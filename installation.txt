@@ -1,0 +1,54 @@
+---------------------------------------------------------------------
+Contents
+---------------------------------------------------------------------
+	I.	Requirements
+
+	II.	Installation
+
+---------------------------------------------------------------------
+I. Requirements
+---------------------------------------------------------------------
+PHP must be compiled with support for:
+	LDAP
+	MySQL
+	PDO
+
+	Actually, you can substitute any database support for MySQL, as this
+framework uses PDO for database interaction.  Also, LDAP is only used for
+for doing LDAP authentication for users.  If you're not going to do any
+LDAP authentication, you can delete or comment out the LDAP stuff.
+
+This application was written assuming you have control over your own web
+server.  If you are on a hosted system, you may need to make changes to
+the code to accomodate your server.
+
+All include files have been kept out of the web directory, and a configuration
+file has been included. You will need to make sure that every .php script
+in the HTML directory includes configuration.inc.  If you control your own
+webserver, you can add a <Directory> command to your httpd.conf, otherwise
+you will need to add a include() command to the top of every .php script in
+the HTML directory.
+
+
+---------------------------------------------------------------------
+II. Installation
+---------------------------------------------------------------------
+	The best way is to have PHP auto_prepend the configuration.inc.
+If this is the only web application on your apache server, you can just point
+your apache's web directory to the html directory inside the application and
+edit the auto_prepend in your php.ini file.
+
+	For us, we're running multiple applications, and have a seperate entry in
+our Apache config for each one.  This does essentially the same thing.
+
+Add to httpd.conf:
+
+Alias /application_name "/var/www/sites/application_name/html"
+<Directory "/var/www/sites/application_name/html">
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+
+        php_value auto_prepend_file /var/www/sites/application_name/configuration.inc
+</Directory>
