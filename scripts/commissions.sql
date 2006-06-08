@@ -11,51 +11,53 @@ CREATE TABLE roles (
 	id int unsigned auto_increment, 
 	role varchar(30) NOT NULL, 
 	PRIMARY KEY(id)) engine=innodb;
-
-CREATE TABLE user_roles (
-	user_id int unsigned, 
-	role_id int unsigned,
-	FOREIGN KEY(user_id) REFERENCES users (id),
-	FOREIGN KEY(role_id) REFERENCES roles (id),
-	PRIMARY KEY(user_id, role_id)) engine=innodb;
-
+	
 CREATE TABLE commissions (
 	id int unsigned auto_increment, 
-	commission varchar(50), 
+	name varchar(75), 
 	PRIMARY KEY(id)) engine=innodb;
 
-CREATE TABLE seatTypes (
+CREATE TABLE seatCategories (
 	id int unsigned auto_increment, 
-	type varchar(30), 
+	category varchar(30), 
 	PRIMARY KEY(id)) engine=innodb;
 
 CREATE TABLE seats (
 	id int unsigned auto_increment, 
 	commission_id int unsigned, 
-	type_id int unsigned, 
+	category_id int unsigned, 
 	title varchar(30), 
 	vacancy int unsigned, 
 	PRIMARY KEY(id),
-	FOREIGN KEY(type_id) REFERENCES seatTypes (id),
-	FOREIGN KEY(commission_id) REFERENCES commissions (id)) engine=innodb;
+	FOREIGN KEY(commission_id) REFERENCES commissions (id),
+	FOREIGN KEY(category_id) REFERENCES seatCategories (id)) engine=innodb;
 
+CREATE TABLE user_roles (
+	user_id int unsigned, 
+	role_id int unsigned,
+	PRIMARY KEY(user_id, role_id),
+	FOREIGN KEY(user_id) REFERENCES users (id),
+	FOREIGN KEY(role_id) REFERENCES roles (id)) engine=innodb;
+	
 CREATE TABLE restrictions (
-	id int unsigned auto_crement, 
+	id int unsigned auto_increment, 
 	restriction varchar(100), 
 	PRIMARY KEY(id)) engine=innodb;
 
 CREATE TABLE seat_restrictions (
 	seat_id int unsigned NOT NULL, 
 	restriction_id int unsigned,
+	PRIMARY KEY(seat_id, restriction_id),
 	FOREIGN KEY(seat_id) REFERENCES seats (id),
-	FOREIGN KEY(restriction_id) REFERENCES restrictions (id),
-	PRIMARY KEY(seat_id, restriction_id)) engine=innodb;
+	FOREIGN KEY(restriction_id) REFERENCES restrictions (id)) engine=innodb;
 
 CREATE TABLE seat_users (
 	seat_id int unsigned, 
 	user_id int unsigned, 
 	term_start varchar(30), 
 	term_end varchar(30),
+	PRIMARY KEY(seat_id, user_id),
 	FOREIGN KEY(seat_id) REFERENCES seats (id),
-	FOREIGN KEY(user_id) REFERENCES users (id),
-	PRIMARY KEY(seat_id, user_id)) engine=innodb;
+	FOREIGN KEY(user_id) REFERENCES users (id)) engine=innodb;
+
+

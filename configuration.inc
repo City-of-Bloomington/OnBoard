@@ -2,19 +2,19 @@
 /*
 	Global settings
 */
-	define("APPLICATION_NAME","application_name");	# Used to keep sessions on the same webserver seperate;
+	define("APPLICATION_NAME","committee_manager");	# Used to keep sessions on the same webserver seperate;
 
-	define("GLOBAL_INCLUDES","/var/www/libraries/php");	# Where on the filesystem this package of libraries is installed.
+	define("GLOBAL_INCLUDES","/var/www/libraries/test");	# Where on the filesystem this package of libraries is installed.
 														# These are shared among other applications we write, so they
 														# are a seperate package we will release.
 
-	define("APPLICATION_HOME","/var/www/sites/application_name");	# Where on the filesystem this is installed
-	define("BASE_URL","/application_name");							# The base URL to get to this site on this webserver
+	define("APPLICATION_HOME","/var/www/sites/committee_manager");	# Where on the filesystem this is installed
+	define("BASE_URL","/committee_manager");							# The base URL to get to this site on this webserver
 
 	#--------------------------------------------------------------------------
 	# Database Setup
 	#--------------------------------------------------------------------------
-	try { $PDO = new PDO("mysql:unix_socket=/tmp/mysql.sock;dbname=application_name","username","password",array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)); }
+	try { $PDO = new PDO("mysql:unix_socket=/tmp/mysql.sock;dbname=committee_manager","committee","h++pd",array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION)); }
 	catch (PDOException $e) { die($e->getMessage()); }
 
 	#--------------------------------------------------------------------------
