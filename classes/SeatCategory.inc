@@ -7,10 +7,10 @@
 		public function __construct($id=null)
 		{
 			global $PDO;
-
-			if ($id)
+			if ($id) 
 			{
-				$sql = "select * from seatCategories where id=$id";
+				if (is_numeric($id)) { $sql = "select * from seatCategories where id=$id"; }
+				else { $sql = "select * from seatCategories where category='$id'";}
 				$result = $PDO->query($sql);
 				if ($result)
 				{
@@ -23,14 +23,16 @@
 
 						$result->closeCursor();
 					}
-					else { throw new Exception($sql); }
+					else { 
+						if (is_numeric($id)) { throw new Exception($sql); } 
+						else { $this->category = $id;}
+					}
 				}
 				else { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 			}
 			else
-			{
-				# This is where the code goes to generate a new, empty instance.
-				# Set any default values for properties that need it here
+			{	
+				
 			}
 		}
 		

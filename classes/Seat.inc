@@ -6,8 +6,10 @@
 		private $category_id;
 		private $title;
 		private $vacancy;
-
-
+		
+		private $commission;
+		private $category;
+		private $restrictions;
 
 		public function __construct($id=null)
 		{
@@ -60,6 +62,8 @@
 
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
+			
+			$this->updateRestrictions();
 		}
 
 		private function update($fields)
@@ -79,19 +83,86 @@
 			$this->id = $PDO->lastInsertID();
 		}
 
+		private function updateRestrictions()
+		{
+			global $PDO;
+
+			$sql = "delete from seat_restrictions where seat_id={$this->id}";
+			$PDO->exec($sql);
+
+			$roles = $this->getRestrictions();
+
+			$statement = $PDO->prepare("insert seat_restrictions set seat_id={$this->id},restriction_id=?");
+			foreach($restrictions as $restriction_id=>$restriction) { $statement->execute(array("$restriction_id")); }
+		}
+
+
 
 		public function getId() { return $this->id; }
 		public function getCommission_id() { return $this->commission_id; }
 		public function getCategory_id() { return $this->category_id; }
 		public function getTitle() { return $this->title; }
 		public function getVacancy() { return $this->vacancy; }
+		public function getCommission() 
+		{
+			if (!$this->commission) { $this->commission = new Commission($this->commission_id); }
+			return $this->commission;
+		}
+			
+		public function getCategory() 
+		{
+			if (!$this->category) { $this->category = new SeatCategory($this->category_id); }
+			return $this->category;
+		}
+		
+		public function getRestrictions() 
+		{
+			global $PDO;
 
+			if (!$this->restrictions)
+			{
+				$this->restrictions = array();
+				$sql = "select restriction_id,restriction from seat_restrictions left join restrictions on restriction_id=id where seat_id={$this->id}";
+				if ($result = $PDO->query($sql))
+				{
+					foreach($result as $row) { $this->restrictions[$row['restriction_id']] = $row['restriction']; }
+					$result->closeCursor();
+				}
+			}
+			return $this->restrictions;
+		}
 
 		public function setId($int) { $this->id = $int; }
 		public function setCommission_id($int) { $this->commission_id = $int; }
 		public function setCategory_id($int) { $this->category_id = $int; }
 		public function setTitle($string) { $this->title = $string; }
 		public function setVacancy($int) { $this->vacancy = $int; }
+		public function setRestrictions($array) { $this->restrictions = $array; }
+		public function setCommission($commission) 
+		{ 
+			$this->commission = $commission; 
+			$this->commission_id = $commission->getId(); 
+		}
+		
+		public function setCategory($category) 
+		{ 
+			$this->category = $category; 
+			$this->category_id = $category->getId(); 
+		}
+		
+		public function deleteSeat() 
+		{
+			global $PDO;
+
+			$sql = "delete from seat_users where seat_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			
+			$sql = "delete from seat_restrictions where seat_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$sql = "delete from seats where id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+		}
 
 	}
 ?>

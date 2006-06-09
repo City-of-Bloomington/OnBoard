@@ -13,24 +13,31 @@
 		{
 			$href = '#';
 			$header = "<tr><th>Edit Commission</th><th>Edit Vacancy</th></tr>";
-			$vacancy = "<a href=#>Edit ";
+			$v_start = "<a href=\"#\">Edit ";
 			$v_end = "</a>";
 		}
 		else 
 		{
 			$href = '#';
 			$header = "<tr><th>Board or Commission</th><th>Vacancy?</th></tr>";
-			$vacancy = "";
+			$v_start = "";
 			$v_end = "";
 		}
 		
 		$commissionList = new CommissionList();
 		$commissionList->find();
+		
 		echo "{$header}";
 		foreach($commissionList as $commission) 
 		{
+			$seatList = new SeatList(array("commission_id"=>$commission->getId()));
+			$vacancy = "";
+			foreach($seatList as $seat)
+			{
+				if ($seat->getVacancy() == 1) { $vacancy = "Position Available"; }
+			}
 			echo "<tr><td><a href=\"{$href}\">{$commission->getName()}</a></td>
-								<td>{$vacancy}{$commission->getId()}{$v_end}</td>
+								<td>{$v_start}{$vacancy}{$v_end}</td>
 						</tr>";
 		}
 	

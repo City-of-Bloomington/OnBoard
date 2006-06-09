@@ -8,10 +8,10 @@
 		public function __construct($id=null)
 		{
 			global $PDO;
-
-			if ($id)
+			if ($id) 
 			{
-				$sql = "select * from commissions where id=$id";
+				if (is_numeric($id)) { $sql = "select * from commissions where id=$id"; }
+				else { $sql = "select * from commissions where name='$id'";}
 				$result = $PDO->query($sql);
 				if ($result)
 				{
@@ -24,14 +24,16 @@
 
 						$result->closeCursor();
 					}
-					else { throw new Exception($sql); }
+					else { 
+						if (is_numeric($id)) { throw new Exception($sql); } 
+						else { $this->name = $id;}
+					}
 				}
 				else { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 			}
 			else
-			{
-				# This is where the code goes to generate a new, empty instance.
-				# Set any default values for properties that need it here
+			{	
+				
 			}
 		}
 		
@@ -55,6 +57,10 @@
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
 		}
+		
+		public function __toString() {
+       return $this->name;
+   }
 
 		private function update($fields)
 		{
