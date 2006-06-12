@@ -86,6 +86,14 @@
 		public function setId($int) { $this->id = $int; }
 		public function setName($string) { $this->name = $string; }
 		public function setCount($int) { $this->count = $int; }
+		
+		public function deleteCommission() 
+		{
+			global $PDO;
+
+			$sql = "delete from commissions where id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+		}
 
 	}
 ?>

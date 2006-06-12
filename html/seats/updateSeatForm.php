@@ -10,37 +10,18 @@
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); ?>
 
 	<h1>Edit Committee</h1>
-	<form method="post" action="updateCommittee.php">
-	<fieldset><legend>Committee Info</legend>
-		<table>
-		<tr><td><label for="name">Committee Name</label></td>
-			<td><input name="name" id="name" /></td></tr>
-				
-		<tr><td><label for="member_count">Amount of Members</label></td>
-			<td><select name="member_count" id="member_count" />
-					<?php
-						for ($i=0; $i<17; $i++) { echo "<option>{$i}</option>"; }
-					?>				
-				</select>
-			</td>
-		</tr>
-		</table>
-
-		<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
-	</fieldset>
-	</form>
-	
-	<h1>Add Seats to Committee</h1>
-	<form method="post" action="addSeats.php">
+	<form method="post" action="updateSeat.php">
 	<fieldset><legend>Seat Info</legend>
+		<input name="id" type="hidden" value="<?php $seat = new Seat($_GET['id']);
+		 echo $seat->getId(); ?>" />
 		<table>
-				
 		<tr><td><label for="title">Seat Title</label></td>
-			<td><input name="title" id="title" /></td></tr>
-
-		<tr><td><label for="vacant">Vacant</label></td>
-			<td><></td></tr>
+			<td><input name="title" id="title" value="<?php echo $seat->getTitle(); ?>" /></td></tr>
+				
+		<tr><td><label for="vacant">Vacant?</label></td>
+				<td><input type="checkbox" name="vacant" id="vacant"
+					<?php  if ($seat->getVacancy() == 1){ echo "checked=\"checked\"";} ?> /></td>
+		</tr>
 		</table>
 
 		<button type="submit" class="submit">Submit</button>

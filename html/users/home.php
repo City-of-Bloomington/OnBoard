@@ -13,9 +13,8 @@
 			Users
 		</div>
 		<table>
+			<tr><th></th><th>Username</th><th>Name</th><th>Auth. Method</th><th>Roles</th></tr>
 		<?php
-			require_once(APPLICATION_HOME."/classes/UserList.inc");
-
 			$userList = new UserList();
 			$userList->find();
 			foreach($userList as $user)

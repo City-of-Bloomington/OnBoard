@@ -11,15 +11,15 @@
 
 		if (isset($_SESSION['USER'])) 
 		{
-			$href = '#';
+			$href = "commissionsEdit.php";
 			$header = "<tr><th>Edit Commission</th><th>Edit Vacancy</th></tr>";
 			$v_start = "<a href=\"#\">Edit ";
 			$v_end = "</a>";
 		}
 		else 
 		{
-			$href = '#';
-			$header = "<tr><th>Board or Commission</th><th>Vacancy?</th></tr>";
+			$href = "commissions.php"; 
+			$header = "<tr><th>Boards &amp; Commissions</th><th>Vacancy?</th></tr>";
 			$v_start = "";
 			$v_end = "";
 		}
@@ -36,7 +36,7 @@
 			{
 				if ($seat->getVacancy() == 1) { $vacancy = "Position Available"; }
 			}
-			echo "<tr><td><a href=\"{$href}\">{$commission->getName()}</a></td>
+			echo "<tr><td><a href=\"{$href}?id={$commission->getId()}\">{$commission->getName()}</a></td>
 								<td>{$v_start}{$vacancy}{$v_end}</td>
 						</tr>";
 		}

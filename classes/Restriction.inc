@@ -10,7 +10,9 @@
 
 			if ($id)
 			{
-				$sql = "select * from restrictions where id=$id";
+				if (is_numeric($id)) { $sql = "select * from restrictions where id=$id"; }
+				else { $sql = "select * from restrictions where restriction='$id'"; }
+				
 				$result = $PDO->query($sql);
 				if ($result)
 				{

@@ -24,18 +24,6 @@
 				</select>
 			</td>
 		</tr>
-
-	<!--	<tr><td><label for="members">Members</label></td>
-			<td><select name="members[]" id="members" size="5" multiple="multiple">
-				<?php
-					$users = new UserList();
-					$users->find();
-					foreach($users as $user) { echo "<option>{$user->getLastname()}, {$user->getFirstName()}</option>"; }
-				?>
-				</select>
-			</td>
-		</tr>
-	-->
 		</table>
 
 		<button type="submit" class="submit">Submit</button>

@@ -86,13 +86,16 @@
 		{
 			global $PDO;
 
-			$sql = "delete from user_roles where user_id={$this->id}";
-			$PDO->exec($sql);
-
 			$roles = $this->getRoles();
 
+			$sql = "delete from user_roles where user_id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
 			$statement = $PDO->prepare("insert user_roles set user_id={$this->id},role_id=?");
-			foreach($roles as $role_id=>$role) { $statement->execute(array("$role_id")); }
+			foreach($roles as $role_id=>$role) 
+			{ 
+				if (false === $statement->execute(array("$role_id"))) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			}
 		}
 
 		protected function saveLocalPassword()
@@ -142,6 +145,25 @@
 		public function setAuthenticationMethod($string) { $this->authenticationMethod = $string; }
 		public function setFirstname($string) { $this->firstname = sanitizeString($string); }
 		public function setLastname($string) { $this->lastname = sanitizeString($string); }
-		public function setRoles($array) { $this->roles = $array; }
+		public function setRoles($array) 
+		{ 
+			$this->roles = array();
+			foreach($array as $id)
+			{
+				$role = new Role($id);
+				$this->roles[$role->getId()] = $role->getRole();
+			} 
+		}
+		
+		public function deleteUser() 
+		{
+			global $PDO;
+
+			$sql = "delete from user_roles where user_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$sql = "delete from users where id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+		}
 	}
 ?>

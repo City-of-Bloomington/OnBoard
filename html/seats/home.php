@@ -13,6 +13,7 @@
 			Seats
 		</div>
 		<table>
+		<tr><th></th><th>Title</th><th>Board/Commission</th><th>Appointment Type</th><th>Vacancy?</th><th>Restrictions</th></tr>
 		<?php
 			$seatList = new SeatList();
 			$seatList->find(null, "commission_id");

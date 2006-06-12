@@ -20,10 +20,18 @@
 				</select>
 			</td>
 		</tr>
-		<tr><td><label for="username">Username</label></td>
-			<td><input name="username" id="username" /></td></tr>
-		<tr><td><label for="password">Password</label></td>
-			<td><input name="password" id="password" /></td></tr>
+		<tr><td><label for="uname">Username</label></td>
+			<td><input name="uname" id="uname" /></td></tr>
+				
+				<tr><td><label for="firstname">First Name</label></td>
+			<td><input name="firstname" id="firstname" /></td></tr>
+				
+				<tr><td><label for="lastname">Last Name</label></td>
+			<td><input name="lastname" id="lastname" /></td></tr>
+				
+		<tr><td><label for="pword">Password</label></td>
+			<td><input type="password" name="pword" id="pword" /></td></tr>
+				
 		<tr><td><label for="roles">Roles</label></td>
 			<td><select name="roles[]" id="roles" size="5" multiple="multiple">
 				<?php

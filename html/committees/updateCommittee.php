@@ -13,7 +13,7 @@
 	#--------------------------------------------------------------------------
 	# Create the new account
 	#--------------------------------------------------------------------------
-	$commission = new Commission();
+	$commission = new Commission($_POST['id']);
 	$commission->setName($_POST['name']);
 	$commission->setCount($_POST['member_count']);
 
@@ -25,6 +25,6 @@
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = $e;
-		Header("Location: addCommitteeForm.php");
+		Header("Location: updateCommitteeForm.php");
 	}
 ?>

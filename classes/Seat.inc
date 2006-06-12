@@ -51,7 +51,6 @@
 			# You can (and maybe should) replace this $fields code with your own custom SQL
 			# for each property of this class,
 			$fields = array();
-			$fields[] = $this->id ? "id='{$this->id}'" : "id=null";
 			$fields[] = $this->commission_id ? "commission_id='{$this->commission_id}'" : "commission_id=null";
 			$fields[] = $this->category_id ? "category_id='{$this->category_id}'" : "category_id=null";
 			$fields[] = $this->title ? "title='{$this->title}'" : "title=null";
@@ -87,16 +86,17 @@
 		{
 			global $PDO;
 
+			$restrictions = $this->getRestrictions();
+		
 			$sql = "delete from seat_restrictions where seat_id={$this->id}";
-			$PDO->exec($sql);
-
-			$roles = $this->getRestrictions();
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 
 			$statement = $PDO->prepare("insert seat_restrictions set seat_id={$this->id},restriction_id=?");
-			foreach($restrictions as $restriction_id=>$restriction) { $statement->execute(array("$restriction_id")); }
+			foreach($restrictions as $restriction_id=>$restriction) 
+			{ 
+				if (false === $statement->execute(array("$restriction_id"))) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			}
 		}
-
-
 
 		public function getId() { return $this->id; }
 		public function getCommission_id() { return $this->commission_id; }
@@ -137,7 +137,8 @@
 		public function setCategory_id($int) { $this->category_id = $int; }
 		public function setTitle($string) { $this->title = $string; }
 		public function setVacancy($int) { $this->vacancy = $int; }
-		public function setRestrictions($array) { $this->restrictions = $array; }
+		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
+		public function removeVacancy($int) { if (isset($this->vacancy)) unset($this->vacancy); }
 		public function setCommission($commission) 
 		{ 
 			$this->commission = $commission; 
@@ -148,6 +149,16 @@
 		{ 
 			$this->category = $category; 
 			$this->category_id = $category->getId(); 
+		}
+		
+			public function setRestrictions($array) 
+		{ 
+			$this->restrictions = array();
+			foreach($array as $id)
+			{
+				$restrictions = new Restriction($id);
+				$this->restrictions[$restrictions->getId()] = $restrictions->getRestriction();
+			} 
 		}
 		
 		public function deleteSeat() 

@@ -10,7 +10,8 @@
 
 			if ($id)
 			{
-				$sql = "select * from roles where id=$id";
+				if (is_numeric($id)) { $sql = "select * from roles where id=$id"; }
+				else { $sql = "select * from roles where role='$id'"; }
 				$result = $PDO->query($sql);
 				if ($result)
 				{
@@ -44,12 +45,10 @@
 			# You can (and maybe should) replace this $fields code with your own custom SQL
 			# for each property of this class,
 			$fields = array();
-			$fields[] = $this->id ? "id='{$this->id}'" : "id=null";
 			$fields[] = $this->role ? "role='{$this->role}'" : "role=null";
 
 			$fields = implode(",",$fields);
-
-
+			
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
 		}

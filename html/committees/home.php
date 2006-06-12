@@ -13,6 +13,7 @@
 			Board or Commission
 		</div>
 		<table>
+			<tr><th></th><th>Commission</th><th>Member Total</th>
 		<?php
 			$commissionList = new CommissionList();
 			$commissionList->find();
