@@ -3,6 +3,8 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
+	
+	verifyUser("Committee Member", "Administrator");
 ?>
 <div id="mainContent">
 	<div class="interfaceBox">
@@ -16,7 +18,7 @@
 				$seatList = new SeatList(array('commission_id'=>$commission->getId()));
 				foreach ($seatList as $seat) {
 					if ($seat->getVacancy() == 1) { $user = "vacant"; }
-					else { $user =  $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); }	
+					else { $user =  $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); }
 					echo "
 					<tr>
 					<td>{$user}</td>

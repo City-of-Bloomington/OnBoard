@@ -29,7 +29,7 @@
 					<td>{$seat->getVacancy()}</td>
 					<td>";
 					foreach($seat->getRestrictions() as $restriction) { echo "$restriction "; }
-					echo "</td></tr>";
+					echo "</td><td>{}</td></tr>";
 			}
 		?>
 		</table>

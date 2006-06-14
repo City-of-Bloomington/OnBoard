@@ -9,7 +9,7 @@
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); ?>
 
-	<h1>Edit Committee</h1>
+	<h1>Edit Seat</h1>
 	<form method="post" action="updateSeat.php">
 	<fieldset><legend>Seat Info</legend>
 		<input name="id" type="hidden" value="<?php $seat = new Seat($_GET['id']);

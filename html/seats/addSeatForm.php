@@ -16,6 +16,18 @@
 		<tr><td><label for="title">Seat Title</label></td>
 			<td><input name="title" id="title" /></td></tr>
 	
+		<tr><td><label for="users">Add Member</label></td>
+			<td><select name="users" id="users">
+				<option>--Vacant--</option>
+				<?php
+					$users = new UserList();
+					$users->find();
+					foreach($users as $user) { echo "<option>{$user->getUsername()}</option>"; }
+				?>
+				</select>
+			</td>
+		</tr>
+	
 		<tr><td><label for="vacant">Vacant?</label></td>
 			<td><input type="checkbox" name="vacant" id="vacant" /></td></tr>
 		

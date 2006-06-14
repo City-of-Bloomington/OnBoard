@@ -24,5 +24,5 @@
 		exit();
 	}
 
-	Header("Location: $_POST[returnURL]");
+	Header("Location: " .BASE_URL);
 ?>

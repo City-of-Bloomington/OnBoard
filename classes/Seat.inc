@@ -10,6 +10,7 @@
 		private $commission;
 		private $category;
 		private $restrictions;
+		private $user;
 
 		public function __construct($id=null)
 		{
@@ -45,7 +46,7 @@
 		public function save()
 		{
 			# Check for required fields here.  Throw an exception if anything is missing.
-
+			if (!$this->commission_id || !$this->category_id || !$this->vacancy) { throw new Exception("missingRequiredFields"); }
 
 			# This generates generic SQL that should work right away.
 			# You can (and maybe should) replace this $fields code with your own custom SQL
@@ -63,6 +64,7 @@
 			else { $this->insert($fields); }
 			
 			$this->updateRestrictions();
+			$this->updateUser();
 		}
 
 		private function update($fields)
@@ -81,7 +83,7 @@
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 			$this->id = $PDO->lastInsertID();
 		}
-
+		
 		private function updateRestrictions()
 		{
 			global $PDO;
@@ -96,6 +98,20 @@
 			{ 
 				if (false === $statement->execute(array("$restriction_id"))) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 			}
+		}
+		
+		private function updateUser()
+		{
+			global $PDO;
+
+			$user = $this->getUser();
+			$user_id = $user->getId();
+		
+			$sql = "delete from seat_users where seat_id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$sql  = "insert seat_users set seat_id={$this->id},user_id={$user_id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 		}
 
 		public function getId() { return $this->id; }
@@ -131,6 +147,22 @@
 			}
 			return $this->restrictions;
 		}
+		
+		public function getUser() 
+		{
+			global $PDO;
+
+			if (!$this->user)
+			{
+				$sql = "select user_id from seat_users left join users on user_id=id where seat_id={$this->id}";
+				if ($result = $PDO->query($sql))
+				{
+					foreach($result as $row) { $this->user = new User($row['user_id']); }
+					$result->closeCursor();
+				}
+			}
+			return $this->user;
+		}
 
 		public function setId($int) { $this->id = $int; }
 		public function setCommission_id($int) { $this->commission_id = $int; }
@@ -139,6 +171,10 @@
 		public function setVacancy($int) { $this->vacancy = $int; }
 		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
 		public function removeVacancy($int) { if (isset($this->vacancy)) unset($this->vacancy); }
+		public function setUser($user) 
+		{ 
+			$this->user = $user; 
+		}
 		public function setCommission($commission) 
 		{ 
 			$this->commission = $commission; 
@@ -151,7 +187,7 @@
 			$this->category_id = $category->getId(); 
 		}
 		
-			public function setRestrictions($array) 
+		public function setRestrictions($array) 
 		{ 
 			$this->restrictions = array();
 			foreach($array as $id)

@@ -123,6 +123,8 @@
 		public function getAuthenticationMethod() { return $this->authenticationMethod; }
 		public function getFirstname() { return $this->firstname; }
 		public function getLastname() { return $this->lastname; }
+		public function getTermStart() { return $this->term_start; }
+		public function getTermEnd() { return $this->term_end; }
 		public function getRoles()
 		{
 			global $PDO;
@@ -145,6 +147,8 @@
 		public function setAuthenticationMethod($string) { $this->authenticationMethod = $string; }
 		public function setFirstname($string) { $this->firstname = sanitizeString($string); }
 		public function setLastname($string) { $this->lastname = sanitizeString($string); }
+		public function setTermStart($string) { $this->term_start = sanitizeString($string); }
+		public function setTermEnd($string) { $this->term_end = sanitizeString($string); }
 		public function setRoles($array) 
 		{ 
 			$this->roles = array();
