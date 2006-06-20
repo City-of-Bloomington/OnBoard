@@ -34,7 +34,7 @@
 						<td><input name="uname" id="uname" value="<?php echo $user->getUsername(); ?>" /></td>
 				</tr>
 				<tr><td><label for="pword">Password</label></td>
-						<td><input type="password" name="pword" id="pword" value="<?php echo $user->getPassword(); ?>" /></td>
+						<td><input name="pword" id="pword" value="" /></td>
 				</tr>
 				<tr><td><label for="roles">Roles</label></td>
 						<td><select name="roles[]" id="roles" size="5" multiple="multiple" >

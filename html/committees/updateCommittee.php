@@ -16,11 +16,17 @@
 	$commission = new Commission($_POST['id']);
 	$commission->setName($_POST['name']);
 	$commission->setCount($_POST['member_count']);
-
+	
+	if (isset($_POST['remove_seat']) && $_POST['remove_seat'] != "--Select Here--") 
+	{ 
+		$seat = new Seat($_POST['remove_seat']);
+		$seat->deleteSeat();  
+	}
+	
 	try
 	{
 		$commission->save();
-		Header("Location: home.php");
+		Header("Location: ". BASE_URL);
 	}
 	catch (Exception $e)
 	{

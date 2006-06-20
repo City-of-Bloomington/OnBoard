@@ -32,7 +32,7 @@
 	try
 	{
 		$user->save();
-	  Header("Location: home.php");
+	  Header("Location: ". BASE_URL);
 	}
 	catch (Exception $e)
 	{

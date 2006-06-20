@@ -7,6 +7,9 @@
 		private $title;
 		private $vacancy;
 		
+		private $term_start;
+		private $term_end;
+		
 		private $commission;
 		private $category;
 		private $restrictions;
@@ -18,7 +21,9 @@
 
 			if ($id)
 			{
-				$sql = "select * from seats where id=$id";
+				if (is_numeric($id)) { $sql = "select * from seats where id=$id"; }
+				else { $sql = "select * from seats where title='$id'"; }
+				
 				$result = $PDO->query($sql);
 				if ($result)
 				{
@@ -46,7 +51,7 @@
 		public function save()
 		{
 			# Check for required fields here.  Throw an exception if anything is missing.
-			if (!$this->commission_id || !$this->category_id || !$this->vacancy) { throw new Exception("missingRequiredFields"); }
+	
 
 			# This generates generic SQL that should work right away.
 			# You can (and maybe should) replace this $fields code with your own custom SQL
@@ -104,14 +109,21 @@
 		{
 			global $PDO;
 
-			$user = $this->getUser();
-			$user_id = $user->getId();
-		
-			$sql = "delete from seat_users where seat_id={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			if($user = $this->user) 
+			{
+				$user_id = $user->getId();
+			
+				$sql = "delete from seat_users where seat_id={$this->id}";
+				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 
-			$sql  = "insert seat_users set seat_id={$this->id},user_id={$user_id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+				$sql  = "insert seat_users set seat_id={$this->id},user_id=$user_id,term_start='{$this->term_start}',term_end='{$this->term_end}'";
+				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			}
+			else 
+			{
+				$sql = "delete from seat_users where seat_id={$this->id}";
+				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			}
 		}
 
 		public function getId() { return $this->id; }
@@ -148,6 +160,36 @@
 			return $this->restrictions;
 		}
 		
+		public function getTermStart() 
+		{
+			global $PDO;
+			if (!$this->term_start)
+			{
+				$sql = "select term_start from seat_users left join users on user_id=id where seat_id={$this->id}"; 
+				if ($result = $PDO->query($sql))
+				{
+					foreach($result as $row) { $this->term_start = $row['term_start']; }
+					$result->closeCursor();
+				}
+			}
+			return $this->term_start;
+		}
+		
+		public function getTermEnd() 
+		{
+			global $PDO;
+			if (!$this->term_end)
+			{
+				$sql = "select term_end from seat_users left join users on user_id=id where seat_id={$this->id}"; 
+				if ($result = $PDO->query($sql))
+				{
+					foreach($result as $row) { $this->term_end = $row['term_end']; }
+					$result->closeCursor();
+				}
+			}
+			return $this->term_end;
+		}
+		
 		public function getUser() 
 		{
 			global $PDO;
@@ -157,9 +199,10 @@
 				$sql = "select user_id from seat_users left join users on user_id=id where seat_id={$this->id}";
 				if ($result = $PDO->query($sql))
 				{
-					foreach($result as $row) { $this->user = new User($row['user_id']); }
+					foreach($result as $row) { $id =  $row['user_id']; }
 					$result->closeCursor();
 				}
+				$this->user = new User($id);
 			}
 			return $this->user;
 		}
@@ -171,10 +214,13 @@
 		public function setVacancy($int) { $this->vacancy = $int; }
 		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
 		public function removeVacancy($int) { if (isset($this->vacancy)) unset($this->vacancy); }
+		public function setTermStart($string) { $this->term_start = sanitizeString($string); }
+		public function setTermEnd($string) { $this->term_end = sanitizeString($string); }
 		public function setUser($user) 
 		{ 
 			$this->user = $user; 
 		}
+		public function unsetUser() { if (isset($this->user)) unset($this->user); }
 		public function setCommission($commission) 
 		{ 
 			$this->commission = $commission; 

@@ -4,6 +4,7 @@
 		private $id;
 		private $name;
 		private $count;
+		private $info;
 
 		public function __construct($id=null)
 		{
@@ -47,9 +48,9 @@
 			# You can (and maybe should) replace this $fields code with your own custom SQL
 			# for each property of this class,
 			$fields = array();
-			$fields[] = $this->id ? "id='{$this->id}'" : "id=null";
 			$fields[] = $this->name ? "name='{$this->name}'" : "name=null";
-			$fields[] = $this->count ? "count='{$this->count}'" : "name=count";
+			$fields[] = $this->count ? "count='{$this->count}'" : "count=null";
+			$fields[] = $this->info ? "info='{$this->info}'" : "info=null";
 
 			$fields = implode(",",$fields);
 
@@ -82,10 +83,12 @@
 		public function getId() { return $this->id; }
 		public function getName() { return $this->name; }
 		public function getCount() { return $this->count; }
+		public function getInfo() { return $this->info; }
 
 		public function setId($int) { $this->id = $int; }
 		public function setName($string) { $this->name = $string; }
 		public function setCount($int) { $this->count = $int; }
+		public function setInfo($string) { $this->info = $string; }
 		
 		public function deleteCommission() 
 		{

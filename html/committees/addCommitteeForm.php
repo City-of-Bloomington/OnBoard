@@ -17,7 +17,7 @@
 			<td><input name="name" id="name" /></td></tr>
 				
 		<tr><td><label for="member_count">Amount of Members</label></td>
-			<td><select name="member_count" id="member_count" />
+			<td><select name="member_count" id="member_count">
 					<?php
 						for ($i=0; $i<17; $i++) { echo "<option>{$i}</option>"; }
 					?>				
@@ -27,7 +27,7 @@
 		</table>
 
 		<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
+		<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>';">Cancel</button>
 	</fieldset>
 	</form>
 </div>

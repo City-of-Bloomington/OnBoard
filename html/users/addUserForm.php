@@ -23,15 +23,6 @@
 		<tr><td><label for="uname">Username</label></td>
 			<td><input name="uname" id="uname" /></td></tr>
 				
-				<tr><td><label for="firstname">First Name</label></td>
-			<td><input name="firstname" id="firstname" /></td></tr>
-				
-				<tr><td><label for="lastname">Last Name</label></td>
-			<td><input name="lastname" id="lastname" /></td></tr>
-				
-		<tr><td><label for="pword">Password</label></td>
-			<td><input type="password" name="pword" id="pword" /></td></tr>
-				
 		<tr><td><label for="roles">Roles</label></td>
 			<td><select name="roles[]" id="roles" size="5" multiple="multiple">
 				<?php
@@ -47,6 +38,43 @@
 		<button type="submit" class="submit">Submit</button>
 		<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
 	</fieldset>
+	</form>
+	<form method="post" action="addUser.php">
+		<fieldset>
+			<table>
+		<tr><td><label for="authenticationMethod">Authentication</label></td>
+			<td><select name="authenticationMethod" id="authenticationMethod">
+					<option>LDAP</option>
+					<option>local</option>
+				</select>
+			</td>
+		</tr>
+		<tr><td><label for="uname">Username</label></td>
+			<td><input name="uname" id="uname" /></td></tr>
+				
+				<tr><td><label for="firstname">First Name</label></td>
+			<td><input name="firstname" id="firstname" /></td></tr>
+				
+				<tr><td><label for="lastname">Last Name</label></td>
+			<td><input name="lastname" id="lastname" /></td></tr>
+				
+		<tr><td><label for="pword">Password</label></td>
+			<td><input name="pword" id="pword" /></td></tr>
+				
+		<tr><td><label for="roles">Roles</label></td>
+			<td><select name="roles[]" id="roles" size="5" multiple="multiple">
+				<?php
+					$roles = new RoleList();
+					$roles->find();
+					foreach($roles as $role) { echo "<option>$role</option>"; }
+				?>
+				</select>
+			</td>
+		</tr>
+		</table>
+			<button type="submit" class="submit">Submit</button>
+			<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
+		</fieldset>
 	</form>
 </div>
 
