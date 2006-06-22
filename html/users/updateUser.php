@@ -1,42 +1,57 @@
 <?php
 /*
 	$_POST variables:	id
+						authenticationMethod
 						username
-						admin
-						info
-						status
+						roles
+						firstname
+						lastname
+
+						# Optional
+						password
+						email
+						homephone
+						workphone
+						city
+						street
+						zip
 */
-	verifyUser("Administrator");
+	verifyUser("Administrator", "Committee Member");
 
 	#--------------------------------------------------------------------------
 	# Update the account
 	#--------------------------------------------------------------------------
 	$user = new User($_POST['id']);
-	$user->setAuthenticationMethod($_POST['authenticationMethod']);
-	$user->setUsername($_POST['uname']);
-	if ($_POST['pword']) { $user->setPassword($_POST['pword']); }
+	
+	#Only updated when Admin accesses an account other than their own
+	if ($_POST['username']) { $user->setUsername($_POST['username']); $direct = "home.php";}
+	else { $direct = BASE_URL; }
+	if ($_POST['authenticationMethod']) {$user->setAuthenticationMethod($_POST['authenticationMethod']); }
+	
+	$user->setFirstname($_POST['firstname']);
+	$user->setLastname($_POST['lastname']);
+	$user->setEmail($_POST['email']);
+	$user->setHomephone($_POST['homephone']);
+	$user->setWorkphone($_POST['workphone']);
+	$user->setCity($_POST['city']);
+	$user->setStreet($_POST['street']);
+	$user->setZipCode($_POST['zip']);
+	$user->setAbout($_POST['about']);
+	
+
+	# Only update the password if they actually typed somethign in
+	if ($_POST['password']) { $user->setPassword($_POST['password']); }
 	if (isset($_POST['roles'])) { $user->setRoles($_POST['roles']); }
 
-	if ($_POST['authenticationMethod'] == "LDAP")
-	{
-		# Load the rest of their stuff from LDAP
-		require_once(GLOBAL_INCLUDES."/classes/LDAPEntry.inc");
-		$ldap = new LDAPEntry($user->getUsername());
-	}
-	else
-	{
-		# Load any other fields from the form
-	}
 
-  
 	try
 	{
 		$user->save();
-	  Header("Location: ". BASE_URL);
+		Header("Location: ". $direct);
 	}
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = $e;
-		Header("Location: updateUserForm.php");
+		Header("Location: updateUserForm.php?id={$user->getId()}");
 	}
 ?>

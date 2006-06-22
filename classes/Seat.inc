@@ -194,7 +194,7 @@
 		{
 			global $PDO;
 
-			if (!$this->user)
+			if (!$this->user && $this->vacancy != 1)
 			{
 				$sql = "select user_id from seat_users left join users on user_id=id where seat_id={$this->id}";
 				if ($result = $PDO->query($sql))

@@ -1,11 +1,15 @@
 <?php
 /*
 	$_POST variables:	authenticationMethod
-						username
-						roles
+										username
+										roles
 
 						# May be optional if LDAP is used
 						password
+						firstname
+						lastname
+						email
+						homephone
 
 */
 	verifyUser("Administrator");
@@ -15,8 +19,8 @@
 	#--------------------------------------------------------------------------
 	$user = new User();
 	$user->setAuthenticationMethod($_POST['authenticationMethod']);
-	$user->setUsername($_POST['uname']);
-	if ($_POST['pword']) { $user->setPassword($_POST['pword']); }
+	$user->setUsername($_POST['username']);
+	if ($_POST['password']) { $user->setPassword($_POST['password']); }
 	if (isset($_POST['roles'])) { $user->setRoles($_POST['roles']); }
 
 	if ($_POST['authenticationMethod'] == "LDAP")
@@ -27,12 +31,14 @@
 		$user->setFirstname($ldap->getFirstname());
 		$user->setLastname($ldap->getLastname());
 		$user->setEmail($ldap->getEmail());
-		$user->setHomephone($ldap->setHomephone());
+		$user->setHomephone($ldap->getHomephone());
 	}
 	else
 	{
 		$user->setFirstname($_POST['firstname']);
 		$user->setLastname($_POST['lastname']);
+		$user->setEmail($_POST['email']);
+		$user->setHomephone($_POST['homephone']);
 	}
 
 	try
