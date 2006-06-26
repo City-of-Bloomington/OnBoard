@@ -51,7 +51,7 @@
 			{
 				if ($seat->getVacancy() == 1) 
 				{ 
-					$vacancy = "<a href=\"http://bloomington.in.gov/clerk/application.php\" onclick=\"window.open(this.href,'_blank');return false;\">Position Available</a>"; 
+					$vacancy = "<a href=\"applicationForm.php\" onclick=\"window.open(this.href,'_blank');return false;\">Position Available</a>"; 
 				}
 			}
 			if ($edit == "" && $delete == "") { $id = "";}

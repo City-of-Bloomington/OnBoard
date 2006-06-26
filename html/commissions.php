@@ -15,7 +15,7 @@
 				$seatList = new SeatList(array('commission_id'=>$commission->getId()));
 				foreach ($seatList as $seat) 
 				{
-					if ($seat->getVacancy() == 1) { $user = "vacant"; $term = ""; $href="http://bloomington.in.gov/clerk/application.php\" onclick=\"window.open(this.href,'_blank');return false;";}
+					if ($seat->getVacancy() == 1) { $user = "vacant"; $term = ""; $href="applicationForm.php\" onclick=\"window.open(this.href,'_blank');return false;";}
 					else 
 					{ 
 						$user = $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); 

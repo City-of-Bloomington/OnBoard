@@ -59,11 +59,10 @@
 							$label = "Committee(s)";
 							$count += 1;
 							if ($count > 1) { $label = ""; }
-							echo "<tr><td><label>$label</label></td><td>{$seat->getCommission()->getName()}</td>"; 
+							echo "<tr><td><label>$label</label></td><td>{$seat->getCommission()->getName()}</td></tr>"; 
 						}
 					} 
 					?>
-				</tr>
 				<tr><td>----------------------------------</td></tr>
 				<tr><td><label>About <?php echo $user->getFirstname() . " " . $user->getLastname(); ?></label></td>
 						<td><?php echo $user->getAbout(); ?></td>
