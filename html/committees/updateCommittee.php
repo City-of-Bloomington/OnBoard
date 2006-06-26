@@ -13,9 +13,9 @@
 	#--------------------------------------------------------------------------
 	# Create the new account
 	#--------------------------------------------------------------------------
-	$commission = new Commission($_POST['id']);
-	$commission->setName($_POST['name']);
-	$commission->setCount($_POST['member_count']);
+	$committee = new Committee($_POST['id']);
+	$committee->setName($_POST['name']);
+	$committee->setCount($_POST['member_count']);
 	
 	if (isset($_POST['remove_seat']) && $_POST['remove_seat'] != "--Select Here--") 
 	{ 
@@ -25,7 +25,7 @@
 	
 	try
 	{
-		$commission->save();
+		$committee->save();
 		Header("Location: ". BASE_URL);
 	}
 	catch (Exception $e)

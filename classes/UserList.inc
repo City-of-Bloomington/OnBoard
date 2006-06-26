@@ -20,6 +20,14 @@
 				if (isset($fields['authenticationMethod'])) { $options[] = "authenticationMethod='$fields[authenticationMethod]'"; }
 				if (isset($fields['firstname'])) { $options[] = "firstname='$fields[firstname]'"; }
 				if (isset($fields['lastname'])) { $options[] = "lastname='$fields[lastname]'"; }
+				if (isset($fields['email'])) { $options[] = "email='$fields[email]'"; }
+				if (isset($fields['address'])) { $options[] = "address='$fields[address]'"; }
+				if (isset($fields['city'])) { $options[] = "city='$fields[city]'"; }
+				if (isset($fields['zipcode'])) { $options[] = "zipcode='$fields[zipcode]'"; }
+				if (isset($fields['homePhone'])) { $options[] = "homePhone='$fields[homePhone]'"; }
+				if (isset($fields['workPhone'])) { $options[] = "workPhone='$fields[workPhone]'"; }
+				if (isset($fields['about'])) { $options[] = "about='$fields[about]'"; }
+				if (isset($fields['timestamp'])) { $options[] = "timestamp='$fields[timestamp]'"; }
 
 				# To search on Role, you have to join the userRoles table
 				if (isset($fields['role']))

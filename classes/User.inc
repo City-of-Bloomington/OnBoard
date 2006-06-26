@@ -7,19 +7,20 @@
 		private $username;
 		private $password;
 		private $authenticationMethod;
-
 		private $firstname;
 		private $lastname;
+		private $address;
+		private $city;
+		private $zipcode;
+		private $email;
+		private $about;
+		private $homePhone;
+		private $workPhone;
+		private $timestamp;
 
 		private $roles;
 		
-		private $city;
-		private $zipcode;
-		private $street;
-		private $email;
-		private $about;
-		private $homephone;
-		private $workphone;
+		
 
 		public function __construct($id = null)
 		{
@@ -41,13 +42,14 @@
 
 					$this->firstname = $user['firstname'];
 					$this->lastname = $user['lastname'];
-					$this->street = $user['street'];
+					$this->address = $user['address'];
 					$this->email = $user['email'];
 					$this->city = $user['city'];
 					$this->zipcode= $user['zipcode'];
-					$this->homephone = $user['homephone'];
-					$this->workphone = $user['workphone'];
+					$this->homePhone = $user['homePhone'];
+					$this->workPhone = $user['workPhone'];
 					$this->about = $user['about'];
+					$this->timestamp = $user['timestamp'];
 
 					$result->closeCursor();
 				}
@@ -65,12 +67,13 @@
 			$fields[] = $this->firstname ? "firstname='{$this->firstname}'" : "firstname=null";
 			$fields[] = $this->lastname ? "lastname='{$this->lastname}'" : "lastname=null";
 			$fields[] = $this->email ? "email='{$this->email}'" : "email=null";
-			$fields[] = $this->street ? "street='{$this->street}'" : "street=null";
+			$fields[] = $this->address ? "address='{$this->address}'" : "address=null";
 			$fields[] = $this->zipcode ? "zipcode='{$this->zipcode}'" : "zipcode=null";
 			$fields[] = $this->city ? "city='{$this->city}'" : "city=null";
-			$fields[] = $this->workphone ? "workphone='{$this->workphone}'" : "workphone=null";
-			$fields[] = $this->homephone ? "homephone='{$this->homephone}'" : "homephone=null";
+			$fields[] = $this->workPhone ? "workPhone='{$this->workPhone}'" : "workPhone=null";
+			$fields[] = $this->homePhone ? "homePhone='{$this->homePhone}'" : "homePhone=null";
 			$fields[] = $this->about ? "about='{$this->about}'" : "about=null";
+			$fields[] = $this->timestamp ? "timestamp='{$this->timestamp}'" : "timestamp=null";
 			$fields[] = $this->authenticationMethod ? "authenticationMethod='{$this->authenticationMethod}'" : "authenticationMethod=local";
 			$fields = implode(",",$fields);
 
@@ -145,13 +148,14 @@
 		public function getAuthenticationMethod() { return $this->authenticationMethod; }
 		public function getFirstname() { return $this->firstname; }
 		public function getLastname() { return $this->lastname; }
+		public function getAddress() { return $this->address; }
 		public function getCity() { return $this->city; }
 		public function getZipcode() { return $this->zipcode; }
-		public function getStreet() { return $this->street; }
 		public function getEmail() { return $this->email; }
 		public function getAbout() { return $this->about; }
-		public function getHomephone() { return $this->homephone; }
-		public function getWorkphone() { return $this->workphone; }
+		public function getHomePhone() { return $this->homePhone; }
+		public function getWorkPhone() { return $this->workPhone; }
+		public function getTimestamp() { return $this->timestamp; }
 		
 		public function getRoles()
 		{
@@ -175,14 +179,14 @@
 		public function setAuthenticationMethod($string) { $this->authenticationMethod = $string; }
 		public function setFirstname($string) { $this->firstname = sanitizeString($string); }
 		public function setLastname($string) { $this->lastname = sanitizeString($string); }
-		public function setStreet($string) { $this->street = sanitizeString($string); }
+		public function setAddress($string) { $this->address = sanitizeString($string); }
 		public function setCity($string) { $this->city = sanitizeString($string); }
 		public function setZipcode($string) { $this->zipcode = sanitizeString($string); }
 		public function setEmail($string) { $this->email = sanitizeString($string); }
-		public function setHomephone($string) { $this->homephone = sanitizeString($string); }
-		public function setWorkphone($string) { $this->workphone = sanitizeString($string); }
+		public function setHomephone($string) { $this->homePhone = sanitizeString($string); }
+		public function setWorkphone($string) { $this->workPhone = sanitizeString($string); }
 		public function setAbout($string) { $this->about = sanitizeString($string); }
-		
+		public function setTimestamp($timestamp) { $this->timestamp = $timestamp; }
 		
 		public function setRoles($array) 
 		{ 

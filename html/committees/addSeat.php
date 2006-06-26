@@ -17,17 +17,17 @@
 	$seat->setTitle($_POST['title']);
 	if (isset($_POST['restrictions'])) { $seat->setRestrictions($_POST['restrictions']); }
 	
-	if (isset($_POST['category']))
+	if (isset($_POST['appointment']))
 	{
-		$category = new SeatCategory($_POST['category']);
-		$seat->setCategory($category);
+		$appointment = new SeatAppointment($_POST['appointment']);
+		$seat->setAppointment($appointment);
 	}
 	
 	if (isset($_POST['id']))
 	{
-		$commission = new Commission($_POST['id']);
-		$seatList = new SeatList(array("commission_id"=>$commission->getId()));
-		if (count($seatList) != $commission->getCount()) {$seat->setCommission($commission);}
+		$committee = new Committee($_POST['id']);
+		$seatList = new SeatList(array("committee_id"=>$committee->getId()));
+		if (count($seatList) != $committee->getCount()) {$seat->setCommittee($committee);}
 		else { throw new Exception("Too Many Seats on Commission");}
 	}
 	

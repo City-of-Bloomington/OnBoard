@@ -70,7 +70,7 @@ CREATE TABLE seat_users (
 	FOREIGN KEY(user_id) REFERENCES users (id))  engine=innodb;
 
 CREATE TABLE applications (
-	id id unsigned auto_increment, 
+	id int unsigned auto_increment, 
 	committee_id int unsigned NOT NULL, 
 	resumePath varchar(100) UNIQUE, 
 	firstname varchar(50) NOT NULL, 

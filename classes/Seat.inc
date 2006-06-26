@@ -2,16 +2,16 @@
 	class Seat
 	{
 		private $id;
-		private $commission_id;
-		private $category_id;
+		private $committee_id;
+		private $appointment_id;
 		private $title;
 		private $vacancy;
 		
 		private $term_start;
 		private $term_end;
 		
-		private $commission;
-		private $category;
+		private $committee;
+		private $appointment;
 		private $restrictions;
 		private $user;
 
@@ -57,8 +57,8 @@
 			# You can (and maybe should) replace this $fields code with your own custom SQL
 			# for each property of this class,
 			$fields = array();
-			$fields[] = $this->commission_id ? "commission_id='{$this->commission_id}'" : "commission_id=null";
-			$fields[] = $this->category_id ? "category_id='{$this->category_id}'" : "category_id=null";
+			$fields[] = $this->committee_id ? "committee_id='{$this->committee_id}'" : "committee_id=null";
+			$fields[] = $this->appointment_id ? "appointment_id='{$this->appointment_id}'" : "appointment_id=null";
 			$fields[] = $this->title ? "title='{$this->title}'" : "title=null";
 			$fields[] = $this->vacancy ? "vacancy='{$this->vacancy}'" : "vacancy=null";
 
@@ -127,20 +127,20 @@
 		}
 
 		public function getId() { return $this->id; }
-		public function getCommission_id() { return $this->commission_id; }
-		public function getCategory_id() { return $this->category_id; }
+		public function getCommittee_id() { return $this->committee_id; }
+		public function getAppointment_id() { return $this->appointment_id; }
 		public function getTitle() { return $this->title; }
 		public function getVacancy() { return $this->vacancy; }
-		public function getCommission() 
+		public function getCommittee() 
 		{
-			if (!$this->commission) { $this->commission = new Commission($this->commission_id); }
-			return $this->commission;
+			if (!$this->committee) { $this->committee = new Committee($this->committee_id); }
+			return $this->committee;
 		}
 			
-		public function getCategory() 
+		public function getAppointment() 
 		{
-			if (!$this->category) { $this->category = new SeatCategory($this->category_id); }
-			return $this->category;
+			if (!$this->appointment) { $this->appointment = new SeatAppointment($this->appointment_id); }
+			return $this->appointment;
 		}
 		
 		public function getRestrictions() 
@@ -208,8 +208,8 @@
 		}
 
 		public function setId($int) { $this->id = $int; }
-		public function setCommission_id($int) { $this->commission_id = $int; }
-		public function setCategory_id($int) { $this->category_id = $int; }
+		public function setCommittee_id($int) { $this->committee_id = $int; }
+		public function setAppointment_id($int) { $this->appointment_id = $int; }
 		public function setTitle($string) { $this->title = $string; }
 		public function setVacancy($int) { $this->vacancy = $int; }
 		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
@@ -221,16 +221,16 @@
 			$this->user = $user; 
 		}
 		public function unsetUser() { if (isset($this->user)) unset($this->user); }
-		public function setCommission($commission) 
+		public function setCommittee($committee) 
 		{ 
-			$this->commission = $commission; 
-			$this->commission_id = $commission->getId(); 
+			$this->committee = $committee; 
+			$this->committee_id = $committee->getId(); 
 		}
 		
-		public function setCategory($category) 
+		public function setAppointment($appointment) 
 		{ 
-			$this->category = $category; 
-			$this->category_id = $category->getId(); 
+			$this->appointment = $appointment; 
+			$this->appointment_id = $appointment->getId(); 
 		}
 		
 		public function setRestrictions($array) 

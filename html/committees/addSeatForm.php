@@ -8,14 +8,14 @@
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
-				$commission = new Commission($_GET['id']);
+				$committee = new Committee($_GET['id']);
 	?>
 
 	<h1>New Seat</h1>
 	<form method="post" action="addSeat.php">
 		
 	<fieldset><legend>Committee Info</legend>
-		<input type="hidden" name="id" value="<?php echo $commission->getId(); ?>" />
+		<input type="hidden" name="id" value="<?php echo $committee->getId(); ?>" />
 		<table>
 		<tr>
 				<td><label for="title">Seat Title</label></td>
@@ -44,12 +44,12 @@
 		<td><input name="t_end" id="t_end" /></td>
 	</tr>
 		
-	<tr><td><label for="category">Appointment Type</label></td>
-			<td><select name="category" id="category">
+	<tr><td><label for="appointment">Appointment Type</label></td>
+			<td><select name="appointment" id="appointment">
 				<?php
-					$seatCategoryList = new SeatCategoryList();
-					$seatCategoryList->find();
-					foreach($seatCategoryList as $seatCategory) { echo "<option>{$seatCategory->getCategory()}</option>"; }
+					$seatAppointmentList = new SeatAppointmentList();
+					$seatAppointmentList->find();
+					foreach($seatAppointmentList as $seatAppointment) { echo "<option>{$seatAppointment->getName()}</option>"; }
 				?>
 				</select>
 			</td>
@@ -57,7 +57,7 @@
 		
 		<tr>
 			<td><label>Commission</label></td>
-			<td><?php echo $commission->getName(); ?></td>
+			<td><?php echo $committee->getName(); ?></td>
 		</tr>
 		
 		<tr><td><label for="restrictions">Restrictions</label></td>

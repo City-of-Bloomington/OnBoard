@@ -12,7 +12,7 @@
 		{
 			if (in_array("Administrator",$_SESSION['USER']->getRoles())) 
 			{
-				$href = "commissions.php";
+				$href = "committees.php";
 				$add = "<div class=\"titleBar\"><button type=\"button\" class=\"addSmall\" onclick=\"document.location.href='committees&#47;addCommitteeForm.php';\">Add</button>Board or Commission</div>";
 				$edit = "<button type=\"button\" class=\"editSmall\" onclick=\"document.location.href='committees&#47;updateCommitteeForm.php?id=";
 				$edit_end = "'\">Edit</button>";
@@ -21,7 +21,7 @@
 			}
 			else 
 			{
-				$href = "commissions.php"; 
+				$href = "committees.php"; 
 				$add = "";
 				$edit = "";
 				$edit_end = "";
@@ -31,7 +31,7 @@
 		}
 		else 
 		{
-			$href = "commissions.php"; 
+			$href = "committees.php"; 
 			$add = "";
 			$edit = "";
 			$edit_end = "";
@@ -39,14 +39,14 @@
 			$delete_end = "";
 		}
 		
-		$commissionList = new CommissionList();
-		$commissionList->find();
+		$committeeList = new CommitteeList();
+		$committeeList->find();
 		
 		echo "{$add}<table><tr><th></th><th>Boards &amp; Commissions</th><th>Vacancy?</th></tr>";
-		foreach($commissionList as $commission) 
+		foreach($committeeList as $committee) 
 		{
 			$vacancy = "";
-			$seatList = new SeatList(array("commission_id"=>$commission->getId()));
+			$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 			foreach($seatList as $seat)
 			{
 				if ($seat->getVacancy() == 1) 
@@ -55,9 +55,9 @@
 				}
 			}
 			if ($edit == "" && $delete == "") { $id = "";}
-			else { $id = $commission->getId(); }
+			else { $id = $committee->getId(); }
 			echo "<tr><td>{$edit}{$id}{$edit_end} {$delete}{$id}{$delete_end}</td>
-								<td><a href=\"{$href}?id={$commission->getId()}\">{$commission->getName()}</a></td>
+								<td><a href=\"{$href}?id={$committee->getId()}\">{$committee->getName()}</a></td>
 								<td>$vacancy</td>
 						</tr>";
 		}

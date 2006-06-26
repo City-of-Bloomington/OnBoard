@@ -1,6 +1,6 @@
 <?php
 
-	class SeatList extends PDOResultIterator
+	class CommitteeList extends PDOResultIterator
 	{
 		private $joins = "";
 		private $where = "";
@@ -14,10 +14,7 @@
 
 			$options = array();
 			if (isset($fields['id'])) { $options[] = "id='$fields[id]'"; }
-			if (isset($fields['committee_id'])) { $options[] = "committee_id='$fields[committee_id]'"; }
-			if (isset($fields['appointment_id'])) { $options[] = "appointment_id='$fields[appointment_id]'"; }
-			if (isset($fields['title'])) { $options[] = "title='$fields[title]'"; }
-			if (isset($fields['vacancy'])) { $options[] = "vacancy='$fields[vacancy]'"; }
+			if (isset($fields['name'])) { $options[] = "name='$fields[name]'"; }
 
 
 			# Finding on fields from other tables required joining those tables.
@@ -26,7 +23,7 @@
 
 
 			if (count($options)) { $this->where = "where ".implode(" and ",$options); }
-			$sql = "select id from seats {$this->joins} {$this->where} order by $sort";
+			$sql = "select id from committees {$this->joins} {$this->where} order by $sort";
 
 			$result = $PDO->query($sql);
 			if ($result)
@@ -37,6 +34,6 @@
 		}
 	
 
-		protected function loadResult($key) { return new Seat($this->list[$key]); }
+		protected function loadResult($key) { return new Committee($this->list[$key]); }
 	}
 ?>

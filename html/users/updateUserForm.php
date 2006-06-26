@@ -60,18 +60,18 @@
 		<tr><td><label for="email">Email</label></td>
 			<td><input name="email" id="email" value="<?php echo $user->getEmail(); ?>" /></td></tr>
 		<tr><td><label for="homephone">Home Phone</label></td>
-			<td><input name="homephone" id="homephone" value="<?php echo $user->getHomephone(); ?>" /></td></tr>
+			<td><input name="homephone" id="homephone" value="<?php echo $user->getHomePhone(); ?>" /></td></tr>
 		<tr><td><label for="workphone">Work Phone</label></td>
 				<td><input name="workphone" id="workphone" value="<?php echo $user->getWorkPhone(); ?>" /></td>
 		</tr>
-		<tr><td><label for="street">Street</label></td>
-				<td><input name="street" id="street" value="<?php echo $user->getStreet(); ?>" /></td>
+		<tr><td><label for="address">Address</label></td>
+				<td><input name="address" id="address" value="<?php echo $user->getAddress(); ?>" /></td>
 		</tr>	
 		<tr><td><label for="city">City, State</label></td>
 				<td><input name="city" id="city" value="<?php echo $user->getCity(); ?>" /></td>
 		</tr>
 		<tr><td><label for="zip">Zip Code</label></td>
-				<td><input name="zip" id="zip" value="<?php echo $user->getZipCode(); ?>" /></td>
+				<td><input name="zip" id="zip" value="<?php echo $user->getZipcode(); ?>" /></td>
 		</tr>
 		<tr><td><label>About</label></td>
 				<td><textarea cols="30" rows="5" name="about"><?php echo $user->getAbout(); ?></textarea></td>

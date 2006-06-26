@@ -100,12 +100,12 @@
 		<p></p>
 		<fieldset><legend>Board/Commission Information</legend>
 			<table>
-				<tr><td><label for="commissions">Board or Commission for which you are applying:*</label></td></tr>
-				<tr><td><select name="commissions" id="commissions">
+				<tr><td><label for="committees">Board or Commission for which you are applying:*</label></td></tr>
+				<tr><td><select name="committees" id="committees">
 							<?php 
-							$commissionList = new CommissionList();
-							$commissionList->find();
-							foreach($commissionList as $commission) { echo "<option>{$commission->getName()}</option>"; } ?>
+							$committeeList = new CommitteeList();
+							$committeeList->find();
+							foreach($committeeList as $committee) { echo "<option>{$committee->getName()}</option>"; } ?>
 						</select></td>
 				</tr>
 				<tr><td><label for="interest">Please explain your interest in this position:*</label></td></tr>

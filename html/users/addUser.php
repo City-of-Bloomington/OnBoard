@@ -31,14 +31,14 @@
 		$user->setFirstname($ldap->getFirstname());
 		$user->setLastname($ldap->getLastname());
 		$user->setEmail($ldap->getEmail());
-		$user->setHomephone($ldap->getHomephone());
+		$user->setHomePhone($ldap->getHomephone());
 	}
 	else
 	{
 		$user->setFirstname($_POST['firstname']);
 		$user->setLastname($_POST['lastname']);
 		$user->setEmail($_POST['email']);
-		$user->setHomephone($_POST['homephone']);
+		$user->setHomePhone($_POST['homephone']);
 	}
 
 	try

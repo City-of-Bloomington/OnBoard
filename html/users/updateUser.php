@@ -13,7 +13,7 @@
 						homephone
 						workphone
 						city
-						street
+						address
 						zip
 */
 	verifyUser("Administrator", "Committee Member");
@@ -34,7 +34,7 @@
 	$user->setHomephone($_POST['homephone']);
 	$user->setWorkphone($_POST['workphone']);
 	$user->setCity($_POST['city']);
-	$user->setStreet($_POST['street']);
+	$user->setAddress($_POST['address']);
 	$user->setZipCode($_POST['zip']);
 	$user->setAbout($_POST['about']);
 	

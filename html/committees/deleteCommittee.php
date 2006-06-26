@@ -11,10 +11,10 @@
 
 	if ($_GET['id'] != $_SESSION['USER']->getId()) 
 	{
-		$commission = new Commission($_GET['id']);
-		$seatList = new SeatList(array("commission_id"=>$commission->getId()));
+		$committee = new Committee($_GET['id']);
+		$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 		foreach ($seatList as $seat) { $seat->deleteSeat(); }
-		$commission->deleteCommission();
+		$committee->deleteCommittee();
 	}
 	
 		Header("Location: home.php");

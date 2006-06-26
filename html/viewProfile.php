@@ -37,8 +37,8 @@
 				</tr>
 				
 				<tr><td>----------Address-----------</td></tr>
-				<tr><td><label>Street</label></td>
-						<td><?php echo $user->getStreet(); ?></td>
+				<tr><td><label>Address</label></td>
+						<td><?php echo $user->getAddress(); ?></td>
 				</tr>
 				
 				<tr><td><label>City, State</label></td>
@@ -46,7 +46,7 @@
 				</tr>
 				
 				<tr><td><label>Zip Code</label></td>
-						<td><?php echo $user->getZipCode(); ?></td>
+						<td><?php echo $user->getZipcode(); ?></td>
 				</tr>
 				<tr><td>---------------------------------</td></tr>
 				<?php 
@@ -59,7 +59,7 @@
 							$label = "Committee(s)";
 							$count += 1;
 							if ($count > 1) { $label = ""; }
-							echo "<tr><td><label>$label</label></td><td>{$seat->getCommission()->getName()}</td></tr>"; 
+							echo "<tr><td><label>$label</label></td><td>{$seat->getCommittee()->getName()}</td></tr>"; 
 						}
 					} 
 					?>

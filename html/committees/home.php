@@ -16,7 +16,7 @@
 		<tr><th></th><th>Title</th><th>Board/Commission</th><th>Appointment Type</th><th>Vacancy?</th><th>Restrictions</th></tr>
 		<?php
 			$seatList = new SeatList();
-			$seatList->find(null, "commission_id");
+			$seatList->find(null, "committee_id");
 			foreach($seatList as $seat)
 			{
 				echo "
@@ -24,8 +24,8 @@
 						<button type=\"button\" class=\"deleteSmall\" onclick=\"deleteConfirmation('deleteSeat.php?id={$seat->getId()}');\">Delete</button>
 					</td>
 					<td>{$seat->getTitle()}</td>
-					<td>{$seat->getCommission()->getName()}</td>
-					<td>{$seat->getCategory()->getCategory()}</td>
+					<td>{$seat->getCommittee()->getName()}</td>
+					<td>{$seat->getAppointment()->getName()}</td>
 					<td>{$seat->getVacancy()}</td>
 					<td>";
 					foreach($seat->getRestrictions() as $restriction) { echo "$restriction "; }

@@ -8,27 +8,27 @@
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
-				$commission = new Commission($_GET['id']); 
+				$committee = new Committee($_GET['id']); 
 	?>
 	<div class="titleBar">
 			<?php echo 
-			"<button type=\"button\" class=\"addSmall\" onclick=\"document.location.href='addSeatForm.php?id={$commission->getId()}';\">Add</button>"; 
+			"<button type=\"button\" class=\"addSmall\" onclick=\"document.location.href='addSeatForm.php?id={$committee->getId()}';\">Add</button>"; 
 			?>
 		  Seat
 	</div>
 	<h1>Edit Committee</h1>
 	<form method="post" action="updateCommittee.php">
 	<fieldset><legend>Committee Info</legend>
-		<input name="id" type="hidden" value="<?php echo $commission->getId(); ?>" />
+		<input name="id" type="hidden" value="<?php echo $committee->getId(); ?>" />
 		<table>
 		<tr><td><label for="name">Committee Name</label></td>
-			<td><input name="name" size="50" id="name" value="<?php echo $commission->getName(); ?>"/></td></tr>
+			<td><input name="name" size="50" id="name" value="<?php echo $committee->getName(); ?>"/></td></tr>
 	
 		<tr><td><label for="remove_seat">Remove Seat</label></td>
 			<td><select name="remove_seat" id="remove_seat">
 					<option>--Select Here--</option>
 					<?php
-						$seatList = new SeatList(array("commission_id"=>$commission->getId()));
+						$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 						foreach($seatList as $seat) {  echo "<option>{$seat->getTitle()}</option>";}
 					?>				
 				</select>
@@ -41,7 +41,7 @@
 						for ($i=0; $i<17; $i++) 
 						{ 
 							echo "<option";
-							if ($i == $commission->getCount()) { echo " selected=\"selected\""; } 
+							if ($i == $committee->getCount()) { echo " selected=\"selected\""; } 
 							echo ">{$i}</option>"; 
 						}
 					?>				
@@ -63,7 +63,7 @@
 			<tr><td><label for="seat">Seat</label></td>
 					<td><select name="seat" id="seat">
 					<?php
-						$seatList = new SeatList(array("commission_id"=>$commission->getId()));
+						$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 						if (count($seatList) == 0) { echo "<option>No Seats</option>";}
 						else { foreach($seatList as $seat) {  echo "<option>{$seat->getTitle()}</option>";}}
 					?>				
