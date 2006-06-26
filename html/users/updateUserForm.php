@@ -13,7 +13,7 @@
 	<?php
 		include(GLOBAL_INCLUDES."/errorMessages.inc");
 
-		$user = new User($_GET['id']); 
+		$user = new User($_GET['id']);
 	?>
 	<h1>Edit <?php echo $user->getUsername(); ?></h1>
 	<form method="post" action="updateUser.php">

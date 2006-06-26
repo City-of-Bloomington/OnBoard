@@ -21,11 +21,8 @@
 			<input name="id" type="hidden" value="<?php echo $user->getId(); ?>" />
 			<table>
 				<tr><th>Field Name</th><th>Personal Information</th></tr>
-				<tr><td><label>First Name</label></td>
-						<td><?php echo $user->getFirstname(); ?></td>
-				</tr>
-				<tr><td><label>Last Name</label></td>
-						<td><?php echo $user->getLastname(); ?></td>
+				<tr><td><label>Name</label></td>
+						<td><?php echo $user->getFirstname() . " " . $user->getLastname(); ?></td>
 				</tr>
 				<tr><td><label>Email Address</label></td>
 						<td><?php echo $user->getEmail(); ?></td>
@@ -39,7 +36,7 @@
 						<td><?php echo $user->getWorkPhone(); ?></td>
 				</tr>
 				
-				<tr><td><?php echo $user->getFirstname() . " " . $user->getLastname(); ?>'s Address</td></tr>
+				<tr><td>----------Address-----------</td></tr>
 				<tr><td><label>Street</label></td>
 						<td><?php echo $user->getStreet(); ?></td>
 				</tr>
@@ -51,6 +48,7 @@
 				<tr><td><label>Zip Code</label></td>
 						<td><?php echo $user->getZipCode(); ?></td>
 				</tr>
+				<tr><td>---------------------------------</td></tr>
 				<?php 
 					$seatList = new SeatList();
 					$seatList->find();
@@ -58,7 +56,7 @@
 					foreach($seatList as $seat) 
 					{
 						if ($seat->getUser() == $user) {
-							$label = "Committees";
+							$label = "Committee(s)";
 							$count += 1;
 							if ($count > 1) { $label = ""; }
 							echo "<tr><td><label>$label</label></td><td>{$seat->getCommission()->getName()}</td>"; 
@@ -66,6 +64,7 @@
 					} 
 					?>
 				</tr>
+				<tr><td>----------------------------------</td></tr>
 				<tr><td><label>About <?php echo $user->getFirstname() . " " . $user->getLastname(); ?></label></td>
 						<td><?php echo $user->getAbout(); ?></td>
 				</tr>
