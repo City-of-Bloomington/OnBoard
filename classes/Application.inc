@@ -52,7 +52,10 @@
 		public function save()
 		{
 			# Check for required fields here.  Throw an exception if anything is missing.
-
+			if (!$this->email || !$this->firstname || !$this->lastname || !$this->interest || !$this->qualifications || !$this->committee_id) 
+			{ 
+				throw new Exception("missingRequiredFields"); 
+			}
 
 			# This generates generic SQL that should work right away.
 			# You can (and maybe should) replace this $fields code with your own custom SQL
@@ -100,7 +103,7 @@
 
 
 		public function getId() { return $this->id; }
-		public function getCommittee_id() { return $this->committee_id; }
+		public function getCommitteeId() { return $this->committee_id; }
 		public function getResumePath() { return $this->resumePath; }
 		public function getFirstname() { return $this->firstname; }
 		public function getLastname() { return $this->lastname; }
@@ -118,21 +121,31 @@
 
 
 		public function setId($int) { $this->id = $int; }
-		public function setCommittee_id($int) { $this->committee_id = $int; }
-		public function setResumePath($string) { $this->resumePath = $string; }
-		public function setFirstname($string) { $this->firstname = $string; }
-		public function setLastname($string) { $this->lastname = $string; }
-		public function setEmail($string) { $this->email = $string; }
-		public function setAddress($string) { $this->address = $string; }
-		public function setCity($string) { $this->city = $string; }
+		public function setCommitteeId($int) { $this->committee_id = $int; }
+		public function setResumePath($string) { $this->resumePath = sanitizeString($string); }
+		public function setFirstname($string) { $this->firstname = sanitizeString($string); }
+		public function setLastname($string) { $this->lastname = sanitizeString($string); }
+		public function setEmail($string) { $this->email = sanitizeString($string); }
+		public function setAddress($string) { $this->address = sanitizeString($string); }
+		public function setCity($string) { $this->city = sanitizeString($string); }
 		public function setZipcode($int) { $this->zipcode = $int; }
-		public function setHomePhone($string) { $this->homePhone = $string; }
-		public function setWorkPhone($string) { $this->workPhone = $string; }
+		public function setHomePhone($string) { $this->homePhone = sanitizeString($string); }
+		public function setWorkPhone($string) { $this->workPhone = sanitizeString($string); }
 		public function setResident($int) { $this->resident = $int; }
-		public function setOccupation($string) { $this->occupation = $string; }
-		public function setInterest($text) { $this->interest = $text; }
-		public function setQualifications($text) { $this->qualifications = $text; }
+		public function setOccupation($string) { $this->occupation = sanitizeString($string); }
+		public function setInterest($text) { $this->interest = sanitizeString($text); }
+		public function setQualifications($text) { $this->qualifications = sanitizeString($text); }
 		public function setTimestamp($timestamp) { $this->timestamp = $timestamp; }
 
+		public function deleteApplication() 
+		{
+			global $PDO;
+
+			$sql = "delete from user_applications where application_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$sql = "delete from applications where id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+		}
 	}
 ?>
