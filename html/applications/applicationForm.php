@@ -13,7 +13,7 @@
 	<p><b>Please complete the information below. When you are finished, press the "Submit" button to send your application.<br />
 	Fields with an asterisk (*) are required fields.<br /></b>
 	</p>
-	<form method="post" action="application.php">
+	<form enctype="multipart/form-data" method="post" action="application.php">
 		<fieldset><legend>Basic Information</legend>
 			<table>
 				<tr>
@@ -72,8 +72,8 @@
 					<td><input size="33" name="city" id="city" /></td>
 				</tr>
 				<tr>
-					<td><label for="zip">Zipcode</label></td>
-					<td><input size="33" name="zip" id="zip" /></td>
+					<td><label for="zipcode">Zipcode</label></td>
+					<td><input size="33" name="zipcode" id="zipcode" /></td>
 				</tr>
 				<tr>
 					<td><label for="homephone">Home Phone Number</label></td>
@@ -92,8 +92,8 @@
 				<tr><td>City Boards and Commissions require City of Bloomington Residency.</td></tr>
 				<tr>
 					<td><label for="no_resident">Do you live in Bloomington City Limits?</label> 
-							<input type="radio" name="resident" id="yes_resident" value="Yes" checked="checked" /> 
-							<input type="radio" name="resident" id="no_resident" value="No" /></td>
+							Yes<input type="radio" name="resident" id="yes_resident" value="Yes" checked="checked" /> 
+							No<input type="radio" name="resident" id="no_resident" value="No" /></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -112,13 +112,51 @@
 				<tr><td><textarea cols="40" rows="5" name="interest" id="interest"></textarea></td></tr>
 				<tr><td><label for="qualifications">Please describe your qualifications for this position:*</label></td></tr>
 				<tr><td><textarea cols="40" rows="5" name="qualifications" id="qualifications"></textarea></td></tr>
-				<tr><td>Submit your <a href="resumeForm.php">resume</a>.</td></tr>
 			</table>
-			<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
-		</fieldset>
-	</form>
-	<h5>*Required to submit form.</h5>
+
+	<?php
+			$error = "";
+			if(isset($_GET['err']))
+			{
+				switch($_GET['err']) 
+				{
+					case 0:
+					$error = "";
+					break;
+					case 1:
+					$error = "The uploaded file exceeds the maximum file size.";
+					break;
+					case 2:
+					$error = "The uploaded file exceeds the maximum file size.";
+					break;
+					case 3:
+					$error = "The uploaded file was only partially uploaded.";
+					break;
+					case 4:
+					$error = "No file was uploaded.";
+					break;
+					case 6:
+					$error = "Missing a temporary folder.";
+					break;
+					case 7:
+					$error = "Failed to write file to disk.";
+					break;
+				}
+			}
+	?>
+			<fieldset><legend>Resume</legend>
+   			<h4><?php echo $error; ?></h4>
+  	  		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+   			<table>	
+   				<tr><td><label for="userfile">Upload Resume</label></td>
+    				<td><input id="userfile" name="userfile" type="file" /></td></tr>
+				</table>
+			</fieldset>
+			<button type="submit" class="submit">Submit Application</button>
+			<button type="button" onclick="document.location.href='printApplication.php';">View Printable Application</button>
+			<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
+			</fieldset>
+		</form>
 </div>
 
 <?php

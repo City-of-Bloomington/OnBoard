@@ -52,7 +52,8 @@
 				</tr>
 				
 				<tr><td><label>City Resident?</label></td>
-						<td><?php echo $application->getResident(); ?></td>
+						<td><?php if($application->getResident() == 1) { echo "Yes"; }
+											else {echo "No";} ?></td>
 				</tr>
 				
 				<tr><td>---------------------------------</td></tr>

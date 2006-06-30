@@ -122,7 +122,7 @@
 
 		public function setId($int) { $this->id = $int; }
 		public function setCommitteeId($int) { $this->committee_id = $int; }
-		public function setResumePath($string) { $this->resumePath = sanitizeString($string); }
+		public function setResumePath($int) { $this->resumePath = $int; }
 		public function setFirstname($string) { $this->firstname = sanitizeString($string); }
 		public function setLastname($string) { $this->lastname = sanitizeString($string); }
 		public function setEmail($string) { $this->email = sanitizeString($string); }
@@ -137,10 +137,29 @@
 		public function setQualifications($text) { $this->qualifications = sanitizeString($text); }
 		public function setTimestamp($timestamp) { $this->timestamp = $timestamp; }
 
+		public function gzip($srcFileName, $dstFileName)
+		{
+   		// getting file content
+   		$fp = fopen($srcFileName, "r");
+   		$data = fread ($fp, filesize($srcFileName));
+   		fclose($fp);
+  
+ 		  // writing compressed file
+   		$zp = gzopen($dstFileName, "w9");
+   		gzwrite($zp, $data);
+   		gzclose($zp);
+		}
+		
 		public function deleteApplication() 
 		{
 			global $PDO;
-
+			
+			if ($this->resumePath)
+			{
+				unlink($this->resumePath);
+				$dir = explode(basename($this->resumePath), $this->resumePath);
+				rmdir($dir[0]);
+			}
 			$sql = "delete from user_applications where application_id ={$this->id}";
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 

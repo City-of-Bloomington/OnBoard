@@ -13,30 +13,18 @@ CREATE TABLE users (
 	workPhone varchar(15), 
 	about text, 
 	timestamp timestamp  on update current_timestamp, 
-	PRIMARY KEY(id)) engine=innodb;
+	PRIMARY KEY(id));
 
 CREATE TABLE roles (
 	id int unsigned auto_increment NOT NULL, 
 	role varchar(30) NOT NULL, 
-	PRIMARY KEY(id))  engine=innodb;
+	PRIMARY KEY(id));
 
 CREATE TABLE user_roles (
 	user_id int unsigned, 
 	role_id int unsigned,
-	PRIMARY KEY(user_id, role_id),
 	FOREIGN KEY(user_id) REFERENCES users (id),
-	FOREIGN KEY(role_id) REFERENCES roles (id))  engine=innodb;
-
-CREATE TABLE committees (
-	id int unsigned auto_increment UNIQUE NOT NULL, 
-	name varchar(50),
-	count int, 
-	PRIMARY KEY(id))  engine=innodb;
-
-CREATE TABLE seatAppointment (
-	id int unsigned auto_increment UNIQUE NOT NULL, 
-	name varchar(50) UNIQUE, 
-	PRIMARY KEY(id))  engine=innodb;
+	FOREIGN KEY(role_id) REFERENCES roles (id));
 
 CREATE TABLE seats (
 	id int unsigned auto_increment UNIQUE NOT NULL, 
@@ -46,33 +34,42 @@ CREATE TABLE seats (
 	vacancy int, 
 	PRIMARY KEY(id),
 	FOREIGN KEY(appointment_id) REFERENCES seatAppointment (id),
-	FOREIGN KEY(committee_id) REFERENCES committees (id))  engine=innodb;
+	FOREIGN KEY(committee_id) REFERENCES committees (id));
 
-CREATE TABLE restrictions (
+CREATE TABLE seatAppointment (
 	id int unsigned auto_increment UNIQUE NOT NULL, 
-	restriction varchar(100), 
-	PRIMARY KEY(id)) engine=innodb;
+	name varchar(50) UNIQUE, 
+	PRIMARY KEY(id));
 
 CREATE TABLE seat_restrictions (
 	seat_id int unsigned NOT NULL, 
 	restriction_id int unsigned,
-	PRIMARY KEY(seat_id, restriction_id),
 	FOREIGN KEY(seat_id) REFERENCES seats (id),
-	FOREIGN KEY(restriction_id) REFERENCES restrictions (id))  engine=innodb;
+	FOREIGN KEY(restriction_id) REFERENCES restrictions (id));
+
+CREATE TABLE restrictions (
+	id int unsigned auto_increment UNIQUE NOT NULL, 
+	restriction varchar(100), 
+	PRIMARY KEY(id));
 
 CREATE TABLE seat_users (
 	seat_id int unsigned, 
 	user_id int unsigned, 
 	term_start varchar(30), 
 	term_end varchar(30),
-	PRIMARY KEY(seat_id, user_id),
 	FOREIGN KEY(seat_id) REFERENCES seats (id),
-	FOREIGN KEY(user_id) REFERENCES users (id))  engine=innodb;
+	FOREIGN KEY(user_id) REFERENCES users (id));
+
+CREATE TABLE committees (
+	id int unsigned auto_increment UNIQUE NOT NULL, 
+	name varchar(50), 
+	count int, 
+	PRIMARY KEY(id));
 
 CREATE TABLE applications (
 	id int unsigned auto_increment, 
 	committee_id int unsigned NOT NULL, 
-	resumePath varchar(100) UNIQUE, 
+	resume_id int unsigned UNIQUE, 
 	firstname varchar(50) NOT NULL, 
 	lastname varchar(50) NOT NULL, 
 	email varchar(50) NOT NULL, 
@@ -87,12 +84,17 @@ CREATE TABLE applications (
 	qualifications text NOT NULL, 
 	timestamp timestamp, 
 	PRIMARY KEY(id),
-	FOREIGN KEY(committee_id) REFERENCES committees (id))  engine=innodb;
+	FOREIGN KEY(committee_id) REFERENCES committees (id),
+	FOREIGN KEY(resume_id) REFERENCES resumes (id));
 
 CREATE TABLE user_applications (
 	user_id int unsigned NOT NULL, 
 	application_id int unsigned,
-	PRIMARY KEY(user_id, application_id),
 	FOREIGN KEY(user_id) REFERENCES users (id),
-	FOREIGN KEY(application_id) REFERENCES applications (id))  engine=innodb;
+	FOREIGN KEY(application_id) REFERENCES applications (id));
+
+CREATE TABLE resumes (
+	id int unsigned auto_increment NOT NULL, 
+	resumePath varchar(100) UNIQUE, 
+	PRIMARY KEY(id));
 

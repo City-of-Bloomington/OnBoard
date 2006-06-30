@@ -21,7 +21,6 @@
 						# You may want to replace this with, or add your own extra, custom loading
 						foreach($row as $field=>$value) { if ($value) $this->$field = $value; }
 
-
 						$result->closeCursor();
 					}
 					else { 
@@ -37,7 +36,6 @@
 			}
 		}
 		
-
 		public function save()
 		{
 			# Check for required fields here.  Throw an exception if anything is missing.
@@ -51,7 +49,6 @@
 			$fields[] = $this->count ? "count='{$this->count}'" : "count=null";
 
 			$fields = implode(",",$fields);
-
 
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
