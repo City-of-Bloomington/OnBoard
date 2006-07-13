@@ -71,7 +71,11 @@
 						<td><?php echo $application->getQualifications(); ?></td>
 				</tr>
 				<tr><td><label>Link to Resume:</label></td>
-						<td><?php echo $application->getResumePath(); ?></td>
+						<td><?php if ($application->getResumePath()) { echo "<a href=\"download.php?id={$application->getId()}\">Resume</a>";}
+											else { echo "No resume attached."; } ?></td>
+				</tr>
+				<tr><td><label>Application Date/Time:</label></td>
+						<td><?php  echo $application->getTimestamp();?></td>
 				</tr>
 			</table>
 		</fieldset>

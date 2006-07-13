@@ -19,8 +19,7 @@
 		private $timestamp;
 
 		private $roles;
-		
-		
+
 
 		public function __construct($id = null)
 		{
@@ -90,6 +89,7 @@
 			$sql = "update users set $fields where id={$this->id}";
 
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			if ($this->getPassword()) { $this->savePassword(); }
 		}
 
 		private function insert($fields)

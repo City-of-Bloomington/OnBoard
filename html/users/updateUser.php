@@ -37,6 +37,7 @@
 	$user->setAddress($_POST['address']);
 	$user->setZipCode($_POST['zip']);
 	$user->setAbout($_POST['about']);
+	$user->setTimestamp(date("Y-m-d H:i:s",time()));
 	
 
 	# Only update the password if they actually typed somethign in

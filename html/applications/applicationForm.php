@@ -29,41 +29,6 @@
 					<td><input size="33" name="email" id="email" /></td>
 				</tr>
 				<tr>
-					<td><label for="date">Today's Date*</label></td>
-					<td><select name="date" id="date">
-							<?php for($i = 1; $i < 32; $i++) 
-							{ 
-								if ($i == date('j')) { $selected = "selected=\"selected\"";}
-								else { $selected = ""; }
-								echo "<option $selected>$i</option>"; 
-							} 
-								?>
-						</select>			
-						<select name="month" id="month">
-							<?php
-							$months = array("January","February","March", "April", "May", "June", "July", "August", "September", "October", "November", "December"); 
-							for($i = 0; $i < count($months); $i++) 
-							{ 
-								if ($months[$i] == date('F')) { $selected = "selected=\"selected\"";}
-								else { $selected = ""; }
-								echo "<option $selected>{$months[$i]}</option>"; 
-							} ?>
-						</select>				
-						<select name="year" id="year">
-							<?php
-							for($i = 6; $i < 11; $i++) 
-							{ 
-								if ($i < 10) { $year = 0 . $i; } 
-								else { $year = $i;}
-								if ($year == date('y')) { $selected = "selected=\"selected\"";}
-								else { $selected = ""; }
-								echo "<option $selected>20{$year}</option>"; 
-							} 
-								?>
-						</select>				
-					</td>
-				</tr>
-				<tr>
 					<td><label for="address">Address</label></td>
 					<td><input size="33" name="address" id="address" /></td>
 				</tr>
@@ -114,48 +79,16 @@
 				<tr><td><textarea cols="40" rows="5" name="qualifications" id="qualifications"></textarea></td></tr>
 			</table>
 
-	<?php
-			$error = "";
-			if(isset($_GET['err']))
-			{
-				switch($_GET['err']) 
-				{
-					case 0:
-					$error = "";
-					break;
-					case 1:
-					$error = "The uploaded file exceeds the maximum file size.";
-					break;
-					case 2:
-					$error = "The uploaded file exceeds the maximum file size.";
-					break;
-					case 3:
-					$error = "The uploaded file was only partially uploaded.";
-					break;
-					case 4:
-					$error = "No file was uploaded.";
-					break;
-					case 6:
-					$error = "Missing a temporary folder.";
-					break;
-					case 7:
-					$error = "Failed to write file to disk.";
-					break;
-				}
-			}
-	?>
-			<fieldset><legend>Resume</legend>
-   			<h4><?php echo $error; ?></h4>
   	  		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
    			<table>	
    				<tr><td><label for="userfile">Upload Resume</label></td>
     				<td><input id="userfile" name="userfile" type="file" /></td></tr>
+    			<tr><td></td><td>*Note* your resume must be in either a Word Document or PDF file format to upload correctly.</td></tr>
 				</table>
-			</fieldset>
-			<button type="submit" class="submit">Submit Application</button>
+				<button type="submit" class="submit">Submit Application</button>
 			<button type="button" onclick="document.location.href='printApplication.php';">View Printable Application</button>
 			<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
-			</fieldset>
+				</fieldset>
 		</form>
 </div>
 

@@ -46,11 +46,9 @@
 			# You can (and maybe should) replace this $fields code with your own custom SQL
 			# for each property of this class,
 			$fields = array();
-			$fields[] = $this->id ? "id='{$this->id}'" : "id=null";
 			$fields[] = $this->restriction ? "restriction='{$this->restriction}'" : "restriction=null";
 
 			$fields = implode(",",$fields);
-
 
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
@@ -77,9 +75,19 @@
 		public function getId() { return $this->id; }
 		public function getRestriction() { return $this->restriction; }
 
-
 		public function setId($int) { $this->id = $int; }
-		public function setRestriction($string) { $this->restriction = $string; }
+		public function setRestriction($string) { $this->restriction = sanitizeString($string); }
+
+		public function deleteRestriction() 
+		{
+			global $PDO;
+
+			$sql = "delete from seat_restrictions where restriction_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$sql = "delete from restrictions where id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+		}
 
 	}
 ?>

@@ -1,8 +1,6 @@
 <?php
 	/*
-	
 		GET variables: id
-	
 	*/
 	
 	verifyUser("Administrator", "Committee Member");
@@ -11,7 +9,6 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-
 ?>
 <div id="mainContent">
 	<div class="interfaceBox">
@@ -20,9 +17,11 @@
 		<tr><th></th><th>Name</th><th>Board/Commission</th><th>Date &amp; Time Created</th></tr>
 		<?php
 			$applicationList = new ApplicationList();
-			$applicationList->find();
+			$applicationList->find(null, 'timestamp');
 			foreach($applicationList as $application)
 			{
+				if ($application->timestampCheck($application->getTimestamp())) { $flag = "Over a year old.";}
+				else {$flag = "";}
 				$committee = new Committee($application->getCommitteeId());
 				if (isset($_GET['id']))
 				{
@@ -37,6 +36,7 @@
 						<td>{$committee->getName()}</td>
 						<td>{$application->getTimestamp()}</td>
 						<td><a href=\"viewApplication.php?id={$application->getId()}\">view</a></td>
+						<td>$flag</td>
 					</tr>";
 					}
 				}
@@ -50,6 +50,7 @@
 						<td>{$committee->getName()}</td>
 						<td>{$application->getTimestamp()}</td>
 						<td><a href=\"viewApplication.php?id={$application->getId()}\">view</a></td>
+						<td>$flag</td>
 					</tr>";
 				}
 			}

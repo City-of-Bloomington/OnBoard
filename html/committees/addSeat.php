@@ -27,8 +27,15 @@
 	{
 		$committee = new Committee($_POST['id']);
 		$seatList = new SeatList(array("committee_id"=>$committee->getId()));
-		if (count($seatList) != $committee->getCount()) {$seat->setCommittee($committee);}
-		else { throw new Exception("Too Many Seats on Commission");}
+		try
+		{
+			 {$seat->setCommittee($committee);}
+		}
+		catch (Exception $e)
+		{
+			$_SESSION['errorMessages'][] = $e;
+			Header("Location: udpateCommitteeForm.php?id={$committee->getId()}");
+		}
 	}
 	
 	if (isset($_POST['users']))
@@ -42,7 +49,8 @@
 			$seat->setVacancy(0);
 			$user = new User($_POST['users']);
 			$seat->setTermStart($_POST['t_start']);
-			$seat->setTermEnd($_POST['t_end']);
+			if ($_POST['t_end']) { $seat->setTermEnd($_POST['t_end']);}
+			else { $seat->setTermEnd("Indefinite");}
 			$seat->setUser($user);
 		}
 	}
@@ -50,11 +58,11 @@
 	try
 	{
 		$seat->save();
-		Header("Location: ". BASE_URL);
+		Header("Location: updateCommitteeForm.php?id={$committee->getId()}");
 	}
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = $e;
-		Header("Location: addSeatForm.php");
+		Header("Location: addSeatForm.php?id={$committee->getId()}");
 	}
 ?>

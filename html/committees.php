@@ -9,10 +9,29 @@
 			<?php $committee = new Committee($_GET['id']); 
 						echo "{$committee->getName()}"; ?>
 		</div>
+		<?php
+		 	if (isset($_SESSION['USER']))
+		 	{
+				include(FCK_EDITOR."/fckeditor.php");
+				echo "<form action=\"committeePage.php?id={$committee->getId()}\" method=\"post\">";
+				$oFCKeditor = new FCKeditor('editor');
+				$oFCKeditor->BasePath = '/FCKeditor/';
+				$oFCKeditor->Value = $committee->getInfo();
+				$oFCKeditor->Config["CustomConfigurationsPath"] = BASE_URL."/committee_config.js";
+				$oFCKeditor->Create();
+				echo "<input type=\"submit\" value=\"Submit\"></form>";
+			}
+			else { echo $committee->getInfo();}
+			
+		?>
 		<table>
-			<tr><th>Member</th><th>Appointment</th><th>Qualifications</th><th>Term End</th></tr>
+			
 			<?php
 				$seatList = new SeatList(array('committee_id'=>$committee->getId()));
+				if (count($seatList) > 0 )
+				{
+					echo "<tr><th>Member</th><th>Appointment</th><th>Qualifications</th><th>Term End</th></tr>";
+				}
 				foreach ($seatList as $seat) 
 				{
 					if ($seat->getVacancy() == 1) 
@@ -28,6 +47,7 @@
 						$term = $seat->getTermEnd();
 						$href = "viewProfile.php?id={$seat->getUser()->getId()}";
 					}	
+
 						echo "
 						<tr>
 						<td><a href=\"$href\">$user</a></td>

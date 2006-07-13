@@ -4,6 +4,7 @@
 		private $id;
 		private $name;
 		private $count;
+		private $info;
 
 		public function __construct($id=null)
 		{
@@ -47,6 +48,7 @@
 			$fields = array();
 			$fields[] = $this->name ? "name='{$this->name}'" : "name=null";
 			$fields[] = $this->count ? "count='{$this->count}'" : "count=null";
+			$fields[] = $this->info ? "info='{$this->info}'" : "info=null";
 
 			$fields = implode(",",$fields);
 
@@ -78,10 +80,12 @@
 		public function getId() { return $this->id; }
 		public function getName() { return $this->name; }
 		public function getCount() { return $this->count; }
+		public function getInfo() { return $this->info; }
 
 		public function setId($int) { $this->id = $int; }
 		public function setName($string) { $this->name = $string; }
 		public function setCount($int) { $this->count = $int; }
+		public function setInfo($int) { $this->info = $int; }
 		
 		public function deleteCommittee() 
 		{

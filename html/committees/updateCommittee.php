@@ -31,6 +31,6 @@
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = $e;
-		Header("Location: updateCommitteeForm.php");
+		Header("Location: updateCommitteeForm.php?id={$committee->getId()}");
 	}
 ?>

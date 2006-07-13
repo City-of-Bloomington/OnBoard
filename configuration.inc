@@ -11,6 +11,8 @@
 	define("APPLICATION_HOME","/var/www/sites/committee_manager");	# Where on the filesystem this is installed
 	define("BASE_URL","/committee_manager");							# The base URL to get to this site on this webserver
 
+	define("FCK_EDITOR", "/var/www/sites/FCKeditor");    # Location of the FCKeditor
+
 	#--------------------------------------------------------------------------
 	# Database Setup
 	#--------------------------------------------------------------------------

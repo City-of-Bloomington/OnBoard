@@ -38,7 +38,7 @@
 		<tr><td><label for="member_count">Amount of Members</label></td>
 			<td><select name="member_count" id="member_count" >
 					<?php
-						for ($i=0; $i<17; $i++) 
+						for ($i=1; $i<17; $i++) 
 						{ 
 							echo "<option";
 							if ($i == $committee->getCount()) { echo " selected=\"selected\""; } 
@@ -57,7 +57,8 @@
 	</form>
 	
 <h1>Edit Seat</h1>
-	<form method="post" action="updateSeatForm.php">
+	<form method="post" action="updateSeatForm.php?id=<?php echo $committee->getId(); ?>">
+
 	<fieldset><legend>Select Seat</legend>
 		<table>
 			<tr><td><label for="seat">Seat</label></td>
@@ -75,6 +76,7 @@
 		<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>';">Cancel</button>
 	</fieldset>
 	</form>
+
 </div>
 
 <?php

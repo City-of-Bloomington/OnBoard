@@ -20,7 +20,7 @@
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = $e;
-		Header("Location: ".BASE_URL);
+		Header("Location: ".$_POST['returnURL']);
 		exit();
 	}
 

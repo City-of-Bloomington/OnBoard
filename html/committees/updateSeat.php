@@ -22,7 +22,6 @@
 		{ 
 			$seat->setVacancy(1); 
 			$seat->unsetUser();
-
 		}
 		else 
 		{
@@ -30,7 +29,8 @@
 			$seat->addVacancy(0);
 			$user = new User($_POST['users']);
 			$seat->setTermStart($_POST['t_start']);
-			$seat->setTermEnd($_POST['t_end']);
+			if ($_POST['t_end']) { $seat->setTermEnd($_POST['t_end']);}
+			else { $seat->setTermEnd("Indefinite");}
 			$seat->setUser($user);
 		}
 	}

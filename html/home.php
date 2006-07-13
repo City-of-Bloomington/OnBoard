@@ -58,6 +58,7 @@
 			else { $id = $committee->getId(); }
 			echo "<tr><td>{$edit}{$id}{$edit_end} {$delete}{$id}{$delete_end}</td>
 								<td><a href=\"committees.php?id={$committee->getId()}\">{$committee->getName()}</a></td>
+						
 								<td>$vacancy</td>
 						</tr>";
 		}

@@ -101,7 +101,6 @@
 			$this->id = $PDO->lastInsertID();
 		}
 
-
 		public function getId() { return $this->id; }
 		public function getCommitteeId() { return $this->committee_id; }
 		public function getResumePath() { return $this->resumePath; }
@@ -149,7 +148,35 @@
    		gzwrite($zp, $data);
    		gzclose($zp);
 		}
-		
+
+		public function timestampCheck($timestamp, $flagyear=1)
+		{
+			$time = explode("-",$timestamp);
+			$day = explode(" ", $time[2]);
+			$day = $day[0];
+			$year = $time[0];
+			$month = $time[1];
+			$currentYear = date("Y", time());
+			$currentMonth = date("m", time());
+			$currentDay = date("d", time());
+			
+			$year = intval($currentYear) - intval($year);
+			$day = intval($currentDay) - intval($day);
+			$month = intval($currentMonth) - intval($month);
+			
+			if ($flagyear > 0) {
+				if ($year >= $flagyear && $day <= 0 && $month <= 0) { $bool = true;}
+				else { $bool = false;}
+			}
+			else
+			{
+				if ($year <= $flagyear && $day <= 0 && $month <= 0) { $bool = true;}
+				else { $bool = false;}
+			}
+			
+			return $bool;
+		}
+
 		public function deleteApplication() 
 		{
 			global $PDO;
@@ -160,9 +187,9 @@
 				$dir = explode(basename($this->resumePath), $this->resumePath);
 				rmdir($dir[0]);
 			}
-			$sql = "delete from user_applications where application_id ={$this->id}";
+			$sql = "update users set application_id = null where application_id = {$this->id}";
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-
+	
 			$sql = "delete from applications where id={$this->id}";
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 		}

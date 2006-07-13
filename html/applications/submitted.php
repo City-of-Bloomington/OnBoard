@@ -13,7 +13,10 @@
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc");?>
 
-
+	<h3>Your application was successfully submitted.</h3>
+	<br />
+	Return to the <a href="<?php echo BASE_URL; ?>">home</a> page.
+	
 </div>
 
 <?php

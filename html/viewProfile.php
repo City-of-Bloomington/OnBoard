@@ -67,6 +67,9 @@
 				<tr><td><label>About <?php echo $user->getFirstname() . " " . $user->getLastname(); ?></label></td>
 						<td><?php echo $user->getAbout(); ?></td>
 				</tr>
+				<tr><td><label>Last Updated:</label></td>
+						<td><?php echo $user->getTimestamp(); ?></td>
+				</tr>
 			</table>
 		</fieldset>
 </div>

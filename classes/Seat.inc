@@ -223,8 +223,13 @@
 		public function unsetUser() { if (isset($this->user)) unset($this->user); }
 		public function setCommittee($committee) 
 		{ 
-			$this->committee = $committee; 
-			$this->committee_id = $committee->getId(); 
+			$seatList = new SeatList(array("committee_id"=>$committee->getId()));
+			if (count($seatList) != $committee->getCount()) 
+			{
+				$this->committee = $committee; 
+				$this->committee_id = $committee->getId(); 
+			}
+			else {throw new Exception("Too Many Seats on Committee");}
 		}
 		
 		public function setAppointment($appointment) 

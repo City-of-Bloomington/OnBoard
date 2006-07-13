@@ -17,6 +17,6 @@
 		$committee->deleteCommittee();
 	}
 	
-		Header("Location: home.php");
+		Header("Location: ". BASE_URL);
 	
 ?>

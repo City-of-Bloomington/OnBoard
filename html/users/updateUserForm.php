@@ -19,7 +19,7 @@
 	<form method="post" action="updateUser.php">
 		<?php 
 		
-		if (in_array("Administrator", $_SESSION['USER']->getRoles())) 
+		if (in_array("Administrator", $_SESSION['USER']->getRoles()) && $_SESSION['USER']->getId() != $_GET['id']) 
 		{
 			echo 
 			"<fieldset><legend>Login Info</legend>
