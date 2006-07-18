@@ -5,13 +5,16 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-	include(APPLICATION_HOME."/includes/sidebarBoxes/RestrictionBox.inc");
+
 ?>
 <div id="mainContent">
-	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); ?>
+	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
+		if ($_GET['page'] == "add") { $cancel = BASE_URL."/committees/addSeatForm.php?id=".$_GET['id'];}
+		else {$cancel = BASE_URL."/committees/updateSeatForm.php?seat={$_GET['page']}&id=".$_GET['id'];}
+	?>
 
 	<h1>New Restriction</h1>
-	<form method="post" action="addRestriction.php?id=<?php echo $_GET['id']; ?>">
+	<form method="post" action="addRestriction.php?page=<?php echo $_GET['page']."&id=".$_GET['id']; ?>">
 		
 	<fieldset><legend>Restriction Info</legend>
 		<table>
@@ -21,7 +24,7 @@
 			</tr>	
 		</table>
 		<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='<?php echo "addSeatForm.php?id={$committee->getId()}"; ?>';">Cancel</button>
+		<button type="button" class="cancel" onclick="document.location.href='<?php echo $cancel; ?>';">Cancel</button>
 	</fieldset>
 	</form>
 </div>

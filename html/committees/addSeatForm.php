@@ -5,7 +5,7 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-	include(APPLICATION_HOME."/includes/sidebarBoxes/RestrictionBox.inc");
+
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
@@ -61,7 +61,9 @@
 			<td><?php echo $committee->getName(); ?></td>
 		</tr>
 		
-		<tr><td><label for="restrictions">Restrictions</label></td>
+		<tr><td><label for="restrictions">Restrictions</label>
+						<button type="button" class="addSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/addRestrictionForm.php?page=add&id={$committee->getId()}"; ?>'">Add</button>
+						<button type="button" class="deleteSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/deleteRestrictionForm.php?page=add&id={$committee->getId()}"; ?>'">Delete</button></td>
 			<td><select name="restrictions[]" id="restrictions" size="5" multiple="multiple">
 				<?php
 					$restrictions = new RestrictionList();

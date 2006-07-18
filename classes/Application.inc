@@ -79,7 +79,6 @@
 
 			$fields = implode(",",$fields);
 
-
 			if ($this->id) { $this->update($fields); }
 			else { $this->insert($fields); }
 		}
@@ -118,7 +117,6 @@
 		public function getQualifications() { return $this->qualifications; }
 		public function getTimestamp() { return $this->timestamp; }
 
-
 		public function setId($int) { $this->id = $int; }
 		public function setCommitteeId($int) { $this->committee_id = $int; }
 		public function setResumePath($int) { $this->resumePath = $int; }
@@ -140,7 +138,7 @@
 		{
    		// getting file content
    		$fp = fopen($srcFileName, "r");
-   		$data = fread ($fp, filesize($srcFileName));
+   		$data = fread($fp, filesize($srcFileName));
    		fclose($fp);
   
  		  // writing compressed file
@@ -184,8 +182,8 @@
 			if ($this->resumePath)
 			{
 				unlink($this->resumePath);
-				$dir = explode(basename($this->resumePath), $this->resumePath);
-				rmdir($dir[0]);
+				$dir = APPLICATION_HOME . "/resumes/".$this->id;
+				rmdir($dir);
 			}
 			$sql = "update users set application_id = null where application_id = {$this->id}";
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }

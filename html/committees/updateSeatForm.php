@@ -5,7 +5,7 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-	include(APPLICATION_HOME."/includes/sidebarBoxes/RestrictionBox.inc");
+
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
@@ -15,6 +15,14 @@
 			$seat = new Seat($_POST['seat']);	
 			$id = $seat->getId();
 			$title = $seat->getTitle();
+			$page = $_POST['seat'];
+		}
+		else if (isset($_GET['seat']))
+		{
+			$seat = new Seat($_GET['seat']);	
+			$id = $seat->getId();
+			$title = $seat->getTitle();
+			$page = $_GET['seat'];
 		}
 		else { Header("Location: updateCommitteeForm.php?id={$_GET['id']}");}
 	?>
@@ -49,8 +57,9 @@
 		<tr><td>*<label for="t_end">Term End Date</label></td>
 		<td><input name="t_end" id="t_end" value="<?php echo $seat->getTermEnd(); ?>" /></td></tr>
 		
-		<tr><td><label for="restrictions">Restrictions</label><br />
-			<a href="restrictionForm.php?id=<?php echo $seat->getId(); ?>">Edit Restrictions</a></td>
+		<tr><td><label for="restrictions">Restrictions</label>
+			<button type="button" class="addSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/addRestrictionForm.php?page={$page}&id={$seat->getId()}"; ?>'">Add</button>
+			<button type="button" class="deleteSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/deleteRestrictionForm.php?page={$page}&id={$seat->getId()}"; ?>'">Delete</button></td>
 			<td><select name="restrictions[]" id="restrictions" size="5" multiple="multiple">
 				<?php
 					$restrictions = new RestrictionList();

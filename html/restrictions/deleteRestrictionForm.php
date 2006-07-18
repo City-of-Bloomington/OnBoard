@@ -4,13 +4,16 @@
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-	include(APPLICATION_HOME."/includes/sidebarBoxes/RestrictionBox.inc");
+
 ?>
 <div id="mainContent">
-	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); ?>
+	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
+	if ($_GET['page'] == "add") { $cancel = BASE_URL."/committees/addSeatForm.php?id=".$_GET['id'];}
+	else {$cancel = BASE_URL."/committees/updateSeatForm.php?seat={$_GET['page']}&id=".$_GET['id'];}
+	?>
 	
 	<h1>Delete Restrictions</h1>
-	<form method="post" action="deleteRestrictionForm.php?id=<?php if (isset($_GET['id'])) {echo $_GET['id']; } ?>">
+	<form method="post" action="deleteRestriction.php?page=<?php echo $_GET['page']."&id=".$_GET['id']; ?>">
 
 	<fieldset><legend>Delete Restrictions</legend>
 		<table>
@@ -18,6 +21,7 @@
 					<td><select name="restriction" id="restriction">
 					<?php
 						$restrictionList = new RestrictionList();
+						$restrictionList->find();
 						if (count($restrictionList) == 0) { echo "<option>No Restrictions</option>";}
 						else { foreach($restrictionList as $restriction) {  echo "<option>$restriction</option>";}}
 					?>				
@@ -26,7 +30,7 @@
 			</tr>
 		</table>
 		<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>';">Cancel</button>
+		<button type="button" class="cancel" onclick="document.location.href='<?php echo $cancel; ?>';">Cancel</button>
 	</fieldset>
 	</form>
 	</div>

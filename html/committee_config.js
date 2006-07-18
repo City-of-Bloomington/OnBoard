@@ -15,8 +15,8 @@ FCKConfig.ToolbarSets["Default"] = [
 	['Link','Unlink'],
 	['Image','Table','Rule','SpecialChar','UniversalKey'],
 	'/',
-	['Style','FontFormat','FontName','FontSize'],
-	['TextColor','BGColor'],
+//	['Style','FontFormat','FontName','FontSize'],
+//	['TextColor','BGColor'],
 	['FitWindow', '-' ,'About']
 ];
 

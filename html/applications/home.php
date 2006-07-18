@@ -29,9 +29,12 @@
 					if ($committee_id == $application->getCommitteeId()) 
 					{
 					echo "
-					<tr><td>
-						<button type=\"button\" class=\"deleteSmall\" onclick=\"deleteConfirmation('deleteApplication.php?id={$application->getId()}');\">Delete</button>
-						</td>
+					<tr><td>";
+						if (in_array("Administrator", $_SESSION['USER']->getRoles()))
+						{
+							echo "<button type=\"button\" class=\"deleteSmall\" onclick=\"deleteConfirmation('deleteApplication.php?id={$application->getId()}');\">Delete</button>";
+						} 
+						echo "</td>
 						<td>{$application->getFirstname()} {$application->getLastname()}</td>
 						<td>{$committee->getName()}</td>
 						<td>{$application->getTimestamp()}</td>

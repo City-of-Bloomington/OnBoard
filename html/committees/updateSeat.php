@@ -6,6 +6,7 @@
 
 						# May be optional if LDAP is used
 						password
+						restrictions
 
 */
 	verifyUser("Administrator");
@@ -15,6 +16,7 @@
 	#--------------------------------------------------------------------------
 	$seat = new Seat($_POST['id']);
 	$seat->setTitle($_POST['title']);
+	if (isset($_POST['title']) { $seat->setRestrictions($_POST['title']);}
 	
 	if (isset($_POST['users']))
 	{

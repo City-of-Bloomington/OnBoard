@@ -76,7 +76,6 @@
 		<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>';">Cancel</button>
 	</fieldset>
 	</form>
-
 </div>
 
 <?php
