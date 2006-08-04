@@ -10,18 +10,33 @@
 						echo "{$committee->getName()}"; ?>
 		</div>
 		<?php
-		 	if (isset($_SESSION['USER']))
-		 	{
-				include(FCK_EDITOR."/fckeditor.php");
-				echo "<form action=\"committeePage.php?id={$committee->getId()}\" method=\"post\">";
-				$oFCKeditor = new FCKeditor('editor');
-				$oFCKeditor->BasePath = '/FCKeditor/';
-				$oFCKeditor->Value = $committee->getInfo();
-				$oFCKeditor->Config["CustomConfigurationsPath"] = BASE_URL."/committee_config.js";
-				$oFCKeditor->Create();
-				echo "<input type=\"submit\" value=\"Submit\"></form>";
+			
+			$member = 0;
+			$seatList = new SeatList(array("committee_id"=>$committee->getId()));
+			if (isset($_SESSION['USER']))
+			{
+				foreach($seatList as $seat) 
+				{ 
+					if ($seat->getVacancy() == 0)
+					{
+						if ($seat->getUser()->getId() == $_SESSION['USER']->getId()) { $member += 1; }
+					}
+				}
+				if (in_array("Administrator", $_SESSION['USER']->getRoles()) || $member > 0) 
+				{ 
+					# FCKeditor
+					include(FCK_EDITOR."/fckeditor.php");
+					echo "<form action=\"committeePage.php?id={$committee->getId()}\" method=\"post\">";
+					$oFCKeditor = new FCKeditor('editor');
+					$oFCKeditor->BasePath = '/FCKeditor/';
+					$oFCKeditor->Value = $committee->getInfo();
+					$oFCKeditor->Config["CustomConfigurationsPath"] = BASE_URL."/committee_config.js";
+					$oFCKeditor->Create();
+					echo "<input type=\"submit\" value=\"Submit\"></form>";
+				}
+				else { echo $committee->getInfo();}
 			}
-			else { echo $committee->getInfo();}
+			else { echo $committee->getInfo();} 
 			
 		?>
 		<table>
@@ -34,21 +49,20 @@
 				}
 				foreach ($seatList as $seat) 
 				{
-					if ($seat->getVacancy() == 1) 
+					if ($seat->getVacancy() == 0) 
+					{ 
+						$user = $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); 
+						$term = $seat->getTermEnd();
+						$href = "viewProfile.php?id={$seat->getUser()->getId()}";
+					}
+					else 
 					{ 
 						$user = "vacant"; 
 						$term = "";
 						if (isset($_SESSION['USER'])) { $href="applications/home.php?id={$committee->getId()}"; }
 						else { $href="applications/applicationForm.php\" onclick=\"window.open(this.href,'_blank');return false;";}
-					}
-					else 
-					{ 
-						$user = $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); 
-						$term = $seat->getTermEnd();
-						$href = "viewProfile.php?id={$seat->getUser()->getId()}";
 					}	
-
-						echo "
+					echo "
 						<tr>
 						<td><a href=\"$href\">$user</a></td>
 						<td>{$seat->getAppointment()->getName()}</td><td>";

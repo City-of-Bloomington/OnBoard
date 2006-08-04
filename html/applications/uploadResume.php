@@ -1,5 +1,4 @@
 <?php
-
 	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
@@ -7,6 +6,7 @@
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
+			# Error message handling for uploads
 			$error = "";
 			if(isset($_GET['err']))
 			{
@@ -41,9 +41,9 @@
 	
 	?>
 	
-	<h1>Board and Commission Application | Upload Resume</h1>
-	
-	<form enctype="multipart/form-data" method="post" action="application.php?id=<?php echo $_GET['id']; ?>">
+	<h2>Board and Commission Application | Upload Resume</h2>
+	<p>Your application was submitted successfully but there was a problem with your upload.</p>
+		<form enctype="multipart/form-data" method="post" action="application.php?id=<?php echo $_GET['id']; ?>">
    			<h4><?php echo $error; ?></h4>
   	  		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
    			<table>	
@@ -52,9 +52,8 @@
     			<tr><td></td><td>*Note* your resume must be in either a Word Document or PDF file format to upload correctly.</td></tr>
 				</table>
 				<button type="submit" class="submit">Upload Resume</button>
-				<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
-				</fieldset>
-			
+				<button type="button" class="cancel" onclick="document.location.href='<?php BASE_URL;?>';">Cancel</button>
+				</fieldset>	
 		</form>
 </div>
 

@@ -105,6 +105,7 @@
 			}
 		}
 		
+		# Updates seat_users table with seat and user information
 		private function updateUser()
 		{
 			global $PDO;
@@ -127,8 +128,8 @@
 		}
 
 		public function getId() { return $this->id; }
-		public function getCommittee_id() { return $this->committee_id; }
-		public function getAppointment_id() { return $this->appointment_id; }
+		public function getCommitteeId() { return $this->committee_id; }
+		public function getAppointmentId() { return $this->appointment_id; }
 		public function getTitle() { return $this->title; }
 		public function getVacancy() { return $this->vacancy; }
 		public function getCommittee() 
@@ -136,13 +137,15 @@
 			if (!$this->committee) { $this->committee = new Committee($this->committee_id); }
 			return $this->committee;
 		}
-			
+		
+		# Gets seat Appointment Type
 		public function getAppointment() 
 		{
 			if (!$this->appointment) { $this->appointment = new SeatAppointment($this->appointment_id); }
 			return $this->appointment;
 		}
 		
+		# Gets seat restrictions
 		public function getRestrictions() 
 		{
 			global $PDO;
@@ -160,6 +163,7 @@
 			return $this->restrictions;
 		}
 		
+		# Gets seat term start from seat_users table
 		public function getTermStart() 
 		{
 			global $PDO;
@@ -175,6 +179,7 @@
 			return $this->term_start;
 		}
 		
+		# Gets seat term end from seat_users table
 		public function getTermEnd() 
 		{
 			global $PDO;
@@ -190,37 +195,38 @@
 			return $this->term_end;
 		}
 		
+		# Gets the user associated with this seat
 		public function getUser() 
 		{
 			global $PDO;
+			$id;
 
-			if (!$this->user && $this->vacancy != 1)
+			if (!$this->user && $this->vacancy != 1 || $this->vacancy != 1)
 			{
 				$sql = "select user_id from seat_users left join users on user_id=id where seat_id={$this->id}";
 				if ($result = $PDO->query($sql))
 				{
-					foreach($result as $row) { $id =  $row['user_id']; }
+					foreach($result as $row) { $id = $row['user_id']; }	
 					$result->closeCursor();
 				}
-				$this->user = new User($id);
+				if (isset($id)) { $this->user = new User($id); }
 			}
 			return $this->user;
 		}
 
 		public function setId($int) { $this->id = $int; }
-		public function setCommittee_id($int) { $this->committee_id = $int; }
-		public function setAppointment_id($int) { $this->appointment_id = $int; }
+		public function setCommitteeId($int) { $this->committee_id = $int; }
+		public function setAppointmentId($int) { $this->appointment_id = $int; }
 		public function setTitle($string) { $this->title = $string; }
 		public function setVacancy($int) { $this->vacancy = $int; }
 		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
 		public function removeVacancy($int) { if (isset($this->vacancy)) unset($this->vacancy); }
 		public function setTermStart($string) { $this->term_start = sanitizeString($string); }
 		public function setTermEnd($string) { $this->term_end = sanitizeString($string); }
-		public function setUser($user) 
-		{ 
-			$this->user = $user; 
-		}
+		public function setUser($user) { $this->user = $user; }
+		
 		public function unsetUser() { if (isset($this->user)) unset($this->user); }
+	
 		public function setCommittee($committee) 
 		{ 
 			$seatList = new SeatList(array("committee_id"=>$committee->getId()));

@@ -6,7 +6,7 @@
 	verifyUser("Administrator");
 
 	#--------------------------------------------------------------------------
-	# Delete account
+	# Delete committee and every seat associated with this committee
 	#--------------------------------------------------------------------------
 
 	if ($_GET['id'] != $_SESSION['USER']->getId()) 

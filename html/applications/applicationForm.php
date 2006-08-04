@@ -18,39 +18,39 @@
 			<table>
 				<tr>
 					<td><label for="firstname">First Name*</label></td>
-					<td><input size="33" name="firstname" id="firstname" /></td>
+					<td><input size="25" name="firstname" id="firstname" /></td>
 				</tr>
 				<tr>
 					<td><label for="lastname">Last Name*</label></td>
-					<td><input size="33" name="lastname" id="lastname" /></td>
+					<td><input size="25" name="lastname" id="lastname" /></td>
 				</tr>
 				<tr>
 					<td><label for="email">Email Address*</label></td>
-					<td><input size="33" name="email" id="email" /></td>
+					<td><input size="25" name="email" id="email" /></td>
 				</tr>
 				<tr>
 					<td><label for="address">Address</label></td>
-					<td><input size="33" name="address" id="address" /></td>
+					<td><input size="25" name="address" id="address" /></td>
 				</tr>
 				<tr>
 					<td><label for="city">City</label></td>
-					<td><input size="33" name="city" id="city" /></td>
+					<td><input size="25" name="city" id="city" /></td>
 				</tr>
 				<tr>
 					<td><label for="zipcode">Zipcode</label></td>
-					<td><input size="33" name="zipcode" id="zipcode" /></td>
+					<td><input size="25" name="zipcode" id="zipcode" /></td>
 				</tr>
 				<tr>
 					<td><label for="homephone">Home Phone Number</label></td>
-					<td><input size="33" name="homephone" id="homephone" /></td>
+					<td><input size="25" name="homephone" id="homephone" /></td>
 				</tr>
 				<tr>
 					<td><label for="workphone">Work Phone Number</label></td>
-					<td><input size="33" name="workphone" id="workphone" /></td>
+					<td><input size="25" name="workphone" id="workphone" /></td>
 				</tr>
 				<tr>
 					<td><label for="occupation">Occupation</label></td>
-					<td><input size="33" name="occupation" id="occupation" /></td>
+					<td><input size="25" name="occupation" id="occupation" /></td>
 				</tr>
 			</table>
 			<table>
@@ -86,9 +86,9 @@
     			<tr><td></td><td>*Note* your resume must be in either a Word Document or PDF file format to upload correctly.</td></tr>
 				</table>
 				<button type="submit" class="submit">Submit Application</button>
-			<button type="button" onclick="document.location.href='printApplication.php';">View Printable Application</button>
-			<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
-				</fieldset>
+				<button type="button" onclick="document.location.href='printApplication.php';">View Printable Application</button>
+				<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL;?>';">Cancel</button>
+			</fieldset>
 		</form>
 </div>
 

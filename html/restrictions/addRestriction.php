@@ -1,6 +1,10 @@
 <?php
 /*
 	$_POST variables:	restriction
+	
+	$_GET variables: page  (which page just came from)
+									 id    (id associated with either a 
+									 				seat/committee, depending on 'page' value)
 */
 	verifyUser("Administrator");
 

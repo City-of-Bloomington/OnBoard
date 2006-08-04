@@ -39,7 +39,7 @@
 		echo "{$add}<table><tr><th></th><th>Boards &amp; Commissions</th><th>Vacancy?</th></tr>";
 	
 		$committeeList = new CommitteeList();
-		$committeeList->find();
+		$committeeList->find(null, "name");
 		foreach($committeeList as $committee) 
 		{
 			$vacancy = "";
@@ -58,7 +58,6 @@
 			else { $id = $committee->getId(); }
 			echo "<tr><td>{$edit}{$id}{$edit_end} {$delete}{$id}{$delete_end}</td>
 								<td><a href=\"committees.php?id={$committee->getId()}\">{$committee->getName()}</a></td>
-						
 								<td>$vacancy</td>
 						</tr>";
 		}

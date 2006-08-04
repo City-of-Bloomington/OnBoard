@@ -8,15 +8,14 @@ FCKConfig.ToolbarSets["Default"] = [
 	['DocProps','-','Save','Preview','-','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','SpellCheck'],
 	['Undo','Redo','-','Find','Replace','-','SelectAll'],
+	['FitWindow', '-' ,'About'],
 	'/',
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	['Link','Unlink'],
-	['Image','Table','Rule','SpecialChar','UniversalKey'],
-	'/',
+	['Image','Table','Rule','SpecialChar','UniversalKey']
 //	['Style','FontFormat','FontName','FontSize'],
 //	['TextColor','BGColor'],
-	['FitWindow', '-' ,'About']
 ];
 

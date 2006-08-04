@@ -39,6 +39,8 @@
 		$user->setLastname($_POST['lastname']);
 		$user->setEmail($_POST['email']);
 		$user->setHomePhone($_POST['homephone']);
+		if (isset($_POST['photo'])) { $user->setPhotoPath($_POST['photo']); }
+		else { $user->setPhotoPath("http://isotope.bloomington.in.gov/directory/images/nophoto.jpg"); }
 	}
 
 	try

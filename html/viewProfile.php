@@ -12,17 +12,27 @@
 <div id="mainContent">
 	<?php
 		include(GLOBAL_INCLUDES."/errorMessages.inc");
-    
 		$user = new User($_GET['id']); 
 		
+	
 	?>
-	<h1><?php echo $user->getFirstname() . " " . $user->getLastname(); ?>'s Profile</h1>
+	<h1><?php echo $user->getFirstname()." ".$user->getLastname(); ?>'s Profile</h1>
 		<fieldset><legend>Profile Info</legend>
-			<input name="id" type="hidden" value="<?php echo $user->getId(); ?>" />
+			<table>
+				<tr><th>Photo</th></tr>
+				<tr><td><?php 
+					if ($user->getAuthenticationMethod() == "LDAP") 
+					{
+						$ldap = new LDAPEntry($user->getUsername());
+						if ($ldap->getPhoto()) { $photo = "<img src=\"photo.php?user={$user->getUsername()}\" alt=\"{$user->getUsername()}\" />"; }
+					}
+					else { $photo = "<img src=\"{$user->getPhotoPath()}\" alt=\"{$user->getUsername()}\" />"; }
+					echo $photo; ?></td></tr>
+			</table>
 			<table>
 				<tr><th>Field Name</th><th>Personal Information</th></tr>
 				<tr><td><label>Name</label></td>
-						<td><?php echo $user->getFirstname() . " " . $user->getLastname(); ?></td>
+						<td><?php echo $user->getFirstname()." ".$user->getLastname(); ?></td>
 				</tr>
 				<tr><td><label>Email Address</label></td>
 						<td><?php echo $user->getEmail(); ?></td>
@@ -64,7 +74,7 @@
 					} 
 					?>
 				<tr><td>----------------------------------</td></tr>
-				<tr><td><label>About <?php echo $user->getFirstname() . " " . $user->getLastname(); ?></label></td>
+				<tr><td><label>About <?php echo $user->getFirstname()." ".$user->getLastname(); ?></label></td>
 						<td><?php echo $user->getAbout(); ?></td>
 				</tr>
 				<tr><td><label>Last Updated:</label></td>

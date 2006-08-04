@@ -22,7 +22,7 @@
 		<input name="id" type="hidden" value="<?php echo $committee->getId(); ?>" />
 		<table>
 		<tr><td><label for="name">Committee Name</label></td>
-			<td><input name="name" size="50" id="name" value="<?php echo $committee->getName(); ?>"/></td></tr>
+			<td><input name="name" size="80" id="name" value="<?php echo $committee->getName(); ?>"/></td></tr>
 	
 		<tr><td><label for="remove_seat">Remove Seat</label></td>
 			<td><select name="remove_seat" id="remove_seat">

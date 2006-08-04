@@ -1,17 +1,12 @@
 <?php
 /*
-	$_POST variables:	authenticationMethod
-						username
-						roles
-
-						# May be optional if LDAP is used
-						password
-
+	$_POST variables:	name
+										member_count
 */
 	verifyUser("Administrator");
 
 	#--------------------------------------------------------------------------
-	# Create the new account
+	# Create the new committee
 	#--------------------------------------------------------------------------
 	$committee = new Committee();
 	$committee->setName($_POST['name']);

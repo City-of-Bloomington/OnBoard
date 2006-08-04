@@ -6,7 +6,7 @@
 	verifyUser("Administrator", "Committee Member");
 
 	#--------------------------------------------------------------------------
-	# Create the new account
+	# Dislay Committee Page from FCKeditor
 	#--------------------------------------------------------------------------
 	$committee = new Committee($_GET['id']);
 	$committee->setInfo($_POST['editor']);

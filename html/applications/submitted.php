@@ -2,12 +2,10 @@
 /*
 	$_GET variables:	id
 */
-
 	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
 	include(APPLICATION_HOME."/includes/banner.inc");
 	include(APPLICATION_HOME."/includes/menubar.inc");
 	include(APPLICATION_HOME."/includes/sidebar.inc");
-
 ?>
 
 <div id="mainContent">

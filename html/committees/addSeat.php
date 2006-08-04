@@ -1,11 +1,15 @@
 <?php
 /*
-	$_POST variables:	authenticationMethod
-						username
-						roles
-
-						# May be optional if LDAP is used
-						password
+	$_POST variables:	
+						title
+						id (committee id)
+										
+						# May be optional 
+						restrictions
+						appointment
+						users 
+						t_start
+						t_end
 
 */
 	verifyUser("Administrator");
@@ -29,7 +33,7 @@
 		$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 		try
 		{
-			 {$seat->setCommittee($committee);}
+			 $seat->setCommittee($committee);
 		}
 		catch (Exception $e)
 		{

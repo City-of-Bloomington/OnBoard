@@ -83,7 +83,7 @@
 		public function getInfo() { return $this->info; }
 
 		public function setId($int) { $this->id = $int; }
-		public function setName($string) { $this->name = $string; }
+		public function setName($string) { $this->name = sanitizeString($string); }
 		public function setCount($int) { $this->count = $int; }
 		public function setInfo($int) { $this->info = $int; }
 		

@@ -14,16 +14,16 @@
 		include(GLOBAL_INCLUDES."/errorMessages.inc");
 		$application = new Application($_GET['id']); 
 	?>
-	<h1><?php echo $application->getFirstname() . " " . $application->getLastname(); ?>'s Application</h1>
+	<h1><?php echo $application->getFirstname()." ".$application->getLastname(); ?>'s Application</h1>
 		<fieldset><legend>Application Info</legend>
 			<input name="id" type="hidden" value="<?php echo $application->getId(); ?>" />
 			<table>
 				<tr><th>Field Name</th><th>Personal Information</th></tr>
 				<tr><td><label>Name</label></td>
-						<td><?php echo $application->getFirstname() . " " . $application->getLastname(); ?></td>
+						<td><?php echo $application->getFirstname()." ".$application->getLastname(); ?></td>
 				</tr>
 				<tr><td><label>Email Address</label></td>
-						<td><?php echo $application->getEmail(); ?></td>
+						<td><?php echo "<a href='mailto:{$application->getEmail()}'>{$application->getEmail()}</a>" ; ?></td>
 				</tr>
 				
 				<tr><td><label>Home Phone Number</label></td>
@@ -57,7 +57,7 @@
 				</tr>
 				
 				<tr><td>---------------------------------</td></tr>
-			<tr><td><label>Board/Commission Applied For:</label></td>
+				<tr><td><label>Board/Commission Applied For:</label></td>
 				<?php 
 					 $committee = new Committee($application->getCommitteeId());
 					 echo "<td>{$committee->getName()}</td></tr>"; 
@@ -75,7 +75,12 @@
 											else { echo "No resume attached."; } ?></td>
 				</tr>
 				<tr><td><label>Application Date/Time:</label></td>
-						<td><?php  echo $application->getTimestamp();?></td>
+						<td><?php  echo $application->getTimestamp(); 
+							if ($application->timestampCheck($application->getTimestamp())) 
+							{ 
+								echo "<h5><b>{$application->getFirstname()} {$application->getLastname()}'s application has been on file for over a year.
+											<br />Click <a href='mailto:{$application->getEmail()}'>here</a> to email applicant.</h5>";
+							}?></td>
 				</tr>
 			</table>
 		</fieldset>

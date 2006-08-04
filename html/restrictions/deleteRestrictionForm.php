@@ -15,7 +15,7 @@
 	<h1>Delete Restrictions</h1>
 	<form method="post" action="deleteRestriction.php?page=<?php echo $_GET['page']."&id=".$_GET['id']; ?>">
 
-	<fieldset><legend>Delete Restrictions</legend>
+		<fieldset><legend>Delete Restrictions</legend>
 		<table>
 			<tr><td><label for="restriction">Restrictions</label></td>
 					<td><select name="restriction" id="restriction">
@@ -31,10 +31,9 @@
 		</table>
 		<button type="submit" class="submit">Submit</button>
 		<button type="button" class="cancel" onclick="document.location.href='<?php echo $cancel; ?>';">Cancel</button>
-	</fieldset>
+		</fieldset>
 	</form>
-	</div>
-
+</div>
 <?php
 	include(APPLICATION_HOME."/includes/footer.inc");
 	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");

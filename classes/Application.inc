@@ -134,19 +134,24 @@
 		public function setQualifications($text) { $this->qualifications = sanitizeString($text); }
 		public function setTimestamp($timestamp) { $this->timestamp = $timestamp; }
 
+		# Function used to compress files 
 		public function gzip($srcFileName, $dstFileName)
 		{
-   		// getting file content
+   		# getting file content
    		$fp = fopen($srcFileName, "r");
    		$data = fread($fp, filesize($srcFileName));
    		fclose($fp);
   
- 		  // writing compressed file
+ 		  # writing compressed file
    		$zp = gzopen($dstFileName, "w9");
    		gzwrite($zp, $data);
    		gzclose($zp);
 		}
-
+		
+		# Checks to see if a timestamp is older than the flagyear
+		# Ex. 1/9/2001 with a flagyear of 1 will send a true value
+		# if the current date is 1/9/2002 or sooner and false if there is less
+		# than a years difference. Only positive whole numbers greater than 0 work.
 		public function timestampCheck($timestamp, $flagyear=1)
 		{
 			$time = explode("-",$timestamp);
@@ -163,18 +168,22 @@
 			$month = intval($currentMonth) - intval($month);
 			
 			if ($flagyear > 0) {
-				if ($year >= $flagyear && $day <= 0 && $month <= 0) { $bool = true;}
-				else { $bool = false;}
+				if ($year == 1 && $month >= 0) 
+				{ 
+					if ($month == 0 && $day >= 0) {$bool = true;}
+					else {$bool = false;}
+				}
+				else if ($year > 1 && $year >= $flagyear) {$bool = true;}
+				else {$bool = false;}
 			}
-			else
-			{
-				if ($year <= $flagyear && $day <= 0 && $month <= 0) { $bool = true;}
-				else { $bool = false;}
-			}
+			else {$bool = false;}
 			
 			return $bool;
 		}
-
+		
+		# Deletes the application from the database and the application_id associated 
+		# with users table.  Also deletes any uploaded resume and it's directory if a  
+		# resumePath exists with the application.
 		public function deleteApplication() 
 		{
 			global $PDO;

@@ -39,7 +39,7 @@
 	try
 	{
 		$seat->save();
-		Header("Location: updateCommitteeForm.php?id={$seat->getCommittee_id()}");
+		Header("Location: updateCommitteeForm.php?id={$seat->getCommitteeId()}");
 	}
 	catch (Exception $e)
 	{

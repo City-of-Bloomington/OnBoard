@@ -69,17 +69,18 @@
 		$ext = $file[1];
 		$file = "resume." . $ext;
 		
+		# Check file extension
 		if ($ext == "doc" || $ext == "pdf")
 		{
 			$newdir = mkdir(APPLICATION_HOME.'/resumes/'.$application->getId());
 			$uploaddir = APPLICATION_HOME.'/resumes/'. $application->getId().'/';
 			$uploadfile = $uploaddir . $file;	
-			
+			# Upload the file
 			if(move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) 
 			{
-				$application->gzip($uploadfile, $uploadfile . ".gz");
+				$application->gzip($uploadfile, $uploadfile.".gz");
 				unlink($uploadfile);
-				$application->setResumePath($uploadfile. ".gz");
+				$application->setResumePath($uploadfile.".gz");
 				try
 				{
 					$application->save();
@@ -91,10 +92,13 @@
 					Header("Location: applicationForm.php");
 				}
 			}
+			# Upload error
 			else {Header("Location: uploadResume.php?err={$_FILES['userfile']['error']}");}
 		}
+		# Incorrect file extension
 		else { Header("Location: uploadResume.php?err=5&id={$application->getId()}");}
-	}
+	} 
+	else {Header("Location: uploadResume.php?err={$_FILES['userfile']['error']}&id={$application->getId()}");}
 	
 	
 ?>

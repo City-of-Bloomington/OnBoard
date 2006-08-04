@@ -4,6 +4,7 @@
 	class User extends SystemUser
 	{
 		private $id;
+		private $application_id;
 		private $username;
 		private $password;
 		private $authenticationMethod;
@@ -17,6 +18,7 @@
 		private $homePhone;
 		private $workPhone;
 		private $timestamp;
+		private $photoPath;
 
 		private $roles;
 
@@ -35,6 +37,7 @@
 				if ($user = $result->fetch())
 				{
 					$this->id = $user['id'];
+					$this->application_id = $user['application_id'];
 					$this->username = $user['username'];
 					# Passwords are one-way encrypted.  They should not be loaded by default
 					$this->authenticationMethod = $user['authenticationMethod'];
@@ -48,6 +51,7 @@
 					$this->homePhone = $user['homePhone'];
 					$this->workPhone = $user['workPhone'];
 					$this->about = $user['about'];
+					$this->photoPath = $user['photoPath'];
 					$this->timestamp = $user['timestamp'];
 
 					$result->closeCursor();
@@ -62,6 +66,7 @@
 			if (!$this->username || !$this->firstname || !$this->lastname) { throw new Exception("missingRequiredFields"); }
 
 			$fields = array();
+			$fields[] = $this->application_id ? "application_id='{$this->application_id}'" : "application_id=null";
 			$fields[] = $this->username ? "username='{$this->username}'" : "username=null";
 			$fields[] = $this->firstname ? "firstname='{$this->firstname}'" : "firstname=null";
 			$fields[] = $this->lastname ? "lastname='{$this->lastname}'" : "lastname=null";
@@ -73,6 +78,7 @@
 			$fields[] = $this->homePhone ? "homePhone='{$this->homePhone}'" : "homePhone=null";
 			$fields[] = $this->about ? "about='{$this->about}'" : "about=null";
 			$fields[] = $this->timestamp ? "timestamp='{$this->timestamp}'" : "timestamp=null";
+			$fields[] = $this->photoPath ? "photoPath='{$this->photoPath}'" : "photoPath=null";
 			$fields[] = $this->authenticationMethod ? "authenticationMethod='{$this->authenticationMethod}'" : "authenticationMethod=local";
 			$fields = implode(",",$fields);
 
@@ -143,6 +149,7 @@
 		}
 
 		public function getId() { return $this->id; }
+		public function getApplicationId() { return $this->application_id; }
 		public function getUsername() { return $this->username; }
 		public function getPassword() { return $this->password; }
 		public function getAuthenticationMethod() { return $this->authenticationMethod; }
@@ -155,6 +162,7 @@
 		public function getAbout() { return $this->about; }
 		public function getHomePhone() { return $this->homePhone; }
 		public function getWorkPhone() { return $this->workPhone; }
+		public function getPhotoPath() { return $this->photoPath; }
 		public function getTimestamp() { return $this->timestamp; }
 		
 		public function getRoles()
@@ -174,6 +182,7 @@
 			return $this->roles;
 		}
 
+		public function setApplicationId($int) { $this->application_id = $int; }
 		public function setUsername($string) { $this->username = sanitizeString($string); }
 		public function setPassword($string) { $this->password = $string; }
 		public function setAuthenticationMethod($string) { $this->authenticationMethod = $string; }
@@ -186,6 +195,7 @@
 		public function setHomephone($string) { $this->homePhone = sanitizeString($string); }
 		public function setWorkphone($string) { $this->workPhone = sanitizeString($string); }
 		public function setAbout($string) { $this->about = sanitizeString($string); }
+		public function setPhotoPath($string) { $this->photoPath = sanitizeString($string); }
 		public function setTimestamp($timestamp) { $this->timestamp = $timestamp; }
 		
 		public function setRoles($array) 
@@ -201,6 +211,9 @@
 		public function deleteUser() 
 		{
 			global $PDO;
+			
+			$sql = "delete from seat_users where user_id ={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 
 			$sql = "delete from user_roles where user_id ={$this->id}";
 			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }

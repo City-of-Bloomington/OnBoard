@@ -12,11 +12,10 @@
 <div id="mainContent">
 	<?php
 		include(GLOBAL_INCLUDES."/errorMessages.inc");
-
 		$user = new User($_GET['id']);
 	?>
 	<h1>Edit <?php echo $user->getUsername(); ?></h1>
-	<form method="post" action="updateUser.php">
+		<form method="post" action="updateUser.php">
 		<?php 
 		
 		if (in_array("Administrator", $_SESSION['USER']->getRoles()) && $_SESSION['USER']->getId() != $_GET['id']) 
@@ -76,6 +75,15 @@
 		<tr><td><label>About</label></td>
 				<td><textarea cols="30" rows="5" name="about"><?php echo $user->getAbout(); ?></textarea></td>
 		</tr>
+		<?php 
+		
+			if ($user->getAuthenticationMethod() == "local")
+			{
+				echo "<tr><td><label for=\"picture_url\">Picture URL</label></td>
+    		<td><input id=\"picture_url\" size=\"80\" name=\"picture_url\" value=\"{$user->getPhotoPath()}\" /></td></tr>
+   			<tr><td></td><td>*Note* picture must be a .jpg file.</td></tr>";
+  		}
+  		?>
 		</table>
 
 		<button type="submit" class="submit">Submit</button>
