@@ -167,22 +167,23 @@
 			$day = intval($currentDay) - intval($day);
 			$month = intval($currentMonth) - intval($month);
 			
-			if ($flagyear > 0) {
+			if ($flagyear > 0) 
+			{
 				if ($year == 1 && $month >= 0) 
 				{ 
 					if ($month == 0 && $day >= 0) {$bool = true;}
+					if ($month >= 1) {$bool = true;}
 					else {$bool = false;}
 				}
 				else if ($year > 1 && $year >= $flagyear) {$bool = true;}
 				else {$bool = false;}
 			}
 			else {$bool = false;}
-			
 			return $bool;
 		}
 		
 		# Deletes the application from the database and the application_id associated 
-		# with users table.  Also deletes any uploaded resume and it's directory if a  
+		# with the users table.  Also deletes any uploaded resume and it's directory if a  
 		# resumePath exists with the application.
 		public function deleteApplication() 
 		{

@@ -18,7 +18,8 @@
 		<form method="post" action="updateUser.php">
 		<?php 
 		
-		if (in_array("Administrator", $_SESSION['USER']->getRoles()) && $_SESSION['USER']->getId() != $_GET['id']) 
+		# These attributes are only viewable/editable if the user has an administrator role
+		if (in_array("Administrator", $_SESSION['USER']->getRoles())) 
 		{
 			echo 
 			"<fieldset><legend>Login Info</legend>
@@ -76,10 +77,11 @@
 				<td><textarea cols="30" rows="5" name="about"><?php echo $user->getAbout(); ?></textarea></td>
 		</tr>
 		<?php 
-		
+		 	#  Used for users that need to supply a link to their photo
 			if ($user->getAuthenticationMethod() == "local")
 			{
-				echo "<tr><td><label for=\"picture_url\">Picture URL</label></td>
+				echo "<tr><td><label for=\"picture\">Picture</label></td><td><img src=\"{$user->getPhotoPath()}\" alt=\"{$user->getUsername()}\" /></td></tr>
+				<tr><td><label for=\"picture_url\">Picture URL</label></td>
     		<td><input id=\"picture_url\" size=\"80\" name=\"picture_url\" value=\"{$user->getPhotoPath()}\" /></td></tr>
    			<tr><td></td><td>*Note* picture must be a .jpg file.</td></tr>";
   		}

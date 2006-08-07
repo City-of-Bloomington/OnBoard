@@ -1,5 +1,7 @@
 <?php
 /*
+	Script for FCKeditor
+
 	$_POST variables:	editor
 	$_GET variables: id
 */

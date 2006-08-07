@@ -227,6 +227,7 @@
 		
 		public function unsetUser() { if (isset($this->user)) unset($this->user); }
 	
+		# Sets committee to this seat
 		public function setCommittee($committee) 
 		{ 
 			$seatList = new SeatList(array("committee_id"=>$committee->getId()));
@@ -238,12 +239,14 @@
 			else {throw new Exception("Too Many Seats on Committee");}
 		}
 		
+		# Sets appointment type to this seat
 		public function setAppointment($appointment) 
 		{ 
 			$this->appointment = $appointment; 
 			$this->appointment_id = $appointment->getId(); 
 		}
 		
+		# Sets restrictions to this seat
 		public function setRestrictions($array) 
 		{ 
 			$this->restrictions = array();
@@ -254,6 +257,7 @@
 			} 
 		}
 		
+		# Deletes seat and all traces
 		public function deleteSeat() 
 		{
 			global $PDO;

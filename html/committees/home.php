@@ -9,27 +9,31 @@
 <div id="mainContent">
 	<div class="interfaceBox">
 		<div class="titleBar">
-			<button type="button" class="addSmall" onclick="document.location.href='addSeatForm.php';">Add</button>
 			Seats
 		</div>
 		<table>
-		<tr><th></th><th>Title</th><th>Board/Commission</th><th>Appointment Type</th><th>Vacancy?</th><th>Restrictions</th></tr>
+		<tr><th>Title</th><th>Board/Commission</th><th>Appointment</th><th>Vacant?</th><th>Restrictions</th></tr>
 		<?php
+			
+			# Find all the applications and sort by vacancy
 			$seatList = new SeatList();
-			$seatList->find(null, "committee_id");
+			$seatList->find(null, "vacancy");
 			foreach($seatList as $seat)
 			{
+				# Display all seats
 				echo "
-				<tr><td><button type=\"button\" class=\"editSmall\" onclick=\"document.location.href='updateSeatForm.php?id={$seat->getId()}'\">Edit</button>
-						<button type=\"button\" class=\"deleteSmall\" onclick=\"deleteConfirmation('deleteSeat.php?id={$seat->getId()}');\">Delete</button>
-					</td>
-					<td>{$seat->getTitle()}</td>
+					<td><a href=\"updateCommitteeForm.php?id={$seat->getCommittee()->getId()}\">{$seat->getTitle()}</a></td>
 					<td>{$seat->getCommittee()->getName()}</td>
-					<td>{$seat->getAppointment()->getName()}</td>
-					<td>{$seat->getVacancy()}</td>
+					<td>{$seat->getAppointment()->getName()}</td>";
+					if ($seat->getVacancy() == 1) 
+					{ 
+						$vacant = "<a href=\"".BASE_URL."/applications/home.php?id={$seat->getCommittee()->getId()}\">Vacant</a>"; 
+					}
+					else { $vacant = "<a href=\"".BASE_URL."/viewProfile.php?id={$seat->getUser()->getId()}\">{$seat->getUser()->getFirstname()} {$seat->getUser()->getLastname()}</a>"; }
+					echo "<td>{$vacant}</td>
 					<td>";
 					foreach($seat->getRestrictions() as $restriction) { echo "$restriction "; }
-					echo "</td><td>{}</td></tr>";
+					echo "</td></tr>";
 			}
 		?>
 		</table>

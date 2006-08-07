@@ -7,6 +7,8 @@
 						# May be optional if LDAP is used
 						password
 						restrictions
+						t_start
+						t_end
 
 */
 	verifyUser("Administrator");

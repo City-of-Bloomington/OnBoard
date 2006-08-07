@@ -9,19 +9,16 @@
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
-	
+		
+		#	Handles either $_GET or $_POST 'seat' variable, for url forwarding	
 		if (isset($_POST['seat']) && $_POST['seat'] != "No Seats") 
 		{ 
 			$seat = new Seat($_POST['seat']);	
-			$id = $seat->getId();
-			$title = $seat->getTitle();
 			$page = $_POST['seat'];
 		}
 		else if (isset($_GET['seat']))
 		{
 			$seat = new Seat($_GET['seat']);	
-			$id = $seat->getId();
-			$title = $seat->getTitle();
 			$page = $_GET['seat'];
 		}
 		else { Header("Location: updateCommitteeForm.php?id={$_GET['id']}");}
@@ -30,10 +27,10 @@
 <h1>Edit Seat</h1>
 	<form method="post" action="updateSeat.php">
 	<fieldset><legend>Seat Info</legend>
-		<input name="id" type="hidden" value="<?php echo $id; ?>" />
+		<input name="id" type="hidden" value="<?php echo $seat->getId(); ?>" />
 		<table>
 		<tr><td><label for="title">Seat Title</label></td>
-			<td><input name="title" id="title" value="<?php echo $title; ?>" /></td></tr>
+			<td><input name="title" id="title" value="<?php echo $seat->getTitle(); ?>" /></td></tr>
 				
 		<tr><td><label for="users">Replace Member</label></td>
 			<td><select name="users" id="users">

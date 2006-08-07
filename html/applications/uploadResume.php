@@ -6,6 +6,8 @@
 ?>
 <div id="mainContent">
 	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); 
+			# User only brought to this page if there was an upload error
+			
 			# Error message handling for uploads
 			$error = "";
 			if(isset($_GET['err']))

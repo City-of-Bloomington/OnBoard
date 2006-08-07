@@ -15,6 +15,8 @@
 		<table>
 			<tr><th></th><th>Username</th><th>Name</th><th>Auth. Method</th><th>Roles</th></tr>
 		<?php
+			
+			# Find all the users and display their username, first/lastname, authentication method and roles.
 			$userList = new UserList();
 			$userList->find();
 			foreach($userList as $user)

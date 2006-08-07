@@ -78,6 +78,8 @@
 			# Upload the file
 			if(move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) 
 			{
+				# If upload was successfull then compress the file, delete the old one 
+				# and set the resume path to the new gzipped file
 				$application->gzip($uploadfile, $uploadfile.".gz");
 				unlink($uploadfile);
 				$application->setResumePath($uploadfile.".gz");

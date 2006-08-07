@@ -17,6 +17,7 @@
 	$committee->setName($_POST['name']);
 	$committee->setCount($_POST['member_count']);
 	
+	# If set, deletes selected seat
 	if (isset($_POST['remove_seat']) && $_POST['remove_seat'] != "--Select Here--") 
 	{ 
 		$seat = new Seat($_POST['remove_seat']);

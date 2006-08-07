@@ -76,6 +76,9 @@
 				</tr>
 				<tr><td><label>Application Date/Time:</label></td>
 						<td><?php  echo $application->getTimestamp(); 
+							
+							# Compare the current timestamp and the application timestamp
+							# If there there is a year or more difference the message below will display
 							if ($application->timestampCheck($application->getTimestamp())) 
 							{ 
 								echo "<h5><b>{$application->getFirstname()} {$application->getLastname()}'s application has been on file for over a year.
