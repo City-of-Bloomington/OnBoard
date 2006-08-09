@@ -19,7 +19,7 @@
 		<table>
 		<tr><th></th><th>Name</th><th>Board/Commission</th><th>Date &amp; Time Created</th></tr>
 		<?php
-			$count;
+			$count = 0;
 		
 			# Find all the applications and sort by timestamp
 			$applicationList = new ApplicationList();

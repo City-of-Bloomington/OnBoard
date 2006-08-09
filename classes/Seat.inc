@@ -130,7 +130,7 @@
 		public function getId() { return $this->id; }
 		public function getCommitteeId() { return $this->committee_id; }
 		public function getAppointmentId() { return $this->appointment_id; }
-		public function getTitle() { return $this->title; }
+		public function getTitle() { return $this->title;}
 		public function getVacancy() { return $this->vacancy; }
 		public function getCommittee() 
 		{

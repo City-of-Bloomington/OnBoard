@@ -66,7 +66,7 @@
 					<?php
 						$seatList = new SeatList(array("committee_id"=>$committee->getId()));
 						if (count($seatList) == 0) { echo "<option>No Seats</option>";}
-						else { foreach($seatList as $seat) {  echo "<option>{$seat->getTitle()}</option>";}}
+						else { foreach($seatList as $seat) {  echo "<option value=\"{$seat->getId()}\">{$seat->getTitle()}</option>";}}
 					?>				
 				</select>
 				</td>

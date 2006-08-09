@@ -44,7 +44,7 @@
 	?>
 	
 	<h2>Board and Commission Application | Upload Resume</h2>
-	<p>Your application was submitted successfully but there was a problem with your upload.</p>
+	<p>Your application was submitted successfully but there was a problem with your upload.<br />  You may resubmit your resume or press the cancel button and email it to <a href="mailto:asdfa@asd.com">asdfa@asdfa.com</a>.<br />  Thank you.</p>
 		<form enctype="multipart/form-data" method="post" action="application.php?id=<?php echo $_GET['id']; ?>">
    			<h4><?php echo $error; ?></h4>
   	  		<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
@@ -54,7 +54,7 @@
     			<tr><td></td><td>*Note* your resume must be in either a Word Document or PDF file format to upload correctly.</td></tr>
 				</table>
 				<button type="submit" class="submit">Upload Resume</button>
-				<button type="button" class="cancel" onclick="document.location.href='<?php BASE_URL;?>';">Cancel</button>
+				<button type="button" class="cancel" onclick="document.location.href='submitted.php';">Cancel</button>
 				</fieldset>	
 		</form>
 </div>

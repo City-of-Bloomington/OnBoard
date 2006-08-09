@@ -62,7 +62,7 @@
 					{ 
 						$user = $seat->getUser()->getLastname() . ", " . $seat->getUser()->getFirstname(); 
 						$term = $seat->getTermEnd();
-						$href = "viewProfile.php?id={$seat->getUser()->getId()}";
+						$href = "viewProfile.php?id={$seat->getUser()->getId()}"; 
 					}
 					# If a seat is vacant a link to the application form is given if the user is not logged in.
 					# If user is logged in any application associated with this committee will be displayed.

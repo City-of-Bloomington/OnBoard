@@ -17,7 +17,7 @@
 			
 			# Find all the applications and sort by vacancy
 			$seatList = new SeatList();
-			$seatList->find(null, "vacancy");
+			$seatList->find(null, "committee_id");
 			foreach($seatList as $seat)
 			{
 				# Display all seats

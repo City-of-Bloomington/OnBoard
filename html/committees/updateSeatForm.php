@@ -61,7 +61,12 @@
 				<?php
 					$restrictions = new RestrictionList();
 					$restrictions->find();
-					foreach($restrictions as $restriction) { echo "<option>$restriction</option>"; }
+					foreach($restrictions as $restriction) 
+					{ 
+						if (in_array($restriction, $seat->getRestrictions())) { $selected = "selected=\"selected\""; }
+						else { $selected = ""; }
+						echo "<option $selected>$restriction</option>"; 
+					}
 				?>
 				</select>
 			</td>

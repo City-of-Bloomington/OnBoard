@@ -5,7 +5,7 @@
 
 */
 
-verifyUser("Administrator");
+verifyUser("Administrator", "Committee Member");
 
 	if (isset($_GET['id'])) 
 	{

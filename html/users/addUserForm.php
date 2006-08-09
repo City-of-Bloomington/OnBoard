@@ -54,9 +54,9 @@
 			<tr><td><label for="email">Email</label></td>
 			<td><input name="email" id="email" /></td></tr>
 			
-			<tr><td><label for="photo">Photo URL</label></td>
+			<tr><td><label for="photo">Photo URL*</label></td>
 			<td><input name="photo" id="photo" /></td></tr>
-			<tr><td>*Not a required field.</td></tr>
+			<tr><td>*Optional field.</td></tr>
 		</table>
 			<button type="submit" class="submit">Submit</button>
 			<button type="button" class="cancel" onclick="document.location.href='home.php';">Cancel</button>
