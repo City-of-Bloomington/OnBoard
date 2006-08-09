@@ -11,11 +11,11 @@
 	
 		# Necessary to route user to correct forms after deleting a restriction
 		if ($_GET['page'] == "add") { $cancel = BASE_URL."/committees/addSeatForm.php?id=".$_GET['id'];}
-		else {$cancel = BASE_URL."/committees/updateSeatForm.php?seat={$_GET['page']}&id=".$_GET['id'];}
+		else {$cancel = BASE_URL."/committees/updateSeatForm.php?seat={$_GET['page']}&amp;id=".$_GET['id'];}
 	?>
 
 	<h1>New Restriction</h1>
-	<form method="post" action="addRestriction.php?page=<?php echo $_GET['page']."&id=".$_GET['id']; ?>">
+	<form method="post" action="addRestriction.php?page=<?php echo $_GET['page']."&amp;id=".$_GET['id']; ?>">
 		
 	<fieldset><legend>Restriction Info</legend>
 		<table>

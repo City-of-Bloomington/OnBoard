@@ -81,7 +81,7 @@
 							# If there there is a year or more difference the message below will display
 							if ($application->timestampCheck($application->getTimestamp())) 
 							{ 
-								echo "<h5><b>{$application->getFirstname()} {$application->getLastname()}'s application has been on file for over a year.
+								echo "<h5>{$application->getFirstname()} {$application->getLastname()}'s application has been on file for over a year.
 											<br />Click <a href='mailto:{$application->getEmail()}'>here</a> to email applicant.</h5>";
 							}?></td>
 				</tr>

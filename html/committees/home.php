@@ -21,7 +21,7 @@
 			foreach($seatList as $seat)
 			{
 				# Display all seats
-				echo "
+				echo "<tr>
 					<td><a href=\"updateCommitteeForm.php?id={$seat->getCommittee()->getId()}\">{$seat->getTitle()}</a></td>
 					<td>{$seat->getCommittee()->getName()}</td>
 					<td>{$seat->getAppointment()->getName()}</td>";

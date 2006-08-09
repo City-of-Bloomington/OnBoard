@@ -55,8 +55,8 @@
 		<td><input name="t_end" id="t_end" value="<?php echo $seat->getTermEnd(); ?>" /></td></tr>
 		
 		<tr><td><label for="restrictions">Restrictions</label>
-			<button type="button" class="addSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/addRestrictionForm.php?page={$page}&id={$seat->getId()}"; ?>'">Add</button>
-			<button type="button" class="deleteSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/deleteRestrictionForm.php?page={$page}&id={$seat->getId()}"; ?>'">Delete</button></td>
+			<button type="button" class="addSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/addRestrictionForm.php?page={$page}&amp;id={$seat->getId()}"; ?>'">Add</button>
+			<button type="button" class="deleteSmall" onclick="document.location.href='<?php echo BASE_URL."/restrictions/deleteRestrictionForm.php?page={$page}&amp;id={$seat->getId()}"; ?>'">Delete</button></td>
 			<td><select name="restrictions[]" id="restrictions" size="5" multiple="multiple">
 				<?php
 					$restrictions = new RestrictionList();

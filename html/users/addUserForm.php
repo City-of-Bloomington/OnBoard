@@ -39,8 +39,9 @@
 		</table>
 	</fieldset>
 	<fieldset>
+		<p>This information is only necessary for local users.  
+			For LDAP authentication, this information will be pulled from LDAP.</p>
 		<table>
-			<p>This information is only necessary for local users.  For LDAP authentication, this information will be pulled from LDAP.</p>
 				
 			<tr><td><label for="firstname">First Name</label></td>
 			<td><input name="firstname" id="firstname" /></td></tr>
