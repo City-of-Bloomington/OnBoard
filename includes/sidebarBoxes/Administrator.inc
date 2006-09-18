@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div>
 	<div class="titleBar">Admin</div>
 	<ul>
 		<li><a href="<?php echo BASE_URL; ?>/applications">Applications</a></li>

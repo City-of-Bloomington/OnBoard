@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div>
 	<div class="titleBar">Profile</div>
 	<ul>
 		<?php if (isset($_SESSION['USER'])) { $id = $_SESSION['USER']->getId(); } ?>
