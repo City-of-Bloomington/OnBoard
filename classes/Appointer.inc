@@ -88,6 +88,20 @@ class Appointer extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
+	public function delete()
+	{
+		if ($this->id)
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('update seats set appointer_id=null where appointer_id=?');
+			$query->execute(array($this->id));
+
+			$query = $PDO->prepare('delete from appointers where id=?');
+			$query->execute(array($this->id));
+		}
+	}
+
 	#----------------------------------------------------------------
 	# Generic Getters
 	#----------------------------------------------------------------

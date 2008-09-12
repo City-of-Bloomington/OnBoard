@@ -44,7 +44,7 @@ class Seat extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->title) { throw new Exception('seats/missingTitle'); }
+		if (!$this->committee_id) { throw new Exception('seats/missingCommittee'); }
 	}
 
 	/**
@@ -123,7 +123,7 @@ class Seat extends ActiveRecord
 			if (!$this->appointer) { $this->appointer = new Appointer($this->appointer_id); }
 			return $this->appointer;
 		}
-		else return null;
+		else return 'Elected';
 	}
 
 	#----------------------------------------------------------------
@@ -137,9 +137,16 @@ class Seat extends ActiveRecord
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
 	public function setAppointer($appointer) { $this->appointer_id = $appointer->getId(); $this->appointer = $appointer; }
 
-
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	/**
+	 * Returns the current member for this seat
+	 * @return Member
+	 */
+	public function getMember()
+	{
+		return null;
+	}
 }

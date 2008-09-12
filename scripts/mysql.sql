@@ -45,10 +45,10 @@ create table appointers (
 
 create table seats (
 	id int unsigned not null primary key auto_increment,
-	title varchar(128) not null,
+	title varchar(128),
 	requirements varchar(255),
 	committee_id int unsigned not null,
-	appointer_id int unsigned not null,
+	appointer_id int unsigned,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;
@@ -57,8 +57,8 @@ create table members (
 	id int unsigned not null primary key auto_increment,
 	seat_id int unsigned not null,
 	user_id int unsigned not null,
-	term_start varchar(30),
-	term_end varchar(30),
+	term_start date,
+	term_end date,
 	foreign key (seat_id) references seats(id),
 	foreign key (user_id) references users(id)
 ) engine=InnoDB;

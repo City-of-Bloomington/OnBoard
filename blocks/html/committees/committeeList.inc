@@ -9,7 +9,8 @@
 		<?php
 			if (userHasRole('Administrator'))
 			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/committees/addCommittee.php\">Add</a>";
+				$url = new URL(BASE_URL.'/committees/addCommittee.php');
+				echo "<a class=\"add button\" href=\"$url\">Add</a>";
 			}
 		?>
 		Committees
@@ -18,7 +19,6 @@
 	<tr><th></th>
 		<th>Name</th>
 		<th>Seats</th>
-		<th>Vacancy?</th>
 	</tr>
 	<?php
 		foreach($this->committeeList as $committee)
@@ -28,13 +28,17 @@
 			$editButton = '';
 			if (userHasRole('Administrator'))
 			{
-				$editButton = "<a class=\"edit button\" href=\"".BASE_URL."/committees/updateCommittee.php?committee_id={$committee->getId()}\">Edit</a>";
+				$url = new URL(BASE_URL.'/committees/updateCommittee.php');
+				$url->committee_id = $committee->getId();
+				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 			}
+
+			$url = new URL(BASE_URL.'/committees/viewCommittee.php');
+			$url->committee_id = $committee->getId();
 			echo "
 			<tr><td>$editButton</td>
-				<td>$name</td>
+				<td><a href=\"$url\">$name</a></td>
 				<td>$seats</td>
-				<td></td>
 			</tr>
 			";
 		}

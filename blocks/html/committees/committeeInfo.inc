@@ -9,7 +9,9 @@ $name = View::escape($this->committee->getName());
 $addSeatButton = '';
 if (userHasRole('Administrator'))
 {
-	$addSeatButton = "<a class=\"add button\" href=\"".BASE_URL."/committees/addSeat.php?committee_id={$this->committee->getId()}\">Add</a>";
+	$url = new URL(BASE_URL.'/seats/addSeat.php');
+	$url->committee_id = $this->committee->getId();
+	$addSeatButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }
 echo "
 <h1>$name</h1>
@@ -20,18 +22,38 @@ if (count($this->committee->getSeats()))
 {
 	echo "
 	<table>
-	<tr><td>Title</td>
+	<tr><td></td>
 		<td>Member</td>
+		<td>Title</td>
 		<td>Appointed By</td>
 		<td>Requirements</td>
 	</tr>
 	";
 	foreach($this->committee->getSeats() as $seat)
 	{
+		$editButton = '';
+		if (userHasRole('Administrator'))
+		{
+			$url = new URL(BASE_URL.'/seats/updateSeat.php');
+			$url->seat_id = $seat->getId();
+			$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+		}
+
 		$title = View::escape($seat->getTitle());
-		$appointment = View::escape($seat->getAppointer());
+		$appointer = View::escape($seat->getAppointer());
 		$requirements = View::escape($seat->getRequirements());
+		$member = $seat->getMember() ? View::escape($seat->getMember()->getFullName()) : 'Vacant';
 		echo "
+		<tr><td>$editButton</td>
+			<td>$member</td>
+			<td>$title</td>
+			<td>$appointer</td>
+			<td>$requirements</td>
+		</tr>
 		";
 	}
+	echo "</table>";
 }
+echo "
+</div>
+";
