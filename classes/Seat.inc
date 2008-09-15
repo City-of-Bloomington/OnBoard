@@ -45,6 +45,7 @@ class Seat extends ActiveRecord
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->committee_id) { throw new Exception('seats/missingCommittee'); }
+		if (!$this->title) { throw new Exception('seats/missingTitle'); }
 	}
 
 	/**
@@ -57,7 +58,7 @@ class Seat extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['title'] = $this->title ? $this->title : null;
+		$fields['title'] = $this->title;
 		$fields['requirements'] = $this->requirements ? $this->requirements : null;
 		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
 		$fields['appointer_id'] = $this->appointer_id ? $this->appointer_id : null;
@@ -141,6 +142,8 @@ class Seat extends ActiveRecord
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	public function getMembers() { return new MemberList(array('seat_id'=>$this->id)); }
+
 	/**
 	 * Returns the current member for this seat
 	 * @return Member
@@ -149,4 +152,5 @@ class Seat extends ActiveRecord
 	{
 		return null;
 	}
+
 }

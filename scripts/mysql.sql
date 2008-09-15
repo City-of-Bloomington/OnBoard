@@ -2,7 +2,7 @@
 -- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
 create table users (
 	id int unsigned not null primary key auto_increment,
-	username varchar(30) not null unique,
+	username varchar(30) unique,
 	password varchar(32),
 	authenticationMethod varchar(20) not null default 'LDAP',
 	firstname varchar(128),
@@ -45,7 +45,7 @@ create table appointers (
 
 create table seats (
 	id int unsigned not null primary key auto_increment,
-	title varchar(128),
+	title varchar(128) not null,
 	requirements varchar(255),
 	committee_id int unsigned not null,
 	appointer_id int unsigned,

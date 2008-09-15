@@ -11,6 +11,13 @@
 	<input name="seat_id" type="hidden" value="<?php echo $this->seat->getId(); ?>" />
 	<table>
 
+	<tr><td><label for="seat-title" class="required">Title</label></td>
+		<td><input name="seat[title]"
+					id="seat-title"
+					value="<?php echo View::escape($this->seat->getTitle()); ?>" />
+		</td>
+	</tr>
+
 	<tr><td><label for="seat-appointer_id">Appointed By</label></td>
 		<td><select name="seat[appointer_id]" id="seat-appointer_id">
 				<option value="">Elected</option>
@@ -25,13 +32,6 @@
 					}
 				?>
 			</select>
-		</td>
-	</tr>
-
-	<tr><td><label for="seat-title">Title</label></td>
-		<td><input name="seat[title]"
-					id="seat-title"
-					value="<?php echo View::escape($this->seat->getTitle()); ?>" />
 		</td>
 	</tr>
 

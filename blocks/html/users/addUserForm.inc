@@ -14,8 +14,11 @@ foreach($fields as $field)
 }
 ?>
 <h1>New User</h1>
+<p>If you are adding an LDAP-authenticated user, only the top portion of the form is necessary.
+Their personal information will be populated automatically from LDAP.</p>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 <fieldset><legend>Login Info</legend>
+	<p>You only need to fill in this information, if you want the person to be able to log in.</p>
 	<table>
 	<tr><td><label for="user-authenticationMethod">Authentication</label></td>
 		<td><select name="user[authenticationMethod]" id="user-authenticationMethod">
@@ -49,8 +52,6 @@ foreach($fields as $field)
 
 </fieldset>
 <fieldset><legend>Personal Info</legend>
-	<p>This information is only necessary for local users.
-		For LDAP authentication, this information will be pulled from LDAP.</p>
 	<table>
 	<tr><td><label for="user-firstname">Firstname</label></td>
 		<td><input name="user[firstname]" id="user-firstname" value="<?php echo $firstname; ?>" /></td></tr>

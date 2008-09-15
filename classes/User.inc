@@ -52,10 +52,10 @@ class User extends SystemUser
 	public function save()
 	{
 		# Check for required fields before saving
-		if (!$this->username || !$this->firstname || !$this->lastname) { throw new Exception("missingRequiredFields"); }
+		if (!$this->firstname || !$this->lastname) { throw new Exception("missingRequiredFields"); }
 
 		$fields = array();
-		$fields['username'] = $this->username;
+		$fields['username'] = $this->username ? $this->username : null;
 		# Passwords should not be updated by default.  Use the savePassword() function
 		$fields['authenticationMethod'] = $this->authenticationMethod ? $this->authenticationMethod : null;
 		$fields['firstname'] = $this->firstname ? $this->firstname : null;

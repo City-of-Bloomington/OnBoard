@@ -9,4 +9,10 @@ $committee = new Committee($_GET['committee_id']);
 
 $template = new Template();
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
+
+$seatList = new Block('seats/seatList.inc');
+$seatList->seatList = $committee->getSeats();
+$seatList->committee = $committee;
+$template->blocks[] = $seatList;
+
 echo $template->render();
