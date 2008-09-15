@@ -10,6 +10,7 @@ class Topic extends ActiveRecord
 	private $number;
 	private $description;
 	private $synopsis;
+	private $type;
 	private $committee_id;
 
 
@@ -62,6 +63,7 @@ class Topic extends ActiveRecord
 		$fields = array();
 		$fields['date'] = $this->date ? $this->date : null;
 		$fields['number'] = $this->number ? $this->number : null;
+		$fields['type'] = $this->type ? $this->type : null;
 		$fields['description'] = $this->description ? $this->description : null;
 		$fields['synopsis'] = $this->synopsis ? $this->synopsis : null;
 		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
@@ -116,6 +118,7 @@ class Topic extends ActiveRecord
 		else return $this->date;
 	}
 	public function getNumber() { return $this->number; }
+	public function getType() { return $this->type; }
 	public function getDescription() { return $this->description; }
 	public function getSynopsis() { return $this->synopsis; }
 	public function getCommittee_id() { return $this->committee_id; }
@@ -143,11 +146,12 @@ class Topic extends ActiveRecord
 	public function setNumber($string) { $this->number = trim($string); }
 	public function setDescription($text) { $this->description = $text; }
 	public function setSynopsis($text) { $this->synopsis = $text; }
+	public function setType($text) { $this->type = $text; }
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
 	public function __toString(){
-		return $this->number.' '.$this->description;
+		return $this->type.' '.$this->number.' '.$this->description;
 	}
 	#----------------------------------------------------------------
 	# Custom Functions
