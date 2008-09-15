@@ -8,8 +8,9 @@
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 <fieldset><legend>Topic Info</legend>
 	<table>
-
-	<tr><td><label for="topic-date-mon">date</label></td>
+	<tr><td><label>Committee</label></td>{$this->committee}</td></tr>
+	
+	<tr><td><label for="topic-date-mon">Date</label></td>
 		<td><select name="topic[date][mon]" id="topic-date-mon"><option></option>
 			<?php
 				$now = getdate();
@@ -32,18 +33,18 @@
 			<input name="topic[date][year]" id="topic-date-year" size="4" maxlength="4" value="<?php echo $now['year']; ?>" />
 		</td>
 	</tr>
-	<tr><td><label for="topic-number">number</label></td>
+	<tr><td><label for="topic-number">Number</label></td>
 		<td><input name="topic[number]" id="topic-number" /></td></tr>
-	<tr><td><label for="topic-description">description</label></td>
+	<tr><td><label for="topic-description">Description</label></td>
 		<td><textarea name="topic[description]" id="topic-description" rows="3" cols="60"></textarea></td></tr>
-	<tr><td><label for="topic-synopsis">synopsis</label></td>
+	<tr><td><label for="topic-synopsis">Dynopsis</label></td>
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"></textarea></td></tr>
 		
 	<tr><td><label for="topic-committee_id">committee_id</label></td>
 		<td><input name="topic[committee_id]" id="topic-committee_id" /></td></tr>
 		
 	</table>
-
+		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="{$this->committee->getId()}" />
 	<button type="submit" class="submit">Submit</button>
 	<a class="cancel button" href="<?php echo BASE_URL; ?>/topics">Cancel</a>
 </fieldset>
