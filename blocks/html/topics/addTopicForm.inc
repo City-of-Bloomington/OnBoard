@@ -8,7 +8,7 @@
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 <fieldset><legend>Topic Info</legend>
 	<table>
-	<tr><td><label>Committee</label></td>{$this->committee}</td></tr>
+	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
 	
 	<tr><td><label for="topic-date-mon">Date</label></td>
 		<td><select name="topic[date][mon]" id="topic-date-mon"><option></option>
@@ -39,10 +39,7 @@
 		<td><textarea name="topic[description]" id="topic-description" rows="3" cols="60"></textarea></td></tr>
 	<tr><td><label for="topic-synopsis">Dynopsis</label></td>
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"></textarea></td></tr>
-		
-	<tr><td><label for="topic-committee_id">committee_id</label></td>
-		<td><input name="topic[committee_id]" id="topic-committee_id" /></td></tr>
-		
+				
 	</table>
 		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="{$this->committee->getId()}" />
 	<button type="submit" class="submit">Submit</button>
