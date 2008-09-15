@@ -9,7 +9,12 @@
 <fieldset><legend>Topic Info</legend>
 	<table>
 	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
-	
+	<tr><td><label for="topic-type">Type</label></td>
+		<td><select name="topic[type]" id="topic-type"><option></option>
+			<option>Ordinance</option>
+			<option>Resolution</option>
+			<option>App. Ordinance</option>
+		</select></td></tr>
 	<tr><td><label for="topic-date-mon">Date</label></td>
 		<td><select name="topic[date][mon]" id="topic-date-mon"><option></option>
 			<?php
