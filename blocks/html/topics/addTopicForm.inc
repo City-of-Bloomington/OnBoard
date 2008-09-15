@@ -41,8 +41,8 @@
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"></textarea></td></tr>
 				
 	</table>
-		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="{$this->committee->getId()}" />
-		<input type="hidden" name="committee_id" id="committee_id" value="{$this->committee->getId()}" />
+		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="<?php echo $this->committee->getId(); ?>" />
+		<input type="hidden" name="committee_id" id="committee_id" value="<?php echo $this->committee->getId(); ?>" />
 	<button type="submit" class="submit">Submit</button>
 	<a class="cancel button" href="<?php echo BASE_URL; ?>/topics">Cancel</a>
 </fieldset>

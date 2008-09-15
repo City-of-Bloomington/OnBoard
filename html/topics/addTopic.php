@@ -8,7 +8,7 @@ $committee = new Committee($_REQUEST['committee_id']);
 if (isset($_POST['topic']))
 {
 	$topic = new Topic();
-	$topic->setCommitte($committee);
+	$topic->setCommittee($committee);
 	foreach($_POST['topic'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);

@@ -146,8 +146,9 @@ class Topic extends ActiveRecord
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
-
-
+	public function __toString(){
+		return $this->number.' '.$this->description;
+	}
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
