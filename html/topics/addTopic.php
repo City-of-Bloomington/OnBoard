@@ -25,5 +25,5 @@ if (isset($_POST['topic']))
 }
 
 $template = new Template();
-$template->blocks[] = new Block('topics/addTopicForm.inc',array('committee'=$committee));
+$template->blocks[] = new Block('topics/addTopicForm.inc',array('committee'=>$committee));
 echo $template->render();
