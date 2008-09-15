@@ -3,10 +3,17 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-class Committee extends ActiveRecord
+class Vote extends ActiveRecord
 {
 	private $id;
-	private $name;
+	private $date;
+	private $type;
+	private $topic_id;
+
+
+	private $topic;
+
+
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -17,11 +24,11 @@ class Committee extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from committees where id=?');
+			$query = $PDO->prepare('select * from votes where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('committees/unknownCommittee'); }
+			if (!count($result)) { throw new Exception('votes/unknownVote'); }
 			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
@@ -30,7 +37,7 @@ class Committee extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-
+	
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -38,7 +45,7 @@ class Committee extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->name) { throw new Exception('missingName'); }
+
 	}
 
 	/**
@@ -51,7 +58,9 @@ class Committee extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['name'] = $this->name;
+		$fields['date'] = $this->date ? $this->date : null;
+		$fields['type'] = $this->type ? $this->type : null;
+		$fields['topic_id'] = $this->topic_id ? $this->topic_id : null;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -73,7 +82,7 @@ class Committee extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "update committees set $preparedFields where id={$this->id}";
+		$sql = "update votes set $preparedFields where id={$this->id}";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 	}
@@ -82,7 +91,7 @@ class Committee extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "insert committees set $preparedFields";
+		$sql = "insert votes set $preparedFields";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
@@ -92,28 +101,47 @@ class Committee extends ActiveRecord
 	# Generic Getters
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
-	public function getName() { return $this->name; }
 
+	public function getDate($format=null)
+	{
+		if ($format && $this->date)
+		{
+			if (strpos($format,'%')!==false) { return strftime($format,$this->date); }
+			else { return date($format,$this->date); }
+		}
+		else return $this->date;
+	}
+	public function getType() { return $this->type; }
+	public function getTopic_id() { return $this->topic_id; }
+
+	public function getTopic()
+	{
+		if ($this->topic_id)
+		{
+			if (!$this->topic) { $this->topic = new Topic($this->topic_id); }
+			return $this->topic;
+		}
+		else return null;
+	}
+		
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
-	public function setName($string) { $this->name = trim($string); }
+
+	public function setDate($date)
+	{
+		if (is_array($date)) { $this->date = $this->dateArrayToTimestamp($date); }
+		elseif(ctype_digit($date)) { $this->date = $date; }
+		else { $this->date = strtotime($date); }
+	}
+	public function setType($string) { $this->type = trim($string); }
+	public function setTopic_id($int) { $this->topic = new Topic($int); $this->topic_id = $int; }
+
+	public function setTopic($topic) { $this->topic_id = $topic->getId(); $this->topic = $topic; }
 
 
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
-	public function getSeats()
-	{
-		return new SeatList(array('committee_id'=>$this->id));
-	}
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
-	public function getTopics()
-	{
-		return new TopicList(array('committee_id'=>$this->id));
-	}
 }

@@ -3,10 +3,16 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-class Committee extends ActiveRecord
+class VotingRecord extends ActiveRecord
 {
 	private $id;
-	private $name;
+	private $member_id;
+	private $vote;
+
+
+	private $member;
+
+
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -17,11 +23,11 @@ class Committee extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from committees where id=?');
+			$query = $PDO->prepare('select * from votingRecords where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('committees/unknownCommittee'); }
+			if (!count($result)) { throw new Exception('votingRecords/unknownVotingRecord'); }
 			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
@@ -30,7 +36,7 @@ class Committee extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-
+	
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -38,7 +44,7 @@ class Committee extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->name) { throw new Exception('missingName'); }
+
 	}
 
 	/**
@@ -51,7 +57,8 @@ class Committee extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['name'] = $this->name;
+		$fields['member_id'] = $this->member_id ? $this->member_id : null;
+		$fields['vote'] = $this->vote ? $this->vote : null;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -73,7 +80,7 @@ class Committee extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "update committees set $preparedFields where id={$this->id}";
+		$sql = "update votingRecords set $preparedFields where id={$this->id}";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 	}
@@ -82,7 +89,7 @@ class Committee extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "insert committees set $preparedFields";
+		$sql = "insert votingRecords set $preparedFields";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
@@ -92,28 +99,30 @@ class Committee extends ActiveRecord
 	# Generic Getters
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
-	public function getName() { return $this->name; }
+	public function getMember_id() { return $this->member_id; }
+	public function getVote() { return $this->vote; }
 
+	public function getMember()
+	{
+		if ($this->member_id)
+		{
+			if (!$this->member) { $this->member = new Member($this->member_id); }
+			return $this->member;
+		}
+		else return null;
+	}
+		
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
-	public function setName($string) { $this->name = trim($string); }
+	public function setMember_id($int) { $this->member = new Member($int); $this->member_id = $int; }
+	public function setVote($string) { $this->vote = trim($string); }
+
+	public function setMember($member) { $this->member_id = $member->getId(); $this->member = $member; }
 
 
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
-	public function getSeats()
-	{
-		return new SeatList(array('committee_id'=>$this->id));
-	}
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
-	public function getTopics()
-	{
-		return new TopicList(array('committee_id'=>$this->id));
-	}
 }

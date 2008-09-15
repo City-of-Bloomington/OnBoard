@@ -15,4 +15,8 @@ $seatList->seatList = $committee->getSeats();
 $seatList->committee = $committee;
 $template->blocks[] = $seatList;
 
+$topicList = new Block('topics/topicList.inc');
+$topicList->topicList = $committee->getTopics();
+$topicList->committee = $committee;
+$template->blocks[] = $topicList;
 echo $template->render();
