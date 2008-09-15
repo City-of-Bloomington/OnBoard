@@ -42,8 +42,7 @@
 	<tr><td><label for="topic-synopsis">synopsis</label></td>
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"><?php echo $this->topic->getSynopsis(); ?></textarea></td></tr>
 		
-	<tr><td><label for="topic-committee_id">committee_id</label></td>
-		<td><input name="topic[committee_id]" id="topic-committee_id" value="<?php echo $this->topic->getCommittee_id(); ?>" /></td></tr>
+		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="<?php echo $this->topic->getCommittee_id(); ?>" />
 		
 	</table>
 
