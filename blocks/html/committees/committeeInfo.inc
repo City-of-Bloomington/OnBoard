@@ -7,5 +7,5 @@
  */
 $name = View::escape($this->committee->getName());
 echo "
-<h1>$name</h1>
+<h1><a href=\"{$this->committee->getURL()}\">$name</a></h1>
 ";

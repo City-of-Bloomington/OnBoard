@@ -112,8 +112,19 @@ class Committee extends ActiveRecord
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	/**
+	 * @return TopicList
+	 */
 	public function getTopics()
 	{
 		return new TopicList(array('committee_id'=>$this->id));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getURL()
+	{
+		return BASE_URL.'/committees/viewCommittee.php?committee_id='.$this->id;
 	}
 }
