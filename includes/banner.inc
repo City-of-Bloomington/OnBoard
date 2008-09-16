@@ -13,6 +13,7 @@
 	<!-- Load the YUI toolkit -->
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/utilities/utilities.js"></script>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/calendar/calendar-min.js"></script>
 	<style type="text/css" media="screen">@import url('<?php echo BASE_URL; ?>/js/yui/build/assets/skins/sam/skin.css');</style>
 	<style type="text/css" media="screen">@import url('<?php echo BASE_URL; ?>/js/yui/build/calendar/assets/skins/sam/calendar.css');</style>
 
