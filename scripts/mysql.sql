@@ -70,6 +70,7 @@ create table topics (
 	description text not null,
 	synopsis text not null,
 	committee_id int unsigned not null,
+	type enum('Ordinance','Resolution','App. Ordinance'),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;
 

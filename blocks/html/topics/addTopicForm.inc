@@ -5,7 +5,7 @@
  */
 ?>
 <h1>Add Legislation</h1>
-<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
+<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
 <fieldset><legend>Legislation Info</legend>
 	<table>
 	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
@@ -15,27 +15,8 @@
 			<option>Resolution</option>
 			<option>App. Ordinance</option>
 		</select></td></tr>
-	<tr><td><label for="topic-date-mon">Date</label></td>
-		<td><select name="topic[date][mon]" id="topic-date-mon"><option></option>
-			<?php
-				$now = getdate();
-				for($i=1; $i<=12; $i++)
-				{
-					if ($i!=$now['mon']) { echo "<option>$i</option>"; }
-					else { echo "<option selected=\"selected\">$i</option>"; }
-				}
-			?>
-			</select>
-			<select name="topic[date][mday]"><option></option>
-			<?php
-				for($i=1; $i<=31; $i++)
-				{
-					if ($i!=$now['mday']) { echo "<option>$i</option>"; }
-					else { echo "<option selected=\"selected\">$i</option>"; }
-				}
-			?>
-			</select>
-			<input name="topic[date][year]" id="topic-date-year" size="4" maxlength="4" value="<?php echo $now['year']; ?>" />
+	<tr><td><label for="topic-date">Date</label></td>
+		<td><input name="topic[date]" id="topic-date" onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" />
 		</td>
 	</tr>
 	<tr><td><label for="topic-number">Number</label></td>

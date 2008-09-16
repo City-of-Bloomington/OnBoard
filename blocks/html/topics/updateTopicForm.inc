@@ -6,7 +6,7 @@
 $options = array('','Ordinance','Resolution','App. Ordinance');
 ?>
 <h1>Update Legislation</h1>
-<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
+<form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
 <fieldset><legend>Legislation Info</legend>
 	<input name="id" type="hidden" value="<?php echo $this->topic->getId(); ?>" />
 	<table>
@@ -24,29 +24,11 @@ $options = array('','Ordinance','Resolution','App. Ordinance');
 	?>
 	</select></td></tr>
 
-	<tr><td><label for="topic-date-mon">date</label></td>
-		<td><select name="topic[date][mon]" id="topic-date-mon"><option></option>
-			<?php
-				$date = $this->topic->dateStringToArray($this->topic->getDate());
-				for($i=1; $i<=12; $i++)
-				{
-					if ($i!=$date['mon']) { echo "<option>$i</option>"; }
-					else { echo "<option selected=\"selected\">$i</option>"; }
-				}
-			?>
-			</select>
-			<select name="topic[date][mday]"><option></option>
-			<?php
-				for($i=1; $i<=31; $i++)
-				{
-					if ($i!=$date['mday']) { echo "<option>$i</option>"; }
-					else { echo "<option selected=\"selected\">$i</option>"; }
-				}
-			?>
-			</select>
-			<input name="topic[date][year]" id="topic-date-year" size="4" maxlength="4" value="<?php echo $date['year']; ?>" />
+	<tr><td><label for="topic-date">Date</label></td>
+		<td><input name="topic[date]" id="topic-date" value="<?php echo $this->topic->getDate('n/j/Y'); ?>"  onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" />
 		</td>
 	</tr>
+
 	<tr><td><label for="topic-number">Number</label></td>
 		<td><input name="topic[number]" id="topic-number" value="<?php echo $this->topic->getNumber(); ?>" /></td></tr>
 		
