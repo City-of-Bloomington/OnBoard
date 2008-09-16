@@ -48,7 +48,7 @@ create table seats (
 	title varchar(128) not null,
 	requirements varchar(255),
 	committee_id int unsigned not null,
-	appointer_id int unsigned,
+	appointer_id int unsigned not null,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;
@@ -63,14 +63,20 @@ create table members (
 	foreign key (user_id) references users(id)
 ) engine=InnoDB;
 
+create table topicTypes (
+	id int unsigned not null primary key auto_increment,
+	name varchar(128) not null
+) engine=InnoDB;
+
 create table topics (
 	id int unsigned not null primary key auto_increment,
+	topicType_id int unsigned not null,
 	date date not null,
 	number varchar(15) not null,
 	description text not null,
 	synopsis text not null,
 	committee_id int unsigned not null,
-	type enum('Ordinance','Resolution','App. Ordinance'),
+	foreign key (topicType_id) references topicTypes(id),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;
 
