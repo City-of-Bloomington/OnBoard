@@ -25,14 +25,22 @@ abstract class View
 	 * There are more bad characters than htmlspecialchars deals with.  We just want
 	 * to add in some other characters to clean.  While here, we might as well
 	 * have it trim out the whitespace too.
-	 * @param string $string
+	 * @param array|string $string
 	 * @param CONSTANT $quotes Optional, the desired constant to use for the htmlspecidalchars call
 	 * @return string
 	 */
-	public static function escape($string,$quotes=ENT_QUOTES)
+	public static function escape($input,$quotes=ENT_QUOTES)
 	{
-		$string = htmlspecialchars(trim($string),$quotes);
-		return $string;
+		if (is_array($input))
+		{
+			foreach($input as $key=>$value)
+			{
+				$input[$key] = self::escape($value,$quotes);
+			}
+		}
+		else { $input = htmlspecialchars(trim($input),$quotes); }
+
+		return $input;
 	}
 
 	/**
