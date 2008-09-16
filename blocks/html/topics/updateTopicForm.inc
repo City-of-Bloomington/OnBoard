@@ -3,7 +3,9 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-$options = array('','Ordinance','Resolution','App. Ordinance');
+
+$options = new TopicTypeList();
+$options->find();
 ?>
 <h1>Update Legislation</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
@@ -11,21 +13,22 @@ $options = array('','Ordinance','Resolution','App. Ordinance');
 	<input name="id" type="hidden" value="<?php echo $this->topic->getId(); ?>" />
 	<table>
 	<tr><td><label for="topic-type">Type</label></td>
-		<td><select name="topic[type]" id="topic-type">
+		<td><select name="topic[topicType_id]" id="topic-type">
+		<option value=''></option>
 	<?php 
-		foreach($options as $option){
-			if($option == $this->topic->getType()){
-				echo "<option selected='selected'>$option</option>";
+		foreach($options as $type){
+			if($type->getId() == $this->topic->getTopicType_id()){
+				echo "<option selected='selected' value=\"{$type->getId()}\">$type</option>";
 			}
 			else{
-				echo "<option>$option</option>";
+				echo "<option value=\"{$type->getId()}\">$type</option>";
 			}
 		}
 	?>
 	</select></td></tr>
 
 	<tr><td><label for="topic-date">Date</label></td>
-		<td><input name="topic[date]" id="topic-date" value="<?php echo $this->topic->getDate('n/j/Y'); ?>"  onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" />
+		<td><input name="topic[date]" id="topic-date" value="<?php echo $this->topic->getDate('n/j/Y'); ?>"  onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" size='10' />
 		</td>
 	</tr>
 

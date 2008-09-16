@@ -3,6 +3,9 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
+$options = new TopicTypeList();
+$options->find();
+
 ?>
 <h1>Add Legislation</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
@@ -10,13 +13,15 @@
 	<table>
 	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
 	<tr><td><label for="topic-type">Type</label></td>
-		<td><select name="topic[type]" id="topic-type"><option></option>
-			<option>Ordinance</option>
-			<option>Resolution</option>
-			<option>App. Ordinance</option>
+		<td><select name="topic[topicType_id]" id="topic-type"><option></option>		
+		<?php 
+			foreach($options as $type){
+			echo "<option value=\"{$type->getId()}\">$type</option>";
+		}
+		?>
 		</select></td></tr>
 	<tr><td><label for="topic-date">Date</label></td>
-		<td><input name="topic[date]" id="topic-date" onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" />
+		<td><input name="topic[date]" id="topic-date" onfocus="FRAMEWORK.popupCalendar(this);" size="10" />
 		</td>
 	</tr>
 	<tr><td><label for="topic-number">Number</label></td>

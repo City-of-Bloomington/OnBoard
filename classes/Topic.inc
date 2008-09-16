@@ -6,17 +6,15 @@
 class Topic extends ActiveRecord
 {
 	private $id;
+	private $topicType_id;
 	private $date;
 	private $number;
 	private $description;
 	private $synopsis;
-	private $type;
 	private $committee_id;
 
-
+	private $topicType;
 	private $committee;
-
-
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -27,7 +25,10 @@ class Topic extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from topics where id=?');
+			$query = $PDO->prepare('select id,topicType_id,
+				unix_timestamp(date) as date,
+				number,description,synopsis,committee_id 
+				 from topics where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -61,9 +62,9 @@ class Topic extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['date'] = $this->date ? $this->date : null;
+		$fields['topicType_id'] = $this->topicType_id ? $this->topicType_id : null;
+		$fields['date'] = $this->date ? date('Y-m-d',$this->date):null;
 		$fields['number'] = $this->number ? $this->number : null;
-		$fields['type'] = $this->type ? $this->type : null;
 		$fields['description'] = $this->description ? $this->description : null;
 		$fields['synopsis'] = $this->synopsis ? $this->synopsis : null;
 		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
@@ -107,6 +108,7 @@ class Topic extends ActiveRecord
 	# Generic Getters
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
+	public function getTopicType_id() { return $this->topicType_id; }
 
 	public function getDate($format=null)
 	{
@@ -118,11 +120,20 @@ class Topic extends ActiveRecord
 		else return $this->date;
 	}
 	public function getNumber() { return $this->number; }
-	public function getType() { return $this->type; }
 	public function getDescription() { return $this->description; }
 	public function getSynopsis() { return $this->synopsis; }
 	public function getCommittee_id() { return $this->committee_id; }
 
+	public function getTopicType()
+	{
+		if ($this->topicType_id)
+		{
+			if (!$this->topicType) { $this->topicType = new TopicType($this->topicType_id); }
+			return $this->topicType;
+		}
+		else return null;
+	}
+		
 	public function getCommittee()
 	{
 		if ($this->committee_id)
@@ -136,25 +147,31 @@ class Topic extends ActiveRecord
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
+	public function setTopicType_id($int) { $this->topicType = new TopicType($int); $this->topicType_id = $int; }
 
 	public function setDate($date)
 	{
 		if (is_array($date)) { $this->date = $this->dateArrayToTimestamp($date); }
 		elseif(ctype_digit($date)) { $this->date = $date; }
-		else { $this->date = strtotime($date); }
+		else { 
+			// here is handled the mm/dd/yyyy case
+			$this->date = strtotime($date); 
+		}
 	}
 	public function setNumber($string) { $this->number = trim($string); }
 	public function setDescription($text) { $this->description = $text; }
 	public function setSynopsis($text) { $this->synopsis = $text; }
-	public function setType($text) { $this->type = $text; }
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 
+	public function setTopicType($topicType) { $this->topicType_id = $topicType->getId(); $this->topicType = $topicType; }
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
-	public function __toString(){
-		return $this->type.' '.$this->number.' '.$this->description;
-	}
+
+
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	public function __toString(){
+		return $this->getTopicType().' '.$this->number.' '.$this->date;
+	}
 }
