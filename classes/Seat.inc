@@ -34,6 +34,7 @@ class Seat extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
+			$this->appointer_id = 1;
 		}
 	}
 
@@ -124,7 +125,6 @@ class Seat extends ActiveRecord
 			if (!$this->appointer) { $this->appointer = new Appointer($this->appointer_id); }
 			return $this->appointer;
 		}
-		else return 'Elected';
 	}
 
 	#----------------------------------------------------------------

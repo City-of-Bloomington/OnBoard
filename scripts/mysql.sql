@@ -42,13 +42,14 @@ create table appointers (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null unique
 ) engine=InnoDB;
+insert appointers values(1,'Elected');
 
 create table seats (
 	id int unsigned not null primary key auto_increment,
 	title varchar(128) not null,
 	requirements varchar(255),
 	committee_id int unsigned not null,
-	appointer_id int unsigned not null,
+	appointer_id int unsigned not null default 1,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;

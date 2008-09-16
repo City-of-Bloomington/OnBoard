@@ -16,14 +16,14 @@
 
 	<tr><td><label for="seat-appointer_id">Appointed By</label></td>
 		<td><select name="seat[appointer_id]" id="seat-appointer_id">
-				<option value="">Elected</option>
 				<?php
 					$list = new AppointerList();
 					$list->find();
 					foreach($list as $appointer)
 					{
 						$name = View::escape($appointer->getName());
-						echo "<option value=\"{$appointer->getId()}\">$name</option>";
+						$selected = $appointer->getId()==1 ? ' selected="selected"' : '';
+						echo "<option value=\"{$appointer->getId()}\"$selected>$name</option>";
 					}
 				?>
 			</select>

@@ -20,7 +20,6 @@
 
 	<tr><td><label for="seat-appointer_id">Appointed By</label></td>
 		<td><select name="seat[appointer_id]" id="seat-appointer_id">
-				<option value="">Elected</option>
 				<?php
 					$list = new AppointerList();
 					$list->find();
