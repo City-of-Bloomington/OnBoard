@@ -29,10 +29,6 @@
 			</select>
 		</td>
 	</tr>
-
-	<tr><td><label for="seat-requirements">Requirements</label></td>
-		<td><input name="seat[requirements]" id="seat-requirements" /></td></tr>
-
 	</table>
 
 	<button type="submit" class="submit">Submit</button>

@@ -7,7 +7,6 @@ class Seat extends ActiveRecord
 {
 	private $id;
 	private $title;
-	private $requirements;
 	private $committee_id;
 	private $appointer_id;
 
@@ -60,7 +59,6 @@ class Seat extends ActiveRecord
 
 		$fields = array();
 		$fields['title'] = $this->title;
-		$fields['requirements'] = $this->requirements ? $this->requirements : null;
 		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
 		$fields['appointer_id'] = $this->appointer_id ? $this->appointer_id : null;
 
@@ -104,7 +102,6 @@ class Seat extends ActiveRecord
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getTitle() { return $this->title; }
-	public function getRequirements() { return $this->requirements; }
 	public function getCommittee_id() { return $this->committee_id; }
 	public function getAppointer_id() { return $this->appointer_id; }
 
@@ -131,7 +128,6 @@ class Seat extends ActiveRecord
 	# Generic Setters
 	#----------------------------------------------------------------
 	public function setTitle($string) { $this->title = trim($string); }
-	public function setRequirements($string) { $this->requirements = trim($string); }
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 	public function setAppointer_id($int) { $this->appointer = new Appointer($int); $this->appointer_id = $int; }
 
@@ -142,6 +138,9 @@ class Seat extends ActiveRecord
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	/**
+	 * @return MemberList
+	 */
 	public function getMembers() { return new MemberList(array('seat_id'=>$this->id)); }
 
 	/**
@@ -153,4 +152,64 @@ class Seat extends ActiveRecord
 		return null;
 	}
 
+	/**
+	 * @return RequirementsList
+	 */
+	public function getRequirements()
+	{
+		return new RequirementList(array('seat_id'=>$this->id));
+	}
+	/**
+	 * @return boolean
+	 */
+	public function hasRequirements()
+	{
+		return count($this->getRequirements()) ? true : false;
+	}
+	/**
+	 * @param Requirement $requirement
+	 * @return boolean
+	 */
+	public function hasRequirement($requirement)
+	{
+		$PDO = Database::getConnection();
+		$query = $PDO->prepare('select requirement_id from seat_requirements where seat_id=? and requirement_id=?');
+		$query->execute(array($this->id,$requirement->getId()));
+		$result = $query->fetchAll();
+		return count($result) ? true : false;
+	}
+	/**
+	 * @param Requirement $requirement
+	 */
+	public function addRequirement($requirement)
+	{
+		if (!$this->hasRequirement($requirement))
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('insert seat_requirements set seat_id=?,requirement_id=?');
+			$query->execute(array($this->id,$requirement->getId()));
+		}
+	}
+	/**
+	 * @param Requirement $requirement
+	 */
+	public function removeRequirement($requirement)
+	{
+		if ($this->id)
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('delete from seat_requirements where seat_id=? and requirement_id=?');
+			$query->execute(array($this->id,$requirement->getId()));
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getURL()
+	{
+		return BASE_URL.'/seats/viewSeat.php?seat_id='.$this->id;
+	}
 }

@@ -22,7 +22,6 @@ if (isset($this->committee) && userHasRole('Administrator'))
 		<td>Member</td>
 		<td>Title</td>
 		<td>Appointed By</td>
-		<td>Requirements</td>
 	</tr>
 	<?php
 		foreach($this->seatList as $seat)
@@ -37,7 +36,6 @@ if (isset($this->committee) && userHasRole('Administrator'))
 
 			$title = View::escape($seat->getTitle());
 			$appointer = View::escape($seat->getAppointer());
-			$requirements = View::escape($seat->getRequirements());
 
 			$member = $seat->getMember() ? View::escape($seat->getMember()->getFullName()) : 'Vacant';
 			$member = "<a href=\"".BASE_URL."/seats/viewSeat.php?seat_id={$seat->getId()}\">$member</a>";
@@ -46,7 +44,6 @@ if (isset($this->committee) && userHasRole('Administrator'))
 				<td>$member</td>
 				<td>$title</td>
 				<td>$appointer</td>
-				<td>$requirements</td>
 			</tr>
 			";
 		}

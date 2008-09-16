@@ -34,13 +34,6 @@
 		</td>
 	</tr>
 
-	<tr><td><label for="seat-requirements">Requirements</label></td>
-		<td><input name="seat[requirements]"
-					id="seat-requirements"
-					value="<?php echo View::escape($this->seat->getRequirements()); ?>" />
-		</td>
-	</tr>
-
 	</table>
 
 	<button type="submit" class="submit">Submit</button>

@@ -7,8 +7,16 @@
  */
 $title = View::escape($this->seat->getTitle());
 $appointer = View::escape($this->seat->getAppointer());
-$requirements = View::escape($this->seat->getRequirements());
 $committee = View::escape($this->seat->getCommittee()->getName());
+
+
+$editRequirementsButton = '';
+if (userHasRole(array('Administrator','Clerk')))
+{
+	$url = new URL(BASE_URL.'/seats/editRequirements.php');
+	$url->seat_id = $this->seat->getId();
+	$editRequirementsButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+}
 echo "
 <div class=\"interfaceBox\">
 	<h1>$title</h1>
@@ -16,11 +24,25 @@ echo "
 	<tr><th>Appointed By</th>
 		<td>$appointer</td>
 	</tr>
-	<tr><th>Requirements</th>
-		<td>$requirements</td>
-	</tr>
 	<tr><th>Committee</th>
 		<td>$committee</td>
+	</tr>
+	<tr><th>$editRequirementsButton
+			Requirements
+		</th>
+		<td>
+";
+			if ($this->seat->hasRequirements())
+			{
+				echo '<ul>';
+				foreach($this->seat->getRequirements() as $requirement)
+				{
+					echo '<li>'.View::escape($requirement).'</li>';
+				}
+				echo '</ul>';
+			}
+echo "
+		</td>
 	</tr>
 	</table>
 </div>

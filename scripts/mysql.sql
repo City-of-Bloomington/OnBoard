@@ -44,14 +44,26 @@ create table appointers (
 ) engine=InnoDB;
 insert appointers values(1,'Elected');
 
+create table requirements (
+	id int unsigned not null primary key auto_increment,
+	text varchar(255) not null
+) engine=InnoDB;
+
 create table seats (
 	id int unsigned not null primary key auto_increment,
 	title varchar(128) not null,
-	requirements varchar(255),
 	committee_id int unsigned not null,
 	appointer_id int unsigned not null default 1,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
+) engine=InnoDB;
+
+create table seat_requirements (
+	seat_id int unsigned not null,
+	requirement_id int unsigned not null,
+	primary key (seat_id,requirement_id),
+	foreign key (seat_id) references seats(id),
+	foreign key (requirement_id) references requirements(id)
 ) engine=InnoDB;
 
 create table members (
