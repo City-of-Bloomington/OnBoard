@@ -5,9 +5,9 @@
  */
 $options = array('','Ordinance','Resolution','App. Ordinance');
 ?>
-<h1>Update Topic</h1>
+<h1>Update Legislation</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
-<fieldset><legend>Topic Info</legend>
+<fieldset><legend>Legislation Info</legend>
 	<input name="id" type="hidden" value="<?php echo $this->topic->getId(); ?>" />
 	<table>
 	<tr><td><label for="topic-type">Type</label></td>
@@ -51,10 +51,10 @@ $options = array('','Ordinance','Resolution','App. Ordinance');
 		<td><input name="topic[number]" id="topic-number" value="<?php echo $this->topic->getNumber(); ?>" /></td></tr>
 		
 	<tr><td><label for="topic-description">Description</label></td>
-		<td><textarea name="topic[description]" id="topic-description" rows="3" cols="60"><?php echo $this->topic->getDescription(); ?></textarea></td></tr>
+		<td><textarea name="topic[description]" id="topic-description" rows="3" cols="60"><?php echo View::escape($this->topic->getDescription()); ?></textarea></td></tr>
 		
 	<tr><td><label for="topic-synopsis">Synopsis</label></td>
-		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"><?php echo $this->topic->getSynopsis(); ?></textarea></td></tr>
+		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"><?php echo View::escape($this->topic->getSynopsis()); ?></textarea></td></tr>
 		
 		<input type="hidden" name="topic[committee_id]" id="topic-committee_id" value="<?php echo $this->topic->getCommittee_id(); ?>" />
 		

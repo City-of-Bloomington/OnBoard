@@ -14,13 +14,13 @@ if (isset($this->committee) && userHasRole('Administrator'))
 ?>
 <div class="interfaceBox">
 	<h1><?php echo $addTopicButton; ?>
-		Topics
+		Legislations
 	</h1>
 	<ul><?php
 			foreach($this->topicList as $topic)
 			{
 				$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/topics/updateTopic.php?id={$topic->getId()}\">Edit</a>" : '';
-				echo "<li>$editButton $topic</li>";
+				echo "<li>$editButton ";echo View::escape($topic)."</li>";
 			}
 		?>
 	</ul>

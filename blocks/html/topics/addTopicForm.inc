@@ -4,9 +4,9 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 ?>
-<h1>Add Topic</h1>
+<h1>Add Legislation</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
-<fieldset><legend>Topic Info</legend>
+<fieldset><legend>Legislation Info</legend>
 	<table>
 	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
 	<tr><td><label for="topic-type">Type</label></td>
