@@ -14,14 +14,41 @@ if (isset($this->committee) && userHasRole('Administrator'))
 ?>
 <div class="interfaceBox">
 	<h1><?php echo $addTopicButton; ?>
-		Legislations
+		Legislation
 	</h1>
-	<ul><?php
-			foreach($this->topicList as $topic)
+	<table>
+	<tr><th></th>
+		<th>Type</th>
+		<th>Number</th>
+		<th>Date</th>
+		<th>Description</th>
+		<th>Synopsis</th>
+	</tr>
+	<?php
+		foreach($this->topicList as $topic)
+		{
+			$editButton = '';
+			if (userHasRole(array('Administrator','Clerk')))
 			{
-				$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/topics/updateTopic.php?id={$topic->getId()}\">Edit</a>" : '';
-				echo "<li>$editButton ";echo View::escape($topic)."</li>";
+				$url = new URL(BASE_URL.'/topics/updateTopic.php');
+				$url->topic_id = $topic->getId();
+				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 			}
-		?>
-	</ul>
+			$type = View::escape($topic->getTopicType());
+			$number = View::escape($topic->getNumber());
+			$date = $topic->getDate('n/j/Y');
+			$description = View::escape($topic->getDescription());
+			$synopsis = View::escape($topic->getSynopsis());
+			echo "
+			<tr><td>$editButton</td>
+				<td><a href=\"{$topic->getURL()}\">$type</a></td>
+				<td><a href=\"{$topic->getURL()}\">$number</a></td>
+				<td><a href=\"{$topic->getURL()}\">$date</a></td>
+				<td>$description</td>
+				<td>$synopsis</td>
+			</tr>
+			";
+		}
+	?>
+	</table>
 </div>

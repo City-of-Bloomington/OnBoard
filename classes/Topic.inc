@@ -25,10 +25,9 @@ class Topic extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select id,topicType_id,
-				unix_timestamp(date) as date,
-				number,description,synopsis,committee_id 
-				 from topics where id=?');
+			$sql = "select id,topicType_id,number,description,synopsis,committee_id,
+					unix_timestamp(date) as date from topics where id=?";
+			$query = $PDO->prepare($sql);
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -41,7 +40,7 @@ class Topic extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-	
+
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -49,7 +48,11 @@ class Topic extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-
+		if (!$this->topicType_id || !$this->date || !$this->number ||
+			!$this->description || !$this->synopsis || !$this->committee)
+		{
+			throw new Exception('missingRequiredFields');
+		}
 	}
 
 	/**
@@ -62,12 +65,12 @@ class Topic extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['topicType_id'] = $this->topicType_id ? $this->topicType_id : null;
-		$fields['date'] = $this->date ? date('Y-m-d',$this->date):null;
-		$fields['number'] = $this->number ? $this->number : null;
-		$fields['description'] = $this->description ? $this->description : null;
-		$fields['synopsis'] = $this->synopsis ? $this->synopsis : null;
-		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
+		$fields['topicType_id'] = $this->topicType_id;
+		$fields['date'] = date('Y-m-d',$this->date);
+		$fields['number'] = $this->number;
+		$fields['description'] = $this->description;
+		$fields['synopsis'] = $this->synopsis;
+		$fields['committee_id'] = $this->committee_id;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -109,6 +112,10 @@ class Topic extends ActiveRecord
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getTopicType_id() { return $this->topicType_id; }
+	public function getNumber() { return $this->number; }
+	public function getDescription() { return $this->description; }
+	public function getSynopsis() { return $this->synopsis; }
+	public function getCommittee_id() { return $this->committee_id; }
 
 	public function getDate($format=null)
 	{
@@ -119,10 +126,6 @@ class Topic extends ActiveRecord
 		}
 		else return $this->date;
 	}
-	public function getNumber() { return $this->number; }
-	public function getDescription() { return $this->description; }
-	public function getSynopsis() { return $this->synopsis; }
-	public function getCommittee_id() { return $this->committee_id; }
 
 	public function getTopicType()
 	{
@@ -133,7 +136,7 @@ class Topic extends ActiveRecord
 		}
 		else return null;
 	}
-		
+
 	public function getCommittee()
 	{
 		if ($this->committee_id)
@@ -143,21 +146,11 @@ class Topic extends ActiveRecord
 		}
 		else return null;
 	}
-		
+
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
 	public function setTopicType_id($int) { $this->topicType = new TopicType($int); $this->topicType_id = $int; }
-
-	public function setDate($date)
-	{
-		if (is_array($date)) { $this->date = $this->dateArrayToTimestamp($date); }
-		elseif(ctype_digit($date)) { $this->date = $date; }
-		else { 
-			// here is handled the mm/dd/yyyy case
-			$this->date = strtotime($date); 
-		}
-	}
 	public function setNumber($string) { $this->number = trim($string); }
 	public function setDescription($text) { $this->description = $text; }
 	public function setSynopsis($text) { $this->synopsis = $text; }
@@ -166,6 +159,16 @@ class Topic extends ActiveRecord
 	public function setTopicType($topicType) { $this->topicType_id = $topicType->getId(); $this->topicType = $topicType; }
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
 
+	public function setDate($date)
+	{
+		if (is_array($date)) { $this->date = $this->dateArrayToTimestamp($date); }
+		elseif(ctype_digit($date)) { $this->date = $date; }
+		else {
+			// here is handled the mm/dd/yyyy case
+			$this->date = strtotime($date);
+		}
+	}
+
 
 	#----------------------------------------------------------------
 	# Custom Functions
@@ -173,5 +176,10 @@ class Topic extends ActiveRecord
 	#----------------------------------------------------------------
 	public function __toString(){
 		return $this->getTopicType().' '.$this->number.' '.$this->date;
+	}
+
+	public function getURL()
+	{
+		return BASE_URL.'/topics/viewTopic.php?topic_id='.$this->id;
 	}
 }
