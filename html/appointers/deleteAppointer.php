@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET appointer_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $appointer = new Appointer($_GET['appointer_id']);
 $appointer->delete();

@@ -6,7 +6,7 @@
  * @param Committee $this->committee (optional)
  */
 $addSeatButton = '';
-if (isset($this->committee) && userHasRole('Administrator'))
+if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 {
 	$url = new URL(BASE_URL.'/seats/addSeat.php');
 	$url->committee_id = $this->committee->getId();
@@ -27,7 +27,7 @@ if (isset($this->committee) && userHasRole('Administrator'))
 		foreach($this->seatList as $seat)
 		{
 			$editButton = '';
-			if (userHasRole('Administrator'))
+			if (userHasRole(array('Administrator','Clerk')))
 			{
 				$url = new URL(BASE_URL.'/seats/updateSeat.php');
 				$url->seat_id = $seat->getId();

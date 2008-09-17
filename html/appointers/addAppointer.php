@@ -3,7 +3,7 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 if (isset($_POST['appointer']))
 {

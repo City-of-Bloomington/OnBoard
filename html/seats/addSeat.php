@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET committee_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $committee = new Committee($_REQUEST['committee_id']);
 if (isset($_POST['seat']))

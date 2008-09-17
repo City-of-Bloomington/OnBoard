@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param GET requirement_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $requirement = new Requirement($_REQUEST['requirement_id']);
 if (isset($_POST['requirement']))

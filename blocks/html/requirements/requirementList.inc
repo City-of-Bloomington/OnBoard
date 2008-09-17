@@ -8,7 +8,7 @@
 <div class="interfaceBox">
 	<h1>
 		<?php
-			if (userHasRole('Administrator'))
+			if (userHasRole(array('Administrator','Clerk')))
 			{
 				echo "<a class=\"add button\" href=\"".BASE_URL."/requirements/addRequirement.php\">Add</a>";
 			}
@@ -21,7 +21,7 @@
 				$text = View::escape($requirement);
 				$editButton = '';
 				$deleteButton = '';
-				if (userHasRole('Administrator'))
+				if (userHasRole(array('Administrator','Clerk')))
 				{
 					$url = new URL(BASE_URL.'/requirements/updateRequirement.php');
 					$url->requirement_id = $requirement->getId();

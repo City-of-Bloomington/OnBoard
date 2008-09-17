@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param GET committee_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $committee = new Committee($_REQUEST['committee_id']);
 if (isset($_POST['committee']))
