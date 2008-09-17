@@ -9,17 +9,32 @@
 		<?php
 			if (userHasRole('Administrator'))
 			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/votes/addVote.php\">Add</a>";
+				echo "<a class=\"add button\" href=\"".BASE_URL."/votes/addVote.php?topic_id=".$this->topic->getId()."\">Add</a>";
 			}
 		?>
 		Votes
 	</h1>
-	<ul><?php
-			foreach($this->voteList as $vote)
-			{
-				$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/votes/updateVote.php?id={$vote->getId()}\">Edit</a>" : '';
-				echo "<li>$editButton $vote</li>";
+	<table>
+	<?php
+       
+	    foreach($this->voteList as $vote)
+		{
+			$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/votes/updateVote.php?id={$vote->getId()}\">Edit</a>" : '';
+	$results = array();
+	
+	$results[] = count($vote->getRecords('pass'));
+	$results[] = count($vote->getRecords('fail'));
+	$results[] = count($vote->getRecords('absent'));
+	$results[] = count($vote->getRecords('abstain'));
+	$results = implode('-',$results); 
+			echo "
+			    <tr><td>$editButton</td>
+				<td>{$vote->getDate('n/j/Y')}</td>
+				<td>$results</td>
+				<td>{$vote->getOutcome()}</td>
+			    </tr>
+				";
 			}
 		?>
-	</ul>
+	</table>
 </div>

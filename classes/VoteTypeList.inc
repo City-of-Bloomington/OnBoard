@@ -3,12 +3,12 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-class VotingRecordList extends PDOResultIterator
+class VoteTypeList extends PDOResultIterator
 {
 
 	public function __construct($fields=null)
 	{
-		$this->select = 'select votingRecords.id as id from votingRecords';
+		$this->select = 'select voteTypes.id as id from voteTypes';
 		if (is_array($fields)) $this->find($fields);
 	}
 	
@@ -27,20 +27,10 @@ class VotingRecordList extends PDOResultIterator
 			$options[] = 'id=:id';
 			$parameters[':id'] = $fields['id'];
 		}
-		if (isset($fields['member_id']))
+		if (isset($fields['name']))
 		{
-			$options[] = 'member_id=:member_id';
-			$parameters[':member_id'] = $fields['member_id'];
-		}
-		if (isset($fields['vote_id']))
-		{
-			$options[] = 'vote_id=:vote_id';
-			$parameters[':vote_id'] = $fields['vote_id'];
-		}
-		if (isset($fields['memberVote']))
-		{
-			$options[] = 'memberVote=:memberVote';
-			$parameters[':memberVote'] = $fields['memberVote'];
+			$options[] = 'name=:name';
+			$parameters[':name'] = $fields['name'];
 		}
 
 
@@ -52,5 +42,5 @@ class VotingRecordList extends PDOResultIterator
 	}
 	
 
-	protected function loadResult($key) { return new VotingRecord($this->list[$key]); }
+	protected function loadResult($key) { return new VoteType($this->list[$key]); }
 }

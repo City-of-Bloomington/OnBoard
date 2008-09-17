@@ -9,17 +9,23 @@
 		<?php
 			if (userHasRole('Administrator'))
 			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php\">Add</a>";
+				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Add</a>";
 			}
 		?>
-		VotingRecords
+		Voting Records
 	</h1>
-	<ul><?php
+	<table>
+	<?php
 			foreach($this->votingRecordList as $votingRecord)
 			{
 				$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/updateVotingRecord.php?id={$votingRecord->getId()}\">Edit</a>" : '';
-				echo "<li>$editButton $votingRecord</li>";
+				echo "
+				     <tr><td>$editButton</td>
+					<td>{$votingRecord->getMember()}</td>
+					<td>{$votingRecord->getMemberVote()</td>
+				    </tr>
+				";
 			}
 		?>
-	</ul>
+	</table>
 </div>

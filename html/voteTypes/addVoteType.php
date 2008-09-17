@@ -4,23 +4,19 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 verifyUser('Administrator');
-if(isset($_REQUEST['vote_id'])){
-  $vote = new Vote($_GET['vote_id']); 
-}
-else
- $vote = new Vote();
-if (isset($_POST['votingRecord']))
+
+if (isset($_POST['voteType']))
 {
-	$votingRecord = new VotingRecord();
-	foreach($_POST['votingRecord'] as $field=>$value)
+	$voteType = new VoteType();
+	foreach($_POST['voteType'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
-		$votingRecord->$set($value);
+		$voteType->$set($value);
 	}
 
 	try
 	{
-		$votingRecord->save();
+		$voteType->save();
 		Header('Location: home.php');
 		exit();
 	}
@@ -28,5 +24,5 @@ if (isset($_POST['votingRecord']))
 }
 
 $template = new Template();
-$template->blocks[] = new Block('votingRecords/addVotingRecordForm.inc',array('vote'=$vote));
+$template->blocks[] = new Block('voteTypes/addVoteTypeForm.inc');
 echo $template->render();

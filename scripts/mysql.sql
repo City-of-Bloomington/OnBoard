@@ -42,28 +42,15 @@ create table appointers (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null unique
 ) engine=InnoDB;
-insert appointers values(1,'Elected');
-
-create table requirements (
-	id int unsigned not null primary key auto_increment,
-	text varchar(255) not null
-) engine=InnoDB;
 
 create table seats (
 	id int unsigned not null primary key auto_increment,
 	title varchar(128) not null,
+	requirements varchar(255),
 	committee_id int unsigned not null,
-	appointer_id int unsigned not null default 1,
+	appointer_id int unsigned not null,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
-) engine=InnoDB;
-
-create table seat_requirements (
-	seat_id int unsigned not null,
-	requirement_id int unsigned not null,
-	primary key (seat_id,requirement_id),
-	foreign key (seat_id) references seats(id),
-	foreign key (requirement_id) references requirements(id)
 ) engine=InnoDB;
 
 create table members (
@@ -80,6 +67,9 @@ create table topicTypes (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null
 ) engine=InnoDB;
+insert topicType values(1,'Ordinance');
+insert topicType values(2,'Resolution');
+insert topicType values(3,'App. Ordinance');
 
 create table topics (
 	id int unsigned not null primary key auto_increment,
@@ -97,12 +87,15 @@ create table voteTypes (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null
 ) engine=InnoDB;
+insert voteTypes values(1,'Do-Pass');
+insert voteTypes values(2,'Final');
 
 create table votes (
 	id int unsigned not null primary key auto_increment,
 	date date not null,
 	voteType_id int unsigned not null,
 	topic_id int unsigned not null,
+	outcome enum('pass','fail'),
 	foreign key (voteType_id) references voteTypes(id),
 	foreign key (topic_id) references topics(id)
 ) engine=InnoDB;
@@ -111,7 +104,7 @@ create table votingRecords (
 	id int unsigned not null primary key auto_increment,
 	member_id int unsigned not null,
 	vote_id int unsigned not null,
-	vote enum('yes','no','abstain','absent') not null,
+	memberVote enum('yes','no','abstain','absent') not null,
 	foreign key (vote_id)  references votes(id),
 	foreign key (member_id) references members(id)
 ) engine=InnoDB;

@@ -3,15 +3,12 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-class VotingRecord extends ActiveRecord
+class VoteType extends ActiveRecord
 {
 	private $id;
-	private $member_id;
-	private $vote_id;
-	private $memberVote;
+	private $name;
 
-	private $vote;
-	private $member;
+
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -22,11 +19,11 @@ class VotingRecord extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from votingRecords where id=?');
+			$query = $PDO->prepare('select * from voteTypes where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('votingRecords/unknownVotingRecord'); }
+			if (!count($result)) { throw new Exception('voteTypes/unknownVoteType'); }
 			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
@@ -56,9 +53,7 @@ class VotingRecord extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['member_id'] = $this->member_id ? $this->member_id : null;
-		$fields['vote_id'] = $this->vote_id ? $this->vote_id : null;
-		$fields['memberVote'] = $this->memberVote ? $this->memberVote : null;
+		$fields['name'] = $this->name ? $this->name : null;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -80,7 +75,7 @@ class VotingRecord extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "update votingRecords set $preparedFields where id={$this->id}";
+		$sql = "update voteTypes set $preparedFields where id={$this->id}";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 	}
@@ -89,7 +84,7 @@ class VotingRecord extends ActiveRecord
 	{
 		$PDO = Database::getConnection();
 
-		$sql = "insert votingRecords set $preparedFields";
+		$sql = "insert voteTypes set $preparedFields";
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
@@ -99,43 +94,16 @@ class VotingRecord extends ActiveRecord
 	# Generic Getters
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
-	public function getMember_id() { return $this->member_id; }
-	public function getVote_id() { return $this->vote_id; }
-	public function getMemberVote() { return $this->memberVote; }
+	public function getName() { return $this->name; }
 
-	public function getMember()
-	{
-		if ($this->member_id)
-		{
-			if (!$this->member) { $this->member = new Member($this->member_id); }
-			return $this->member;
-		}
-		else return null;
-	}
-		
-	public function getVote()
-	{
-		if ($this->vote_id)
-		{
-			if (!$this->vote) { $this->vote = new Vote($this->vote_id); }
-			return $this->vote;
-		}
-		else return null;
-	}
-		
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
-	public function setMember_id($int) { $this->member = new Member($int); $this->member_id = $int; }
-	public function setVote_id($int) { $this->vote = new Vote($int); $this->vote_id = $int; }
-	public function setMemberVote($string) { $this->memberVote = trim($string); }
-
-	public function setMember($member) { $this->member_id = $member->getId(); $this->member = $member; }
-	public function setVote($vote) { $this->vote_id = $vote->getId(); $this->vote = $vote; }
-
+	public function setName($string) { $this->name = trim($string); }
 
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	public function __toString() { return $this->name; }
 }

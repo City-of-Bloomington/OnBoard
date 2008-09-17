@@ -32,10 +32,10 @@ class VoteList extends PDOResultIterator
 			$options[] = 'date=:date';
 			$parameters[':date'] = $fields['date'];
 		}
-		if (isset($fields['type']))
+		if (isset($fields['voteType_id']))
 		{
-			$options[] = 'type=:type';
-			$parameters[':type'] = $fields['type'];
+			$options[] = 'voteType_id=:voteType_id';
+			$parameters[':voteType_id'] = $fields['voteType_id'];
 		}
 		if (isset($fields['topic_id']))
 		{

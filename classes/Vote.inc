@@ -7,13 +7,20 @@ class Vote extends ActiveRecord
 {
 	private $id;
 	private $date;
-	private $type;
+	private $voteType_id;
 	private $topic_id;
 
-
+	private $voteType;
 	private $topic;
+	private $outcome;
+	private $votingRecords = array();
 
-
+	// Used to report stats 
+	private $total=0;
+	private $passes=0;
+	private $fails=0;
+	private $absents=0;
+	private $abstains=0;
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -37,7 +44,6 @@ class Vote extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-	
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -59,9 +65,9 @@ class Vote extends ActiveRecord
 
 		$fields = array();
 		$fields['date'] = $this->date ? $this->date : null;
-		$fields['type'] = $this->type ? $this->type : null;
+		$fields['voteType_id'] = $this->voteType_id ? $this->voteType_id : null;
 		$fields['topic_id'] = $this->topic_id ? $this->topic_id : null;
-
+		$fields['outcome'] = $this->outcome ? $this->outcome : null;
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
@@ -101,6 +107,7 @@ class Vote extends ActiveRecord
 	# Generic Getters
 	#----------------------------------------------------------------
 	public function getId() { return $this->id; }
+	public function getOutcome() { return $this->outcome; }
 
 	public function getDate($format=null)
 	{
@@ -111,9 +118,19 @@ class Vote extends ActiveRecord
 		}
 		else return $this->date;
 	}
-	public function getType() { return $this->type; }
+	public function getVoteType_id() { return $this->voteType_id; }
 	public function getTopic_id() { return $this->topic_id; }
 
+	public function getVoteType()
+	{
+		if ($this->voteType_id)
+		{
+			if (!$this->voteType) { $this->voteType = new VoteType($this->voteType_id); }
+			return $this->voteType;
+		}
+		else return null;
+	}
+		
 	public function getTopic()
 	{
 		if ($this->topic_id)
@@ -123,25 +140,48 @@ class Vote extends ActiveRecord
 		}
 		else return null;
 	}
-		
+	public function getVotingRecords() { 
+		if(!count($this->voteRecords)){
+		    if($this->id){
+			$list = new VotingRecordList(array('vote_id'=>$this->id));
+			// echo $list->getSQL();
+			foreach($list as $voteRecord){
+				$this->votingRecords[] = $voteRecord;
+			}
+		   }
+		}
+		return $this->votingRecords; 
+	}		
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------
-
+	public function setOutcome($string) { $this->outcome = trim($string); }
 	public function setDate($date)
 	{
 		if (is_array($date)) { $this->date = $this->dateArrayToTimestamp($date); }
 		elseif(ctype_digit($date)) { $this->date = $date; }
 		else { $this->date = strtotime($date); }
 	}
-	public function setType($string) { $this->type = trim($string); }
+	public function setVoteType_id($int) { $this->voteType = new VoteType($int); $this->voteType_id = $int; }
 	public function setTopic_id($int) { $this->topic = new Topic($int); $this->topic_id = $int; }
 
+	public function setVoteType($voteType) { $this->voteType_id = $voteType->getId(); $this->voteType = $voteType; }
 	public function setTopic($topic) { $this->topic_id = $topic->getId(); $this->topic = $topic; }
 
-
+	
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	public function __toString(){
+		return $this->getVoteType().' '.$this->getDate('n/j/Y');
+	}
+	public function getRecords($memeberVote=null){
+		$fields = array('vote_id'=>$this->id);
+		if($memberVote){
+			$fields['memberVote'] = $memberVote;
+		}
+		return new VotingRecordList($fields); 
+	}
+
 }
