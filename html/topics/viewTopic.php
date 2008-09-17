@@ -8,12 +8,7 @@
 $topic = new Topic($_GET['topic_id']);
 
 $template = new Template();
+$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$topic->getCommittee()));
 $template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
-/**
-// we will add votes here
-$voteList = new Block('votes/voteList.inc');
-$voteList->voteList = $topic->getVotes();
-$voteList->topic = $topic;
-$template->blocks[] = $voteList;
-*/
+
 echo $template->render();
