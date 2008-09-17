@@ -11,4 +11,9 @@ $template = new Template();
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$topic->getCommittee()));
 $template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
 
+$votes = new Block('votes/voteList.inc');
+$votes->voteList = $topic->getVotes();
+$votes->topic = $topic;
+$template->blocks[] = $votes;
+
 echo $template->render();

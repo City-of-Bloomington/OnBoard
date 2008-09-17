@@ -8,8 +8,6 @@ class VoteType extends ActiveRecord
 	private $id;
 	private $name;
 
-
-
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
@@ -32,7 +30,7 @@ class VoteType extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-	
+
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -40,7 +38,7 @@ class VoteType extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-
+		if (!$this->name) { throw new Exception('missingName'); }
 	}
 
 	/**
@@ -53,7 +51,7 @@ class VoteType extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['name'] = $this->name ? $this->name : null;
+		$fields['name'] = $this->name;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have

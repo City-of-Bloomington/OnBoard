@@ -2,10 +2,11 @@
 /**
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @param GET vote_id
  */
 verifyUser('Administrator');
 
-$vote = new Vote($_REQUEST['id']);
+$vote = new Vote($_REQUEST['vote_id']);
 if (isset($_POST['vote']))
 {
 	foreach($_POST['vote'] as $field=>$value)
@@ -17,7 +18,7 @@ if (isset($_POST['vote']))
 	try
 	{
 		$vote->save();
-		Header('Location: home.php');
+		Header('Location: '.$vote->getTopic()->getURL());
 		exit();
 	}
 	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }

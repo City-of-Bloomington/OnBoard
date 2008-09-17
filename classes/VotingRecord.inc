@@ -35,7 +35,7 @@ class VotingRecord extends ActiveRecord
 			# Set any default values for properties that need it here
 		}
 	}
-	
+
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -43,7 +43,10 @@ class VotingRecord extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-
+		if (!$this->member_id || !$this->vote_id || !$this->vote)
+		{
+			throw new Exception('missingRequiredFields');
+		}
 	}
 
 	/**
@@ -56,9 +59,9 @@ class VotingRecord extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['member_id'] = $this->member_id ? $this->member_id : null;
-		$fields['vote_id'] = $this->vote_id ? $this->vote_id : null;
-		$fields['memberVote'] = $this->memberVote ? $this->memberVote : null;
+		$fields['member_id'] = $this->member_id;
+		$fields['vote_id'] = $this->vote_id;
+		$fields['memberVote'] = $this->memberVote;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -112,7 +115,7 @@ class VotingRecord extends ActiveRecord
 		}
 		else return null;
 	}
-		
+
 	public function getVote()
 	{
 		if ($this->vote_id)
@@ -122,7 +125,7 @@ class VotingRecord extends ActiveRecord
 		}
 		else return null;
 	}
-		
+
 	#----------------------------------------------------------------
 	# Generic Setters
 	#----------------------------------------------------------------

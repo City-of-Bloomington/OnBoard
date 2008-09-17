@@ -182,4 +182,14 @@ class Topic extends ActiveRecord
 	{
 		return BASE_URL.'/topics/viewTopic.php?topic_id='.$this->id;
 	}
+
+	public function getVotes()
+	{
+		if ($this->id)
+		{
+			return new VoteList(array('topic_id'=>$this->id));
+		}
+		else return array();
+	}
+	public function hasVotes() { return count($this->hasVotes()) ? true : false; }
 }
