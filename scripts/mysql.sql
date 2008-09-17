@@ -93,17 +93,25 @@ create table topics (
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;
 
+create table voteTypes (
+	id int unsigned not null primary key auto_increment,
+	name varchar(128) not null
+) engine=InnoDB;
+
 create table votes (
 	id int unsigned not null primary key auto_increment,
 	date date not null,
-	type varchar(128) not null,
+	voteType_id int unsigned not null,
 	topic_id int unsigned not null,
+	foreign key (voteType_id) references voteTypes(id),
 	foreign key (topic_id) references topics(id)
 ) engine=InnoDB;
 
 create table votingRecords (
 	id int unsigned not null primary key auto_increment,
 	member_id int unsigned not null,
+	vote_id int unsigned not null,
 	vote enum('yes','no','abstain','absent') not null,
+	foreign key (vote_id)  references votes(id),
 	foreign key (member_id) references members(id)
 ) engine=InnoDB;
