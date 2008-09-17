@@ -5,7 +5,7 @@
  */
 verifyUser('Administrator');
 
-$topic = new Topic($_REQUEST['id']);
+$topic = new Topic($_REQUEST['topic_id']);
 if (isset($_POST['topic']))
 {
 	foreach($_POST['topic'] as $field=>$value)
@@ -17,7 +17,7 @@ if (isset($_POST['topic']))
 	try
 	{
 		$topic->save();
-		Header('Location: home.php');
+		Header('Location: '.$topic->getCommittee()->getURL());
 		exit();
 	}
 	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }

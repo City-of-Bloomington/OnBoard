@@ -18,7 +18,7 @@ if (isset($_POST['topic']))
 	try
 	{
 		$topic->save();
-		Header('Location: home.php');
+		Header('Location: '.$committee->getURL());
 		exit();
 	}
 	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
