@@ -23,7 +23,9 @@ class Vote extends ActiveRecord
 		if ($id)
 		{
 			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from votes where id=?');
+			$query = $PDO->prepare('select id,unix_timestamp(date) as date,
+				voteType_id,topic_id,outcome from votes where id=?');
+
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -157,7 +159,7 @@ class Vote extends ActiveRecord
 	public function __toString(){
 		return $this->getVoteType().' '.$this->getDate('n/j/Y');
 	}
-	public function getRecords($memeberVote=null) {
+	public function getRecords($memberVote=null) {
 		$fields = array('vote_id'=>$this->id);
 		if($memberVote){ $fields['memberVote'] = $memberVote; }
 		return new VotingRecordList($fields);

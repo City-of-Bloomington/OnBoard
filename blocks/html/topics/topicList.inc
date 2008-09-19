@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 $addTopicButton = '';
-if (isset($this->committee) && userHasRole('Administrator'))
+if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 {
 	$url = new URL(BASE_URL.'/topics/addTopic.php');
 	$url->committee_id = $this->committee->getId();

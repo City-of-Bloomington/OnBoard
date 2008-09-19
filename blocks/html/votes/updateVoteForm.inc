@@ -4,6 +4,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Vote $this->vote
  */
+$outcomes = array(' ','pass','fail');
+
 ?>
 <h1>Update Vote</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
@@ -11,7 +13,7 @@
 	<input name="vote_id" type="hidden" value="<?php echo $this->vote->getId(); ?>" />
 
 	<table>
-	<tr><td><label for="vote-date">Date</label></td>
+	<tr><td><label for="vote-date">Date</label></td><td>
 			<input name="vote[date]"
 					id="vote-date"
 					size="10"
@@ -23,7 +25,7 @@
 	<tr><td><label for="vote-voteType_id">Type</label></td>
 		<td><select name="vote[voteType_id]" id="vote-voteType_id">
 			<?php
-				$types = new VoteTypeList()
+				$types = new VoteTypeList();
 				$types->find();
 				foreach($types as $type) {
 					$name = View::escape($type);
@@ -34,7 +36,17 @@
 			</select>
 		</td>
 	</tr>
-
+	<tr><td><label for='vote-outcome'>Outcome</td><td>
+	<select name='vote-outcome' id='vote-outcome'>
+	<?php
+		foreach($outcomes as $outcome){
+			if($this->vote->getOutcome() == $outcome)
+				echo "<option selected=\"selected\">".$outcome."</option>";
+			else
+				echo "<option>".$outcome."</option>";
+		}
+	?>
+	</select></td></tr>
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
