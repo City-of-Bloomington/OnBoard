@@ -7,7 +7,7 @@
 <div class="interfaceBox">
 	<h1>
 		<?php
-			if (userHasRole('Administrator'))
+			if (userHasRole(array('Administrator','Clerk')))
 			{
 				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Add</a>";
 			}
@@ -22,7 +22,7 @@
 				echo "
 				     <tr><td>$editButton</td>
 					<td>{$votingRecord->getMember()}</td>
-					<td>{$votingRecord->getMemberVote()</td>
+					<td>{$votingRecord->getMemberVote()}</td>
 				    </tr>
 				";
 			}

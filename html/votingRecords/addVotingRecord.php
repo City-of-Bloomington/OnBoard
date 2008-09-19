@@ -21,12 +21,19 @@ if (isset($_POST['votingRecord']))
 	try
 	{
 		$votingRecord->save();
-		Header('Location: home.php');
-		exit();
+		//Header('Location: home.php');
+		//exit();
 	}
 	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }
 
 $template = new Template();
-$template->blocks[] = new Block('votingRecords/addVotingRecordForm.inc',array('vote'=$vote));
+	if(isset($_REQUEST['vote_id'])){
+	$template->blocks[] = new Block('votingRecords/addVotingRecordForm.inc',array('vote'=>$vote));
+}
+else{
+	$votingRecordList = new VotingRecordList();
+	$votingRecordList->find();
+	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('votingRecordList'=>$votingRecordList,'vote'=>$vote));
+}
 echo $template->render();

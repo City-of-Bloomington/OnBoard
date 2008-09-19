@@ -191,5 +191,5 @@ class Topic extends ActiveRecord
 		}
 		else return array();
 	}
-	public function hasVotes() { return count($this->hasVotes()) ? true : false; }
+	public function hasVotes() { return count($this->getVotes()) ? true : false; }
 }

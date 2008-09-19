@@ -13,6 +13,7 @@ class Vote extends ActiveRecord
 
 	private $voteType;
 	private $topic;
+	
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -167,4 +168,13 @@ class Vote extends ActiveRecord
 		if($memberVote){ $fields['memberVote'] = $memberVote; }
 		return new VotingRecordList($fields);
 	}
+	public function getVotingRecords()
+	{
+		if ($this->id)
+		{
+			return new VoteRecordList(array('vote_id'=>$this->id));
+		}
+		else return array();
+	}
+	public function hasVotingRecords() { return count($this->getVotingRecords()) ? true : false; }
 }

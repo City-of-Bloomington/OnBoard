@@ -182,6 +182,6 @@ class Member extends ActiveRecord
 	public function getLastname() { return $this->getUser()->getLastname(); }
 
 	public function __toString() {
-		return $this->getFirstname().' '.$this->getLastname();
+		return $this->getUser()->getFirstname()." ".$this->getUser()->getLastname();
 	}
 }

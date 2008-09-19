@@ -18,7 +18,7 @@
 		Votes
 	</h1>
 	<table>
-	<tr><th></th><th>Vote</th><th>Vote Date</th><th>Yes Votes</th><th>No Votes</th><th>Absents</th><th>Absiants</th><th>Final Outcome</th></tr>
+	<tr><th></th><th>Vote</th><th>Vote Date</th><th>Yes Votes</th><th>No Votes</th><th>Absents</th><th>Absiants</th><th>Final Outcome</th><th></th></tr>
 	<?php
 	    foreach($this->voteList as $vote)
 		{
@@ -42,9 +42,14 @@
 				<td>{$vote->getVoteType()}</td>
 				<td>{$vote->getDate('n/j/Y')}</td>
 				<td>$results</td>
-				<td>{$vote->getOutcome()}</td>
-		    </tr>
-			";
+				<td>{$vote->getOutcome()}</td>";
+			if (userHasRole(array('Administrator','Clerk')))
+			{
+				$url = new URL(BASE_URL.'/votingRecords/addVotingRecord.php');
+				$url->vote_id = $vote->getId();
+				echo "<td><a class=\"add button\" href=\"$url\">Add Voting Record</a></td>";
+			}
+		echo "</tr>";
 		}
 	?>
 	</table>

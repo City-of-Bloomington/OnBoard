@@ -17,8 +17,8 @@ if (isset($_POST['voteType']))
 	try
 	{
 		$voteType->save();
-		Header('Location: home.php');
-		exit();
+		// Header('Location: home.php');
+		// exit();
 	}
 	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }

@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 $members = new MemberList();
-$members.find();
+$members->find();
 $voteOptions = array('yes','no','abstain','absent');
 
 ?>
@@ -29,21 +29,18 @@ $voteOptions = array('yes','no','abstain','absent');
 	</select></td></tr>
 		
 	<tr><td><label for="votingRecord-vote_id">Vote</label></td>
-		<td><select name="votingRecord[memberVote_id]" id="votingRecord-memberVote_id"></td>
+		<td><select name="votingRecord[memberVote]" id="votingRecord-memberVote">
 	<?php 
-		for($i;$i<count($voteOptions);$i++){
-			if($voteOptions[i] == $this->votingRecord->getMemeberVote()){
-		 		echo "
-				<option selected=\"selected\">$option</option>";
+		foreach($voteOptions as $option){
+			if($option == $this->votingRecord->getMemberVote()){
+		 		echo "<option selected=\"selected\">$option</option>";
 			}
 			else{
-		 		echo "
-				<option>$option</option>";
+		 		echo "<option>$option</option>";
 			}
 		}
 	?>
 	</select></td></tr>
-		
 	</table>
 	<input type="hidden" name="votingRecord[vote_id]" value="<?php echo $this->votingRecord->getVote_id(); ?>" />
 	<button type="submit" class="submit">Submit</button>

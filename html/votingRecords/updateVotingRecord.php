@@ -6,6 +6,7 @@
 verifyUser('Administrator');
 
 $votingRecord = new VotingRecord($_REQUEST['id']);
+$vote = $votingRecord->getVote();
 if (isset($_POST['votingRecord']))
 {
 	foreach($_POST['votingRecord'] as $field=>$value)
@@ -17,12 +18,21 @@ if (isset($_POST['votingRecord']))
 	try
 	{
 		$votingRecord->save();
-		Header('Location: home.php');
-		exit();
+		$vote = $votingRecord->getVote();		
+		// Header('Location: home.php');
+		// exit();
 	}
 	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }
 
 $template = new Template();
-$template->blocks[] = new Block('votingRecords/updateVotingRecordForm.inc',array('votingRecord'=>$votingRecord));
+
+if (!isset($_POST['votingRecord'])){
+	$template->blocks[] = new Block('votingRecords/updateVotingRecordForm.inc',array('votingRecord'=>$votingRecord, 'vote'=>$vote));
+}
+else{
+	$votingRecordList = new VotingRecordList();
+	$votingRecordList->find();
+	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('votingRecordList'=>$votingRecordList,'vote'=>$vote));
+}
 echo $template->render();

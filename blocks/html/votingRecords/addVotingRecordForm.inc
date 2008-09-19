@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 $members = new MemberList();
-$members.find();
+$members->find();
 $voteOptions = array('yes','no','abstain','absent');
 ?>
 <h1>Add VotingRecord</h1>
@@ -15,8 +15,7 @@ $voteOptions = array('yes','no','abstain','absent');
 		<td><select name="votingRecord[member_id]" id="votingRecord-member_id">
 	<?php 
 		foreach($members as $member){
-		 	echo "
-				<option value=\"{$member->getId()}\">$member</option>";
+		 	echo "<option value=\"{$member->getId()}\">$member</option>";
 		}
 	?>
 	</select></td></tr>	
@@ -26,9 +25,9 @@ $voteOptions = array('yes','no','abstain','absent');
 	<tr><td><label for="votingRecord-memberVote">Vote</label></td>
 		<td><select name="votingRecord[memberVote]" id="votingRecord-memberVote">
 	<?php 
-		for($i;$i<count($voteOptions);$i++){
+		foreach($voteOptions as $option){
 		 	echo "
-				<option>{$option[i]}</option>";
+				<option>$option</option>";
 		}
 	?>
 	</select></td></tr>
