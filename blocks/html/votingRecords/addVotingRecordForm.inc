@@ -5,8 +5,7 @@
  */
 $members = new MemberList();
 $members.find();
-$voteOptions = new MemberVoteList();
-$options.find();
+$voteOptions = array('yes','no','abstain','absent');
 ?>
 <h1>Add VotingRecord</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
@@ -27,9 +26,9 @@ $options.find();
 	<tr><td><label for="votingRecord-memberVote">Vote</label></td>
 		<td><select name="votingRecord[memberVote]" id="votingRecord-memberVote">
 	<?php 
-		foreach($voteOptions as $option){
+		for($i;$i<count($voteOptions);$i++){
 		 	echo "
-				<option value=\"{$option->getId()}\">$option</option>";
+				<option>{$option[i]}</option>";
 		}
 	?>
 	</select></td></tr>

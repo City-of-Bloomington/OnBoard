@@ -5,8 +5,8 @@
  */
 $members = new MemberList();
 $members.find();
-$voteOptions = new MemberVoteList();
-$options.find();
+$voteOptions = array('yes','no','abstain','absent');
+
 ?>
 <h1>Update VotingRecord</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
@@ -31,19 +31,18 @@ $options.find();
 	<tr><td><label for="votingRecord-vote_id">Vote</label></td>
 		<td><select name="votingRecord[memberVote_id]" id="votingRecord-memberVote_id"></td>
 	<?php 
-		foreach($voteOptions as $option){
-			if($option->getId() == $this->votingRecord->getVote_id()){
+		for($i;$i<count($voteOptions);$i++){
+			if($voteOptions[i] == $this->votingRecord->getMemeberVote()){
 		 		echo "
-				<option selected=\"selected\" value=\"{$option->getId()}\">$option</option>";
+				<option selected=\"selected\">$option</option>";
 			}
 			else{
 		 		echo "
-				<option value=\"{$option->getId()}\">$option</option>";
+				<option>$option</option>";
 			}
 		}
 	?>
 	</select></td></tr>
-
 		
 	</table>
 	<input type="hidden" name="votingRecord[vote_id]" value="<?php echo $this->votingRecord->getVote_id(); ?>" />
