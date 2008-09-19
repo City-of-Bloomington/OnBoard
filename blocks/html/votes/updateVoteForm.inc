@@ -37,13 +37,12 @@ $outcomes = array(' ','pass','fail');
 		</td>
 	</tr>
 	<tr><td><label for='vote-outcome'>Outcome</td><td>
-	<select name='vote-outcome' id='vote-outcome'>
+	<select name='vote[outcome]' id='vote-outcome'>
 	<?php
-		foreach($outcomes as $outcome){
-			if($this->vote->getOutcome() == $outcome)
-				echo "<option selected=\"selected\">".$outcome."</option>";
-			else
-				echo "<option>".$outcome."</option>";
+		foreach($outcomes as $outcome)
+		{
+			$selected = $this->vote->getOutcome()==$outcome ? ' selected="selected"' : '';
+			echo "<option$selected>$outcome</option>";
 		}
 	?>
 	</select></td></tr>

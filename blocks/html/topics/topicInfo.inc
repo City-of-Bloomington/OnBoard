@@ -7,6 +7,7 @@
  */
 $type = View::escape($this->topic->getTopicType());
 $number = View::escape($this->topic->getNumber());
+$date = View::escape($this->topic->getDate('n/j/Y'));
 $description = View::escape($this->topic->getDescription());
 $synopsis = View::escape($this->topic->getSynopsis());
 $editButton = '';
@@ -17,7 +18,8 @@ if (userHasRole(array('Administrator','Clerk')))
 		$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";		}
 ?>
 <div class="interfaceBox">
-	<h1><?php echo $editButton; echo $type.' '.$number; ?></h1>
-	<h2><?php echo $description; ?></h2>
+	<h1><?php echo $editButton; echo $type." ".$number ?></h1>
+	<p><b><?php echo "Date: ".$date; ?></b></p>
+	<p><b><?php echo $description; ?></b></p>
 	<p><?php echo $synopsis; ?></p>
 </div>

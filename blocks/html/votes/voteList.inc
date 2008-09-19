@@ -18,6 +18,7 @@
 		Votes
 	</h1>
 	<table>
+	<tr><th></th><th>Vote</th><th>Vote Date</th><th>Yes Votes</th><th>No Votes</th><th>Absents</th><th>Absiants</th><th>Final Outcome</th></tr>
 	<?php
 	    foreach($this->voteList as $vote)
 		{
@@ -34,10 +35,11 @@
 			$results[] = count($vote->getRecords('fail'));
 			$results[] = count($vote->getRecords('absent'));
 			$results[] = count($vote->getRecords('abstain'));
-			$results = implode('-',$results);
+			$results = implode('</td><td>',$results);
 
 			echo "
 		    <tr><td>$editButton</td>
+				<td>{$vote->getVoteType()}</td>
 				<td>{$vote->getDate('n/j/Y')}</td>
 				<td>$results</td>
 				<td>{$vote->getOutcome()}</td>

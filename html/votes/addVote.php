@@ -5,9 +5,7 @@
  * @param GET topic_id
  */
 verifyUser('Administrator');
-
 $topic = new Topic($_REQUEST['topic_id']);
-
 if (isset($_POST['vote']))
 {
 	$vote = new Vote();
@@ -28,6 +26,11 @@ if (isset($_POST['vote']))
 	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }
 
+
 $template = new Template();
+$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$topic->getCommittee()));
+$template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
 $template->blocks[] = new Block('votes/addVoteForm.inc',array('topic'=>$topic));
+
+
 echo $template->render();

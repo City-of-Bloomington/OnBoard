@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Topic $this->topic
  */
+$outcomes = array(' ','pass','fail');
 ?>
 <h1>Add Vote</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" class="yui-skin-sam">
@@ -32,6 +33,15 @@
 			</select>
 		</td>
 	</tr>
+	<tr><td><label for='vote-outcome'>Outcome</td><td>
+	<select name='vote[outcome]' id='vote-outcome'>
+	<?php
+		foreach($outcomes as $outcome)
+		{
+			echo "<option>$outcome</option>";
+		}
+	?>
+	</select></td></tr>
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
