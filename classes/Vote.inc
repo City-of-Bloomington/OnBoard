@@ -36,6 +36,7 @@ class Vote extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
+			$this->date = time();
 		}
 	}
 	/**
@@ -46,6 +47,8 @@ class Vote extends ActiveRecord
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->voteType_id || !$this->topic_id) { throw new Exception('missingRequiredFields'); }
+
+		if (!$this->date) { $this->date = time(); }
 	}
 
 	/**
@@ -58,7 +61,7 @@ class Vote extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['date'] = $this->date ? $this->date : null;
+		$fields['date'] = date('Y-m-d',$this->date);
 		$fields['voteType_id'] = $this->voteType_id;
 		$fields['topic_id'] = $this->topic_id;
 		$fields['outcome'] = $this->outcome ? $this->outcome : null;
