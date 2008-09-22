@@ -16,12 +16,14 @@ $votes->voteList = $topic->getVotes();
 $votes->topic = $topic;
 $template->blocks[] = $votes;
 if($topic->hasVotes()){
-	$votelist = $topic->getVotes();
+	$voteList = $topic->getVotes();
+	if(is_array($voteList)){
 	foreach($voteList as $vote){
 	if($vote->hasVotingRecords()){
 		$votingRecords = new Block('votingRecords/votingRecordList.inc');
 		$votingRecords->votingRecordList = $vote->getVotingRecords();
 		$template->blocks[] = $votingRecords;
 	}
+    }}
 }
 echo $template->render();

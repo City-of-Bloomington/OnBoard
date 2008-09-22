@@ -4,9 +4,11 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 verifyUser('Administrator');
-
-$votingRecord = new VotingRecord($_REQUEST['id']);
-$vote = $votingRecord->getVote();
+if(isset($_REQUEST['id'])){
+	$votingRecord = new VotingRecord($_REQUEST['id']);
+	$vote = $votingRecord->getVote();
+	$topic = $vote->getTopic();
+}
 if (isset($_POST['votingRecord']))
 {
 	foreach($_POST['votingRecord'] as $field=>$value)
@@ -18,7 +20,8 @@ if (isset($_POST['votingRecord']))
 	try
 	{
 		$votingRecord->save();
-		$vote = $votingRecord->getVote();		
+		$vote = $votingRecord->getVote();	
+		$topic = $vote->getTopic();	
 		// Header('Location: home.php');
 		// exit();
 	}
@@ -27,8 +30,13 @@ if (isset($_POST['votingRecord']))
 
 $template = new Template();
 
+$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$topic->getCommittee()));
+$template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
+$template->blocks[] = new Block('votes/voteInfo.inc',array('vote'=>$vote));
+
 if (!isset($_POST['votingRecord'])){
 	$template->blocks[] = new Block('votingRecords/updateVotingRecordForm.inc',array('votingRecord'=>$votingRecord, 'vote'=>$vote));
+
 }
 else{
 	$votingRecordList = new VotingRecordList();

@@ -8,7 +8,7 @@ class MemberList extends PDOResultIterator
 
 	public function __construct($fields=null)
 	{
-		$this->select = 'select members.id as id from members';
+		$this->select = 'select members.id as id from members ';
 		if (is_array($fields)) $this->find($fields);
 	}
 
@@ -52,6 +52,14 @@ class MemberList extends PDOResultIterator
 		# Finding on fields from other tables required joining those tables.
 		# You can add fields from other tables to $options by adding the join SQL
 		# to $this->joins here
+		if (isset($fields['committee_id']))
+		{
+		/*
+			$options[] = 'term_end=:term_end';
+			$parameters[':term_end'] = $fields['term_end'];
+		*/
+		}
+
 
 		$this->populateList($options,$parameters);
 	}

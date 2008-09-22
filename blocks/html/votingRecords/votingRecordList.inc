@@ -16,9 +16,9 @@
 	</h1>
 	<table>
 	<?php
-			foreach($this->votingRecordList as $votingRecord)
+			foreach($this->voteRecordList as $votingRecord)
 			{
-				$editButton = userHasRole('Administrator') ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/updateVotingRecord.php?id={$votingRecord->getId()}\">Edit</a>" : '';
+				$editButton = userHasRole(array('Clerk','Administrator')) ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/updateVotingRecord.php?id={$votingRecord->getId()}\">Edit</a>" : '';
 				echo "
 				     <tr><td>$editButton</td>
 					<td>{$votingRecord->getMember()}</td>

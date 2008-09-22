@@ -11,14 +11,20 @@ $date = View::escape($this->topic->getDate('n/j/Y'));
 $description = View::escape($this->topic->getDescription());
 $synopsis = View::escape($this->topic->getSynopsis());
 $editButton = '';
+$viewInto ='';
 if (userHasRole(array('Administrator','Clerk')))
 	{
 		$url = new URL(BASE_URL.'/topics/updateTopic.php');
 		$url->topic_id = $this->topic->getId();
 		$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";		}
+	$url = new URL(BASE_URL.'/topics/viewTopic.php');
+	$url->topic_id = $this->topic->getId();
+
+
 ?>
+
 <div class="interfaceBox">
-	<h1><?php echo $editButton; echo $type." ".$number ?></h1>
+	<h1><?php echo "$editButton Legislation: "; echo "<a href=\"$url\">".$type." ".$number."</a>"; ?></h1>
 	<p><b><?php echo "Date: ".$date; ?></b></p>
 	<p><b><?php echo $description; ?></b></p>
 	<p><?php echo $synopsis; ?></p>

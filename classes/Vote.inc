@@ -172,7 +172,7 @@ class Vote extends ActiveRecord
 	{
 		if ($this->id)
 		{
-			return new VoteRecordList(array('vote_id'=>$this->id));
+			return new VotingRecordList(array('vote_id'=>$this->id));
 		}
 		else return array();
 	}

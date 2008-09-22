@@ -31,8 +31,8 @@
 			}
 
 			$results = array();
-			$results[] = count($vote->getRecords('pass'));
-			$results[] = count($vote->getRecords('fail'));
+			$results[] = count($vote->getRecords('yes'));
+			$results[] = count($vote->getRecords('no'));
 			$results[] = count($vote->getRecords('absent'));
 			$results[] = count($vote->getRecords('abstain'));
 			$results = implode('</td><td>',$results);
