@@ -13,7 +13,7 @@ $template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
 $template->blocks[] = new Block('votes/voteInfo.inc',array('vote'=>$vote));
 
 if($vote->hasVotingRecords()){
-	$voteRecordList =  $vote->getVotingRecords();
-	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('voteRecordList'=>$voteRecordList,'vote'=>$vote));
+	$votingRecordList =  $vote->getVotingRecords();
+	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('votingRecordList'=>$votingRecordList,'vote'=>$vote));
 }
 echo $template->render();

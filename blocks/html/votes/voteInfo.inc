@@ -7,6 +7,8 @@
  */
 $type = View::escape($this->vote->getVoteType());
 $date = $this->vote->getDate('n/j/Y');
+$outcome = $this->vote->getOutcome();
+if($outcome) $outcome = ucfirst($outcome);
 
 $editButton = '';
 $viewInto ='';
@@ -23,5 +25,5 @@ if (userHasRole(array('Administrator','Clerk')))
 ?>
 
 <div class="interfaceBox">
-	<h1><?php echo "$editButton Vote: "; echo "<a href=\"$url\">".$type." ".$date."</a>"; ?></h1>
+	<h1><?php echo "$editButton Vote: "; echo "$type $date $outcome"; ?></h1>
 </div>

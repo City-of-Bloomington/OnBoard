@@ -9,16 +9,16 @@
 		<?php
 			if (userHasRole(array('Administrator','Clerk')))
 			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Add</a>";
+				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Add/Edit</a>";
 			}
 		?>
 		Voting Records
 	</h1>
 	<table>
 	<?php
-			foreach($this->voteRecordList as $votingRecord)
+			foreach($this->votingRecordList as $votingRecord)
 			{
-				$editButton = userHasRole(array('Clerk','Administrator')) ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/updateVotingRecord.php?id={$votingRecord->getId()}\">Edit</a>" : '';
+				$editButton ="";// userHasRole(array('Clerk','Administrator')) ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Edit</a>" : '';
 				echo "
 				     <tr><td>$editButton</td>
 					<td>{$votingRecord->getMember()}</td>

@@ -43,12 +43,11 @@ class VotingRecord extends ActiveRecord
 	public function validate()
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->member_id || !$this->vote_id || !$this->vote)
+		if (!$this->member_id || !$this->vote_id)
 		{
 			throw new Exception('missingRequiredFields');
 		}
 	}
-
 	/**
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
@@ -61,7 +60,7 @@ class VotingRecord extends ActiveRecord
 		$fields = array();
 		$fields['member_id'] = $this->member_id;
 		$fields['vote_id'] = $this->vote_id;
-		$fields['memberVote'] = $this->memberVote;
+		$fields['memberVote'] = $this->memberVote ? $this->memberVote:null;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -136,6 +135,11 @@ class VotingRecord extends ActiveRecord
 	public function setMember($member) { $this->member_id = $member->getId(); $this->member = $member; }
 	public function setVote($vote) { $this->vote_id = $vote->getId(); $this->vote = $vote; }
 
+	public function getCommittee_id(){
+		$vote = $this->getVote();
+		$topic = $vote->getTopic()->getCommittee_id();
+		return $topic->getCommittee_id();
+	}
 
 	#----------------------------------------------------------------
 	# Custom Functions

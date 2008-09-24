@@ -8,7 +8,7 @@ class MemberList extends PDOResultIterator
 
 	public function __construct($fields=null)
 	{
-		$this->select = 'select members.id as id from members ';
+		$this->select = 'select m.id as id from members m ';
 		if (is_array($fields)) $this->find($fields);
 	}
 
@@ -24,27 +24,27 @@ class MemberList extends PDOResultIterator
 		$parameters = array();
 		if (isset($fields['id']))
 		{
-			$options[] = 'id=:id';
+			$options[] = 'm.id=:id';
 			$parameters[':id'] = $fields['id'];
 		}
 		if (isset($fields['seat_id']))
 		{
-			$options[] = 'seat_id=:seat_id';
+			$options[] = 'm.seat_id=:seat_id';
 			$parameters[':seat_id'] = $fields['seat_id'];
 		}
 		if (isset($fields['user_id']))
 		{
-			$options[] = 'user_id=:user_id';
+			$options[] = 'm.user_id=:user_id';
 			$parameters[':user_id'] = $fields['user_id'];
 		}
 		if (isset($fields['term_start']))
 		{
-			$options[] = 'term_start=:term_start';
+			$options[] = 'm.term_start=:term_start';
 			$parameters[':term_start'] = $fields['term_start'];
 		}
 		if (isset($fields['term_end']))
 		{
-			$options[] = 'term_end=:term_end';
+			$options[] = 'm.term_end=:term_end';
 			$parameters[':term_end'] = $fields['term_end'];
 		}
 
@@ -54,13 +54,10 @@ class MemberList extends PDOResultIterator
 		# to $this->joins here
 		if (isset($fields['committee_id']))
 		{
-		/*
-			$options[] = 'term_end=:term_end';
-			$parameters[':term_end'] = $fields['term_end'];
-		*/
+			$this->joins.=" left join seats s on m.seat_id=s.id ";  
+			$options[] = 's.committee_id=:committee_id';
+			$parameters[':committee_id'] = $fields['committee_id'];
 		}
-
-
 		$this->populateList($options,$parameters);
 	}
 

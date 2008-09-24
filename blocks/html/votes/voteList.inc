@@ -36,10 +36,11 @@
 			$results[] = count($vote->getRecords('absent'));
 			$results[] = count($vote->getRecords('abstain'));
 			$results = implode('</td><td>',$results);
-
+			$url = new URL(BASE_URL.'/votes/viewVote.php');
+			$url->vote_id = $vote->getId();
 			echo "
-		    <tr><td>$editButton</td>
-				<td>{$vote->getVoteType()}</td>
+		        <tr><td>$editButton</td>
+				<td><a href=\"$url\">{$vote->getVoteType()}</a></td>
 				<td>{$vote->getDate('n/j/Y')}</td>
 				<td>$results</td>
 				<td>{$vote->getOutcome()}</td>";

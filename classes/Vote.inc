@@ -99,8 +99,43 @@ class Vote extends ActiveRecord
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
-	}
 
+		//
+		// when  a new vote record is created we add dumming 
+		// votingRecord as well but the value for memberVote as Null
+		// till it is updated by the Clerk
+		//	
+		$this->addVotingRecords();
+	}
+	//
+	public function addVotingRecords(){
+		//
+		// first get the list of members in this committee
+		//
+		$top = $this->getTopic();
+		$committee_id = $top->getCommittee_id();
+		echo " 2 ECO follows ";
+		echo " ECO id = ".$committee_id;
+		$PDO = Database::getConnection();
+		$sql = "select m.id as id from members m,seats s 
+			where s.id=m.seat_id and m.term_end > now() 
+			and s.committee_id=$committee_id";
+
+		$stmt = $PDO->query($sql);
+		$result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+		// print_r($result);
+		if (!count($result)) { throw new Exception('votes/unknownVote'); }
+
+		foreach($result as $value) { 
+			if ($value){
+				$vt = new VotingRecord();
+				$vt->setVote_id($this->id);
+				$vt->setMember_id($value);
+				$vt->save();
+			}
+		}
+
+	}
 	#----------------------------------------------------------------
 	# Generic Getters
 	#----------------------------------------------------------------

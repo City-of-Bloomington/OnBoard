@@ -112,7 +112,7 @@ create table votingRecords (
 	id int unsigned not null primary key auto_increment,
 	member_id int unsigned not null,
 	vote_id int unsigned not null,
-	memberVote enum('yes','no','abstain','absent') not null,
+	memberVote enum('yes','no','abstain','absent'),
 	foreign key (vote_id)  references votes(id),
 	foreign key (member_id) references members(id)
 ) engine=InnoDB;
