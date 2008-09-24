@@ -5,10 +5,10 @@
  */
 verifyUser('Administrator');
 if(isset($_GET['vote_id'])){
-  $vote = new Vote($_GET['vote_id']); 
-  $topic = $vote->getTopic();
-  $votingRecordList = New VotingRecordList();
-  $votingRecordList->find(array('vote_id'=>$_GET['vote_id']));
+       	$vote = new Vote($_GET['vote_id']); 
+       	$topic = $vote->getTopic();
+  	$votingRecordList = New VotingRecordList();
+  	$votingRecordList->find(array('vote_id'=>$_GET['vote_id']));
 
 }
 
@@ -17,7 +17,7 @@ if (isset($_POST['votingRecord']))
 	// print_r($_POST);
 	foreach($_POST['votingRecord'] as $field=>$value)
 	{
-
+		//
 		// echo $field." ".$value."\n"; 
 		// 
 		// case of id field and array value
