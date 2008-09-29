@@ -1,30 +1,30 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-require_once 'TestCases/AppointerListTest.php';
-require_once 'TestCases/AppointerTest.php';
-require_once 'TestCases/CommitteeListTest.php';
-require_once 'TestCases/CommitteeTest.php';
-require_once 'TestCases/MemberListTest.php';
-require_once 'TestCases/MemberTest.php';
-require_once 'TestCases/RequirementListTest.php';
-require_once 'TestCases/RequirementTest.php';
-require_once 'TestCases/RoleListTest.php';
-require_once 'TestCases/RoleTest.php';
-require_once 'TestCases/SeatListTest.php';
-require_once 'TestCases/SeatTest.php';
-require_once 'TestCases/TopicListTest.php';
-require_once 'TestCases/TopicTest.php';
-require_once 'TestCases/TopicTypeListTest.php';
-require_once 'TestCases/TopicTypeTest.php';
-require_once 'TestCases/UserListTest.php';
-require_once 'TestCases/UserTest.php';
-require_once 'TestCases/VoteListTest.php';
-require_once 'TestCases/VoteTest.php';
-require_once 'TestCases/VoteTypeListTest.php';
-require_once 'TestCases/VoteTypeTest.php';
-require_once 'TestCases/VotingRecordListTest.php';
-require_once 'TestCases/VotingRecordTest.php';
+require_once 'ClassTests/AppointerListTest.php';
+require_once 'ClassTests/AppointerTest.php';
+require_once 'ClassTests/CommitteeListTest.php';
+require_once 'ClassTests/CommitteeTest.php';
+require_once 'ClassTests/MemberListTest.php';
+require_once 'ClassTests/MemberTest.php';
+require_once 'ClassTests/RequirementListTest.php';
+require_once 'ClassTests/RequirementTest.php';
+require_once 'ClassTests/RoleListTest.php';
+require_once 'ClassTests/RoleTest.php';
+require_once 'ClassTests/SeatListTest.php';
+require_once 'ClassTests/SeatTest.php';
+require_once 'ClassTests/TopicListTest.php';
+require_once 'ClassTests/TopicTest.php';
+require_once 'ClassTests/TopicTypeListTest.php';
+require_once 'ClassTests/TopicTypeTest.php';
+require_once 'ClassTests/UserListTest.php';
+require_once 'ClassTests/UserTest.php';
+require_once 'ClassTests/VoteListTest.php';
+require_once 'ClassTests/VoteTest.php';
+require_once 'ClassTests/VoteTypeListTest.php';
+require_once 'ClassTests/VoteTypeTest.php';
+require_once 'ClassTests/VotingRecordListTest.php';
+require_once 'ClassTests/VotingRecordTest.php';
 
 class ClassTests
 {
