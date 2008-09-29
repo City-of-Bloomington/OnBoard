@@ -26,11 +26,11 @@ require_once 'ClassTests/VoteTypeTest.php';
 require_once 'ClassTests/VotingRecordListTest.php';
 require_once 'ClassTests/VotingRecordTest.php';
 
-class ClassTests
+class ClassTests extends PHPUnit_Framework_TestSuite
 {
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('Committee Manager Classes');
+        $suite = new ClassTests('Committee Manager Classes');
 
 		$suite->addTestSuite('AppointerListTest');
 		$suite->addTestSuite('AppointerTest');
