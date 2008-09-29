@@ -6,7 +6,6 @@ require_once 'PHPUnit/Framework.php';
  */
 class AppointerTest extends PHPUnit_Framework_TestCase
 {
-	protected $test_id;
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
@@ -72,18 +71,15 @@ class AppointerTest extends PHPUnit_Framework_TestCase
     		$this->assertGreaterThan(1,$appointer->getId());
     	}
     	catch (Exception $e) { $this->fail($e->getMessage()); }
-
-    	$this->test_id = $appointer->getId();
     }
 
     /**
      * @todo Implement testDelete().
      */
-    public function testDelete() {
-    	$appointer = new Appointer($this->test_id);
+    public function testDelete()
+    {
+    	$appointer = new Appointer(6);
     	try { $appointer->delete(); }
     	catch (Exception $e) { $this->fail($e->getMessage()); }
-
-    	unset($this->test_id);
     }
 }
