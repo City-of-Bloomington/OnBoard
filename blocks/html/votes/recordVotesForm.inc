@@ -12,7 +12,8 @@
 	<input name="vote_id" type="hidden" value="<?php echo $this->vote->getId(); ?>" />
 
 	<table>
-	<tr><th>Members</th>
+	<tr><th>Seat</th>
+		<th>Member</th>
 		<th>Yes</th>
 		<th>No</th>
 		<th>Abstain</th>
@@ -21,7 +22,8 @@
 	<?php
 		foreach($this->vote->getCommittee()->getCurrentMembers() as $member)
 		{
-			$name = View::escape("{$member->getFirstname()} {$member->getLastname()}");
+			$title = View::escape($member->getSeat()->getTitle());
+			$memberName = View::escape("{$member->getFirstname()} {$member->getLastname()}");
 			$votingRecord = $this->vote->getVotingRecord($member);
 
 			$yesChecked = $votingRecord->getMemberVote()=='yes' ? ' checked="checked"' : '';
@@ -30,7 +32,8 @@
 			$absentChecked = $votingRecord->getMemberVote()=='absent' ? ' checked="checked"' : '';
 
 			echo "
-			<tr><th>$name</th>
+			<tr><th>$title</th>
+				<th>$memberName</th>
 				<td><input name=\"votingRecord[{$member->getId()}]\"
 							type=\"radio\"
 							value=\"yes\"
