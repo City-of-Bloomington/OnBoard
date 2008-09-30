@@ -7,11 +7,7 @@ require_once 'PHPUnit/Framework.php';
  */
 class UserTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    User
-     * @access protected
-     */
-    protected $object;
+	protected $user;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -21,7 +17,7 @@ class UserTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new User;
+    	$this->user = new User();
     }
 
     /**
@@ -64,134 +60,70 @@ class UserTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @todo Implement testGetUsername().
-     */
-    public function testGetUsername() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testUsername() {
+    	$this->user->setUsername('username');
+    	$this->assertEquals($this->user->getUsername(),'username');
     }
 
-    /**
-     * @todo Implement testGetAuthenticationMethod().
-     */
-    public function testGetAuthenticationMethod() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testAuthenticationMethod() {
+    	$this->user->setAuthenticationMethod('local');
+    	$this->assertEquals($this->user->getAuthenticationMethod(),'local');
     }
 
-    /**
-     * @todo Implement testGetFirstname().
-     */
-    public function testGetFirstname() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testFirstname() {
+    	$this->user->setFirstname('firstname');
+    	$this->assertEquals($this->user->getFirstname(),'firstname');
     }
 
-    /**
-     * @todo Implement testGetLastname().
-     */
-    public function testGetLastname() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testLastname() {
+    	$this->user->setLastname('lastname');
+    	$this->assertEquals($this->user->getLastname(),'lastname');
     }
 
-    /**
-     * @todo Implement testGetEmail().
-     */
-    public function testGetEmail() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testGetFullname() {
+    	$this->user->setFirstname('firstname');
+    	$this->user->setLastname('lastname');
+    	$this->assertEquals($this->user->getFullname(),'firstname lastname');
     }
 
-    /**
-     * @todo Implement testGetAddress().
-     */
-    public function testGetAddress() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testEmail() {
+    	$this->user->setEmail('email');
+    	$this->assertEquals($this->user->getEmail(),'email');
     }
 
-    /**
-     * @todo Implement testGetCity().
-     */
-    public function testGetCity() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testAddress() {
+    	$this->user->setAddress('address');
+    	$this->assertEquals($this->user->getAddress(),'address');
     }
 
-    /**
-     * @todo Implement testGetZipcode().
-     */
-    public function testGetZipcode() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testCity() {
+    	$this->user->setCity('city');
+    	$this->assertEquals($this->user->getCity(),'city');
     }
 
-    /**
-     * @todo Implement testGetHomePhone().
-     */
-    public function testGetHomePhone() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testZipcode() {
+    	$this->user->setZipcode('zip');
+    	$this->assertEquals($this->user->getZipcode(),'zip');
     }
 
-    /**
-     * @todo Implement testGetWorkPhone().
-     */
-    public function testGetWorkPhone() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testHomePhone() {
+    	$this->user->setHomePhone('homephone');
+    	$this->assertEquals($this->user->getHomePhone(),'homephone');
     }
 
-    /**
-     * @todo Implement testGetAbout().
-     */
-    public function testGetAbout() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testWorkPhone() {
+    	$this->user->setWorkPhone('workphone');
+    	$this->assertEquals($this->user->getWorkPhone(),'workphone');
     }
 
-    /**
-     * @todo Implement testGetPhotoPath().
-     */
-    public function testGetPhotoPath() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testAbout() {
+    	$this->user->setAbout('about');
+    	$this->assertEquals($this->user->getAbout(),'about');
     }
 
-    /**
-     * @todo Implement testSetUsername().
-     */
-    public function testSetUsername() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testPhotoPath() {
+    	$this->user->setPhotoPath('photopath');
+    	$this->assertEquals($this->user->getPhotoPath(),'photopath');
     }
 
     /**
@@ -208,116 +140,6 @@ class UserTest extends PHPUnit_Framework_TestCase
      * @todo Implement testSetPasswordHash().
      */
     public function testSetPasswordHash() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetAuthenticationMethod().
-     */
-    public function testSetAuthenticationMethod() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetFirstname().
-     */
-    public function testSetFirstname() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetLastname().
-     */
-    public function testSetLastname() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetEmail().
-     */
-    public function testSetEmail() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetAddress().
-     */
-    public function testSetAddress() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetCity().
-     */
-    public function testSetCity() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetZipcode().
-     */
-    public function testSetZipcode() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetHomePhone().
-     */
-    public function testSetHomePhone() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetWorkPhone().
-     */
-    public function testSetWorkPhone() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetAbout().
-     */
-    public function testSetAbout() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testSetPhotoPath().
-     */
-    public function testSetPhotoPath() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
           'This test has not been implemented yet.'

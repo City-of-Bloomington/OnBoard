@@ -38,7 +38,7 @@ class Member extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
-			$this->start = time();
+			$this->term_start = time();
 		}
 	}
 
@@ -50,7 +50,7 @@ class Member extends ActiveRecord
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->seat_id || !$this->user_id) { throw new Exception('missingRequiredFields'); }
-		if (!$this->start) { $this->start = time(); }
+		if (!$this->term_start) { $this->term_start = time(); }
 	}
 
 	/**
@@ -101,6 +101,20 @@ class Member extends ActiveRecord
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
+	}
+
+	public function delete()
+	{
+		if ($this->id)
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('delete from votingRecords where member_id=?');
+			$query->execute(array($this->id));
+
+			$query = $PDO->prepare('delete from members where id=?');
+			$query->execute(array($this->id));
+		}
 	}
 
 	#----------------------------------------------------------------
@@ -181,7 +195,7 @@ class Member extends ActiveRecord
 	public function getFirstname() { return $this->getUser()->getFirstname(); }
 	public function getLastname() { return $this->getUser()->getLastname(); }
 
-	public function __toString() {
+	public function getFullname() {
 		return $this->getUser()->getFirstname()." ".$this->getUser()->getLastname();
 	}
 }

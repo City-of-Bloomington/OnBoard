@@ -2,30 +2,31 @@
 /**
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @param Vote $this->vote
  */
 ?>
 <div class="interfaceBox">
 	<h1>
 		<?php
+			echo View::escape($this->vote->getVoteType());
 			if (userHasRole(array('Administrator','Clerk')))
 			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Add/Edit</a>";
+				$url = new URL(BASE_URL.'/votes/recordVotes.php');
+				$url->vote_id = $this->vote->getId();
+				echo "<button type=\"button\" onclick=\"document.location.href='$url';\">Enter Votes</button>";
 			}
 		?>
-		Voting Records
 	</h1>
 	<table>
 	<?php
-			foreach($this->votingRecordList as $votingRecord)
-			{
-				$editButton ="";// userHasRole(array('Clerk','Administrator')) ? "<a class=\"edit button\" href=\"".BASE_URL."/votingRecords/addVotingRecord.php?vote_id={$this->vote->getId()}\">Edit</a>" : '';
-				echo "
-				     <tr><td>$editButton</td>
-					<td>{$votingRecord->getMember()}</td>
-					<td>{$votingRecord->getMemberVote()}</td>
-				    </tr>
-				";
-			}
-		?>
+		foreach($this->vote->getVotingRecords() as $votingRecord)
+		{
+			echo "
+			<tr><td>{$votingRecord->getMember()->getFullname()}</td>
+				<td>{$votingRecord->getMemberVote()}</td>
+			</tr>
+			";
+		}
+	?>
 	</table>
 </div>

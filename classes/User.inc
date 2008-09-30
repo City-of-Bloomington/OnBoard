@@ -185,6 +185,14 @@ class User extends SystemUser
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
 	/**
+	 * @return string
+	 */
+	public function getFullname()
+	{
+		return "{$this->firstname} {$this->lastname}";
+	}
+
+	/**
 	 * Returns an array of Role names with the role id as the array index
 	 * @return array
 	 */

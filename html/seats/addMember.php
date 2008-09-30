@@ -38,8 +38,21 @@ if (isset($_POST['member']))
 		$member->$set($value);
 	}
 
+	# Update the User's personal information
+	$user->setFirstname($_POST['user']['firstname']);
+	$user->setLastname($_POST['user']['lastname']);
+	$user->setEmail($_POST['user']['email']);
+	$user->setAddress($_POST['user']['address']);
+	$user->setCity($_POST['user']['city']);
+	$user->setZipCode($_POST['user']['zipcode']);
+	$user->setHomePhone($_POST['user']['homePhone']);
+	$user->setWorkPhone($_POST['user']['workPhone']);
+	$user->setAbout($_POST['user']['about']);
+	$user->setPhotoPath($_POST['user']['photoPath']);
+
 	try
 	{
+		$user->save();
 		$member->save();
 		Header('Location: '.$seat->getURL());
 		exit();

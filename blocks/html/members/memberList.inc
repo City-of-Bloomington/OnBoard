@@ -29,9 +29,23 @@ if (isset($this->seat) && userHasRole(array('Administrator','Clerk')))
 				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 			}
 
+			$deleteButton = '';
+			if (userHasRole(array('Administrator','Clerk')))
+			{
+				$url = new URL(BASE_URL.'/members/deleteMember.php');
+				$url->member_id = $member->getId();
+				$deleteButton = "
+				<button type=\"button\"
+						class=\"delete\"
+						onclick=\"FRAMEWORK.deleteConfirmation('$url');\">
+					Delete
+				</button>
+				";
+			}
+
 			$name = View::escape("{$member->getFirstname()} {$member->getLastname()}");
 			echo "
-			<tr><td>$editButton</td>
+			<tr><td>$editButton $deleteButton</td>
 				<td>$name</td>
 				<td>{$member->getTerm_start('n/j/Y')} - {$member->getTerm_end('n/j/Y')}</td>
 			</tr>

@@ -7,13 +7,17 @@
  */
 $vote = new Vote($_GET['vote_id']);
 $topic = $vote->getTopic();
+
 $template = new Template();
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$topic->getCommittee()));
 $template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
 $template->blocks[] = new Block('votes/voteInfo.inc',array('vote'=>$vote));
 
-if($vote->hasVotingRecords()){
-	$votingRecordList =  $vote->getVotingRecords();
-	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('votingRecordList'=>$votingRecordList,'vote'=>$vote));
+if ($vote->hasVotingRecords()) {
+	$block = new Block('votingRecords/votingRecordList.inc');
+	$block->votingRecordList = $vote->getVotingRecords();
+	$block->vote = $vote;
+	$template->blocks[] = $block;
 }
+
 echo $template->render();

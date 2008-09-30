@@ -108,10 +108,7 @@ class Committee extends ActiveRecord
 	{
 		return new SeatList(array('committee_id'=>$this->id));
 	}
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+
 	/**
 	 * @return TopicList
 	 */
@@ -126,5 +123,13 @@ class Committee extends ActiveRecord
 	public function getURL()
 	{
 		return BASE_URL.'/committees/viewCommittee.php?committee_id='.$this->id;
+	}
+
+	/**
+	 * @return MemberList
+	 */
+	public function getCurrentMembers()
+	{
+		return new MemberList(array('committee_id'=>$this->id,'status'=>'current'));
 	}
 }

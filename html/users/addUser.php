@@ -3,15 +3,29 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param REQUEST return_url
  */
 verifyUser('Administrator');
 if (isset($_POST['user']))
 {
 	$user = new User();
-	foreach($_POST['user'] as $field=>$value)
+	# Both clerk and admin can edit these fields
+	$fields = array('firstname','lastname','email','address','city','zipcode',
+				'homePhone','workPhone','about','photoPath');
+	if (userHasRole('Administrator'))
 	{
-		$set = 'set'.ucfirst($field);
-		$user->$set($value);
+		$fields[] = 'authenticationMethod';
+		$fields[] = 'username';
+		$fields[] = 'password';
+		$fields[] = 'roles';
+	}
+	foreach($fields as $field)
+	{
+		if (isset($_POST['user'][$field]))
+		{
+			$set = 'set'.ucfirst($field);
+			$user->$set($_POST['user'][$field]);
+		}
 	}
 
 	# Load their information from LDAP
@@ -35,5 +49,9 @@ if (isset($_POST['user']))
 }
 
 $template = new Template();
-$template->blocks[] = new Block('users/addUserForm.inc');
+
+$form = new Block('users/addUserForm.inc');
+$form->return_url = $_REQUEST['return_url'];
+$template->blocks[] = $form;
+
 echo $template->render();

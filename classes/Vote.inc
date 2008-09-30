@@ -13,7 +13,7 @@ class Vote extends ActiveRecord
 
 	private $voteType;
 	private $topic;
-	
+
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -99,43 +99,8 @@ class Vote extends ActiveRecord
 		$query = $PDO->prepare($sql);
 		$query->execute($values);
 		$this->id = $PDO->lastInsertID();
-
-		//
-		// when  a new vote record is created we add dumming 
-		// votingRecord as well but the value for memberVote as Null
-		// till it is updated by the Clerk
-		//	
-		$this->addVotingRecords();
 	}
-	//
-	public function addVotingRecords(){
-		//
-		// first get the list of members in this committee
-		//
-		$top = $this->getTopic();
-		$committee_id = $top->getCommittee_id();
-		echo " 2 ECO follows ";
-		echo " ECO id = ".$committee_id;
-		$PDO = Database::getConnection();
-		$sql = "select m.id as id from members m,seats s 
-			where s.id=m.seat_id and m.term_end > now() 
-			and s.committee_id=$committee_id";
 
-		$stmt = $PDO->query($sql);
-		$result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-		// print_r($result);
-		if (!count($result)) { throw new Exception('votes/unknownVote'); }
-
-		foreach($result as $value) { 
-			if ($value){
-				$vt = new VotingRecord();
-				$vt->setVote_id($this->id);
-				$vt->setMember_id($value);
-				$vt->save();
-			}
-		}
-
-	}
 	#----------------------------------------------------------------
 	# Generic Getters
 	#----------------------------------------------------------------
@@ -198,18 +163,75 @@ class Vote extends ActiveRecord
 	public function __toString(){
 		return $this->getVoteType().' '.$this->getDate('n/j/Y');
 	}
-	public function getRecords($memberVote=null) {
-		$fields = array('vote_id'=>$this->id);
-		if($memberVote){ $fields['memberVote'] = $memberVote; }
-		return new VotingRecordList($fields);
+
+	/**
+	 * Returns just one member's record on this vote
+	 * @param Member $member
+	 * @return VotingRecord
+	 */
+	public function getVotingRecord($member)
+	{
+		$list = new VotingRecordList(array('vote_id'=>$this->id,'member_id'=>$member->getId()));
+		if (count($list))
+		{
+			return $list[0];
+		}
+		else
+		{
+			$votingRecord = new VotingRecord();
+			$votingRecord->setVote($this);
+			$votingRecord->setMember($member);
+			return $votingRecord;
+		}
 	}
-	public function getVotingRecords()
+
+	/**
+	 * Returns the set of records matching the result you ask for.  If
+	 * no result is given, it returns the full list
+	 * @return VotingRecordList
+	 */
+	public function getVotingRecords($memberVote=null)
 	{
 		if ($this->id)
 		{
-			return new VotingRecordList(array('vote_id'=>$this->id));
+			$fields = array('vote_id'=>$this->id);
+			if ($memberVote) { $fields['memberVote'] = $memberVote; }
+			return new VotingRecordList($fields);
 		}
 		else return array();
 	}
 	public function hasVotingRecords() { return count($this->getVotingRecords()) ? true : false; }
+
+	/**
+	 * @param array $records A POST array of records with member_id as the index
+	 */
+	public function setVotingRecords(array $records)
+	{
+		$PDO = Database::getConnection();
+
+		$query = $PDO->prepare('delete from votingRecords where vote_id=?');
+		$query->execute(array($this->id));
+
+		$query = $PDO->prepare('insert votingRecords set vote_id=?,member_id=?,memberVote=?');
+		foreach($records as $member_id=>$memberVote)
+		{
+			$query->execute(array($this->id,$member_id,$memberVote));
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getURL()
+	{
+		return BASE_URL.'/topics/viewTopic.php?topic_id='.$this->topic_id;
+	}
+
+	/**
+	 * @return Committee
+	 */
+	public function getCommittee()
+	{
+		return $this->getTopic()->getCommittee();
+	}
 }

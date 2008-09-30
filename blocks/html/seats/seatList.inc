@@ -37,11 +37,12 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			$title = View::escape($seat->getTitle());
 			$appointer = View::escape($seat->getAppointer());
 
-			$member = $seat->getMember() ? View::escape($seat->getMember()->getFullName()) : 'Vacant';
-			$member = "<a href=\"".BASE_URL."/seats/viewSeat.php?seat_id={$seat->getId()}\">$member</a>";
+			$member = $seat->getMember();
+			$memberName = $member ? View::escape($member->getFirstname().' '.$member->getLastname()) : 'Vacant';
+			$memberName = "<a href=\"".BASE_URL."/seats/viewSeat.php?seat_id={$seat->getId()}\">$memberName</a>";
 			echo "
 			<tr><td>$editButton</td>
-				<td>$member</td>
+				<td>$memberName</td>
 				<td>$title</td>
 				<td>$appointer</td>
 			</tr>

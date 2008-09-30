@@ -33,6 +33,7 @@ class VotingRecord extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
+			$this->memberVote = 'absent';
 		}
 	}
 
@@ -47,6 +48,8 @@ class VotingRecord extends ActiveRecord
 		{
 			throw new Exception('missingRequiredFields');
 		}
+
+		if (!$this->memberVote) { $this->meberVote = 'absent'; }
 	}
 	/**
 	 * This generates generic SQL that should work right away.
@@ -60,7 +63,7 @@ class VotingRecord extends ActiveRecord
 		$fields = array();
 		$fields['member_id'] = $this->member_id;
 		$fields['vote_id'] = $this->vote_id;
-		$fields['memberVote'] = $this->memberVote ? $this->memberVote:null;
+		$fields['memberVote'] = $this->memberVote;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have

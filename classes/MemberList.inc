@@ -48,13 +48,19 @@ class MemberList extends PDOResultIterator
 			$parameters[':term_end'] = $fields['term_end'];
 		}
 
+		if (isset($fields['status'])=='current')
+		{
+			$options[] = 'm.term_start<now()';
+			$options[] = '(m.term_end is null or m.term_end>now())';
+		}
+
 
 		# Finding on fields from other tables required joining those tables.
 		# You can add fields from other tables to $options by adding the join SQL
 		# to $this->joins here
 		if (isset($fields['committee_id']))
 		{
-			$this->joins.=" left join seats s on m.seat_id=s.id ";  
+			$this->joins.=" left join seats s on m.seat_id=s.id ";
 			$options[] = 's.committee_id=:committee_id';
 			$parameters[':committee_id'] = $fields['committee_id'];
 		}

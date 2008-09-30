@@ -11,7 +11,7 @@ class MemberTest extends PHPUnit_Framework_TestCase
      * @var    Member
      * @access protected
      */
-    protected $object;
+    protected $member;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -21,7 +21,7 @@ class MemberTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Member;
+        $this->member = new Member();
     }
 
     /**
@@ -35,13 +35,18 @@ class MemberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @todo Implement testValidate().
+     * The new member we set up is empty it should not validate
      */
     public function testValidate() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	try
+    	{
+    		$this->member->validate();
+    		$this->fail('Member failed to throw a validation exception');
+    	}
+    	catch (Exception $e)
+    	{
+    		# Success
+    	}
     }
 
     /**
@@ -65,23 +70,19 @@ class MemberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @todo Implement testGetSeat_id().
+     * Setting the seat_id requires giving a valid seat
      */
-    public function testGetSeat_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testSeat_id() {
+    	$this->setSeat_id(1);
+    	$this->assertEquals($this->getSeat_id(),1);
     }
 
     /**
-     * @todo Implement testGetUser_id().
+     * Setting the user_id requires giving a valid user
      */
     public function testGetUser_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	$this->setUser_id(1);
+    	$this->assertEquals($this->getUser_id(),1);
     }
 
     /**
@@ -205,13 +206,12 @@ class MemberTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @todo Implement test__toString().
+     * @todo Implement testGetFullname().
      */
-    public function test__toString() {
+    public function testGetFullname() {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
           'This test has not been implemented yet.'
         );
     }
 }
-?>

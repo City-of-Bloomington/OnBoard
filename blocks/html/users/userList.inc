@@ -5,11 +5,13 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param UserList $this->userList
  */
+$addButton = '';
 if (userHasRole('Administrator'))
 {
-	$addButton = '<a class="add button" href="'.BASE_URL.'/users/addUser.php">Add</a>';
+	$url = new URL(BASE_URL.'/users/addUser.php');
+	$url->return_url = $_SERVER['REQUEST_URI'];
+	$addButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }
-else { $addButton = ''; }
 ?>
 <div class="interfaceBox">
 	<h1><?php echo $addButton; ?>Users</h1>
@@ -17,25 +19,39 @@ else { $addButton = ''; }
 	<?php
 		foreach($this->userList as $user)
 		{
+			$editButton = '';
+			$deleteButton = '';
 			if (userHasRole('Administrator'))
 			{
-				$editButton = "<a class=\"edit button\" href=\"".BASE_URL."/users/updateUser.php?id={$user->getId()}\">Edit</a>";
-				$deleteButton = "<button type=\"button\" class=\"delete\" onclick=\"FRAMEWORK.deleteConfirmation('deleteUser.php?id={$user->getId()}');\">Delete</button>";
+				$url = new URL(BASE_URL.'/users/updateUser.php');
+				$url->user_id = $user->getId();
+				$url->return_url = $_SERVER['REQUEST_URI'];
+				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+
+				$url = new URL(BASE_URL.'/users/deleteUser.php');
+				$url->user_id = $user->getId();
+				$deleteButton = "
+				<button type=\"button\"
+						class=\"delete\"
+						onclick=\"FRAMEWORK.deleteConfirmation('$url');\">
+					Delete
+				</button>
+				";
 			}
-			else
-			{
-				$editButton = '';
-				$deleteButton = '';
-			}
+
+			$firstname = View::escape($user->getFirstname());
+			$lastname = View::escape($user->getLastname());
+			$roles = implode(' ',$user->getRoles());
 			echo "
-			<tr><td>{$editButton}{$deleteButton}</td>
+			<tr><td>$editButton
+					$deleteButton
+				</td>
 				<td>{$user->getUsername()}</td>
-				<td>{$user->getFirstname()} {$user->getLastname()}</td>
+				<td>$firstname $lastname</td>
 				<td>{$user->getAuthenticationMethod()}</td>
-				<td>
+				<td>$roles</td>
+			</tr>
 			";
-					foreach($user->getRoles() as $role) { echo "$role "; }
-			echo "</td></tr>";
 		}
 	?>
 	</table>

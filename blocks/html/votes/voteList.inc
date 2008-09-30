@@ -18,7 +18,15 @@
 		Votes
 	</h1>
 	<table>
-	<tr><th></th><th>Vote</th><th>Vote Date</th><th>Yes Votes</th><th>No Votes</th><th>Absents</th><th>Absiants</th><th>Final Outcome</th><th></th></tr>
+	<tr><th></th>
+		<th>Vote</th>
+		<th>Vote Date</th>
+		<th>Yes</th>
+		<th>No</th>
+		<th>Absents</th>
+		<th>Abstain</th>
+		<th>Final Outcome</th>
+	</tr>
 	<?php
 	    foreach($this->voteList as $vote)
 		{
@@ -30,27 +38,17 @@
 				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 			}
 
-			$results = array();
-			$results[] = count($vote->getRecords('yes'));
-			$results[] = count($vote->getRecords('no'));
-			$results[] = count($vote->getRecords('absent'));
-			$results[] = count($vote->getRecords('abstain'));
-			$results = implode('</td><td>',$results);
-			$url = new URL(BASE_URL.'/votes/viewVote.php');
-			$url->vote_id = $vote->getId();
 			echo "
-		        <tr><td>$editButton</td>
-				<td><a href=\"$url\">{$vote->getVoteType()}</a></td>
+			<tr><td>$editButton</td>
+				<td><a href=\"{$vote->getURL()}\">{$vote->getVoteType()}</a></td>
 				<td>{$vote->getDate('n/j/Y')}</td>
-				<td>$results</td>
-				<td>{$vote->getOutcome()}</td>";
-			if (userHasRole(array('Administrator','Clerk')))
-			{
-				$url = new URL(BASE_URL.'/votingRecords/addVotingRecord.php');
-				$url->vote_id = $vote->getId();
-				echo "<td><a class=\"add button\" href=\"$url\">Add Voting Record</a></td>";
-			}
-		echo "</tr>";
+				<td>".count($vote->getVotingRecords('yes'))."</td>
+				<td>".count($vote->getVotingRecords('no'))."</td>
+				<td>".count($vote->getVotingRecords('absent'))."</td>
+				<td>".count($vote->getVotingRecords('abstain'))."</td>
+				<td>{$vote->getOutcome()}</td>
+			</tr>
+			";
 		}
 	?>
 	</table>

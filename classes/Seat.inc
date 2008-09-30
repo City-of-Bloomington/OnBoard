@@ -12,6 +12,7 @@ class Seat extends ActiveRecord
 
 	private $committee;
 	private $appointer;
+	private $member; # The current member for this seat
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -149,7 +150,23 @@ class Seat extends ActiveRecord
 	 */
 	public function getMember()
 	{
-		return null;
+		if (!$this->member)
+		{
+			$PDO = Database::getConnection();
+
+			$sql = "select id from members
+					where seat_id=?
+					and term_start<now()
+					and (term_end is null or term_end>now())";
+			$query = $PDO->prepare($sql);
+			$query->execute(array($this->id));
+			$result = $query->fetchAll();
+			if (count($result))
+			{
+				$this->member = new Member($result[0]['id']);
+			}
+		}
+		return $this->member;
 	}
 
 	/**
