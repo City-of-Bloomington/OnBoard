@@ -49,7 +49,7 @@ class Topic extends ActiveRecord
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->topicType_id || !$this->date || !$this->number ||
-			!$this->description || !$this->synopsis || !$this->committee)
+			!$this->description || !$this->synopsis || !$this->committee_id)
 		{
 			throw new Exception('missingRequiredFields');
 		}

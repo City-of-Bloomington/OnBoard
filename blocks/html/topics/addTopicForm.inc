@@ -11,9 +11,8 @@
 	<input type="hidden" name="committee_id" id="committee_id" value="<?php echo $this->committee->getId(); ?>" />
 
 	<table>
-	<tr><td><label>Committee</label></td><td><?php echo $this->committee->getName(); ?></td></tr>
-	<tr><td><label for="topic-type">Type</label></td>
-		<td><select name="topic[topicType_id]" id="topic-type"><option></option>
+	<tr><td><label for="topic-type" class="required">Type</label></td>
+		<td><select name="topic[topicType_id]" id="topic-type">
 			<?php
 				$options = new TopicTypeList();
 				$options->find();
@@ -24,18 +23,26 @@
 			</select>
 		</td>
 	</tr>
-	<tr><td><label for="topic-date">Date</label></td>
-		<td><input name="topic[date]" id="topic-date" onfocus="FRAMEWORK.popupCalendar(this);" size="10" />
+
+	<tr><td><label for="topic-date" class="required">Date</label></td>
+		<td><input name="topic[date]"
+					id="topic-date"
+					maxlength="10"
+					size="10"
+					onfocus="FRAMEWORK.popupCalendar(this);" />
 		</td>
 	</tr>
-	<tr><td><label for="topic-number">Number</label></td>
+	<tr><td><label for="topic-number" class="required">Number</label></td>
 		<td><input name="topic[number]" id="topic-number" /></td></tr>
-	<tr><td><label for="topic-description">Description</label></td>
+
+	<tr><td><label for="topic-description" class="required">Description</label></td>
 		<td><textarea name="topic[description]" id="topic-description" rows="3" cols="60"></textarea></td></tr>
-	<tr><td><label for="topic-synopsis">Dynopsis</label></td>
+
+	<tr><td><label for="topic-synopsis" class="required">Synopsis</label></td>
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"></textarea></td></tr>
 
 	</table>
+
 	<button type="submit" class="submit">Submit</button>
 	<a class="cancel button" href="<?php echo $this->committee->getURL(); ?>">Cancel</a>
 </fieldset>
