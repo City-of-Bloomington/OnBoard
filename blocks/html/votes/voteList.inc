@@ -20,10 +20,10 @@
 	<table>
 	<tr><th></th>
 		<th>Vote</th>
-		<th>Vote Date</th>
+		<th>Date</th>
 		<th>Yes</th>
 		<th>No</th>
-		<th>Absents</th>
+		<th>Absent</th>
 		<th>Abstain</th>
 		<th>Final Outcome</th>
 	</tr>
@@ -39,8 +39,8 @@
 			}
 
 			echo "
-			<tr><td>$editButton</td>
-				<td><a href=\"{$vote->getURL()}\">{$vote->getVoteType()}</a></td>
+			<tr><th>$editButton</th>
+				<th><a href=\"{$vote->getURL()}\">{$vote->getVoteType()}</a></th>
 				<td>{$vote->getDate('n/j/Y')}</td>
 				<td>".count($vote->getVotingRecords('yes'))."</td>
 				<td>".count($vote->getVotingRecords('no'))."</td>

@@ -7,23 +7,17 @@
  */
 $type = View::escape($this->vote->getVoteType());
 $date = $this->vote->getDate('n/j/Y');
-$outcome = $this->vote->getOutcome();
-if($outcome) $outcome = ucfirst($outcome);
+$outcome = ucfirst($this->vote->getOutcome());
 
 $editButton = '';
-$viewInto ='';
 if (userHasRole(array('Administrator','Clerk')))
-	{
-		$url = new URL(BASE_URL.'/votes/updateVote.php');
-		$url->vote_id = $this->vote->getId();
-		$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";		
-	}
-
-	$url = new URL(BASE_URL.'/votes/viewVote.php');
+{
+	$url = new URL(BASE_URL.'/votes/updateVote.php');
 	$url->vote_id = $this->vote->getId();
-
+	$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+}
 ?>
 
 <div class="interfaceBox">
-	<h1><?php echo "$editButton Vote: "; echo "$type $date $outcome"; ?></h1>
+	<h1><?php echo "$editButton Vote: $type $date $outcome"; ?></h1>
 </div>
