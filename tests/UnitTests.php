@@ -1,7 +1,10 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-require_once 'UnitTests/MemberTest.php';
+require_once 'UnitTests/AppointerUnitTest.php';
+require_once 'UnitTests/MemberUnitTest.php';
+require_once 'UnitTests/RequirementUnitTest.php';
+require_once 'UnitTests/RoleUnitTest.php';
 
 class UnitTests extends PHPUnit_Framework_TestSuite
 {
@@ -9,7 +12,10 @@ class UnitTests extends PHPUnit_Framework_TestSuite
     {
         $suite = new UnitTests('Committee Manager Unit Tests');
 
-		$suite->addTestSuite('MemberTest');
+		$suite->addTestSuite('AppointerUnitTest');
+		$suite->addTestSuite('MemberUnitTest');
+		$suite->addTestSuite('RequirementUnitTest');
+		$suite->addTestSuite('RoleUnitTest');
 
 		return $suite;
 	}

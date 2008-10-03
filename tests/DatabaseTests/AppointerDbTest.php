@@ -15,22 +15,7 @@ class AppointerDbTest extends PHPUnit_Framework_TestCase
 		$PDO = Database::getConnection(true);
 	}
 
-    public function testValidate()
-    {
-    	# Name Should be required
-    	$appointer = new Appointer();
-    	try
-    	{
-    		$appointer->validate();
-    		$this->fail('Missing name did not throw an exception');
-    	}
-    	catch (Exception $e)
-    	{
-			# Success
-    	}
-    }
-
-    public function testSaveLoadDelete()
+    public function testSaveLoad()
     {
     	$appointer = new Appointer();
     	$appointer->setName('Test Appointer');

@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class MemberTest extends PHPUnit_Framework_TestCase
+class MemberUnitTest extends PHPUnit_Framework_TestCase
 {
 	public function testSetTerm_start()
 	{
