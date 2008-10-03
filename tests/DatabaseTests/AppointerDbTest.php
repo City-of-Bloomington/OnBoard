@@ -50,24 +50,5 @@ class AppointerDbTest extends PHPUnit_Framework_TestCase
 
     	$appointer = new Appointer($id);
     	$this->assertEquals($appointer->getName(),'Test');
-
-    	$appointer->delete();
-    	try
-    	{
-			$appointer = new Appointer($id);
-			$this->fail('Appointer failed to delete');
-    	}
-    	catch (Exception $e)
-    	{
-			# Success
-    	}
-    }
-
-    public function testDelete()
-    {
-    	$list = new AppointerList();
-    	$list->find();
-
-    	foreach($list as $appointer) { $appointer->delete(); }
     }
 }

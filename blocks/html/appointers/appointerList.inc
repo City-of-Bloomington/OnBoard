@@ -31,15 +31,6 @@
 				$editURL = new URL(BASE_URL.'/appointers/updateAppointer.php');
 				$editURL->appointer_id = $appointer->getId();
 				$editButton = "<a class=\"edit button\" href=\"$editURL\">Edit</a>";
-
-				$deleteURL = new URL(BASE_URL.'/appointers/deleteAppointer.php');
-				$deleteURL->appointer_id = $appointer->getId();
-				$deleteButton = "<button type=\"button\"
-										class=\"delete\"
-										onclick=\"FRAMEWORK.deleteConfirmation('$deleteURL');\">
-									Delete
-								</button>
-								";
 			}
 
 			echo "<li>$editButton $deleteButton $name</li>";
