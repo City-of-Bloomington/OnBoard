@@ -11,9 +11,9 @@ class TopicList extends PDOResultIterator
 		$this->select = 'select topics.id as id from topics';
 		if (is_array($fields)) $this->find($fields);
 	}
-	
 
-	public function find($fields=null,$sort='id',$limit=null,$groupBy=null)
+
+	public function find($fields=null,$sort='date desc',$limit=null,$groupBy=null)
 	{
 		$this->sort = $sort;
 		$this->limit = $limit;
@@ -60,7 +60,7 @@ class TopicList extends PDOResultIterator
 
 		$this->populateList($options,$parameters);
 	}
-	
+
 
 	protected function loadResult($key) { return new Topic($this->list[$key]); }
 }
