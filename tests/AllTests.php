@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-require_once 'ClassTests.php';
+require_once 'DatabaseTests.php';
 
 class AllTests extends PHPUnit_Framework_TestSuite
 {
@@ -20,7 +20,7 @@ class AllTests extends PHPUnit_Framework_TestSuite
     public static function suite()
     {
         $suite = new AllTests('Committee Manager');
-        $suite->addTest(ClassTests::suite());
+        $suite->addTest(DatabaseTests::suite());
         return $suite;
     }
 }
