@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class RequirementListTest extends PHPUnit_Framework_TestCase
+class RequirementListDbTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{

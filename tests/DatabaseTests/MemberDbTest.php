@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class MemberTest extends PHPUnit_Framework_TestCase
+class MemberDbTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
@@ -37,11 +37,13 @@ class MemberTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($member->getId(),$id);
 
 		$now = time();
+		$date = date('Y-m-d');
 		$member->setTerm_end($now);
+		$this->assertEquals($member->getTerm_end('Y-m-d'),$date);
 		$member->save();
 
 		$member = new Member($id);
-		$this->assertEquals($member->getTerm_end(),$now);
+		$this->assertEquals($member->getTerm_end('Y-m-d'),$date);
 
 		$member->delete();
 		try

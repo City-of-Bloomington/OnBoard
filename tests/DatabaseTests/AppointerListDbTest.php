@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class AppointerListTest extends PHPUnit_Framework_TestCase
+class AppointerListDbTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{

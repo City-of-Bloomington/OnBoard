@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class CommitteeTest extends PHPUnit_Framework_TestCase
+class CommitteeDbTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{

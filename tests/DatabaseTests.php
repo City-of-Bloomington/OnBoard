@@ -1,61 +1,73 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-require_once 'DatabaseTests/AppointerListTest.php';
-require_once 'DatabaseTests/AppointerTest.php';
-require_once 'DatabaseTests/CommitteeListTest.php';
-require_once 'DatabaseTests/CommitteeTest.php';
-require_once 'DatabaseTests/MemberListTest.php';
-require_once 'DatabaseTests/MemberTest.php';
-require_once 'DatabaseTests/RequirementListTest.php';
-require_once 'DatabaseTests/RequirementTest.php';
-require_once 'DatabaseTests/RoleListTest.php';
-require_once 'DatabaseTests/RoleTest.php';
-require_once 'DatabaseTests/SeatListTest.php';
-require_once 'DatabaseTests/SeatTest.php';
-require_once 'DatabaseTests/TopicListTest.php';
-require_once 'DatabaseTests/TopicTest.php';
-require_once 'DatabaseTests/TopicTypeListTest.php';
-require_once 'DatabaseTests/TopicTypeTest.php';
-require_once 'DatabaseTests/UserListTest.php';
-require_once 'DatabaseTests/UserTest.php';
-require_once 'DatabaseTests/VoteListTest.php';
-require_once 'DatabaseTests/VoteTest.php';
-require_once 'DatabaseTests/VoteTypeListTest.php';
-require_once 'DatabaseTests/VoteTypeTest.php';
-require_once 'DatabaseTests/VotingRecordListTest.php';
-require_once 'DatabaseTests/VotingRecordTest.php';
+require_once 'DatabaseTests/AppointerListDbTest.php';
+require_once 'DatabaseTests/AppointerDbTest.php';
+require_once 'DatabaseTests/CommitteeListDbTest.php';
+require_once 'DatabaseTests/CommitteeDbTest.php';
+require_once 'DatabaseTests/MemberListDbTest.php';
+require_once 'DatabaseTests/MemberDbTest.php';
+require_once 'DatabaseTests/RequirementListDbTest.php';
+require_once 'DatabaseTests/RequirementDbTest.php';
+require_once 'DatabaseTests/RoleListDbTest.php';
+require_once 'DatabaseTests/RoleDbTest.php';
+require_once 'DatabaseTests/SeatListDbTest.php';
+require_once 'DatabaseTests/SeatDbTest.php';
+require_once 'DatabaseTests/TopicListDbTest.php';
+require_once 'DatabaseTests/TopicDbTest.php';
+require_once 'DatabaseTests/TopicTypeListDbTest.php';
+require_once 'DatabaseTests/TopicTypeDbTest.php';
+require_once 'DatabaseTests/UserListDbTest.php';
+require_once 'DatabaseTests/UserDbTest.php';
+require_once 'DatabaseTests/VoteListDbTest.php';
+require_once 'DatabaseTests/VoteDbTest.php';
+require_once 'DatabaseTests/VoteTypeListDbTest.php';
+require_once 'DatabaseTests/VoteTypeDbTest.php';
+require_once 'DatabaseTests/VotingRecordListDbTest.php';
+require_once 'DatabaseTests/VotingRecordDbTest.php';
 
 class DatabaseTests extends PHPUnit_Framework_TestSuite
 {
+	protected function setUp()
+	{
+		$dir = dirname(__FILE__);
+
+		$PDO = Database::getConnection();
+		$PDO->exec('drop database '.DB_NAME);
+		$PDO->exec('create database '.DB_NAME);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/testData.sql\n");
+
+		$PDO = Database::getConnection(true);
+	}
+
     public static function suite()
     {
         $suite = new DatabaseTests('Committee Manager Classes');
 
-		$suite->addTestSuite('AppointerListTest');
-		$suite->addTestSuite('AppointerTest');
-		$suite->addTestSuite('CommitteeListTest');
-		$suite->addTestSuite('CommitteeTest');
-		$suite->addTestSuite('MemberListTest');
-		$suite->addTestSuite('MemberTest');
-		$suite->addTestSuite('RequirementListTest');
-		$suite->addTestSuite('RequirementTest');
-		$suite->addTestSuite('RoleListTest');
-		$suite->addTestSuite('RoleTest');
-		$suite->addTestSuite('SeatListTest');
-		$suite->addTestSuite('SeatTest');
-		$suite->addTestSuite('TopicListTest');
-		$suite->addTestSuite('TopicTest');
-		$suite->addTestSuite('TopicTypeListTest');
-		$suite->addTestSuite('TopicTypeTest');
-		$suite->addTestSuite('UserListTest');
-		$suite->addTestSuite('UserTest');
-		$suite->addTestSuite('VoteListTest');
-		$suite->addTestSuite('VoteTest');
-		$suite->addTestSuite('VoteTypeListTest');
-		$suite->addTestSuite('VoteTypeTest');
-		$suite->addTestSuite('VotingRecordListTest');
-		$suite->addTestSuite('VotingRecordTest');
+		$suite->addTestSuite('AppointerListDbTest');
+		$suite->addTestSuite('AppointerDbTest');
+		$suite->addTestSuite('CommitteeListDbTest');
+		$suite->addTestSuite('CommitteeDbTest');
+		$suite->addTestSuite('MemberListDbTest');
+		$suite->addTestSuite('MemberDbTest');
+		$suite->addTestSuite('RequirementListDbTest');
+		$suite->addTestSuite('RequirementDbTest');
+		$suite->addTestSuite('RoleListDbTest');
+		$suite->addTestSuite('RoleDbTest');
+		$suite->addTestSuite('SeatListDbTest');
+		$suite->addTestSuite('SeatDbTest');
+		$suite->addTestSuite('TopicListDbTest');
+		$suite->addTestSuite('TopicDbTest');
+		$suite->addTestSuite('TopicTypeListDbTest');
+		$suite->addTestSuite('TopicTypeDbTest');
+		$suite->addTestSuite('UserListDbTest');
+		$suite->addTestSuite('UserDbTest');
+		$suite->addTestSuite('VoteListDbTest');
+		$suite->addTestSuite('VoteDbTest');
+		$suite->addTestSuite('VoteTypeListDbTest');
+		$suite->addTestSuite('VoteTypeDbTest');
+		$suite->addTestSuite('VotingRecordListDbTest');
+		$suite->addTestSuite('VotingRecordDbTest');
 
         return $suite;
     }
