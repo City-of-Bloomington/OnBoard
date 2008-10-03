@@ -7,101 +7,80 @@ require_once 'PHPUnit/Framework.php';
  */
 class RequirementTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    Requirement
-     * @access protected
-     */
-    protected $object;
+	protected $test_id;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     */
-    protected function setUp()
-    {
-        $this->object = new Requirement;
-    }
+	public function testTextChanging()
+	{
+		$requirement = new Requirement();
+		$requirement->setText('another test');
+		$this->assertEquals($requirement->getText(),'another test');
+	}
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     */
-    protected function tearDown()
-    {
-    }
+	public function testToString()
+	{
+		$requirement = new Requirement();
+		$requirement->setText('string name');
+		$this->assertEquals($requirement,'string name');
+	}
 
-    /**
-     * @todo Implement testValidate().
-     */
-    public function testValidate() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testValidate()
+	{
+		$requirement = new Requirement();
+		try
+		{
+			$requirement->validate();
+			$this->fail('Missing name did not throw an exception');
+		}
+		catch (Exception $e)
+		{
+			# Success
+		}
+	}
 
-    /**
-     * @todo Implement testSave().
-     */
-    public function testSave() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testInsert()
+	{
+		$requirement = new Requirement();
+		$requirement->setText('Test Requirement');
+		try
+		{
+			$requirement->save();
+			$id = $requirement->getId();
+			$this->assertGreaterThan(1,$id);
+			$this->test_id = $id;
+		}
+		catch (Exception $e) { $this->fail($e->getMessage()); }
+	}
 
-    /**
-     * @todo Implement testDelete().
-     */
-    public function testDelete() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testLoadById()
+	{
+		$requirement = new Requirement($this->test_id);
+		$this->assertEquals($this->test_id,$requirement->getId());
+	}
 
-    /**
-     * @todo Implement testGetId().
-     */
-    public function testGetId() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testUpdate()
+	{
+		$test_name = 'Changed Test Requirement';
 
-    /**
-     * @todo Implement testGetText().
-     */
-    public function testGetText() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$requirement = new Requirement($this->test_id);
+		$requirement->setText($test_name);
+		try
+		{
+			$requirement->save();
 
-    /**
-     * @todo Implement testSetText().
-     */
-    public function testSetText() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+			$requirement = new Requirement($this->test_id);
+			$this->assertEquals($requirement->getText(),$test_name);
+		}
+		catch (Exception $e) { $this->fail($e->getMessage()); }
+	}
 
-    /**
-     * @todo Implement test__toString().
-     */
-    public function test__toString() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	/**
+	 * We should be able to remove any and all requirements.  There should be no
+	 * foreign key errors thrown - ever.
+	 */
+	public function testDelete()
+	{
+		$list = new RequirementList();
+		$list->find();
+		foreach($list as $requirement) { $requirement->delete(); }
+	}
 }
-?>

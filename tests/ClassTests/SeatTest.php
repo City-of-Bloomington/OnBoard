@@ -7,241 +7,112 @@ require_once 'PHPUnit/Framework.php';
  */
 class SeatTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    Seat
-     * @access protected
-     */
-    protected $object;
+	protected $test_committee_id;
+	protected $test_appointer_id;
+	protected $test_id;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     */
-    protected function setUp()
-    {
-        $this->object = new Seat;
-    }
+	public function testSetCommittee()
+	{
+		$committee = new Committee();
+		$committee->setName('Seat Test Committee');
+		$committee->save();
+		$this->test_committee_id = $committee->getId();
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     */
-    protected function tearDown()
-    {
-    }
+		$seat = new Seat();
+		$seat->setCommittee($committee);
+		$this->assertEquals($seat->getCommittee_id(),$committee->getId());
+	}
 
-    /**
-     * @todo Implement testValidate().
-     */
-    public function testValidate() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testSetCommittee_id()
+	{
+		$seat = new Seat();
+		$seat->setCommittee_id($this->test_committee_id);
+		echo "Committee_id: {$this->test_committee_id}\n";
+		$this->assertEquals($seat->getCommittee()->getId(),$this->test_committee_id);
+	}
 
-    /**
-     * @todo Implement testSave().
-     */
-    public function testSave() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testSetAppointer()
+	{
+		$appointer = new Appointer();
+		$appointer->setName('Seat Test Appointer');
+		$appointer->save();
+		$this->test_appointer_id = $appointer->getId();
 
-    /**
-     * @todo Implement testGetId().
-     */
-    public function testGetId() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$seat = new Seat();
+		$seat->setAppointer($appointer);
+		$this->assertEquals($seat->getAppointer_id(),$appointer->getId());
 
-    /**
-     * @todo Implement testGetTitle().
-     */
-    public function testGetTitle() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	}
 
-    /**
-     * @todo Implement testGetCommittee_id().
-     */
-    public function testGetCommittee_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testSetAppointer_id()
+	{
+		$appointer = new Appointer($this->test_appointer_id);
 
-    /**
-     * @todo Implement testGetAppointer_id().
-     */
-    public function testGetAppointer_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$seat = new Seat();
+		$seat->setAppointer_id($appointer->getId());
+		$this->assertEquals($seat->getAppointer()->getId(),$appointer->getId());
+	}
 
-    /**
-     * @todo Implement testGetCommittee().
-     */
-    public function testGetCommittee() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testValidate()
+	{
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee_id($this->test_committee_id);
+		try { $seat->validate(); }
+		catch (Exception $e) { $this->fail('Validation failed even when all required fields were set'); }
 
-    /**
-     * @todo Implement testGetAppointer().
-     */
-    public function testGetAppointer() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$seat->setTitle('');
+		try
+		{
+			$seat->validate();
+			$this->fail('Missing Title failed to throw validation error.');
+		}
+		catch (Exception $e) { }
 
-    /**
-     * @todo Implement testSetTitle().
-     */
-    public function testSetTitle() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee_id(null);
+		try
+		{
+			$seat->validate();
+			$this->fail('Missing committee failed to throw validation error.');
+		}
+		catch (Exception $e) { }
+	}
 
-    /**
-     * @todo Implement testSetCommittee_id().
-     */
-    public function testSetCommittee_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testInsert()
+	{
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee_id($this->test_committee_id);
+		try
+		{
+			$seat->save();
+			$id = $seat->getId();
+			$this->assertGreaterThan(1,$id);
+			$this->test_id = $id;
+		}
+		catch (Exception $e) { $this->fail($e->getMessage()); }
+	}
 
-    /**
-     * @todo Implement testSetAppointer_id().
-     */
-    public function testSetAppointer_id() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testLoadById()
+	{
+		$seat = new Seat($this->test_id);
+		$this->assertEquals($seat->getId(),$this->test_id);
+	}
 
-    /**
-     * @todo Implement testSetCommittee().
-     */
-    public function testSetCommittee() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+	public function testUpdate()
+	{
+		$test_title = 'Updated Test Title';
 
-    /**
-     * @todo Implement testSetAppointer().
-     */
-    public function testSetAppointer() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+		$seat = new Seat($this->test_id);
+		$seat->setTitle($test_title);
+		try
+		{
+			$seat->save();
 
-    /**
-     * @todo Implement testGetMembers().
-     */
-    public function testGetMembers() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetMember().
-     */
-    public function testGetMember() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetRequirements().
-     */
-    public function testGetRequirements() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testHasRequirements().
-     */
-    public function testHasRequirements() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testHasRequirement().
-     */
-    public function testHasRequirement() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testAddRequirement().
-     */
-    public function testAddRequirement() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testRemoveRequirement().
-     */
-    public function testRemoveRequirement() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetURL().
-     */
-    public function testGetURL() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
+			$seat = new Seat($this->test_id);
+			$this->assertEquals($seat->getTitle(),$test_title);
+		}
+		catch (Exception $e) { $this->fail($e->getMessage()); }
+	}
 }
-?>

@@ -7,11 +7,7 @@ require_once 'PHPUnit/Framework.php';
  */
 class CommitteeTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    Committee
-     * @access protected
-     */
-    protected $object;
+	protected $test_id;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -21,7 +17,6 @@ class CommitteeTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Committee;
     }
 
     /**
@@ -34,84 +29,49 @@ class CommitteeTest extends PHPUnit_Framework_TestCase
     {
     }
 
-    /**
-     * @todo Implement testValidate().
-     */
-    public function testValidate() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testChangingName()
+    {
+    	$committee = new Committee();
+    	$committee->setName('test name');
+    	$this->assertEquals($committee->getName(),'test name');
     }
 
-    /**
-     * @todo Implement testSave().
-     */
-    public function testSave() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testInsert()
+    {
+    	$committee = new Committee();
+    	$committee->setName('test committee');
+    	try
+    	{
+    		$committee->save();
+			$id = $committee->getId();
+			$this->assertGreaterThan(1,$id);
+			$this->test_id = $id;
+		}
+		catch(Exception $e) { $this->fail($e->getMessage()); }
     }
 
-    /**
-     * @todo Implement testGetId().
-     */
-    public function testGetId() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testUpdate()
+    {
+    	$test_name = 'updated test committee';
+		$committee = new Committee($this->test_id);
+		$committee->setName($test_name);
+		try
+		{
+			$committee->save();
+			$this->assertEquals($committee->getName(),$test_name);
+		}
+		catch (Exception $e) { $this->fail($e->getMessage()); }
     }
 
-    /**
-     * @todo Implement testGetName().
-     */
-    public function testGetName() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testGetSeats()
+    {
+    	$committee = new Committee($this->test_id);
+    	$this->assertTrue($committee->getSeats() instanceof SeatList);
     }
 
-    /**
-     * @todo Implement testSetName().
-     */
-    public function testSetName() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetSeats().
-     */
-    public function testGetSeats() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetTopics().
-     */
-    public function testGetTopics() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @todo Implement testGetURL().
-     */
-    public function testGetURL() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    public function testGetTopics()
+    {
+    	$committee = new Committee($this->test_id);
+    	$this->assertTrue($committee->getTopics() instanceof TopicList);
     }
 }
-?>

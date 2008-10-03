@@ -7,41 +7,13 @@ require_once 'PHPUnit/Framework.php';
  */
 class AppointerListTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     *
-     * @access protected
-     */
-    protected function tearDown()
-    {
-    }
-
 	/**
 	 * Makes sure find returns all Appointers ordered by name
 	 */
-	public function testFind() {
-    	$PDO = Database::getConnection();
-    	$query = $PDO->query('select name from appointers order by name');
-    	$results = $query->fetchAll();
-
+	public function testFindOrderedByName()
+	{
     	$list = new AppointerList();
     	$list->find();
-    	$this->assertEquals(count($results),count($list));
-
-    	foreach($list as $i=>$appointer)
-    	{
-    		$this->assertEquals($appointer->getName(),$results[$i]['name']);
-    	}
+    	$this->assertEquals($list->getSort(),'name');
     }
 }
