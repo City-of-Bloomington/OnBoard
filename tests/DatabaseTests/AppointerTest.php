@@ -1,20 +1,20 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-/**
- * Test class for Appointer.
- */
 class AppointerTest extends PHPUnit_Framework_TestCase
 {
-    public function testLoadById()
-    {
-    	$appointer = new Appointer(1);
-    	$this->assertEquals($appointer->getName(),'Elected');
-    }
+	protected function setUp()
+	{
+		$dir = dirname(__FILE__);
 
-    /**
-     * @todo Implement testValidate().
-     */
+		$PDO = Database::getConnection();
+		$PDO->exec('drop database '.DB_NAME);
+		$PDO->exec('create database '.DB_NAME);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
+
+		$PDO = Database::getConnection(true);
+	}
+
     public function testValidate()
     {
     	# Name Should be required
@@ -30,18 +30,7 @@ class AppointerTest extends PHPUnit_Framework_TestCase
     	}
     }
 
-    public function testUpdate()
-    {
-    	$appointer = new Appointer(1);
-    	$appointer->setName('Test');
-    	try { $appointer->save(); }
-    	catch (Exception $e) { $this->fail($e->getMessage()); }
-
-    	$appointer->setName('Elected');
-    	$appointer->save();
-    }
-
-    public function testInsertAndDelete()
+    public function testSaveLoadDelete()
     {
     	$appointer = new Appointer();
     	$appointer->setName('Test Appointer');
@@ -53,9 +42,16 @@ class AppointerTest extends PHPUnit_Framework_TestCase
     	}
     	catch (Exception $e) { $this->fail($e->getMessage()); }
 
-    	try { $appointer->delete(); }
-    	catch (Exception $e) { $this->fail($e->getMessage()); }
+    	$appointer = new Appointer($id);
+    	$this->assertEquals($appointer->getName(),'Test Appointer');
 
+    	$appointer->setName('Test');
+    	$appointer->save();
+
+    	$appointer = new Appointer($id);
+    	$this->assertEquals($appointer->getName(),'Test');
+
+    	$appointer->delete();
     	try
     	{
 			$appointer = new Appointer($id);
@@ -65,5 +61,13 @@ class AppointerTest extends PHPUnit_Framework_TestCase
     	{
 			# Success
     	}
+    }
+
+    public function testDelete()
+    {
+    	$list = new AppointerList();
+    	$list->find();
+
+    	foreach($list as $appointer) { $appointer->delete(); }
     }
 }

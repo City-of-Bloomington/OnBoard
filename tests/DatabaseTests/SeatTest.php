@@ -7,59 +7,66 @@ require_once 'PHPUnit/Framework.php';
  */
 class SeatTest extends PHPUnit_Framework_TestCase
 {
-	protected $test_committee_id;
-	protected $test_appointer_id;
-	protected $test_id;
+	protected $committee;
+	protected $appointer;
 
-	public function testSetCommittee()
+	protected function setUp()
 	{
+		$dir = dirname(__FILE__);
+
+		$PDO = Database::getConnection();
+		$PDO->exec('drop database '.DB_NAME);
+		$PDO->exec('create database '.DB_NAME);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
+
+		$PDO = Database::getConnection(true);
+
 		$committee = new Committee();
 		$committee->setName('Seat Test Committee');
 		$committee->save();
-		$this->test_committee_id = $committee->getId();
+		$this->committee = $committee;
 
-		$seat = new Seat();
-		$seat->setCommittee($committee);
-		$this->assertEquals($seat->getCommittee_id(),$committee->getId());
+		$appointer = new Appointer();
+		$appointer->setName('Seat Test Appointer');
+		$appointer->save();
+		$this->appointer = $appointer;
 	}
 
-	public function testSetCommittee_id()
+	public function testSetCommitte()
 	{
 		$seat = new Seat();
-		$seat->setCommittee_id($this->test_committee_id);
-		echo "Committee_id: {$this->test_committee_id}\n";
-		$this->assertEquals($seat->getCommittee()->getId(),$this->test_committee_id);
+		$seat->setCommittee_id($this->committee->getId());
+		$this->assertEquals($seat->getCommittee()->getId(),$this->committee->getId());
+
+		$seat = new Seat();
+		$seat->setCommittee($this->committee);
+		$this->assertEquals($seat->getCommittee_id(),$this->committee->getId());
 	}
 
 	public function testSetAppointer()
 	{
-		$appointer = new Appointer();
-		$appointer->setName('Seat Test Appointer');
-		$appointer->save();
-		$this->test_appointer_id = $appointer->getId();
+		$seat = new Seat();
+		$seat->setAppointer($this->appointer);
+		$this->assertEquals($seat->getAppointer_id(),$this->appointer->getId());
 
 		$seat = new Seat();
-		$seat->setAppointer($appointer);
-		$this->assertEquals($seat->getAppointer_id(),$appointer->getId());
-
-	}
-
-	public function testSetAppointer_id()
-	{
-		$appointer = new Appointer($this->test_appointer_id);
-
-		$seat = new Seat();
-		$seat->setAppointer_id($appointer->getId());
-		$this->assertEquals($seat->getAppointer()->getId(),$appointer->getId());
+		$seat->setAppointer_id($this->appointer->getId());
+		$this->assertEquals($seat->getAppointer()->getId(),$this->appointer->getId());
 	}
 
 	public function testValidate()
 	{
+		$list = new CommitteeList(array('name'=>'Seat Test Committee'));
+		$committee = $list[0];
+
 		$seat = new Seat();
 		$seat->setTitle('Test Seat');
-		$seat->setCommittee_id($this->test_committee_id);
+		$seat->setCommittee($this->committee);
 		try { $seat->validate(); }
-		catch (Exception $e) { $this->fail('Validation failed even when all required fields were set'); }
+		catch (Exception $e)
+		{
+			$this->fail('Validation failed even when all required fields were set');
+		}
 
 		$seat->setTitle('');
 		try
@@ -79,40 +86,21 @@ class SeatTest extends PHPUnit_Framework_TestCase
 		catch (Exception $e) { }
 	}
 
-	public function testInsert()
+	public function testSaveAndLoad()
 	{
 		$seat = new Seat();
 		$seat->setTitle('Test Seat');
-		$seat->setCommittee_id($this->test_committee_id);
-		try
-		{
-			$seat->save();
-			$id = $seat->getId();
-			$this->assertGreaterThan(1,$id);
-			$this->test_id = $id;
-		}
-		catch (Exception $e) { $this->fail($e->getMessage()); }
-	}
+		$seat->setCommittee($this->committee);
 
-	public function testLoadById()
-	{
-		$seat = new Seat($this->test_id);
-		$this->assertEquals($seat->getId(),$this->test_id);
-	}
+		$seat->save();
+		$id = $seat->getId();
+		$this->assertGreaterThan(1,$id);
 
-	public function testUpdate()
-	{
-		$test_title = 'Updated Test Title';
+		$seat = new Seat($id);
+		$seat->setTitle('Updated Test Title');
+		$seat->save();
 
-		$seat = new Seat($this->test_id);
-		$seat->setTitle($test_title);
-		try
-		{
-			$seat->save();
-
-			$seat = new Seat($this->test_id);
-			$this->assertEquals($seat->getTitle(),$test_title);
-		}
-		catch (Exception $e) { $this->fail($e->getMessage()); }
+		$seat = new Seat($id);
+		$this->assertEquals($seat->getTitle(),'Updated Test Title');
 	}
 }
