@@ -1,5 +1,10 @@
 -- @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
 -- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+create table races (
+	id int unsigned not null primary key auto_increment,
+	name varchar(50) not null
+) engine=InnoDB;
+
 create table users (
 	id int unsigned not null primary key auto_increment,
 	username varchar(30) unique,
@@ -11,11 +16,20 @@ create table users (
 	address varchar(128),
 	city varchar(128),
 	zipcode varchar(15),
-	homePhone varchar(15),
-	workPhone varchar(15),
 	about text,
-	photoPath varchar(150),
-	timestamp timestamp on update CURRENT_TIMESTAMP
+	gender enum('male','female') not null;
+	race_id int unsigned,
+	timestamp timestamp on update CURRENT_TIMESTAMP,
+	foreign key (race_id) references races(id)
+) engine=InnoDB;
+
+create table phoneNumbers (
+	id int unsigned not null primary key auto_increment,
+	user_id int unsigned not null,
+	ordering tinyint (1) unsigned not null default 1,
+	type enum('home','work','cell','fax') not null default 'home',
+	number varchar(15) not null,
+	foreign key (user_id) references users(id)
 ) engine=InnoDB;
 
 create table roles (
