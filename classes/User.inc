@@ -16,10 +16,7 @@ class User extends SystemUser
 	private $address;
 	private $city;
 	private $zipcode;
-	private $homePhone;
-	private $workPhone;
 	private $about;
-	private $photoPath;
 	private $timestamp;
 
 	private $roles = array();
@@ -64,10 +61,7 @@ class User extends SystemUser
 		$fields['address'] = $this->address ? $this->address : null;
 		$fields['city'] = $this->city ? $this->city : null;
 		$fields['zipcode'] = $this->zipcode ? $this->zipcode : null;
-		$fields['homePhone'] = $this->homePhone ? $this->homePhone : null;
-		$fields['workPhone'] = $this->workPhone ? $this->workPhone : null;
 		$fields['about'] = $this->about ? $this->about : null;
-		$fields['photoPath'] = $this->photoPath ? $this->photoPath : null;
 		# Timestamp should be left alone, let the database set it automatically
 
 		# Split the fields up into a preparedFields array and a values array.
@@ -144,10 +138,7 @@ class User extends SystemUser
 	public function getAddress() { return $this->address; }
 	public function getCity() { return $this->city; }
 	public function getZipcode() { return $this->zipcode; }
-	public function getHomePhone() { return $this->homePhone; }
-	public function getWorkPhone() { return $this->workPhone; }
 	public function getAbout() { return $this->about; }
-	public function getPhotoPath() { return $this->photoPath; }
 
 	#----------------------------------------------------------------
 	# Generic Setters
@@ -175,10 +166,7 @@ class User extends SystemUser
 	public function setAddress($string) { $this->address = trim($string); }
 	public function setCity($string) { $this->city = trim($string); }
 	public function setZipcode($string) { $this->zipcode = trim($string); }
-	public function setHomePhone($string) { $this->homePhone = trim($string); }
-	public function setWorkPhone($string) { $this->workPhone = trim($string); }
 	public function setAbout($text) { $this->about = $text; }
-	public function setPhotoPath($string) { $this->photoPath = trim($string); }
 
 	#----------------------------------------------------------------
 	# Custom Functions
@@ -207,8 +195,10 @@ class User extends SystemUser
 				$query = $PDO->prepare($sql);
 				$query->execute(array($this->id));
 				$result = $query->fetchAll();
-
-				foreach($result as $row) { $this->roles[$row['role_id']] = $row['name']; }
+				if (count($result))
+				{
+					foreach($result as $row) { $this->roles[$row['role_id']] = $row['name']; }
+				}
 			}
 		}
 		return $this->roles;

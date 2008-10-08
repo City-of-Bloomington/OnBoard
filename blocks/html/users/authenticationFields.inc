@@ -3,17 +3,10 @@
  * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param User $this->user
  */
-$fields = array('authenticationMethod','username','roles');
-foreach($fields as $field)
-{
-	$$field = isset($_POST[$field]) ? View::escape($_POST[$field]) : '';
-	if (isset($this->user))
-	{
-		$getter = 'get'.ucfirst($field);
-		$$field = $$field ? $$field : View::escape($this->user->$getter());
-	}
-}
+$authenticationMethod = $this->user->getAuthenticationMethod();
+$username = View::escape($this->user->getUsername());
 ?>
 <fieldset><legend>Login Info</legend>
 	<p>You only need to fill in this information, if you want the person to be able to log in.</p>
@@ -34,6 +27,8 @@ foreach($fields as $field)
 	<tr><td><label for="user[roles]">Roles</label></td>
 		<td><select name="user[roles][]" id="user-roles" size="5" multiple="multiple">
 			<?php
+				$roles = $this->user->getRoles();
+
 				$list = new RoleList();
 				$list->find();
 				foreach($list as $role)

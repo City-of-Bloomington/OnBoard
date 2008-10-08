@@ -6,12 +6,14 @@
  * @param REQUEST return_url
  */
 verifyUser('Administrator');
+
+$user = new User();
 if (isset($_POST['user']))
 {
-	$user = new User();
 	# Both clerk and admin can edit these fields
-	$fields = array('firstname','lastname','email','address','city','zipcode',
-				'homePhone','workPhone','about','photoPath');
+	$fields = array('firstname','lastname','email','address','city','zipcode','about');
+
+	# Only the Administrator can edit these fields
 	if (userHasRole('Administrator'))
 	{
 		$fields[] = 'authenticationMethod';
@@ -19,6 +21,8 @@ if (isset($_POST['user']))
 		$fields[] = 'password';
 		$fields[] = 'roles';
 	}
+
+	# Set all the fields they're allowed to edit
 	foreach($fields as $field)
 	{
 		if (isset($_POST['user'][$field]))
@@ -28,7 +32,7 @@ if (isset($_POST['user']))
 		}
 	}
 
-	# Load their information from LDAP
+	# Load user information from LDAP
 	# Delete this statement if you're not using LDAP
 	if ($user->getAuthenticationMethod() == 'LDAP')
 	{
@@ -36,7 +40,6 @@ if (isset($_POST['user']))
 		$user->setFirstname($ldap->getFirstname());
 		$user->setLastname($ldap->getLastname());
 		$user->setEmail($ldap->getEmail());
-		$user->setHomePhone($ldap->getHomePhone());
 	}
 
 	try
@@ -51,6 +54,7 @@ if (isset($_POST['user']))
 $template = new Template();
 
 $form = new Block('users/addUserForm.inc');
+$form->user = $user;
 $form->return_url = $_REQUEST['return_url'];
 $template->blocks[] = $form;
 
