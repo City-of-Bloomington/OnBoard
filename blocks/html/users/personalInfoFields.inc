@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param User $this->user
  */
-$fields = array('firstname','lastname','email','address','city','zipcode','about');
+$fields = array('gender','firstname','lastname','email','address','city','zipcode','about');
 foreach($fields as $field)
 {
 	$getter = 'get'.ucfirst($field);
@@ -14,6 +14,11 @@ foreach($fields as $field)
 ?>
 <fieldset><legend>Personal Info</legend>
 	<table>
+	<tr><td><label class="required">Gender</label>
+		<td><label><input name="user[gender]" type="radio" value="male" <?php if($gender=='male') echo ' checked="checked"'; ?> />M</label>
+			<label><input name="user[gender]" type="radio" value="female" <?php if($gender=='female') echo ' checked="checked"'; ?> />F</label>
+		</td>
+	</tr>
 	<tr><td><label for="user-firstname">Firstname</label></td>
 		<td><input name="user[firstname]" id="user-firstname" value="<?php echo $firstname; ?>" /></td></tr>
 

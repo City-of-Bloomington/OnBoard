@@ -12,7 +12,8 @@ $user = new User($_REQUEST['user_id']);
 if (isset($_POST['user']))
 {
 	# Both clerk and admin can edit these fields
-	$fields = array('firstname','lastname','email','address','city','zipcode','about');
+	$fields = array('gender','firstname','lastname','email','address','city',
+					'zipcode','about');
 
 	# Only the Administrator can edit these fields
 	if (userHasRole('Administrator'))

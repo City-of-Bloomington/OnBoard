@@ -17,8 +17,11 @@ class User extends SystemUser
 	private $city;
 	private $zipcode;
 	private $about;
+	private $gender;
+	private $race_id;
 	private $timestamp;
 
+	private $race;
 	private $roles = array();
 	private $newPassword; # the User's new password, unencrypted
 
@@ -46,10 +49,22 @@ class User extends SystemUser
 		}
 	}
 
+	public function validate()
+	{
+		if (!$this->firstname || !$this->lastname)
+		{
+			throw new Exception('missingName');
+		}
+
+		if (!$this->gender)
+		{
+			throw new Exception('users/missingGender');
+		}
+	}
+
 	public function save()
 	{
-		# Check for required fields before saving
-		if (!$this->firstname || !$this->lastname) { throw new Exception("missingRequiredFields"); }
+		$this->validate();
 
 		$fields = array();
 		$fields['username'] = $this->username ? $this->username : null;
@@ -62,6 +77,8 @@ class User extends SystemUser
 		$fields['city'] = $this->city ? $this->city : null;
 		$fields['zipcode'] = $this->zipcode ? $this->zipcode : null;
 		$fields['about'] = $this->about ? $this->about : null;
+		$fields['gender'] = $this->gender ? $this->gender : null;
+		$fields['race_id'] = $this->race_id ? $this->race_id : null;
 		# Timestamp should be left alone, let the database set it automatically
 
 		# Split the fields up into a preparedFields array and a values array.
@@ -139,6 +156,17 @@ class User extends SystemUser
 	public function getCity() { return $this->city; }
 	public function getZipcode() { return $this->zipcode; }
 	public function getAbout() { return $this->about; }
+	public function getGender() { return $this->gender; }
+	public function getRace_id() { return $this->race_id; }
+	public function getRace()
+	{
+		if ($this->race_id)
+		{
+			if (!$this->race) { $this->race = new Race($this->race_id); }
+			return $this->race;
+		}
+		else return null;
+	}
 
 	#----------------------------------------------------------------
 	# Generic Setters
@@ -167,6 +195,9 @@ class User extends SystemUser
 	public function setCity($string) { $this->city = trim($string); }
 	public function setZipcode($string) { $this->zipcode = trim($string); }
 	public function setAbout($text) { $this->about = $text; }
+	public function setGender($string) { $this->gender = trim($string); }
+	public function setRace_id($int) { $this->race = new Race($int); $this->race_id = $int; }
+	public function setRace($race) { $this->race_id = $race->getId(); $this->race = $race; }
 
 	#----------------------------------------------------------------
 	# Custom Functions
