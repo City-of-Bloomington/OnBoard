@@ -21,7 +21,7 @@ class RequirementDbTest extends PHPUnit_Framework_TestCase
 		$requirement->setText('Test Requirement');
 		$requirement->save();
 		$id = $requirement->getId();
-		$this->assertGreaterThan(1,$id);
+		$this->assertGreaterThan(0,$id);
 
 		$requirement = new Requirement($id);
 		$this->assertEquals($requirement->getId(),$id);

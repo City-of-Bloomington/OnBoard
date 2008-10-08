@@ -31,7 +31,7 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 
 		$member->save();
 		$id = $member->getId();
-		$this->assertGreaterThan(1,$member->getId());
+		$this->assertGreaterThan(0,$member->getId());
 
 		$member = new Member($id);
 		$this->assertEquals($member->getId(),$id);

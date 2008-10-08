@@ -23,7 +23,7 @@ class TopicTypeDbTest extends PHPUnit_Framework_TestCase
     	{
     		$topicType->save();
     		$id = $topicType->getId();
-    		$this->assertGreaterThan(1,$id);
+    		$this->assertGreaterThan(0,$id);
     	}
     	catch (Exception $e) { $this->fail($e->getMessage()); }
 

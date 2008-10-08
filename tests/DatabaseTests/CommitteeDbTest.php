@@ -22,7 +22,7 @@ class CommitteeDbTest extends PHPUnit_Framework_TestCase
 
 		$committee->save();
 		$id = $committee->getId();
-		$this->assertGreaterThan(1,$id);
+		$this->assertGreaterThan(0,$id);
 
 		$committee = new Committee($id);
 		$this->assertEquals($committee->getName(),'test committee');

@@ -7,6 +7,8 @@ require_once 'DatabaseTests/CommitteeListDbTest.php';
 require_once 'DatabaseTests/CommitteeDbTest.php';
 require_once 'DatabaseTests/MemberListDbTest.php';
 require_once 'DatabaseTests/MemberDbTest.php';
+require_once 'DatabaseTests/RaceDbTest.php';
+require_once 'DatabaseTests/RaceListDbTest.php';
 require_once 'DatabaseTests/RequirementListDbTest.php';
 require_once 'DatabaseTests/RequirementDbTest.php';
 require_once 'DatabaseTests/RoleListDbTest.php';
@@ -50,6 +52,8 @@ class DatabaseTests extends PHPUnit_Framework_TestSuite
 		$suite->addTestSuite('CommitteeDbTest');
 		$suite->addTestSuite('MemberListDbTest');
 		$suite->addTestSuite('MemberDbTest');
+		$suite->addTestSuite('RaceDbTest');
+		$suite->addTestSuite('RaceListDbTest');
 		$suite->addTestSuite('RequirementListDbTest');
 		$suite->addTestSuite('RequirementDbTest');
 		$suite->addTestSuite('RoleListDbTest');

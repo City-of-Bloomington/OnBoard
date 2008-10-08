@@ -87,7 +87,7 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 
 		$seat->save();
 		$id = $seat->getId();
-		$this->assertGreaterThan(1,$id);
+		$this->assertGreaterThan(0,$id);
 
 		$seat = new Seat($id);
 		$seat->setTitle('Updated Test Title');

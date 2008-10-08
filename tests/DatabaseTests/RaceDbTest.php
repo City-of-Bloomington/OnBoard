@@ -1,7 +1,7 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-class AppointerDbTest extends PHPUnit_Framework_TestCase
+class RaceDbTest extends PHPUnit_Framework_TestCase
 {
 	protected function setUp()
 	{
@@ -17,23 +17,23 @@ class AppointerDbTest extends PHPUnit_Framework_TestCase
 
     public function testSaveLoad()
     {
-    	$appointer = new Appointer();
-    	$appointer->setName('Test Appointer');
+    	$race = new Race();
+    	$race->setName('Test Race');
     	try
     	{
-    		$appointer->save();
-    		$id = $appointer->getId();
+    		$race->save();
+    		$id = $race->getId();
     		$this->assertGreaterThan(0,$id);
     	}
     	catch (Exception $e) { $this->fail($e->getMessage()); }
 
-    	$appointer = new Appointer($id);
-    	$this->assertEquals($appointer->getName(),'Test Appointer');
+    	$race = new Race($id);
+    	$this->assertEquals($race->getName(),'Test Race');
 
-    	$appointer->setName('Test');
-    	$appointer->save();
+    	$race->setName('Test');
+    	$race->save();
 
-    	$appointer = new Appointer($id);
-    	$this->assertEquals($appointer->getName(),'Test');
+    	$race = new Race($id);
+    	$this->assertEquals($race->getName(),'Test');
     }
 }
