@@ -196,7 +196,19 @@ class User extends SystemUser
 	public function setZipcode($string) { $this->zipcode = trim($string); }
 	public function setAbout($text) { $this->about = $text; }
 	public function setGender($string) { $this->gender = trim($string); }
-	public function setRace_id($int) { $this->race = new Race($int); $this->race_id = $int; }
+	public function setRace_id($int)
+	{
+		if ($int)
+		{
+			$this->race = new Race($int);
+			$this->race_id = $int;
+		}
+		else
+		{
+			$this->race = null;
+			$this->race_id = null;
+		}
+	}
 	public function setRace($race) { $this->race_id = $race->getId(); $this->race = $race; }
 
 	#----------------------------------------------------------------

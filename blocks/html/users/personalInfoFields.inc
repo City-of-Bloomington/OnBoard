@@ -5,7 +5,8 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param User $this->user
  */
-$fields = array('gender','firstname','lastname','email','address','city','zipcode','about');
+$fields = array('gender','firstname','lastname','email','address','city',
+				'zipcode','about','race_id');
 foreach($fields as $field)
 {
 	$getter = 'get'.ucfirst($field);
@@ -19,6 +20,21 @@ foreach($fields as $field)
 			<label><input name="user[gender]" type="radio" value="female" <?php if($gender=='female') echo ' checked="checked"'; ?> />F</label>
 		</td>
 	</tr>
+	<tr><td><label for="user-race_id">Race</label></td>
+		<td><select name="user[race_id]" id="user-race_id"><option></option>
+			<?php
+				$list = new RaceList();
+				$list->find();
+				foreach($list as $race)
+				{
+					$selected = $race_id==$race->getId() ? ' selected="selected"' : '';
+					echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
+				}
+			?>
+			</select>
+		</td>
+	</tr>
+
 	<tr><td><label for="user-firstname">Firstname</label></td>
 		<td><input name="user[firstname]" id="user-firstname" value="<?php echo $firstname; ?>" /></td></tr>
 

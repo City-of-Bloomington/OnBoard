@@ -2,8 +2,14 @@
 -- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
 create table races (
 	id int unsigned not null primary key auto_increment,
-	name varchar(50) not null
+	name varchar(50) not null unique
 ) engine=InnoDB;
+insert races set name='Caucasion';
+insert races set name='Hispanic';
+insert races set name='African American';
+insert races set name='Native American';
+insert races set name='Asian';
+insert races set name='Other';
 
 create table users (
 	id int unsigned not null primary key auto_increment,
