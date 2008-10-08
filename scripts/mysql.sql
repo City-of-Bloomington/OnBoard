@@ -25,6 +25,7 @@ create table users (
 	about text,
 	gender enum('male','female') not null;
 	race_id int unsigned,
+	birthdate date,
 	timestamp timestamp on update CURRENT_TIMESTAMP,
 	foreign key (race_id) references races(id)
 ) engine=InnoDB;

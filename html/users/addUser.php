@@ -12,7 +12,7 @@ if (isset($_POST['user']))
 {
 	# Both clerk and admin can edit these fields
 	$fields = array('gender','firstname','lastname','email','address','city',
-					'zipcode','about','race_id');
+					'zipcode','about','race_id','birthdate');
 
 	# Only the Administrator can edit these fields
 	if (userHasRole('Administrator'))

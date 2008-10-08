@@ -56,5 +56,34 @@ foreach($fields as $field)
 	<tr><td><label for="user-about">About</label></td>
 		<td><textarea name="user[about]" id="user-about" rows="3" cols="60"><?php echo $about; ?></textarea></td></tr>
 
+	<tr><td><label for="user-birthdate-mon">Birthdate</label></td>
+		<td><select name="user[birthdate][mon]" id="user-birthdate-mon"><option></option>
+			<?php
+				if ($this->user->getBirthdate())
+				{
+					$date = getdate($this->user->getBirthdate());
+				}
+				else { $date = array('year'=>null,'mon'=>null,'mday'=>null); }
+
+				for($i=1; $i<=12; $i++)
+				{
+					$selected = $i==$date['mon'] ? ' selected="selected"' : '';
+					echo "<option$selected>$i</option>";
+				}
+			?>
+			</select>
+			<select name="user[birthdate][mday]"><option></option>
+			<?php
+				for($i=1; $i<=31; $i++)
+				{
+					$selected = $i==$date['mday'] ? ' selected="selected"' : '';
+					echo "<option$selected>$i</option>";
+				}
+			?>
+			</select>
+			<input name="user[birthdate][year]" id="user-birthdate-year" size="4" maxlength="4" value="<?php echo $date['year']; ?>" />
+		</td>
+	</tr>
+
 	</table>
 </fieldset>

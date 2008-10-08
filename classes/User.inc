@@ -19,6 +19,7 @@ class User extends SystemUser
 	private $about;
 	private $gender;
 	private $race_id;
+	private $birthdate;
 	private $timestamp;
 
 	private $race;
@@ -40,7 +41,23 @@ class User extends SystemUser
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('users/unknownUser'); }
-			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			foreach($result[0] as $field=>$value)
+			{
+				if ($value)
+				{
+					# Birthdates must be stored internally as timestamps
+					#
+					# MySQL cannot handle timestamps prior to 1970
+					# PHP supports negative timestamps, which go back to 1901
+					# For early dates, we need to select the dates as strings
+					# and convert them to timestamps in PHP
+					if ($field=='birthdate' && $value!='0000-00-00')
+					{
+						$this->birthdate = strtotime($value);
+					}
+					else { $this->$field = $value; }
+				}
+			}
 		}
 		else
 		{
@@ -79,6 +96,7 @@ class User extends SystemUser
 		$fields['about'] = $this->about ? $this->about : null;
 		$fields['gender'] = $this->gender ? $this->gender : null;
 		$fields['race_id'] = $this->race_id ? $this->race_id : null;
+		$fields['birthdate'] = $this->birthdate ? date('Y-m-d',$this->birthdate) : null;
 		# Timestamp should be left alone, let the database set it automatically
 
 		# Split the fields up into a preparedFields array and a values array.
@@ -167,6 +185,15 @@ class User extends SystemUser
 		}
 		else return null;
 	}
+	public function getBirthdate($format=null)
+	{
+		if ($format && $this->birthdate)
+		{
+			if (strpos($format,'%')!==false) { return strftime($format,$this->birthdate); }
+			else { return date($format,$this->birthdate); }
+		}
+		else return $this->birthdate;
+	}
 
 	#----------------------------------------------------------------
 	# Generic Setters
@@ -196,6 +223,7 @@ class User extends SystemUser
 	public function setZipcode($string) { $this->zipcode = trim($string); }
 	public function setAbout($text) { $this->about = $text; }
 	public function setGender($string) { $this->gender = trim($string); }
+	public function setRace($race) { $this->race_id = $race->getId(); $this->race = $race; }
 	public function setRace_id($int)
 	{
 		if ($int)
@@ -209,7 +237,12 @@ class User extends SystemUser
 			$this->race_id = null;
 		}
 	}
-	public function setRace($race) { $this->race_id = $race->getId(); $this->race = $race; }
+	public function setBirthdate($date)
+	{
+		if (is_array($date)) { $this->birthdate = $this->dateArrayToTimestamp($date); }
+		elseif(ctype_digit($date)) { $this->birthdate = $date; }
+		else { $this->birthdate = strtotime($date); }
+	}
 
 	#----------------------------------------------------------------
 	# Custom Functions
