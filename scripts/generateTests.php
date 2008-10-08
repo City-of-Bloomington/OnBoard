@@ -115,9 +115,6 @@ class {$className}DbTest extends PHPUnit_Framework_TestCase
 ";
 file_put_contents("$dir/DatabaseTests/{$className}DbTest.php",$contents);
 
-echo "$className\n";
-}
-
 #------------------------------------------------------------------------------
 # Generate the Database List Tests
 #------------------------------------------------------------------------------
@@ -159,6 +156,9 @@ class {$className}ListDbTest extends PHPUnit_Framework_TestCase
 }
 ";
 file_put_contents("$dir/DatabaseTests/{$className}ListDbTest.php",$contents);
+
+echo "$className\n";
+}
 
 #------------------------------------------------------------------------------
 # Generate the All Tests Suite
