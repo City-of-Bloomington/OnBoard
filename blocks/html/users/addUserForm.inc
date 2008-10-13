@@ -16,6 +16,7 @@
 		include APPLICATION_HOME.'/blocks/html/users/authenticationFields.inc';
 	}
 	include APPLICATION_HOME.'/blocks/html/users/personalInfoFields.inc';
+	include APPLICATION_HOME.'/blocks/html/users/phoneNumberFields.inc';
 ?>
 
 <fieldset><legend>Submit</legend>

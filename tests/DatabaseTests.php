@@ -7,6 +7,8 @@ require_once 'DatabaseTests/CommitteeListDbTest.php';
 require_once 'DatabaseTests/CommitteeDbTest.php';
 require_once 'DatabaseTests/MemberListDbTest.php';
 require_once 'DatabaseTests/MemberDbTest.php';
+require_once 'DatabaseTests/PhoneNumberDbTest.php';
+require_once 'DatabaseTests/PhoneNumberListDbTest.php';
 require_once 'DatabaseTests/RaceDbTest.php';
 require_once 'DatabaseTests/RaceListDbTest.php';
 require_once 'DatabaseTests/RequirementListDbTest.php';
@@ -42,6 +44,18 @@ class DatabaseTests extends PHPUnit_Framework_TestSuite
 		$PDO = Database::getConnection(true);
 	}
 
+	protected function tearDown()
+	{
+		$dir = dirname(__FILE__);
+
+		$PDO = Database::getConnection();
+		$PDO->exec('drop database '.DB_NAME);
+		$PDO->exec('create database '.DB_NAME);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/testData.sql\n");
+
+		$PDO = Database::getConnection(true);
+	}
+
     public static function suite()
     {
         $suite = new DatabaseTests('Committee Manager Classes');
@@ -52,6 +66,8 @@ class DatabaseTests extends PHPUnit_Framework_TestSuite
 		$suite->addTestSuite('CommitteeDbTest');
 		$suite->addTestSuite('MemberListDbTest');
 		$suite->addTestSuite('MemberDbTest');
+		$suite->addTestSuite('PhoneNumberDbTest');
+		$suite->addTestSuite('PhoneNumberListDbTest');
 		$suite->addTestSuite('RaceDbTest');
 		$suite->addTestSuite('RaceListDbTest');
 		$suite->addTestSuite('RequirementListDbTest');

@@ -25,6 +25,7 @@ class User extends SystemUser
 	private $race;
 	private $roles = array();
 	private $newPassword; # the User's new password, unencrypted
+	private $phoneNumbers = array();
 
 	public function __construct($id = null)
 	{
@@ -86,9 +87,9 @@ class User extends SystemUser
 		$fields = array();
 		$fields['username'] = $this->username ? $this->username : null;
 		# Passwords should not be updated by default.  Use the savePassword() function
-		$fields['authenticationMethod'] = $this->authenticationMethod ? $this->authenticationMethod : null;
-		$fields['firstname'] = $this->firstname ? $this->firstname : null;
-		$fields['lastname'] = $this->lastname ? $this->lastname : null;
+		if ($this->authenticationMethod) { $fields['authenticationMethod'] = $this->authenticationMethod; }
+		$fields['firstname'] = $this->firstname;
+		$fields['lastname'] = $this->lastname;
 		$fields['email'] = $this->email ? $this->email : null;
 		$fields['address'] = $this->address ? $this->address : null;
 		$fields['city'] = $this->city ? $this->city : null;
@@ -118,6 +119,7 @@ class User extends SystemUser
 		if ($this->passwordHasChanged()) { $this->savePassword(); }
 
 		$this->updateRoles();
+		$this->savePhoneNumbers();
 	}
 
 	private function update($values,$preparedFields)
@@ -158,6 +160,22 @@ class User extends SystemUser
 		{
 			$PDO->rollBack();
 			throw $e;
+		}
+	}
+
+	private function savePhoneNumbers()
+	{
+		if ($this->id)
+		{
+			$PDO = Database::getConnection();
+			$query = $PDO->prepare('delete from phoneNumbers where user_id=?');
+			$query->execute(array($this->id));
+
+			foreach($this->getPhoneNumbers() as $phoneNumber)
+			{
+				$phoneNumber->setUser($this);
+				$phoneNumber->save();
+			}
 		}
 	}
 
@@ -362,5 +380,47 @@ class User extends SystemUser
 		$query->execute(array($this->username,$password));
 		$result = $query->fetchAll();
 		return count($result) ? true : false;
+	}
+
+	/**
+	 * Returns an array of PhoneNumbers
+	 * @return array
+	 */
+	public function getPhoneNumbers()
+	{
+		if (!count($this->phoneNumbers))
+		{
+			$list = new PhoneNumberList(array('user_id'=>$this->id));
+			foreach($list as $phoneNumber)
+			{
+				$this->phoneNumbers[] = $phoneNumber;
+			}
+		}
+		return $this->phoneNumbers;
+	}
+
+	/**
+	 * Takes a POST array of phoneNumbers and assigns them to this user
+	 * $phoneNumbers[i][ordering]
+	 * $phoneNumbers[i][number]
+	 * $phoneNumbers[i][type]
+	 * @param array $phoneNumbers
+	 */
+	public function setPhoneNumbers(array $phoneNumbers)
+	{
+		$this->phoneNumbers = array();
+		foreach($phoneNumbers as $posted)
+		{
+			if (trim($posted['number']))
+			{
+				$phoneNumber = new PhoneNumber();
+				$phoneNumber->setNumber($posted['number']);
+				$phoneNumber->setUser($this);
+				if ($posted['ordering']) { $phoneNumber->setOrdering($posted['ordering']); }
+				if ($posted['type']) { $phoneNumber->setType($posted['type']); }
+
+				$this->phoneNumbers[] = $phoneNumber;
+			}
+		}
 	}
 }

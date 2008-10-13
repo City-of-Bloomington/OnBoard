@@ -6,6 +6,7 @@ require_once 'UnitTests/MemberUnitTest.php';
 require_once 'UnitTests/RaceUnitTest.php';
 require_once 'UnitTests/RequirementUnitTest.php';
 require_once 'UnitTests/RoleUnitTest.php';
+require_once 'UnitTests/UserUnitTest.php';
 
 class UnitTests extends PHPUnit_Framework_TestSuite
 {
@@ -18,6 +19,7 @@ class UnitTests extends PHPUnit_Framework_TestSuite
 		$suite->addTestSuite('RaceUnitTest');
 		$suite->addTestSuite('RequirementUnitTest');
 		$suite->addTestSuite('RoleUnitTest');
+		$suite->addTestSuite('UserUnitTest');
 
 		return $suite;
 	}
