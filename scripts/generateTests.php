@@ -81,13 +81,7 @@ class {$className}DbTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		\$dir = dirname(__FILE__);
-
-		\$PDO = Database::getConnection();
-		\$PDO->exec('drop database '.DB_NAME);
-		\$PDO->exec('create database '.DB_NAME);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME.\" < \$dir/../testData.sql\");
-
-		\$PDO = Database::getConnection(true);
 	}
 
     public function testSaveLoad()
@@ -126,13 +120,7 @@ class {$className}ListDbTest extends PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		\$dir = dirname(__FILE__);
-
-		\$PDO = Database::getConnection();
-		\$PDO->exec('drop database '.DB_NAME);
-		\$PDO->exec('create database '.DB_NAME);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME.\" < \$dir/../testData.sql\");
-
-		\$PDO = Database::getConnection(true);
 	}
 
 	/**
@@ -197,13 +185,13 @@ class DatabaseTests extends PHPUnit_Framework_TestSuite
 	protected function setUp()
 	{
 		\$dir = dirname(__FILE__);
-
-		\$PDO = Database::getConnection();
-		\$PDO->exec('drop database '.DB_NAME);
-		\$PDO->exec('create database '.DB_NAME);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME.\" < \$dir/testData.sql\");
+	}
 
-		\$PDO = Database::getConnection(true);
+	protected function tearDown()
+	{
+		\$dir = dirname(__FILE__);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME.\" < \$dir/testData.sql\");
 	}
 
 	public static function suite()
@@ -234,18 +222,6 @@ foreach($classes as $className)
 $contents.= "
 class UnitTests extends PHPUnit_Framework_TestSuite
 {
-	protected function setUp()
-	{
-		\$dir = dirname(__FILE__);
-
-		\$PDO = Database::getConnection();
-		\$PDO->exec('drop database '.DB_NAME);
-		\$PDO->exec('create database '.DB_NAME);
-		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME.\" < \$dir/testData.sql\");
-
-		\$PDO = Database::getConnection(true);
-	}
-
 	public static function suite()
 	{
 		\$suite = new UnitTests('".APPLICATION_NAME." Classes');

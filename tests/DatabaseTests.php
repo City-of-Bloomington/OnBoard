@@ -35,25 +35,13 @@ class DatabaseTests extends PHPUnit_Framework_TestSuite
 	protected function setUp()
 	{
 		$dir = dirname(__FILE__);
-
-		$PDO = Database::getConnection();
-		$PDO->exec('drop database '.DB_NAME);
-		$PDO->exec('create database '.DB_NAME);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/testData.sql\n");
-
-		$PDO = Database::getConnection(true);
 	}
 
 	protected function tearDown()
 	{
 		$dir = dirname(__FILE__);
-
-		$PDO = Database::getConnection();
-		$PDO->exec('drop database '.DB_NAME);
-		$PDO->exec('create database '.DB_NAME);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/testData.sql\n");
-
-		$PDO = Database::getConnection(true);
 	}
 
     public static function suite()
