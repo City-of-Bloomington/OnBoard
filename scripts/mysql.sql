@@ -36,6 +36,7 @@ create table phoneNumbers (
 	ordering tinyint (1) unsigned not null default 1,
 	type enum('home','work','cell','fax') not null default 'home',
 	number varchar(15) not null,
+	private boolean not null default 0,
 	foreign key (user_id) references users(id)
 ) engine=InnoDB;
 

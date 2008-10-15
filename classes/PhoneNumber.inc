@@ -11,6 +11,7 @@ class PhoneNumber extends ActiveRecord
 	private $ordering;
 	private $type;
 	private $number;
+	private $private;
 
 	private $user;
 
@@ -34,6 +35,7 @@ class PhoneNumber extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
+			$this->private = 0;
 		}
 	}
 
@@ -62,6 +64,7 @@ class PhoneNumber extends ActiveRecord
 		if ($this->ordering) { $fields['ordering'] = $this->ordering; }
 		if ($this->type) { $fields['type'] = $this->type; }
 		$fields['number'] = $this->number;
+		$fields['private'] = $this->private;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -105,8 +108,14 @@ class PhoneNumber extends ActiveRecord
 	public function getUser_id() { return $this->user_id; }
 	public function getOrdering() { return $this->ordering; }
 	public function getType() { return $this->type; }
-	public function getNumber() { return $this->number; }
-
+	public function getNumber()
+	{
+		if (!$this->isPrivate() || userHasRole(array('Administrator','Clerk')))
+		{
+			return $this->number;
+		}
+	}
+	public function getPrivate() { return $this->private; }
 	public function getUser()
 	{
 		if ($this->user_id)
@@ -124,7 +133,7 @@ class PhoneNumber extends ActiveRecord
 	public function setOrdering($int) { $this->ordering = ereg_replace("[^0-9]","",$int); }
 	public function setType($string) { $this->type = trim($string); }
 	public function setNumber($string) { $this->number = trim($string); }
-
+	public function setPrivate($boolean) { $this->private = $boolean ? 1 : 0; }
 	public function setUser($user) { $this->user_id = $user->getId(); $this->user = $user; }
 
 
@@ -132,5 +141,7 @@ class PhoneNumber extends ActiveRecord
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
-	public function __toString() { return $this->number; }
+	public function __toString() { return $this->getNumber(); }
+
+	public function isPrivate() { return $this->private ? true : false; }
 }

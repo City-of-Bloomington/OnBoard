@@ -48,6 +48,11 @@ class PhoneNumberList extends PDOResultIterator
 			$options[] = 'number=:number';
 			$parameters[':number'] = $fields['number'];
 		}
+		if (isset($fields['private']))
+		{
+			$options[] = 'private=:private';
+			$parameters[':private'] = $fields['private'];
+		}
 
 
 		# Finding on fields from other tables required joining those tables.

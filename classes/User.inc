@@ -427,6 +427,7 @@ class User extends SystemUser
 	 * $phoneNumbers[i][ordering]
 	 * $phoneNumbers[i][number]
 	 * $phoneNumbers[i][type]
+	 * $phoneNumbers[i][private] (Optional)
 	 * @param array $phoneNumbers
 	 */
 	public function setPhoneNumbers(array $phoneNumbers)
@@ -441,6 +442,7 @@ class User extends SystemUser
 				$phoneNumber->setUser($this);
 				if ($posted['ordering']) { $phoneNumber->setOrdering($posted['ordering']); }
 				if ($posted['type']) { $phoneNumber->setType($posted['type']); }
+				if (isset($posted['private'])) { $phoneNumber->setPrivate($posted['private']); }
 
 				$this->phoneNumbers[] = $phoneNumber;
 			}

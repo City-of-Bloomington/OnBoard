@@ -22,6 +22,7 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 			$phoneNumber['ordering'] = '';
 			$phoneNumber['number'] = "$i$i$i-$i$i$i-$i$i$i$i";
 			$phoneNumber['type'] = '';
+			$phoneNumber['private'] = 1;
 			$phoneNumbers[] = $phoneNumber;
 		}
 
@@ -35,6 +36,8 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		$phoneNumbers = array();
 		foreach($user->getPhoneNumbers() as $phoneNumber)
 		{
+			$this->assertTrue($phoneNumber->isPrivate());
+
 			$number['ordering'] = $phoneNumber->getOrdering();
 			$number['number'] = $phoneNumber->getNumber();
 			$number['type'] = 'cell';
@@ -48,6 +51,7 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		foreach($user->getPhoneNumbers() as $phoneNumber)
 		{
 			$this->assertEquals($phoneNumber->getType(),'cell');
+			$this->assertFalse($phoneNumber->isPrivate());
 		}
 	}
 

@@ -11,6 +11,7 @@
 	<tr><th>Order</th>
 		<th>Number</th>
 		<th>Type</th>
+		<th>Private</th>
 	</tr>
 	<?php
 		$phoneNumbers = $this->user->getPhoneNumbers();
@@ -19,6 +20,7 @@
 			$ordering = isset($phoneNumbers[$i]) ? $phoneNumbers[$i]->getOrdering() : '';
 			$number = isset($phoneNumbers[$i]) ? $phoneNumbers[$i]->getNumber() : '';
 			$type = isset($phoneNumbers[$i]) ? $phoneNumbers[$i]->getType() : '';
+			$checked = (isset($phoneNumbers[$i]) && $phoneNumbers[$i]->isPrivate()) ? 'checked="checked"' : '';
 
 			echo "
 			<tr><td><input name=\"user[phoneNumbers][$i][ordering]\" size=\"2\" maxlength=\"2\" value=\"$ordering\" /></td>
@@ -38,6 +40,7 @@
 			echo "
 					</select>
 				</td>
+				<td><input type=\"checkbox\" name=\"user[phoneNumbers][$i][private]\" value=\"1\" $checked /></td>
 			</tr>
 			";
 		}
