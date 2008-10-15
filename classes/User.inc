@@ -26,6 +26,7 @@ class User extends SystemUser
 	private $roles = array();
 	private $newPassword; # the User's new password, unencrypted
 	private $phoneNumbers = array();
+	private $privateFields = array();
 
 	public function __construct($id = null)
 	{
@@ -120,6 +121,7 @@ class User extends SystemUser
 
 		$this->updateRoles();
 		$this->savePhoneNumbers();
+		$this->savePrivateFields();
 	}
 
 	private function update($values,$preparedFields)
@@ -179,38 +181,59 @@ class User extends SystemUser
 		}
 	}
 
+	public function savePrivateFields()
+	{
+		$PDO = Database::getConnection();
+
+		$query = $PDO->prepare('delete from user_private_fields where user_id=?');
+		$query->execute(array($this->id));
+
+		$query = $PDO->prepare('insert user_private_fields set user_id=?,fieldname=?');
+		foreach($this->privateFields as $field)
+		{
+			$query->execute(array($this->id,$field));
+		}
+	}
+
 	#----------------------------------------------------------------
 	# Generic Getters
 	#----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getUsername() { return $this->username; }
-	public function getAuthenticationMethod() { return $this->authenticationMethod; }
-	public function getFirstname() { return $this->firstname; }
-	public function getLastname() { return $this->lastname; }
-	public function getEmail() { return $this->email; }
-	public function getAddress() { return $this->address; }
-	public function getCity() { return $this->city; }
-	public function getZipcode() { return $this->zipcode; }
-	public function getAbout() { return $this->about; }
-	public function getGender() { return $this->gender; }
-	public function getRace_id() { return $this->race_id; }
+	public function getId() { return $this->isGettable('id') ? $this->id : null; }
+	public function getUsername() { return $this->isGettable('username') ? $this->username : ''; }
+	public function getAuthenticationMethod() { return $this->isGettable('authenticationMethod') ? $this->authenticationMethod : null; }
+	public function getFirstname() { return $this->isGettable('firstname') ? $this->firstname : 'Anonymous'; }
+	public function getLastname() { return $this->isGettable('lastname') ? $this->lastname : 'Anonymous'; }
+	public function getEmail() { return $this->isGettable('email') ? $this->email : null; }
+	public function getAddress() { return $this->isGettable('address') ? $this->address : null; }
+	public function getCity() { return $this->isGettable('city') ? $this->city : null; }
+	public function getZipcode() { return $this->isGettable('zipcode') ? $this->zipcode : null; }
+	public function getAbout() { return $this->isGettable('about') ? $this->about : null; }
+	public function getGender() { return $this->isGettable('gender') ? $this->gender : null; }
+	public function getRace_id() { return $this->isGettable('race_id') ? $this->race_id : null; }
 	public function getRace()
 	{
-		if ($this->race_id)
+		if ($this->isGettable('race_id'))
 		{
-			if (!$this->race) { $this->race = new Race($this->race_id); }
-			return $this->race;
+			if ($this->race_id)
+			{
+				if (!$this->race) { $this->race = new Race($this->race_id); }
+				return $this->race;
+			}
 		}
-		else return null;
+		return null;
 	}
 	public function getBirthdate($format=null)
 	{
-		if ($format && $this->birthdate)
+		if ($this->isGettable('birthdate'))
 		{
-			if (strpos($format,'%')!==false) { return strftime($format,$this->birthdate); }
-			else { return date($format,$this->birthdate); }
+			if ($format && $this->birthdate)
+			{
+				if (strpos($format,'%')!==false) { return strftime($format,$this->birthdate); }
+				else { return date($format,$this->birthdate); }
+			}
+			else return $this->birthdate;
 		}
-		else return $this->birthdate;
+		return null;
 	}
 
 	#----------------------------------------------------------------
@@ -422,5 +445,52 @@ class User extends SystemUser
 				$this->phoneNumbers[] = $phoneNumber;
 			}
 		}
+	}
+
+	/**
+	 * Takes an array of the user's fields that you want to make private
+	 * @param array $fields
+	 */
+	public function setPrivateFields($fields=null)
+	{
+		if ($fields) { $this->privateFields = $fields; }
+		else { $this->privateFields = array(); }
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getPrivateFields()
+	{
+		if (!$this->privateFields)
+		{
+			$PDO = Database::getConnection();
+			$query = $PDO->prepare('select fieldname from user_private_fields where user_id=?');
+			$query->execute(array($this->id));
+			$result = $query->fetchAll(PDO::FETCH_ASSOC);
+			foreach($result as $row)
+			{
+				$this->privateFields[] = $row['fieldname'];
+			}
+		}
+		return $this->privateFields;
+	}
+
+	/**
+	 * Determines whether a single field is private or not
+	 * @param string $field
+	 * @return boolean
+	 */
+	public function isPrivate($field)
+	{
+		return in_array($field,$this->getPrivateFields());
+	}
+
+	/**
+	 * @param string $field
+	 */
+	private function isGettable($field)
+	{
+		return (userHasRole(array('Administrator','Clerk')) || !$this->isPrivate($field));
 	}
 }

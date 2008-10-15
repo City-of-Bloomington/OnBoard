@@ -39,6 +39,13 @@ create table phoneNumbers (
 	foreign key (user_id) references users(id)
 ) engine=InnoDB;
 
+create table user_private_fields (
+	user_id int unsigned not null,
+	fieldname varchar(128) not null,
+	primary key (user_id,fieldname),
+	foreign key (user_id) references users(id)
+) engine=InnoDB;
+
 create table roles (
 	id int unsigned not null primary key auto_increment,
 	name varchar(30) not null unique

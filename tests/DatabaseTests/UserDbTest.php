@@ -56,4 +56,70 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 			$this->assertEquals($phoneNumber->getType(),'cell');
 		}
 	}
+
+	public function testSavePrivateFields()
+	{
+		$user = new User();
+		$user->setFirstname('Test');
+		$user->setLastname('User');
+		$user->setGender('Male');
+
+		$privateFields = array('gender','firstname','lastname','address','email');
+		$publicFields = array('city','zipcode','about');
+
+		$user->setPrivateFields($privateFields);
+		$user->save();
+		$id = $user->getId();
+
+		$user = new User($id);
+		foreach($privateFields as $field)
+		{
+			$this->assertTrue($user->isPrivate($field));
+		}
+		foreach($publicFields as $field)
+		{
+			$this->assertTrue(!$user->isPrivate($field));
+		}
+	}
+
+	public function testAdministratorCanSeePrivateFields()
+	{
+		$PDO = Database::getConnection();
+		$sql = 'select user_id from user_roles left join roles on role_id=id where name=? limit 1';
+		$query = $PDO->prepare($sql);
+		$query->execute(array('Administrator'));
+		$result = $query->fetchAll();
+		if (count($result))
+		{
+			$_SESSION['USER'] = new User($result[0]['user_id']);
+			$user = new User();
+			$user->setFirstname('Test');
+			$user->setLastname('User');
+			$user->setPrivateFields(array('firstname','lastname'));
+
+			$this->assertEquals($user->getFirstname(),'Test');
+			$this->assertEquals($user->getLastname(),'User');
+		}
+	}
+
+	public function testClerkCanSeePrivateFields()
+	{
+		$PDO = Database::getConnection();
+		$sql = 'select user_id from user_roles left join roles on role_id=id where name=? limit 1';
+		$query = $PDO->prepare($sql);
+		$query->execute(array('Clerk'));
+		$result = $query->fetchAll();
+		if (count($result))
+		{
+			$_SESSION['USER'] = new User($result[0]['user_id']);
+			$user = new User();
+			$user->setFirstname('Test');
+			$user->setLastname('User');
+			$user->setPrivateFields(array('firstname','lastname'));
+
+			$this->assertEquals($user->getFirstname(),'Test');
+			$this->assertEquals($user->getLastname(),'User');
+		}
+	}
+
 }
