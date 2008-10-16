@@ -3,10 +3,10 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<link rel="SHORTCUT ICON" href="/favicon.ico" />
 	<style type="text/css" media="screen">
-		@import url('/skins/default/screen.css');
+		@import url('/skins/external/screen.css');
 	</style>
 	<style type="text/css" media="print">
-		@import url('/skins/default/print.css');
+		@import url('/skins/external/print.css');
 	</style>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/functions.js"></script>
 
