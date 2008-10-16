@@ -43,7 +43,6 @@ class Committee extends ActiveRecord
 		{
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
-			$this->dateFormed = time();
 		}
 	}
 
@@ -55,7 +54,6 @@ class Committee extends ActiveRecord
 	{
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->name) { throw new Exception('missingName'); }
-		if (!$this->dateFormed) { $this->dateFormed = time(); }
 	}
 
 	/**
@@ -71,7 +69,7 @@ class Committee extends ActiveRecord
 		$fields['name'] = $this->name;
 		$fields['statutoryName'] = $this->statutoryName ? $this->statutoryName : null;
 		$fields['statuteReference'] = $this->statuteReference ? $this->statuteReference : null;
-		$fields['dateFormed'] = date('Y-m-d',$this->dateFormed);
+		$fields['dateFormed'] = $this->dateFormed ? date('Y-m-d',$this->dateFormed) : null;
 		$fields['website'] = $this->website ? $this->website : null;
 		$fields['description'] = $this->description ? $this->description : null;
 
@@ -141,7 +139,11 @@ class Committee extends ActiveRecord
 	{
 		if (is_array($date)) { $this->dateFormed = $this->dateArrayToTimestamp($date); }
 		elseif(ctype_digit($date)) { $this->dateFormed = $date; }
-		else { $this->dateFormed = strtotime($date); }
+		else
+		{
+			if ($date) { $this->dateFormed = strtotime($date); }
+			else { $this->dateFormed = null; }
+		}
 	}
 
 
