@@ -35,7 +35,7 @@ if (count($this->pages) > 1)
 	{
 		$displayNumber = $i+1;
 		$url->page = $i;
-		$class = ($i != $this->page) ? 'class="current"' : '';
+		$class = ($i == $this->page) ? 'class="current"' : '';
 		echo "<li><a href=\"$url\" $class>$displayNumber</a></li>";
 	}
 
