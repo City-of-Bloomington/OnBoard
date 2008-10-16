@@ -22,7 +22,6 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 		<th>Number</th>
 		<th>Date</th>
 		<th>Description</th>
-		<th>Synopsis</th>
 	</tr>
 	<?php
 		foreach($this->topicList as $topic)
@@ -45,7 +44,6 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 				<td><a href=\"{$topic->getURL()}\">$number</a></td>
 				<td><a href=\"{$topic->getURL()}\">$date</a></td>
 				<td>$description</td>
-				<td>$synopsis</td>
 			</tr>
 			";
 		}
