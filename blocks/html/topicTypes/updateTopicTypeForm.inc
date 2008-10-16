@@ -5,9 +5,9 @@
  * @param TopicType $this->topicType
  */
 ?>
-<h1>Update TopicType</h1>
+<h1>Update Legislation Type</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
-<fieldset><legend>TopicType Info</legend>
+<fieldset><legend>Legislation Type Info</legend>
 	<input name="topicType_id" type="hidden" value="<?php echo $this->topicType->getId(); ?>" />
 	<table>
 

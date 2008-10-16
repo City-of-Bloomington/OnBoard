@@ -12,7 +12,7 @@
 				echo "<a class=\"add button\" href=\"$url\">Add</a>";
 			}
 		?>
-		Topic Types
+		Legislation Types
 	</h1>
 	<ul><?php
 			foreach($this->topicTypeList as $topicType)
