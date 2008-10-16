@@ -64,7 +64,12 @@ create table user_roles (
 
 create table committees (
 	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null
+	name varchar(128) not null,
+	statutoryName varchar(128),
+	statuteReference varchar(128),
+	dateFormed date,
+	website varchar(128),
+	description text
 ) engine=InnoDB;
 
 create table appointers (

@@ -32,6 +32,31 @@ class CommitteeList extends PDOResultIterator
 			$options[] = 'name=:name';
 			$parameters[':name'] = $fields['name'];
 		}
+		if (isset($fields['statutoryName']))
+		{
+			$options[] = 'statutoryName=:statutoryName';
+			$parameters[':statutoryName'] = $fields['statutoryName'];
+		}
+		if (isset($fields['statuteReference']))
+		{
+			$options[] = 'statuteReference=:statuteReference';
+			$parameters[':statuteReference'] = $fields['statuteReference'];
+		}
+		if (isset($fields['dateFormed']))
+		{
+			$options[] = 'dateFormed=:dateFormed';
+			$parameters[':dateFormed'] = $fields['dateFormed'];
+		}
+		if (isset($fields['website']))
+		{
+			$options[] = 'website=:website';
+			$parameters[':website'] = $fields['website'];
+		}
+		if (isset($fields['description']))
+		{
+			$options[] = 'description=:description';
+			$parameters[':description'] = $fields['description'];
+		}
 
 
 		# Finding on fields from other tables required joining those tables.
