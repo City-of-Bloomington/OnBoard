@@ -20,13 +20,6 @@ foreach($fields as $field)
 		<th></th>
 		<th>Private</th>
 	</tr>
-	<tr>
-		<td><label class="required">Gender</label>
-		<td><label><input name="user[gender]" type="radio" value="male" <?php if($gender=='male') echo ' checked="checked"'; ?> />M</label>
-			<label><input name="user[gender]" type="radio" value="female" <?php if($gender=='female') echo ' checked="checked"'; ?> />F</label>
-		</td>
-		<td><input type="checkbox" name="user[privateFields][gender]" value="gender" <?php if($this->user->isPrivate('gender')) echo 'checked="checked"'; ?> /></td>
-	</tr>
 
 	<tr>
 		<td><label for="user-firstname">Firstname</label></td>
@@ -101,6 +94,14 @@ foreach($fields as $field)
 			<input name="user[birthdate][year]" id="user-birthdate-year" size="4" maxlength="4" value="<?php echo $date['year']; ?>" />
 		</td>
 		<td><input type="checkbox" name="user[privateFields][birthdate]" value="birthdate" <?php if($this->user->isPrivate('birthdate')) echo 'checked="checked"'; ?> /></td>
+	</tr>
+
+	<tr>
+		<td><label>Gender</label>
+		<td><label><input name="user[gender]" type="radio" value="male" <?php if($gender=='male') echo ' checked="checked"'; ?> />M</label>
+			<label><input name="user[gender]" type="radio" value="female" <?php if($gender=='female') echo ' checked="checked"'; ?> />F</label>
+		</td>
+		<td><input type="checkbox" name="user[privateFields][gender]" value="gender" <?php if($this->user->isPrivate('gender')) echo 'checked="checked"'; ?> /></td>
 	</tr>
 
 	<tr>

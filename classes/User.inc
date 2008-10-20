@@ -74,11 +74,6 @@ class User extends SystemUser
 		{
 			throw new Exception('missingName');
 		}
-
-		if (!$this->gender)
-		{
-			throw new Exception('users/missingGender');
-		}
 	}
 
 	public function save()
