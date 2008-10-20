@@ -40,10 +40,10 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			$synopsis = View::escape($topic->getSynopsis());
 			echo "
 			<tr><td>$editButton</td>
-				<td><a href=\"{$topic->getURL()}\">$type</a></td>
-				<td><a href=\"{$topic->getURL()}\">$number</a></td>
 				<td><a href=\"{$topic->getURL()}\">$date</a></td>
 				<td>$description</td>
+				<td><a href=\"{$topic->getURL()}\">$number</a></td>
+				<td><a href=\"{$topic->getURL()}\">$type</a></td>
 			</tr>
 			";
 		}
