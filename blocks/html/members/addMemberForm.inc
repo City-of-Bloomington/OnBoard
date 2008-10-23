@@ -39,6 +39,6 @@
 
 <fieldset><legend>Submit</legend>
 	<button type="submit" class="submit">Submit</button>
-	<a class="cancel button" href="<?php echo $this->seat->getURL(); ?>">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->seat->getURL(); ?>';">Cancel</button>
 </fieldset>
 </form>

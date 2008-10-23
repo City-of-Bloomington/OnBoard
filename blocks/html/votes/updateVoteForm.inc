@@ -49,6 +49,6 @@ $outcomes = array(' ','pass','fail');
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<a class="cancel button" href="<?php echo $this->vote->getTopic()->getURL(); ?>">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->vote->getTopic()->getURL(); ?>';">Cancel</button>
 </fieldset>
 </form>

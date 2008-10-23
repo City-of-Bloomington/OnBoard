@@ -12,10 +12,10 @@
 
 	<tr><td><label for="voteType-name">name</label></td>
 		<td><input name="voteType[name]" id="voteType-name" value="<?php echo $this->voteType->getName(); ?>" /></td></tr>
-		
+
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<a class="cancel button" href="<?php echo BASE_URL; ?>/voteTypes">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>/voteTypes';">Cancel</button>
 </fieldset>
 </form>

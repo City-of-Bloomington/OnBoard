@@ -23,6 +23,6 @@
 	<input name="user_id" type="hidden" value="<?php echo $this->user->getId(); ?>" />
 	<input name="return_url" type="hidden" value="<?php echo View::escape($this->return_url); ?>" />
 	<button type="submit" class="submit">Submit</button>
-	<a class="cancel button" href="<?php echo View::escape($this->return_url); ?>">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo View::escape($this->return_url); ?>';">Cancel</button>
 </fieldset>
 </form>

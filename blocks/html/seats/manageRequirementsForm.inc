@@ -56,6 +56,6 @@ if ($this->seat->hasRequirements())
 <fieldset>
 	<input name="seat_id" type="hidden" value="<?php echo $this->seat->getId(); ?>" />
 	<button type="submit" class="submit">Submit</button>
-	<a cancel="done button" href="<?php echo $this->seat->getURL(); ?>">Done</a>
+	<button type="button" cancel="done" onclick="document.location.href='<?php echo $this->seat->getURL(); ?>';">Done</button>
 </fieldset>
 </form>
