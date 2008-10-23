@@ -12,11 +12,7 @@
 	<table>
 
 	<tr><td><label for="seat-title" class="required">Title</label></td>
-		<td><input name="seat[title]"
-					id="seat-title"
-					value="<?php echo View::escape($this->seat->getTitle()); ?>" />
-		</td>
-	</tr>
+		<td><input name="seat[title]" id="seat-title" value="<?php echo View::escape($this->seat->getTitle()); ?>" /></td></tr>
 
 	<tr><td><label for="seat-appointer_id">Appointed By</label></td>
 		<td><select name="seat[appointer_id]" id="seat-appointer_id">
@@ -34,13 +30,12 @@
 		</td>
 	</tr>
 
+	<tr><td><label for="seat-maxCurrentMembers">Maximum Concurrent Members</label></td>
+		<td><input name="seat[maxCurrentMembers]" id="seat-maxCurrentMembers" size="3" maxlength="3" value="<?php echo View::escape($this->seat->getMaxCurrentMembers()); ?>" /></td></tr>
+
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<?php
-		$url = new URL(BASE_URL.'/committees/viewCommittee.php');
-		$url->committee_id = $this->seat->getCommittee_id();
-	?>
-	<a class="cancel button" href="<?php echo $url; ?>">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->seat->getCommittee()->getURL(); ?>';">Cancel</button>
 </fieldset>
 </form>

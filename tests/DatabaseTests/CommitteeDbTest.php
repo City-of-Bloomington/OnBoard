@@ -55,4 +55,31 @@ class CommitteeDbTest extends PHPUnit_Framework_TestCase
 			}
 		}
     }
+
+    public function testGetMaxCurrentMembers()
+    {
+    	$committee = new Committee();
+    	$committee->setName('test committee');
+		$committee->save();
+
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee($committee);
+		$seat->save();
+
+		$this->assertEquals(1,$committee->getMaxCurrentMembers());
+
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee($committee);
+		$seat->save();
+		$id = $seat->getId();
+
+		$this->assertEquals(2,$committee->getMaxCurrentMembers());
+
+		$seat->setMaxCurrentMembers(2);
+		$seat->save();
+
+		$this->assertEquals(3,$committee->getMaxCurrentMembers());
+    }
 }

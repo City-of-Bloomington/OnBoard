@@ -27,6 +27,8 @@ echo "
 	<tr><th>Committee</th>
 		<td>$committee</td>
 	</tr>
+	<tr><th>Maximum Current Members</th>
+		<td>{$this->seat->getMaxCurrentMembers()}</td></tr>
 	<tr><th>$editRequirementsButton
 			Requirements
 		</th>

@@ -3,25 +3,39 @@ require_once 'PHPUnit/Framework.php';
 
 class MemberDbTest extends PHPUnit_Framework_TestCase
 {
+	protected $seat;
+	protected $user;
+
 	protected function setUp()
 	{
 		$dir = dirname(__FILE__);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
+
+		$committee = new Committee();
+		$committee->setName('Seat Test Committee');
+		$committee->save();
+
+		$appointer = new Appointer();
+		$appointer->setName('Seat Test Appointer');
+		$appointer->save();
+
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee($committee);
+		$seat->setAppointer($appointer);
+		$seat->save();
+		$this->seat = $seat;
+
+		$users = new UserList();
+		$users->find();
+		$this->user = $users[0];
 	}
 
 	public function testSaveLoadDelete()
 	{
-		$list = new SeatList();
-		$list->find();
-		$seat = $list[0];
-
-		$list = new UserList();
-		$list->find();
-		$user = $list[0];
-
 		$member = new Member();
-		$member->setSeat($seat);
-		$member->setUser($user);
+		$member->setSeat($this->seat);
+		$member->setUser($this->user);
 
 		$member->save();
 		$id = $member->getId();
@@ -40,15 +54,9 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($member->getTerm_end('Y-m-d'),$date);
 
 		$member->delete();
-		try
-		{
-			$member = new Member($id);
-			$this->fail('Test member was not deleted');
-		}
-		catch (Exception $e)
-		{
-			# Success
-		}
+		try { $member = new Member($id); }
+		catch (Exception $e) { return; }
+		$this->fail('Test member was not deleted');
 	}
 
 	public function testDelete()
@@ -67,5 +75,22 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		{
 			$this->markTestIncomplete('No Members in the system to test');
 		}
+	}
+
+	public function testSeatMemberLimit()
+	{
+		# The seat member limit should be one, by default
+		$member = new Member();
+		$member->setSeat($this->seat);
+		$member->setUser($this->user);
+		$member->save();
+
+		$member = new Member();
+		$member->setSeat($this->seat);
+		$member->setUser($this->user);
+
+		try { $member->save(); }
+		catch (Exception $e) { return; }
+		$this->fail('We were able to exceed the max number of members allowed for a seat');
 	}
 }

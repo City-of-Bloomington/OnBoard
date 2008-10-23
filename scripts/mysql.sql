@@ -88,6 +88,7 @@ create table seats (
 	title varchar(128) not null,
 	committee_id int unsigned not null,
 	appointer_id int unsigned not null default 1,
+	maxCurrentMembers tinyint unsigned not null default 1,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
 ) engine=InnoDB;

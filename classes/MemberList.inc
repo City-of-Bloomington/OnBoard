@@ -48,10 +48,15 @@ class MemberList extends PDOResultIterator
 			$parameters[':term_end'] = $fields['term_end'];
 		}
 
-		if (isset($fields['status'])=='current')
+		if (isset($fields['current']))
 		{
-			$options[] = 'm.term_start<now()';
-			$options[] = '(m.term_end is null or m.term_end>now())';
+			$date = date('Y-m-d H:i:s',$fields['current']);
+
+			$options[] = 'm.term_start<:currentStart';
+			$options[] = '(m.term_end is null or m.term_end>:currentEnd)';
+
+			$parameters[':currentStart'] = $date;
+			$parameters[':currentEnd'] = $date;
 		}
 
 

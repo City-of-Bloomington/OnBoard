@@ -22,9 +22,7 @@ if (isset($_POST['seat']))
 	try
 	{
 		$seat->save();
-		$url = new URL(BASE_URL.'/committees/viewCommittee.php');
-		$url->committee_id = $committee->getId();
-		Header("Location: $url");
+		Header('Location: '.$committee->getURL());
 		exit();
 	}
 	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }

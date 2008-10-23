@@ -65,6 +65,9 @@ abstract class ActiveRecord
 		$minutes = isset($date['minutes']) ? $date['minutes'] : 0;
 		$seconds = isset($date['seconds']) ? $date['seconds'] : 0;
 
-		return mktime($hours,$minutes,$seconds,$date['mon'],$date['mday'],$date['year']);
+		if ($date['mon'] && $date['mday'] && $date['year'])
+		{
+			return mktime($hours,$minutes,$seconds,$date['mon'],$date['mday'],$date['year']);
+		}
 	}
 }

@@ -18,16 +18,20 @@ if (isset($_POST['member']))
 
 	# Update the User's personal information
 	$user = $member->getUser();
-	$user->setFirstname($_POST['user']['firstname']);
-	$user->setLastname($_POST['user']['lastname']);
-	$user->setEmail($_POST['user']['email']);
-	$user->setAddress($_POST['user']['address']);
-	$user->setCity($_POST['user']['city']);
-	$user->setZipCode($_POST['user']['zipcode']);
-	$user->setHomePhone($_POST['user']['homePhone']);
-	$user->setWorkPhone($_POST['user']['workPhone']);
-	$user->setAbout($_POST['user']['about']);
-	$user->setPhotoPath($_POST['user']['photoPath']);
+
+	# Both clerk and admin can edit these fields
+	$fields = array('gender','firstname','lastname','email','address','city',
+					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
+
+	# Set all the fields they're allowed to edit
+	foreach($fields as $field)
+	{
+		if (isset($_POST['user'][$field]))
+		{
+			$set = 'set'.ucfirst($field);
+			$user->$set($_POST['user'][$field]);
+		}
+	}
 
 	try
 	{

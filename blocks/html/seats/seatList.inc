@@ -18,10 +18,11 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 		Seats
 	</h1>
 	<table>
-	<tr><td></td>
-		<td>Member</td>
-		<td>Title</td>
-		<td>Appointed By</td>
+	<tr><th></th>
+		<th>Title</th>
+		<th>Max Current Members</th>
+		<th>Appointed By</th>
+		<th>Current Members</th>
 	</tr>
 	<?php
 		foreach($this->seatList as $seat)
@@ -37,13 +38,20 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			$title = View::escape($seat->getTitle());
 			$appointer = View::escape($seat->getAppointer());
 
-			$member = $seat->getMember();
-			$memberName = $member ? View::escape($member->getFirstname().' '.$member->getLastname()) : 'Vacant';
+			$members = array();
+			foreach($seat->getCurrentMembers() as $member)
+			{
+				$members[] = View::escape($member->getFullname());
+			}
+			$members = implode(', ',$members);
+
+			$vacancy = (count($seat->getCurrentMembers()) < $seat->getMaxCurrentMembers()) ? '(Vacancy)' : '';
 			echo "
 			<tr><td>$editButton</td>
-				<td>$memberName</td>
-				<td><a href=\"".BASE_URL."/seats/viewSeat.php?seat_id={$seat->getId()}\">$title</a></td>
+				<td><a href=\"{$seat->getURL()}\">$title</a></td>
+				<td>{$seat->getMaxCurrentMembers()}</td>
 				<td>$appointer</td>
+				<td>$members $vacancy</td>
 			</tr>
 			";
 		}

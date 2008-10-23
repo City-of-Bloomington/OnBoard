@@ -29,13 +29,12 @@
 			</select>
 		</td>
 	</tr>
+
+	<tr><td><label for="seat-maxCurrentMembers">Maximum Concurrent Members</label></td>
+		<td><input name="seat[maxCurrentMembers]" id="seat-maxCurrentMembers" size="3" maxlength="3" value="1" /></td></tr>
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<?php
-		$url = new URL(BASE_URL.'/committees/viewCommittee.php');
-		$url->committee_id = $this->committee->getId();
-	?>
-	<a class="cancel button" href="<?php echo $url; ?>">Cancel</a>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->committee->getURL(); ?>';">Cancel</button>
 </fieldset>
 </form>

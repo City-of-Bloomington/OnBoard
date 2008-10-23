@@ -51,6 +51,20 @@ class Member extends ActiveRecord
 		# Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->seat_id || !$this->user_id) { throw new Exception('missingRequiredFields'); }
 		if (!$this->term_start) { $this->term_start = time(); }
+
+		# Make sure this member does not exceed the maxCurrentMembers for the seat
+		if ( $this->term_start < time() &&
+			 (!$this->term_end || $this->term_end >= time()) )
+		{
+			# The member we're adding is current, make sure there's room
+			$count = count($this->seat->getCurrentMembers());
+			if (!$this->id) { $count++; }
+
+			if ($count > $this->seat->getMaxCurrentMembers())
+			{
+				throw new Exception('seats/maxCurrentMembersFilled');
+			}
+		}
 	}
 
 	/**

@@ -18,10 +18,10 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 	</h1>
 	<table>
 	<tr><th></th>
-		<th>Type</th>
-		<th>Number</th>
 		<th>Date</th>
 		<th>Description</th>
+		<th>Number</th>
+		<th>Type</th>
 	</tr>
 	<?php
 		foreach($this->topicList as $topic)
@@ -40,10 +40,10 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			$synopsis = View::escape($topic->getSynopsis());
 			echo "
 			<tr><td>$editButton</td>
-				<td><a href=\"{$topic->getURL()}\">$date</a></td>
+				<td>$date</td>
 				<td>$description</td>
 				<td><a href=\"{$topic->getURL()}\">$number</a></td>
-				<td><a href=\"{$topic->getURL()}\">$type</a></td>
+				<td>$type</td>
 			</tr>
 			";
 		}

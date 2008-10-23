@@ -158,6 +158,19 @@ class Committee extends ActiveRecord
 	{
 		return new SeatList(array('committee_id'=>$this->id));
 	}
+	/**
+	 * Each seat can have multiple member positions
+	 * @return int
+	 */
+	public function getMaxCurrentMembers()
+	{
+		$positions = 0;
+		foreach($this->getSeats() as $seat)
+		{
+			$positions += $seat->getMaxCurrentMembers();
+		}
+		return $positions;
+	}
 
 	/**
 	 * @return TopicList

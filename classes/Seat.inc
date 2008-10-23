@@ -9,6 +9,7 @@ class Seat extends ActiveRecord
 	private $title;
 	private $committee_id;
 	private $appointer_id;
+	private $maxCurrentMembers;
 
 	private $committee;
 	private $appointer;
@@ -35,6 +36,7 @@ class Seat extends ActiveRecord
 			# This is where the code goes to generate a new, empty instance.
 			# Set any default values for properties that need it here
 			$this->appointer_id = 1;
+			$this->maxCurrentMembers = 1;
 		}
 	}
 
@@ -60,8 +62,9 @@ class Seat extends ActiveRecord
 
 		$fields = array();
 		$fields['title'] = $this->title;
-		$fields['committee_id'] = $this->committee_id ? $this->committee_id : null;
-		$fields['appointer_id'] = $this->appointer_id ? $this->appointer_id : null;
+		$fields['committee_id'] = $this->committee_id;
+		$fields['appointer_id'] = $this->appointer_id;
+		$fields['maxCurrentMembers'] = $this->maxCurrentMembers;
 
 		# Split the fields up into a preparedFields array and a values array.
 		# PDO->execute cannot take an associative array for values, so we have
@@ -105,6 +108,7 @@ class Seat extends ActiveRecord
 	public function getTitle() { return $this->title; }
 	public function getCommittee_id() { return $this->committee_id; }
 	public function getAppointer_id() { return $this->appointer_id; }
+	public function getMaxCurrentMembers() { return $this->maxCurrentMembers; }
 
 	public function getCommittee()
 	{
@@ -131,6 +135,7 @@ class Seat extends ActiveRecord
 	public function setTitle($string) { $this->title = trim($string); }
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 	public function setAppointer_id($int) { $this->appointer = new Appointer($int); $this->appointer_id = $int; }
+	public function setMaxCurrentMembers($int) { $this->maxCurrentMembers = (int) $int; }
 
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
 	public function setAppointer($appointer) { $this->appointer_id = $appointer->getId(); $this->appointer = $appointer; }
@@ -145,28 +150,14 @@ class Seat extends ActiveRecord
 	public function getMembers() { return new MemberList(array('seat_id'=>$this->id)); }
 
 	/**
-	 * Returns the current member for this seat
-	 * @return Member
+	 * Returns the list of members active at the given time
+	 * @param int $timestamp A unix timestamp
+	 * @return MemberList
 	 */
-	public function getMember()
+	public function getCurrentMembers(int $timestamp=null)
 	{
-		if (!$this->member)
-		{
-			$PDO = Database::getConnection();
-
-			$sql = "select id from members
-					where seat_id=?
-					and term_start<now()
-					and (term_end is null or term_end>now())";
-			$query = $PDO->prepare($sql);
-			$query->execute(array($this->id));
-			$result = $query->fetchAll();
-			if (count($result))
-			{
-				$this->member = new Member($result[0]['id']);
-			}
-		}
-		return $this->member;
+		if (!$timestamp) { $timestamp = time(); }
+		return new MemberList(array('seat_id'=>$this->id,'current'=>$timestamp));
 	}
 
 	/**

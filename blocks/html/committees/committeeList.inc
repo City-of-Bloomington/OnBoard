@@ -25,7 +25,7 @@
 		foreach($this->committeeList as $committee)
 		{
 			$name = View::escape($committee->getName());
-			$seats = count($committee->getSeats());
+			$seats = $committee->getMaxCurrentMembers();
 			$editButton = '';
 			if (userHasRole(array('Administrator','Clerk')))
 			{

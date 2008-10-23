@@ -8,7 +8,7 @@
 $addButton = '';
 if (isset($this->seat) && userHasRole(array('Administrator','Clerk')))
 {
-	$url = new URL(BASE_URL.'/seats/addMember.php');
+	$url = new URL(BASE_URL.'/members/addMember.php');
 	$url->seat_id = $this->seat->getId();
 	$addButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }

@@ -5,13 +5,12 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 {
 	protected $committee;
 	protected $appointer;
+	protected $user;
 
 	protected function setUp()
 	{
 		$dir = dirname(__FILE__);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
-
-		$PDO = Database::getConnection();
 
 		$committee = new Committee();
 		$committee->setName('Seat Test Committee');
@@ -22,6 +21,10 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 		$appointer->setName('Seat Test Appointer');
 		$appointer->save();
 		$this->appointer = $appointer;
+
+		$users = new UserList();
+		$users->find();
+		$this->user = $users[0];
 	}
 
 	public function testSetCommitte()
@@ -46,7 +49,25 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($seat->getAppointer()->getId(),$this->appointer->getId());
 	}
 
-	public function testValidate()
+	public function testValidateTitle()
+	{
+		$seat = new Seat();
+		$seat->setCommittee($this->committee);
+		try { $seat->validate(); }
+		catch (Exception $e) { return; }
+		$this->fail('Missing Title failed to throw validation error.');
+	}
+
+	public function testValidateCommittee()
+	{
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		try { $seat->validate(); }
+		catch (Exception $e) { return; }
+		$this->fail('Missing committee failed to throw validation error.');
+	}
+
+	public function testSuccessfulValidate()
 	{
 		$seat = new Seat();
 		$seat->setTitle('Test Seat');
@@ -56,23 +77,6 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 		{
 			$this->fail('Validation failed even when all required fields were set');
 		}
-
-		$seat->setTitle('');
-		try
-		{
-			$seat->validate();
-			$this->fail('Missing Title failed to throw validation error.');
-		}
-		catch (Exception $e) { }
-
-		$seat->setTitle('Test Seat');
-		$seat->setCommittee_id(null);
-		try
-		{
-			$seat->validate();
-			$this->fail('Missing committee failed to throw validation error.');
-		}
-		catch (Exception $e) { }
 	}
 
 	public function testSaveAndLoad()
@@ -91,5 +95,48 @@ class SeatDbTest extends PHPUnit_Framework_TestCase
 
 		$seat = new Seat($id);
 		$this->assertEquals($seat->getTitle(),'Updated Test Title');
+	}
+
+	public function testGetMembers()
+	{
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee($this->committee);
+		$seat->save();
+
+		$member = new Member();
+		$member->setSeat($seat);
+		$member->setUser($this->user);
+		$member->setTerm_start(strtotime('-2 weeks'));
+		$member->setTerm_end(strtotime('-1 week'));
+		$member->save();
+
+		$this->assertEquals(1,count($seat->getMembers()));
+	}
+
+	public function testGetCurrentMembers()
+	{
+		$seat = new Seat();
+		$seat->setTitle('Test Seat');
+		$seat->setCommittee($this->committee);
+		$seat->save();
+
+		$member = new Member();
+		$member->setSeat($seat);
+		$member->setUser($this->user);
+		$member->setTerm_start(strtotime('-2 weeks'));
+		$member->setTerm_end(strtotime('-1 week'));
+		$member->save();
+
+		$this->assertEquals(0,count($seat->getCurrentMembers()));
+
+		$member = new Member();
+		$member->setSeat($seat);
+		$member->setUser($this->user);
+		$member->setTerm_start(strtotime('-2 weeks'));
+		$member->setTerm_end(strtotime('+1 week'));
+		$member->save();
+
+		$this->assertEquals(1,count($seat->getCurrentMembers()));
 	}
 }
