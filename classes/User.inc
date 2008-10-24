@@ -490,4 +490,20 @@ class User extends SystemUser
 	{
 		return (userHasRole(array('Administrator','Clerk')) || !$this->isPrivate($field));
 	}
+
+	/**
+	 * @return MemberList
+	 */
+	public function getMembers()
+	{
+		return new MemberList(array('user_id'=>$this->id));
+	}
+
+	/**
+	 * @return VotingRecordList
+	 */
+	public function getVotingRecords()
+	{
+		return new VotingRecordList(array('user_id'=>$this->id));
+	}
 }

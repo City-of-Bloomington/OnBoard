@@ -53,14 +53,13 @@ class Member extends ActiveRecord
 		if (!$this->term_start) { $this->term_start = time(); }
 
 		# Make sure this member does not exceed the maxCurrentMembers for the seat
-		if ( $this->term_start < time() &&
+		if ( $this->term_start <= time() &&
 			 (!$this->term_end || $this->term_end >= time()) )
 		{
 			# The member we're adding is current, make sure there's room
-			$count = count($this->seat->getCurrentMembers());
+			$count = count($this->getSeat()->getCurrentMembers());
 			if (!$this->id) { $count++; }
-
-			if ($count > $this->seat->getMaxCurrentMembers())
+			if ($count > $this->getSeat()->getMaxCurrentMembers())
 			{
 				throw new Exception('seats/maxCurrentMembersFilled');
 			}
@@ -211,5 +210,18 @@ class Member extends ActiveRecord
 
 	public function getFullname() {
 		return $this->getUser()->getFirstname()." ".$this->getUser()->getLastname();
+	}
+
+	public function getURL()
+	{
+		return BASE_URL.'/members/viewMember.php?member_id='.$this->id;
+	}
+
+	/**
+	 * @return Committee
+	 */
+	public function getCommittee()
+	{
+		return $this->getSeat()->getCommittee();
 	}
 }

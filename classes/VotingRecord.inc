@@ -148,4 +148,10 @@ class VotingRecord extends ActiveRecord
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
 	#----------------------------------------------------------------
+	public function getDate($format=null)
+	{
+		return $this->getVote()->getDate($format);
+	}
+
+	public function getTopic() { return $this->getVote()->getTopic(); }
 }

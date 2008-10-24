@@ -41,7 +41,8 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			$members = array();
 			foreach($seat->getCurrentMembers() as $member)
 			{
-				$members[] = View::escape($member->getFullname());
+				$fullname = View::escape($member->getFullname());
+				$members[] = "<a href=\"{$member->getURL()}\">$fullname</a>";
 			}
 			$members = implode(', ',$members);
 

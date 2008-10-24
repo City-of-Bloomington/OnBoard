@@ -8,38 +8,38 @@ class VotingRecordList extends PDOResultIterator
 
 	public function __construct($fields=null)
 	{
-		$this->select = 'select votingRecords.id as id from votingRecords';
+		$this->select = 'select vr.id as id from votingRecords vr';
 		if (is_array($fields)) $this->find($fields);
 	}
-	
 
-	public function find($fields=null,$sort='id',$limit=null,$groupBy=null)
+
+	public function find($fields=null,$sort='v.date desc',$limit=null,$groupBy=null)
 	{
 		$this->sort = $sort;
 		$this->limit = $limit;
 		$this->groupBy = $groupBy;
-		$this->joins = '';
+		$this->joins = 'left join votes v on vr.vote_id=v.id';
 
 		$options = array();
 		$parameters = array();
 		if (isset($fields['id']))
 		{
-			$options[] = 'id=:id';
+			$options[] = 'vr.id=:id';
 			$parameters[':id'] = $fields['id'];
 		}
 		if (isset($fields['member_id']))
 		{
-			$options[] = 'member_id=:member_id';
+			$options[] = 'vr.member_id=:member_id';
 			$parameters[':member_id'] = $fields['member_id'];
 		}
 		if (isset($fields['vote_id']))
 		{
-			$options[] = 'vote_id=:vote_id';
+			$options[] = 'vr.vote_id=:vote_id';
 			$parameters[':vote_id'] = $fields['vote_id'];
 		}
 		if (isset($fields['memberVote']))
 		{
-			$options[] = 'memberVote=:memberVote';
+			$options[] = 'vr.memberVote=:memberVote';
 			$parameters[':memberVote'] = $fields['memberVote'];
 		}
 
@@ -47,10 +47,16 @@ class VotingRecordList extends PDOResultIterator
 		# Finding on fields from other tables required joining those tables.
 		# You can add fields from other tables to $options by adding the join SQL
 		# to $this->joins here
+		if (isset($fields['user_id']))
+		{
+			$this->joins.= ' left join members m on vr.member_id=m.id';
+			$options[] = 'm.user_id=:user_id';
+			$parameters[':user_id'] = $fields['user_id'];
+		}
 
 		$this->populateList($options,$parameters);
 	}
-	
+
 
 	protected function loadResult($key) { return new VotingRecord($this->list[$key]); }
 }

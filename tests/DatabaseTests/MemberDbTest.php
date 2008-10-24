@@ -26,9 +26,11 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		$seat->save();
 		$this->seat = $seat;
 
-		$users = new UserList();
-		$users->find();
-		$this->user = $users[0];
+		$user = new User();
+		$user->setFirstname('Test');
+		$user->setLastname('User');
+		$user->save();
+		$this->user = $user;
 	}
 
 	public function testSaveLoadDelete()
@@ -92,5 +94,12 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		try { $member->save(); }
 		catch (Exception $e) { return; }
 		$this->fail('We were able to exceed the max number of members allowed for a seat');
+	}
+
+	public function testGetCommittee()
+	{
+		$member = new Member();
+		$member->setSeat($this->seat);
+		$this->assertEquals($member->getCommittee()->getName(),'Seat Test Committee');
 	}
 }

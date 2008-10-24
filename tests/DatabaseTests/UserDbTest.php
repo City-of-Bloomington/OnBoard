@@ -119,5 +119,4 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 			$this->assertEquals($user->getLastname(),'User');
 		}
 	}
-
 }

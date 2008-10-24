@@ -46,7 +46,7 @@ if (isset($this->seat) && userHasRole(array('Administrator','Clerk')))
 			$name = View::escape("{$member->getFirstname()} {$member->getLastname()}");
 			echo "
 			<tr><td>$editButton $deleteButton</td>
-				<td>$name</td>
+				<td><a href=\"{$member->getURL()}\">$name</a></td>
 				<td>{$member->getTerm_start('n/j/Y')} - {$member->getTerm_end('n/j/Y')}</td>
 			</tr>
 			";

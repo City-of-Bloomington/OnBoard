@@ -11,8 +11,6 @@ class TopicDbTest extends PHPUnit_Framework_TestCase
 		$dir = dirname(__FILE__);
 		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
 
-		$PDO = Database::getConnection();
-
 		$committee = new Committee();
 		$committee->setName('Seat Test Committee');
 		$committee->save();
