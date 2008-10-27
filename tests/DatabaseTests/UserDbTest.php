@@ -132,9 +132,7 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		$user = new User($id);
 		$this->assertTrue($user->hasRole('Clerk'));
 
-		echo "Trying to clear roles\n";
 		$user->setRoles(null);
-		print_r($user->getRoles());
 		$user->save();
 
 		$user = new User($id);
