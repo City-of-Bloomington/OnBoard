@@ -27,6 +27,13 @@ if (isset($_POST['user']))
 	# Set all the fields they're allowed to edit
 	foreach($fields as $field)
 	{
+		if ($field == 'roles')
+		{
+			$_POST['user']['roles'] = isset($_POST['user']['roles'])
+										? $_POST['user']['roles']
+										: array();
+		}
+
 		if (isset($_POST['user'][$field]))
 		{
 			$set = 'set'.ucfirst($field);

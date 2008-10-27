@@ -322,10 +322,25 @@ class User extends SystemUser
 	public function setRoles($roleNames)
 	{
 		$this->roles = array();
-		foreach($roleNames as $name)
+		if ($roleNames)
 		{
-			$role = new Role($name);
-			$this->roles[$role->getId()] = $role->getName();
+			foreach($roleNames as $name)
+			{
+				$role = new Role($name);
+				$this->roles[$role->getId()] = $role->getName();
+			}
+		}
+		# If this user is already in the database, and they set
+		# the roles to be empty, we must wipe them out immediately
+		# Otherwise, they will be reset when we go to save
+		else
+		{
+			if ($this->id)
+			{
+				$PDO = Database::getConnection();
+				$query = $PDO->prepare('delete from user_roles where user_id=?');
+				$query->execute(array($this->id));
+			}
 		}
 	}
 	/**
