@@ -13,9 +13,9 @@
 	<!-- Load the YUI toolkit -->
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/utilities/utilities.js"></script>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/element/element-beta-min.js"></script>
-	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datasource/datasource-beta-min.js"></script>
-	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datatable/datatable-beta-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datatable/datatable-min.js"></script>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/calendar/calendar-min.js"></script>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/autocomplete/autocomplete-min.js"></script>
 
@@ -23,6 +23,7 @@
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/assets/skins/sam/skin.css');
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/calendar/assets/skins/sam/calendar.css');
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/datatable/assets/skins/sam/datatable.css');
+<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/datasource/datasource-min.js"></script>
 	</style>
 
 	<title>Boards &amp; Commissions - City of Bloomington, Indiana</title>
