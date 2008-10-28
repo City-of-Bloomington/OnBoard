@@ -78,9 +78,12 @@ class MemberList extends PDOResultIterator
 
 		$options = array();
 		$parameters = array();
-		$this->select = 'select m.id as id from members m ';
-		$this->joins.=" left join votingRecords v1 on m.id=v1.member_id ";
+		$this->sort.=" u.lastname,u.firstname ";
+		$this->select = 'select distinct m.id as id from members m ';
+		$this->joins.= "left join users u on m.user_id=u.id "; 
+		$this->joins.=" inner join votingRecords v1 on m.id=v1.member_id ";
 		$this->joins.=" inner join votingRecords v2 on v1.vote_id=v2.vote_id ";
+
 		$options[] = 'v2.member_id=:member_id';
 		$options[] = 'v1.member_id!=:member_id';
 		$parameters[':member_id'] = $member_id;

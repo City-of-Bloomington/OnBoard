@@ -232,49 +232,57 @@ class Member extends ActiveRecord
 		$percent=0;
 		//
 		// Total votes
-		$qq = " select count(*) from votingRecords v1 where v1.member_id=".$this->id;
+		$qq = " select count(*) as total from votingRecords v1 where v1.member_id=".$this->id;
+		//
 		// accorded votes
-		$qq2 = "select count(*) from votingRecords v1, votingRecords v2 where v1.vote_id=v2.vote_id and v2.member_id=".$this->member_id." and v1.member_id = $otherMember_id and v1.memberVote=v2.memberVote ";
+		$qq2 = "select count(*) from votingRecords v1, votingRecords v2 where v1.vote_id=v2.vote_id and v2.member_id=".$this->id." and v1.member_id = $otherMember_id and v1.memberVote=v2.memberVote ";
 		$PDO = Database::getConnection();
-		$query->execute($qq);
+		$query = $PDO->prepare($qq);
+		$query->execute();
 		$result = $query->fetchAll();
 		if(count($result) > 0){
-			$total = $result[0];
+			$total = $result[0][0];
 		}
-		$query->execute($qq2);
+		$query = $PDO->prepare($qq2);
+		$query->execute();
 		$result = $query->fetchAll();
 		if(count($result) > 0){
-			$match = $result[0];
+			$match = $result[0][0];
 		}
 		if($total > 0){
-			$percent = $match * 100.0/$total
+			$percent = round($match * 100.0/$total,2);
 		}
 		return $percent;
 	}
 
-	public function findVoteByType()
+	public function findVoteByType($topicType_id)
 	{
 		$total=0;
 		//
 		// Total votes
-		$qq = " select count(*) from votingRecords v1 where v1.member_id=".$this->id;
+		$qq = " select count(*) as total from votingRecords v1,
+		topics tp,votes v where tp.topicType_id=$topicType_id and tp.id=v.topic_id and v.id=v1.vote_id and v1.member_id=".$this->id;
 		$PDO = Database::getConnection();
-		$query->execute($qq);
+		$query = $PDO->prepare($qq);
+		$query->execute();
 		$result = $query->fetchAll();
 		if(count($result) > 0){
-			$total = $result[0];
+			$total = $result[0][0];
 		}
 		if($total == 0) $total = 1;
-		$output = array();
+		$output = array('yes'=>0,'no'=>0,'abstain'=>0,'absent'=>0);
 		//
 		// Voting by voting type (yes,no, abstain,absent)
 		//
-		$qq = " select v1.memberVote as type,count(*) from votingRecords v1 where v1.member_id=".$this->member_id." group by type ";
-		$query->execute($qq);
-		$result = $query->fetchAll();
+		$qq = " select v1.memberVote as type,count(*) as count from votingRecords v1,topics tp,votes v where tp.topicType_id=$topicType_id and tp.id=v.topic_id and v.id=v1.vote_id and v1.member_id=".$this->id." group by type ";
+		$query = $PDO->prepare($qq);
+		$query->execute();
+		$results = $query->fetchAll();
 		if(count($result) > 0){
-			foreach($result as $row) 
-			$output[$row[0]]=$row[1]*100.0/$total;
+			foreach($results as $row){ 
+				$output[$row[0]] = round($row[1] * 100.0 / $total,2);
+
+			}
 		}
 		return $output;		
 	}

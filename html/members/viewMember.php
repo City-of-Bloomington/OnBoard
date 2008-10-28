@@ -17,6 +17,10 @@ $seats = new Block('members/seatList.inc');
 $seats->memberList = $member->getUser()->getMembers();
 $template->blocks[] = $seats;
 
+$memberReport = new Block('members/memberReport.inc');
+$memberReport->member = $member;
+$template->blocks[] = $memberReport;
+
 $votingRecord = new Block('members/votingRecord.inc');
 $votingRecord->user = $member->getUser();
 $template->blocks[] = $votingRecord;
