@@ -199,8 +199,6 @@ class Member extends ActiveRecord
 		else { $this->term_end = strtotime($date); }
 	}
 
-
-
 	#----------------------------------------------------------------
 	# Custom Functions
 	# We recommend adding all your custom code down here at the bottom
