@@ -21,7 +21,9 @@ class VoteListDbTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new VoteList;
+		$dir = dirname(__FILE__);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql");
+
     }
 
     /**
@@ -38,10 +40,18 @@ class VoteListDbTest extends PHPUnit_Framework_TestCase
      * @todo Implement testFind().
      */
     public function testFind() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+
+    	$PDO = Database::getConnection();
+    	$query = $PDO->query('select id from votes order by id desc');
+    	$result = $query->fetchAll();
+
+    	$list = new VoteList();
+    	$list->find();
+    	foreach($list as $i=>$vote)
+    	{
+    		$this->assertEquals($vote->getId(),$result[$i]['id']);
+    	}
+
     }
 }
 ?>

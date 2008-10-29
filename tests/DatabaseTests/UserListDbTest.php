@@ -11,7 +11,7 @@ class UserListDbTest extends PHPUnit_Framework_TestCase
      * @var    UserList
      * @access protected
      */
-    protected $object;
+
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -21,7 +21,9 @@ class UserListDbTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new UserList;
+	$dir = dirname(__FILE__);
+	exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql");
+
     }
 
     /**
@@ -38,10 +40,17 @@ class UserListDbTest extends PHPUnit_Framework_TestCase
      * @todo Implement testFind().
      */
     public function testFind() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	$PDO = Database::getConnection();
+    	$query = $PDO->query('select id from users order by username');
+    	$result = $query->fetchAll();
+
+    	$list = new UserList();
+    	$list->find();
+    	foreach($list as $i=>$user)
+    	{
+    		$this->assertEquals($user->getId(),$result[$i]['id']);
+    	}
+
     }
 }
 ?>

@@ -11,21 +11,15 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
      * @var    VotingRecordList
      * @access protected
      */
-    protected $object;
+
+	protected function setUp()
+	{
+		$dir = dirname(__FILE__);
+		exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql");
+
+	}
 
     /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     *
-     * @access protected
-     */
-    protected function setUp()
-    {
-        $this->object = new VotingRecordList;
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
      * This method is called after a test is executed.
      *
      * @access protected
@@ -38,10 +32,17 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
      * @todo Implement testFind().
      */
     public function testFind() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+    	$PDO = Database::getConnection();
+    	$query = $PDO->query('select id from votingRecords order by id desc');
+    	$result = $query->fetchAll();
+
+    	$list = new MemberList();
+    	$list->find();
+    	foreach($list as $i=>$votingRecord)
+    	{
+    		$this->assertEquals($votingRecord->getId(),$result[$i]['id']);
+    	}
     }
+
 }
 ?>
