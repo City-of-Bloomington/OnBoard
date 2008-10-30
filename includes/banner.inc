@@ -23,7 +23,7 @@
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/assets/skins/sam/skin.css');
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/calendar/assets/skins/sam/calendar.css');
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/datatable/assets/skins/sam/datatable.css');
-<script type="text/javascript" src="http://yui.yahooapis.com/2.6.0/build/datasource/datasource-min.js"></script>
+		@import url('<?php echo BASE_URL; ?>/build/autocomplete/assets/skins/sam/autocomplete.css');
 	</style>
 
 	<title>Boards &amp; Commissions - City of Bloomington, Indiana</title>

@@ -12,11 +12,6 @@ verifyUser(array('Administrator','Clerk'));
 # Load all the data we need from the database
 #--------------------------------------------------------------------
 $seat = new Seat($_REQUEST['seat_id']);
-if (isset($_REQUEST['username']))
-{
-	try { $user = new User($_REQUEST['username']); }
-	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
-}
 if (isset($_REQUEST['user_id']))
 {
 	try { $user = new User($_REQUEST['user_id']); }
