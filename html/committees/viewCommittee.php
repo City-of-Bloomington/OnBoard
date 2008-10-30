@@ -8,15 +8,16 @@
 $committee = new Committee($_GET['committee_id']);
 
 $template = new Template();
+
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 
-$seatList = new Block('seats/seatList.inc');
-$seatList->seatList = $committee->getSeats();
-$seatList->committee = $committee;
-$template->blocks[] = $seatList;
+$seats = new Block('committees/seats.inc');
+$seats->committee = $committee;
+$template->blocks[] = $seats;
 
 $topicList = new Block('topics/topicList.inc');
 $topicList->topicList = $committee->getTopics();
 $topicList->committee = $committee;
 $template->blocks[] = $topicList;
+
 echo $template->render();
