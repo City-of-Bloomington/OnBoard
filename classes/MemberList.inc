@@ -8,7 +8,7 @@ class MemberList extends PDOResultIterator
 
 	public function __construct($fields=null)
 	{
-		$this->select = 'select m.id as id from members m ';
+		$this->select = 'select distinct m.id as id from members m ';
 		if (is_array($fields)) $this->find($fields);
 	}
 
@@ -69,61 +69,25 @@ class MemberList extends PDOResultIterator
 			$options[] = 's.committee_id=:committee_id';
 			$parameters[':committee_id'] = $fields['committee_id'];
 		}
-		$this->populateList($options,$parameters);
-	}
-	/*
-	*  list of members voted with the given member
-	*/
-	public function findMemberVoteList($member_id){
 
-		$options = array();
-		$parameters = array();
-		$this->sort.=" u.lastname,u.firstname ";
-		$this->select = 'select distinct m.id as id from members m ';
-		$this->joins.= "left join users u on m.user_id=u.id "; 
-		$this->joins.=" inner join votingRecords v1 on m.id=v1.member_id ";
-		$this->joins.=" inner join votingRecords v2 on v1.vote_id=v2.vote_id ";
+		/*
+		*  list of members voted with the given member
+		*/
+		if(isset($fields['member_id']))
+		{
+			$this->sort = "u.lastname,u.firstname";
+			$this->joins.= " left join users u on m.user_id=u.id ";
+			$this->joins.= " inner join votingRecords v1 on m.id=v1.member_id ";
+			$this->joins.= " inner join votingRecords v2 on v1.vote_id=v2.vote_id ";
 
-		$options[] = 'v2.member_id=:member_id';
-		$options[] = 'v1.member_id!=:member_id';
-		$parameters[':member_id'] = $member_id;
+			$options[] = 'v2.member_id=:member_idA';
+			$options[] = 'v1.member_id!=:member_idB';
+			$parameters[':member_idA'] = $fields['member_id'];
+			$parameters[':member_idB'] = $fields['member_id'];
+		}
 
 		$this->populateList($options,$parameters);
-
 	}
-	public function experiments($member_id, $otherMember_id=null)
-	{
-		//
-		// list of members voted with this member
-		//
-		$qq = "select distinct m.id as id from members m left join votingRecords v1 on m.id=v1.member_id inner join votingRecords v2 on v1.vote_id=v2.vote_id where v2.member_id=$member_id and v1.member_id != $member_id";
 
-		//
-		// Example
-		$qq = "select distinct m.id as id from members m left join votingRecords v1 on m.id=v1.member_id inner join votingRecords v2 on v1.vote_id=v2.vote_id where v2.member_id=4 and v1.member_id !=4";
-		//
-		// Total votes
-		$qq = " select count(*) from votingRecords v1 where v1.member_id=$member_id";
-		// 
-		// Example (48)
-		$qq = " select count(*) from votingRecords v1 where v1.member_id=4";	
-		//
-		// Matching with others
-		$qq = "	select count(*) from votingRecords v1, votingRecords v2 where v1.vote_id=v2.vote_id and v2.member_id=$member_id and v1.member_id = $otherMember_id and v1.memberVote=v2.memberVote ";
-		//
-		// Example (42)
-		$qq = " select count(*) from votingRecords v1, votingRecords v2 where v1.vote_id=v2.vote_id and v2.member_id=4 and v1.member_id = 6 and v1.memberVote=v2.memberVote ";
-		//
-		// Voting by legislation type
-		$qq = " select t.name as type,count(*) from topicTypes t,topics tp,votes v, votingRecords v1 where t.id=tp.topicType_id and tp.id=v.topic_id and v.id=v1.vote_id and v1.member_id=4 group by type ";   
-		//
-		// voting by voting type (yes,no, abstain,absent)
-		$qq = " select v1.memberVote as type,count(*) from votingRecords v1 where v1.member_id=$member_id group by type ";
-		//
-		// Example
-		$qq = " select v1.memberVote as type,count(*) from votingRecords v1 where v1.member_id=5 group by type ";
-
-	}
 	protected function loadResult($key) { return new Member($this->list[$key]); }
-
 }

@@ -154,4 +154,9 @@ class VotingRecord extends ActiveRecord
 	}
 
 	public function getTopic() { return $this->getVote()->getTopic(); }
+
+	public static function getPossibleMemberVoteValues()
+	{
+		return array('yes','no','abstain','absent');
+	}
 }

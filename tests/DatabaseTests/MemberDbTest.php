@@ -102,4 +102,9 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		$member->setSeat($this->seat);
 		$this->assertEquals($member->getCommittee()->getName(),'Seat Test Committee');
 	}
+
+	public function testGetVotePercentages()
+	{
+		$this->markTestIncomplete('Need test data to confirm this functions calculates known values');
+	}
 }

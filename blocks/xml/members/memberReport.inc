@@ -5,52 +5,47 @@
  * @param Member $this->member
  */
 ?>
-<div class="interfaceBox">
-	<h1> Voting Percentages </h1>
-	<table>
+<votingRecord>
+	<votePercentagesByTopicType>
 	<?php
-		echo "<tr><th>Legislation</th>";
 		$memberVoteValues = VotingRecord::getPossibleMemberVoteValues();
-		foreach($memberVoteValues as $value)
-		{
-			echo "<th>$value</th>";
-		}
-
 
 		$topicTypes = new TopicTypeList();
 		$topicTypes->find();
 		foreach($topicTypes as $topicType)
 		{
 			$name = View::escape($topicType->getName());
-			echo "<tr><th>$name</th>";
-			$percentages = $member->getVotePercentages($topicType);
+			echo "
+			<topicType id=\"{$topicType->getId()} name=\"$name\">
+			";
 
+			$percentages = $member->getVotePercentages($topicType);
 			foreach($memberVoteValues as $memberVote)
 			{
-				echo "<td>$percentages[$memberVote]</td>";
+				echo "
+					<$memberVote>$percentages[$memberVote]</$memberVote>
+				";
 			}
-			echo "</tr>";
-		}
-		echo "</tr>"
-	?>
-	</table>
-</div>
-
-<div class="interfaceBox">
-	<h1> Voting Accords With Other Members </h1>
-	<table>
-	<tr><th>Member</th><th>Percentage</th></tr>
-	<?php
-		$members = new MemberList(array('member_id'=>$this->member->getId()));
-		foreach($members as $otherMember) {
-			$fullname = View::escape($otherMember->getFullname());
-			$percent = $this->member->getAccordancePercentage($otherMember);
 			echo "
-			<tr><td>$fullname</td>
-				<td>$percent</td></tr>
+			</topicType>
 			";
 		}
 	?>
-	</table>
+	</votePercentagesByTopicType>
 
-</div>
+	<votingAccordance>
+	<?php
+		$members = new MemberList(array('member_id'=>$this->member->getId()));
+		foreach($members as $otherMember)
+		{
+			$fullname = View::escape($otherMember->getFullname());
+			$percent = $this->member->getAccordancePercentage($otherMember);
+			echo "
+			<member id=\"{$otherMember->getId()} name=\"$fullname\">
+				<percentage>$percent</percentage>
+			</member>
+			";
+		}
+	?>
+	</votingAccordance>
+</votingRecord>
