@@ -42,7 +42,7 @@ class VoteListDbTest extends PHPUnit_Framework_TestCase
     public function testFind() {
 
     	$PDO = Database::getConnection();
-    	$query = $PDO->query('select id from votes order by id desc');
+    	$query = $PDO->query('select id from votes order by date desc');
     	$result = $query->fetchAll();
 
     	$list = new VoteList();

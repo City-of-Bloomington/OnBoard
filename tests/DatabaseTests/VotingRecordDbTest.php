@@ -58,12 +58,17 @@ class VotingRecordDbTest extends PHPUnit_Framework_TestCase
 		$vote->setTopic($this->topic);
 		$vote->setDate(strtotime('yesterday'));
 		$vote->save();
+		$this->vote = $vote;
 
 		$user = new User();
 		$user->setFirstname("ftest");
 		$user->setLastname("ltest");
 		$user->save();
 		$this->user = $user;
+
+		$appointer = new Appointer();
+		$appointer->setName("test A");
+		$appointer->save();
 
 		$seat = new Seat();
 		$seat->setTitle("Seat Test");
@@ -123,7 +128,7 @@ class VotingRecordDbTest extends PHPUnit_Framework_TestCase
     {
 		$votingRecord = new VotingRecord();
 		$votingRecord->setMember_id($this->member->getId());
-		$this->assertEquals($votingRecord->getMember()->getId(),$this->Member->getId());
+		$this->assertEquals($votingRecord->getMember()->getId(),$this->member->getId());
     }
 
     public function testGetMemberVote()

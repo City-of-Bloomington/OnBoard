@@ -21,7 +21,8 @@ class TopicListDbTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new TopicList;
+      $dir = dirname(__FILE__);
+      exec('/usr/local/mysql/bin/mysql -u '.DB_USER.' -p'.DB_PASS.' '.DB_NAME." < $dir/../testData.sql\n");
     }
 
     /**
@@ -38,10 +39,19 @@ class TopicListDbTest extends PHPUnit_Framework_TestCase
      * @todo Implement testFind().
      */
     public function testFind() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+
+      $PDO = Database::getConnection();
+      $query = $PDO->query('select date from topics order by date desc');
+      $result = $query->fetchAll();
+
+      $list = new TopicList();
+      $list->find();
+      foreach($list as $i=>$topic)
+	{
+	  $this->assertEquals($topic->getDate('Y-m-d'),$result[$i]['date']);
+	}
+
+
     }
 }
 ?>

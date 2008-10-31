@@ -33,10 +33,10 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
      */
     public function testFind() {
     	$PDO = Database::getConnection();
-    	$query = $PDO->query('select id from votingRecords order by id desc');
+    	$query = $PDO->query('select vr.id as id from votingRecords vr left join votes v on  vr.vote_id=v.id order by v.date desc');
     	$result = $query->fetchAll();
 
-    	$list = new MemberList();
+    	$list = new VotingRecordList();
     	$list->find();
     	foreach($list as $i=>$votingRecord)
     	{
