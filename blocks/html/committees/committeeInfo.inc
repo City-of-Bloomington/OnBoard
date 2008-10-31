@@ -24,9 +24,3 @@ echo "
 	<td><a href=\"{$this->committee->getWebsite()}\">{$this->committee->getWebsite()}</a></td></tr>
 </table>
 ";
-
-
-include APPLICATION_HOME.'/blocks/html/committees/seats.inc';
-
-$this->topicList = $this->committee->getTopics();
-include APPLICATION_HOME.'/blocks/html/topics/topicList.inc';

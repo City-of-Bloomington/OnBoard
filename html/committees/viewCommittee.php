@@ -11,4 +11,15 @@ $template = new Template('default',$format);
 $committee = new Committee($_GET['committee_id']);
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 
+if ($template->outputFormat == 'html')
+{
+	$seats = new Block('committees/seats.inc');
+	$seats->committee = $committee;
+	$template->blocks[] = $seats;
+
+	$topics = new Block('topics/topicList.inc');
+	$topics->topicList = $committee->getTopics();
+	$template->blocks[] = $topics;
+}
+
 echo $template->render();
