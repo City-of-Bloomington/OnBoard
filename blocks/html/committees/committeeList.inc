@@ -8,7 +8,8 @@
 <div class="interfaceBox">
 	<h1>
 		<?php
-			if (userHasRole(array('Administrator','Clerk')))
+			$userIsAdmin = userHasRole(array('Administrator','Clerk'));
+			if ($userIsAdmin)
 			{
 				$url = new URL(BASE_URL.'/committees/addCommittee.php');
 				echo "<a class=\"add button\" href=\"$url\">Add</a>";
@@ -26,8 +27,9 @@
 		{
 			$name = View::escape($committee->getName());
 			$seats = $committee->getMaxCurrentMembers();
+
 			$editButton = '';
-			if (userHasRole(array('Administrator','Clerk')))
+			if ($userIsAdmin)
 			{
 				$url = new URL(BASE_URL.'/committees/updateCommittee.php');
 				$url->committee_id = $committee->getId();

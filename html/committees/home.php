@@ -3,9 +3,13 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
-$committeeList = new CommitteeList();
-$committeeList->find();
+$format = isset($_GET['format']) ? $_GET['format'] : 'html';
+$template = new Template('default',$format);
 
-$template = new Template();
-$template->blocks[] = new Block('committees/committeeList.inc',array('committeeList'=>$committeeList));
+$committees = new CommitteeList();
+$committees->find();
+$list = new Block('committees/committeeList.inc');
+$list->committeeList = $committees;
+$template->blocks[] = $list;
+
 echo $template->render();
