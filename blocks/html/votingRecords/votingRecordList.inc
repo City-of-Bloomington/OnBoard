@@ -21,8 +21,11 @@
 	<?php
 		foreach($this->vote->getVotingRecords() as $votingRecord)
 		{
+			$fullname = View::escape($votingRecord->getMember()->getFullname());
 			echo "
-			<tr><td>{$votingRecord->getMember()->getFullname()}</td>
+			<tr><td><a href=\"{$votingRecord->getMember()->getURL()}\">
+					$fullname</a>
+				</td>
 				<td>{$votingRecord->getMemberVote()}</td>
 			</tr>
 			";

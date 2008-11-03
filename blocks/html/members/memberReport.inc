@@ -6,7 +6,7 @@
  */
 ?>
 <div class="interfaceBox">
-	<h1> Voting Percentages </h1>
+	<h1>Vote Stats</h1>
 	<table>
 	<?php
 		echo "<tr><th>Legislation</th>";
@@ -15,7 +15,6 @@
 		{
 			echo "<th>$value</th>";
 		}
-
 
 		$topicTypes = new TopicTypeList();
 		$topicTypes->find();
@@ -37,7 +36,7 @@
 </div>
 
 <div class="interfaceBox">
-	<h1> Voting Accords With Other Members </h1>
+	<h1>Voting Comparison</h1>
 	<table>
 	<tr><th>Member</th><th>Percentage</th></tr>
 	<?php
@@ -46,11 +45,12 @@
 			$fullname = View::escape($otherMember->getFullname());
 			$percent = $this->member->getAccordancePercentage($otherMember);
 			echo "
-			<tr><td>$fullname</td>
+			<tr><td><a href=\"{$otherMember->getURL()}\">
+					$fullname</a>
+				</td>
 				<td>$percent</td></tr>
 			";
 		}
 	?>
 	</table>
-
 </div>
