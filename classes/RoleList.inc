@@ -1,26 +1,50 @@
 <?php
-/*
-	Roles are really just an attribute array for users.  For now, I'm not loading them in as objects.
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
 */
-	require_once(GLOBAL_INCLUDES."/classes/PDOResultIterator.inc");
-
-	class RoleList extends PDOResultIterator
+class RoleList extends PDOResultIterator
+{
+	/**
+	 * Roles are really just an attribute array for users.
+	 * For now, I'm not loading them in as objects.
+	 * This is an optimization to save on database calls
+	 */
+	public function __construct($fields=null)
 	{
+		$this->select = 'select name as id from roles';
+		if (is_array($fields)) $this->find($fields);
+	}
 
-		public function find($fields=null,$sort='role')
+	public function find($fields=null,$sort='name',$limit=null,$groupBy=null)
+	{
+		$this->sort = $sort;
+		$this->limit = $limit;
+		$this->groupBy = $groupBy;
+		$this->joins = '';
+
+		$options = array();
+		$parameters = array();
+		if (isset($fields['id']))
 		{
-			global $PDO;
-
-			$options = array();
-			if (isset($fields['role'])) { $options[] = "role='$fields[role]'"; }
-
-			if (count($options)) { $where = " where ".implode(" and ",$options); } else { $where = ""; }
-			$sql = "select role from roles $where order by $sort";
-
-			foreach($PDO->query($sql) as $row) { $this->list[] = $row['role']; }
+			$options[] = 'id=:id';
+			$parameters[':id'] = $fields['id'];
+		}
+		if (isset($fields['name']))
+		{
+			$options[] = 'name=:name';
+			$parameters[':name'] = $fields['name'];
 		}
 
 
-		protected function loadResult($key) { return $this->list[$key]; }
+		# Finding on fields from other tables required joining those tables.
+		# You can add fields from other tables to $options by adding the join SQL
+		# to $this->joins here
+
+		$this->populateList($options,$parameters);
 	}
-?>
+
+	# For now we are not returning Role objects, only the names of each role
+	protected function loadResult($key) { return $this->list[$key]; }
+}

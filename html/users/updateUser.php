@@ -1,66 +1,60 @@
 <?php
-/*
-	$_POST variables:	id
-						authenticationMethod
-						username
-						roles
-						firstname
-						lastname
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param REQUEST return_url
+ */
+verifyUser(array('Administrator','Clerk'));
 
-						# Optional
-						password
-						email
-						homephone
-						workphone
-						city
-						address
-						zip
-						picture_url
-*/
-	verifyUser("Administrator", "Committee Member");
+$user = new User($_REQUEST['user_id']);
 
-	#--------------------------------------------------------------------------
-	# Update the account
-	#--------------------------------------------------------------------------
-	$user = new User($_POST['id']);
-	
-	#Only updated when Admin accesses an account other than their own
-	if ($_POST['username']) { $user->setUsername($_POST['username']); $direct = "home.php";}
-	else { $direct = BASE_URL."/viewProfile.php?id={$_POST['id']}"; }
-	if ($_POST['authenticationMethod']) {$user->setAuthenticationMethod($_POST['authenticationMethod']); }
-	
-	$user->setFirstname($_POST['firstname']);
-	$user->setLastname($_POST['lastname']);
-	$user->setEmail($_POST['email']);
-	$user->setHomephone($_POST['homephone']);
-	$user->setWorkphone($_POST['workphone']);
-	$user->setCity($_POST['city']);
-	$user->setAddress($_POST['address']);
-	$user->setZipCode($_POST['zip']);
-	$user->setAbout($_POST['about']);
-	$user->setTimestamp(date("Y-m-d H:i:s",time()));	
+if (isset($_POST['user']))
+{
+	# Both clerk and admin can edit these fields
+	$fields = array('gender','firstname','lastname','email','address','city',
+					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
 
-	# Only update the password if they actually typed somethign in
-	if ($_POST['password']) { $user->setPassword($_POST['password']); }
-	if (isset($_POST['roles'])) { $user->setRoles($_POST['roles']); }
-	
-	# Only update the photoPath if they supplied a url
-	if (isset($_POST['picture_url'])) 
+	# Only the Administrator can edit these fields
+	if (userHasRole('Administrator'))
 	{
-		$file = basename($_POST['picture_url']);
-		$file = explode(".", $file);
-		$ext = $file[1];
-		if ($ext == "jpg") { $user->setPhotoPath($_POST['picture_url']); }
+		$fields[] = 'authenticationMethod';
+		$fields[] = 'username';
+		$fields[] = 'password';
+		$fields[] = 'roles';
+	}
+
+	# Set all the fields they're allowed to edit
+	foreach($fields as $field)
+	{
+		if ($field == 'roles')
+		{
+			$_POST['user']['roles'] = isset($_POST['user']['roles'])
+										? $_POST['user']['roles']
+										: array();
+		}
+
+		if (isset($_POST['user'][$field]))
+		{
+			$set = 'set'.ucfirst($field);
+			$user->$set($_POST['user'][$field]);
+		}
 	}
 
 	try
 	{
 		$user->save();
-		Header("Location: ". $direct);
+		Header('Location: home.php');
+		exit();
 	}
-	catch (Exception $e)
-	{
-		$_SESSION['errorMessages'][] = $e;
-		Header("Location: updateUserForm.php?id={$user->getId()}");
-	}
-?>
+	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
+}
+
+$template = new Template();
+
+$form = new Block('users/updateUserForm.inc');
+$form->user = $user;
+$form->return_url = $_REQUEST['return_url'];
+$template->blocks[] = $form;
+
+echo $template->render();

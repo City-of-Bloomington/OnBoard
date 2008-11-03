@@ -1,33 +1,13 @@
 <?php
-/*
-	$_GET variables:	id
-									
-*/
-	verifyUser("Administrator");
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param GET id
+ */
+verifyUser('Administrator');
 
-	#--------------------------------------------------------------------------
-	# Delete account
-	#--------------------------------------------------------------------------
+$user = new User($_GET['id']);
+$user->delete();
 
-	if ($_GET['id'] != $_SESSION['USER']->getId()) 
-	{
-		$user = new User($_GET['id']);
-		
-		# Find if the user is on any committees and unset user for any seats user is a part of,
-		# And set seat vacancy to vacant(1), then save seat. 
-		$seatList = new SeatList();
-		$seatList->find();
-		foreach($seatList as $seat) 
-		{
-			if ($seat->getUser()) 
-			{
-				if ($seat->getUser()->getId() == $user->getId()) { $seat->setVacancy(1); $seat->unsetUser($user); }
-				$seat->save();
-			}
-		} 
-		$user->deleteUser();
-	}
-	
-	Header("Location: home.php");
-	
-?>
+Header('Location: '.BASE_URL.'/users');

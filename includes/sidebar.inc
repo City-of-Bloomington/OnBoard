@@ -1,10 +1,21 @@
-<div id="sidebar">
 <?php
-	if (!isset($_SESSION['USER'])) { include(GLOBAL_INCLUDES."/sidebarBoxes/loginBox.inc"); }
-	else
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ */
+?>
+<div class="left sidebar">
+<?php
+	if (!isset($_SESSION['USER']))
 	{
-		if (in_array("Committee Member",$_SESSION['USER']->getRoles())) {include(APPLICATION_HOME."/includes/sidebarBoxes/Profile.inc"); }
-		if (in_array("Administrator",$_SESSION['USER']->getRoles())) { include(APPLICATION_HOME."/includes/sidebarBoxes/Administrator.inc"); }
+		$block = new Block('loginForm.inc');
+		echo $block->render();
+	}
+
+	if (userHasRole('Administrator'))
+	{
+		include APPLICATION_HOME.'/includes/sidebarBoxes/Administrator.inc';
 	}
 ?>
 </div>

@@ -1,18 +1,19 @@
 <?php
-mysql_connect(":/tmp/mysql.sock","username","password") or die(mysql_error());
-mysql_select_db("database") or die(mysql_error());
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ */
+include '../configuration.inc';
+$PDO = Database::getConnection();
 
-$sql = "show tables";
-$tables = mysql_query($sql) or die($sql.mysql_error());
-while(list($tableName) = mysql_fetch_array($tables))
+$tables = array();
+foreach($PDO->query("show tables") as $row) { list($tables[]) = $row; }
+
+foreach($tables as $tableName)
 {
-	$className = ucwords($tableName);
-	echo "$className\n";
-
-	$sql = "describe $tableName";
-	$description = mysql_query($sql) or die($sql.mysql_error());
 	$fields = array();
-	while($row = mysql_fetch_array($description))
+	foreach($PDO->query("describe $tableName") as $row)
 	{
 		$type = ereg_replace("[^a-z]","",$row['Type']);
 
@@ -21,64 +22,76 @@ while(list($tableName) = mysql_fetch_array($tables))
 
 
 		$fields[] = array('Field'=>$row['Field'],'Type'=>$type);
-
-		#echo "\t$row[Field] - $type\n";
 	}
 
-	$constructor = "";
-	$sql = "show index from $tableName where key_name='PRIMARY'";
-	$temp = mysql_query($sql) or die($sql.mysql_error());
-
-	# This code should really only be run on tables with a single primary key
-	# The other tables are either linking tables, or are multiple attributes of a single-keyed table
-	if (mysql_num_rows($temp) != 1) { continue; }
-	$key = mysql_fetch_array($temp);
+	$result = $PDO->query("show index from $tableName where key_name='PRIMARY'")->fetchAll();
+	if (count($result) != 1) { continue; }
+	$key = $result[0];
 
 
+	$className = Inflector::classify($tableName);
+	#--------------------------------------------------------------------------
+	# Constructor
+	#--------------------------------------------------------------------------
+	$constructor = "
+	public function __construct(\$fields=null)
+	{
+		\$this->select = 'select $tableName.$key[Column_name] as id from $tableName';
+		if (is_array(\$fields)) \$this->find(\$fields);
+	}
+	";
 
+
+	#--------------------------------------------------------------------------
+	# Find
+	#--------------------------------------------------------------------------
 	$findFunction = "
-		public function find(\$fields=null,\$sort=\"$key[Column_name]\")
-		{
-			global \$PDO;
+	public function find(\$fields=null,\$sort='id',\$limit=null,\$groupBy=null)
+	{
+		\$this->sort = \$sort;
+		\$this->limit = \$limit;
+		\$this->groupBy = \$groupBy;
+		\$this->joins = '';
 
-			\$options = array();
+		\$options = array();
+		\$parameters = array();
 ";
-			foreach($fields as $field) { $findFunction.="\t\t\tif (isset(\$fields['$field[Field]'])) { \$options[] = \"$field[Field]='\$fields[$field[Field]]'\"; }\n"; }
+	foreach($fields as $field)
+	{
+		$findFunction.="\t\tif (isset(\$fields['$field[Field]']))
+		{
+			\$options[] = '$field[Field]=:$field[Field]';
+			\$parameters[':$field[Field]'] = \$fields['$field[Field]'];
+		}\n";
+	}
 	$findFunction.="
 
-			# Finding on fields from other tables required joining those tables.
-			# You can add fields from other tables to \$options by adding the join SQL
-			# to \$this->joins here
+		# Finding on fields from other tables required joining those tables.
+		# You can add fields from other tables to \$options by adding the join SQL
+		# to \$this->joins here
 
-
-			if (count(\$options)) { \$this->where = \"where \".implode(\" and \",\$options); }
-			\$sql = \"select $key[Column_name] from $tableName {\$this->joins} {\$this->where} order by \$sort\";
-
-			\$result = \$PDO->query(\$sql);
-			if (\$result)
-			{
-				foreach(\$result as \$row) { \$this->list[] = \$row['$key[Column_name]']; }
-			}
-			else { \$e = \$PDO->errorInfo(); throw new Exception(\$sql.\$e[2]); }
-		}
+		\$this->populateList(\$options,\$parameters);
+	}
 	";
 
 
 
-$contents = "<?php
-
-	class {$className}List extends PDOResultIterator
-	{
-		private \$joins = \"\";
-		private \$where = \"\";
-
-		public function __construct(\$fields=null) { if (is_array(\$fields)) \$this->find(\$fields); }
-
+	#--------------------------------------------------------------------------
+	# Output the class
+	#--------------------------------------------------------------------------
+$contents = "<?php\n";
+$contents.= COPYRIGHT;
+$contents.="
+class {$className}List extends PDOResultIterator
+{
+$constructor
 $findFunction
 
-		protected function loadResult(\$key) { return new $className(\$this->list[\$key]); }
-	}
-?>";
-		file_put_contents("./classStubs/{$className}List.inc",$contents);
-	}
-?>
+	protected function loadResult(\$key) { return new $className(\$this->list[\$key]); }
+}
+";
+	$dir = APPLICATION_HOME.'/scripts/stubs/classes';
+	if (!is_dir($dir)) { mkdir($dir,0770,true); }
+	file_put_contents("$dir/{$className}List.inc",$contents);
+	echo "$className\n";
+}

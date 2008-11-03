@@ -1,37 +1,29 @@
 <?php
-/*
-	$_POST variables:	authenticationMethod
-						username
-						roles
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @param GET committee_id
+ */
+verifyUser(array('Administrator','Clerk'));
 
-						# May be optional if LDAP is used
-						password
-
-*/
-	verifyUser("Administrator");
-
-	#--------------------------------------------------------------------------
-	# Create the new account
-	#--------------------------------------------------------------------------
-	$committee = new Committee($_POST['id']);
-	$committee->setName($_POST['name']);
-	$committee->setCount($_POST['member_count']);
-	
-	# If set, deletes selected seat
-	if (isset($_POST['remove_seat']) && $_POST['remove_seat'] != "--Select Here--") 
-	{ 
-		$seat = new Seat($_POST['remove_seat']);
-		$seat->deleteSeat();  
+$committee = new Committee($_REQUEST['committee_id']);
+if (isset($_POST['committee']))
+{
+	foreach($_POST['committee'] as $field=>$value)
+	{
+		$set = 'set'.ucfirst($field);
+		$committee->$set($value);
 	}
-	
+
 	try
 	{
 		$committee->save();
-		Header("Location: ". BASE_URL);
+		Header('Location: home.php');
+		exit();
 	}
-	catch (Exception $e)
-	{
-		$_SESSION['errorMessages'][] = $e;
-		Header("Location: updateCommitteeForm.php?id={$committee->getId()}");
-	}
-?>
+	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
+}
+
+$template = new Template();
+$template->blocks[] = new Block('committees/updateCommitteeForm.inc',array('committee'=>$committee));
+echo $template->render();

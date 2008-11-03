@@ -1,276 +1,223 @@
 <?php
-	class Seat
+/**
+ * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ */
+class Seat extends ActiveRecord
+{
+	private $id;
+	private $title;
+	private $committee_id;
+	private $appointer_id;
+	private $maxCurrentMembers;
+
+	private $committee;
+	private $appointer;
+	private $member; # The current member for this seat
+
+	/**
+	 * This will load all fields in the table as properties of this class.
+	 * You may want to replace this with, or add your own extra, custom loading
+	 */
+	public function __construct($id=null)
 	{
-		private $id;
-		private $committee_id;
-		private $appointment_id;
-		private $title;
-		private $vacancy;
-		
-		private $term_start;
-		private $term_end;
-		
-		private $committee;
-		private $appointment;
-		private $restrictions;
-		private $user;
-
-		public function __construct($id=null)
+		if ($id)
 		{
-			global $PDO;
+			$PDO = Database::getConnection();
+			$query = $PDO->prepare('select * from seats where id=?');
+			$query->execute(array($id));
 
-			if ($id)
-			{
-				if (is_numeric($id)) { $sql = "select * from seats where id=$id"; }
-				else { $sql = "select * from seats where title='$id'"; }
-				
-				$result = $PDO->query($sql);
-				if ($result)
-				{
-					if ($row = $result->fetch())
-					{
-						# This will load all fields in the table as properties of this class.
-						# You may want to replace this with, or add your own extra, custom loading
-						foreach($row as $field=>$value) { if ($value) $this->$field = $value; }
-
-
-						$result->closeCursor();
-					}
-					else { throw new Exception($sql); }
-				}
-				else { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			}
-			else
-			{
-				# This is where the code goes to generate a new, empty instance.
-				# Set any default values for properties that need it here
-			}
+			$result = $query->fetchAll(PDO::FETCH_ASSOC);
+			if (!count($result)) { throw new Exception('seats/unknownSeat'); }
+			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
-		
-
-		public function save()
+		else
 		{
-			# Check for required fields here.  Throw an exception if anything is missing.
-	
-
-			# This generates generic SQL that should work right away.
-			# You can (and maybe should) replace this $fields code with your own custom SQL
-			# for each property of this class,
-			$fields = array();
-			$fields[] = $this->committee_id ? "committee_id='{$this->committee_id}'" : "committee_id=null";
-			$fields[] = $this->appointment_id ? "appointment_id='{$this->appointment_id}'" : "appointment_id=null";
-			$fields[] = $this->title ? "title='{$this->title}'" : "title=null";
-			$fields[] = $this->vacancy ? "vacancy='{$this->vacancy}'" : "vacancy=null";
-
-			$fields = implode(",",$fields);
-
-
-			if ($this->id) { $this->update($fields); }
-			else { $this->insert($fields); }
-			
-			$this->updateRestrictions();
-			$this->updateUser();
+			# This is where the code goes to generate a new, empty instance.
+			# Set any default values for properties that need it here
+			$this->appointer_id = 1;
+			$this->maxCurrentMembers = 1;
 		}
+	}
 
-		private function update($fields)
+	/**
+	 * Throws an exception if anything's wrong
+	 * @throws Exception $e
+	 */
+	public function validate()
+	{
+		# Check for required fields here.  Throw an exception if anything is missing.
+		if (!$this->committee_id) { throw new Exception('seats/missingCommittee'); }
+		if (!$this->title) { throw new Exception('seats/missingTitle'); }
+	}
+
+	/**
+	 * This generates generic SQL that should work right away.
+	 * You can replace this $fields code with your own custom SQL
+	 * for each property of this class,
+	 */
+	public function save()
+	{
+		$this->validate();
+
+		$fields = array();
+		$fields['title'] = $this->title;
+		$fields['committee_id'] = $this->committee_id;
+		$fields['appointer_id'] = $this->appointer_id;
+		$fields['maxCurrentMembers'] = $this->maxCurrentMembers;
+
+		# Split the fields up into a preparedFields array and a values array.
+		# PDO->execute cannot take an associative array for values, so we have
+		# to strip out the keys from $fields
+		$preparedFields = array();
+		foreach($fields as $key=>$value)
 		{
-			global $PDO;
-
-			$sql = "update seats set $fields where id={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			$preparedFields[] = "$key=?";
+			$values[] = $value;
 		}
+		$preparedFields = implode(",",$preparedFields);
 
-		private function insert($fields)
-		{
-			global $PDO;
 
-			$sql = "insert seats set $fields";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			$this->id = $PDO->lastInsertID();
-		}
-		
-		private function updateRestrictions()
-		{
-			global $PDO;
+		if ($this->id) { $this->update($values,$preparedFields); }
+		else { $this->insert($values,$preparedFields); }
+	}
 
-			$restrictions = $this->getRestrictions();
-		
-			$sql = "delete from seat_restrictions where seat_id={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+	private function update($values,$preparedFields)
+	{
+		$PDO = Database::getConnection();
 
-			$statement = $PDO->prepare("insert seat_restrictions set seat_id={$this->id},restriction_id=?");
-			foreach($restrictions as $restriction_id=>$restriction) 
-			{ 
-				if (false === $statement->execute(array("$restriction_id"))) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			}
-		}
-		
-		# Updates seat_users table with seat and user information
-		private function updateUser()
-		{
-			global $PDO;
+		$sql = "update seats set $preparedFields where id={$this->id}";
+		$query = $PDO->prepare($sql);
+		$query->execute($values);
+	}
 
-			if($user = $this->user) 
-			{
-				$user_id = $user->getId();
-			
-				$sql = "delete from seat_users where seat_id={$this->id}";
-				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+	private function insert($values,$preparedFields)
+	{
+		$PDO = Database::getConnection();
 
-				$sql  = "insert seat_users set seat_id={$this->id},user_id=$user_id,term_start='{$this->term_start}',term_end='{$this->term_end}'";
-				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			}
-			else 
-			{
-				$sql = "delete from seat_users where seat_id={$this->id}";
-				if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			}
-		}
+		$sql = "insert seats set $preparedFields";
+		$query = $PDO->prepare($sql);
+		$query->execute($values);
+		$this->id = $PDO->lastInsertID();
+	}
 
-		public function getId() { return $this->id; }
-		public function getCommitteeId() { return $this->committee_id; }
-		public function getAppointmentId() { return $this->appointment_id; }
-		public function getTitle() { return $this->title;}
-		public function getVacancy() { return $this->vacancy; }
-		public function getCommittee() 
+	#----------------------------------------------------------------
+	# Generic Getters
+	#----------------------------------------------------------------
+	public function getId() { return $this->id; }
+	public function getTitle() { return $this->title; }
+	public function getCommittee_id() { return $this->committee_id; }
+	public function getAppointer_id() { return $this->appointer_id; }
+	public function getMaxCurrentMembers() { return $this->maxCurrentMembers; }
+
+	public function getCommittee()
+	{
+		if ($this->committee_id)
 		{
 			if (!$this->committee) { $this->committee = new Committee($this->committee_id); }
 			return $this->committee;
 		}
-		
-		# Gets seat Appointment Type
-		public function getAppointment() 
-		{
-			if (!$this->appointment) { $this->appointment = new SeatAppointment($this->appointment_id); }
-			return $this->appointment;
-		}
-		
-		# Gets seat restrictions
-		public function getRestrictions() 
-		{
-			global $PDO;
-
-			if (!$this->restrictions)
-			{
-				$this->restrictions = array();
-				$sql = "select restriction_id,restriction from seat_restrictions left join restrictions on restriction_id=id where seat_id={$this->id}";
-				if ($result = $PDO->query($sql))
-				{
-					foreach($result as $row) { $this->restrictions[$row['restriction_id']] = $row['restriction']; }
-					$result->closeCursor();
-				}
-			}
-			return $this->restrictions;
-		}
-		
-		# Gets seat term start from seat_users table
-		public function getTermStart() 
-		{
-			global $PDO;
-			if (!$this->term_start)
-			{
-				$sql = "select term_start from seat_users left join users on user_id=id where seat_id={$this->id}"; 
-				if ($result = $PDO->query($sql))
-				{
-					foreach($result as $row) { $this->term_start = $row['term_start']; }
-					$result->closeCursor();
-				}
-			}
-			return $this->term_start;
-		}
-		
-		# Gets seat term end from seat_users table
-		public function getTermEnd() 
-		{
-			global $PDO;
-			if (!$this->term_end)
-			{
-				$sql = "select term_end from seat_users left join users on user_id=id where seat_id={$this->id}"; 
-				if ($result = $PDO->query($sql))
-				{
-					foreach($result as $row) { $this->term_end = $row['term_end']; }
-					$result->closeCursor();
-				}
-			}
-			return $this->term_end;
-		}
-		
-		# Gets the user associated with this seat
-		public function getUser() 
-		{
-			global $PDO;
-			$id;
-
-			if (!$this->user && $this->vacancy != 1 || $this->vacancy != 1)
-			{
-				$sql = "select user_id from seat_users left join users on user_id=id where seat_id={$this->id}";
-				if ($result = $PDO->query($sql))
-				{
-					foreach($result as $row) { $id = $row['user_id']; }	
-					$result->closeCursor();
-				}
-				if (isset($id)) { $this->user = new User($id); }
-			}
-			return $this->user;
-		}
-
-		public function setId($int) { $this->id = $int; }
-		public function setCommitteeId($int) { $this->committee_id = $int; }
-		public function setAppointmentId($int) { $this->appointment_id = $int; }
-		public function setTitle($string) { $this->title = $string; }
-		public function setVacancy($int) { $this->vacancy = $int; }
-		public function addVacancy($int) { if (!isset($this->vacancy)) $this->vacancy = $int; }
-		public function removeVacancy($int) { if (isset($this->vacancy)) unset($this->vacancy); }
-		public function setTermStart($string) { $this->term_start = sanitizeString($string); }
-		public function setTermEnd($string) { $this->term_end = sanitizeString($string); }
-		public function setUser($user) { $this->user = $user; }
-		
-		public function unsetUser() { if (isset($this->user)) unset($this->user); }
-	
-		# Sets committee to this seat
-		public function setCommittee($committee) 
-		{ 
-			$seatList = new SeatList(array("committee_id"=>$committee->getId()));
-			if (count($seatList) != $committee->getCount()) 
-			{
-				$this->committee = $committee; 
-				$this->committee_id = $committee->getId(); 
-			}
-			else {throw new Exception("Too Many Seats on Committee");}
-		}
-		
-		# Sets appointment type to this seat
-		public function setAppointment($appointment) 
-		{ 
-			$this->appointment = $appointment; 
-			$this->appointment_id = $appointment->getId(); 
-		}
-		
-		# Sets restrictions to this seat
-		public function setRestrictions($array) 
-		{ 
-			$this->restrictions = array();
-			foreach($array as $id)
-			{
-				$restrictions = new Restriction($id);
-				$this->restrictions[$restrictions->getId()] = $restrictions->getRestriction();
-			} 
-		}
-		
-		# Deletes seat and all traces
-		public function deleteSeat() 
-		{
-			global $PDO;
-
-			$sql = "delete from seat_users where seat_id ={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-			
-			$sql = "delete from seat_restrictions where seat_id ={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-
-			$sql = "delete from seats where id ={$this->id}";
-			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
-		}
-
+		else return null;
 	}
-?>
+
+	public function getAppointer()
+	{
+		if ($this->appointer_id)
+		{
+			if (!$this->appointer) { $this->appointer = new Appointer($this->appointer_id); }
+			return $this->appointer;
+		}
+	}
+
+	#----------------------------------------------------------------
+	# Generic Setters
+	#----------------------------------------------------------------
+	public function setTitle($string) { $this->title = trim($string); }
+	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
+	public function setAppointer_id($int) { $this->appointer = new Appointer($int); $this->appointer_id = $int; }
+	public function setMaxCurrentMembers($int) { $this->maxCurrentMembers = (int) $int; }
+
+	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
+	public function setAppointer($appointer) { $this->appointer_id = $appointer->getId(); $this->appointer = $appointer; }
+
+	#----------------------------------------------------------------
+	# Custom Functions
+	# We recommend adding all your custom code down here at the bottom
+	#----------------------------------------------------------------
+	/**
+	 * @return MemberList
+	 */
+	public function getMembers() { return new MemberList(array('seat_id'=>$this->id)); }
+
+	/**
+	 * Returns the list of members active at the given time
+	 * @param int $timestamp A unix timestamp
+	 * @return MemberList
+	 */
+	public function getCurrentMembers(int $timestamp=null)
+	{
+		if (!$timestamp) { $timestamp = time(); }
+		return new MemberList(array('seat_id'=>$this->id,'current'=>$timestamp));
+	}
+
+	/**
+	 * @return RequirementsList
+	 */
+	public function getRequirements()
+	{
+		return new RequirementList(array('seat_id'=>$this->id));
+	}
+	/**
+	 * @return boolean
+	 */
+	public function hasRequirements()
+	{
+		return count($this->getRequirements()) ? true : false;
+	}
+	/**
+	 * @param Requirement $requirement
+	 * @return boolean
+	 */
+	public function hasRequirement($requirement)
+	{
+		$PDO = Database::getConnection();
+		$query = $PDO->prepare('select requirement_id from seat_requirements where seat_id=? and requirement_id=?');
+		$query->execute(array($this->id,$requirement->getId()));
+		$result = $query->fetchAll();
+		return count($result) ? true : false;
+	}
+	/**
+	 * @param Requirement $requirement
+	 */
+	public function addRequirement($requirement)
+	{
+		if (!$this->hasRequirement($requirement))
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('insert seat_requirements set seat_id=?,requirement_id=?');
+			$query->execute(array($this->id,$requirement->getId()));
+		}
+	}
+	/**
+	 * @param Requirement $requirement
+	 */
+	public function removeRequirement($requirement)
+	{
+		if ($this->id)
+		{
+			$PDO = Database::getConnection();
+
+			$query = $PDO->prepare('delete from seat_requirements where seat_id=? and requirement_id=?');
+			$query->execute(array($this->id,$requirement->getId()));
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getURL()
+	{
+		return BASE_URL.'/seats/viewSeat.php?seat_id='.$this->id;
+	}
+}
