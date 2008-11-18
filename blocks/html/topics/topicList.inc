@@ -3,32 +3,35 @@
  * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param TopicList $this->topicList
+ * @param Committee $this->committee (optional)
  */
+$userCanEdit = userHasRole(array('Administrator','Clerk'));
+
 $addTopicButton = '';
-if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
+if (isset($this->committee) && $userCanEdit)
 {
 	$url = new URL(BASE_URL.'/topics/addTopic.php');
 	$url->committee_id = $this->committee->getId();
 	$addTopicButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }
 
-?>
-<div class="interfaceBox">
-	<h1><?php echo $addTopicButton; ?>
-		Legislation
-	</h1>
-	<table>
-	<tr><th></th>
-		<th>Date</th>
-		<th>Description</th>
-		<th>Number</th>
-		<th>Type</th>
-	</tr>
-	<?php
+if (count($this->topicList) || $userCanEdit)
+{
+	echo "
+	<div class=\"interfaceBox\">
+		<h1>$addTopicButton Legislation</h1>
+		<table>
+		<tr><th></th>
+			<th>Date</th>
+			<th>Description</th>
+			<th>Number</th>
+			<th>Type</th>
+		</tr>
+	";
 		foreach($this->topicList as $topic)
 		{
 			$editButton = '';
-			if (userHasRole(array('Administrator','Clerk')))
+			if ($userCanEdit)
 			{
 				$url = new URL(BASE_URL.'/topics/updateTopic.php');
 				$url->topic_id = $topic->getId();
@@ -48,6 +51,8 @@ if (isset($this->committee) && userHasRole(array('Administrator','Clerk')))
 			</tr>
 			";
 		}
-	?>
-	</table>
-</div>
+	echo "
+		</table>
+	</div>
+	";
+}

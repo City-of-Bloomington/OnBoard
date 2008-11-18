@@ -19,6 +19,7 @@ if ($template->outputFormat == 'html')
 
 	$topics = new Block('topics/topicList.inc');
 	$topics->topicList = $committee->getTopics();
+	$topics->committee = $committee;
 	$template->blocks[] = $topics;
 }
 

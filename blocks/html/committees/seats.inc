@@ -62,7 +62,9 @@ if (isset($this->committee) && $userIsAdmin)
 			{
 				echo "
 				<tr><td>( Vacancy )</td>
-					<td><a href=\"{$seat->getURL()}\">$title</a></td>
+					<td>$editButton
+						<a href=\"{$seat->getURL()}\">$title</a>
+					</td>
 					<td>$appointer</td>
 					<td></td>
 				</tr>
