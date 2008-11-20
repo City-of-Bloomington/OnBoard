@@ -57,6 +57,12 @@ class TopicList extends PDOResultIterator
 		# Finding on fields from other tables required joining those tables.
 		# You can add fields from other tables to $options by adding the join SQL
 		# to $this->joins here
+		if (isset($fields['tag_id']))
+		{
+			$this->joins.= ' left join topic_tags t on topics.id=t.topic_id';
+			$options[] = 'tag_id=:tag_id';
+			$parameters[':tag_id'] = $fields['tag_id'];
+		}
 
 		$this->populateList($options,$parameters);
 	}

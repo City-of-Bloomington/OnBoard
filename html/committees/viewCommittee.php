@@ -9,6 +9,7 @@ $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
 
 $committee = new Committee($_GET['committee_id']);
+$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 
 if ($template->outputFormat == 'html')

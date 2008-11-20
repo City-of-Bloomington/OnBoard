@@ -48,7 +48,27 @@
 		<td><textarea name="topic[synopsis]" id="topic-synopsis" rows="3" cols="60"><?php echo View::escape($this->topic->getSynopsis()); ?></textarea></td></tr>
 
 	</table>
+</fieldset>
 
+<fieldset><legend>Tags</legend>
+	<?php
+		$list = new TagList();
+		$list->find();
+		foreach($list as $tag)
+		{
+			$name = View::escape($tag->getName());
+			$checked = $this->topic->hasTag($tag) ? 'checked="checked"' : '';
+			echo "
+			<label>
+				<input type=\"checkbox\" name=\"tags[{$tag->getId()}]\" value=\"{$tag->getId()}\" $checked />
+				$name
+			</label>
+			";
+		}
+	?>
+</fieldset>
+
+<fieldset><legend>Submit</legend>
 	<button type="submit" class="submit">Submit</button>
 	<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->topic->getCommittee()->getURL(); ?>';">Cancel</button>
 </fieldset>

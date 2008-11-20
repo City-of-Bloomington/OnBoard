@@ -6,6 +6,8 @@
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
 
+$template->blocks[] = new Block('committees/breadcrumbs.inc');
+
 $committees = new CommitteeList();
 $committees->find();
 $list = new Block('committees/committeeList.inc');

@@ -15,6 +15,7 @@ class Topic extends ActiveRecord
 
 	private $topicType;
 	private $committee;
+	private $tags = array();
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -87,6 +88,8 @@ class Topic extends ActiveRecord
 
 		if ($this->id) { $this->update($values,$preparedFields); }
 		else { $this->insert($values,$preparedFields); }
+
+		$this->saveTags();
 	}
 
 	private function update($values,$preparedFields)
@@ -193,4 +196,63 @@ class Topic extends ActiveRecord
 		else return array();
 	}
 	public function hasVotes() { return count($this->getVotes()) ? true : false; }
+
+	/**
+	 * Finds out whether this topic has a certain tag
+	 * @param Tag $tag The tag to check for
+	 * @return boolean
+	 */
+	public function hasTag(Tag $tag)
+	{
+		return in_array($tag->getId(),array_keys($this->getTags()));
+	}
+
+	/**
+	 * Wipes this topic's tags and replaces it with the given array of tags
+	 * @param array $tags An array of tag_id's to set
+	 */
+	public function setTags($tags=null)
+	{
+		$this->tags = array();
+		if (count($tags))
+		{
+			foreach($tags as $tag_id)
+			{
+				$tag = new Tag($tag_id);
+				$this->tags[$tag->getId()] = $tag;
+			}
+		}
+	}
+
+	/**
+	 * @return array An array of Tag Objects with the tag_id as the index
+	 */
+	public function getTags()
+	{
+		if (!count($this->tags))
+		{
+			$list = new TagList(array('topic_id'=>$this->id));
+			foreach($list as $tag)
+			{
+				$this->tags[$tag->getId()] = $tag;
+			}
+		}
+		return $this->tags;
+	}
+
+	private function saveTags()
+	{
+		$PDO = Database::getConnection();
+
+		$query = $PDO->prepare('delete from topic_tags where topic_id=?');
+		$query->execute(array($this->id));
+
+		# Do not call $this->getTags() as it will reload tags from the
+		# database, instead of saving the set of tags we've made changes to
+		$query = $PDO->prepare('insert topic_tags set topic_id=?,tag_id=?');
+		foreach($this->tags as $tag)
+		{
+			$query->execute(array($this->id,$tag->getId()));
+		}
+	}
 }

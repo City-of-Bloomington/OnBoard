@@ -20,6 +20,15 @@ if (userHasRole(array('Administrator','Clerk')))
 }
 	$url = new URL(BASE_URL.'/topics/viewTopic.php');
 	$url->topic_id = $this->topic->getId();
+
+$tags = array();
+foreach($this->topic->getTags() as $tag)
+{
+	$tags[] = View::escape($tag->getName());
+}
+$tags = implode(', ',$tags);
+if ($tags) { $tags = "<p><strong>Tags: </strong>$tags</p>"; }
+
 echo "
 <div class=\"interfaceBox\">
 	<h1>$editButton
@@ -27,5 +36,6 @@ echo "
 	</h1>
 	<h2>$description</h2>
 	<p>$synopsis</p>
+	$tags
 </div>
 ";

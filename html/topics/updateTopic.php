@@ -14,6 +14,8 @@ if (isset($_POST['topic']))
 		$topic->$set($value);
 	}
 
+	isset($_POST['tags']) ? $topic->setTags($_POST['tags']) : $topic->setTags();
+
 	try
 	{
 		$topic->save();

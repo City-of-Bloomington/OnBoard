@@ -151,3 +151,15 @@ create table votingRecords (
 	foreign key (vote_id)  references votes(id),
 	foreign key (member_id) references members(id)
 ) engine=InnoDB;
+
+create table tags (
+	id int unsigned not null primary key auto_increment,
+	name varchar(128) not null
+) engine=InnoDB;
+
+create table topic_tags (
+	topic_id int unsigned not null,
+	tag_id int unsigned not null,
+	foreign key (topic_id) references topics(id),
+	foreign key (tag_id) references tags(id)
+) engine=InnoDB;
