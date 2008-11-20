@@ -244,7 +244,7 @@ class Member extends ActiveRecord
 			$search['topicType'] = $topicType;
 		}
 		$votingRecords = new VotingRecordList($search);
-		$total = count($votingRecords);
+		$total = count($votingRecords) ? count($votingRecords) : 1;
 
 		$output = array('yes'=>0,'no'=>0,'abstain'=>0,'absent'=>0);
 		foreach(array_keys($output) as $memberVote)
