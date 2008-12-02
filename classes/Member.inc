@@ -256,4 +256,12 @@ class Member extends ActiveRecord
 		}
 		return $output;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasVotingRecord()
+	{
+		return count($this->getUser()->getVotingRecords()) ? true : false;
+	}
 }

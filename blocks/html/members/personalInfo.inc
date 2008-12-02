@@ -14,24 +14,37 @@ foreach($fields as $field)
 	$$field = View::escape($user->$get());
 }
 
-echo "
-<h1>$fullname</h1>
-<table>
-<tr><th>Email</th>
-	<td><a href=\"mailto:$email\">$email</a></td></tr>
-<tr><th>Address</th>
-	<td>$address</td></tr>
-<tr><th>City</th>
-	<td>$city</td></tr>
-<tr><th>Zip</th>
-	<td>$zipcode</td></tr>
-</table>
-<p>$about</p>
-";
+echo "<h1>$fullname</h1>";
+if ($email || $address || $city || $zipcode)
+{
+	echo "<table>";
+	if ($email)
+	{
+		echo "<tr><th>Email</th><td><a href=\"mailto:$email\">$email</a></td></tr>";
+	}
+	if ($address)
+	{
+		echo "<tr><th>Address</th><td>$address</td></tr>";
+	}
+	if ($city)
+	{
+		echo "<tr><th>City</th><td>$city</td></tr>";
+	}
+	if($zipcode)
+	{
+		echo "<tr><th>Zip</th><td>$zipcode</td></tr>";
+	}
+	echo "</table>";
+}
+if ($about) { echo "<p>$about</p>"; }
 
 $this->memberList = $user->getMembers();
 include APPLICATION_HOME.'/blocks/html/members/seatList.inc';
-include APPLICATION_HOME.'/blocks/html/members/memberReport.inc';
 
-$this->user = $user;
-include APPLICATION_HOME.'/blocks/html/members/votingRecord.inc';
+if ($this->member->hasVotingRecord())
+{
+	include APPLICATION_HOME.'/blocks/html/members/memberReport.inc';
+
+	$this->user = $user;
+	include APPLICATION_HOME.'/blocks/html/members/votingRecord.inc';
+}
