@@ -4,14 +4,14 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<link rel="SHORTCUT ICON" href="/favicon.ico" />
 	<style type="text/css" media="screen">
-		@import url('<?php echo BASE_URL; ?>/skins/reset.css');
-		@import url('<?php echo BASE_URL; ?>/skins/default/layouts/<?php echo $this->layout; ?>.css');
-		@import url('<?php echo BASE_URL; ?>/skins/default/screen.css');
+		@import url('/skins/origin-external/reset.css');
+		@import url('/skins/origin-external/layouts/<?php echo $this->layout; ?>.css');
+		@import url('/skins/origin-external/screen.css');
 	</style>
 	<style type="text/css" media="print">
-		@import url('<?php echo BASE_URL; ?>/skins/reset.css');
-		@import url('<?php echo BASE_URL; ?>/skins/default/layouts/<?php echo $this->layout; ?>.css');
-		@import url('<?php echo BASE_URL; ?>/skins/default/print.css');
+		@import url('/skins/origin-external/reset.css');
+		@import url('/skins/origin-external/layouts/<?php echo $this->layout; ?>.css');
+		@import url('/skins/origin-external/print.css');
 	</style>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/functions.js"></script>
 
