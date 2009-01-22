@@ -22,7 +22,7 @@ class PhoneNumberListDbTest extends PHPUnit_Framework_TestCase
 		$list->find();
 		$this->assertEquals($list->getSort(),'ordering');
 
-		foreach($list as $i=>$phonenumber)
+		foreach ($list as $i=>$phonenumber)
 		{
 			$this->assertEquals($phonenumber->getId(),$result[$i]['id']);
 		}

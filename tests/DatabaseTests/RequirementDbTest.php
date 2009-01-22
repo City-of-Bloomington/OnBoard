@@ -39,7 +39,7 @@ class RequirementDbTest extends PHPUnit_Framework_TestCase
 	{
 		$list = new RequirementList();
 		$list->find();
-		foreach($list as $requirement)
+		foreach ($list as $requirement)
 		{
 			$requirement->delete();
 		}

@@ -34,7 +34,7 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(count($user->getPhoneNumbers()),count($phoneNumbers));
 
 		$phoneNumbers = array();
-		foreach($user->getPhoneNumbers() as $phoneNumber)
+		foreach ($user->getPhoneNumbers() as $phoneNumber)
 		{
 			$this->assertTrue($phoneNumber->isPrivate());
 
@@ -48,7 +48,7 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		$user->save();
 
 		$user = new User($id);
-		foreach($user->getPhoneNumbers() as $phoneNumber)
+		foreach ($user->getPhoneNumbers() as $phoneNumber)
 		{
 			$this->assertEquals($phoneNumber->getType(),'cell');
 			$this->assertFalse($phoneNumber->isPrivate());
@@ -70,11 +70,11 @@ class UserDbTest extends PHPUnit_Framework_TestCase
 		$id = $user->getId();
 
 		$user = new User($id);
-		foreach($privateFields as $field)
+		foreach ($privateFields as $field)
 		{
 			$this->assertTrue($user->isPrivate($field));
 		}
-		foreach($publicFields as $field)
+		foreach ($publicFields as $field)
 		{
 			$this->assertTrue(!$user->isPrivate($field));
 		}

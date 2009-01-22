@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class Topic extends ActiveRecord
@@ -33,7 +33,7 @@ class Topic extends ActiveRecord
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('topics/unknownTopic'); }
-			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
 		{
@@ -78,7 +78,7 @@ class Topic extends ActiveRecord
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
@@ -216,7 +216,7 @@ class Topic extends ActiveRecord
 		$this->tags = array();
 		if (count($tags))
 		{
-			foreach($tags as $tag_id)
+			foreach ($tags as $tag_id)
 			{
 				$tag = new Tag($tag_id);
 				$this->tags[$tag->getId()] = $tag;
@@ -232,7 +232,7 @@ class Topic extends ActiveRecord
 		if (!count($this->tags))
 		{
 			$list = new TagList(array('topic_id'=>$this->id));
-			foreach($list as $tag)
+			foreach ($list as $tag)
 			{
 				$this->tags[$tag->getId()] = $tag;
 			}
@@ -250,7 +250,7 @@ class Topic extends ActiveRecord
 		# Do not call $this->getTags() as it will reload tags from the
 		# database, instead of saving the set of tags we've made changes to
 		$query = $PDO->prepare('insert topic_tags set topic_id=?,tag_id=?');
-		foreach($this->tags as $tag)
+		foreach ($this->tags as $tag)
 		{
 			$query->execute(array($this->id,$tag->getId()));
 		}

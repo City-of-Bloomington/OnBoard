@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class Tag extends ActiveRecord
@@ -22,7 +22,7 @@ class Tag extends ActiveRecord
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('tags/unknownTag'); }
-			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
 		{
@@ -57,7 +57,7 @@ class Tag extends ActiveRecord
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;

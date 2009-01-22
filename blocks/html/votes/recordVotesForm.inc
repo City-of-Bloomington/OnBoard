@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Vote $this->vote
@@ -20,7 +20,7 @@
 		<th>Absent</th>
 	</tr>
 	<?php
-		foreach($this->vote->getCommittee()->getCurrentMembers() as $member)
+		foreach ($this->vote->getCommittee()->getCurrentMembers() as $member)
 		{
 			$title = View::escape($member->getSeat()->getTitle());
 			$memberName = View::escape("{$member->getFirstname()} {$member->getLastname()}");

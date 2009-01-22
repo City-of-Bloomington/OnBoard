@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -19,7 +19,7 @@
 				<?php
 					$list = new AppointerList();
 					$list->find();
-					foreach($list as $appointer)
+					foreach ($list as $appointer)
 					{
 						$name = View::escape($appointer->getName());
 						$selected = ($this->seat->getAppointer_id()==$appointer->getId()) ? ' selected="selected"' : '';

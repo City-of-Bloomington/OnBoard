@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class Committee extends ActiveRecord
@@ -27,7 +27,7 @@ class Committee extends ActiveRecord
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('committees/unknownCommittee'); }
-			foreach($result[0] as $field=>$value)
+			foreach ($result[0] as $field=>$value)
 			{
 				if ($value)
 				{
@@ -77,7 +77,7 @@ class Committee extends ActiveRecord
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
@@ -165,7 +165,7 @@ class Committee extends ActiveRecord
 	public function getMaxCurrentMembers()
 	{
 		$positions = 0;
-		foreach($this->getSeats() as $seat)
+		foreach ($this->getSeats() as $seat)
 		{
 			$positions += $seat->getMaxCurrentMembers();
 		}

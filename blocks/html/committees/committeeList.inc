@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param CommitteeList $this->committeeList
  */
@@ -23,7 +23,7 @@
 		<th>Seats</th>
 	</tr>
 	<?php
-		foreach($this->committeeList as $committee)
+		foreach ($this->committeeList as $committee)
 		{
 			$name = View::escape($committee->getName());
 			$seats = $committee->getMaxCurrentMembers();

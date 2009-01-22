@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param REQUEST member_id
@@ -10,7 +10,7 @@ verifyuser(array('Administrator','Clerk'));
 $member = new Member($_REQUEST['member_id']);
 if (isset($_POST['member']))
 {
-	foreach($_POST['member'] as $field=>$value)
+	foreach ($_POST['member'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
 		$member->$set($value);
@@ -24,7 +24,7 @@ if (isset($_POST['member']))
 					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
 
 	# Set all the fields they're allowed to edit
-	foreach($fields as $field)
+	foreach ($fields as $field)
 	{
 		if (isset($_POST['user'][$field]))
 		{

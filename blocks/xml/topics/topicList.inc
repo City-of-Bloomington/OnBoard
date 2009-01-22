@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param topicList $this->topicList
  */
 ?>
 <topics>
 <?php
-	foreach($this->topicList as $topic)
+	foreach ($this->topicList as $topic)
 	{
 		$type = View::escape($topic->getTopicType());
 		$number = View::escape($topic->getNumber());

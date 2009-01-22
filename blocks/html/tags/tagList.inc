@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param TagList $this->tagList
@@ -18,7 +18,7 @@ $userCanEdit = userHasRole(array('Administrator','Clerk'));
 		Tags
 	</h1>
 	<ul><?php
-			foreach($this->tagList as $tag)
+			foreach ($this->tagList as $tag)
 			{
 				$editButton = '';
 				$deleteButton = '';

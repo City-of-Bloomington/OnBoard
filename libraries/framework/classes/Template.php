@@ -2,7 +2,7 @@
 /**
  * Defines the overall page layout
  *
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -58,7 +58,7 @@ class Template extends View
 	private function includeBlocks()
 	{
 		ob_start();
-		foreach($this->blocks as $block) {
+		foreach ($this->blocks as $block) {
 			echo $block->render($this->outputFormat);
 		}
 		return ob_get_clean();

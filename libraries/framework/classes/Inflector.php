@@ -25,7 +25,7 @@
  * Modified to work in City of Bloomington's Framework
  * Relicensed under GPL
  * Redistributions must retain all copyright notices
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class Inflector
@@ -121,7 +121,7 @@ class Inflector
 			return $regs[1] . $irregular[strtolower($regs[2])];
 		}
 
-		foreach($pluralRules as $rule => $replacement) {
+		foreach ($pluralRules as $rule => $replacement) {
 			if (preg_match($rule, $word)) {
 				$replace = preg_replace($rule, $replacement, $word);
 				return $replace;
@@ -231,7 +231,7 @@ class Inflector
 			return $regs[1] . $irregular[strtolower($regs[2])];
 		}
 
-		foreach($singularRules as $rule => $replacement) {
+		foreach ($singularRules as $rule => $replacement) {
 			if (preg_match($rule, $word)) {
 				$replace = preg_replace($rule, $replacement, $word);
 				return $replace;

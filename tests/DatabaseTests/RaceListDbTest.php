@@ -22,7 +22,7 @@ class RaceListDbTest extends PHPUnit_Framework_TestCase
     	$list->find();
     	$this->assertEquals($list->getSort(),'name');
 
-    	foreach($list as $i=>$race)
+    	foreach ($list as $i=>$race)
     	{
     		$this->assertEquals($race->getName(),$result[$i]['name']);
     	}

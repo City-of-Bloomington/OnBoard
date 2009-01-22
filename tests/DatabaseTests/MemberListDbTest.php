@@ -20,7 +20,7 @@ class MemberListDbTest extends PHPUnit_Framework_TestCase
 
     	$list = new MemberList();
     	$list->find();
-    	foreach($list as $i=>$member)
+    	foreach ($list as $i=>$member)
     	{
     		$this->assertEquals($member->getId(),$result[$i]['id']);
     	}

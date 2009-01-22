@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -76,7 +76,7 @@ abstract class View
 		$output = '';
 		$words = preg_split('/\s+/',$string);
 		$c = 0;
-		foreach($words as $word) {
+		foreach ($words as $word) {
 			$output.= "$word ";
 			$c++;
 			if ($c >= $numWords) {

@@ -21,7 +21,7 @@ class RoleListDbTest extends PHPUnit_Framework_TestCase
 
 		$list = new RoleList();
 		$list->find();
-		foreach($list as $i=>$role)
+		foreach ($list as $i=>$role)
 		{
 			$this->assertEquals($role,$result[$i]['name']);
 		}

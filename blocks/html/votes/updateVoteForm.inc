@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Vote $this->vote
  */
@@ -27,7 +27,7 @@ $outcomes = array(' ','pass','fail');
 			<?php
 				$types = new VoteTypeList();
 				$types->find();
-				foreach($types as $type) {
+				foreach ($types as $type) {
 					$name = View::escape($type);
 					$selected = $this->vote->getVoteType_id()==$type->getId() ? ' selected="selected"' : '';
 					echo "<option value=\"{$type->getId()}\"$selected>$name</option>";
@@ -39,7 +39,7 @@ $outcomes = array(' ','pass','fail');
 	<tr><td><label for='vote-outcome'>Outcome</td><td>
 	<select name='vote[outcome]' id='vote-outcome'>
 	<?php
-		foreach($outcomes as $outcome)
+		foreach ($outcomes as $outcome)
 		{
 			$selected = $this->vote->getOutcome()==$outcome ? ' selected="selected"' : '';
 			echo "<option$selected>$outcome</option>";

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -20,7 +20,7 @@
 
 		$list = new UserList();
 		$list->find(null,'lastname,firstname');
-		foreach($list as $u)
+		foreach ($list as $u)
 		{
 			$id = $u->getId();
 			$fullname = addslashes($u->getFullname());

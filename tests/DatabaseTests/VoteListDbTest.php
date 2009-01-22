@@ -47,7 +47,7 @@ class VoteListDbTest extends PHPUnit_Framework_TestCase
 
     	$list = new VoteList();
     	$list->find();
-    	foreach($list as $i=>$vote)
+    	foreach ($list as $i=>$vote)
     	{
     		$this->assertEquals($vote->getId(),$result[$i]['id']);
     	}

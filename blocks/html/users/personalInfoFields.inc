@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param User $this->user
  */
 $fields = array('gender','firstname','lastname','email','address','city',
 				'zipcode','about','race_id');
-foreach($fields as $field)
+foreach ($fields as $field)
 {
 	$getter = 'get'.ucfirst($field);
 	$$field = View::escape($this->user->$getter());
@@ -110,7 +110,7 @@ foreach($fields as $field)
 			<?php
 				$list = new RaceList();
 				$list->find();
-				foreach($list as $race)
+				foreach ($list as $race)
 				{
 					$selected = $race_id==$race->getId() ? ' selected="selected"' : '';
 					echo "<option value=\"{$race->getId()}\"$selected>$race</option>";

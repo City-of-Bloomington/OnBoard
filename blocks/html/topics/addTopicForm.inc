@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -16,7 +16,7 @@
 			<?php
 				$options = new TopicTypeList();
 				$options->find();
-				foreach($options as $type) {
+				foreach ($options as $type) {
 					echo "<option value=\"{$type->getId()}\">$type</option>";
 				}
 			?>
@@ -48,7 +48,7 @@
 	<?php
 		$list = new TagList();
 		$list->find();
-		foreach($list as $tag)
+		foreach ($list as $tag)
 		{
 			$name = View::escape($tag->getName());
 			echo "

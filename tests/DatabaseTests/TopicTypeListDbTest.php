@@ -22,7 +22,7 @@ class TopicTypeListDbTest extends PHPUnit_Framework_TestCase
     	$list->find();
     	$this->assertEquals($list->getSort(),'name');
 
-    	foreach($list as $i=>$topicType)
+    	foreach ($list as $i=>$topicType)
     	{
     		$this->assertEquals($topicType->getName(),$result[$i]['name']);
     	}

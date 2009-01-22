@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2007-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2007-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param UserList $this->userList
@@ -17,7 +17,7 @@ if (userHasRole('Administrator'))
 	<h1><?php echo $addButton; ?>Users</h1>
 	<table>
 	<?php
-		foreach($this->userList as $user)
+		foreach ($this->userList as $user)
 		{
 			$editButton = '';
 			$deleteButton = '';

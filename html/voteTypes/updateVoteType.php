@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 verifyUser('Administrator');
@@ -8,7 +8,7 @@ verifyUser('Administrator');
 $voteType = new VoteType($_REQUEST['id']);
 if (isset($_POST['voteType']))
 {
-	foreach($_POST['voteType'] as $field=>$value)
+	foreach ($_POST['voteType'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
 		$voteType->$set($value);

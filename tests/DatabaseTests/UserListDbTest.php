@@ -46,7 +46,7 @@ class UserListDbTest extends PHPUnit_Framework_TestCase
 
     	$list = new UserList();
     	$list->find();
-    	foreach($list as $i=>$user)
+    	foreach ($list as $i=>$user)
     	{
     		$this->assertEquals($user->getId(),$result[$i]['id']);
     	}

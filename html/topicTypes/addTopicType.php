@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 verifyUser('Administrator');
@@ -8,7 +8,7 @@ verifyUser('Administrator');
 if (isset($_POST['topicType']))
 {
 	$topicType = new TopicType();
-	foreach($_POST['topicType'] as $field=>$value)
+	foreach ($_POST['topicType'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
 		$topicType->$set($value);

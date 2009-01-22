@@ -22,7 +22,7 @@ class CommitteeListDbTest extends PHPUnit_Framework_TestCase
     	$list->find();
     	$this->assertEquals($list->getSort(),'name');
 
-    	foreach($list as $i=>$committee)
+    	foreach ($list as $i=>$committee)
     	{
     		$this->assertEquals($committee->getName(),$result[$i]['name']);
     	}

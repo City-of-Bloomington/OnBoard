@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->topic
@@ -22,7 +22,7 @@ if (userHasRole(array('Administrator','Clerk')))
 	$url->topic_id = $this->topic->getId();
 
 $tags = array();
-foreach($this->topic->getTags() as $tag)
+foreach ($this->topic->getTags() as $tag)
 {
 	$tags[] = View::escape($tag->getName());
 }

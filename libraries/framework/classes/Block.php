@@ -9,7 +9,7 @@
  * APPLICATION_HOME/blocks/xml/...
  * APPLICATION_HOME/blocks/json/..
  *
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -30,7 +30,7 @@ class Block extends View
 	{
 		$this->file = $file;
 		if (count($vars)) {
-			foreach($vars as $name=>$value) {
+			foreach ($vars as $name=>$value) {
 				$this->vars[$name] = $value;
 			}
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2007-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2007-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -29,7 +29,7 @@ class PhoneNumber extends ActiveRecord
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('phoneNumbers/unknownPhoneNumber'); }
-			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
 		{
@@ -70,7 +70,7 @@ class PhoneNumber extends ActiveRecord
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;

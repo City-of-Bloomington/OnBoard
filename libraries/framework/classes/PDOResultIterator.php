@@ -2,7 +2,7 @@
 /**
  * Base class for iterating over database results
  *
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -61,7 +61,7 @@ abstract class PDOResultIterator implements ArrayAccess,SeekableIterator,Countab
 
 		$result = $query->fetchAll();
 		if ($result) {
-			foreach($result as $row) {
+			foreach ($result as $row) {
 				$this->list[] = $row['id'];
 			}
 		}

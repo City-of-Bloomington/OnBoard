@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat_id
@@ -16,7 +16,7 @@ if ($this->seat->hasRequirements())
 	";
 		$url = new URL(BASE_URL.'/seats/removeRequirement.php');
 		$url->seat_id = $this->seat->getId();
-		foreach($this->seat->getRequirements() as $requirement)
+		foreach ($this->seat->getRequirements() as $requirement)
 		{
 			$url->requirement_id = $requirement->getId();
 			$text = View::escape($requirement);
@@ -38,7 +38,7 @@ if ($this->seat->hasRequirements())
 		<?php
 			$requirements = new RequirementList();
 			$requirements->find();
-			foreach($requirements as $requirement)
+			foreach ($requirements as $requirement)
 			{
 				$name = View::escape($requirement);
 				echo "<option value=\"{$requirement->getId()}\">$name</option>";

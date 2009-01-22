@@ -67,7 +67,7 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 		$list->find();
 		if (count($list))
 		{
-			foreach($list as $member)
+			foreach ($list as $member)
 			{
 				try { $member->delete(); }
 				catch (Exception $e) { $this->fail($e->getMessage()); }

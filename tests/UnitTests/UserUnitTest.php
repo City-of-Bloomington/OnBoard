@@ -17,7 +17,7 @@ class UserUnitTest extends PHPUnit_Framework_TestCase
 		$user = new User();
 		$user->setPhoneNumbers($phoneNumbers);
 
-		foreach($user->getPhoneNumbers() as $i=>$phoneNumber)
+		foreach ($user->getPhoneNumbers() as $i=>$phoneNumber)
 		{
 			$this->assertEquals($phoneNumber->getNumber(),"$i$i$i-$i$i$i-$i$i$i$i");
 		}
@@ -28,23 +28,23 @@ class UserUnitTest extends PHPUnit_Framework_TestCase
 		$user = new User();
 
 		$privateFields = array('gender','firstname','lastname','address','email');
-		foreach($privateFields as $field)
+		foreach ($privateFields as $field)
 		{
 			$this->assertFalse($user->isPrivate($field));
 		}
 
 		$publicFields = array('city','zipcode','about');
-		foreach($publicFields as $field)
+		foreach ($publicFields as $field)
 		{
 			$this->assertFalse($user->isPrivate($field));
 		}
 
 		$user->setPrivateFields($privateFields);
-		foreach($privateFields as $field)
+		foreach ($privateFields as $field)
 		{
 			$this->assertTrue($user->isPrivate($field));
 		}
-		foreach($publicFields as $field)
+		foreach ($publicFields as $field)
 		{
 			$this->assertFalse($user->isPrivate($field));
 		}

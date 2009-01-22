@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class Member extends ActiveRecord
@@ -32,7 +32,7 @@ class Member extends ActiveRecord
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('members/unknownMember'); }
-			foreach($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
 		}
 		else
 		{
@@ -85,7 +85,7 @@ class Member extends ActiveRecord
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
@@ -247,7 +247,7 @@ class Member extends ActiveRecord
 		$total = count($votingRecords) ? count($votingRecords) : 1;
 
 		$output = array('yes'=>0,'no'=>0,'abstain'=>0,'absent'=>0);
-		foreach(array_keys($output) as $memberVote)
+		foreach (array_keys($output) as $memberVote)
 		{
 			$search = array('member_id'=>$this->id,'memberVote'=>$memberVote);
 			if ($topicType) { $search['topicType'] = $topicType; }

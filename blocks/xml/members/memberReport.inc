@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Member $this->member
  */
@@ -12,7 +12,7 @@
 
 		$topicTypes = new TopicTypeList();
 		$topicTypes->find();
-		foreach($topicTypes as $topicType)
+		foreach ($topicTypes as $topicType)
 		{
 			$name = View::escape($topicType->getName());
 			echo "
@@ -20,7 +20,7 @@
 			";
 
 			$percentages = $member->getVotePercentages($topicType);
-			foreach($memberVoteValues as $memberVote)
+			foreach ($memberVoteValues as $memberVote)
 			{
 				echo "
 					<$memberVote>$percentages[$memberVote]</$memberVote>
@@ -36,7 +36,7 @@
 	<votingAccordance>
 	<?php
 		$members = new MemberList(array('member_id'=>$this->member->getId()));
-		foreach($members as $otherMember)
+		foreach ($members as $otherMember)
 		{
 			$fullname = View::escape($otherMember->getFullname());
 			$percent = $this->member->getAccordancePercentage($otherMember);

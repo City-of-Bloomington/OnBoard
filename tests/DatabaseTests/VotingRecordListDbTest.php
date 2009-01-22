@@ -20,7 +20,7 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
 
     	$list = new VotingRecordList();
     	$list->find();
-    	foreach($list as $i=>$votingRecord)
+    	foreach ($list as $i=>$votingRecord)
     	{
     		$this->assertEquals($votingRecord->getId(),$result[$i]['id']);
     	}
@@ -45,11 +45,11 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
 		$topicTypes->find();
 
 		$memberVotes = array('yes','no','absent','abstain');
-		foreach($members as $member)
+		foreach ($members as $member)
 		{
-			foreach($topicTypes as $topicType)
+			foreach ($topicTypes as $topicType)
 			{
-				foreach($memberVotes as $memberVote)
+				foreach ($memberVotes as $memberVote)
 				{
 					$query->execute(array($topicType->getId(),$member->getId(),$memberVote));
 					$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -58,7 +58,7 @@ class VotingRecordListDbTest extends PHPUnit_Framework_TestCase
 									'topicType'=>$topicType,
 									'memberVote'=>$memberVote);
 					$list = new VotingRecordList($search);
-					foreach($list as $i=>$votingRecord)
+					foreach ($list as $i=>$votingRecord)
 					{
 						$this->assertEquals($votingRecord->getId(),$result[$i]['id']);
 					}

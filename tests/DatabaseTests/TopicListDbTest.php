@@ -46,7 +46,7 @@ class TopicListDbTest extends PHPUnit_Framework_TestCase
 
       $list = new TopicList();
       $list->find();
-      foreach($list as $i=>$topic)
+      foreach ($list as $i=>$topic)
 	{
 	  $this->assertEquals($topic->getDate('Y-m-d'),$result[$i]['date']);
 	}

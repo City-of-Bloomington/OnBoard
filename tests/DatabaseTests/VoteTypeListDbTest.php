@@ -22,7 +22,7 @@ class VoteTypeListDbTest extends PHPUnit_Framework_TestCase
 		$list->find();
 		$this->assertEquals($list->getSort(),'id');
 
-		foreach($list as $i=>$votetype)
+		foreach ($list as $i=>$votetype)
 		{
 			$this->assertEquals($votetype->getId(),$result[$i]['id']);
 		}

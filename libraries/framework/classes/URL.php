@@ -7,7 +7,7 @@
  * $url->somevar = $somevar;
  * echo $url->getURL();
  *
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana.
+ * @copyright 2006-2009 City of Bloomington, Indiana.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -45,7 +45,7 @@ class URL
 			list($script,$parameters) = explode('?',$script);
 
 			$parameters = preg_split('/[;&]/',$parameters);
-			foreach($parameters as $parameter) {
+			foreach ($parameters as $parameter) {
 				if (preg_match('/=/',$parameter)) {
 					list($field,$value) = explode('=',$parameter);
 					if ($value) {
@@ -84,7 +84,7 @@ class URL
 		$url = $this->protocol.$this->script;
 		if (count($this->parameters)) {
 			$url.= '?';
-			foreach($this->parameters as $key=>$value) {
+			foreach ($this->parameters as $key=>$value) {
 				if (is_array($value)) {
 					$url.= $this->smash($value,array($key));
 				}
@@ -126,10 +126,10 @@ class URL
 	private function smash($array, $keyssofar)
 	{
 		$output = '';
-		foreach($array as $key => $value) {
+		foreach ($array as $key => $value) {
 			if (!is_array($value)) {
 				$t = '';
-				foreach($keyssofar as $i=>$k) {
+				foreach ($keyssofar as $i=>$k) {
 					if ($i) {
 						$t.= '['.urlencode($k).']';
 					}
@@ -143,7 +143,7 @@ class URL
 			}
 			else {
 				$t = array();
-				foreach($keyssofar as $k) {
+				foreach ($keyssofar as $k) {
 					$t[] = $k;
 				}
 

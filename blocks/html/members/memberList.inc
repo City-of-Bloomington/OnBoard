@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param MemberList $this->memberList
  * @param Seat $this->seat (optional)
@@ -19,7 +19,7 @@ if (isset($this->seat) && userHasRole(array('Administrator','Clerk')))
 	</h1>
 	<table>
 	<?php
-		foreach($this->memberList as $member)
+		foreach ($this->memberList as $member)
 		{
 			$editButton = '';
 			if (userHasRole(array('Administrator','Clerk')))

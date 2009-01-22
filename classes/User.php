@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  */
 class User extends SystemUser
@@ -43,7 +43,7 @@ class User extends SystemUser
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
 			if (!count($result)) { throw new Exception('users/unknownUser'); }
-			foreach($result[0] as $field=>$value)
+			foreach ($result[0] as $field=>$value)
 			{
 				if ($value)
 				{
@@ -100,7 +100,7 @@ class User extends SystemUser
 		# PDO->execute cannot take an associative array for values, so we have
 		# to strip out the keys from $fields
 		$preparedFields = array();
-		foreach($fields as $key=>$value)
+		foreach ($fields as $key=>$value)
 		{
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
@@ -168,7 +168,7 @@ class User extends SystemUser
 			$query = $PDO->prepare('delete from phoneNumbers where user_id=?');
 			$query->execute(array($this->id));
 
-			foreach($this->getPhoneNumbers() as $phoneNumber)
+			foreach ($this->getPhoneNumbers() as $phoneNumber)
 			{
 				$phoneNumber->setUser($this);
 				$phoneNumber->save();
@@ -184,7 +184,7 @@ class User extends SystemUser
 		$query->execute(array($this->id));
 
 		$query = $PDO->prepare('insert user_private_fields set user_id=?,fieldname=?');
-		foreach($this->privateFields as $field)
+		foreach ($this->privateFields as $field)
 		{
 			$query->execute(array($this->id,$field));
 		}
@@ -309,7 +309,7 @@ class User extends SystemUser
 				$result = $query->fetchAll();
 				if (count($result))
 				{
-					foreach($result as $row) { $this->roles[$row['role_id']] = $row['name']; }
+					foreach ($result as $row) { $this->roles[$row['role_id']] = $row['name']; }
 				}
 			}
 		}
@@ -324,7 +324,7 @@ class User extends SystemUser
 		$this->roles = array();
 		if ($roleNames)
 		{
-			foreach($roleNames as $name)
+			foreach ($roleNames as $name)
 			{
 				$role = new Role($name);
 				$this->roles[$role->getId()] = $role->getName();
@@ -352,7 +352,7 @@ class User extends SystemUser
 	{
 		if (is_array($roles))
 		{
-			foreach($roles as $roleName)
+			foreach ($roles as $roleName)
 			{
 				if (in_array($roleName,$this->getRoles())) { return true; }
 			}
@@ -370,7 +370,7 @@ class User extends SystemUser
 		$query->execute(array($this->id));
 
 		$query = $PDO->prepare('insert user_roles values(?,?)');
-		foreach($roles as $role_id=>$roleName)
+		foreach ($roles as $role_id=>$roleName)
 		{
 			$query->execute(array($this->id,$role_id));
 		}
@@ -424,7 +424,7 @@ class User extends SystemUser
 		if (!count($this->phoneNumbers))
 		{
 			$list = new PhoneNumberList(array('user_id'=>$this->id));
-			foreach($list as $phoneNumber)
+			foreach ($list as $phoneNumber)
 			{
 				$this->phoneNumbers[] = $phoneNumber;
 			}
@@ -443,7 +443,7 @@ class User extends SystemUser
 	public function setPhoneNumbers(array $phoneNumbers)
 	{
 		$this->phoneNumbers = array();
-		foreach($phoneNumbers as $posted)
+		foreach ($phoneNumbers as $posted)
 		{
 			if (trim($posted['number']))
 			{
@@ -480,7 +480,7 @@ class User extends SystemUser
 			$query = $PDO->prepare('select fieldname from user_private_fields where user_id=?');
 			$query->execute(array($this->id));
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			foreach($result as $row)
+			foreach ($result as $row)
 			{
 				$this->privateFields[] = $row['fieldname'];
 			}

@@ -98,7 +98,7 @@ class VoteDbTest extends PHPUnit_Framework_TestCase
 		$vote->setVotingRecords($records);
 
 		$this->assertTrue($vote->hasVotingRecords());
-		foreach($vote->getVotingRecords() as $record)
+		foreach ($vote->getVotingRecords() as $record)
 		{
 			$this->assertEquals($vote->getId(),$record->getVote_id());
 		}

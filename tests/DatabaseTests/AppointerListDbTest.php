@@ -22,7 +22,7 @@ class AppointerListDbTest extends PHPUnit_Framework_TestCase
     	$list->find();
     	$this->assertEquals($list->getSort(),'name');
 
-    	foreach($list as $i=>$appointer)
+    	foreach ($list as $i=>$appointer)
     	{
     		$this->assertEquals($appointer->getName(),$result[$i]['name']);
     	}

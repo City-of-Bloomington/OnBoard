@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param GET vote_id
  */
@@ -10,7 +10,7 @@ $vote = new Vote($_REQUEST['vote_id']);
 
 if (isset($_POST['vote']))
 {
-	foreach($_POST['vote'] as $field=>$value)
+	foreach ($_POST['vote'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
 		$vote->$set($value);

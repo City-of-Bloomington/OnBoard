@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param User $this->member
@@ -8,7 +8,7 @@
 $user = $this->member->getUser();
 
 $fields = array('fullname','email','address','city','zipcode','about');
-foreach($fields as $field)
+foreach ($fields as $field)
 {
 	$get = 'get'.ucfirst($field);
 	$$field = View::escape($user->$get());

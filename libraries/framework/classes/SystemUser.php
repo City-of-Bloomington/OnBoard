@@ -6,7 +6,7 @@
  * a city employee will have the same username and password on all applications.
  * Applications should use these public functions for their own users.
  *
- * @copyright Copyright (C) 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */

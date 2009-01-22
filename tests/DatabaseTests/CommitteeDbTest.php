@@ -32,10 +32,10 @@ class CommitteeDbTest extends PHPUnit_Framework_TestCase
     {
     	$list = new CommitteeList();
     	$list->find();
-    	foreach($list as $committee)
+    	foreach ($list as $committee)
     	{
     		$this->assertTrue($committee->getSeats() instanceof SeatList);
-    		foreach($committee->getSeats() as $seat)
+    		foreach ($committee->getSeats() as $seat)
     		{
 				$this->assertEquals($seat->getCommittee_id(),$committee->getId());
     		}
@@ -46,10 +46,10 @@ class CommitteeDbTest extends PHPUnit_Framework_TestCase
     {
     	$list = new CommitteeList();
     	$list->find();
-    	foreach($list as $committee)
+    	foreach ($list as $committee)
     	{
 			$this->assertTrue($committee->getTopics() instanceof TopicList);
-			foreach($committee->getTopics() as $topic)
+			foreach ($committee->getTopics() as $topic)
 			{
 				$this->assertEquals($topic->getCommittee_id(),$committee->getId());
 			}

@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param CommitteeList $this->committeeList
  */
 ?>
 <committees>
 <?php
-	foreach($this->committeeList as $committee)
+	foreach ($this->committeeList as $committee)
 	{
 		echo "\t<committee id=\"{$committee->getId()}\">\n";
 

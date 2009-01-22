@@ -45,7 +45,7 @@ class SeatListDbTest extends PHPUnit_Framework_TestCase
 
 		$list = new SeatList();
 		$list->find();
-		foreach($list as $i=>$seat)
+		foreach ($list as $i=>$seat)
 		{
 			$this->assertEquals($seat->getTitle(),$result[$i]['title']);
 		}

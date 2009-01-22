@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET committee_id
@@ -16,7 +16,7 @@ $votes->voteList = $topic->getVotes();
 $votes->topic = $topic;
 $template->blocks[] = $votes;
 
-foreach($topic->getVotes() as $vote)
+foreach ($topic->getVotes() as $vote)
 {
 	$records = new Block('votingRecords/votingRecordList.inc');
 	$records->vote = $vote;

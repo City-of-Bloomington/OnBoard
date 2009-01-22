@@ -28,7 +28,7 @@ class RequirementListDbTest extends PHPUnit_Framework_TestCase
 
 		$list = new RequirementList();
 		$list->find();
-		foreach($list as $i=>$requirement)
+		foreach ($list as $i=>$requirement)
 		{
 			$this->assertEquals($requirement->getText(),$result[$i]['text']);
 		}

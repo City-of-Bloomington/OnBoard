@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param GET committee_id
  */
@@ -9,7 +9,7 @@ verifyUser(array('Administrator','Clerk'));
 $committee = new Committee($_REQUEST['committee_id']);
 if (isset($_POST['committee']))
 {
-	foreach($_POST['committee'] as $field=>$value)
+	foreach ($_POST['committee'] as $field=>$value)
 	{
 		$set = 'set'.ucfirst($field);
 		$committee->$set($value);

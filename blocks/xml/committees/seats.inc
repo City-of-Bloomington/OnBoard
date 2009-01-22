@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright Copyright (C) 2006-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
 ?>
 <seats>
 <?php
-	foreach($this->committee->getSeats() as $seat)
+	foreach ($this->committee->getSeats() as $seat)
 	{
 		$title = View::escape($seat->getTitle());
 		$appointer = View::escape($seat->getAppointer());
@@ -23,7 +23,7 @@
 			#--------------------------------------------------------
 			$members = array();
 			$c = 0;
-			foreach($seat->getCurrentMembers() as $member)
+			foreach ($seat->getCurrentMembers() as $member)
 			{
 				$c++;
 				$fullname = View::escape($member->getFullname());
