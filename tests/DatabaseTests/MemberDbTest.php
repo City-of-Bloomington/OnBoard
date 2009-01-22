@@ -81,7 +81,7 @@ class MemberDbTest extends PHPUnit_Framework_TestCase
 
 	public function testSeatMemberLimit()
 	{
-		# The seat member limit should be one, by default
+		// The seat member limit should be one, by default
 		$member = new Member();
 		$member->setSeat($this->seat);
 		$member->setUser($this->user);

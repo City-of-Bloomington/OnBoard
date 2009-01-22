@@ -13,7 +13,7 @@ class Seat extends ActiveRecord
 
 	private $committee;
 	private $appointer;
-	private $member; # The current member for this seat
+	private $member; // The current member for this seat
 
 	/**
 	 * This will load all fields in the table as properties of this class.
@@ -33,8 +33,8 @@ class Seat extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->appointer_id = 1;
 			$this->maxCurrentMembers = 1;
 		}
@@ -46,7 +46,7 @@ class Seat extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->committee_id) { throw new Exception('seats/missingCommittee'); }
 		if (!$this->title) { throw new Exception('seats/missingTitle'); }
 	}
@@ -66,9 +66,9 @@ class Seat extends ActiveRecord
 		$fields['appointer_id'] = $this->appointer_id;
 		$fields['maxCurrentMembers'] = $this->maxCurrentMembers;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -101,9 +101,9 @@ class Seat extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getTitle() { return $this->title; }
 	public function getCommittee_id() { return $this->committee_id; }
@@ -129,9 +129,9 @@ class Seat extends ActiveRecord
 		}
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setTitle($string) { $this->title = trim($string); }
 	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
 	public function setAppointer_id($int) { $this->appointer = new Appointer($int); $this->appointer_id = $int; }
@@ -140,10 +140,10 @@ class Seat extends ActiveRecord
 	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
 	public function setAppointer($appointer) { $this->appointer_id = $appointer->getId(); $this->appointer = $appointer; }
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	/**
 	 * @return MemberList
 	 */

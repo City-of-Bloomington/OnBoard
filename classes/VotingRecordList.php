@@ -43,9 +43,9 @@ class VotingRecordList extends PDOResultIterator
 			$parameters[':memberVote'] = $fields['memberVote'];
 		}
 
-		# Finding on fields from other tables required joining those tables.
-		# You can add fields from other tables to $options by adding the join SQL
-		# to $this->joins here
+		// Finding on fields from other tables required joining those tables.
+		// You can add fields from other tables to $options by adding the join SQL
+		// to $this->joins here
 		if (isset($fields['user_id']))
 		{
 			$this->joins.= ' left join members m on vr.member_id=m.id';

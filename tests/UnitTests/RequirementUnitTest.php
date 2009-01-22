@@ -5,7 +5,7 @@ class RequirementUnitTest extends PHPUnit_Framework_TestCase
 {
     public function testValidate()
     {
-    	# Text should be the only required field
+    	// Text should be the only required field
     	$requirement = new Requirement();
     	try
     	{
@@ -14,7 +14,7 @@ class RequirementUnitTest extends PHPUnit_Framework_TestCase
     	}
     	catch (Exception $e)
     	{
-			# Success
+			// Success
     	}
 
     	$requirement->setText('Test Requirement');

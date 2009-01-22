@@ -57,9 +57,9 @@ class UserList extends PDOResultIterator
 			$parameters[':email'] = $fields['email'];
 		}
 
-		# Finding on fields from other tables required joining those tables.
-		# You can add fields from other tables to $options by adding the join SQL
-		# to $this->joins here
+		// Finding on fields from other tables required joining those tables.
+		// You can add fields from other tables to $options by adding the join SQL
+		// to $this->joins here
 		if (isset($fields['role']))
 		{
 			$this->joins.= ' left join user_roles on users.id=user_id left join roles on role_id=roles.id';

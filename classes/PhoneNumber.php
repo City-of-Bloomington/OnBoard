@@ -33,8 +33,8 @@ class PhoneNumber extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->private = 0;
 		}
 	}
@@ -45,7 +45,7 @@ class PhoneNumber extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->user_id) { throw new Exception('phoneNumbers/missingUser'); }
 		if (!$this->number) { throw new Exception('phoneNumbers/missingNumber'); }
 	}
@@ -66,9 +66,9 @@ class PhoneNumber extends ActiveRecord
 		$fields['number'] = $this->number;
 		$fields['private'] = $this->private;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -101,9 +101,9 @@ class PhoneNumber extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getUser_id() { return $this->user_id; }
 	public function getOrdering() { return $this->ordering; }
@@ -126,9 +126,9 @@ class PhoneNumber extends ActiveRecord
 		else return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setUser_id($int) { $this->user = new User($int); $this->user_id = $int; }
 	public function setOrdering($int) { $this->ordering = ereg_replace("[^0-9]","",$int); }
 	public function setType($string) { $this->type = trim($string); }
@@ -137,10 +137,10 @@ class PhoneNumber extends ActiveRecord
 	public function setUser($user) { $this->user_id = $user->getId(); $this->user = $user; }
 
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function __toString() { return $this->getNumber(); }
 
 	public function isPrivate() { return $this->private ? true : false; }

@@ -22,5 +22,5 @@ catch (Exception $e)
 	exit();
 }
 
-# The user has successfully logged in.  Redirect them wherever you like
+// The user has successfully logged in.  Redirect them wherever you like
 Header('Location: '.BASE_URL);

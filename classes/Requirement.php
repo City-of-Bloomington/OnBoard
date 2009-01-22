@@ -26,8 +26,8 @@ class Requirement extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 		}
 	}
 
@@ -37,7 +37,7 @@ class Requirement extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->text) { throw new Exception('missingRequiredFields'); }
 	}
 
@@ -53,9 +53,9 @@ class Requirement extends ActiveRecord
 		$fields = array();
 		$fields['text'] = $this->text;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -102,22 +102,22 @@ class Requirement extends ActiveRecord
 		}
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getText() { return $this->text; }
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setText($string) { $this->text = trim($string); }
 
 
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function __toString() { return $this->text; }
 }

@@ -37,8 +37,8 @@ class Topic extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->date = time();
 		}
 	}
@@ -49,7 +49,7 @@ class Topic extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->topicType_id || !$this->date || !$this->number ||
 			!$this->description || !$this->synopsis || !$this->committee_id)
 		{
@@ -74,9 +74,9 @@ class Topic extends ActiveRecord
 		$fields['synopsis'] = $this->synopsis;
 		$fields['committee_id'] = $this->committee_id;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -111,9 +111,9 @@ class Topic extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getTopicType_id() { return $this->topicType_id; }
 	public function getNumber() { return $this->number; }
@@ -151,9 +151,9 @@ class Topic extends ActiveRecord
 		else return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setTopicType_id($int) { $this->topicType = new TopicType($int); $this->topicType_id = $int; }
 	public function setNumber($string) { $this->number = trim($string); }
 	public function setDescription($text) { $this->description = $text; }
@@ -174,10 +174,10 @@ class Topic extends ActiveRecord
 	}
 
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function __toString(){
 		return $this->getTopicType().' '.$this->number.' '.$this->date;
 	}
@@ -247,8 +247,8 @@ class Topic extends ActiveRecord
 		$query = $PDO->prepare('delete from topic_tags where topic_id=?');
 		$query->execute(array($this->id));
 
-		# Do not call $this->getTags() as it will reload tags from the
-		# database, instead of saving the set of tags we've made changes to
+		// Do not call $this->getTags() as it will reload tags from the
+		// database, instead of saving the set of tags we've made changes to
 		$query = $PDO->prepare('insert topic_tags set topic_id=?,tag_id=?');
 		foreach ($this->tags as $tag)
 		{

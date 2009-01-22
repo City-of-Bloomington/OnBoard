@@ -41,8 +41,8 @@ class Committee extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 		}
 	}
 
@@ -52,7 +52,7 @@ class Committee extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->name) { throw new Exception('missingName'); }
 	}
 
@@ -73,9 +73,9 @@ class Committee extends ActiveRecord
 		$fields['website'] = $this->website ? $this->website : null;
 		$fields['description'] = $this->description ? $this->description : null;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -108,9 +108,9 @@ class Committee extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getName() { return $this->name; }
 	public function getStatutoryName() { return $this->statutoryName; }
@@ -127,9 +127,9 @@ class Committee extends ActiveRecord
 		else return $this->dateFormed;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setName($string) { $this->name = trim($string); }
 	public function setStatutoryName($string) { $this->statutoryName = trim($string); }
 	public function setStatuteReference($string) { $this->statuteReference = trim($string); }
@@ -147,10 +147,10 @@ class Committee extends ActiveRecord
 	}
 
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	/**
 	 * @return SeatList
 	 */

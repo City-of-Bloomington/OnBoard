@@ -5,7 +5,7 @@ class AppointerUnitTest extends PHPUnit_Framework_TestCase
 {
     public function testValidate()
     {
-    	# Name should be the only required field
+    	// Name should be the only required field
     	$appointer = new Appointer();
     	try
     	{
@@ -14,7 +14,7 @@ class AppointerUnitTest extends PHPUnit_Framework_TestCase
     	}
     	catch (Exception $e)
     	{
-			# Success
+			// Success
     	}
 
     	$appointer->setName('Test Appointer');

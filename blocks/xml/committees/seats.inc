@@ -18,9 +18,9 @@
 			<maxCurrentMembers>{$seat->getMaxCurrentMembers()}</maxCurrentMembers>
 			<members>
 		";
-			#--------------------------------------------------------
-			# Show all the members
-			#--------------------------------------------------------
+			//--------------------------------------------------------
+			// Show all the members
+			//--------------------------------------------------------
 			$members = array();
 			$c = 0;
 			foreach ($seat->getCurrentMembers() as $member)

@@ -55,9 +55,9 @@ class PhoneNumberList extends PDOResultIterator
 		}
 
 
-		# Finding on fields from other tables required joining those tables.
-		# You can add fields from other tables to $options by adding the join SQL
-		# to $this->joins here
+		// Finding on fields from other tables required joining those tables.
+		// You can add fields from other tables to $options by adding the join SQL
+		// to $this->joins here
 
 		$this->populateList($options,$parameters);
 	}

@@ -36,8 +36,8 @@ class Member extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->term_start = time();
 		}
 	}
@@ -48,15 +48,15 @@ class Member extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->seat_id || !$this->user_id) { throw new Exception('missingRequiredFields'); }
 		if (!$this->term_start) { $this->term_start = time(); }
 
-		# Make sure this member does not exceed the maxCurrentMembers for the seat
+		// Make sure this member does not exceed the maxCurrentMembers for the seat
 		if ( $this->term_start <= time() &&
 			 (!$this->term_end || $this->term_end >= time()) )
 		{
-			# The member we're adding is current, make sure there's room
+			// The member we're adding is current, make sure there's room
 			$count = count($this->getSeat()->getCurrentMembers());
 			if (!$this->id) { $count++; }
 			if ($count > $this->getSeat()->getMaxCurrentMembers())
@@ -81,9 +81,9 @@ class Member extends ActiveRecord
 		$fields['term_start'] = $this->term_start ? date('Y-m-d',$this->term_start) : date('Y-m-d');
 		$fields['term_end'] = $this->term_end ? date('Y-m-d',$this->term_end) : null;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -130,9 +130,9 @@ class Member extends ActiveRecord
 		}
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getSeat_id() { return $this->seat_id; }
 	public function getUser_id() { return $this->user_id; }
@@ -177,9 +177,9 @@ class Member extends ActiveRecord
 		else return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setSeat_id($int) { $this->seat = new Seat($int); $this->seat_id = $int; }
 	public function setUser_id($int) { $this->user = new User($int); $this->user_id = $int; }
 	public function setSeat($seat) { $this->seat_id = $seat->getId(); $this->seat = $seat; }
@@ -199,10 +199,10 @@ class Member extends ActiveRecord
 		else { $this->term_end = strtotime($date); }
 	}
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function getFirstname() { return $this->getUser()->getFirstname(); }
 	public function getLastname() { return $this->getUser()->getLastname(); }
 

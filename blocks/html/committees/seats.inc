@@ -36,9 +36,9 @@ if (isset($this->committee) && $userIsAdmin)
 			$title = View::escape($seat->getTitle());
 			$appointer = View::escape($seat->getAppointer());
 
-			#--------------------------------------------------------
-			# Show all the members
-			#--------------------------------------------------------
+			//--------------------------------------------------------
+			// Show all the members
+			//--------------------------------------------------------
 			$members = array();
 			$c = 0;
 			foreach ($seat->getCurrentMembers() as $member)
@@ -55,9 +55,9 @@ if (isset($this->committee) && $userIsAdmin)
 				</tr>
 				";
 			}
-			#--------------------------------------------------------
-			# Show all the vacancies
-			#--------------------------------------------------------
+			//--------------------------------------------------------
+			// Show all the vacancies
+			//--------------------------------------------------------
 			for($c; $c<$seat->getMaxCurrentMembers(); $c++)
 			{
 				echo "

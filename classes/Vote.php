@@ -35,8 +35,8 @@ class Vote extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->date = time();
 		}
 	}
@@ -46,7 +46,7 @@ class Vote extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->voteType_id || !$this->topic_id) { throw new Exception('missingRequiredFields'); }
 
 		if (!$this->date) { $this->date = time(); }
@@ -66,9 +66,9 @@ class Vote extends ActiveRecord
 		$fields['voteType_id'] = $this->voteType_id;
 		$fields['topic_id'] = $this->topic_id;
 		$fields['outcome'] = $this->outcome ? $this->outcome : null;
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -101,9 +101,9 @@ class Vote extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getOutcome() { return $this->outcome; }
 	public function getVoteType_id() { return $this->voteType_id; }
@@ -139,9 +139,9 @@ class Vote extends ActiveRecord
 		else return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setOutcome($string) { $this->outcome = trim($string); }
 	public function setDate($date)
 	{
@@ -156,10 +156,10 @@ class Vote extends ActiveRecord
 	public function setTopic($topic) { $this->topic_id = $topic->getId(); $this->topic = $topic; }
 
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function __toString(){
 		return $this->getVoteType().' '.$this->getDate('n/j/Y');
 	}

@@ -31,8 +31,8 @@ class VotingRecord extends ActiveRecord
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 			$this->memberVote = 'absent';
 		}
 	}
@@ -43,7 +43,7 @@ class VotingRecord extends ActiveRecord
 	 */
 	public function validate()
 	{
-		# Check for required fields here.  Throw an exception if anything is missing.
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->member_id || !$this->vote_id)
 		{
 			throw new Exception('missingRequiredFields');
@@ -65,9 +65,9 @@ class VotingRecord extends ActiveRecord
 		$fields['vote_id'] = $this->vote_id;
 		$fields['memberVote'] = $this->memberVote;
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -100,9 +100,9 @@ class VotingRecord extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->id; }
 	public function getMember_id() { return $this->member_id; }
 	public function getVote_id() { return $this->vote_id; }
@@ -128,9 +128,9 @@ class VotingRecord extends ActiveRecord
 		else return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setMember_id($int) { $this->member = new Member($int); $this->member_id = $int; }
 	public function setVote_id($int) { $this->vote = new Vote($int); $this->vote_id = $int; }
 	public function setMemberVote($string) { $this->memberVote = trim($string); }
@@ -144,10 +144,10 @@ class VotingRecord extends ActiveRecord
 		return $topic->getCommittee_id();
 	}
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	public function getDate($format=null)
 	{
 		return $this->getVote()->getDate($format);

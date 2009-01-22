@@ -8,9 +8,9 @@
  */
 verifyUser(array('Administrator','Clerk'));
 
-#--------------------------------------------------------------------
-# Load all the data we need from the database
-#--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// Load all the data we need from the database
+//--------------------------------------------------------------------
 $seat = new Seat($_REQUEST['seat_id']);
 if (isset($_REQUEST['user_id']))
 {
@@ -18,9 +18,9 @@ if (isset($_REQUEST['user_id']))
 	catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }
 
-#--------------------------------------------------------------------
-# Handle any user-posted data to create the new member
-#--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// Handle any user-posted data to create the new member
+//--------------------------------------------------------------------
 if (isset($_POST['member']))
 {
 	$member = new Member();
@@ -33,11 +33,11 @@ if (isset($_POST['member']))
 		$member->$set($value);
 	}
 
-	# Both clerk and admin can edit these fields
+	// Both clerk and admin can edit these fields
 	$fields = array('gender','firstname','lastname','email','address','city',
 					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
 
-	# Set all the fields they're allowed to edit
+	// Set all the fields they're allowed to edit
 	foreach ($fields as $field)
 	{
 		if (isset($_POST['user'][$field]))
@@ -57,9 +57,9 @@ if (isset($_POST['member']))
 	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
 }
 
-#--------------------------------------------------------------------
-# Render the web page
-#--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// Render the web page
+//--------------------------------------------------------------------
 $template = new Template();
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$seat->getCommittee()));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));

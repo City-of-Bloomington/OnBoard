@@ -11,11 +11,11 @@ $user = new User($_REQUEST['user_id']);
 
 if (isset($_POST['user']))
 {
-	# Both clerk and admin can edit these fields
+	// Both clerk and admin can edit these fields
 	$fields = array('gender','firstname','lastname','email','address','city',
 					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
 
-	# Only the Administrator can edit these fields
+	// Only the Administrator can edit these fields
 	if (userHasRole('Administrator'))
 	{
 		$fields[] = 'authenticationMethod';
@@ -24,7 +24,7 @@ if (isset($_POST['user']))
 		$fields[] = 'roles';
 	}
 
-	# Set all the fields they're allowed to edit
+	// Set all the fields they're allowed to edit
 	foreach ($fields as $field)
 	{
 		if ($field == 'roles')

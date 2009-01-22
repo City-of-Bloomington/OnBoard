@@ -24,7 +24,7 @@ class User extends SystemUser
 
 	private $race;
 	private $roles = array();
-	private $newPassword; # the User's new password, unencrypted
+	private $newPassword; // the User's new password, unencrypted
 	private $phoneNumbers = array();
 	private $privateFields = array();
 
@@ -34,7 +34,7 @@ class User extends SystemUser
 		{
 			$PDO = Database::getConnection();
 
-			# Load an existing user
+			// Load an existing user
 			if (ctype_digit($id)) { $sql = 'select * from users where id=?'; }
 			else { $sql = 'select * from users where username=?'; }
 
@@ -47,12 +47,12 @@ class User extends SystemUser
 			{
 				if ($value)
 				{
-					# Birthdates must be stored internally as timestamps
-					#
-					# MySQL cannot handle timestamps prior to 1970
-					# PHP supports negative timestamps, which go back to 1901
-					# For early dates, we need to select the dates as strings
-					# and convert them to timestamps in PHP
+					// Birthdates must be stored internally as timestamps
+					//
+					// MySQL cannot handle timestamps prior to 1970
+					// PHP supports negative timestamps, which go back to 1901
+					// For early dates, we need to select the dates as strings
+					// and convert them to timestamps in PHP
 					if ($field=='birthdate' && $value!='0000-00-00')
 					{
 						$this->birthdate = strtotime($value);
@@ -63,8 +63,8 @@ class User extends SystemUser
 		}
 		else
 		{
-			# This is where the code goes to generate a new, empty instance.
-			# Set any default values for properties that need it here
+			// This is where the code goes to generate a new, empty instance.
+			// Set any default values for properties that need it here
 		}
 	}
 
@@ -82,7 +82,7 @@ class User extends SystemUser
 
 		$fields = array();
 		$fields['username'] = $this->username ? $this->username : null;
-		# Passwords should not be updated by default.  Use the savePassword() function
+		// Passwords should not be updated by default.  Use the savePassword() function
 		if ($this->authenticationMethod) { $fields['authenticationMethod'] = $this->authenticationMethod; }
 		$fields['firstname'] = $this->firstname;
 		$fields['lastname'] = $this->lastname;
@@ -94,11 +94,11 @@ class User extends SystemUser
 		$fields['gender'] = $this->gender ? $this->gender : null;
 		$fields['race_id'] = $this->race_id ? $this->race_id : null;
 		$fields['birthdate'] = $this->birthdate ? date('Y-m-d',$this->birthdate) : null;
-		# Timestamp should be left alone, let the database set it automatically
+		// Timestamp should be left alone, let the database set it automatically
 
-		# Split the fields up into a preparedFields array and a values array.
-		# PDO->execute cannot take an associative array for values, so we have
-		# to strip out the keys from $fields
+		// Split the fields up into a preparedFields array and a values array.
+		// PDO->execute cannot take an associative array for values, so we have
+		// to strip out the keys from $fields
 		$preparedFields = array();
 		foreach ($fields as $key=>$value)
 		{
@@ -107,11 +107,11 @@ class User extends SystemUser
 		}
 		$preparedFields = implode(",",$preparedFields);
 
-		# Do the database calls
+		// Do the database calls
 		if ($this->id) { $this->update($values,$preparedFields); }
 		else { $this->insert($values,$preparedFields); }
 
-		# Save the password only if it's changed
+		// Save the password only if it's changed
 		if ($this->passwordHasChanged()) { $this->savePassword(); }
 
 		$this->updateRoles();
@@ -190,9 +190,9 @@ class User extends SystemUser
 		}
 	}
 
-	#----------------------------------------------------------------
-	# Generic Getters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Getters
+	//----------------------------------------------------------------
 	public function getId() { return $this->isGettable('id') ? $this->id : null; }
 	public function getUsername() { return $this->isGettable('username') ? $this->username : ''; }
 	public function getAuthenticationMethod() { return $this->isGettable('authenticationMethod') ? $this->authenticationMethod : null; }
@@ -231,9 +231,9 @@ class User extends SystemUser
 		return null;
 	}
 
-	#----------------------------------------------------------------
-	# Generic Setters
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Generic Setters
+	//----------------------------------------------------------------
 	public function setUsername($string) { $this->username = trim($string); }
 	/**
 	 * Takes a user-given password and converts it to an MD5 Hash
@@ -241,7 +241,7 @@ class User extends SystemUser
 	 */
 	public function setPassword($string)
 	{
-		# Save the user given password, so we can update it externally, if needed
+		// Save the user given password, so we can update it externally, if needed
 		$this->newPassword = trim($string);
 		$this->password = md5(trim($string));
 	}
@@ -280,10 +280,10 @@ class User extends SystemUser
 		else { $this->birthdate = strtotime($date); }
 	}
 
-	#----------------------------------------------------------------
-	# Custom Functions
-	# We recommend adding all your custom code down here at the bottom
-	#----------------------------------------------------------------
+	//----------------------------------------------------------------
+	// Custom Functions
+	// We recommend adding all your custom code down here at the bottom
+	//----------------------------------------------------------------
 	/**
 	 * @return string
 	 */
@@ -330,9 +330,9 @@ class User extends SystemUser
 				$this->roles[$role->getId()] = $role->getName();
 			}
 		}
-		# If this user is already in the database, and they set
-		# the roles to be empty, we must wipe them out immediately
-		# Otherwise, they will be reset when we go to save
+		// If this user is already in the database, and they set
+		// the roles to be empty, we must wipe them out immediately
+		// Otherwise, they will be reset when we go to save
 		else
 		{
 			if ($this->id)
@@ -392,7 +392,7 @@ class User extends SystemUser
 	{
 		$PDO = Database::getConnection();
 
-		# Passwords in the class should already be MD5 hashed
+		// Passwords in the class should already be MD5 hashed
 		$query = $PDO->prepare('update users set password=? where id=?');
 		$query->execute(array($this->password,$this->id));
 	}

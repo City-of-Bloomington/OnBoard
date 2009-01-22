@@ -10,14 +10,14 @@ verifyUser(array('Administrator','Clerk'));
 $seat = new Seat($_REQUEST['seat_id']);
 try
 {
-	# User Posted a new Requirement
+	// User Posted a new Requirement
 	if (isset($_POST['text']) && trim($_POST['text']))
 	{
 		$requirement = new Requirement();
 		$requirement->setText($_POST['text']);
 		$requirement->save();
 	}
-	# User selected an existing Requirement
+	// User selected an existing Requirement
 	elseif (isset($_POST['requirement_id']))
 	{
 		$requirement = new Requirement($_POST['requirement_id']);

@@ -34,9 +34,9 @@ class RequirementList extends PDOResultIterator
 		}
 
 
-		# Finding on fields from other tables required joining those tables.
-		# You can add fields from other tables to $options by adding the join SQL
-		# to $this->joins here
+		// Finding on fields from other tables required joining those tables.
+		// You can add fields from other tables to $options by adding the join SQL
+		// to $this->joins here
 		if (isset($fields['seat_id']))
 		{
 			$this->joins.= ' left join seat_requirements on requirements.id=requirement_id';
