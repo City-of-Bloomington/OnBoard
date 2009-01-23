@@ -5,15 +5,18 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET committee_id
  */
+$committee = new Committee($_GET['committee_id']);
+
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
 
-$committee = new Committee($_GET['committee_id']);
-$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));
+if ($template->outputFormat == 'html') {
+	$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));
+}
+
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 
-if ($template->outputFormat == 'html')
-{
+if ($template->outputFormat == 'html') {
 	$seats = new Block('committees/seats.inc');
 	$seats->committee = $committee;
 	$template->blocks[] = $seats;
