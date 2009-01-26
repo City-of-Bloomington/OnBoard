@@ -44,6 +44,14 @@ class TagList extends PDOResultIterator
 			$parameters[':topic_id'] = $fields['topic_id'];
 		}
 
+		if (isset($fields['topicList'])) {
+			$topics = $fields['topicList']->getSQL();
+
+			$this->joins.= ' join topic_tags linked on tags.id=linked.tag_id';
+			$this->joins.= " join ($topics)related_topics on linked.topic_id=related_topics.id";
+			$parameters = array_merge($parameters,$fields['topicList']->getParameters());
+		}
+
 		$this->populateList($options,$parameters);
 	}
 

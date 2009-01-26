@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param TopicList $this->topicList
  * @param Committee $this->committee (optional)
+ * @param Tag $this->tag
  */
 $userCanEdit = userHasRole(array('Administrator','Clerk'));
 
@@ -17,9 +18,10 @@ if (isset($this->committee) && $userCanEdit)
 
 if (count($this->topicList) || $userCanEdit)
 {
+	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
 	echo "
 	<div class=\"interfaceBox\">
-		<h1>$addTopicButton Legislation</h1>
+		<h1>$addTopicButton $title Legislation</h1>
 		<table>
 		<tr><th></th>
 			<th>Date</th>

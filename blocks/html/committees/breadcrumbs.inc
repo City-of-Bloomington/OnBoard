@@ -8,7 +8,7 @@
 ?>
 <div class="breadcrumbs">
 	<ul>
-		<li><a href="<?php echo BASE_UURL; ?>">Home</a></li>
+		<li><a href="<?php echo BASE_URL; ?>">Home</a></li>
 		<li><a href="<?php echo BASE_URL; ?>/committees">Committees</a></li>
 		<?php
 			if (isset($this->committee))

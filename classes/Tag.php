@@ -2,6 +2,7 @@
 /**
  * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 class Tag extends ActiveRecord
 {
@@ -11,21 +12,27 @@ class Tag extends ActiveRecord
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
+	 *
+	 * @param int $id
 	 */
 	public function __construct($id=null)
 	{
-		if ($id)
-		{
-			$PDO = Database::getConnection();
-			$query = $PDO->prepare('select * from tags where id=?');
+		if ($id) {
+			$pdo = Database::getConnection();
+			$query = $pdo->prepare('select * from tags where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('tags/unknownTag'); }
-			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			if (!count($result)) {
+				throw new Exception('tags/unknownTag');
+			}
+			foreach ($result[0] as $field=>$value) {
+				if ($value) {
+					$this->$field = $value;
+				}
+			}
 		}
-		else
-		{
+		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 		}
@@ -33,12 +40,14 @@ class Tag extends ActiveRecord
 
 	/**
 	 * Throws an exception if anything's wrong
+	 *
 	 * @throws Exception $e
 	 */
 	public function validate()
 	{
-		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->name) { throw new Exception('missingName'); }
+		if (!$this->name) {
+			throw new Exception('missingName');
+		}
 	}
 
 	/**
@@ -57,47 +66,49 @@ class Tag extends ActiveRecord
 		// PDO->execute cannot take an associative array for values, so we have
 		// to strip out the keys from $fields
 		$preparedFields = array();
-		foreach ($fields as $key=>$value)
-		{
+		foreach ($fields as $key=>$value) {
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
 		}
 		$preparedFields = implode(",",$preparedFields);
 
 
-		if ($this->id) { $this->update($values,$preparedFields); }
-		else { $this->insert($values,$preparedFields); }
+		if ($this->id) {
+			$this->update($values,$preparedFields);
+		}
+		else {
+			$this->insert($values,$preparedFields);
+		}
 	}
 
 	private function update($values,$preparedFields)
 	{
-		$PDO = Database::getConnection();
+		$pdo = Database::getConnection();
 
 		$sql = "update tags set $preparedFields where id={$this->id}";
-		$query = $PDO->prepare($sql);
+		$query = $pdo->prepare($sql);
 		$query->execute($values);
 	}
 
 	private function insert($values,$preparedFields)
 	{
-		$PDO = Database::getConnection();
+		$pdo = Database::getConnection();
 
 		$sql = "insert tags set $preparedFields";
-		$query = $PDO->prepare($sql);
+		$query = $pdo->prepare($sql);
 		$query->execute($values);
-		$this->id = $PDO->lastInsertID();
+		$this->id = $pdo->lastInsertID();
 	}
 
 	public function delete()
 	{
-		if ($this->id)
-		{
-			$PDO = Database::getConnection();
+		if ($this->id) {
+			$pdo = Database::getConnection();
 
-			$query = $PDO->prepare('delete from topic_tags where tag_id=?');
+			$query = $pdo->prepare('delete from topic_tags where tag_id=?');
 			$query->execute(array($this->id));
 
-			$query = $PDO->prepare('delete from tags where id=?');
+			$query = $pdo->prepare('delete from tags where id=?');
 			$query->execute(array($this->id));
 		}
 	}
@@ -105,13 +116,31 @@ class Tag extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getName() { return $this->name; }
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
-	public function setName($string) { $this->name = trim($string); }
+	/**
+	 * @param string $string
+	 */
+	public function setName($string)
+	{
+		$this->name = trim($string);
+	}
 
 
 
@@ -119,8 +148,17 @@ class Tag extends ActiveRecord
 	// Custom Functions
 	// We recommend adding all your custom code down here at the bottom
 	//----------------------------------------------------------------
-	public function __toString() { return $this->name; }
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->name;
+	}
 
+	/**
+	 * @return string
+	 */
 	public function getURL()
 	{
 		return BASE_URL.'/tags/viewTag.php?tag_id='.$this->id;
@@ -132,5 +170,26 @@ class Tag extends ActiveRecord
 	public function getTopics()
 	{
 		return new TopicList(array('tag_id'=>$this->id));
+	}
+
+	/**
+	 * Returns the count of how many Topics use this tag
+	 * If you pass in a topicList, the popularity determined for the given set of topics
+	 *
+	 * @param TopicList $topicList An optional list of topics to look in
+	 * @return int
+	 */
+	public function getPopularity(TopicList $topicList=null)
+	{
+		if ($this->id) {
+			$PDO = Database::getConnection();
+			$sql = "select count(*) as popularity from topic_tags
+					where tag_id=? group by tag_id";
+
+			$query = $PDO->prepare($sql);
+			$query->execute(array($this->id));
+			$result = $query->fetchAll();
+			return $result[0]['popularity'];
+		}
 	}
 }

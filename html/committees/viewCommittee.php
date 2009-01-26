@@ -21,6 +21,10 @@ if ($template->outputFormat == 'html') {
 	$seats->committee = $committee;
 	$template->blocks[] = $seats;
 
+	$tagCloud = new Block('topics/tagCloud.inc');
+	$tagCloud->topicList = $committee->getTopics();
+	$template->blocks[] = $tagCloud;
+
 	$topics = new Block('topics/topicList.inc');
 	$topics->topicList = $committee->getTopics();
 	$topics->committee = $committee;
