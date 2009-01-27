@@ -82,7 +82,7 @@ define('LDAP_PASSWORD_ATTRIBUTE','userpassword');
 /**
  * Import global functions that we use for many applications we write
  */
-include FRAMEWORK.'/globalFunctions.inc';
+include FRAMEWORK.'/globalFunctions.php';
 
 /**
  * Session Startup

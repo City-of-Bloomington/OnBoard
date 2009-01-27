@@ -25,6 +25,10 @@ if ($template->outputFormat == 'html') {
 	$tagCloud->topicList = $committee->getTopics();
 	$template->blocks[] = $tagCloud;
 
+	$votingComparison = new Block('topics/votingRecordComparison.inc');
+	$votingComparison->topicList = $committee->getTopics();
+	$template->blocks[] = $votingComparison;
+
 	$topics = new Block('topics/topicList.inc');
 	$topics->topicList = $committee->getTopics();
 	$topics->committee = $committee;

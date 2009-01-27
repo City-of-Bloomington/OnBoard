@@ -23,7 +23,7 @@ create table users (
 	city varchar(128),
 	zipcode varchar(15),
 	about text,
-	gender enum('male','female');
+	gender enum('male','female'),
 	race_id int unsigned,
 	birthdate date,
 	timestamp timestamp on update CURRENT_TIMESTAMP,

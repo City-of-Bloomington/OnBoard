@@ -23,6 +23,11 @@ else {
 
 $template = new Template();
 
+$votingComparison = new Block('topics/votingRecordComparison.inc');
+$votingComparison->topicList = $topicList;
+$template->blocks[] = $votingComparison;
+
+
 $list = new Block('topics/topicList.inc');
 $list->topicList = $topicList;
 if (isset($tag)) {
