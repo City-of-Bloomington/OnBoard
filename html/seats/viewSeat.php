@@ -6,9 +6,12 @@
  * @param GET seat_id
  */
 $seat = new Seat($_GET['seat_id']);
+$committee = $seat->getCommittee();
 
 $template = new Template();
-$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$seat->getCommittee()));
+$template->title = $committee->getName().' - '.$seat->getName();
+
+$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));
 
 $members = new Block('members/memberList.inc');

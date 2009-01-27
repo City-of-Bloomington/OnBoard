@@ -32,5 +32,12 @@
 		@import url('<?php echo BASE_URL; ?>/build/autocomplete/assets/skins/sam/autocomplete.css');
 	</style>
 
-	<title>Boards &amp; Commissions - City of Bloomington, Indiana</title>
+	<title>
+	<?php
+		if (!$this->title) {
+			$_SESSION['errorMessages'][] = new Exception('missingTitle');
+		}
+		echo View::escape($this->title);
+	?>
+	</title>
 </head>

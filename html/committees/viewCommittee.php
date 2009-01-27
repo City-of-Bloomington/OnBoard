@@ -9,6 +9,7 @@ $committee = new Committee($_GET['committee_id']);
 
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
+$template->title = $committee->getName();
 
 if ($template->outputFormat == 'html') {
 	$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));

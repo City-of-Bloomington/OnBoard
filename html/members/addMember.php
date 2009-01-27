@@ -62,6 +62,7 @@ if (isset($_POST['member'])) {
 // Render the web page
 //--------------------------------------------------------------------
 $template = new Template();
+$template->title = 'Add Member';
 
 $committeeInfo = new Block('committees/committeeInfo.inc');
 $committeeInfo->committee = $seat->getCommittee();

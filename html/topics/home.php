@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param GET tag_id (optional)
  */
@@ -22,6 +22,16 @@ else {
 
 
 $template = new Template();
+if (isset($tag)) {
+	$template->title = $tag->getName();
+}
+$template->title.= ' Legislation';
+
+$breadcrumbs = new Block('topics/breadcrumbs.inc');
+if (isset($tag)) {
+	$breadcrumbs->tag = $tag;
+}
+$template->blocks[] = $breadcrumbs;
 
 $votingComparison = new Block('topics/votingRecordComparison.inc');
 $votingComparison->topicList = $topicList;

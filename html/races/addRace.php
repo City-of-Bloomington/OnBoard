@@ -6,24 +6,24 @@
  */
 verifyUser('Administrator');
 
-if (isset($_POST['race']))
-{
+if (isset($_POST['race'])) {
 	$race = new Race();
-	foreach ($_POST['race'] as $field=>$value)
-	{
+	foreach ($_POST['race'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
 		$race->$set($value);
 	}
 
-	try
-	{
+	try {
 		$race->save();
-		Header('Location: '.BASE_URL.'/races');
+		header('Location: '.BASE_URL.'/races');
 		exit();
 	}
-	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
+	catch(Exception $e) {
+		$_SESSION['errorMessages'][] = $e;
+	}
 }
 
 $template = new Template();
+$template->title = 'Add Race';
 $template->blocks[] = new Block('races/addRaceForm.inc');
 echo $template->render();

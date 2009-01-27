@@ -9,8 +9,10 @@ $xAxisMembers = $this->topicList->getMembers();
 $yAxisMembers = $this->topicList->getMembers();
 if (count($xAxisMembers)) {
 	echo "
-	<table>
-		<tr><th></th>
+	<div class=\"interfaceBox\">
+		<h1>Voting Comparison</h1>
+		<table>
+			<tr><th></th>
 	";
 		foreach ($xAxisMembers as $xMember) {
 			$name = View::escape($xMember->getLastname());
@@ -38,6 +40,7 @@ if (count($xAxisMembers)) {
 			echo "</tr>";
 		}
 	echo "
-	</table>
+		</table>
+	</div>
 	";
 }

@@ -25,5 +25,6 @@ if (isset($_POST['committee']))
 }
 
 $template = new Template();
+$template->title = "Edit ".$committee->getName();
 $template->blocks[] = new Block('committees/updateCommitteeForm.inc',array('committee'=>$committee));
 echo $template->render();

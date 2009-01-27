@@ -8,4 +8,4 @@ verifyUser(array('Administrator','Clerk'));
 
 $requirement = new Requirement($_GET['requirement_id']);
 $requirement->delete();
-Header('Location: '.BASE_URL.'/requirements');
+header('Location: '.BASE_URL.'/requirements');

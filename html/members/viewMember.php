@@ -5,10 +5,12 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET member_id
  */
+$member = new Member($_GET['member_id']);
+
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
+$template->title = $member->getFullname();
 
-$member = new Member($_GET['member_id']);
 $template->blocks[] = new Block('members/personalInfo.inc',array('member'=>$member));
 
 echo $template->render();

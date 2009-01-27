@@ -10,5 +10,6 @@ $raceList = new RaceList();
 $raceList->find();
 
 $template = new Template();
+$template->title = 'Races';
 $template->blocks[] = new Block('races/raceList.inc',array('raceList'=>$raceList));
 echo $template->render();

@@ -5,6 +5,7 @@
  */
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
+$template->title = 'Boards &amp; Commissions';
 
 $template->blocks[] = new Block('committees/breadcrumbs.inc');
 

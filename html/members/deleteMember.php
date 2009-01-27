@@ -12,6 +12,4 @@ $seat = $member->getSeat();
 
 $member->delete();
 
-Header('Location: '.$seat->getURL());
-
-
+header('Location: '.$seat->getURL());

@@ -8,10 +8,8 @@
 verifyuser(array('Administrator','Clerk'));
 
 $member = new Member($_REQUEST['member_id']);
-if (isset($_POST['member']))
-{
-	foreach ($_POST['member'] as $field=>$value)
-	{
+if (isset($_POST['member'])) {
+	foreach ($_POST['member'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
 		$member->$set($value);
 	}
@@ -24,27 +22,28 @@ if (isset($_POST['member']))
 					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
 
 	// Set all the fields they're allowed to edit
-	foreach ($fields as $field)
-	{
-		if (isset($_POST['user'][$field]))
-		{
+	foreach ($fields as $field) {
+		if (isset($_POST['user'][$field])) {
 			$set = 'set'.ucfirst($field);
 			$user->$set($_POST['user'][$field]);
 		}
 	}
 
-	try
-	{
+	try {
 		$user->save();
 		$member->save();
-		Header('Location: '.$member->getSeat()->getURL());
+		header('Location: '.$member->getSeat()->getURL());
 		exit();
 	}
-	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
+	catch(Exception $e) {
+		$_SESSION['errorMessages'][] = $e;
+	}
 }
 
 $template = new Template();
-$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$member->getSeat()->getCommittee()));
+$template->title = 'Edit Member';
+$template->blocks[] = new Block('committees/committeeInfo.inc',
+								array('committee'=>$member->getSeat()->getCommittee()));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$member->getSeat()));
 $template->blocks[] = new Block('members/updateMemberForm.inc',array('member'=>$member));
 echo $template->render();

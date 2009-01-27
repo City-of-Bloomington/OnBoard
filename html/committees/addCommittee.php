@@ -24,5 +24,6 @@ if (isset($_POST['committee']))
 }
 
 $template = new Template();
+$template->title = 'Add a new committee';
 $template->blocks[] = new Block('committees/addCommitteeForm.inc');
 echo $template->render();
