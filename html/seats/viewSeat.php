@@ -9,7 +9,7 @@ $seat = new Seat($_GET['seat_id']);
 $committee = $seat->getCommittee();
 
 $template = new Template();
-$template->title = $committee->getName().' - '.$seat->getName();
+$template->title = $committee->getName().' - '.$seat->getTitle();
 
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));
