@@ -15,7 +15,8 @@ if ($template->outputFormat == 'html') {
 	$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));
 }
 
-$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
+$template->blocks['panel-one'][] = new Block('committees/committeeInfo.inc',
+											 array('committee'=>$committee));
 
 if ($template->outputFormat == 'html') {
 	$seats = new Block('committees/seats.inc');
