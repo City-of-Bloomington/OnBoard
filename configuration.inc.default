@@ -86,5 +86,10 @@ include FRAMEWORK.'/globalFunctions.php';
 
 /**
  * Session Startup
+ * Don't start a session for CLI usage.
+ * We only want sessions when PHP code is executed from the webserver
  */
-session_start();
+if (!defined('STDIN')) {
+	ini_set('session.save_path',APPLICATION_HOME.'/data/sessions');
+	session_start();
+}

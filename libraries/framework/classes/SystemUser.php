@@ -71,7 +71,6 @@ abstract class SystemUser extends ActiveRecord
 
 		$_SESSION['USER'] = $this;
 		$_SESSION['IP_ADDRESS'] = $_SERVER['REMOTE_ADDR'];
-		$_SESSION['APPLICATION_NAME'] = APPLICATION_NAME;
 	}
 
 	/**

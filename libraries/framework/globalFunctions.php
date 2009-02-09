@@ -133,11 +133,6 @@ function verifyUser($roles=null)
 		exit();
 	}
 
-	// Handle sessions from other applications
-	if ($_SESSION['APPLICATION_NAME'] != APPLICATION_NAME) {
-		$_SESSION['USER']->startNewSession();
-	}
-
 	// Check their roles against the required roles for the page
 	if ($roles) {
 		if (!$_SESSION['USER']->hasRole($roles)) {
