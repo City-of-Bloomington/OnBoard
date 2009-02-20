@@ -2,11 +2,6 @@
 <?php
 	echo $this->includeBlocks('panel-one');
 
-	if (!isset($_SESSION['USER'])) {
-		$block = new Block('loginForm.inc');
-		echo $block->render();
-	}
-
 	if (userHasRole('Clerk')) {
 		echo "
 		<div>

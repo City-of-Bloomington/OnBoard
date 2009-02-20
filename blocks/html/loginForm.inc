@@ -1,6 +1,6 @@
 <div id="login">
 	<h1>Login</h1>
-	<form method="post" action="<?php echo BASE_URL; ?>/login.php">
+	<form method="post" action="<?php echo BASE_URL; ?>/login/login.php">
 	<fieldset><legend>Login</legend>
 		<table>
 		<tr><td><label for="username">User:</label></td>
