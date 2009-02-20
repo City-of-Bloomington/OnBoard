@@ -35,10 +35,30 @@ if ($template->outputFormat == 'html') {
 	$votingComparison->topicList = $committee->getTopics();
 	$template->blocks[] = $votingComparison;
 
-	$topics = new Block('topics/topicList.inc');
-	$topics->topicList = $committee->getTopics();
-	$topics->committee = $committee;
-	$template->blocks[] = $topics;
+
+	$topicList = $committee->getTopics();
+	if (count($topicList) > 15) {
+		$pages = new Paginator($topicList,15);
+		$page = (isset($_GET['page']) && $_GET['page'])
+				? (int)$_GET['page']
+				: 0;
+		if (!$pages->offsetExists($page)) {
+			$page = 0;
+		}
+		$topicList = new LimitIterator($topicList,$pages[$page],$pages->getPageSize());
+	}
+	$template->blocks[] = new Block('topics/topicList.inc',
+									array('topicList'=>$topicList,'committee'=>$committee));
+
+	if (isset($pages)) {
+		$pageNavigation = new Block('pageNavigation.inc');
+		$pageNavigation->page = $page;
+		$pageNavigation->pages = $pages;
+		$pageNavigation->url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+
+		$template->blocks[] = $pageNavigation;
+	}
+
 }
 
 echo $template->render();
