@@ -15,6 +15,8 @@ if ($template->outputFormat == 'html') {
 	$template->blocks[] = new Block('committees/breadcrumbs.inc',array('committee'=>$committee));
 }
 
+$template->blocks[] = new Block('committees/committeeDescription.inc',
+								  array('committee'=>$committee));
 $template->blocks['panel-one'][] = new Block('committees/committeeInfo.inc',
 											 array('committee'=>$committee));
 
@@ -23,9 +25,11 @@ if ($template->outputFormat == 'html') {
 	$seats->committee = $committee;
 	$template->blocks[] = $seats;
 
-	$tagCloud = new Block('topics/tagCloud.inc');
-	$tagCloud->topicList = $committee->getTopics();
-	$template->blocks[] = $tagCloud;
+	$topics = $committee->getTopics();
+	if (count($topics)) {
+		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
+
+	}
 
 	$votingComparison = new Block('topics/votingRecordComparison.inc');
 	$votingComparison->topicList = $committee->getTopics();
