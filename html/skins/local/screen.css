@@ -1,9 +1,8 @@
 /* Tag Styles */
-.tags span { padding: 0px 2px; }
-.tags .p90 { font-size:250%; }
-.tags .p70 { font-size:200%; }
+.tags span { padding: 10px 2px; }
+.tags .p90 { font-size:200%; }
+.tags .p70 { font-size:180%; }
 .tags .p50 { font-size:150%; }
 .tags .p30 { font-size:125%; }
 .tags .p10 { font-size:100%; }
 .tags .p0 { font-size:80%; }
-
