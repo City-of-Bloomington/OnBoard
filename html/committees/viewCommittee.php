@@ -21,15 +21,16 @@ $template->blocks['panel-one'][] = new Block('committees/committeeInfo.inc',
 											 array('committee'=>$committee));
 
 if ($template->outputFormat == 'html') {
-	$seats = new Block('committees/seats.inc');
-	$seats->committee = $committee;
-	$template->blocks[] = $seats;
-
+	
 	$topics = $committee->getTopics();
 	if (count($topics)) {
 		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
 
 	}
+	
+	$seats = new Block('committees/seats.inc');
+	$seats->committee = $committee;
+	$template->blocks[] = $seats;
 
 	$votingComparison = new Block('topics/votingRecordComparison.inc');
 	$votingComparison->topicList = $committee->getTopics();

@@ -22,13 +22,6 @@ if (count($this->topicList) || $userCanEdit)
 	echo "
 	<div class=\"interfaceBox\">
 		<h1>$addTopicButton $title Legislation</h1>
-		<table>
-		<tr><th></th>
-			<th>Date</th>
-			<th>Description</th>
-			<th>Number</th>
-			<th>Type</th>
-		</tr>
 	";
 		foreach ($this->topicList as $topic)
 		{
@@ -45,12 +38,10 @@ if (count($this->topicList) || $userCanEdit)
 			$description = View::escape($topic->getDescription());
 			$synopsis = View::escape($topic->getSynopsis());
 			echo "
-			<tr><td>$editButton</td>
-				<td>$date</td>
-				<td>$description</td>
-				<td><a href=\"{$topic->getURL()}\">$number</a></td>
-				<td>$type</td>
-			</tr>
+			<div class=\"topic\">
+				<h3>$editButton <a href=\"{$topic->getURL()}\">$number</a> $date</h3>
+				<p>$description</p>
+			</div>
 			";
 		}
 	echo "

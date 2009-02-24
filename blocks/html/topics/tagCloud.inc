@@ -8,6 +8,7 @@
 ?>
 <div class="interfaceBox tags">
 	<h1>Tags</h1>
+	<div id="tagWall">
 	<?php
 		$maxPopularity = 0;
 		$tags = array();
@@ -37,4 +38,5 @@
 			";
 		}
 	?>
+	</div>
 </div>

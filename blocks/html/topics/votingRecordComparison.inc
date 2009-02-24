@@ -9,7 +9,7 @@ $xAxisMembers = $this->topicList->getMembers();
 $yAxisMembers = $this->topicList->getMembers();
 if (count($xAxisMembers)) {
 	echo "
-	<div class=\"interfaceBox\">
+	<div class=\"interfaceBox votingComparison\">
 		<h1>Voting Comparison</h1>
 		<table>
 			<tr><th></th>
