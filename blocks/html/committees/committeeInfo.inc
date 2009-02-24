@@ -13,17 +13,13 @@ $description = View::escape($this->committee->getDescription());
 echo "
 <h1><a href=\"{$this->committee->getURL()}\">$name</a></h1>
 <table>
-	<tr><th>Date Formed</th>
-		<td>{$this->committee->getDateFormed('n/j/Y')}</td>
-	</tr>
-	<tr><th>Statutory Name</th>
-		<td>$statutoryName</td>
-	</tr>
-	<tr><th>Statute Reference</th>
-		<td>$statuteReference</td>
-	</tr>
-	<tr><th>Website</th>
-		<td><a href=\"{$this->committee->getWebsite()}\">{$this->committee->getWebsite()}</a></td>
-	</tr>
+<tr><th>Date Formed</th>
+	<td>{$this->committee->getDateFormed('n/j/Y')}</td></tr>
+<tr><th>Statutory Name</th>
+	<td>$statutoryName</td></tr>
+<tr><th>Statute Reference</th>
+	<td>$statuteReference</td></tr>
+<tr><th>Website</th>
+	<td><a href=\"{$this->committee->getWebsite()}\">View Homepage</a></td></tr>
 </table>
 ";
