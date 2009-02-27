@@ -6,12 +6,14 @@
  * @param Committee $this->committee
  */
 $name = View::escape($this->committee->getName());
+$description = View::escape($this->committee->getDescription());
 $statutoryName = View::escape($this->committee->getStatutoryName());
 $statuteReference = View::escape($this->committee->getStatuteReference());
 $description = View::escape($this->committee->getDescription());
 
 echo "
 <h1><a href=\"{$this->committee->getURL()}\">$name</a></h1>
+<p>$description</p>
 <table>
 <tr><th>Date Formed</th>
 	<td>{$this->committee->getDateFormed('n/j/Y')}</td></tr>

@@ -11,10 +11,7 @@ $committee = $seat->getCommittee();
 $template = new Template();
 $template->title = $committee->getName().' - '.$seat->getTitle();
 
-$template->blocks['panel-one'][] = new Block('committees/committeeInfo.inc',
-										   array('committee'=>$committee));
-$template->blocks[] = new Block('committees/committeeDescription.inc',
-								array('committee'=>$committee));
+$template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));
 
 $members = new Block('members/memberList.inc');
