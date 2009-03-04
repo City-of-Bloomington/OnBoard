@@ -20,7 +20,7 @@ if (count($this->topicList) || $userCanEdit)
 {
 	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
 	echo "
-	<div class=\"interfaceBox\">
+	<div class=\"interfaceBox topicList\">
 		<h1>$addTopicButton $title Legislation</h1>
 	";
 		foreach ($this->topicList as $topic)
@@ -39,7 +39,7 @@ if (count($this->topicList) || $userCanEdit)
 			$synopsis = View::escape($topic->getSynopsis());
 			echo "
 			<div class=\"topic\">
-				<h3>$editButton <a href=\"{$topic->getURL()}\">$number</a> $date</h3>
+				<h3>$editButton <a href=\"{$topic->getURL()}\">$number</a> <span style=\"font-size:.8em; \" > $date</span></h3>
 				<p>$description</p>
 			</div>
 			";

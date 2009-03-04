@@ -11,4 +11,5 @@ $description = View::escape($this->committee->getDescription());
 echo "
 <h1><a href=\"{$this->committee->getURL()}\">$name</a></h1>
 <p>$description</p>
+
 ";

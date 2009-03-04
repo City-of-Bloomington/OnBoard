@@ -13,7 +13,7 @@ if (isset($this->committee) && $userIsAdmin)
 	$addSeatButton = "<a class=\"add button\" href=\"$url\">Add Seat</a>";
 }
 ?>
-<div class="interfaceBox seats">
+<div id="seats">
 	<h1><?php echo $addSeatButton; ?>
 		Seats
 	</h1>
