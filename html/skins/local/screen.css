@@ -8,3 +8,16 @@
 .tags .p0 { font-size:80%; }
 
 
+
+#committeeDescription { float:left; width:425px; margin:0 10px 5px 5px; }
+#committeeInfo { float:left; clear:right; }
+.seats { clear:left; float:left; margin:0px 10px 0px 2px; }
+.tags { float:left; clear:both; width:350px; border:1px solid black; background-color:grey; margin:0 15px 15px 0; }
+#tagWall { float:left; clear:left; border:1px solid black; overflow:auto; padding:2px; margin:0 10px; }
+#content-panel .votingComparison { float:left; clear:right; margin:0 10px; }
+#content-panel .legislation { float:left; clear:right; width:600px; margin:0 10px; }
+#content-panel .topic { margin:10px 0;}
+#content-panel .topic h3 { font-size:1.25em; }
+#content_panel .topic h3 .topicDate { display:inline; font-size:.8em; }
+#content_panel .councilMember { float:left; clear:left; margin:0 10px; }
+#content_panel .memberList  {float:left; clear:right; margin:0 10px; }

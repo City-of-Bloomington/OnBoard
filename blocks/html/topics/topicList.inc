@@ -20,7 +20,7 @@ if (count($this->topicList) || $userCanEdit)
 {
 	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
 	echo "
-	<div class=\"interfaceBox topicList\">
+	<div class=\"interfaceBox legislation\">
 		<h1>$addTopicButton $title Legislation</h1>
 	";
 		foreach ($this->topicList as $topic)

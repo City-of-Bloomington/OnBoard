@@ -13,7 +13,7 @@ if (isset($this->seat) && userHasRole(array('Administrator','Clerk')))
 	$addButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }
 ?>
-<div class="interfaceBox">
+<div class="interfaceBox memberList">
 	<h1><?php echo $addButton; ?>
 		Members
 	</h1>

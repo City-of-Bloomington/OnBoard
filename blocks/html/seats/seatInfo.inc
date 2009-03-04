@@ -18,7 +18,7 @@ if (userHasRole(array('Administrator','Clerk')))
 	$editRequirementsButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 }
 echo "
-<div class=\"interfaceBox\">
+<div class=\"interfaceBox councilMember\">
 	<h1>$title</h1>
 	<table>
 	<tr><th>Appointed By</th>
