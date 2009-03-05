@@ -14,7 +14,7 @@ foreach ($fields as $field)
 	$$field = View::escape($user->$get());
 }
 
-echo "<h1>$fullname</h1>";
+echo "<div id=\"personalInfo\"><h1>$fullname</h1>";
 if ($email || $address || $city || $zipcode)
 {
 	echo "<table>";
@@ -34,7 +34,7 @@ if ($email || $address || $city || $zipcode)
 	{
 		echo "<tr><th>Zip</th><td>$zipcode</td></tr>";
 	}
-	echo "</table>";
+	echo "</table></div>";
 }
 if ($about) { echo "<p>$about</p>"; }
 

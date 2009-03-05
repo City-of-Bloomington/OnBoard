@@ -6,7 +6,7 @@
  * @param VoteList $this->voteList
  */
 ?>
-<div class="interfaceBox">
+<div class="interfaceBox votes">
 	<h1><?php
 			if (isset($this->topic) && userHasRole(array('Administrator','Clerk')))
 			{

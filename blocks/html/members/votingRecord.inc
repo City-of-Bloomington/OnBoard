@@ -6,7 +6,7 @@
  * @param User $this->user
  */
 ?>
-<div class="interfaceBox">
+<div class="interfaceBox memberVR">
 	<h1>Voting Record for <?php echo View::escape($this->user->getFullname()); ?></h1>
 	<table>
 	<tr><th>Date</th>

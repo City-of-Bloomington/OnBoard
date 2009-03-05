@@ -6,7 +6,7 @@
  * @param MemberList $this->memberList
  */
 ?>
-<div class="interfaceBox">
+<div class="interfaceBox memberSeat">
 	<h1>Seats</h1>
 	<table>
 	<tr><th>Committee</th>

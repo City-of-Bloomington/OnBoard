@@ -19,5 +19,13 @@
 #content-panel .topic { margin:10px 0;}
 #content-panel .topic h3 { font-size:1.25em; }
 #content_panel .topic h3 .topicDate { display:inline; font-size:.8em; }
-#content_panel .councilMember { float:left; clear:left; margin:0 10px; }
-#content_panel .memberList  {float:left; clear:right; margin:0 10px; }
+.councilMember { float:left; clear:left; margin:0 10px; }
+.memberList  {float:left; clear:right; margin:0 10px; }
+.votes { float:left; clear:left; margin:0 10px; }
+.votingTable { float:left; clear:right; margin:0 10px; }
+
+#personalInfo { float:left; margin:0 10px;}
+.memberSeat {float:left; clear:right; margin:0 10px; }
+.memberVR { float:left; clear:left; margin:0 10px; width:600px; }
+.memberVoteStats { float:left; clear:left; margin:0 10px; }
+.memberVoteComparison {float:left; clear:right; margin:0 10px; }
