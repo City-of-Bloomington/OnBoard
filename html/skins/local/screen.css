@@ -16,7 +16,7 @@
 #tagWall { float:left; clear:left; border:1px solid black; overflow:auto; padding:2px; margin:0 10px; }
 #content-panel .votingComparison { float:left; clear:right; margin:0 10px; }
 #content-panel .legislation { float:left; clear:right; width:600px; margin:0 10px; }
-#content-panel .topic { margin:10px 0;}
+#content-panel .topic { margin:10px 0; border-bottom:1px solid #999999;}
 #content-panel .topic h3 { font-size:1.25em; }
 #content_panel .topic h3 .topicDate { display:inline; font-size:.8em; }
 .councilMember { float:left; clear:left; margin:0 10px; }
@@ -29,3 +29,5 @@
 .memberVR { float:left; clear:left; margin:0 10px; width:600px; }
 .memberVoteStats { float:left; clear:left; margin:0 10px; }
 .memberVoteComparison {float:left; clear:right; margin:0 10px; }
+
+.pageNavigation {clear:both; }
