@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 ?>
 <h1>Add Committee</h1>
@@ -16,16 +17,14 @@
 	<tr><td><label for="committee-dateFormed-mon">Date Formed</label></td>
 		<td><select name="committee[dateFormed][mon]" id="committee-dateFormed-mon"><option></option>
 			<?php
-				for($i=1; $i<=12; $i++)
-				{
+				for($i=1; $i<=12; $i++) {
 					echo "<option>$i</option>";
 				}
 			?>
 			</select>
 			<select name="committee[dateFormed][mday]"><option></option>
 			<?php
-				for($i=1; $i<=31; $i++)
-				{
+				for($i=1; $i<=31; $i++) {
 					echo "<option>$i</option>";
 				}
 			?>

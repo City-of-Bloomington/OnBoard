@@ -93,26 +93,31 @@ class MemberList extends PDOResultIterator
 		}
 
 		/*
-		*  list of members voted with the given member
+		*  Find the list of terms of people who voted with the given term
 		*/
-		if (isset($fields['member_id'])) {
-			$this->sort = "u.lastname,u.firstname";
-			$this->joins.= " left join users u on m.user_id=u.id ";
-			$this->joins.= " inner join votingRecords v1 on m.id=v1.member_id ";
-			$this->joins.= " inner join votingRecords v2 on v1.vote_id=v2.vote_id ";
+		if (isset($fields['term_id'])) {
+			$this->sort = "p.lastname,p.firstname";
+			$this->joins.= "
+				left join users p on t.person_id=p.id
+				inner join votingRecords v1 on t.id=v1.term_id
+				inner join votingRecords v2 on v1.vote_id=v2.vote_id
+			";
 
-			$options[] = 'v2.member_id=:member_idA';
-			$options[] = 'v1.member_id!=:member_idB';
-			$parameters[':member_idA'] = $fields['member_id'];
-			$parameters[':member_idB'] = $fields['member_id'];
+			$options[] = 'v2.term_id=:term_idA';
+			$options[] = 'v1.term_id!=:term_idB';
+			$parameters[':term_idA'] = $fields['term_id'];
+			$parameters[':term_idB'] = $fields['term_id'];
 		}
 
 		/**
 		 * List of members for any given set of Topics
 		 */
 		if (isset($fields['topicList'])) {
-			$this->joins.= " left join votingRecords r on m.id=r.member_id";
-			$this->joins.= " left join votes v on r.vote_id=v.id";
+			$this->joins.= "
+				left join votingRecords r on t.id=r.term_id
+				left join votes v on r.vote_id=v.id
+			";
+
 			$options[] = "v.topic_id in ({$fields['topicList']->getSQL()})";
 			$parameters = array_merge($parameters,$fields['topicList']->getParameters());
 		}

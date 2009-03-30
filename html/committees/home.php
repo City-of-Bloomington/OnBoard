@@ -1,18 +1,18 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+$committees = new CommitteeList();
+$committees->find();
+
 $format = isset($_GET['format']) ? $_GET['format'] : 'html';
 $template = new Template('default',$format);
-$template->title = 'Boards &amp; Commissions';
+$template->title = 'Boards & Commissions';
 
 $template->blocks[] = new Block('committees/breadcrumbs.inc');
 
-$committees = new CommitteeList();
-$committees->find();
-$list = new Block('committees/committeeList.inc');
-$list->committeeList = $committees;
-$template->blocks[] = $list;
+$template->blocks[] = new Block('committees/committeeList.inc',array('committeeList'=>$committees));
 
 echo $template->render();
