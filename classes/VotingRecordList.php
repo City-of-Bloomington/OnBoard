@@ -14,7 +14,7 @@
  * The PDOResultIterator uses prepared queries; it is recommended to use bound
  * parameters for each of the options you handle
  *
- * @copyright 2008-2009 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -28,7 +28,7 @@ class VotingRecordList extends PDOResultIterator
 	 */
 	public function __construct($fields=null)
 	{
-		$this->select = 'select vr.id as id from votingRecords vr';
+		$this->select = 'select distinct vr.id as id from votingRecords vr';
 		if (is_array($fields)) {
 			$this->find($fields);
 		}
@@ -51,37 +51,48 @@ class VotingRecordList extends PDOResultIterator
 
 		$options = array();
 		$parameters = array();
+
 		if (isset($fields['id'])) {
-			$options[] = 'vr.id=:id';
+			$options[] = 'id=:id';
 			$parameters[':id'] = $fields['id'];
 		}
-		if (isset($fields['member_id'])) {
-			$options[] = 'vr.member_id=:member_id';
-			$parameters[':member_id'] = $fields['member_id'];
+
+		if (isset($fields['term_id'])) {
+			$options[] = 'term_id=:term_id';
+			$parameters[':term_id'] = $fields['term_id'];
 		}
+
 		if (isset($fields['vote_id'])) {
-			$options[] = 'vr.vote_id=:vote_id';
+			$options[] = 'vote_id=:vote_id';
 			$parameters[':vote_id'] = $fields['vote_id'];
 		}
-		if (isset($fields['memberVote'])) {
-			$options[] = 'vr.memberVote=:memberVote';
-			$parameters[':memberVote'] = $fields['memberVote'];
+
+		if (isset($fields['position'])) {
+			$options[] = 'position=:position';
+			$parameters[':position'] = $fields['position'];
 		}
+
 
 		// Finding on fields from other tables required joining those tables.
 		// You can add fields from other tables to $options by adding the join SQL
 		// to $this->joins here
-		if (isset($fields['user_id'])) {
-			$this->joins.= ' left join members m on vr.member_id=m.id';
-			$options[] = 'm.user_id=:user_id';
-			$parameters[':user_id'] = $fields['user_id'];
+		if (isset($fields['person_id'])) {
+			$this->joins.= ' left join terms on vr.term_id=terms.id';
+			$options[] = 'terms.person_id=:person_id';
+			$parameters[':person_id'] = $fields['person_id'];
 		}
 
 		if (isset($fields['topicType'])) {
-			$this->joins.= ' left join topics t on v.topic_id=t.id';
+			$this->joins.= ' left join topics on v.topic_id=topics.id';
 			$type = $fields['topicType'];
-			$options[] = 't.topicType_id=:topicType_id';
-			$parameters['topicType_id'] = $type->getId();
+			$options[] = 'topics.topicType_id=:topicType_id';
+			$parameters[':topicType_id'] = $type->getId();
+		}
+
+		if (isset($fields['voteType'])) {
+			$this->joins.= ' left join votes on vr.vote_id=v.id';
+			$options[] = 'v.voteType_id=:voteType_id';
+			$parameters[':voteType_id'] = $fields['voteType']->getId();
 		}
 
 		$this->populateList($options,$parameters);
@@ -98,26 +109,28 @@ class VotingRecordList extends PDOResultIterator
 	}
 
 	/**
-	 * Returns the percentage that two members have voted the same way
+	 * Returns the percentage that two people have voted the same way
 	 *
 	 * If you pass in a topic list, the comparison will be only for votes on the given topics
-	 * Without a topicList, the comparison will be for any votes the two members share
+	 * Without a topicList, the comparison will be for any votes both people participated in
 	 *
-	 * @param Member $memberOne
-	 * @param Member $otherMember
+	 * @param Person $personOne
+	 * @param Person $otherPerson
 	 * @param TopicList $topicList (optional)
 	 * @return float
 	 */
-	public static function findAccordancePercentage($memberOne,$otherMember,TopicList $topicList=null)
+	public static function findAccordancePercentage($personOne,$otherPerson,TopicList $topicList=null)
 	{
 		$pdo = Database::getConnection();
 
-		$sql = "select a.id,a.memberVote as memberOneVote,b.memberVote as otherMemberVote
+		$sql = "select a.id,a.position as personOneVote,b.position as otherPersonVote
 				from votingRecords a
+				left join terms at on a.term_id=at.id
 				inner join votingRecords b on a.vote_id=b.vote_id
-				where a.member_id=:a
-				and b.member_id=:b ";
-		$parameters = array(':a'=>$memberOne->getId(),':b'=>$otherMember->getId());
+				left join terms bt on b.term_id=bt.id
+				where at.person_id=:a
+				and bt.person_id=:b ";
+		$parameters = array(':a'=>$personOne->getId(),':b'=>$otherPerson->getId());
 		if ($topicList) {
 			$sql.= " and a.vote_id in
 					(select votes.id from votes where topic_id in
@@ -133,15 +146,11 @@ class VotingRecordList extends PDOResultIterator
 		$matchedVotes = 0;
 		if ($total) {
 			foreach ($result as $row) {
-				if ($row['memberOneVote'] == $row['otherMemberVote']) {
+				if ($row['personOneVote'] == $row['otherPersonVote']) {
 					$matchedVotes++;
 				}
 			}
-			$percent = round($matchedVotes * 100.0/$total,2);
+			return round($matchedVotes * 100.0/$total,2);
 		}
-		else {
-			$percent = false;
-		}
-		return $percent;
 	}
 }

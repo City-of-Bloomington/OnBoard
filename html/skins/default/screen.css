@@ -1,6 +1,12 @@
-@import '../reset.css';
+@import 'reset.css';
 /* Set the default styles for common HTML elements */
-body { color:black; background-color:white; margin:0px; font-family:sans-serif; font-size:10pt; }
+html { background:url('images/pagebg.gif'); background-repeat:repeat; background-position:top; text-align:center; padding-bottom:10px; }
+body {
+	width:980px; position:relative; margin:0 auto; text-align:left;
+	color:black; background-color:white;
+	font-family:sans-serif; font-size:.75em;
+	border:2px solid black;
+}
 
 /* Text formatting */
 strong { font-weight:bold; }
@@ -10,102 +16,130 @@ sub { vertical-align:sub; }
 sup { vertical-align:super; }
 code { font-family:monospace; }
 
-a { text-decoration:none; cursor:pointer; }
-a:link { color:#3366cc; background-color:transparent; }
+a { color:#0066CC; text-decoration:none; cursor:pointer; }
+a:link { color:#0066CC; background-color:transparent; }
 a:active { color:red; background-color:transparent; }
-a:visited { color:#3366cc;  background-color:transparent; }
-a:hover { color:#666666; background-color:transparent; }
+a:visited { color:#0066CC;  background-color:transparent; }
+a:hover { color:#0066CC; background-color:transparent; text-decoration:underline; }
 
-img { border:0; }
+img { border:0; padding:2px; }
 
-h1 { text-align:left; margin:0; font-size:16pt; font-weight:bold; }
-h2 { margin:0; font-size:14pt; font-weight:bold; }
-h3 { margin-top:.5em; font-size:12pt; font-weight:bold; }
-h4 { margin-top:.5em; font-size:10pt; font-weight:bold; }
-h5 { margin-top:.5em; font-weight:bold; }
+h1 { display:table; text-align:left; font-size:2em; border-bottom:6px double #99cccc; margin-top:3px; margin-bottom:12px; }
+h2 { margin-top:3px; font-size:1.75em;  }
+h3 { margin-top:3px; font-size:1.5em; }
+h4 { margin-top:3px; font-size:1em; font-weight:bold; }
+h5 { margin-top:3px; font-weight:bold; }
 h6 { margin:0; }
 
-p { margin-top:.5em; margin-bottom:.5em; }
+p { margin-top:4px; margin-bottom:4px; }
 
 form {  }
-fieldset { border:2px solid black; }
-legend { border:2px solid black; padding:.5em; background-color:#3366cc; color:white; font-weight:bold; }
+fieldset {  }
+legend { border:1px solid black; padding:4px 6px 4px 6px; background-color:#99cccc; font-size:1.25em; }
 label { font-weight:bold; }
-.required { color:red; background-color:inherit; }
-input { font-family:sans-serif; font-size:8pt; }
-button { font-size:8pt; }
+label.required { padding-left:15px; }
+.required { background:url('images/required_asterik.gif') no-repeat; }
+input { font-size:.75em; }
+button { font-size:.75em; }
 
-table { border-collapse:collapse; border:1px solid black; }
-tr { vertical-align:top; }
-td { padding-left:.5em; padding-right:.5em; background-color:inherit; }
-th { text-align:left; background-color:#dddddd; padding:.25em .5em; vertical-align: top; font-weight:bold; }
+table { border-collapse:separate; border:1px solid black; margin:3px 0 8px 0; overflow:auto; }
+tr { }
+td { padding:6px 4px 6px 4px; vertical-align:top; border-bottom:1px solid #dddddd; }
+th { text-align:left; background-color:#dddddd; padding:6px 4px 6px 4px; vertical-align: top; font-weight:bold; border-bottom:1px solid #dddddd; }
 th a:link,th a:visited { color:#3366cc; background-color:inherit; }
 form table { border:none; }
 
-ul { margin-top:0em; }
+ul { margin-top:4px; }
 ul.compact,ul.compact li { list-style-type:none; margin:0; padding:0; }
-li.current>a { background-color:#cccccc; width:100%; }
+li { margin-top:5px; margin-bottom:1px; }
+li.current a { background-color:#cccccc; width:100%; }
+ul.inline { list-style-type:none; }
+ul.inline li { display:inline; margin-left:8px; margin-right:8px; }
+ul.pageNavigation li { margin-right:2px; }
+
+/* Banner */
+#banner {
+	height:126px;
+	padding-left:16px;
+	background:url('images/banner-with-gradient.gif') top left no-repeat;
+	border-bottom:2px solid black;
+}
+	#application_name
+	{
+		height: 62px; background:url('images/citylogo-white.gif') top left no-repeat;
+		color:white; text-align:left;
+		padding-top:90px; margin:1px;
+		font-size:1.75em;
+	}
+	#logo
+	{
+		width:284px; height:68px; position:absolute; top:16px; left:16px; text-indent:-9999px;
+	}
+
+	#logo a
+	{
+		display:block; width:246px; height:64px;
+	}
+
+	#location_name
+	{
+		display:none;
+	}
+	#banner a { color:white; text-decoration:none; }
+
+/* Side Panels */
+#panel-container { padding-top:2px; padding-bottom:2px; }
+#panel-one { }
+	#panel-one fieldset { border:none; }
+	#panel-one legend { display:none; }
+	#panel-one div { margin: 0 0 7px 4px; border:1px solid black; }
+	#panel-one ul { list-style:none; margin:0; padding-left:10px; }
+	#panel-one h1 {
+		font-size:16px;
+		color:black; background-color:#99CCCC;
+		border:1px solid black;
+		margin:-1px; padding: 8px 8px 8px 8px;
+	}
+
+/* Main Content */
+#content-panel { padding-right:1px; padding-left:4px; }
+	#content-panel .interfaceBox img { margin-bottom:.5em; }
+	#content-panel .interfaceBox h1 {
+		font-size:1.25em;
+		color:black; background-color:#99CCCC;
+		padding:8px 16px 8px 3px;
+		border:1px solid black; display:table;
+		margin-top:4px; height:20px;
+	}
+	#content-panel .interfaceBox h1 a {
+		margin:0px; height:20px;
+	}
+	#content-panel .interfaceBox h1 a:link,.titleBar a:visited
+	{ color:white; background-color:transparent;
+	}
+	#content-panel .interfaceBox h1 form
+	{
+		margin:0; padding:0; display:inline; height:1em;
+	}
+	#content-panel .interfaceBox h1 form fieldset
+	{
+		margin:0; padding:0; border:0; display:inline;
+	}
 
 
-/* Top Banner stuff */
-#banner { height:62px; border-bottom:2px solid black; background:#3366cc url('images/citylogo-white.gif') no-repeat; padding-left:80px; }
-#application_name { color:white; background-color:#3366cc; text-align:left; padding-top:5px; }
-#location_name { color:white; background-color:#3366cc; text-align:left; font-size:12pt; }
-#banner a { color:white; background-color:#3366cc; text-decoration:none; }
+/* Controls how error messages are displayed */
+#errorMessages { border:2px solid black; }
+#errorMessages h1 { color:red; }
+#warning { border:2px solid red; }
+#warning h1 { background-color:red; }
 
-/* Used to create a menu bar across any div */
-.menuBar { width:100%; border-bottom:2px solid black; background-color:#FFFFFF; font-size:12px; }
-.menuBar ul { width:100%; height:1em; list-style-type:none; margin:0; padding:0; }
-.menuBar li { float:left; margin-left:1.5em; list-style-type:none; }
-.menuBar a { font-weight:bold; }
-	/* This lets us put small forms into the menubar without hurting the layout too bad */
-	.menuBar form { margin:0; padding:0; display:inline; height:1em; }
-	.menuBar form fieldset { margin:0; padding:0; border:0; display:inline; }
 
-/* Used to draw fancy bordered boxes around content */
-.interfaceBox { border-bottom:2px dotted black; margin:10px 0 10px 0; }
-.interfaceBox img { margin:0; }
+/* Footer */
+#footer { text-align:center; clear:both; margin-top:8px; }
+#footer p { font-size: 9px; color: #666666; margin:0 12px 12px 0; }
 
-.interfaceBox h1 { background-color:#3366cc; color:white; font-size:14pt; border:2px solid black; font-weight:bold; padding-left:.5em; padding-right:.5em; }
-.interfaceBox h1 a { margin:0px; height:20px; }
-.interfaceBox h1 a:link,.titleBar a:visited { color:white; background-color:transparent; }
-.interfaceBox h1 form { margin:0; padding:0; display:inline; height:1em; }
-.interfaceBox h1 form fieldset { margin:0; padding:0; border:0; display:inline; }
 
-/* These are for the boxes on the sides of the page */
-.sidebar { width:155px; font-size:12px; margin-top:1em; }
-.sidebar ul { list-style-type:none; margin-left:.5em; padding:0; }
-.sidebar ul a { display:inline; font-weight:bold; }
-.sidebar fieldset { border:0; }
-.sidebar legend { display:none; }
-.sidebar div { margin-bottom:2em; border:2px solid black; }
-.sidebar div h1 { background-color:#3366cc; height:20px; color:white; font-family: serif; font-size:12pt; margin:0; border-top:0; border-right:0; border-left:0; border-bottom:2px solid black; text-align:center; }
-.sidebar input { width:140px; }
-	h1 form { margin:0; padding:0; display:inline; height:1em; }
-	h1 form fieldset { margin:0; padding:0; border:0; display:inline; }
-.sidebar #login input { width:80px; }
 
-.left { float:left; clear:left; }
-.right { float:right; clear:right; }
-
-/* Breadcrumb class for navigational items */
-.breadcrumbs ul { margin:0; }
-.breadcrumbs li { display:inline; list-style-type:none; }
-.breadcrumbs li a { padding-right:8px; background:url('images/breadcrumb.gif') no-repeat right; margin-right:8px; }
-
-/*  mainContent allows for 3 columns,	*/
-/*	backendContent allows for 2 columns	*/
-#mainContent { background-color:inherit; margin-left:170px; margin-top:1em; }
-
-.contextualMenu { background-color:#fba500; color:black; border:2px solid black; margin-bottom:1em; margin-top:1em; }
-.contextualMenu div { display:inline; }
-.contextualMenu span.title { background:inherit; color:white; font-size:12pt; font-weight:bold; border:0; padding-left:1em; padding-right:0; }
-.contextualMenu ul,.contextualMenu li { display:inline; margin:0; padding:0; list-style-type:none; }
-.contextualMenu a {  }
-.contextualMenu a:hover { color:white; background-color:inherit; }
-	/* This lets us put small forms into the menubar without hurting the layout too bad */
-	.contextualMenu form { margin:0; padding:0; display:inline; height:1em; }
-	.contextualMenu form fieldset { margin:0; padding:0; border:0; display:inline; }
 
 /* For pages with tab-type system on them */
 .tabBar ul { list-style: none; margin:0; padding-bottom:7px; border-bottom:1px solid gray; font-weight:bold; white-space:nowrap; }
@@ -123,20 +157,32 @@ li.current>a { background-color:#cccccc; width:100%; }
 .pageNavigation a { }
 .pageNavigation button { }
 
-#footer { font-size:10pt; text-align:center; clear:both; margin-top:1em; }
-#footer p { font-size: 9px; color: #666666; margin:0 2em 2em 0; }
+
+
+/* Menu Bars */
+.menuBar { border-top:2px solid black; border-bottom:2px solid black; }
+.menuBar ul { list-style:none; }
+.menuBar li { display:inline; }
+
+
+/* Breadcrumbs */
+.breadcrumbs ul { list-style-type:none; }
+.breadcrumbs li { display:inline; }
+.breadcrumbs li a { padding-right:8px; background:url('images/buttons/breadcrumb.gif') no-repeat right; margin-right:8px; font-size:.75em; color:#999999; }
+
+
+
+
 
 /*  Custom buttons for forms */
-button { cursor:pointer; overflow:hidden; vertical-align:middle; }
-
-button.addSmall { width:15px; height:15px; padding-top:15px; background: url('images/addSmall.gif') no-repeat; border:0; }
-button.deleteSmall { width:15px; height:15px; padding-top:15px; background: url('images/deleteSmall.gif') no-repeat; border:0; }
-button.excel { width:16px; height:16px; padding-top:16px; background: url('images/excel.gif') no-repeat; border:0; }
-button.printSmall { width:16px; height:16px; padding-top:16px; background: url('images/pagetools/print.gif') no-repeat; border:0; }
-
-button.login { width:52px; height:15px; padding-top:15px; background: url('images/login.gif') no-repeat; border:0; }
-button.submit { width:70px; height:15px; padding-top:15px; background: url('images/submit.gif') no-repeat; border:0; }
-button.save { width:52px; height:15px; padding-top:15px; background: url('images/save.gif') no-repeat; border:0; }
+button { cursor:pointer; overflow:hidden; vertical-align:middle; margin:8px 5px 2px 0px; font-size:1em; }
+	button.addSmall { width:15px; height:15px; padding-top:15px; background: url('images/buttons/addSmall.gif') no-repeat; border:0; }
+	button.delete { width:15px; height:15px; padding-top:15px; background: url('images/buttons/deleteSmall.gif') no-repeat; border:0; }
+	button.excel { width:16px; height:16px; padding-top:16px; background: url('images/buttons/excel.gif') no-repeat; border:0; }
+	button.printSmall { width:16px; height:16px; padding-top:16px; background: url('images/buttons/print.gif') no-repeat; border:0; }
+	button.login { width:52px; height:15px; padding-top:15px; background: url('images/buttons/login.gif') no-repeat; border:0; }
+	/*button.submit { width:70px; height:15px; padding-top:15px; background: url('images/buttons/submit.gif') no-repeat; border:0; }*/
+	button.save { width:52px; height:15px; padding-top:15px; background: url('images/buttons/save.gif') no-repeat; border:0; }
 
 /* All hrefs that are to be rendered as buttons need to include the button class. */
 /* Technique taken from http://www.evotech.net/blog/2007/09/css-image-replacement-method */
@@ -149,29 +195,24 @@ a.button {
 	overflow:hidden;
 	vertical-align:middle;
 }
-
 /* Image Replacements for hrefs that are to be rendered as buttons */
-a.add { width:15px; height:15px; background-image:url('images/addSmall.gif'); }
-a.edit { width:15px; height:15px; background-image:url('images/editSmall.gif'); }
-a.delete { width:15px; height:15px; background-image:url('images/deleteSmall.gif'); }
-
-a.cancel { width:69px; height:15px; background-image:url('images/cancel.gif'); }
-
-a.previous { width:16px; height:16px; background-image:url('images/previous.png'); }
-a.next { width:16px; height:16px; background-image:url('images/next.png'); }
-a.first { width:22px; height:22px; background-image:url('images/player_start.png'); }
-a.last { width:22px; height:22px; background-image:url('images/player_end.png'); }
+a.add { width:15px; height:15px; background-image:url('images/buttons/addSmall.gif'); }
+a.edit { width:15px; height:15px; background-image:url('images/buttons/editSmall.gif'); }
+a.delete { width:15px; height:15px; background-image:url('images/buttons/deleteSmall.gif'); }
+/*a.cancel { width:69px; height:15px; background-image:url('images/buttons/cancel.gif'); }*/
+a.previous { width:16px; height:16px; background-image:url('images/buttons/previous.png'); }
+a.next { width:16px; height:16px; background-image:url('images/buttons/next.png'); }
+a.first { width:22px; height:22px; background-image:url('images/buttons/player_start.png'); }
+a.last { width:22px; height:22px; background-image:url('images/buttons/player_end.png'); }
 
 
-/* Controls how error messages are displayed */
-#errorMessages { border:2px solid black; }
-#errorMessages h1 { color:red; background-color:inherit; }
-#warning { border:2px solid red; }
-#warning h1 { color:inherit; background-color:red; font-size:14pt; }
+
+
+
 
 /* Various Styles for text */
-.copyright { text-align:center; font-size:10pt; }
-.comments { color:red; background-color:inherit; }
+.copyright { text-align:center; font-size:9px; }
+.comments { color:red; }
 .money { text-align:right; }
 .void,.void td { text-decoration:line-through; }
 .total { border-top:1px solid black; text-align:right; }

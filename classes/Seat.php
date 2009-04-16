@@ -1,42 +1,48 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 class Seat extends ActiveRecord
 {
 	private $id;
-	private $title;
+	private $name;
 	private $committee_id;
 	private $appointer_id;
-	private $maxCurrentMembers;
+	private $maxCurrentTerms;
 
 	private $committee;
 	private $appointer;
-	private $member; // The current member for this seat
 
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
+	 *
+	 * @param int $id
 	 */
 	public function __construct($id=null)
 	{
-		if ($id)
-		{
+		if ($id) {
 			$PDO = Database::getConnection();
 			$query = $PDO->prepare('select * from seats where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('seats/unknownSeat'); }
-			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			if (!count($result)) {
+				throw new Exception('seats/unknownSeat');
+			}
+			foreach ($result[0] as $field=>$value) {
+				if ($value) {
+					$this->$field = $value;
+				}
+			}
 		}
-		else
-		{
+		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 			$this->appointer_id = 1;
-			$this->maxCurrentMembers = 1;
+			$this->maxCurrentTerms = 1;
 		}
 	}
 
@@ -47,11 +53,17 @@ class Seat extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->committee_id) { throw new Exception('seats/missingCommittee'); }
-		if (!$this->title) { throw new Exception('seats/missingTitle'); }
+		if (!$this->name) {
+			throw new Exception('missingName');
+		}
+		if (!$this->committee_id) {
+			throw new Exception('seats/missingCommittee');
+		}
 	}
 
 	/**
+	 * Saves this record back to the database
+	 *
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
 	 * for each property of this class,
@@ -61,25 +73,28 @@ class Seat extends ActiveRecord
 		$this->validate();
 
 		$fields = array();
-		$fields['title'] = $this->title;
+		$fields['name'] = $this->name;
 		$fields['committee_id'] = $this->committee_id;
 		$fields['appointer_id'] = $this->appointer_id;
-		$fields['maxCurrentMembers'] = $this->maxCurrentMembers;
+		$fields['maxCurrentTerms'] = $this->maxCurrentTerms;
 
 		// Split the fields up into a preparedFields array and a values array.
 		// PDO->execute cannot take an associative array for values, so we have
 		// to strip out the keys from $fields
 		$preparedFields = array();
-		foreach ($fields as $key=>$value)
-		{
+		foreach ($fields as $key=>$value) {
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
 		}
 		$preparedFields = implode(",",$preparedFields);
 
 
-		if ($this->id) { $this->update($values,$preparedFields); }
-		else { $this->insert($values,$preparedFields); }
+		if ($this->id) {
+			$this->update($values,$preparedFields);
+		}
+		else {
+			$this->insert($values,$preparedFields);
+		}
 	}
 
 	private function update($values,$preparedFields)
@@ -104,62 +119,163 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getTitle() { return $this->title; }
-	public function getCommittee_id() { return $this->committee_id; }
-	public function getAppointer_id() { return $this->appointer_id; }
-	public function getMaxCurrentMembers() { return $this->maxCurrentMembers; }
 
-	public function getCommittee()
+	/**
+	 * @return int
+	 */
+	public function getId()
 	{
-		if ($this->committee_id)
-		{
-			if (!$this->committee) { $this->committee = new Committee($this->committee_id); }
-			return $this->committee;
-		}
-		else return null;
+		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getCommittee_id()
+	{
+		return $this->committee_id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAppointer_id()
+	{
+		return $this->appointer_id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMaxCurrentTerms()
+	{
+		return $this->maxCurrentTerms;
+	}
+
+	/**
+	 * @return Committee
+	 */
+	public function getCommittee()
+	{
+		if ($this->committee_id) {
+			if (!$this->committee) {
+				$this->committee = new Committee($this->committee_id);
+			}
+			return $this->committee;
+		}
+		return null;
+	}
+
+	/**
+	 * @return Appointer
+	 */
 	public function getAppointer()
 	{
-		if ($this->appointer_id)
-		{
-			if (!$this->appointer) { $this->appointer = new Appointer($this->appointer_id); }
+		if ($this->appointer_id) {
+			if (!$this->appointer) {
+				$this->appointer = new Appointer($this->appointer_id);
+			}
 			return $this->appointer;
 		}
+		return null;
 	}
 
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
-	public function setTitle($string) { $this->title = trim($string); }
-	public function setCommittee_id($int) { $this->committee = new Committee($int); $this->committee_id = $int; }
-	public function setAppointer_id($int) { $this->appointer = new Appointer($int); $this->appointer_id = $int; }
-	public function setMaxCurrentMembers($int) { $this->maxCurrentMembers = (int) $int; }
 
-	public function setCommittee($committee) { $this->committee_id = $committee->getId(); $this->committee = $committee; }
-	public function setAppointer($appointer) { $this->appointer_id = $appointer->getId(); $this->appointer = $appointer; }
+	/**
+	 * @param string $string
+	 */
+	public function setName($string)
+	{
+		$this->name = trim($string);
+	}
+
+	/**
+	 * @param int $int
+	 */
+	public function setCommittee_id($int)
+	{
+		$this->committee = new Committee($int);
+		$this->committee_id = $int;
+	}
+
+	/**
+	 * @param int $int
+	 */
+	public function setAppointer_id($int)
+	{
+		$this->appointer = new Appointer($int);
+		$this->appointer_id = $int;
+	}
+
+	/**
+	 * @param int $int
+	 */
+	public function setMaxCurrentTerms($int)
+	{
+		$this->maxCurrentTerms = preg_replace("/[^0-9]/","",$int);
+	}
+
+	/**
+	 * @param Committee $committee
+	 */
+	public function setCommittee($committee)
+	{
+		$this->committee_id = $committee->getId();
+		$this->committee = $committee;
+	}
+
+	/**
+	 * @param Appointer $appointer
+	 */
+	public function setAppointer($appointer)
+	{
+		$this->appointer_id = $appointer->getId();
+		$this->appointer = $appointer;
+	}
+
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	// We recommend adding all your custom code down here at the bottom
 	//----------------------------------------------------------------
 	/**
-	 * @return MemberList
+	 * @return string
 	 */
-	public function getMembers() { return new MemberList(array('seat_id'=>$this->id)); }
-
-	/**
-	 * Returns the list of members active at the given time
-	 * @param int $timestamp A unix timestamp
-	 * @return MemberList
-	 */
-	public function getCurrentMembers(int $timestamp=null)
+	public function getURL()
 	{
-		if (!$timestamp) { $timestamp = time(); }
-		return new MemberList(array('seat_id'=>$this->id,'current'=>$timestamp));
+		return BASE_URL.'/seats/viewSeat.php?seat_id='.$this->id;
+	}
+	/**
+	 * @return TermList
+	 */
+	public function getTerms()
+	{
+		return new TermList(array('seat_id'=>$this->id));
 	}
 
+	/**
+	 * Returns the list of terms active at the given time
+	 * @param int $timestamp A unix timestamp
+	 * @return TermList
+	 */
+	public function getCurrentTerms(int $timestamp=null)
+	{
+		if (!$timestamp) {
+			$timestamp = time();
+		}
+		return new TermList(array('seat_id'=>$this->id,'current'=>$timestamp));
+	}
 	/**
 	 * @return RequirementsList
 	 */
@@ -180,8 +296,8 @@ class Seat extends ActiveRecord
 	 */
 	public function hasRequirement($requirement)
 	{
-		$PDO = Database::getConnection();
-		$query = $PDO->prepare('select requirement_id from seat_requirements where seat_id=? and requirement_id=?');
+		$pdo = Database::getConnection();
+		$query = $pdo->prepare('select requirement_id from seat_requirements where seat_id=? and requirement_id=?');
 		$query->execute(array($this->id,$requirement->getId()));
 		$result = $query->fetchAll();
 		return count($result) ? true : false;
@@ -191,11 +307,10 @@ class Seat extends ActiveRecord
 	 */
 	public function addRequirement($requirement)
 	{
-		if (!$this->hasRequirement($requirement))
-		{
-			$PDO = Database::getConnection();
+		if (!$this->hasRequirement($requirement)) {
+			$pdo = Database::getConnection();
 
-			$query = $PDO->prepare('insert seat_requirements set seat_id=?,requirement_id=?');
+			$query = $pdo->prepare('insert seat_requirements set seat_id=?,requirement_id=?');
 			$query->execute(array($this->id,$requirement->getId()));
 		}
 	}
@@ -204,20 +319,11 @@ class Seat extends ActiveRecord
 	 */
 	public function removeRequirement($requirement)
 	{
-		if ($this->id)
-		{
-			$PDO = Database::getConnection();
+		if ($this->id) {
+			$pdo = Database::getConnection();
 
-			$query = $PDO->prepare('delete from seat_requirements where seat_id=? and requirement_id=?');
+			$query = $pdo->prepare('delete from seat_requirements where seat_id=? and requirement_id=?');
 			$query->execute(array($this->id,$requirement->getId()));
 		}
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getURL()
-	{
-		return BASE_URL.'/seats/viewSeat.php?seat_id='.$this->id;
 	}
 }

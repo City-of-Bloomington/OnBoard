@@ -15,13 +15,13 @@ foreach ($PDO->query('show tables') as $row) {
 foreach ($tables as $tableName) {
 	$fields = array();
 	foreach ($PDO->query("describe $tableName") as $row) {
-		$type = ereg_replace("[^a-z]","",$row['Type']);
+		$type = preg_replace("/[^a-z]/","",$row['Type']);
 
 		// Translate any MySQL datatype names into PHP datatype names
-		if (ereg('int',$type)) {
+		if (preg_match('/int/',$type)) {
 			$type = 'int';
 		}
-		if (ereg('enum',$type) || ereg('varchar',$type)) {
+		if (preg_match('/enum/',$type) || preg_match('/varchar/',$type)) {
 			$type = 'string';
 		}
 
@@ -99,7 +99,7 @@ $HTML = "<h1>Add $className</h1>
 						<?php
 							\$now = getdate();
 							for (\$i=1; \$i<=12; \$i++) {
-								\$selected = (\$i!=\$now['mon']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['mon']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -108,7 +108,7 @@ $HTML = "<h1>Add $className</h1>
 						<option></option>
 						<?php
 							for (\$i=1; \$i<=31; \$i++) {
-								\$selected = (\$i!=\$now['mday']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['mday']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -127,7 +127,7 @@ $HTML = "<h1>Add $className</h1>
 						<?php
 							\$now = getdate();
 							for (\$i=1; \$i<=12; \$i++) {
-								\$selected = (\$i!=\$now['mon']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['mon']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -136,7 +136,7 @@ $HTML = "<h1>Add $className</h1>
 						<option></option>
 						<?php
 							for (\$i=1; \$i<=31; \$i++) {
-								\$selected = (\$i!=\$now['mday']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['mday']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -145,7 +145,7 @@ $HTML = "<h1>Add $className</h1>
 					<select name=\"{$variableName}[$field[Field]][hours]\" id=\"{$variableName}-$field[Field]-hours\">
 						<?php
 							for (\$i=0; \$i<=23; \$i++) {
-								\$selected = (\$i!=\$now['hours']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['hours']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -153,7 +153,7 @@ $HTML = "<h1>Add $className</h1>
 					<select name=\"{$variableName}[$field[Field]][minutes]\" id=\"{$variableName}-$field[Field]-minutes\">
 						<?php
 							for (\$i=0; \$i<=59; \$i+=15) {
-								\$selected = (\$i!=\$now['minutes']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$now['minutes']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -219,7 +219,7 @@ $HTML = "<h1>Update $className</h1>
 						<?php
 							\$$field[Field] = \$this->{$variableName}->dateStringToArray(\$this->{$variableName}->get$fieldFunctionName());
 							for (\$i=1; \$i<=12; \$i++) {
-								\$selected = (\$i!=\$$field[Field]['mon']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$$field[Field]['mon']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected\">\$i</option>\";
 							}
 						?>
@@ -228,7 +228,7 @@ $HTML = "<h1>Update $className</h1>
 						<option></option>
 						<?php
 							for (\$i=1; \$i<=31; \$i++) {
-								\$selected = (\$i!=\$$field[Field]['mday']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$$field[Field]['mday']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -247,7 +247,7 @@ $HTML = "<h1>Update $className</h1>
 						<?php
 							\$$field[Field] = \$this->{$variableName}->dateStringToArray(\$this->{$variableName}->get$fieldFunctionName());
 							for (\$i=1; \$i<=12; \$i++) {
-								\$selected = (\$i!=\$$field[Field]['mon']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$$field[Field]['mon']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -256,7 +256,7 @@ $HTML = "<h1>Update $className</h1>
 						<option></option>
 						<?php
 							for (\$i=1; \$i<=31; \$i++) {
-								\$selected = (\$i!=\$$field[Field]['mday']) ? 'selected=\"selected\"' : '';
+								\$selected = (\$i==\$$field[Field]['mday']) ? 'selected=\"selected\"' : '';
 								echo \"<option \$selected>\$i</option>\";
 							}
 						?>
@@ -265,7 +265,7 @@ $HTML = "<h1>Update $className</h1>
 					<select name=\"{$variableName}[$field[Field]][hours]\" id=\"{$variableName}-$field[Field]-hours\">
 					<?php
 						for (\$i=0; \$i<=23; \$i++) {
-							\$selected = (\$i!=\$$field[Field]['hours']) ? 'selected=\"selected\"' : '';
+							\$selected = (\$i==\$$field[Field]['hours']) ? 'selected=\"selected\"' : '';
 							echo \"<option \$selected>\$i</option>\";
 						}
 					?>
@@ -273,7 +273,7 @@ $HTML = "<h1>Update $className</h1>
 					<select name=\"{$variableName}[$field[Field]][minutes]\" id=\"{$variableName}-$field[Field]-minutes\">
 					<?php
 						for (\$i=0; \$i<=59; \$i+=15) {
-							\$selected = (\$i!=\$$field[Field]['minutes']) ? 'selected=\"selected\"' : '';
+							\$selected = (\$i==\$$field[Field]['minutes']) ? 'selected=\"selected\"' : '';
 							echo \"<option \$selected>\$i</option>\";
 						}
 					?>

@@ -16,47 +16,73 @@ if ($template->outputFormat == 'html') {
 }
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 
-if ($template->outputFormat == 'html')
-{
-	$seats = new Block('committees/seats.inc');
-	$seats->committee = $committee;
-	$template->blocks[] = $seats;
 
-	$votingComparison = new Block('topics/votingRecordComparison.inc');
-	$votingComparison->topicList = $committee->getTopics();
-	$template->blocks[] = $votingComparison;
+// Don't bother showing the tabs if there are no topics for this committee
+if ($committee->hasTopics()) {
+	$tabs = array('members','topics','votes');
+	$current_tab = isset($_GET['tab']) && in_array($_GET['tab'],$tabs) ? $_GET['tab'] : 'members';
+	$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,'current_tab'=>$current_tab));
+}
+else {
+	$current_tab = 'members';
+}
 
-	$topics = $committee->getTopics();
-	if (count($topics)) {
+// Add all the blocks for each tab
+// One case for each possible tab
+switch ($current_tab) {
+	case 'members':
+		$block = (isset($_GET['members']) && $_GET['members']=='past')
+				? 'pastMembers.inc'
+				: 'currentTerms.inc';
+		$template->blocks[] = new Block("committees/$block",array('committee'=>$committee));
+		break;
+
+	case 'topics':
+		$topics = $committee->getTopics();
+		$people = array();
+		foreach($committee->getCurrentTerms() as $term) {
+			$people[] = $term->getPerson();
+		}
 		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
 
-	}
-
-	$topicList = $committee->getTopics();
-	if (count($topicList) > 15) {
-		$pages = new Paginator($topicList,15);
-		$page = (isset($_GET['page']) && $_GET['page'])
-				? (int)$_GET['page']
-				: 0;
-		if (!$pages->offsetExists($page)) {
-			$page = 0;
+		if (count($topics) > 15) {
+			$pages = new Paginator($topics,15);
+			$page = (isset($_GET['page']) && $_GET['page'])
+					? (int)$_GET['page']
+					: 0;
+			if (!$pages->offsetExists($page)) {
+				$page = 0;
+			}
+			$topicList = new LimitIterator($topics,$pages[$page],$pages->getPageSize());
 		}
-		$topicList = new LimitIterator($topicList,$pages[$page],$pages->getPageSize());
-	}
-	
-	
-	$template->blocks[] = new Block('topics/topicList.inc',
-									array('topicList'=>$topicList,'committee'=>$committee));
+		else {
+			$topicList = $topics;
+		}
+		$template->blocks[] = new Block('topics/topicList.inc',
+										array('topicList'=>$topicList,'committee'=>$committee));
 
-	if (isset($pages)) {
-		$pageNavigation = new Block('pageNavigation.inc');
-		$pageNavigation->page = $page;
-		$pageNavigation->pages = $pages;
-		$pageNavigation->url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+		if (isset($pages)) {
+			$pageNavigation = new Block('pageNavigation.inc');
+			$pageNavigation->page = $page;
+			$pageNavigation->pages = $pages;
+			$pageNavigation->url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 
-		$template->blocks[] = $pageNavigation;
-	}
+			$template->blocks[] = $pageNavigation;
+		}
+		break;
 
+	case 'votes':
+		$topics = $committee->getTopics();
+		$people = array();
+		foreach($committee->getCurrentTerms() as $term) {
+			$people[] = $term->getPerson();
+		}
+
+		$votingComparison = new Block('votingRecords/votingRecordComparison.inc');
+		$votingComparison->topicList = $topics;
+		$votingComparison->people = $people;
+		$template->blocks[] = $votingComparison;
+		break;
 }
 
 echo $template->render();

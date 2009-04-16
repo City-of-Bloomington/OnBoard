@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param TopicList $this->topicList
  * @param Committee $this->committee (optional)
  * @param Tag $this->tag
@@ -9,25 +10,21 @@
 $userCanEdit = userHasRole(array('Administrator','Clerk'));
 
 $addTopicButton = '';
-if (isset($this->committee) && $userCanEdit)
-{
+if (isset($this->committee) && $userCanEdit) {
 	$url = new URL(BASE_URL.'/topics/addTopic.php');
 	$url->committee_id = $this->committee->getId();
 	$addTopicButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 }
 
-if (count($this->topicList) || $userCanEdit)
-{
+if (count($this->topicList) || $userCanEdit) {
 	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
 	echo "
 	<div class=\"interfaceBox legislation\">
 		<h1>$addTopicButton $title Legislation</h1>
 	";
-		foreach ($this->topicList as $topic)
-		{
+		foreach ($this->topicList as $topic) {
 			$editButton = '';
-			if ($userCanEdit)
-			{
+			if ($userCanEdit) {
 				$url = new URL(BASE_URL.'/topics/updateTopic.php');
 				$url->topic_id = $topic->getId();
 				$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
@@ -39,13 +36,31 @@ if (count($this->topicList) || $userCanEdit)
 			$synopsis = View::escape($topic->getSynopsis());
 			echo "
 			<div class=\"topic\">
-				<h3>$editButton <a href=\"{$topic->getURL()}\">$number</a> <span style=\"font-size:.8em; \" > $date</span></h3>
+				<h3>$editButton <a href=\"{$topic->getURL()}\">$number</a> <span style=\"font-size:.8em;\"> $date</span></h3>
 				<p>$description</p>
-			</div>
 			";
+
+
+			$votingRecords = array();
+			if ($topic->hasVotes()) {
+				foreach ($topic->getLatestVotingRecords() as $vote) {
+					$name = View::escape($vote->getPerson()->getLastname());
+					$votingRecords[$vote->getPosition()][] = "<a href=\"{$vote->getPerson()->getURL()}\">$name</a>";
+				}
+				foreach ($votingRecords as $position=>$names) {
+					$votingRecords[$position] = implode(', ',$names);
+				}
+				if ($votingRecords) {
+					echo "<div>";
+					foreach ($votingRecords as $position=>$names) {
+						echo "$position($names) ";
+					}
+					echo "</div>";
+				}
+			}
+			echo "</div>";
 		}
 	echo "
-		</table>
 	</div>
 	";
 }

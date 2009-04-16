@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2008 City of Bloomington, Indiana
+ * @copyright 2008-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Tag $this->tag
@@ -13,11 +13,15 @@
 	<table>
 
 	<tr><td><label for="tag-name" class="required">Name</label></td>
-		<td><input name="tag[name]" id="tag-name" value="<?php echo View::escape($this->tag->getName()); ?>" /></td></tr>
+		<td><input name="tag[name]" id="tag-name" value="<?php echo View::escape($this->tag->getName()); ?>" />
+		</td>
+	</tr>
 
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<button type="button" class="button" onclick="document.location.href='<?php echo BASE_URL; ?>/tags';">Cancel</button>
+	<button type="button" class="button" onclick="document.location.href='<?php echo BASE_URL; ?>/tags';">
+		Cancel
+	</button>
 </fieldset>
 </form>

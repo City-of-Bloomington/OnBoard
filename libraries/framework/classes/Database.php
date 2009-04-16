@@ -19,9 +19,8 @@ class Database
 		if ($reconnect) {
 			self::$pdo=null;
 		}
-		if(!self::$pdo) {
-			try
-			{
+		if (!self::$pdo) {
+			try {
 				self::$pdo = new PDO(DB_TYPE.':'.DB_DSN.'dbname='.DB_NAME,
 										DB_USER,
 										DB_PASS,

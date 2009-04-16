@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 class Committee extends ActiveRecord
 {
@@ -16,31 +17,35 @@ class Committee extends ActiveRecord
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
+	 *
+	 * @param int $id
 	 */
 	public function __construct($id=null)
 	{
-		if ($id)
-		{
+		if ($id) {
 			$PDO = Database::getConnection();
 			$query = $PDO->prepare('select * from committees where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('committees/unknownCommittee'); }
-			foreach ($result[0] as $field=>$value)
-			{
-				if ($value)
-				{
-					if ($field=='dateFormed' && $value!='0000-00-00')
-					{
-						$this->dateFormed = strtotime($value);
+			if (!count($result)) {
+				throw new Exception('committees/unknownCommittee');
+			}
+			foreach ($result[0] as $field=>$value) {
+				if ($value) {
+					switch ($field) {
+						case 'dateFormed':
+							if ($value && $value!='0000-00-00') {
+								$this->dateFormed = strtotime($value);
+							}
+							break;
+						default:
+							$this->$field = $value;
 					}
-					else { $this->$field = $value; }
 				}
 			}
 		}
-		else
-		{
+		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 		}
@@ -53,10 +58,15 @@ class Committee extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->name) { throw new Exception('missingName'); }
+		if (!$this->name) {
+			throw new Exception('missingName');
+		}
+
 	}
 
 	/**
+	 * Saves this record back to the database
+	 *
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
 	 * for each property of this class,
@@ -77,16 +87,19 @@ class Committee extends ActiveRecord
 		// PDO->execute cannot take an associative array for values, so we have
 		// to strip out the keys from $fields
 		$preparedFields = array();
-		foreach ($fields as $key=>$value)
-		{
+		foreach ($fields as $key=>$value) {
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
 		}
 		$preparedFields = implode(",",$preparedFields);
 
 
-		if ($this->id) { $this->update($values,$preparedFields); }
-		else { $this->insert($values,$preparedFields); }
+		if ($this->id) {
+			$this->update($values,$preparedFields);
+		}
+		else {
+			$this->insert($values,$preparedFields);
+		}
 	}
 
 	private function update($values,$preparedFields)
@@ -111,39 +124,140 @@ class Committee extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getName() { return $this->name; }
-	public function getStatutoryName() { return $this->statutoryName; }
-	public function getStatuteReference() { return $this->statuteReference; }
-	public function getWebsite() { return $this->website; }
-	public function getDescription() { return $this->description; }
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStatutoryName()
+	{
+		return $this->statutoryName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getStatuteReference()
+	{
+		return $this->statuteReference;
+	}
+
+	/**
+	 * Returns the date/time in the desired format
+	 * Format can be specified using either the strftime() or the date() syntax
+	 *
+	 * @param string $format
+	 */
 	public function getDateFormed($format=null)
 	{
-		if ($format && $this->dateFormed)
-		{
-			if (strpos($format,'%')!==false) { return strftime($format,$this->dateFormed); }
-			else { return date($format,$this->dateFormed); }
+		if ($format && $this->dateFormed) {
+			if (strpos($format,'%')!==false) {
+				return strftime($format,$this->dateFormed);
+			}
+			else {
+				return date($format,$this->dateFormed);
+			}
 		}
-		else return $this->dateFormed;
+		return $this->dateFormed;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWebsite()
+	{
+		return $this->website;
+	}
+
+	/**
+	 * @return text
+	 */
+	public function getDescription()
+	{
+		return $this->description;
 	}
 
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
-	public function setName($string) { $this->name = trim($string); }
-	public function setStatutoryName($string) { $this->statutoryName = trim($string); }
-	public function setStatuteReference($string) { $this->statuteReference = trim($string); }
-	public function setWebsite($string) { $this->website = trim($string); }
-	public function setDescription($text) { $this->description = $text; }
+
+	/**
+	 * @param string $string
+	 */
+	public function setName($string)
+	{
+		$this->name = trim($string);
+	}
+
+	/**
+	 * @param string $string
+	 */
+	public function setStatutoryName($string)
+	{
+		$this->statutoryName = trim($string);
+	}
+
+	/**
+	 * @param string $string
+	 */
+	public function setStatuteReference($string)
+	{
+		$this->statuteReference = trim($string);
+	}
+
+	/**
+	 * Sets the date
+	 *
+	 * Dates and times should be stored as timestamps internally.
+	 * This accepts dates and times in multiple formats and sets the internal timestamp
+	 * Accepted formats are:
+	 * 		array - in the form of PHP getdate()
+	 *		timestamp
+	 *		string - anything strtotime understands
+	 * @param date $date
+	 */
 	public function setDateFormed($date)
 	{
-		if (is_array($date)) { $this->dateFormed = $this->dateArrayToTimestamp($date); }
-		elseif(ctype_digit($date)) { $this->dateFormed = $date; }
-		else
-		{
-			if ($date) { $this->dateFormed = strtotime($date); }
-			else { $this->dateFormed = null; }
+		if (is_array($date)) {
+			$this->dateFormed = $this->dateArrayToTimestamp($date);
 		}
+		elseif (ctype_digit($date)) {
+			$this->dateFormed = $date;
+		}
+		else {
+			$this->dateFormed = strtotime($date);
+		}
+	}
+
+	/**
+	 * @param string $string
+	 */
+	public function setWebsite($string)
+	{
+		$this->website = trim($string);
+	}
+
+	/**
+	 * @param text $text
+	 */
+	public function setDescription($text)
+	{
+		$this->description = $text;
 	}
 
 
@@ -158,16 +272,16 @@ class Committee extends ActiveRecord
 	{
 		return new SeatList(array('committee_id'=>$this->id));
 	}
+
 	/**
-	 * Each seat can have multiple member positions
+	 * Each seat can have multiple concurrent terms
 	 * @return int
 	 */
-	public function getMaxCurrentMembers()
+	public function getMaxCurrentTerms()
 	{
 		$positions = 0;
-		foreach ($this->getSeats() as $seat)
-		{
-			$positions += $seat->getMaxCurrentMembers();
+		foreach ($this->getSeats() as $seat) {
+			$positions += $seat->getMaxCurrentTerms();
 		}
 		return $positions;
 	}
@@ -181,18 +295,51 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @return string
+	 * @return boolean
 	 */
-	public function getURL()
+	public function hasTopics()
 	{
-		return BASE_URL.'/committees/viewCommittee.php?committee_id='.$this->id;
+		return count($this->getTopics()) ? true : false;
 	}
 
 	/**
-	 * @return MemberList
+	 * @return URL
 	 */
-	public function getCurrentMembers()
+	public function getURL()
 	{
-		return new MemberList(array('committee_id'=>$this->id,'status'=>'current'));
+		return new URL(BASE_URL.'/committees/viewCommittee.php?committee_id='.$this->id);
+	}
+
+	/**
+	 * Returns terms that were current for the given timestamp.
+	 * If no timestamp is given, the current time is used.
+	 *
+	 * @param timestamp $timestamp The timestamp for when the terms would have been current
+	 * @return TermList
+	 */
+	public function getCurrentTerms($timestamp=null)
+	{
+		if (!$timestamp) {
+			$timestamp = time();
+		}
+		return new TermList(array('committee_id'=>$this->id,'current'=>$timestamp));
+	}
+
+	/**
+	 * Returns all the terms for this committee
+	 * @return TermList
+	 */
+	public function getTerms()
+	{
+		return new TermList(array('committee_id'=>$this->id));
+	}
+
+	/**
+	 * Returns all the people who have served on this committee
+	 * @return PeopleList
+	 */
+	public function getPeople()
+	{
+		return new PersonList(array('committee_id'=>$this->id));
 	}
 }

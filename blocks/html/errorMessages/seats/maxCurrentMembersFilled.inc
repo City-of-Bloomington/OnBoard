@@ -1,1 +1,0 @@
-<p>All the current members for that seat have been assigned.</p>

@@ -8,7 +8,7 @@
 ?>
 <div class="interfaceBox tags">
 	<h1>Tags</h1>
-	<div class="tagWall">
+	<div id="tagWall">
 	<?php
 		$maxPopularity = 0;
 		$tags = array();
@@ -24,12 +24,24 @@
 		foreach ($tags as $id=>$tag) {
 			$percent = $tag['popularity'] / $maxPopularity * 100;
 
-			if ($percent > 90) { $class = 'class="p90"'; }
-			elseif ($percent > 70) { $class = 'class="p70"'; }
-			elseif ($percent > 50) { $class = 'class="p50"'; }
-			elseif ($percent > 30) { $class = 'class="p30"'; }
-			elseif ($percent > 10) { $class = 'class="p10"'; }
-			else { $class = 'class="p0"'; }
+			if ($percent > 90) {
+				$class = 'class="p90"';
+			}
+			elseif ($percent > 70) {
+				$class = 'class="p70"';
+			}
+			elseif ($percent > 50) {
+				$class = 'class="p50"';
+			}
+			elseif ($percent > 30) {
+				$class = 'class="p30"';
+			}
+			elseif ($percent > 10) {
+				$class = 'class="p10"';
+			}
+			else {
+				$class = 'class="p0"';
+			}
 
 			echo "
 			<span $class>

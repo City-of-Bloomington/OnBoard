@@ -1,33 +1,19 @@
 /* Tag Styles */
-.tags span { padding: 10px 2px; }
-.tags .p90 { font-size:200%; }
-.tags .p70 { font-size:180%; }
-.tags .p50 { font-size:150%; }
-.tags .p30 { font-size:125%; }
-.tags .p10 { font-size:100%; }
-.tags .p0 { font-size:80%; }
+.tags { width:200px; float:right; }
+.tags .p90 { font-size:180%; }
+.tags .p70 { font-size:150%; }
+.tags .p50 { font-size:100%; }
+.tags .p30 { font-size:80%; }
+.tags .p10 { font-size:75%; }
+.tags .p0 { font-size:50%; }
 
 
-
-#committeeDescription { float:left; width:425px; margin:0 10px 5px 5px; }
-#committeeInfo { float:left; clear:right; }
-.seats { clear:left; float:left; margin:0px 10px 0px 2px; }
-.tags { float:left; clear:both; width:350px; border:1px solid black; background-color:grey; margin:0 15px 15px 0; }
-#tagWall { float:left; clear:left; border:1px solid black; overflow:auto; padding:2px; margin:0 10px; }
-#content-panel .votingComparison { float:left; clear:right; margin:0 10px; }
-#content-panel .legislation { float:left; clear:right; width:600px; margin:0 10px; }
 #content-panel .topic { margin:10px 0; border-bottom:1px solid #999999;}
-#content-panel .topic h3 { font-size:1.25em; }
-#content_panel .topic h3 .topicDate { display:inline; font-size:.8em; }
-.councilMember { float:left; clear:left; margin:0 10px; }
-.memberList  {float:left; clear:right; margin:0 10px; }
-.votes { float:left; clear:left; margin:0 10px; }
-.votingTable { float:left; clear:right; margin:0 10px; }
+#content-panel .topic h3 { font-size:1.3em; }
 
-#personalInfo { float:left; margin:0 10px;}
-.memberSeat {float:left; clear:right; margin:0 10px; }
-.memberVR { float:left; clear:left; margin:0 10px; width:600px; }
-.memberVoteStats { float:left; clear:left; margin:0 10px; }
-.memberVoteComparison {float:left; clear:right; margin:0 10px; }
+.pageNavigation { clear:both; }
 
-.pageNavigation {clear:both; }
+.topic .yes { height:24px; padding-left:28px; background:url('images/check.gif') top left no-repeat; }
+.topic .no { height:24px; padding-left:28px; background:url('images/x.gif') top left no-repeat; }
+.topic .absent { height:24px; padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
+.topic .abstain { height:24px; padding-left:28px; background:url('images/dash.gif') top left no-repeat; }

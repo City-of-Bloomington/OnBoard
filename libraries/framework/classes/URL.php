@@ -40,8 +40,7 @@ class URL
 		}
 
 		// Parse any parameters already in the script
-		if (preg_match('/\?/',$script))
-		{
+		if (preg_match('/\?/',$script)) {
 			list($script,$parameters) = explode('?',$script);
 
 			$parameters = preg_split('/[;&]/',$parameters);
@@ -161,7 +160,9 @@ class URL
 	 */
 	public function __get($key)
 	{
-		if (isset($this->parameters[$key])) { return $this->parameters[$key]; }
+		if (isset($this->parameters[$key])) {
+			return $this->parameters[$key];
+		}
 	}
 
 	/**

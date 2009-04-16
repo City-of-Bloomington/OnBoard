@@ -1,26 +1,26 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 verifyUser(array('Administrator','Clerk'));
 
-if (isset($_POST['committee']))
-{
+if (isset($_POST['committee'])) {
 	$committee = new Committee();
-	foreach ($_POST['committee'] as $field=>$value)
-	{
+	foreach ($_POST['committee'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
 		$committee->$set($value);
 	}
 
-	try
-	{
+	try {
 		$committee->save();
-		Header('Location: home.php');
+		header('Location: home.php');
 		exit();
 	}
-	catch(Exception $e) { $_SESSION['errorMessages'][] = $e; }
+	catch(Exception $e) {
+		$_SESSION['errorMessages'][] = $e;
+	}
 }
 
 $template = new Template();

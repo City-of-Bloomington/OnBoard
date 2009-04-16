@@ -61,6 +61,22 @@ function customErrorHandler ($errno, $errstr, $errfile, $errline)
 				 $message,
 				 "From: apache@$_SERVER[SERVER_NAME]");
 		}
+		if (in_array('SKIDDER',$ERROR_REPORTING)) {
+			$message = "Error on line $errline of file $errfile:\n$errstr\n";
+			$message.= print_r(debug_backtrace(),true);
+
+			$skidder = curl_init(SKIDDER_URL);
+			curl_setopt($skidder,CURLOPT_POST,true);
+			curl_setopt($skidder,CURLOPT_HEADER,true);
+			curl_setopt($skidder,CURLOPT_RETURNTRANSFER,true);
+			curl_setopt($skidder,
+						CURLOPT_POSTFIELDS,
+						array('application_id'=>SKIDDER_APPLICATION_ID,
+							  'script'=>$_SERVER['REQUEST_URI'],
+							  'type'=>$errstr,
+							  'message'=>$message));
+			curl_exec($skidder);
+		}
 	}
 }
 if (ERROR_REPORTING != 'PHP_DEFAULT') {
@@ -108,6 +124,22 @@ function customExceptionHandler($exception)
 				 $message,
 				 "From: apache@$_SERVER[SERVER_NAME]");
 		}
+		if (in_array('SKIDDER',$ERROR_REPORTING)) {
+			$message = "Error on line {$exception->getLine()} of file {$exception->getFile()}:\n{$exception->getMessage()}\n";
+			$message.= print_r(debug_backtrace(),true);
+
+			$skidder = curl_init(SKIDDER_URL);
+			curl_setopt($skidder,CURLOPT_POST,true);
+			curl_setopt($skidder,CURLOPT_HEADER,true);
+			curl_setopt($skidder,CURLOPT_RETURNTRANSFER,true);
+			curl_setopt($skidder,
+						CURLOPT_POSTFIELDS,
+						array('application_id'=>SKIDDER_APPLICATION_ID,
+							  'script'=>$_SERVER['REQUEST_URI'],
+							  'type'=>'Uncaught Exception',
+							  'message'=>$message));
+			curl_exec($skidder);
+		}
 	}
 }
 if (ERROR_REPORTING != 'PHP_DEFAULT') {
@@ -117,9 +149,11 @@ if (ERROR_REPORTING != 'PHP_DEFAULT') {
 
 /**
  * Makes sure the user is logged in.
+ *
  * If a Role or an array of Roles is passed in, it will check
  * to make sure the user belongs to one of the given roles.
  * If the validation fails, the user will be bounced to the BASE_URL
+ *
  * @param string $role Optional role name
  * @param array $roles Optional array of role names
  */
@@ -137,7 +171,7 @@ function verifyUser($roles=null)
 	if ($roles) {
 		if (!$_SESSION['USER']->hasRole($roles)) {
 			$_SESSION['errorMessages'][] = new Exception('noAccessAllowed');
-			header("Location: ".BASE_URL);
+			header('Location: '.BASE_URL);
 			exit();
 		}
 	}
@@ -149,19 +183,24 @@ function verifyUser($roles=null)
  * or an array of role names to check against.
  * @param string $role
  * @param array $roles
+ * @return boolean
  */
 function userHasRole($roles)
 {
 	if (isset($_SESSION['USER'])) {
 		return $_SESSION['USER']->hasRole($roles);
 	}
+	return false;
 }
 
 /**
- *	Browsers still use & when creating the url's when posting a form.
+ * Browsers still use & when creating the url's when posting a form.
  * This will convert those into XHTML-compliant semicolons for using inside the markup
+ *
+ * @return string
  */
-function getCurrentURL() {
+function getCurrentURL()
+{
 	return strtr($_SERVER['REQUEST_URI'],"&",";");
 }
 

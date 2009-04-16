@@ -1,16 +1,19 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param AppointerList $this->appointerList
  */
 ?>
 <div class="interfaceBox">
-	<h1>
-		<?php
-			if (userHasRole(array('Administrator','Cler')))
-			{
-				echo "<a class=\"add button\" href=\"".BASE_URL."/appointers/addAppointer.php\">Add</a>";
+	<h1><?php
+			if (userHasRole('Administrator')) {
+				echo "
+				<a class=\"add button\" href=\"".BASE_URL."/appointers/addAppointer.php\">
+					Add
+				</a>
+				";
 			}
 		?>
 		Appointers
@@ -18,23 +21,16 @@
 	<p>Seats on boards &amp; committees are appointed.  This is the list of
 		appointers known to the system.  When creating a seat, an entry from
 		this list must be chosen.</p>
-	<ul>
-	<?php
-		foreach ($this->appointerList as $appointer)
-		{
-			$name = View::escape($appointer->getName());
-
-			$editButton = '';
-			$deleteButton = '';
-			if (userHasRole(array('Administrator','Clerk')))
-			{
-				$editURL = new URL(BASE_URL.'/appointers/updateAppointer.php');
-				$editURL->appointer_id = $appointer->getId();
-				$editButton = "<a class=\"edit button\" href=\"$editURL\">Edit</a>";
+	<ul><?php
+			foreach ($this->appointerList as $appointer) {
+				$editButton = '';
+				if (userHasRole('Administrator')) {
+					$url = new URL(BASE_URL.'/appointers/updateAppointer.php');
+					$url->appointer_id = $appointer->getId();
+					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+				}
+				echo "<li>$editButton $appointer</li>";
 			}
-
-			echo "<li>$editButton $deleteButton $name</li>";
-		}
-	?>
+		?>
 	</ul>
 </div>

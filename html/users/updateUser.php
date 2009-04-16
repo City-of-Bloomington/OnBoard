@@ -1,39 +1,18 @@
 <?php
 /**
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param REQUEST return_url
+ * @param REQUEST user_id
  */
-verifyUser(array('Administrator','Clerk'));
+verifyUser('Administrator');
 
 $user = new User($_REQUEST['user_id']);
 
 if (isset($_POST['user'])) {
-	// Both clerk and admin can edit these fields
-	$fields = array('gender','firstname','lastname','email','address','city',
-					'zipcode','about','race_id','birthdate','phoneNumbers','privateFields');
-
-	// Only the Administrator can edit these fields
-	if (userHasRole('Administrator')) {
-		$fields[] = 'authenticationMethod';
-		$fields[] = 'username';
-		$fields[] = 'password';
-		$fields[] = 'roles';
-	}
-
-	// Set all the fields they're allowed to edit
-	foreach ($fields as $field) {
-		if ($field == 'roles') {
-			$_POST['user']['roles'] = isset($_POST['user']['roles'])
-										? $_POST['user']['roles']
-										: array();
-		}
-
-		if (isset($_POST['user'][$field])) {
-			$set = 'set'.ucfirst($field);
-			$user->$set($_POST['user'][$field]);
-		}
+	foreach ($_POST['user'] as $field=>$value) {
+		$set = 'set'.ucfirst($field);
+		$user->$set($value);
 	}
 
 	try {
@@ -47,11 +26,7 @@ if (isset($_POST['user'])) {
 }
 
 $template = new Template();
-$template->title = 'Update User';
-
-$form = new Block('users/updateUserForm.inc');
-$form->user = $user;
-$form->return_url = $_REQUEST['return_url'];
-$template->blocks[] = $form;
-
+$template->title = 'Update a user account';
+$template->blocks[] = new Block('users/updateUserForm.inc',array('user'=>$user));
+$template->blocks[] = new BlocK('people/personInfo.inc',array('person'=>$user->getPerson()));
 echo $template->render();

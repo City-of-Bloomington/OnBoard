@@ -15,13 +15,13 @@ foreach ($PDO->query('show tables') as $row) {
 foreach ($tables as $tableName) {
 	$fields = array();
 	foreach ($PDO->query("describe $tableName") as $row) {
-		$type = ereg_replace("[^a-z]","",$row['Type']);
+		$type = preg_replace("/[^a-z]/","",$row['Type']);
 
 		// Translate any MySQL datatype names into PHP datatype names
-		if (ereg('int',$type)) {
+		if (preg_match('/int/',$type)) {
 			$type = 'int';
 		}
-		if (ereg('enum',$type) || ereg('varchar',$type)) {
+		if (preg_match('/enum/',$type) || preg_match('/varchar/',$type)) {
 			$type = 'string';
 		}
 
@@ -74,7 +74,7 @@ if (isset(\$_POST['{$variableName}'])) {
 
 	try {
 		\${$variableName}->save();
-		header('Location: '.BASE_URL.\"/$tableName\");
+		header('Location: '.BASE_URL.'/$tableName');
 		exit();
 	}
 	catch(Exception \$e) {
@@ -106,7 +106,7 @@ if (isset(\$_POST['$variableName'])) {
 
 	try {
 		\${$variableName}->save();
-		header('Location: '.BASE_URL.\"/$tableName\");
+		header('Location: '.BASE_URL.'/$tableName');
 		exit();
 	}
 	catch (Exception \$e) {

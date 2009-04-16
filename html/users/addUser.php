@@ -3,44 +3,55 @@
  * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param REQUEST return_url
+ * @param GET person_id
  */
 verifyUser('Administrator');
+if (isset($_REQUEST['person_id'])) {
+	try {
+		$person = new Person($_REQUEST['person_id']);
+	}
+	catch (Exception $e) {
+	}
+}
 
-$user = new User();
 if (isset($_POST['user'])) {
-	// Both clerk and admin can edit these fields
-	$fields = array('gender','firstname','lastname','email','address','city',
-					'zipcode','about','race_id','birthdate','phoneNumbers');
 
-	// Only the Administrator can edit these fields
-	if (userHasRole('Administrator')) {
-		$fields[] = 'authenticationMethod';
-		$fields[] = 'username';
-		$fields[] = 'password';
-		$fields[] = 'roles';
+	$user = new User();
+	foreach ($_POST['user'] as $field=>$value) {
+		$set = 'set'.ucfirst($field);
+		$user->$set($value);
 	}
 
-	// Set all the fields they're allowed to edit
-	foreach ($fields as $field) {
-		if (isset($_POST['user'][$field])) {
-			$set = 'set'.ucfirst($field);
-			$user->$set($_POST['user'][$field]);
+	if (isset($person)) {
+		$user->setPerson_id($person->getId());
+	}
+	else {
+		// Load their information from LDAP
+		// Delete this statement if you're not using LDAP
+		if ($user->getAuthenticationMethod() == 'LDAP') {
+			try {
+				$ldap = new LDAPEntry($user->getUsername());
+				try {
+					$person = new Person($ldap->getEmail());
+				}
+				catch (Exception $e) {
+					$person = new Person();
+					$person->setFirstname($ldap->getFirstname());
+					$person->setLastname($ldap->getLastname());
+					$person->setEmail($ldap->getEmail());
+					$person->save();
+				}
+				$user->setPerson($person);
+			}
+			catch (Exception $e) {
+				$_SESSION['errorMessages'][] = $e;
+			}
 		}
-	}
-
-	// Load user information from LDAP
-	// Delete this statement if you're not using LDAP
-	if ($user->getAuthenticationMethod() == 'LDAP') {
-		$ldap = new LDAPEntry($user->getUsername());
-		$user->setFirstname($ldap->getFirstname());
-		$user->setLastname($ldap->getLastname());
-		$user->setEmail($ldap->getEmail());
 	}
 
 	try {
 		$user->save();
-		header('Location: home.php');
+		header('Location: '.BASE_URL.'/users');
 		exit();
 	}
 	catch (Exception $e) {
@@ -49,11 +60,9 @@ if (isset($_POST['user'])) {
 }
 
 $template = new Template();
-$template->title = 'Add User';
-
-$form = new Block('users/addUserForm.inc');
-$form->user = $user;
-$form->return_url = $_REQUEST['return_url'];
-$template->blocks[] = $form;
-
+$template->title = 'Create a user account';
+$template->blocks[] = new Block('users/addUserForm.inc');
+if (isset($person)) {
+	$template->blocks[] = new Block('people/personInfo.inc',array('person'=>$person));
+}
 echo $template->render();

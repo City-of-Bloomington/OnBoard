@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2007-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -12,21 +12,27 @@ class Race extends ActiveRecord
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
+	 *
+	 * @param int $id
 	 */
 	public function __construct($id=null)
 	{
-		if ($id)
-		{
+		if ($id) {
 			$PDO = Database::getConnection();
 			$query = $PDO->prepare('select * from races where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('races/unknownRace'); }
-			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			if (!count($result)) {
+				throw new Exception('races/unknownRace');
+			}
+			foreach ($result[0] as $field=>$value) {
+				if ($value) {
+					$this->$field = $value;
+				}
+			}
 		}
-		else
-		{
+		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 		}
@@ -39,10 +45,15 @@ class Race extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->name) { throw new Exception('missingName'); }
+		if (!$this->name) {
+			throw new Exception('missingName');
+		}
+
 	}
 
 	/**
+	 * Saves this record back to the database
+	 *
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
 	 * for each property of this class,
@@ -58,16 +69,19 @@ class Race extends ActiveRecord
 		// PDO->execute cannot take an associative array for values, so we have
 		// to strip out the keys from $fields
 		$preparedFields = array();
-		foreach ($fields as $key=>$value)
-		{
+		foreach ($fields as $key=>$value) {
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
 		}
 		$preparedFields = implode(",",$preparedFields);
 
 
-		if ($this->id) { $this->update($values,$preparedFields); }
-		else { $this->insert($values,$preparedFields); }
+		if ($this->id) {
+			$this->update($values,$preparedFields);
+		}
+		else {
+			$this->insert($values,$preparedFields);
+		}
 	}
 
 	private function update($values,$preparedFields)
@@ -92,19 +106,45 @@ class Race extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getName() { return $this->name; }
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
-	public function setName($string) { $this->name = trim($string); }
 
+	/**
+	 * @param string $string
+	 */
+	public function setName($string)
+	{
+		$this->name = trim($string);
+	}
 
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	// We recommend adding all your custom code down here at the bottom
 	//----------------------------------------------------------------
-	public function __toString() { return $this->name; }
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

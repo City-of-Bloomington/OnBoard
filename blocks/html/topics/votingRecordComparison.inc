@@ -5,30 +5,30 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param TopicList $this->topicList
  */
-$xAxisMembers = $this->topicList->getMembers();
-$yAxisMembers = $this->topicList->getMembers();
-if (count($xAxisMembers)) {
+$xAxisPeople = $this->topicList->getPeople();
+$yAxisPeople = $this->topicList->getPeople();
+if (count($xAxisPeople)) {
 	echo "
 	<div class=\"interfaceBox votingComparison\">
 		<h1>Voting Comparison</h1>
 		<table>
 			<tr><th></th>
 	";
-		foreach ($xAxisMembers as $xMember) {
-			$name = View::escape($xMember->getLastname());
+		foreach ($xAxisPeople as $xPerson) {
+			$name = View::escape($xPerson->getLastname());
 			echo "<th>$name</th>";
 		}
 		echo "</tr>";
 
-		foreach ($yAxisMembers as $yMember) {
-			$name = View::escape($yMember->getLastname());
+		foreach ($yAxisPeople as $yPerson) {
+			$name = View::escape($yPerson->getLastname());
 			echo "
 			<tr><th>$name</th>
 			";
 
-			foreach ($xAxisMembers as $xMember) {
-				if ($xMember->getId() != $yMember->getId()) {
-					$percent = $yMember->getAccordancePercentage($xMember,$this->topicList);
+			foreach ($xAxisPeople as $xPerson) {
+				if ($xPerson->getId() != $yPerson->getId()) {
+					$percent = $yPerson->getAccordancePercentage($xPerson,$this->topicList);
 					$percent = "$percent%";
 				}
 				else {

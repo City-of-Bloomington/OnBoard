@@ -134,3 +134,30 @@ FRAMEWORK.dateSelectionHandler = function (type,args,obj)
 	FRAMEWORK.dateField.value = args[0][0][1] + "/" + args[0][0][2] + "/" + args[0][0][0];
 	FRAMEWORK.popupDatePicker.hide();
 }
+
+/**
+ * Makes sure dates are correct.  Returns false on dates like Feb 30
+ * The months are zero based, so January is 0 and December is 11
+ *
+ * @param int month (0=Jan, 11=Dec)
+ * @param int day
+ * @param int year
+ */
+FRAMEWORK.validateDate = function (month,day,year)
+{
+	var date = new Date(year,month,day);
+
+	if (year != date.getFullYear()) {
+		alert('Year is not valid!');
+		return false;
+	}
+	if (month != date.getMonth()) {
+		alert('Month is not valid!');
+		return false;
+	}
+	if(day != date.getDate()) {
+		alert('Day is not valid!');
+		return false;
+	}
+	return true;
+};

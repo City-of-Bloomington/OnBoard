@@ -121,8 +121,7 @@ class Paginator implements ArrayAccess,SeekableIterator,Countable
 	 */
 	public function seek($index)
 	{
-		if (isset($this->pages[$index]))
-		{
+		if (isset($this->pages[$index])) {
 			$this->key = $index;
 		}
 		else {

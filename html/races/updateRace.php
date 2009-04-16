@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright 2007-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param REQUEST race_id
  */
+
 verifyUser('Administrator');
 
 $race = new Race($_REQUEST['race_id']);

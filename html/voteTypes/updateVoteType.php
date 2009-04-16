@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param REQUEST voteType_id
  */
 verifyUser('Administrator');
 
-$voteType = new VoteType($_REQUEST['id']);
+$voteType = new VoteType($_REQUEST['voteType_id']);
+
 if (isset($_POST['voteType'])) {
 	foreach ($_POST['voteType'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
@@ -15,6 +17,8 @@ if (isset($_POST['voteType'])) {
 
 	try {
 		$voteType->save();
+		header('Location: '.BASE_URL.'/voteTypes');
+		exit();
 	}
 	catch (Exception $e) {
 		$_SESSION['errorMessages'][] = $e;
@@ -22,6 +26,6 @@ if (isset($_POST['voteType'])) {
 }
 
 $template = new Template();
-$template->title = 'Update Vote Type';
+$template->title = 'Edit Vote Type';
 $template->blocks[] = new Block('voteTypes/updateVoteTypeForm.inc',array('voteType'=>$voteType));
 echo $template->render();

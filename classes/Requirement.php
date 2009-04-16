@@ -1,7 +1,8 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 class Requirement extends ActiveRecord
 {
@@ -11,21 +12,27 @@ class Requirement extends ActiveRecord
 	/**
 	 * This will load all fields in the table as properties of this class.
 	 * You may want to replace this with, or add your own extra, custom loading
+	 *
+	 * @param int $id
 	 */
 	public function __construct($id=null)
 	{
-		if ($id)
-		{
+		if ($id) {
 			$PDO = Database::getConnection();
 			$query = $PDO->prepare('select * from requirements where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
-			if (!count($result)) { throw new Exception('requirements/unknownRequirement'); }
-			foreach ($result[0] as $field=>$value) { if ($value) $this->$field = $value; }
+			if (!count($result)) {
+				throw new Exception('requirements/unknownRequirement');
+			}
+			foreach ($result[0] as $field=>$value) {
+				if ($value) {
+					$this->$field = $value;
+				}
+			}
 		}
-		else
-		{
+		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 		}
@@ -38,10 +45,14 @@ class Requirement extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->text) { throw new Exception('missingRequiredFields'); }
+		if (!$this->text) {
+			throw new Exception('requirements/missingText');
+		}
 	}
 
 	/**
+	 * Saves this record back to the database
+	 *
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
 	 * for each property of this class,
@@ -57,16 +68,19 @@ class Requirement extends ActiveRecord
 		// PDO->execute cannot take an associative array for values, so we have
 		// to strip out the keys from $fields
 		$preparedFields = array();
-		foreach ($fields as $key=>$value)
-		{
+		foreach ($fields as $key=>$value) {
 			$preparedFields[] = "$key=?";
 			$values[] = $value;
 		}
 		$preparedFields = implode(",",$preparedFields);
 
 
-		if ($this->id) { $this->update($values,$preparedFields); }
-		else { $this->insert($values,$preparedFields); }
+		if ($this->id) {
+			$this->update($values,$preparedFields);
+		}
+		else {
+			$this->insert($values,$preparedFields);
+		}
 	}
 
 	private function update($values,$preparedFields)
@@ -90,14 +104,12 @@ class Requirement extends ActiveRecord
 
 	public function delete()
 	{
-		if ($this->id)
-		{
-			$PDO = Database::getConnection();
-
-			$query = $PDO->prepare('delete from seat_requirements where requirement_id=?');
+		if ($this->id) {
+			$pdo = Database::getConnection();
+			$query = $pdo->prepare('delete from seat_requirements where requirement_id=?');
 			$query->execute(array($this->id));
 
-			$query = $PDO->prepare('delete from requirements where id=?');
+			$query = $pdo->prepare('delete from requirements where id=?');
 			$query->execute(array($this->id));
 		}
 	}
@@ -105,19 +117,45 @@ class Requirement extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
-	public function getId() { return $this->id; }
-	public function getText() { return $this->text; }
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getText()
+	{
+		return $this->text;
+	}
 
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
-	public function setText($string) { $this->text = trim($string); }
 
+	/**
+	 * @param string $string
+	 */
+	public function setText($string)
+	{
+		$this->text = trim($string);
+	}
 
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	// We recommend adding all your custom code down here at the bottom
 	//----------------------------------------------------------------
-	public function __toString() { return $this->text; }
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->text;
+	}
 }

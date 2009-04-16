@@ -33,13 +33,14 @@ $classes = array();
 foreach ($tables as $tableName) {
 	$fields = array();
 	foreach ($PDO->query("describe $tableName") as $row) {
-		$type = ereg_replace("[^a-z]","",$row['Type']);
+		$type = preg_replace("/[^a-z]/","",$row['Type']);
 
-		if (ereg("int",$type)) {
-			$type = "int";
+		// Translate any MySQL datatype names into PHP datatype names
+		if (preg_match('/int/',$type)) {
+			$type = 'int';
 		}
-		if (ereg("enum",$type) || ereg("varchar",$type)) {
-			$type = "string";
+		if (preg_match('/enum/',$type) || preg_match('/varchar/',$type)) {
+			$type = 'string';
 		}
 
 		$fields[] = array('Field'=>$row['Field'],'Type'=>$type);

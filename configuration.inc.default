@@ -4,7 +4,7 @@
  * will include this copyright statement
  */
 define('COPYRIGHT',"/**
- * @copyright Copyright (C) 2007-2008 City of Bloomington, Indiana. All rights reserved.
+ * @copyright Copyright (C) 2007-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */");
@@ -49,10 +49,18 @@ define('ADMINISTRATOR_EMAIL','admin@servername.com');
  * PRETTY_PRINT - Display a message in the browser
  * EMAIL_ADMIN - email the Administrator
  * EMAIL_USER - email the logged in user
+ * SKIDDER - post errors to a Skidder server (see config below)
 */
 define('ERROR_REPORTING','PHP_DEFAULT');
-#define('ERROR_REPORTING','CUSTOM');
-#$ERROR_REPORTING = array('EMAIL_ADMIN');
+//define('ERROR_REPORTING','CUSTOM');
+//$ERROR_REPORTING = array('PRETTY_PRINT','SKIDDER');
+/**
+ * Skidder is a web service for error notifications.  Error reporting supports
+ * posting errors to a Skidder server.  You must register for an application_id
+ * on the skidder server you want to post errors to.
+ */
+//define('SKIDDER_URL','http://localhost/skidder/home.php');
+//define('SKIDDER_APPLICATION_ID',);
 
 /**
  * Database Setup

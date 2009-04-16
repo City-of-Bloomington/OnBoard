@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2008 City of Bloomington, Indiana
+ * @copyright 2008-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -11,11 +11,14 @@
 	<table>
 
 	<tr><td><label for="tag-name" class="required">Name</label></td>
-		<td><input name="tag[name]" id="tag-name" /></td></tr>
+		<td><input name="tag[name]" id="tag-name" /></td>
+	</tr>
 
 	</table>
 
 	<button type="submit" class="submit">Submit</button>
-	<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>/tags';">Cancel</button>
+	<button type="button" class="cancel" onclick="document.location.href='<?php echo BASE_URL; ?>/tags';">
+		Cancel
+	</button>
 </fieldset>
 </form>

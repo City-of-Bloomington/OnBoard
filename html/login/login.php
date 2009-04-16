@@ -5,7 +5,7 @@
  *	A logged in user will have a $_SESSION['USER']
  *								$_SESSION['IP_ADDRESS']
  *
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2008 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -16,7 +16,7 @@ try {
 		$user->startNewSession();
 	}
 	else {
-		throw new Exception("wrongPassword");
+		throw new Exception('wrongPassword');
 	}
 }
 catch (Exception $e) {

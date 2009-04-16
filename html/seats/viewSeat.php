@@ -9,14 +9,14 @@ $seat = new Seat($_GET['seat_id']);
 $committee = $seat->getCommittee();
 
 $template = new Template();
-$template->title = $committee->getName().' - '.$seat->getTitle();
+$template->title = $committee->getName().' - '.$seat->getName();
 
 $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'=>$committee));
 $template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));
 
-$members = new Block('members/memberList.inc');
-$members->memberList = $seat->getMembers();
-$members->seat = $seat;
-$template->blocks[] = $members;
+$terms = new Block('terms/termList.inc');
+$terms->termList = $seat->getTerms();
+$terms->seat = $seat;
+$template->blocks[] = $terms;
 
 echo $template->render();

@@ -64,8 +64,8 @@ class Template extends View
 	 * the template file will need to include the panel's name in the includeBlocks() call.
 	 *
 	 * $this->blocks is a multi-dimensional array.  The top level elements, non-array elements
-	 * are for the default, main content area.  Other panels will arrays in $this->blocks with the
-	 * panel name as the key.
+	 * are for the default, main content area.  Other panels will be arrays in $this->blocks with
+	 * the panel name as the key.
 	 *
 	 * Panels are nothing but a name on a div, the $panel string can be whatever the template
 	 * author thinks makes sense.  Controllers are expected to know what the template authors

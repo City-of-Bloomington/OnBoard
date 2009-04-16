@@ -2,10 +2,10 @@
 /**
  * @copyright 2006-2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET tag_id (optional)
  */
 $topicList = new TopicList();
-
 
 if (!isset($_GET['tag_id'])) {
 	$topicList->find();
@@ -19,7 +19,6 @@ else {
 		$topicList->find();
 	}
 }
-
 
 $template = new Template();
 if (isset($tag)) {

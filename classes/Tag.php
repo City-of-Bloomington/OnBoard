@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2008 City of Bloomington, Indiana
+ * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -18,8 +18,8 @@ class Tag extends ActiveRecord
 	public function __construct($id=null)
 	{
 		if ($id) {
-			$pdo = Database::getConnection();
-			$query = $pdo->prepare('select * from tags where id=?');
+			$PDO = Database::getConnection();
+			$query = $PDO->prepare('select * from tags where id=?');
 			$query->execute(array($id));
 
 			$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -40,17 +40,19 @@ class Tag extends ActiveRecord
 
 	/**
 	 * Throws an exception if anything's wrong
-	 *
 	 * @throws Exception $e
 	 */
 	public function validate()
 	{
+		// Check for required fields here.  Throw an exception if anything is missing.
 		if (!$this->name) {
 			throw new Exception('missingName');
 		}
 	}
 
 	/**
+	 * Saves this record back to the database
+	 *
 	 * This generates generic SQL that should work right away.
 	 * You can replace this $fields code with your own custom SQL
 	 * for each property of this class,
@@ -83,21 +85,21 @@ class Tag extends ActiveRecord
 
 	private function update($values,$preparedFields)
 	{
-		$pdo = Database::getConnection();
+		$PDO = Database::getConnection();
 
 		$sql = "update tags set $preparedFields where id={$this->id}";
-		$query = $pdo->prepare($sql);
+		$query = $PDO->prepare($sql);
 		$query->execute($values);
 	}
 
 	private function insert($values,$preparedFields)
 	{
-		$pdo = Database::getConnection();
+		$PDO = Database::getConnection();
 
 		$sql = "insert tags set $preparedFields";
-		$query = $pdo->prepare($sql);
+		$query = $PDO->prepare($sql);
 		$query->execute($values);
-		$this->id = $pdo->lastInsertID();
+		$this->id = $PDO->lastInsertID();
 	}
 
 	public function delete()
@@ -112,10 +114,10 @@ class Tag extends ActiveRecord
 			$query->execute(array($this->id));
 		}
 	}
-
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------
+
 	/**
 	 * @return int
 	 */
@@ -123,6 +125,7 @@ class Tag extends ActiveRecord
 	{
 		return $this->id;
 	}
+
 	/**
 	 * @return string
 	 */
@@ -134,6 +137,7 @@ class Tag extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Setters
 	//----------------------------------------------------------------
+
 	/**
 	 * @param string $string
 	 */
@@ -141,7 +145,6 @@ class Tag extends ActiveRecord
 	{
 		$this->name = trim($string);
 	}
-
 
 
 	//----------------------------------------------------------------
@@ -174,7 +177,8 @@ class Tag extends ActiveRecord
 
 	/**
 	 * Returns the count of how many Topics use this tag
-	 * If you pass in a topicList, the popularity determined for the given set of topics
+	 * If you pass in a topicList, the popularity will bedetermined
+	 * for the given set of topics
 	 *
 	 * @param TopicList $topicList An optional list of topics to look in
 	 * @return int
@@ -182,12 +186,17 @@ class Tag extends ActiveRecord
 	public function getPopularity(TopicList $topicList=null)
 	{
 		if ($this->id) {
-			$PDO = Database::getConnection();
-			$sql = "select count(*) as popularity from topic_tags
-					where tag_id=? group by tag_id";
+			$sql = "select count(*) as popularity from topic_tags where tag_id=:tag_id";
+			$parameters = array(':tag_id'=>$this->id);
+			if ($topicList) {
+				$sql.= " and topic_id in ({$topicList->getSQL()})";
+				$parameters = array_merge($parameters,$topicList->getParameters());
+			}
+			$sql.= " group by tag_id";
 
-			$query = $PDO->prepare($sql);
-			$query->execute(array($this->id));
+			$pdo = Database::getConnection();
+			$query = $pdo->prepare($sql);
+			$query->execute($parameters);
 			$result = $query->fetchAll();
 			return $result[0]['popularity'];
 		}

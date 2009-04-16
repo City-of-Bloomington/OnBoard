@@ -14,7 +14,8 @@
 
 			if (userHasRole('Administrator')) {
 				echo "
-				<li><a href=\"".BASE_URL."/users\">Users</a></li>
+				<li><a href=\"".BASE_URL."/people\">People</a></li>
+				<li><a href=\"".BASE_URL."/users\">User Accounts</a></li>
 				<li><a href=\"".BASE_URL."/committees\">Committees</a></li>
 				<li><a href=\"".BASE_URL."/appointers\">Appointers</a></li>
 				<li><a href=\"".BASE_URL."/requirements\">Requirements</a></li>
