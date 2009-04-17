@@ -13,11 +13,13 @@ $template->title = $topic->getDescription();
 $template->blocks[] = new Block('committees/committeeInfo.inc',
 								array('committee'=>$topic->getCommittee()));
 
-if ($template->outputFormat == 'html') {
-	$template->blocks[] = new Block('topics/tabs.inc',
-								array('topic'=>$topic,'currentTab'=>'legislation'));
-	$template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
-}
+$template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
 
+$template->blocks[] = new Block('votes/voteList.inc',
+								array('topic'=>$topic,'voteList'=>$topic->getVotes()));
+
+foreach ($topic->getVotes() as $vote) {
+	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('vote'=>$vote));
+}
 
 echo $template->render();
