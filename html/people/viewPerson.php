@@ -9,6 +9,7 @@ $person = new Person($_GET['person_id']);
 
 $template = new Template();
 $template->title = $person->getFullname();
+$template->blocks[] = new Block('people/breadcrumbs.inc',array('person'=>$person));
 $template->blocks[] = new Block('people/personInfo.inc',array('person'=>$person));
 
 $terms = $person->getTerms();

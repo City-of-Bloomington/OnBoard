@@ -9,5 +9,6 @@ $personList->find();
 
 $template = new Template();
 $template->title = 'People';
+$template->blocks[] = new Block('people/breadcrumbs.inc');
 $template->blocks[] = new Block('people/personList.inc',array('personList'=>$personList));
 echo $template->render();
