@@ -54,8 +54,17 @@ if ($this->person->hasVotingRecord()) {
 		}
 		if ($votingRecords) {
 			echo "<div>";
-			foreach ($votingRecords as $position=>$names) {
-				echo "$position($names) ";
+			if (isset($votingRecords['yes'])) {
+				echo "yes($votingRecords[yes]); ";
+			}
+			if (isset($votingRecords['no'])) {
+				echo "no($votingRecords[no]); ";
+			}
+			if (isset($votingRecords['abstain'])) {
+				echo "abstain($votingRecords[abstain]); ";
+			}
+			if (isset($votingRecords['absent'])) {
+				echo "absent($votingRecords[absent]); ";
 			}
 			echo "</div>";
 		}
