@@ -19,8 +19,8 @@ $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'
 
 // Don't bother showing the tabs if there are no topics for this committee
 if ($committee->hasTopics()) {
-	$tabs = array('members','topics','votes');
-	$current_tab = isset($_GET['tab']) && in_array($_GET['tab'],$tabs) ? $_GET['tab'] : 'members';
+	$tabs = array('members'=>'Members','topics'=>'Legislation','votes'=>'Votes');
+	$current_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs) ? $_GET['tab'] : 'members';
 	$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,'current_tab'=>$current_tab));
 }
 else {

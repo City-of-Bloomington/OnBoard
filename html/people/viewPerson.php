@@ -14,8 +14,10 @@ $template->blocks[] = new Block('people/personInfo.inc',array('person'=>$person)
 
 $terms = $person->getTerms();
 if (count($terms)) {
-	$tabs = array('info','votes');
-	$current_tab = (isset($_GET['tab']) && in_array($_GET['tab'],$tabs)) ? $_GET['tab'] : 'info';
+	$tabs = array('info'=>'Information','votes'=>'Voting Record');
+	$current_tab = (isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs))
+					? $_GET['tab']
+					: 'info';
 	$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,'current_tab'=>$current_tab));
 	$template->blocks[] = new Block("people/tabs/$current_tab.inc",array('person'=>$person));
 }

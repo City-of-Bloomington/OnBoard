@@ -9,9 +9,9 @@
 $url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 
 echo "<ul class=\"tabBar\">";
-foreach ($this->tabs as $tab) {
+foreach ($this->tabs as $tab=>$title) {
 	$class = $this->current_tab == $tab ? 'class="current"' : '';
-	$name = ucfirst($tab);
+	$name = View::escape($title);
 	$url->tab = $tab;
 	echo "<li><a href=\"$url\" $class>$name</a></li>";
 }
