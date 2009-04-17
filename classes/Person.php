@@ -563,6 +563,7 @@ class Person extends ActiveRecord
 	}
 
 	/**
+	 * @param array $fields Extra fields to search on
 	 * @return TermList
 	 */
 	public function getTerms($fields=null)
@@ -572,6 +573,15 @@ class Person extends ActiveRecord
 			$search = array_merge($search,$fields);
 		}
 		return new TermList($search);
+	}
+
+	/**
+	 * @param Committee
+	 * @return boolean
+	 */
+	public function isCurrentlyServing(Committee $committee)
+	{
+		return count($this->getTerms(array('committee_id'=>$committee->getId()))) ? true : false;
 	}
 
 	/**

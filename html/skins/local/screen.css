@@ -17,3 +17,7 @@
 .topic .no { height:24px; padding-left:28px; background:url('images/x.gif') top left no-repeat; }
 .topic .absent { height:24px; padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
 .topic .abstain { height:24px; padding-left:28px; background:url('images/dash.gif') top left no-repeat; }
+
+
+#personalInfo .memberTable li { list-style-type:none; }
+#personalInfo .memberTable .current { padding-left:18px; background-color:gray; }

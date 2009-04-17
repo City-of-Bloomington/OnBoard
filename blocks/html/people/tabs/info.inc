@@ -41,11 +41,22 @@ echo "
 		else {
 			$office = '';
 		}
-		$committees[] = "$name-$appointers $office";
+		$class = $this->person->isCurrentlyServing($committee) ? 'class="current"' : '';
+		$committees[] = "<li $class>$name-$appointers $office</li>";
 	}
-	$committees = implode(', ',$committees);
 	if ($committees) {
-		echo "<tr><th>Committees</th><td>$committees</td></tr>";
+		echo "
+		<tr><th>Committees</th>
+			<td><ul>
+		";
+		foreach ($committees as $committee) {
+			echo $committee;
+		}
+		echo "
+				</ul>
+			</td>
+		</tr>
+		";
 	}
 
 echo "
