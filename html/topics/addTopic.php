@@ -19,7 +19,9 @@ if (isset($_POST['topic'])) {
 
 	try {
 		$topic->save();
-		header('Location: '.$committee->getURL());
+		$url = $committee->getURL();
+		$url->tab = 'topics';
+		header("Location: $url");
 		exit();
 	}
 	catch(Exception $e) {
