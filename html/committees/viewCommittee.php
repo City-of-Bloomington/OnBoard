@@ -38,13 +38,29 @@ switch ($current_tab) {
 		break;
 
 	case 'topics':
-		$topics = $committee->getTopics();
+		// Only allow the valid sort values
+		$sort = null;
+		if (isset($_GET['sort'])) {
+			switch ($_GET['sort']) {
+				case 'date':
+				case 'date desc':
+				case 'number':
+				case 'number desc':
+					$sort = $_GET['sort'];
+					break;
+				default:
+					$sort = null;
+			}
+		}
+
+		$topics = $committee->getTopics(null,$sort);
 		$people = array();
 		foreach($committee->getCurrentTerms() as $term) {
 			$people[] = $term->getPerson();
 		}
 		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
 
+		// Paginate the topics if there's alot of them
 		if (count($topics) > 15) {
 			$pages = new Paginator($topics,15);
 			$page = (isset($_GET['page']) && $_GET['page'])

@@ -18,9 +18,19 @@ if (isset($this->committee) && $userCanEdit) {
 
 if (count($this->topicList) || $userCanEdit) {
 	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
+
+	$dateSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	$numberSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	$dateSortURL->sort = $this->topicList->getSort()=='topics.date' ? 'date desc' : 'date';
+	$numberSortURL->sort = $this->topicList->getSort()=='topics.number' ? 'number desc' : 'number';
 	echo "
 	<div class=\"interfaceBox legislation\">
 		<h1>$addTopicButton $title Legislation</h1>
+		<div>
+			<label>Sort:</label>
+			<a href=\"$dateSortURL\">Date</a>
+			<a href=\"$numberSortURL\">Number</a>
+		</div>
 	";
 		foreach ($this->topicList as $topic) {
 			$editButton = '';

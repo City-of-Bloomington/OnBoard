@@ -287,11 +287,26 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param array $fields Extra fields to search on
+	 * @param string $sort Optional sorting
 	 * @return TopicList
 	 */
-	public function getTopics()
+	public function getTopics(array $fields=null,$sort=null)
 	{
-		return new TopicList(array('committee_id'=>$this->id));
+		$search = array('committee_id'=>$this->id);
+		if ($fields) {
+			$search = array_merge($search,$fields);
+		}
+
+		if ($sort) {
+			$topics = new TopicList();
+			$topics->find($search,$sort);
+		}
+		else {
+			$topics = new TopicList($search);
+		}
+
+		return $topics;
 	}
 
 	/**
