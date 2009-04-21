@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET vote_id
  */
-verifyUser(array('Administrator','Webmaster'));
+verifyUser(array('Administrator','Clerk'));
 
 $vote = new Vote($_REQUEST['vote_id']);
 if (isset($_POST['votingRecord'])) {

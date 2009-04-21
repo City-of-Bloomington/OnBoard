@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET topic_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 $topic = new Topic($_REQUEST['topic_id']);
 if (isset($_POST['vote'])) {
 	$vote = new Vote();
