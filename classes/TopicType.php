@@ -37,7 +37,7 @@ class TopicType extends ActiveRecord
 			// Set any default values for properties that need it here
 		}
 	}
-	
+
 	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
@@ -145,5 +145,13 @@ class TopicType extends ActiveRecord
 	public function __toString()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return TopicList
+	 */
+	public function getTopics()
+	{
+		return new TopicList(array('topicType_id'=>$this->id));
 	}
 }

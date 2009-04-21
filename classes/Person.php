@@ -666,13 +666,19 @@ class Person extends ActiveRecord
 	 * If you pass in a topic list, the comparison will be only for votes on the given topics
 	 * Without a topicList, the comparison will be for any votes both people participated in
 	 *
+	 * Passing in a voteType will limit the calculation to only votingRecords of that
+	 * type within the topicList
+	 *
 	 * @param Person $otherPerson
 	 * @param TopicList $topicList (optional)
+	 * @param VoteType $voteType (optional)
 	 * @return float
 	 */
-	public function getAccordancePercentage($otherPerson,TopicList $topicList=null)
+	public function getAccordancePercentage($otherPerson,
+											TopicList $topicList=null,
+											VoteType $voteType=null)
 	{
-		return VotingRecordList::findAccordancePercentage($this,$otherPerson,$topicList);
+		return VotingRecordList::findAccordancePercentage($this,$otherPerson,$topicList,$voteType);
 	}
 
 	/**

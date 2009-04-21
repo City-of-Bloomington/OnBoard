@@ -114,31 +114,42 @@ class VotingRecordList extends PDOResultIterator
 	 * If you pass in a topic list, the comparison will be only for votes on the given topics
 	 * Without a topicList, the comparison will be for any votes both people participated in
 	 *
+	 * Passing in a voteType will limit the calculation to only votingRecords of that
+	 * type within the topicList
+	 *
 	 * @param Person $personOne
 	 * @param Person $otherPerson
 	 * @param TopicList $topicList (optional)
+	 * @param VoteType $voteType (optional)
 	 * @return float
 	 */
-	public static function findAccordancePercentage($personOne,$otherPerson,TopicList $topicList=null)
+	public static function findAccordancePercentage($personOne,
+													$otherPerson,
+													TopicList $topicList=null,
+													VoteType $voteType=null)
 	{
-		$pdo = Database::getConnection();
-
-		$sql = "select a.id,a.position as personOneVote,b.position as otherPersonVote
-				from votingRecords a
-				left join terms at on a.term_id=at.id
+		$select = "select a.id,a.position as personOneVote,b.position as otherPersonVote
+					from votingRecords a";
+		$joins = "left join terms at on a.term_id=at.id
 				inner join votingRecords b on a.vote_id=b.vote_id
-				left join terms bt on b.term_id=bt.id
-				where at.person_id=:a
-				and bt.person_id=:b ";
+				left join terms bt on b.term_id=bt.id";
+		$where = "where at.person_id=:a and bt.person_id=:b";
+
 		$parameters = array(':a'=>$personOne->getId(),':b'=>$otherPerson->getId());
 		if ($topicList) {
-			$sql.= " and a.vote_id in
+			$where.= " and a.vote_id in
 					(select votes.id from votes where topic_id in
 					({$topicList->getSQL()}))";
 			$parameters = array_merge($parameters,$topicList->getParameters());
 		}
+		if ($voteType) {
+			$joins.= ' left join votes v on a.vote_id=v.id';
+			$where.= ' and v.voteType_id=:voteType_id';
+			$parameters[':voteType_id'] = $voteType->getId();
+		}
 
-		$query = $pdo->prepare($sql);
+		$pdo = Database::getConnection();
+		$query = $pdo->prepare("$select $joins $where");
 		$query->execute($parameters);
 		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 

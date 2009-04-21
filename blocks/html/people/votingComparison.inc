@@ -4,40 +4,59 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Person $this->person
  */
+$firstname = View::escape($this->person->getFirstname());
 ?>
 <div class="interfaceBox memberVoteComparison">
 	<h1>Voting Comparison</h1>
+	<p>Shows how often (as a percentage) that other members vote the same
+		way as <?php echo $firstname; ?>
+	</p>
 	<table>
-		<tr><th>Member</th><th>Percentage</th></tr>
+		<tr><th>Member</th>
+			<th>All Votes</th>
+			<?php
+				$finalVoteType = VoteType::getFinalVoteType();
+				echo '<th>'.View::escape($finalVoteType).' Votes</th>';
+
+				$topicTypes = new TopicTypeList();
+				$topicTypes->find();
+				foreach ($topicTypes as $topicType) {
+					$name = View::escape($topicType);
+					echo "<th>$name</th>";
+				}
+			?>
+		</tr>
 		<?php
 			// Gather all the data for this page
 			$comparison = array();
 			$peers = $this->person->getPeers();
 			foreach ($peers as $peer) {
-				$comparison[] = array('firstname'=>$peer->getFirstname(),
-									  'lastname'=>$peer->getLastname(),
-									  'fullname'=>$peer->getFullname(),
-									  'url'=>$peer->getURL(),
-									  'percentage'=>$this->person->getAccordancePercentage($peer));
+				$data = array('firstname'=>$peer->getFirstname(),
+								'lastname'=>$peer->getLastname(),
+								  'fullname'=>$peer->getFullname(),
+								  'url'=>$peer->getURL());
+				$data['allVotes'] = $this->person->getAccordancePercentage($peer);
+				$data['finalVotes'] = $this->person->getAccordancePercentage($peer,
+																			 null,
+																			 $finalVoteType);
+				foreach ($topicTypes as $topicType) {
+					$data[$topicType->getName()] = $this->person->getAccordancePercentage($peer,
+																						  $topicType->getTopics());
+				}
+				$comparison[] = $data;
 			}
 
-			// Sort the result by percentage, lastname, firstname
-			foreach ($comparison as $key=>$row) {
-				$percentage[$key] = $row['percentage'];
-				$lastname[$key] = $row['lastname'];
-				$firstname[$key] = $row['firstname'];
-			}
-			array_multisort($percentage,SORT_DESC,
-							$lastname,SORT_STRING,
-							$firstname,SORT_STRING,
-							$comparison);
-
-			// Output the sorted results
 			foreach ($comparison as $row) {
 				$fullname = View::escape($row['fullname']);
 				echo "
 				<tr><td><a href=\"$row[url]\">$fullname</a></td>
-					<td>$row[percentage]</td>
+					<td>$row[allVotes]</td>
+					<td>$row[finalVotes]</td>
+				";
+				foreach ($topicTypes as $topicType) {
+					echo "<td>".$row[$topicType->getName()]."</td>";
+				}
+				echo "
 				</tr>
 				";
 			}
