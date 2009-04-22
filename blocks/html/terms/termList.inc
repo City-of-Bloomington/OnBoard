@@ -19,7 +19,8 @@
 				$editButton = '';
 				if (userHasRole('Administrator')) {
 					$url = new URL(BASE_URL.'/terms/updateTerm.php');
-					$url->id = $term->getId();
+					$url->term_id = $term->getId();
+					$url->return_url = $_SERVER['REQUEST_URI'];
 					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 				}
 				$committee = $term->getSeat()->getCommittee();
