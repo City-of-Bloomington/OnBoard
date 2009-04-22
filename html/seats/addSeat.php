@@ -19,7 +19,7 @@ if (isset($_POST['seat'])) {
 
 	try {
 		$seat->save();
-		header('Location: '.$committee->getURL());
+		header('Location: '.$seat->getURL());
 		exit();
 	}
 	catch(Exception $e) {

@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param array $this->tabs
  * @param string $this->current_tab
+ * @param URL $this->base_url
  */
 $url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 

@@ -47,7 +47,7 @@ class AppointerList extends PDOResultIterator
 		$this->sort = $sort;
 		$this->limit = $limit;
 		$this->groupBy = $groupBy;
-		$this->joins = '';
+		$this->joins = array();
 
 		$options = array();
 		$parameters = array();

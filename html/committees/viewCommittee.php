@@ -18,8 +18,10 @@ $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'
 
 
 // Don't bother showing the tabs if there are no topics for this committee
-if ($committee->hasTopics()) {
-	$tabs = array('members'=>'Members','topics'=>'Legislation','votes'=>'Votes');
+// But we do want to show the tabs if the user is logged in
+// These tabs are the only places where you can add information to a new committee
+if (userHasRole(array('Administrator','Clerk')) || $committee->hasTopics()) {
+	$tabs = array('members'=>'Members','topics'=>'Legislation','votes'=>'Votes','seats'=>'Seats');
 	$current_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs) ? $_GET['tab'] : 'members';
 	$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,'current_tab'=>$current_tab));
 }
@@ -98,6 +100,25 @@ switch ($current_tab) {
 		$votingComparison->topicList = $topics;
 		$votingComparison->people = $people;
 		$template->blocks[] = $votingComparison;
+		break;
+
+	case 'seats':
+		$template->blocks[] = new Block('seats/seatList.inc',
+										array('seatList'=>$committee->getSeats()));
+		if (isset($_GET['seat'])) {
+			try {
+				$seat = new Seat($_GET['seat']);
+				if ($seat->getCommittee_id()==$committee->getId()) {
+					$template->blocks[] = new Block('seats/seatInfo.inc',array('seat'=>$seat));
+					$template->blocks[] = new Block('terms/termList.inc',
+													array('termList'=>$seat->getTerms(),
+														  'seat'=>$seat));
+				}
+			}
+			catch (Exception $e) {
+				// Just ignore them if they try to ask for a seat that doesn't exist
+			}
+		}
 		break;
 }
 

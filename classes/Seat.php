@@ -254,7 +254,10 @@ class Seat extends ActiveRecord
 	 */
 	public function getURL()
 	{
-		return BASE_URL.'/seats/viewSeat.php?seat_id='.$this->id;
+		$url = $this->getCommittee()->getURL();
+		$url->tab = 'seats';
+		$url->seat = $this->id;
+		return $url;
 	}
 	/**
 	 * @return TermList

@@ -16,7 +16,7 @@
 				<td><input name="seat[name]" id="seat-name" value="<?php echo View::escape($this->seat->getName()); ?>" />
 				</td>
 			</tr>
-				
+
 			<tr><td><label for="seat-appointer_id" class="required">Appointer</label></td>
 				<td><select name="seat[appointer_id]" id="seat-appointer_id">
 						<?php
@@ -37,16 +37,16 @@
 					</select>
 				</td>
 			</tr>
-				
+
 			<tr><td><label for="seat-maxCurrentTerms">Maximum Concurrent Terms</label></td>
 				<td><input name="seat[maxCurrentTerms]" id="seat-maxCurrentTerms" size="3" maxlength="3" value="<?php echo $this->seat->getMaxCurrentTerms(); ?>" />
 				</td>
 			</tr>
-				
+
 		</table>
 
 		<button type="submit" class="submit">Submit</button>
-		<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->seat->getCommittee()->getURL(); ?>';">
+		<button type="button" class="cancel" onclick="document.location.href='<?php echo $this->seat->getURL(); ?>';">
 			Cancel
 		</button>
 	</fieldset>
