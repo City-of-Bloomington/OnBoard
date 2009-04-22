@@ -20,9 +20,13 @@
 	<!-- Load the YUI toolkit -->
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/calendar/calendar-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="<?php echo BASE_URL; ?>/js/yui/build/datatable/datatable-min.js"></script>
 	<style type="text/css" media="screen">
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/assets/skins/sam/skin.css');
 		@import url('<?php echo BASE_URL; ?>/js/yui/build/calendar/assets/skins/sam/calendar.css');
+		@import url('<?php echo BASE_URL; ?>/js/yui/build/datatable/assets/skins/sam/datatable.css');
 	</style>
 
 	<title>
