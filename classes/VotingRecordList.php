@@ -42,33 +42,35 @@ class VotingRecordList extends PDOResultIterator
 	 * @param int $limit
 	 * @param string $groupBy
 	 */
-	public function find($fields=null,$sort='v.date desc',$limit=null,$groupBy=null)
+	public function find($fields=null,$sort='votes.date desc,people.lastname',$limit=null,$groupBy=null)
 	{
 		$this->sort = $sort;
 		$this->limit = $limit;
 		$this->groupBy = $groupBy;
-		$this->joins = 'left join votes v on vr.vote_id=v.id';
+		$this->joins = "left join votes on vr.vote_id=votes.id
+						left join terms on vr.term_id=terms.id
+						left join people on terms.person_id=people.id";
 
 		$options = array();
 		$parameters = array();
 
 		if (isset($fields['id'])) {
-			$options[] = 'id=:id';
+			$options[] = 'vr.id=:id';
 			$parameters[':id'] = $fields['id'];
 		}
 
 		if (isset($fields['term_id'])) {
-			$options[] = 'term_id=:term_id';
+			$options[] = 'vr.term_id=:term_id';
 			$parameters[':term_id'] = $fields['term_id'];
 		}
 
 		if (isset($fields['vote_id'])) {
-			$options[] = 'vote_id=:vote_id';
+			$options[] = 'vr.vote_id=:vote_id';
 			$parameters[':vote_id'] = $fields['vote_id'];
 		}
 
 		if (isset($fields['position'])) {
-			$options[] = 'position=:position';
+			$options[] = 'vr.position=:position';
 			$parameters[':position'] = $fields['position'];
 		}
 
@@ -77,21 +79,19 @@ class VotingRecordList extends PDOResultIterator
 		// You can add fields from other tables to $options by adding the join SQL
 		// to $this->joins here
 		if (isset($fields['person_id'])) {
-			$this->joins.= ' left join terms on vr.term_id=terms.id';
 			$options[] = 'terms.person_id=:person_id';
 			$parameters[':person_id'] = $fields['person_id'];
 		}
 
 		if (isset($fields['topicType'])) {
-			$this->joins.= ' left join topics on v.topic_id=topics.id';
+			$this->joins.= ' left join topics on votes.topic_id=topics.id';
 			$type = $fields['topicType'];
 			$options[] = 'topics.topicType_id=:topicType_id';
 			$parameters[':topicType_id'] = $type->getId();
 		}
 
 		if (isset($fields['voteType'])) {
-			$this->joins.= ' left join votes on vr.vote_id=v.id';
-			$options[] = 'v.voteType_id=:voteType_id';
+			$options[] = 'votes.voteType_id=:voteType_id';
 			$parameters[':voteType_id'] = $fields['voteType']->getId();
 		}
 
