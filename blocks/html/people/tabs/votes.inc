@@ -6,10 +6,6 @@
  * @param Person $this->person
  * @oaram GET voteType
  */
-include APPLICATION_HOME.'/blocks/html/people/votingComparison.inc';
-
-
-
 $currentVoteType = (isset($_GET['voteType']) && $_GET['voteType']=='all') ? 'all' : 'final';
 
 $allURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);

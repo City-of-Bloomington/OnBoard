@@ -14,7 +14,9 @@ $template->blocks[] = new Block('people/personInfo.inc',array('person'=>$person)
 
 $terms = $person->getTerms();
 if (count($terms)) {
-	$tabs = array('info'=>'Information','votes'=>'Voting Record');
+	$tabs = array('info'=>'Information',
+				  'votes'=>'Voting Record',
+				  'comparisons'=>'Voting Comparisons');
 	$current_tab = (isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs))
 					? $_GET['tab']
 					: 'info';
