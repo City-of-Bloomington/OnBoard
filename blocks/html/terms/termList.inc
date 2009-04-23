@@ -9,11 +9,19 @@ $tableRows = array('current'=>'','past'=>'');
 
 foreach ($this->termList as $term) {
 	$editButton = '';
-	if (userHasRole('Administrator')) {
+	$deleteButton = '';
+	if (userHasRole(array('Administrator','Clerk'))) {
 		$url = new URL(BASE_URL.'/terms/updateTerm.php');
 		$url->term_id = $term->getId();
 		$url->return_url = $_SERVER['REQUEST_URI'];
 		$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+
+		if ($term->isSafeToDelete()) {
+			$url = new URL(BASE_URL.'/terms/deleteTerm.php');
+			$url->term_id = $term->getId();
+			$url->return_url = $_SERVER['REQUEST_URI'];
+			$deleteButton = "<a class=\"delete button\" href=\"$url\">Delete</a>";
+		}
 	}
 	$personName = View::escape($term->getPerson()->getFullname());
 	$committee = $term->getSeat()->getCommittee();
@@ -31,7 +39,7 @@ foreach ($this->termList as $term) {
 		<td><a href=\"{$committee->getURL()}\">$committeeName</a></td>
 		<td>$appointer</td>
 		<td>{$term->getTerm_start('n/j/Y')} - {$term->getTerm_end('n/j/Y')}</td>
-		<td>$editButton</td>
+		<td>$editButton $deleteButton</td>
 	</tr>
 	";
 }

@@ -350,12 +350,27 @@ class Term extends ActiveRecord
 	// Custom Functions
 	// We recommend adding all your custom code down here at the bottom
 	//----------------------------------------------------------------
-
 	/**
 	 * @return Committee
 	 */
 	public function getCommittee()
 	{
 		return $this->getSeat()->getCommittee();
+	}
+
+	/**
+	 * @return VotingRecordList
+	 */
+	public function getVotingRecords()
+	{
+		return new VotingRecordList(array('term_id'=>$this->id));
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isSafeToDelete()
+	{
+		return (count($this->getVotingRecords()) == 0) ? true : false;
 	}
 }
