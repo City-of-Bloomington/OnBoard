@@ -90,10 +90,13 @@ class Term extends ActiveRecord
 		// Make sure this person is not serving overlapping terms for the same committee
 		$pdo = Database::getConnection();
 		$sql = "select id from terms
-				where (term_start<=? and ?>=term_end)
-				or (?<=term_end and ?>=term_end)";
+				where id!=?
+				and ((term_start<=? and ?>=term_end)
+					or (?<=term_end and ?>=term_end))";
 		$query = $pdo->prepare($sql);
-		$query->execute(array($this->term_start,$this->term_end,$this->term_start,$this->term_end));
+		$query->execute(array($this->id,
+							  $this->term_start,$this->term_end,
+							  $this->term_start,$this->term_end));
 		$result = $query->fetchAll(PDO::FETCH_ASSOC);
 		if (count($result)) {
 			throw new Exception('terms/overlappingTerms');
