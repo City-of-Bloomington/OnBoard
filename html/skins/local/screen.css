@@ -17,7 +17,6 @@
 .topic .no { height:24px; padding-left:28px; background:url('images/x.gif') top left no-repeat; }
 .topic .absent { height:24px; padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
 .topic .abstain { height:24px; padding-left:28px; background:url('images/dash.gif') top left no-repeat; }
-.topic .voteSummary a.current { font-weight:bold; }
 
 .memberTable ul { margin:0; padding:0px; }
 
