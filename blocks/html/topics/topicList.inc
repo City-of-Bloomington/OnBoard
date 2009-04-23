@@ -19,17 +19,33 @@ if (isset($this->committee) && $userCanEdit) {
 if (count($this->topicList) || $userCanEdit) {
 	$title = isset($this->tag) ? View::escape($this->tag->getName()) : '';
 
-	$dateSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 	$numberSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-	$dateSortURL->sort = $this->topicList->getSort()=='topics.date' ? 'date desc' : 'date';
-	$numberSortURL->sort = $this->topicList->getSort()=='topics.number' ? 'number desc' : 'number';
+	if ($this->topicList->getSort()=='topics.number') {
+		$numberSortURL->sort = 'number desc';
+		$numberDirection = 'down';
+	}
+	else {
+		$numberSortURL->sort = 'number';
+		$numberDirection = 'up';
+	}
+
+	$dateSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+	if ($this->topicList->getSort()=='topics.date') {
+		$dateSortURL->sort = 'date desc';
+		$dateDirection = 'down';
+	}
+	else {
+		$dateSortURL->sort = 'date';
+		$dateDirection = 'up';
+	}
+
 	echo "
 	<div class=\"interfaceBox legislation\">
 		<h1>$addTopicButton $title Legislation</h1>
 		<div>
 			<label>Sort:</label>
-			<a href=\"$dateSortURL\">Date</a>
-			<a href=\"$numberSortURL\">Number</a>
+			<a href=\"$numberSortURL\" class=\"$numberDirection\">Number</a>
+			<a href=\"$dateSortURL\" class=\"$dateDirection\">Date</a>
 		</div>
 	";
 		foreach ($this->topicList as $topic) {

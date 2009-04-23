@@ -18,6 +18,8 @@
 .topic .absent { height:24px; padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
 .topic .abstain { height:24px; padding-left:28px; background:url('images/dash.gif') top left no-repeat; }
 .topic .voteSummary a.current { font-weight:bold; }
+a.up { padding-right:10px; background:url('images/up.png') center right no-repeat; }
+a.down { padding-right:10px; background:url('images/down.png') center right no-repeat; }
 
 .memberTable ul { margin:0; padding:0px; }
 
