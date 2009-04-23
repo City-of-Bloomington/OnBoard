@@ -19,6 +19,7 @@
 .topic .abstain { height:24px; padding-left:28px; background:url('images/dash.gif') top left no-repeat; }
 .topic .voteSummary a.current { font-weight:bold; }
 
+.memberTable ul { margin:0; padding:0px; }
 
 #personalInfo .memberTable li { list-style-type:none; }
 #personalInfo .memberTable .current { padding-left:18px; background-color:gray; }

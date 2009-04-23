@@ -41,7 +41,7 @@ echo "
 		else {
 			$office = '';
 		}
-		$current = $this->person->isCurrentlyServing($committee) ? 'current' : '';
+		$current = $this->person->isCurrentlyServing($committee) ? '(Current Member)' : '';
 		$committees[] = "<li>$name-$appointers $office $current</li>";
 	}
 	if ($committees) {
