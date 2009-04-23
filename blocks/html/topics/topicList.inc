@@ -6,6 +6,8 @@
  * @param TopicList $this->topicList
  * @param Committee $this->committee (optional)
  * @param Tag $this->tag
+ * @param array $this->years An array of all the years with available topics
+ * @param int $this->currentYear The year we're currently displaying
  */
 $userCanEdit = userHasRole(array('Administrator','Clerk'));
 
@@ -42,6 +44,16 @@ if (count($this->topicList) || $userCanEdit) {
 	echo "
 	<div class=\"interfaceBox legislation\">
 		<h1>$addTopicButton $title Legislation</h1>
+		<div class=\"years\">
+	";
+		$url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+		foreach ($this->years as $year) {
+			$url->year = $year;
+			$class = $year==$this->currentYear ? 'class="current"' : '';
+			echo "<a href=\"$url\" $class>$year</a> ";
+		}
+	echo "
+		</div>
 		<div>
 			<label>Sort:</label>
 			<a href=\"$numberSortURL\" class=\"$numberDirection\">Number</a>

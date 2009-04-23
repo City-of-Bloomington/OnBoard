@@ -55,11 +55,19 @@ switch ($current_tab) {
 			}
 		}
 
-		$topics = $committee->getTopics(null,$sort);
-		$people = array();
-		foreach($committee->getCurrentTerms() as $term) {
-			$people[] = $term->getPerson();
-		}
+		// We only want to display topics for a single year,
+		// chosen by the user
+		$topics = $committee->getTopics();
+		$years = $topics->getYears();
+		$displayYear = (isset($_GET['year']) && ctype_digit($_GET['year']))
+					? $_GET['year']
+					: $years[0];
+		$topics = $committee->getTopics(array('year'=>$displayYear),$sort);
+
+		#$people = array();
+		#foreach($committee->getCurrentTerms() as $term) {
+		#	$people[] = $term->getPerson();
+		#}
 		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
 
 		// Paginate the topics if there's alot of them
@@ -77,7 +85,10 @@ switch ($current_tab) {
 			$topicList = $topics;
 		}
 		$template->blocks[] = new Block('topics/topicList.inc',
-										array('topicList'=>$topicList,'committee'=>$committee));
+										array('topicList'=>$topicList,
+											  'committee'=>$committee,
+											  'years'=>$years,
+											  'currentYear'=>$displayYear));
 
 		if (isset($pages)) {
 			$pageNavigation = new Block('pageNavigation.inc');

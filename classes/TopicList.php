@@ -67,6 +67,11 @@ class TopicList extends PDOResultIterator
 			$parameters[':date'] = $fields['date'];
 		}
 
+		if (isset($fields['year'])) {
+			$options[] = 'year(topics.date)=:year';
+			$parameters[':year'] = $fields['year'];
+		}
+
 		if (isset($fields['number'])) {
 			$options[] = 'topics.number=:number';
 			$parameters[':number'] = $fields['number'];
@@ -155,5 +160,36 @@ class TopicList extends PDOResultIterator
 		if(count($this)) {
 			return new PersonList(array('topicList'=>$this));
 		}
+	}
+
+	/**
+	 * Returns a list of years for this collection.
+	 * If this collection is not populated, it returns a list of all the years in the database
+	 *
+	 * @return array
+	 */
+	public function getYears()
+	{
+		$pdo = Database::getConnection();
+
+		if ($this->getSQL()) {
+			$sql = str_replace($this->getSelect(),
+							   'select distinct year(date) as year from topics',
+							   $this->getSQL());
+			$query = $pdo->prepare($sql);
+			$query->execute($this->getParameters());
+		}
+		else {
+			$sql = 'select distinct year(date) as year from topics order by date desc';
+			$query = $pdo->prepare($sql);
+			$query->execute();
+		}
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+		$years = array();
+		foreach ($result as $row) {
+			$years[] = $row['year'];
+		}
+		return $years;
 	}
 }
