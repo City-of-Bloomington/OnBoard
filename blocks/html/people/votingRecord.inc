@@ -18,13 +18,13 @@ if ($this->person->hasVotingRecord()) {
 		switch ($position) {
 			case 'yes':
 			case 'no':
-				$action = "voted $position";
+				$action = 'voted '.ucfirst($position);
 				break;
 			case 'absent':
-				$action = "was absent";
+				$action = "was Absent";
 				break;
 			case 'abstain':
-				$action = "abstained";
+				$action = "Abstained";
 				break;
 		}
 		$number = View::escape($record->getTopic()->getNumber());
@@ -47,25 +47,17 @@ if ($this->person->hasVotingRecord()) {
 		$votingRecords = array();
 		foreach ($record->getVote()->getVotingRecords() as $vote) {
 			$name = View::escape($vote->getPerson()->getLastname());
-			$votingRecords[$vote->getPosition()][] = "<a href=\"{$vote->getPerson()->getURL()}\">$name</a>";
+			$class = ($vote->getPerson()->getId()==$this->person->getId())
+					? 'class="current"'
+					: '';
+			$votingRecords[$vote->getPosition()][] = "<a href=\"{$vote->getPerson()->getURL()}\" $class>$name</a>";
 		}
 		foreach ($votingRecords as $position=>$names) {
-			$votingRecords[$position] = implode(', ',$names);
+			$votingRecords[$position] = "$position(".implode(', ',$names).")";
 		}
 		if ($votingRecords) {
-			echo "<div>";
-			if (isset($votingRecords['yes'])) {
-				echo "yes($votingRecords[yes]); ";
-			}
-			if (isset($votingRecords['no'])) {
-				echo "no($votingRecords[no]); ";
-			}
-			if (isset($votingRecords['abstain'])) {
-				echo "abstain($votingRecords[abstain]); ";
-			}
-			if (isset($votingRecords['absent'])) {
-				echo "absent($votingRecords[absent]); ";
-			}
+			echo "<div class=\"voteSummary\">";
+			echo implode('; ',$votingRecords);
 			echo "</div>";
 		}
 		echo "</div>";
