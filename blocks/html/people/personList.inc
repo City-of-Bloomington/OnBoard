@@ -5,22 +5,44 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param PersonList $this->personList
  */
+$people = array('Current Members'=>array(),
+				'Past Members'=>array(),
+				'Users'=>array(),
+				'Others'=>array());
+foreach ($this->personList as $person) {
+	if (count($person->getTerms(array('current'=>time())))) {
+		$people['Current Members'][] = $person;
+	}
+	elseif (count($person->getTerms(array('current'=>time())))) {
+		$people['Past Members'][] = $person;
+	}
+	elseif ($person->getUser_id()) {
+		$people['Users'][] = $person;
+	}
+	else {
+		$people['Others'][] = $person;
+	}
+}
 ?>
 <div class="interfaceBox">
-	<h1><?php
-			if (userHasRole('Administrator')) {
-				echo "
-				<a class=\"add button\" href=\"".BASE_URL."/people/addPerson.php\" title=\"Add a person\">
-					Add
-				</a>
-				";
-			}
-		?>
-		People
-	</h1>
-	<table>
-		<?php
-			foreach ($this->personList as $person) {
+<?php
+	$addButton = '';
+	if (userHasRole('Administrator')) {
+		$addButton = "
+		<a class=\"add button\" href=\"".BASE_URL."/people/addPerson.php\" title=\"Add a person\">
+			Add
+		</a>
+		";
+	}
+	foreach (array_keys($people) as $key) {
+		if ((in_array($key,array('Current Members','Past Members'))
+			&& count($people[$key]))
+			|| userHasRole(array('Administrator','Clerk'))) {
+			echo "
+			<h1>$addButton$key</h1>
+			<table>
+			";
+			foreach ($people[$key] as $person) {
 				$editButton = '';
 				if (userHasRole('Administrator')) {
 					$url = new URL(BASE_URL.'/people/updatePerson.php');
@@ -35,12 +57,13 @@
 				$name = View::escape($person->getFullname());
 				echo "
 				<tr><td>$editButton</td>
-					<td>{$person->getUsername()}</td>
 					<td><a href=\"{$person->getURL()}\">$name</a></td>
 					<td>{$person->getEmail()}</td>
 				</tr>
 				";
 			}
-		?>
-	</table>
+			echo "</table>";
+		}
+	}
+?>
 </div>
