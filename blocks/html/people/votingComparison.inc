@@ -15,7 +15,6 @@ $firstname = View::escape($this->person->getFirstname());
 		<table id="votingComparisonTable">
 			<thead>
 				<tr><th>Member</th>
-					<th>All Votes</th>
 					<?php
 						$finalVoteType = VoteType::getFinalVoteType();
 						echo "<th>$finalVoteType Votes</th>";
@@ -27,6 +26,7 @@ $firstname = View::escape($this->person->getFirstname());
 							echo "<th>$name</th>";
 						}
 					?>
+					<th>All Votes</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -51,13 +51,13 @@ $firstname = View::escape($this->person->getFirstname());
 					$fullname = View::escape($row['fullname']);
 					echo "
 					<tr><td><a href=\"$row[url]\">$fullname</a></td>
-						<td>$row[allVotes]</td>
 						<td>$row[finalVotes]</td>
 					";
 					foreach ($topicTypes as $topicType) {
 						echo "<td>".$row[$topicType->getName()]."</td>";
 					}
 					echo "
+						<td>$row[allVotes]</td>
 					</tr>
 					";
 				}
@@ -68,13 +68,13 @@ $firstname = View::escape($this->person->getFirstname());
 </div>
 <?php
 	$yuiLabels = array();
-	$yuiLabels['all'] = 'All Votes';
 	$yuiLabels['final'] = $finalVoteType->getName().' Votes';
 	foreach ($topicTypes as $topicType) {
 		preg_match('/^\w*/',$topicType->getName(),$matches);
 		$key = strtolower($matches[0]);
 		$yuiLabels[$key] = $topicType->getName();
 	}
+	$yuiLabels['all'] = 'All Votes';
 ?>
 <script type="text/javascript">
 	YAHOO.util.Event.addListener(window,'load',function() {
