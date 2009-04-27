@@ -109,6 +109,8 @@ class Topic extends ActiveRecord
 		else {
 			$this->insert($values,$preparedFields);
 		}
+
+		$this->saveTags();
 	}
 
 	private function update($values,$preparedFields)
