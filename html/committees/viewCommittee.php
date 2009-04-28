@@ -78,7 +78,8 @@ switch ($current_tab) {
 
 	case 'seats':
 		$template->blocks[] = new Block('seats/seatList.inc',
-										array('seatList'=>$committee->getSeats()));
+										array('seatList'=>$committee->getSeats(),
+											  'committee'=>$committee));
 		if (isset($_GET['seat'])) {
 			try {
 				$seat = new Seat($_GET['seat']);

@@ -4,13 +4,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param SeatList $this->seatList
+ * @param Committee $this->committee (optional)
  */
 $userCanEdit = userHasRole(array('Administrator','Clerk'));
 ?>
 <div class="interfaceBox">
 	<h1><?php
-			if ($userCanEdit) {
-				echo "<a class=\"add button\" href=\"".BASE_URL."/seats/addSeat.php\">Add</a>";
+			if (isset($this->committee) && $userCanEdit) {
+				$url = new URL(BASE_URL.'/seats/addSeat.php');
+				$url->committee_id = $this->committee->getId();
+				echo "<a class=\"add button\" href=\"$url\">Add</a>";
 			}
 		?>
 		Seats
