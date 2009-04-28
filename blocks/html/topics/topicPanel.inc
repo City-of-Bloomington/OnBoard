@@ -24,6 +24,7 @@ if (isset($_GET['sort'])) {
 // We only want to display topics for a single year, chosen by the user
 // Lets create a new list, only including a single years worth of topics
 $years = $this->topicList->getYears();
+$years = count($years) ? $years : array(date('Y'));
 $displayYear = (isset($_GET['year']) && ctype_digit($_GET['year']))
 			? $_GET['year']
 			: $years[0];
