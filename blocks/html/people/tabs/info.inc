@@ -18,7 +18,7 @@ echo "
 		echo "<tr><th>Address</th><td>{$this->person->getAddress()}</td></tr>";
 	}
 	if ($this->person->getBirthdate()) {
-		echo "<tr><th>Birthdate</th><td>{$this->person->getBirdate('n/j/Y')}</td></tr>";
+		echo "<tr><th>Birthdate</th><td>{$this->person->getBirthdate('n/j/Y')}</td></tr>";
 	}
 
 	$committees = array();
