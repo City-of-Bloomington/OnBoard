@@ -1,5 +1,5 @@
 /* Tag Styles */
-.tags { width:200px; float:right; }
+.tags { width:250px; float:right; }
 .tags .p90 { font-size:180%; }
 .tags .p70 { font-size:150%; }
 .tags .p50 { font-size:100%; }
@@ -25,3 +25,5 @@ a.down { padding-right:10px; background:url('images/down.png') center right no-r
 
 #personalInfo .memberTable li { list-style-type:none; }
 #personalInfo .memberTable .current { padding-left:18px; background-color:gray; }
+
+.legislation {width:550px; }
