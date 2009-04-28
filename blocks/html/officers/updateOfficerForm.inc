@@ -20,15 +20,13 @@
 			<tr><td><label for="officer-startDate">Start Date</label></td>
 				<td><input name="officer[startDate]"
 							id="officer-startDate"
-							value="<?php echo $this->officer->getStartDate('n/j/Y'); ?>""
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							value="<?php echo $this->officer->getStartDate('n/j/Y'); ?>"" />
 				</td>
 			</tr>
 			<tr><td><label for="officer-endDate">End Date</label></td>
 				<td><input name="officer[endDate]"
 							id="officer-endDate"
-							value="<?php echo $this->officer->getEndDate('n/j/Y'); ?>"
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							value="<?php echo $this->officer->getEndDate('n/j/Y'); ?>" />
 				</td>
 			</tr>
 		</table>

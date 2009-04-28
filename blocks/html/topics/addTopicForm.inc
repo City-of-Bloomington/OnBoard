@@ -27,8 +27,7 @@
 				<td><input name="topic[date]"
 							id="topic-date"
 							maxlength="10"
-							size="10"
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							size="10" />
 				</td>
 			</tr>
 

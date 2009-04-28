@@ -33,7 +33,7 @@
 				<td><input name="topic[date]"
 							id="topic-date"
 							value="<?php echo $this->topic->getDate('n/j/Y'); ?>"
-							onfocus="FRAMEWORK.popupCalendar(this);" maxlength="10" size="10" />
+							maxlength="10" size="10" />
 				</td>
 			</tr>
 

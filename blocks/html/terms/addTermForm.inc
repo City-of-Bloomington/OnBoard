@@ -16,11 +16,11 @@
 		<h2><?php echo View::escape($this->person->getFullname()); ?></h2>
 		<table>
 			<tr><td><label for="term-term_start" class="required">Term Start</label></td>
-				<td><input name="term[term_start]" id="term-term_start" value="<?php echo date('n/j/Y'); ?>" onfocus="FRAMEWORK.popupCalendar(this);" />
+				<td><input name="term[term_start]" id="term-term_start" value="<?php echo date('n/j/Y'); ?>" />
 				</td>
 			</tr>
 			<tr><td><label for="term-term_end">Term End</label></td>
-				<td><input name="term[term_end]" id="term-term_end" onfocus="FRAMEWORK.popupCalendar(this);" />
+				<td><input name="term[term_end]" id="term-term_end" />
 				</td>
 			</tr>
 		</table>

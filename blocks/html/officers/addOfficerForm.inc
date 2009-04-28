@@ -22,14 +22,12 @@
 			<tr><td><label for="officer-startDate" class="required">Start Date</label></td>
 				<td><input name="officer[startDate]"
 							id="officer-startDate"
-							value="<?php echo date('n/j/Y'); ?>"
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							value="<?php echo date('n/j/Y'); ?>" />
 				</td>
 			</tr>
 			<tr><td><label for="officer-endDate">End Date</label></td>
 				<td><input name="officer[endDate]"
-							id="officer-endDate"
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							id="officer-endDate" />
 				</td>
 			</tr>
 		</table>

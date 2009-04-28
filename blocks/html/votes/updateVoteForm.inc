@@ -17,8 +17,7 @@
 							id="vote-date"
 							size="10"
 							maxlength="10"
-							value="<?php echo $this->vote->getDate('n/j/Y'); ?>"
-							onfocus="FRAMEWORK.popupCalendar(this);" />
+							value="<?php echo $this->vote->getDate('n/j/Y'); ?>" />
 				</td>
 			</tr>
 			<tr><td><label for="vote-voteType_id">Type</label></td>
