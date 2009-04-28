@@ -72,5 +72,13 @@
 			</div>
 			";
 		}
+		else {
+			echo "
+			<div class\"interfaceBox results\">
+				<h1>Results</h1>
+				<p>No People Found</p>
+			</div>
+			";
+		}
 	}
 ?>
