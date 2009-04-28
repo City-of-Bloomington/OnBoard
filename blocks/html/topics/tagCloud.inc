@@ -21,6 +21,19 @@
 			$tags[$tag->getId()]['popularity'] = $popularity;
 		}
 
+		// If the topicList is for a committee, use the Committee's URL
+		// Otherwise, use the general Topics url
+		$parameters = $this->topicList->getParameters();
+		if (array_key_exists(':committee_id',$parameters)) {
+			$committee = new Committee($parameters[':committee_id']);
+			$url = $committee->getURL();
+			$url->tab = 'topics';
+		}
+		else {
+			$url = new URL(BASE_URL.'/topics');
+		}
+
+
 		foreach ($tags as $id=>$tag) {
 			$percent = $tag['popularity'] / $maxPopularity * 100;
 
@@ -43,9 +56,10 @@
 				$class = 'class="p0"';
 			}
 
+			$url->tag_id = $id;
 			echo "
 			<span $class>
-				<a href=\"".BASE_URL."/topics?tag_id=$id\">$tag[name]</a>
+				<a href=\"$url\">$tag[name]</a>
 			</span>
 			";
 		}

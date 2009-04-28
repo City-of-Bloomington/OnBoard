@@ -177,7 +177,7 @@ class Tag extends ActiveRecord
 
 	/**
 	 * Returns the count of how many Topics use this tag
-	 * If you pass in a topicList, the popularity will bedetermined
+	 * If you pass in a topicList, the popularity will be determined
 	 * for the given set of topics
 	 *
 	 * @param TopicList $topicList An optional list of topics to look in

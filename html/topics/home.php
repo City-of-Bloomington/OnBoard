@@ -37,11 +37,7 @@ $votingComparison->topicList = $topicList;
 $template->blocks[] = $votingComparison;
 
 
-$list = new Block('topics/topicList.inc');
-$list->topicList = $topicList;
-if (isset($tag)) {
-	$list->tag = $tag;
-}
-$template->blocks[] = $list;
+$template->blocks[] = new Block('topics/topicPanel.inc',array('topicList'=>$topicList));
+
 
 echo $template->render();

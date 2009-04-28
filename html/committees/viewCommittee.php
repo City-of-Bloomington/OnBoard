@@ -21,9 +21,19 @@ $template->blocks[] = new Block('committees/committeeInfo.inc',array('committee'
 // But we do want to show the tabs if the user is logged in
 // These tabs are the only places where you can add information to a new committee
 if (userHasRole(array('Administrator','Clerk')) || $committee->hasTopics()) {
-	$tabs = array('members'=>'Members','topics'=>'Legislation','votes'=>'Votes','seats'=>'Seats');
-	$current_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs) ? $_GET['tab'] : 'members';
-	$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,'current_tab'=>$current_tab));
+	$tabs = array('members'=>'Members',
+				  'topics'=>'Legislation',
+				  'votes'=>'Votes',
+				  'seats'=>'Seats');
+
+	$current_tab = (isset($_GET['tab']) && array_key_exists($_GET['tab'],$tabs))
+					? $_GET['tab']
+					: 'members';
+
+	$template->blocks[] = new Block('tabs.inc',
+									array('tabs'=>$tabs,
+										  'current_tab'=>$current_tab,
+										  'base_url'=>$committee->getURL()));
 }
 else {
 	$current_tab = 'members';
@@ -40,64 +50,17 @@ switch ($current_tab) {
 		break;
 
 	case 'topics':
-		// Only allow the valid sort values
-		$sort = null;
-		if (isset($_GET['sort'])) {
-			switch ($_GET['sort']) {
-				case 'date':
-				case 'date desc':
-				case 'number':
-				case 'number desc':
-					$sort = $_GET['sort'];
-					break;
-				default:
-					$sort = null;
+		$search = null;
+		if (isset($_GET['tag_id'])) {
+			try {
+				$tag = new Tag($_GET['tag_id']);
+				$search = array('tag'=>$tag);
+			}
+			catch (Exception $e) {
 			}
 		}
-
-		// We only want to display topics for a single year,
-		// chosen by the user
-		$topics = $committee->getTopics();
-		$years = $topics->getYears();
-		$displayYear = (isset($_GET['year']) && ctype_digit($_GET['year']))
-					? $_GET['year']
-					: $years[0];
-		$topics = $committee->getTopics(array('year'=>$displayYear),$sort);
-
-		#$people = array();
-		#foreach($committee->getCurrentTerms() as $term) {
-		#	$people[] = $term->getPerson();
-		#}
-		$template->blocks[] = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
-
-		// Paginate the topics if there's alot of them
-		if (count($topics) > 15) {
-			$pages = new Paginator($topics,15);
-			$page = (isset($_GET['page']) && $_GET['page'])
-					? (int)$_GET['page']
-					: 0;
-			if (!$pages->offsetExists($page)) {
-				$page = 0;
-			}
-			$topicList = new LimitIterator($topics,$pages[$page],$pages->getPageSize());
-		}
-		else {
-			$topicList = $topics;
-		}
-		$template->blocks[] = new Block('topics/topicList.inc',
-										array('topicList'=>$topicList,
-											  'committee'=>$committee,
-											  'years'=>$years,
-											  'currentYear'=>$displayYear));
-
-		if (isset($pages)) {
-			$pageNavigation = new Block('pageNavigation.inc');
-			$pageNavigation->page = $page;
-			$pageNavigation->pages = $pages;
-			$pageNavigation->url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-
-			$template->blocks[] = $pageNavigation;
-		}
+		$template->blocks[] = new Block('topics/topicPanel.inc',
+										array('topicList'=>$committee->getTopics($search)));
 		break;
 
 	case 'votes':
