@@ -78,8 +78,23 @@ class Person extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->firstname || !$this->lastname) {
+		if (!$this->firstname || !$this->lastname || !$this->email) {
 			throw new Exception('missingRequiredFields');
+		}
+
+		// Make sure the email address is unique
+		$pdo = Database::getConnection();
+		$sql = 'select id from people where email=?';
+		$parameters = array($this->email);
+		if ($this->id) {
+			$sql.= ' and id!=?';
+			$parameters[] = $this->id;
+		}
+		$query = $pdo->prepare($sql);
+		$query->execute($parameters);
+		$result = $query->fetchAll();
+		if (count($result)) {
+			throw new Exception('people/duplicateEmail');
 		}
 	}
 
@@ -97,7 +112,7 @@ class Person extends ActiveRecord
 		$fields = array();
 		$fields['firstname'] = $this->firstname;
 		$fields['lastname'] = $this->lastname;
-		$fields['email'] = $this->email ? $this->email : null;
+		$fields['email'] = $this->email;
 		$fields['address'] = $this->address ? $this->address : null;
 		$fields['city'] = $this->city ? $this->city : null;
 		$fields['zipcode'] = $this->zipcode ? $this->zipcode : null;

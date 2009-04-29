@@ -20,7 +20,7 @@
 				</td>
 			</tr>
 
-			<tr><td><label for="person-email">Email</label></td>
+			<tr><td><label for="person-email" class="required">Email</label></td>
 				<td><input name="person[email]" id="person-email" />
 				</td>
 			</tr>

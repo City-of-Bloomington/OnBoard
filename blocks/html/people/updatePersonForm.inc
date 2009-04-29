@@ -27,7 +27,7 @@ foreach ($fields as $field) {
 				</td>
 			</tr>
 
-			<tr><td><label for="person-email">Email</label></td>
+			<tr><td><label for="person-email" class="required">Email</label></td>
 				<td><input name="person[email]" id="person-email" value="<?php echo $email; ?>" />
 				</td>
 			</tr>
