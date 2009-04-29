@@ -13,7 +13,7 @@ foreach ($this->personList as $person) {
 	if (count($person->getTerms(array('current'=>time())))) {
 		$people['Current Members'][] = $person;
 	}
-	elseif (count($person->getTerms(array('current'=>time())))) {
+	elseif (count($person->getTerms())) {
 		$people['Past Members'][] = $person;
 	}
 	elseif ($person->getUser_id()) {
