@@ -15,7 +15,7 @@
 				echo "<a class=\"add button\" href=\"$url\">Add</a>";
 			}
 		?>
-		Committees
+		Councils, Commissions, Committees & Boards
 	</h1>
 	<table>
 		<tr><th></th>
