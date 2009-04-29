@@ -10,10 +10,8 @@ $xAxisPeople = $this->people;
 $yAxisPeople = $this->people;
 if (count($xAxisPeople)) {
 	echo "
-	<div class=\"interfaceBox votingComparison\">
-		<h1>Voting Comparison</h1>
-		<table>
-			<tr><th></th>
+	<table>
+		<tr><th></th>
 	";
 		foreach ($xAxisPeople as $xPerson) {
 			$name = View::escape($xPerson->getLastname());
@@ -41,7 +39,6 @@ if (count($xAxisPeople)) {
 			echo "</tr>";
 		}
 	echo "
-		</table>
-	</div>
+	</table>
 	";
 }

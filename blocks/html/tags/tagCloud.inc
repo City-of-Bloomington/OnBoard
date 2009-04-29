@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param TopicList $this->topicList
+ * @param URL $this->base_url
  */
 ?>
 <div class="interfaceBox tags">
@@ -20,19 +21,6 @@
 			$tags[$tag->getId()]['name'] = View::escape($tag->getName());
 			$tags[$tag->getId()]['popularity'] = $popularity;
 		}
-
-		// If the topicList is for a committee, use the Committee's URL
-		// Otherwise, use the general Topics url
-		$parameters = $this->topicList->getParameters();
-		if (array_key_exists(':committee_id',$parameters)) {
-			$committee = new Committee($parameters[':committee_id']);
-			$url = $committee->getURL();
-			$url->tab = 'topics';
-		}
-		else {
-			$url = new URL(BASE_URL.'/topics');
-		}
-
 
 		foreach ($tags as $id=>$tag) {
 			$percent = $tag['popularity'] / $maxPopularity * 100;
@@ -56,10 +44,10 @@
 				$class = 'class="p0"';
 			}
 
-			$url->tag_id = $id;
+			$this->base_url->tag_id = $id;
 			echo "
 			<span $class>
-				<a href=\"$url\">$tag[name]</a>
+				<a href=\"{$this->base_url}\">$tag[name]</a>
 			</span>
 			";
 		}

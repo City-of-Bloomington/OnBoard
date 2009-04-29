@@ -64,16 +64,15 @@ switch ($current_tab) {
 		break;
 
 	case 'votes':
-		$topics = $committee->getTopics();
 		$people = array();
 		foreach($committee->getCurrentTerms() as $term) {
 			$people[] = $term->getPerson();
 		}
 
-		$votingComparison = new Block('votingRecords/votingRecordComparison.inc');
-		$votingComparison->topicList = $topics;
-		$votingComparison->people = $people;
-		$template->blocks[] = $votingComparison;
+		$template->blocks[] = new Block('votingRecords/votingComparisonPanel.inc',
+										array('committee'=>$committee,
+											  'topicList'=>$committee->getTopics(),
+											  'people'=>$people));
 		break;
 
 	case 'seats':

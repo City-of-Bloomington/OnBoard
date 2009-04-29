@@ -43,7 +43,15 @@ $topics->find($search,$sort);
 
 
 // Display the tag cloud
-$tagCloud = new Block('topics/tagCloud.inc',array('topicList'=>$topics));
+if (isset($committee)) {
+	$url = $committee->getURL();
+	$url->tab = 'topics';
+}
+else {
+	$url = new URL(BASE_URL.'/topics');
+}
+$tagCloud = new Block('tags/tagCloud.inc',
+					  array('topicList'=>$topics,'base_url'=>$url));
 echo $tagCloud->render();
 
 

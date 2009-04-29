@@ -20,6 +20,8 @@
  */
 class TopicList extends PDOResultIterator
 {
+	private $fields = array();
+
 	/**
 	 * Creates a basic select statement for the collection.
 	 * Populates the collection if you pass in $fields
@@ -53,67 +55,71 @@ class TopicList extends PDOResultIterator
 		$options = array();
 		$parameters = array();
 
-		if (isset($fields['id'])) {
-			$options[] = 'topics.id=:id';
-			$parameters[':id'] = $fields['id'];
-		}
+		if ($fields) {
+			$this->fields = $fields;
 
-		if (isset($fields['topicType_id'])) {
-			$options[] = 'topics.topicType_id=:topicType_id';
-			$parameters[':topicType_id'] = $fields['topicType_id'];
-		}
+			if (isset($fields['id'])) {
+				$options[] = 'topics.id=:id';
+				$parameters[':id'] = $fields['id'];
+			}
 
-		if (isset($fields['date'])) {
-			$options[] = 'topics.date=:date';
-			$parameters[':date'] = $fields['date'];
-		}
+			if (isset($fields['topicType_id'])) {
+				$options[] = 'topics.topicType_id=:topicType_id';
+				$parameters[':topicType_id'] = $fields['topicType_id'];
+			}
 
-		if (isset($fields['year'])) {
-			$options[] = 'year(topics.date)=:year';
-			$parameters[':year'] = $fields['year'];
-		}
+			if (isset($fields['date'])) {
+				$options[] = 'topics.date=:date';
+				$parameters[':date'] = $fields['date'];
+			}
 
-		if (isset($fields['number'])) {
-			$options[] = 'topics.number=:number';
-			$parameters[':number'] = $fields['number'];
-		}
+			if (isset($fields['year'])) {
+				$options[] = 'year(topics.date)=:year';
+				$parameters[':year'] = $fields['year'];
+			}
 
-		if (isset($fields['description'])) {
-			$options[] = 'topics.description=:description';
-			$parameters[':description'] = $fields['description'];
-		}
+			if (isset($fields['number'])) {
+				$options[] = 'topics.number=:number';
+				$parameters[':number'] = $fields['number'];
+			}
 
-		if (isset($fields['synopsis'])) {
-			$options[] = 'topics.synopsis=:synopsis';
-			$parameters[':synopsis'] = $fields['synopsis'];
-		}
+			if (isset($fields['description'])) {
+				$options[] = 'topics.description=:description';
+				$parameters[':description'] = $fields['description'];
+			}
 
-		if (isset($fields['committee_id'])) {
-			$options[] = 'topics.committee_id=:committee_id';
-			$parameters[':committee_id'] = $fields['committee_id'];
-		}
+			if (isset($fields['synopsis'])) {
+				$options[] = 'topics.synopsis=:synopsis';
+				$parameters[':synopsis'] = $fields['synopsis'];
+			}
+
+			if (isset($fields['committee_id'])) {
+				$options[] = 'topics.committee_id=:committee_id';
+				$parameters[':committee_id'] = $fields['committee_id'];
+			}
 
 
-		// Finding on fields from other tables required joining those tables.
-		// You can add fields from other tables to $options by adding the join SQL
-		// to $this->joins here
-		if (isset($fields['tag'])) {
-			$fields['tag_id'] = $fields['tag']->getId();
-		}
+			// Finding on fields from other tables required joining those tables.
+			// You can add fields from other tables to $options by adding the join SQL
+			// to $this->joins here
+			if (isset($fields['tag'])) {
+				$fields['tag_id'] = $fields['tag']->getId();
+			}
 
-		if (isset($fields['tag_id'])) {
-			$this->joins.= ' left join topic_tags t on topics.id=t.topic_id';
-			$options[] = 'tag_id=:tag_id';
-			$parameters[':tag_id'] = $fields['tag_id'];
-		}
+			if (isset($fields['tag_id'])) {
+				$this->joins.= ' left join topic_tags t on topics.id=t.topic_id';
+				$options[] = 'tag_id=:tag_id';
+				$parameters[':tag_id'] = $fields['tag_id'];
+			}
 
-		if (isset($fields['person_id'])) {
-			$this->joins.= "
-				left join votes v on topics.id=v.topic_id
-				left join votingRecords vr on vr.vote_id=v.id
-				left join terms on vr.term_id=terms.id";
-			$options[] = 'terms.person_id=:person_id';
-			$parameters[':person_id'] = $fields['person_id'];
+			if (isset($fields['person_id'])) {
+				$this->joins.= "
+					left join votes v on topics.id=v.topic_id
+					left join votingRecords vr on vr.vote_id=v.id
+					left join terms on vr.term_id=terms.id";
+				$options[] = 'terms.person_id=:person_id';
+				$parameters[':person_id'] = $fields['person_id'];
+			}
 		}
 
 		$this->populateList($options,$parameters);
@@ -126,6 +132,14 @@ class TopicList extends PDOResultIterator
 	protected function loadResult($key)
 	{
 		return new Topic($this->list[$key]);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getFields()
+	{
+		return $this->fields;
 	}
 
 	/**
