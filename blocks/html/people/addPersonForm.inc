@@ -59,38 +59,20 @@
 
 			<tr><td><label for="person-race_id">Race</label></td>
 				<td><select name="person[race_id]" id="person-race_id">
-					<?php
-						$list = new RaceList();
-						$list->find();
-						foreach ($list as $race) {
-							echo "<option value=\"{$race->getId()}\">$race</option>";
-						}
-					?>
+						<option></option>
+						<?php
+							$list = new RaceList();
+							$list->find();
+							foreach ($list as $race) {
+								echo "<option value=\"{$race->getId()}\">$race</option>";
+							}
+						?>
 					</select>
 				</td>
 			</tr>
 
-			<tr><td><label for="person-birthdate-mon">Birthdate</label></td>
-				<td><select name="person[birthdate][mon]" id="person-birthdate-mon">
-						<option></option>
-						<?php
-							$now = getdate();
-							for ($i=1; $i<=12; $i++) {
-								$selected = ($i==$now['mon']) ? 'selected="selected"' : '';
-								echo "<option $selected>$i</option>";
-							}
-						?>
-					</select>
-					<select name="person[birthdate][mday]">
-						<option></option>
-						<?php
-							for ($i=1; $i<=31; $i++) {
-								$selected = ($i==$now['mday']) ? 'selected="selected"' : '';
-								echo "<option $selected>$i</option>";
-							}
-						?>
-					</select>
-					<input name="person[birthdate][year]" id="person-birthdate-year" size="4" maxlength="4" value="<?php echo $now['year']; ?>" />
+			<tr><td><label for="person-birthdate">Birthdate</label></td>
+				<td><input name="person[birthdate]" id="person-birthdate" />
 				</td>
 			</tr>
 		</table>

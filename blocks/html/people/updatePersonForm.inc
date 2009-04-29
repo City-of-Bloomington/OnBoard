@@ -66,39 +66,21 @@ foreach ($fields as $field) {
 
 			<tr><td><label for="person-race_id">Race</label></td>
 				<td><select name="person[race_id]" id="person-race_id">
-					<?php
-						$list = new RaceList();
-						$list->find();
-						foreach ($list as $race) {
-							$selected = $this->person->getRace_id()==$race->getId() ? ' selected="selected"' : '';
-							echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
-						}
-					?>
+						<option></option>
+						<?php
+							$list = new RaceList();
+							$list->find();
+							foreach ($list as $race) {
+								$selected = $this->person->getRace_id()==$race->getId() ? ' selected="selected"' : '';
+								echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
+							}
+						?>
 					</select>
 				</td>
 			</tr>
 
-			<tr><td><label for="person-birthdate-mon">Birthdate</label></td>
-				<td><select name="person[birthdate][mon]" id="person-birthdate-mon">
-						<option></option>
-						<?php
-							$birthdate = $this->person->dateStringToArray($this->person->getBirthdate());
-							for ($i=1; $i<=12; $i++) {
-								$selected = ($i!=$birthdate['mon']) ? 'selected="selected"' : '';
-								echo "<option $selected>$i</option>";
-							}
-						?>
-					</select>
-					<select name="person[birthdate][mday]">
-						<option></option>
-						<?php
-							for ($i=1; $i<=31; $i++) {
-								$selected = ($i!=$birthdate['mday']) ? 'selected="selected"' : '';
-								echo "<option $selected>$i</option>";
-							}
-						?>
-					</select>
-					<input name="person[birthdate][year]" id="person-birthdate-year" size="4" maxlength="4" value="<?php echo $birthdate['year']; ?>" />
+			<tr><td><label for="person-birthdate">Birthdate</label></td>
+				<td><input name="person[birthdate]" id="person-birthdate" value="<?php echo $this->person->getBirthdate('n/j/Y'); ?>" />
 				</td>
 			</tr>
 		</table>
