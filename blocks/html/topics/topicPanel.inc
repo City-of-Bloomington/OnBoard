@@ -5,21 +5,21 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET sort
  * @param TopicList $this->topicList
+ * @param Committee $this->committee
  */
-// Only allow the valid sort values
-$sort = null;
-if (isset($_GET['sort'])) {
-	switch ($_GET['sort']) {
-		case 'date':
-		case 'date desc':
-		case 'number':
-		case 'number desc':
-			$sort = $_GET['sort'];
-			break;
-		default:
-			$sort = null;
-	}
-}
+
+// Show the Tag Cloud
+// We're not currently choosing multiple tags, so we don't need to
+// limit the tag list to only related tags.
+// For now, we want to show a tag cloud based on the complete topicList
+$url = $this->committee->getURL();
+$url->tab = 'topics';
+$tagCloud = new Block('tags/tagCloud.inc',
+					  array('topicList'=>$this->topicList,
+							'base_url'=>$url));
+echo $tagCloud->render();
+
+
 
 // We only want to display topics for a single year, chosen by the user
 // Lets create a new list, only including a single years worth of topics
@@ -28,31 +28,21 @@ $years = count($years) ? $years : array(date('Y'));
 $displayYear = (isset($_GET['year']) && ctype_digit($_GET['year']))
 			? $_GET['year']
 			: $years[0];
-$search = array('year'=>$displayYear);
-$parameters = $this->topicList->getParameters();
-if (array_key_exists(':committee_id',$parameters)) {
-	$search['committee_id'] = $parameters[':committee_id'];
-	$committee = new Committee($parameters[':committee_id']);
-}
-if (array_key_exists(':tag_id',$parameters)) {
-	$search['tag_id'] = $parameters[':tag_id'];
-	$tag = new Tag($parameters[':tag_id']);
+$search = $this->topicList->getFields();
+$search['year'] = $displayYear;
+// If they ask for a tag, filter the topicList to only topics for that tag
+if (isset($_GET['tag_id'])) {
+	try {
+		$tag = new Tag($_GET['tag_id']);
+		$search['tag_id'] = $tag->getId();
+	}
+	catch (Exception $e) {
+	}
 }
 $topics = new TopicList();
-$topics->find($search,$sort);
+$topics->find($search,$this->topicList->getSort());
 
 
-// Display the tag cloud
-if (isset($committee)) {
-	$url = $committee->getURL();
-	$url->tab = 'topics';
-}
-else {
-	$url = new URL(BASE_URL.'/topics');
-}
-$tagCloud = new Block('tags/tagCloud.inc',
-					  array('topicList'=>$topics,'base_url'=>$url));
-echo $tagCloud->render();
 
 
 // Display the years list and the sorting buttons
@@ -61,9 +51,9 @@ if (count($topics) || $userCanEdit) {
 	$title = isset($tag) ? View::escape(ucfirst($tag->getName())) : '';
 
 	$addTopicButton = '';
-	if (isset($committee) && $userCanEdit) {
+	if ($userCanEdit) {
 		$url = new URL(BASE_URL.'/topics/addTopic.php');
-		$url->committee_id = $committee->getId();
+		$url->committee_id = $this->committee->getId();
 		$addTopicButton = "<a class=\"add button\" href=\"$url\">Add</a>";
 	}
 	echo "
@@ -72,6 +62,7 @@ if (count($topics) || $userCanEdit) {
 		<div class=\"years\">
 	";
 		$url = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+		arsort($years);
 		foreach ($years as $year) {
 			$url->year = $year;
 			$class = $year==$displayYear ? 'class="current"' : '';
@@ -80,23 +71,23 @@ if (count($topics) || $userCanEdit) {
 	echo "</div>";
 
 	$numberSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-	if ($sort=='number') {
-		$numberSortURL->sort = 'number desc';
-		$numberDirection = 'down';
-	}
-	else {
+	if (preg_match('/number desc/',$topics->getSort())) {
 		$numberSortURL->sort = 'number';
 		$numberDirection = 'up';
 	}
+	else {
+		$numberSortURL->sort = 'number desc';
+		$numberDirection = 'down';
+	}
 
 	$dateSortURL = new URL($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-	if ($sort=='date') {
-		$dateSortURL->sort = 'date desc';
-		$dateDirection = 'down';
-	}
-	else {
+	if (preg_match('/date desc/',$topics->getSort())) {
 		$dateSortURL->sort = 'date';
 		$dateDirection = 'up';
+	}
+	else {
+		$dateSortURL->sort = 'date desc';
+		$dateDirection = 'down';
 	}
 	echo "
 		<div>

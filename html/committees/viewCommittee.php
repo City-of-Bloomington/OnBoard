@@ -50,17 +50,23 @@ switch ($current_tab) {
 		break;
 
 	case 'topics':
-		$search = null;
-		if (isset($_GET['tag_id'])) {
-			try {
-				$tag = new Tag($_GET['tag_id']);
-				$search = array('tag'=>$tag);
-			}
-			catch (Exception $e) {
+		// Only allow the valid sort values
+		$sort = null;
+		if (isset($_GET['sort'])) {
+			switch ($_GET['sort']) {
+				case 'date':
+				case 'date desc':
+				case 'number':
+				case 'number desc':
+					$sort = $_GET['sort'];
+					break;
+				default:
+					$sort = null;
 			}
 		}
 		$template->blocks[] = new Block('topics/topicPanel.inc',
-										array('topicList'=>$committee->getTopics($search)));
+										array('topicList'=>$committee->getTopics(null,$sort),
+											  'committee'=>$committee));
 		break;
 
 	case 'votes':

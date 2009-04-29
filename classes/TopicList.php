@@ -44,10 +44,14 @@ class TopicList extends PDOResultIterator
 	 * @param int $limit
 	 * @param string $groupBy
 	 */
-	public function find($fields=null,$sort='date desc',$limit=null,$groupBy=null)
+	public function find($fields=null,$sort='topics.date desc',$limit=null,$groupBy=null)
 	{
-		if (!$sort) { $sort = 'date desc'; }
-		$this->sort = 'topics.'.$sort;
+		if ($sort) {
+			$this->sort = preg_match('/topics\./',$sort) ? $sort : 'topics.'.$sort;
+		}
+		else {
+			$this->sort = 'topics.date desc';
+		}
 		$this->limit = $limit;
 		$this->groupBy = $groupBy;
 		$this->joins = '';
