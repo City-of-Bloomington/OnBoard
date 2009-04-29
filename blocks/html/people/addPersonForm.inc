@@ -9,43 +9,55 @@
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 	<fieldset><legend>Person Info</legend>
 		<table>
+			<tr><th>Private</th>
+				<th></th>
+				<th></th>
+			</tr>
 
-			<tr><td><label for="person-firstname" class="required">Firstname</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="firstname" /></td>
+				<td><label for="person-firstname" class="required">Firstname</label></td>
 				<td><input name="person[firstname]" id="person-firstname" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-lastname" class="required">Lastname</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="lastname" /></td>
+				<td><label for="person-lastname" class="required">Lastname</label></td>
 				<td><input name="person[lastname]" id="person-lastname" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-email" class="required">Email</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="email" checked="checked" /></td>
+				<td><label for="person-email" class="required">Email</label></td>
 				<td><input name="person[email]" id="person-email" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-address">Address</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="address" checked="checked" /></td>
+				<td><label for="person-address">Address</label></td>
 				<td><input name="person[address]" id="person-address" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-city">City</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="city" checked="checked" /></td>
+				<td><label for="person-city">City</label></td>
 				<td><input name="person[city]" id="person-city" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-zipcode">Zip</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="zipcode" checked="checked" /></td>
+				<td><label for="person-zipcode">Zip</label></td>
 				<td><input name="person[zipcode]" id="person-zipcode" />
 				</td>
 			</tr>
 
-			<tr><td><label for="person-about">About</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="about" /></td>
+				<td><label for="person-about">About</label></td>
 				<td><textarea name="person[about]" id="person-about" rows="3" cols="60"></textarea>
 				</td>
 			</tr>
 
-			<tr><td><label>Gender</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="gender" checked="checked" /></td>
+				<td><label>Gender</label></td>
 				<td><label>
 						<input name="person[gender]" type="radio" value="male" checked="checked" />
 						M
@@ -57,7 +69,8 @@
 				</td>
 			</tr>
 
-			<tr><td><label for="person-race_id">Race</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="race_id" checked="checked" /></td>
+				<td><label for="person-race_id">Race</label></td>
 				<td><select name="person[race_id]" id="person-race_id">
 						<option></option>
 						<?php
@@ -71,7 +84,8 @@
 				</td>
 			</tr>
 
-			<tr><td><label for="person-birthdate">Birthdate</label></td>
+			<tr><td><input name="person[privateFields][]" type="checkbox" value="birthdate" checked="checked" /></td>
+				<td><label for="person-birthdate">Birthdate</label></td>
 				<td><input name="person[birthdate]" id="person-birthdate" />
 				</td>
 			</tr>
