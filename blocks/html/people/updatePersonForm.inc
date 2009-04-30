@@ -40,7 +40,7 @@ $privateChecked['birthdate'] = in_array('birthdate',$privateFields) ? 'checked="
 			</tr>
 
 			<tr><td><input name="person[privateFields][]" type="checkbox" value="email" <?php echo $privateChecked['email']; ?> /></td>
-				<td><label for="person-email" class="required">Email</label></td>
+				<td><label for="person-email">Email</label></td>
 				<td><input name="person[email]" id="person-email" value="<?php echo $email; ?>" />
 				</td>
 			</tr>

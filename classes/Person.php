@@ -78,7 +78,7 @@ class Person extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->firstname || !$this->lastname || !$this->email) {
+		if (!$this->firstname || !$this->lastname) {
 			throw new Exception('missingRequiredFields');
 		}
 
@@ -112,7 +112,7 @@ class Person extends ActiveRecord
 		$fields = array();
 		$fields['firstname'] = $this->firstname;
 		$fields['lastname'] = $this->lastname;
-		$fields['email'] = $this->email;
+		$fields['email'] = $this->email ? $this->email : null;
 		$fields['address'] = $this->address ? $this->address : null;
 		$fields['city'] = $this->city ? $this->city : null;
 		$fields['zipcode'] = $this->zipcode ? $this->zipcode : null;

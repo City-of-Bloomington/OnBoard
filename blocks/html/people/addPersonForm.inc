@@ -27,7 +27,7 @@
 			</tr>
 
 			<tr><td><input name="person[privateFields][]" type="checkbox" value="email" checked="checked" /></td>
-				<td><label for="person-email" class="required">Email</label></td>
+				<td><label for="person-email">Email</label></td>
 				<td><input name="person[email]" id="person-email" />
 				</td>
 			</tr>
