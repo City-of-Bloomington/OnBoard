@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
+ * @param string $this->title
  */
 $fields = array('firstname','lastname','email','address','city','zipcode','about');
 $privateFields = $this->person->getPrivateFields();
@@ -16,8 +17,10 @@ foreach ($fields as $field) {
 $privateChecked['gender'] = in_array('gender',$privateFields) ? 'checked="checked"' : '';
 $privateChecked['race_id'] = in_array('race_id',$privateFields) ? 'checked="checked"' : '';
 $privateChecked['birthdate'] = in_array('birthdate',$privateFields) ? 'checked="checked"' : '';
+
+$title = $this->title ? View::escape($this->title) : 'Update Person';
+echo "<h1>$title</h1>";
 ?>
-<h1>Update Person</h1>
 <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME']; ?>">
 	<fieldset><legend>Person Info</legend>
 		<input name="person_id" type="hidden" value="<?php echo $this->person->getId(); ?>" />

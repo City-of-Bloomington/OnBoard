@@ -6,8 +6,9 @@
  */
 verifyUser(array('Administrator','Clerk'));
 
+$person = new Person();
+
 if (isset($_POST['person'])) {
-	$person = new Person();
 	foreach ($_POST['person'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
 		$person->$set($value);
@@ -25,5 +26,6 @@ if (isset($_POST['person'])) {
 
 $template = new Template();
 $template->title = 'Add a Person';
-$template->blocks[] = new Block('people/addPersonForm.inc');
+$template->blocks[] = new Block('people/updatePersonForm.inc',
+								array('person'=>$person,'title'=>'New Person'));
 echo $template->render();

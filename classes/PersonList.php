@@ -156,14 +156,22 @@ class PersonList extends PDOResultIterator
 		$parameters = array();
 
 		if (isset($fields['firstname']) && $fields['firstname']) {
+			// Only use the first three letters for the search
+			$firstname = substr($fields['firstname'],0,3);
 			$options[] = 'firstname like :firstname';
-			$parameters[':firstname'] = "$fields[firstname]%";
+			$parameters[':firstname'] = "$firstname%";
 		}
 
 		if (isset($fields['lastname']) && $fields['lastname']) {
+			// Only use the first three letters for the search
+			$lastname = substr($fields['lastname'],0,3);
 			$options[] = 'lastname like :lastname';
-			$parameters[':lastname'] = "$fields[lastname]%";
+			$parameters[':lastname'] = "$lastname%";
 		}
+
+		// We want to do an OR search instead of the normal AND
+		$options = implode(' or ',$options);
+		$options = array("($options)");
 
 		// Finding on fields from other tables required joining those tables.
 		// You can add fields from other tables to $options by adding the join SQL

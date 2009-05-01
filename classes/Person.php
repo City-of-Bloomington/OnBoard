@@ -68,6 +68,8 @@ class Person extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->privateFields = array('email','address','city','zipcode',
+										 'gender','race_id','birthdate');
 		}
 	}
 
