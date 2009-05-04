@@ -45,9 +45,13 @@
 			}
 
 			$this->base_url->tag_id = $id;
+			$current = '';
+			if (isset($_GET['tag_id']) && $_GET['tag_id']==$id) {
+				$current = 'class="current"';
+			}
 			echo "
 			<span $class>
-				<a href=\"{$this->base_url}\">$tag[name]</a>
+				<a href=\"{$this->base_url}\" $current>$tag[name]</a>
 			</span>
 			";
 		}
