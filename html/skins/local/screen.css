@@ -1,11 +1,13 @@
 /* Tag Styles */
-.tags { width:250px; float:right; }
-.tags .p90 { font-size:180%; }
-.tags .p70 { font-size:150%; }
-.tags .p50 { font-size:100%; }
-.tags .p30 { font-size:80%; }
-.tags .p10 { font-size:75%; }
-.tags .p0 { font-size:50%; }
+.tags { font-size:20px; }
+.tags a {font-size:20px; }
+.tags .p90 a { font-size:110%; color:black; font-weight:bold; }
+.tags .p70 a { font-size:100%; color:black;  }
+.tags .p50 a { font-size:90%; color:#150517; }
+.tags .p30 a { font-size:75%; color:#2b1b17; }
+.tags .p10 a { font-size:60%; color:#302226; }
+.tags .p0 a { font-size:50%; color:#3b3131; }
+.tags a.current { color:#ee7d22; }
 
 
 #content-panel .topic { margin:10px 0; border-bottom:1px solid #999999;}
@@ -21,9 +23,10 @@ a.current { font-weight:bold; }
 a.up { padding-right:10px; background:url('images/up.png') center right no-repeat; }
 a.down { padding-right:10px; background:url('images/down.png') center right no-repeat; }
 
+.memberTable {float:right; margin:1px; }
 .memberTable ul { margin:0; padding:0px; }
 
 #personalInfo .memberTable li { list-style-type:none; }
 #personalInfo .memberTable .current { padding-left:18px; background-color:gray; }
 
-.legislation {width:550px; }
+.legislation { }

@@ -8,7 +8,7 @@
 $about = nl2br(View::escape($this->person->getAbout()));
 echo "
 <div id=\"personalInfo\">
-	<p class=\"memberDescription\">$about</p>
+	<p class=\"memberDescription\">
 	<table class=\"memberTable\">
 ";
 	if ($this->person->getEmail()) {
@@ -61,6 +61,7 @@ echo "
 
 echo "
 	</table>
+	$about</p>
 </div>
 ";
 
