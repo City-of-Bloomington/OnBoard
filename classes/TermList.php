@@ -78,10 +78,10 @@ class TermList extends PDOResultIterator
 		}
 
 		if (isset($fields['current'])) {
-			$date = date('Y-m-d H:i:s',$fields['current']);
+			$date = date('Y-m-d',$fields['current']);
 
-			$options[] = 't.term_start<:currentStart';
-			$options[] = '(t.term_end is null or t.term_end>:currentEnd)';
+			$options[] = 't.term_start<=:currentStart';
+			$options[] = '(t.term_end is null or t.term_end>=:currentEnd)';
 
 			$parameters[':currentStart'] = $date;
 			$parameters[':currentEnd'] = $date;
