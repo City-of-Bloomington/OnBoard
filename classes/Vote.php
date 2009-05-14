@@ -361,11 +361,33 @@ class Vote extends ActiveRecord
 	}
 
 	/**
-	 * Returns the terms that were current during the time of this vote
-	 * @return TermList
+	 * Returns an associative array of Term objects using the term_id as the key
+	 *
+	 * We need to return all the current terms, as well as any other terms that are
+	 * hanging around with votingRecords for this vote
+	 *
+	 * Because the dates for all this stuff can be edited at any time, votes
+	 * can be entered for "current" terms, only to have the dates changed later.
+	 * The votingRecords for those non-current terms are still in the system
+	 * and need to be displayed. (If only to make someone clean up the data)
+	 *
+	 * @return array
 	 */
 	public function getTerms()
 	{
-		return $this->getCommittee()->getCurrentTerms($this->date);
+		$terms = array();
+		foreach ($this->getCommittee()->getCurrentTerms($this->date) as $term) {
+			$terms[$term->getId()] = $term;
+		}
+
+		// Merge the set of terms for the votingRecords we have with the
+		// set of terms that are current
+		foreach ($this->getVotingRecords() as $votingRecord) {
+			if (!array_key_exists($votingRecord->getTerm_id(),$terms)) {
+				$terms[$votingRecord->getTerm_id()] = $votingRecord->getTerm();
+			}
+		}
+
+		return $terms;
 	}
 }
