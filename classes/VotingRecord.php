@@ -114,6 +114,14 @@ class VotingRecord extends ActiveRecord
 		$this->id = $PDO->lastInsertID();
 	}
 
+	public function delete()
+	{
+		$pdo = Database::getConnection();
+
+		$query = $pdo->prepare('delete from votingRecords where id=?');
+		$query->execute(array($this->id));
+	}
+
 	//----------------------------------------------------------------
 	// Generic Getters
 	//----------------------------------------------------------------

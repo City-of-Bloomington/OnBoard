@@ -15,6 +15,14 @@ if (isset($_POST['vote'])) {
 		$vote->$set($value);
 	}
 
+	// If there are invalid votingRecords, make sure the user knows they're
+	// going to be deleting a bunch of votingRecords when they save
+	if ($vote->hasInvalidVotingRecords()) {
+		$_SESSION['pendingVote'] = $vote;
+		header('Location: confirmDeleteInvalidVotingRecords.php');
+		exit();
+	}
+
 	try {
 		$vote->save();
 		header('Location: '.$vote->getTopic()->getURL());
@@ -23,6 +31,7 @@ if (isset($_POST['vote'])) {
 	catch (Exception $e) {
 		$_SESSION['errorMessages'][] = $e;
 	}
+	exit();
 }
 $topic = $vote->getTopic();
 

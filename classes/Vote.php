@@ -103,6 +103,8 @@ class Vote extends ActiveRecord
 		else {
 			$this->insert($values,$preparedFields);
 		}
+
+		$this->deleteInvalidVotingRecords();
 	}
 
 	private function update($values,$preparedFields)
@@ -389,5 +391,35 @@ class Vote extends ActiveRecord
 		}
 
 		return $terms;
+	}
+
+	/**
+	 * Invalid Voting Records are votingRecords where the vote date does not occur
+	 * during the term for the votingRecord.  This happens as people change term dates
+	 * or vote dates after votingRecords are entered.
+	 *
+	 * @return VotingRecordList
+	 */
+	public function getInvalidVotingRecords()
+	{
+		return new VotingRecordList(array('invalid_for_vote'=>$this));
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasInvalidVotingRecords()
+	{
+		return count($this->getInvalidVotingRecords()) ? true : false;
+	}
+
+	/**
+	 * Deletes all the invalid voting records for this vote
+	 */
+	public function deleteInvalidVotingRecords()
+	{
+		foreach ($this->getInvalidVotingRecords() as $votingRecord) {
+			$votingRecord->delete();
+		}
 	}
 }
