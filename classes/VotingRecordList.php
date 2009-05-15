@@ -101,7 +101,7 @@ class VotingRecordList extends PDOResultIterator
 								or (terms.term_end is not null
 									and terms.term_end<:invalid_end_date))";
 
-			$date = $fields['invalid_for_vote']->getDate('Y-M-d');
+			$date = $fields['invalid_for_vote']->getDate('Y-m-d');
 			$parameters[':invalid_vote_id'] = $fields['invalid_for_vote']->getId();
 			$parameters[':invalid_start_date'] = $date;
 			$parameters[':invalid_end_date'] = $date;

@@ -13,6 +13,7 @@
 
 		<table>
 			<tr><th>Member</th>
+				<th>Term</th>
 				<?php
 					$positions = VotingRecord::getPossiblePositions();
 					foreach ($positions as $position) {
@@ -24,9 +25,12 @@
 				foreach ($this->vote->getTerms() as $term) {
 					$fullname = View::escape($term->getPerson()->getFullname());
 					$votingRecord = $this->vote->getVotingRecord($term);
+					$termStart = $term->getTerm_start('n/j/Y');
+					$termEnd = $term->getTerm_end('n/j/Y');
 
 					echo "
 					<tr><th>$fullname</th>
+						<th>$termStart - $termEnd</th>
 					";
 					foreach ($positions as $position) {
 						$checked = $position.'Checked';
