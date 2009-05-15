@@ -3,9 +3,11 @@
  * @copyright 2009 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param Topic $this->topic
  * @param VoteList $this->voteList
+ * @param Topic $this->topic (optional)
+ * @param string $this->title (optional)
  */
+$title = isset($this->title) ? View::escape($this->title) : 'Votes';
 ?>
 <div class="interfaceBox votes">
 	<h1><?php
@@ -14,8 +16,8 @@
 				$url->topic_id = $this->topic->getId();
 				echo "<a class=\"add button\" href=\"$url\">Add</a>";
 			}
+			echo $title;
 		?>
-		Votes
 	</h1>
 	<table>
 		<tr><th></th>

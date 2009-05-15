@@ -357,4 +357,32 @@ class Committee extends ActiveRecord
 	{
 		return new PersonList(array('committee_id'=>$this->id));
 	}
+
+	/**
+	 * Votes are considered invalid when the number of votingRecords for
+	 * the vote does not match this committeee's maxCurrentTerms.
+	 * That means that either not all the votingRecords have been entered,
+	 * or too many votingRecords have been entered.
+	 *
+	 * @return array An array of Vote objects
+	 */
+	public function getInvalidVotes()
+	{
+		$pdo = Database::getConnection();
+
+		$sql = "select v.id,count(vr.id) as count from votes v
+				left join topics t on v.topic_id=t.id
+				left join votingRecords vr on v.id=vr.vote_id
+				where t.committee_id=?
+				group by v.id having count!=?";
+		$query = $pdo->prepare($sql);
+		$query->execute(array($this->id,$this->getMaxCurrentTerms()));
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+		$votes = array();
+		foreach ($result as $row) {
+			$votes[] = new Vote($row['id']);
+		}
+		return $votes;
+	}
 }
