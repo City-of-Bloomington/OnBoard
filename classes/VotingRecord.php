@@ -40,7 +40,6 @@ class VotingRecord extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
-			$this->position = 'absent';
 		}
 	}
 
