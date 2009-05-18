@@ -443,8 +443,6 @@ class Term extends ActiveRecord
 	{
 		foreach ($this->getInvalidVotingRecords() as $votingRecord) {
 			$votingRecord->delete();
-			echo "Deleted votingRecord {$votingRecord->getId()}\n";
 		}
-		exit();
 	}
 }
