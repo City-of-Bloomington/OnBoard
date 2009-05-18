@@ -79,14 +79,6 @@ switch ($current_tab) {
 										array('committee'=>$committee,
 											  'topicList'=>$committee->getTopics(),
 											  'people'=>$people));
-		if (userHasRole(array('Administrator','Clerk'))) {
-			$invalidVotes = $committee->getInvalidVotes();
-			if (count($invalidVotes)) {
-				$template->blocks[] = new Block('votes/voteList.inc',
-												array('voteList'=>$invalidVotes,
-													  'title'=>'Invalid Votes'));
-			}
-		}
 		break;
 
 	case 'seats':

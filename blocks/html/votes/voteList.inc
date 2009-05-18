@@ -22,6 +22,7 @@ $title = isset($this->title) ? View::escape($this->title) : 'Votes';
 	<table>
 		<tr><th></th>
 			<th>Vote</th>
+			<th>Legislation</th>
 			<th>Date</th>
 			<?php
 				$positions = VotingRecord::getPossiblePositions();
@@ -30,7 +31,7 @@ $title = isset($this->title) ? View::escape($this->title) : 'Votes';
 					echo "<th>$position</th>";
 				}
 			?>
-			<th>Final Outcome</th>
+			<th>Outcome</th>
 		</tr>
 		<?php
 			foreach ($this->voteList as $vote) {
@@ -41,9 +42,12 @@ $title = isset($this->title) ? View::escape($this->title) : 'Votes';
 					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 				}
 
+				$number = View::escape($vote->getTopic()->getNumber());
+
 				echo "
 				<tr><th>$editButton</th>
 					<th><a href=\"{$vote->getURL()}\">{$vote->getVoteType()}</a></th>
+					<th><a href=\"{$vote->getTopic()->getURL()}\">$number</a></th>
 					<td>{$vote->getDate('n/j/Y')}</td>
 				";
 				foreach ($positions as $position) {

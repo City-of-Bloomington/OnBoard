@@ -19,7 +19,7 @@ if (isset($_POST['vote'])) {
 	// going to be deleting a bunch of votingRecords when they save
 	if ($vote->hasInvalidVotingRecords()) {
 		$_SESSION['pendingVote'] = $vote;
-		header('Location: confirmDeleteInvalidVotingRecords.php');
+		header('Location: '.BASE_URL.'/votes/confirmDeleteInvalidVotingRecords.php');
 		exit();
 	}
 

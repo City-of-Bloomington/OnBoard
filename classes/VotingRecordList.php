@@ -95,18 +95,6 @@ class VotingRecordList extends PDOResultIterator
 			$parameters[':voteType_id'] = $fields['voteType']->getId();
 		}
 
-		if (isset($fields['invalid_for_vote'])) {
-			$options[] = "vr.vote_id=:invalid_vote_id
-							and (terms.term_start>:invalid_start_date
-								or (terms.term_end is not null
-									and terms.term_end<:invalid_end_date))";
-
-			$date = $fields['invalid_for_vote']->getDate('Y-m-d');
-			$parameters[':invalid_vote_id'] = $fields['invalid_for_vote']->getId();
-			$parameters[':invalid_start_date'] = $date;
-			$parameters[':invalid_end_date'] = $date;
-		}
-
 		$this->populateList($options,$parameters);
 	}
 

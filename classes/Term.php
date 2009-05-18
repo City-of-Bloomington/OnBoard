@@ -137,6 +137,8 @@ class Term extends ActiveRecord
 		else {
 			$this->insert($values,$preparedFields);
 		}
+
+		$this->deleteInvalidVotingRecords();
 	}
 
 	private function update($values,$preparedFields)
@@ -387,5 +389,62 @@ class Term extends ActiveRecord
 	public function isSafeToDelete()
 	{
 		return (count($this->getVotingRecords()) == 0) ? true : false;
+	}
+
+	/**
+	 * Invalid Voting Records are votingRecords where the vote date does not occur
+	 * during the term for the votingRecord.  This happens as people change term dates
+	 * or vote dates after votingRecords are entered.
+	 *
+	 * @return array VotingRecords
+	 */
+	public function getInvalidVotingRecords()
+	{
+		$pdo = Database::getConnection();
+		$parameters = array($this->id);
+
+		$dateCheck = "?>v.date";
+		$parameters[] = $this->getTerm_start('Y-m-d');
+
+		if ($this->term_end) {
+			$dateCheck.= " or ?<v.date";
+			$parameters[] = $this->getTerm_end('Y-m-d');
+		}
+
+		$sql = "select vr.id from votingRecords vr
+				left join terms t on vr.term_id=t.id
+				left join votes v on vr.vote_id=v.id
+				where vr.term_id=?
+				and ($dateCheck)";
+
+		$query = $pdo->prepare($sql);
+		$query->execute($parameters);
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+		$invalidVotingRecords = array();
+		foreach ($result as $row) {
+			$invalidVotingRecords[] = new VotingRecord($row['id']);
+		}
+		return $invalidVotingRecords;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasInvalidVotingRecords()
+	{
+		return count($this->getInvalidVotingRecords()) ? true : false;
+	}
+
+	/**
+	 * Deletes all the invalid voting records for this term
+	 */
+	public function deleteInvalidVotingRecords()
+	{
+		foreach ($this->getInvalidVotingRecords() as $votingRecord) {
+			$votingRecord->delete();
+			echo "Deleted votingRecord {$votingRecord->getId()}\n";
+		}
+		exit();
 	}
 }

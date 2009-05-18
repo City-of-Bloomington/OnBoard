@@ -398,11 +398,26 @@ class Vote extends ActiveRecord
 	 * during the term for the votingRecord.  This happens as people change term dates
 	 * or vote dates after votingRecords are entered.
 	 *
-	 * @return VotingRecordList
+	 * @return array VotingRecords
 	 */
 	public function getInvalidVotingRecords()
 	{
-		return new VotingRecordList(array('invalid_for_vote'=>$this));
+		$invalidVotingRecords = array();
+
+		$pdo = Database::getConnection();
+		$sql = "select vr.id from votingRecords vr
+				left join terms t on vr.term_id=t.id
+				left join votes v on vr.vote_id=v.id
+				where vr.vote_id=?
+				and (t.term_start>?
+				or (t.term_end is not null and t.term_end<?))";
+		$query = $pdo->prepare($sql);
+		$query->execute(array($this->id,$this->getDate('Y-m-d'),$this->getDate('Y-m-d')));
+		$result = $query->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($result as $row) {
+			$invalidVotingRecords[] = new VotingRecord($row['id']);
+		}
+		return $invalidVotingRecords;
 	}
 
 	/**

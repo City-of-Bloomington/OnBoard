@@ -21,6 +21,16 @@ if (isset($_POST['term'])) {
 		$term->$set($value);
 	}
 
+	// If there are invalid votingRecords, make sure the user knows they're
+	// going to be deleting a bunch of votingRecords when they save
+	if ($term->hasInvalidVotingRecords()) {
+		$_SESSION['pendingTerm'] = $term;
+		$url = new URL(BASE_URL.'/terms/confirmDeleteInvalidVotingRecords.php');
+		$url->return_url = $_REQUEST['return_url'];
+		header("Location: $url");
+		exit();
+	}
+
 	try {
 		$term->save();
 		header('Location: '.$return_url);

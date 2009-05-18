@@ -19,6 +19,15 @@ $tagCloud = new Block('tags/tagCloud.inc',
 							'base_url'=>$url));
 echo $tagCloud->render();
 
+if (userHasRole(array('Administrator','Clerk'))) {
+	$invalidVotes = $this->committee->getInvalidVotes();
+	if (count($invalidVotes)) {
+		$invalidVotesBlock = new Block('votes/voteList.inc',
+										array('voteList'=>$invalidVotes,
+										'title'=>'Invalid Votes'));
+		echo $invalidVotesBlock->render();
+	}
+}
 
 
 // We only want to display topics for a single year, chosen by the user
