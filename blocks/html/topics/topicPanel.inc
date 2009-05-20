@@ -12,8 +12,13 @@
 // We're not currently choosing multiple tags, so we don't need to
 // limit the tag list to only related tags.
 // For now, we want to show a tag cloud based on the complete topicList
-$url = $this->committee->getURL();
-$url->tab = 'topics';
+if (isset($this->committee)) {
+	$url = $this->committee->getURL();
+	$url->tab = 'topics';
+}
+else {
+	$url = new URL(BASE_URL.'/topics');
+}
 $tagCloud = new Block('tags/tagCloud.inc',
 					  array('topicList'=>$this->topicList,
 							'base_url'=>$url));

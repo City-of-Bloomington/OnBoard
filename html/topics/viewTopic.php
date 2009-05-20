@@ -10,14 +10,12 @@ $topic = new Topic($_GET['topic_id']);
 $template = new Template();
 $template->title = $topic->getDescription();
 
+$template->blocks[] = new Block('topics/breadcrumbs.inc',array('topic'=>$topic));
 $template->blocks[] = new Block('committees/committeeInfo.inc',
 								array('committee'=>$topic->getCommittee()));
-
 $template->blocks[] = new Block('topics/topicInfo.inc',array('topic'=>$topic));
-
 $template->blocks[] = new Block('votes/voteList.inc',
 								array('topic'=>$topic,'voteList'=>$topic->getVotes()));
-
 foreach ($topic->getVotes() as $vote) {
 	$template->blocks[] = new Block('votingRecords/votingRecordList.inc',array('vote'=>$vote));
 }
