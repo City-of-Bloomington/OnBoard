@@ -22,7 +22,15 @@
 				?>
 			</tr>
 			<?php
+				// Sort the terms by lastname
+				$terms = array();
 				foreach ($this->vote->getTerms() as $term) {
+					$key = $term->getPerson()->getLastname().'-'.$term->getId();
+					$terms[$key] = $term;
+				}
+				ksort($terms);
+
+				foreach ($terms as $term) {
 					$fullname = View::escape($term->getPerson()->getFullname());
 					$votingRecord = $this->vote->getVotingRecord($term);
 					$termStart = $term->getTerm_start('n/j/Y');
