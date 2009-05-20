@@ -141,7 +141,7 @@ create table topics (
 	id int unsigned not null primary key auto_increment,
 	topicType_id int unsigned not null,
 	date date not null,
-	number varchar(15) not null,
+	number varchar(25) not null,
 	description text not null,
 	synopsis text not null,
 	committee_id int unsigned not null,
