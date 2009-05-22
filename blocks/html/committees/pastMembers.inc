@@ -14,7 +14,9 @@
 				$fullname = View::escape($person->getFullname());
 				$earliestStart = time();
 				$latestEnd = null;
-				foreach ($person->getTerms($this->committee) as $term) {
+
+				$terms = $person->getTerms(array('committee'=>$this->committee));
+				foreach ($terms as $term) {
 					if ($term->getTerm_start()<$earliestStart) {
 						$earliestStart = $term->getTerm_start();
 					}

@@ -90,6 +90,9 @@ class TermList extends PDOResultIterator
 		// Finding on fields from other tables required joining those tables.
 		// You can add fields from other tables to $options by adding the join SQL
 		// to $this->joins here
+		if (isset($fields['committee'])) {
+			$fields['committee_id'] = $fields['committee']->getId();
+		}
 		if (isset($fields['committee_id'])) {
 			$this->joins.= ' left join seats s on t.seat_id=s.id';
 			$options[] = 's.committee_id=:committee_id';
