@@ -23,7 +23,7 @@
 					}
 				}
 				$earliestStart = date('n/j/Y',$earliestStart);
-				$latestEnd = date('n/j/Y',$latestEnd);
+				$latestEnd = $latestEnd ? date('n/j/Y',$latestEnd) : '';
 
 				$offices = array();
 				foreach ($person->getOffices($this->committee) as $office) {
