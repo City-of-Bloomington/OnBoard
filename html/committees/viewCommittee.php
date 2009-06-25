@@ -30,10 +30,11 @@ if (userHasRole(array('Administrator','Clerk')) || $committee->hasTopics()) {
 					? $_GET['tab']
 					: 'members';
 
-	$template->blocks[] = new Block('tabs.inc',
-									array('tabs'=>$tabs,
-										  'current_tab'=>$current_tab,
-										  'base_url'=>$committee->getURL()));
+	if ($template->outputFormat == 'html') {
+		$template->blocks[] = new Block('tabs.inc',array('tabs'=>$tabs,
+														'current_tab'=>$current_tab,
+														'base_url'=>$committee->getURL()));
+	}
 }
 else {
 	$current_tab = 'members';
