@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param REQUEST topicType_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $topicType = new TopicType($_REQUEST['topicType_id']);
 

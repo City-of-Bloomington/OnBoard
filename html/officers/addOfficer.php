@@ -7,7 +7,7 @@
  * @param REQUEST person_id
  */
 
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 $committee = new Committee($_REQUEST['committee_id']);
 $person = new Person($_REQUEST['person_id']);
 
@@ -15,7 +15,7 @@ if (isset($_POST['officer'])) {
 	$officer = new Officer();
 	$officer->setCommittee($committee);
 	$officer->setPerson($person);
-	
+
 	foreach ($_POST['officer'] as $field=>$value) {
 		$set = 'set'.ucfirst($field);
 		$officer->$set($value);

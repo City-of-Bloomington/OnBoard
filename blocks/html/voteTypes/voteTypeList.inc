@@ -8,7 +8,7 @@
 ?>
 <div class="interfaceBox">
 	<h1><?php
-			if (userHasRole('Administrator')) {
+			if (userHasRole(array('Administrator','Clerk'))) {
 				echo "
 				<a class=\"add button\" href=\"".BASE_URL."/voteTypes/addVoteType.php\">
 					Add
@@ -22,7 +22,7 @@
 		<?php
 			foreach ($this->voteTypeList as $voteType) {
 				$editButton = '';
-				if (userHasRole('Administrator')) {
+				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/voteTypes/updateVoteType.php');
 					$url->voteType_id = $voteType->getId();
 					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";

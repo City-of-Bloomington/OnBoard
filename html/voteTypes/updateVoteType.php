@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param REQUEST voteType_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $voteType = new VoteType($_REQUEST['voteType_id']);
 

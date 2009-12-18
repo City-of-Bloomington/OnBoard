@@ -27,7 +27,7 @@ foreach ($this->personList as $person) {
 <div class="interfaceBox">
 <?php
 	$addButton = '';
-	if (userHasRole('Administrator')) {
+	if (userHasRole(array('Administrator','Clerk'))) {
 		$addButton = "
 		<a class=\"add button\" href=\"".BASE_URL."/people/addPerson.php\" title=\"Add a person\">
 			Add
@@ -44,7 +44,7 @@ foreach ($this->personList as $person) {
 			";
 			foreach ($people[$key] as $person) {
 				$editButton = '';
-				if (userHasRole('Administrator')) {
+				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/people/updatePerson.php');
 					$url->person_id = $person->getId();
 					$editButton = "

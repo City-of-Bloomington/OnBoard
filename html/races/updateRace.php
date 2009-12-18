@@ -6,7 +6,7 @@
  * @param REQUEST race_id
  */
 
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $race = new Race($_REQUEST['race_id']);
 if (isset($_POST['race'])) {

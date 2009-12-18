@@ -8,7 +8,7 @@
 ?>
 <div class="interfaceBox">
 	<h1><?php
-			if (userHasRole('Administrator')) {
+			if (userHasRole(array('Administrator'))) {
 				echo "<a class=\"add button\" href=\"".BASE_URL."/topicTypes/addTopicType.php\">Add</a>";
 			}
 		?>
@@ -17,12 +17,12 @@
 	<ul><?php
 			foreach ($this->topicTypeList as $topicType) {
 				$editButton = '';
-				if (userHasRole('Administrator')) {
+				if (userHasRole(array('Administrator'))) {
 					$url = new URL(BASE_URL.'/topicTypes/updateTopicType.php');
 					$url->topicType_id = $topicType->getId();
 					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
 				}
-				
+
 				$name = View::escape($topicType->getName());
 				echo "<li>$editButton $name</li>";
 			}

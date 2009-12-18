@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param REQUEST officer_id
  */
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 $officer = new Officer($_REQUEST['officer_id']);
 if (isset($_POST['officer'])) {

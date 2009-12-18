@@ -8,7 +8,7 @@
 ?>
 <div class="interfaceBox">
 	<h1><?php
-			if (userHasRole('Administrator')) {
+			if (userHasRole(array('Administrator','Clerk'))) {
 				echo "
 				<a class=\"add button\" href=\"".BASE_URL."/appointers/addAppointer.php\">
 					Add
@@ -24,7 +24,7 @@
 	<ul><?php
 			foreach ($this->appointerList as $appointer) {
 				$editButton = '';
-				if (userHasRole('Administrator')) {
+				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/appointers/updateAppointer.php');
 					$url->appointer_id = $appointer->getId();
 					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";

@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 
-verifyUser('Administrator');
+verifyUser(array('Administrator','Clerk'));
 
 if (isset($_POST['race'])) {
 	$race = new Race();
