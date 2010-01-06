@@ -4,8 +4,8 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<link rel="SHORTCUT ICON" href="/favicon.ico" />
 	<style type="text/css">
-		@import url('/skins/reset.css');
-		@import url('/skins/origin-external/layouts/<?php echo $this->layout; ?>.css');
+		@import url('/skins/origin-external/reset.css');
+		@import url('<?php echo BASE_URL; ?>/skins/local/layouts/<?php echo $this->layout; ?>.css');
 		@import url('/skins/origin-external/screen.css');
 		@import url('<?php echo BASE_URL; ?>/skins/local/screen.css');
 	</style>

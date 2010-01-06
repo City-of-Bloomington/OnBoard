@@ -10,6 +10,7 @@ echo "
 <div id=\"personalInfo\">
 	<p class=\"memberDescription\">
 	<table class=\"memberTable\">
+	<tbody>
 ";
 	if ($this->person->getEmail()) {
 		echo "<tr><th>Email</th><td>{$this->person->getEmail()}</td></tr>";
@@ -60,6 +61,7 @@ echo "
 	}
 
 echo "
+	</tbody>
 	</table>
 	$about</p>
 </div>

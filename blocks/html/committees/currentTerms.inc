@@ -10,13 +10,15 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 <div class="interfaceBox seats">
 	<h1>Current Members</h1>
 	<table>
-		<tr><th>Name</th>
+		<thead>
+			<tr><th>Name</th>
 			<th>Appointed By</th>
 			<th>Term</th>
 			<th></th>
 			<th>Offices</th>
 			<th></th>
-		</tr>
+			</tr>
+		</thead>
 		<?php
 			foreach ($this->committee->getSeats() as $seat) {
 				$appointer = View::escape($seat->getAppointer());
@@ -79,13 +81,14 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 
 					$fullname = View::escape($term->getPerson()->getFullname());
 					echo "
-					<tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
+					<tbody><tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
 						<td>$appointer</td>
 						<td>{$term->getTerm_start('n/j/Y')} - {$term->getTerm_end('n/j/y')}</td>
 						<td>$addTermButton $editTermButton $deleteTermButton</td>
 						<td>$offices</td>
 						<td>$addOfficeButton</td>
 					</tr>
+					</tbody>
 					";
 				}
 				//--------------------------------------------------------
@@ -101,13 +104,14 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 						";
 					}
 					echo "
-					<tr><td>( Vacancy )</td>
+					<tbody><tr><td>( Vacancy )</td>
 						<td>$appointer</td>
 						<td></td>
 						<td>$addTermButton</td>
 						<td></td>
 						<td></td>
 					</tr>
+					</tbody>
 					";
 				}
 			}

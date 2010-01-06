@@ -50,14 +50,18 @@ foreach ($this->termList as $term) {
 			echo "
 			<h1>Current Terms</h1>
 			<table>
-				<tr><th></th>
+			<thead>
+				<tr>
+					<th></th>
 					<th>Committee</th>
 					<th>Appointed By</th>
 					<th>Term</th>
 					<th></th>
 				</tr>
+			</thead>
+			<tbody>
 				$tableRows[current]
-			</table>
+			</tbody></table>
 			";
 		}
 
@@ -65,6 +69,7 @@ foreach ($this->termList as $term) {
 			echo "
 			<h1>Past Terms</h1>
 			<table>
+			<tbody>
 				<tr><th></th>
 					<th>Committee</th>
 					<th>Appointed By</th>
@@ -72,6 +77,7 @@ foreach ($this->termList as $term) {
 					<th></th>
 				</tr>
 				$tableRows[past]
+			</tbody>
 			</table>
 			";
 		}

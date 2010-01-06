@@ -18,10 +18,12 @@
 		Councils, Commissions, Committees & Boards
 	</h1>
 	<table>
+	<thead>
 		<tr><th></th>
 			<th>Name</th>
 			<th>Seats</th>
 		</tr>
+	</thead>
 		<?php
 			foreach ($this->committeeList as $committee) {
 				$name = View::escape($committee->getName());
@@ -37,12 +39,14 @@
 				$url = new URL(BASE_URL.'/committees/viewCommittee.php');
 				$url->committee_id = $committee->getId();
 				echo "
-				<tr><td>$editButton</td>
-					<td><a href=\"$url\">$name</a></td>
-					<td>$seats</td>
-				</tr>
+	<tbody>
+		<tr><td>$editButton</td>
+			<td><a href=\"$url\">$name</a></td>
+			<td>$seats</td>
+		</tr>
 				";
 			}
 		?>
+	</body>
 	</table>
 </div>
