@@ -12,7 +12,12 @@
 			$userIsAdmin = userHasRole(array('Administrator','Clerk'));
 			if ($userIsAdmin) {
 				$url = new URL(BASE_URL.'/committees/addCommittee.php');
-				echo "<a class=\"add button\" href=\"$url\">Add</a>";
+				$addURL->return_url = $return_url;
+				echo "
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
+				Add
+				</button>
+				";
 			}
 		?>
 		Councils, Commissions, Committees & Boards
@@ -31,9 +36,14 @@
 
 				$editButton = '';
 				if ($userIsAdmin) {
-					$url = new URL(BASE_URL.'/committees/updateCommittee.php');
-					$url->committee_id = $committee->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editURL = new URL(BASE_URL.'/committees/updateCommittee.php');
+					$editURL->committee_id = $committee->getId();
+					$editURL->return_url = $return_url;
+					$editButton = "
+					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$editURL';\">
+						Edit
+					</button>
+					";
 				}
 
 				$url = new URL(BASE_URL.'/committees/viewCommittee.php');
