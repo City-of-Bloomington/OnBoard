@@ -11,7 +11,7 @@
 		<?php
 			$userIsAdmin = userHasRole(array('Administrator','Clerk'));
 			if ($userIsAdmin) {
-				$url = new URL(BASE_URL.'/committees/addCommittee.php');
+				$addURL = new URL(BASE_URL.'/committees/addCommittee.php');
 				$addURL->return_url = $return_url;
 				echo "
 				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
