@@ -9,10 +9,11 @@
 <div class="interfaceBox">
 	<h1><?php
 			if (userHasRole(array('Administrator','Clerk'))) {
+				$addURL = new URL(BASE_URL.'/appointers/addAppointer.php');
 				echo "
-				<a class=\"add button\" href=\"".BASE_URL."/appointers/addAppointer.php\">
-					Add
-				</a>
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
+				Add
+				</button>
 				";
 			}
 		?>
@@ -25,12 +26,14 @@
 			foreach ($this->appointerList as $appointer) {
 				$editButton = '';
 				if (userHasRole(array('Administrator','Clerk'))) {
-					$url = new URL(BASE_URL.'/appointers/updateAppointer.php');
-					$url->appointer_id = $appointer->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editURL = new URL(BASE_URL.'/appointers/updateAppointer.php');
+					$editURL->appointer_id = $appointer->getId();
+					$editButton = "
+					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$editURL';\">
+						Edit
+					</button>
+					";
 				}
-				echo "<li>$editButton $appointer</li>";
-			}
 		?>
 	</ul>
 </div>

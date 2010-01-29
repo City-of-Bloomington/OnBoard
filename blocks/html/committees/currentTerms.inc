@@ -36,17 +36,19 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 					$deleteTermButton = '';
 					$addOfficeButton = '';
 					if ($userIsAdmin) {
-						$url = new URL(BASE_URL.'/terms/addTerm.php');
-						$url->seat_id = $seat->getId();
-						$url->person_id = $term->getPerson_id();
-						$addTermButton = "
-						<a class=\"add button\" href=\"$url\" title=\"Add Term\">Add</a>
+						$addURL = new URL(BASE_URL.'/terms/addTerm.php');
+						$addURL->seat_id = $seat->getId();
+						$addURL->person_id = $term->getPerson_id();
+						echo "
+						<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
+						Add
+						</button>
 						";
 
 						$url = new URL(BASE_URL.'/terms/updateTerm.php');
 						$url->term_id = $term->getId();
-						$editTermButton = "
-						<a class=\"edit button\" href=\"$url\" title=\"Edit Term\">Edit</a>
+						echo "
+						$editButton
 						";
 
 						if ($term->isSafeToDelete()) {

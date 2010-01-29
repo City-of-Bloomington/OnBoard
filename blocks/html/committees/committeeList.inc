@@ -12,7 +12,6 @@
 			$userIsAdmin = userHasRole(array('Administrator','Clerk'));
 			if ($userIsAdmin) {
 				$addURL = new URL(BASE_URL.'/committees/addCommittee.php');
-				$addURL->return_url = $return_url;
 				echo "
 				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
 				Add
@@ -38,7 +37,6 @@
 				if ($userIsAdmin) {
 					$editURL = new URL(BASE_URL.'/committees/updateCommittee.php');
 					$editURL->committee_id = $committee->getId();
-					$editURL->return_url = $return_url;
 					$editButton = "
 					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$editURL';\">
 						Edit
