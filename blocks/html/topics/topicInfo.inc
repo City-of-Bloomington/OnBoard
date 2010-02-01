@@ -15,7 +15,9 @@ $editButton = '';
 if (userHasRole(array('Administrator','Clerk'))) {
 	$url = new URL(BASE_URL.'/topics/updateTopic.php');
 	$url->topic_id = $this->topic->getId();
-	$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+	$editButton = "<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+	Edit
+	</button>";
 }
 	$url = new URL(BASE_URL.'/topics/viewTopic.php');
 	$url->topic_id = $this->topic->getId();

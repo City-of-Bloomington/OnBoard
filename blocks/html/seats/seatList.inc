@@ -13,7 +13,9 @@ $userCanEdit = userHasRole(array('Administrator','Clerk'));
 			if (isset($this->committee) && $userCanEdit) {
 				$url = new URL(BASE_URL.'/seats/addSeat.php');
 				$url->committee_id = $this->committee->getId();
-				echo "<a class=\"add button\" href=\"$url\">Add</a>";
+				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href='url';\">
+				Add Seat
+				</button>";
 			}
 		?>
 		Seats

@@ -13,10 +13,8 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 		<thead>
 			<tr><th>Name</th>
 			<th>Appointed By</th>
-			<th>Term</th>
-			<th></th>
-			<th>Offices</th>
-			<th></th>
+			<th colspan="3">Term</th>
+			<th colspan="2">Offices</th>
 			</tr>
 		</thead>
 		<?php
@@ -35,20 +33,23 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 					$editTermButton = '';
 					$deleteTermButton = '';
 					$addOfficeButton = '';
+					$editOfficeButton = '';
 					if ($userIsAdmin) {
-						$addURL = new URL(BASE_URL.'/terms/addTerm.php');
-						$addURL->seat_id = $seat->getId();
-						$addURL->person_id = $term->getPerson_id();
-						echo "
-						<button type=\"button\" class=\"add\" onclick=\"document.location.href='$addURL';\">
-						Add
+						$url = new URL(BASE_URL.'/terms/addTerm.php');
+						$url->seat_id = $seat->getId();
+						$url->person_id = $term->getPerson_id();
+						$addTermButton = "
+						<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
+						Add Term
 						</button>
 						";
 
 						$url = new URL(BASE_URL.'/terms/updateTerm.php');
 						$url->term_id = $term->getId();
-						echo "
-						$editButton
+						$editTermButton = "
+						<button type=\"button\" onclick=\"document.location.href='$url';\">
+						Edit Term
+						</button>
 						";
 
 						if ($term->isSafeToDelete()) {
@@ -56,7 +57,9 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 							$url->term_id = $term->getId();
 							$url->return_url = $_SERVER['REQUEST_URI'];
 							$deleteTermButton = "
-							<a class=\"delete button\" href=\"$url\" title=\"Delete Term\">Delete</a>
+							<button type=\"button\" onclick=\"document.location.href='$url';\">
+						Delete Term
+						</button>
 							";
 						}
 
@@ -64,7 +67,9 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 						$url->committee_id = $seat->getCommittee_id();
 						$url->person_id = $term->getPerson_id();
 						$addOfficeButton = "
-						<a class=\"add button\" href=\"$url\" title=\"Add Office\">Add</a>
+						<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
+						Add Office
+						</button>
 						";
 					}
 
@@ -74,7 +79,9 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 						if ($userIsAdmin) {
 							$url = BASE_URL.'/officers/updateOfficer.php?officer_id='.$office->getId();
 							$editOfficeButton = "
-							<a class=\"edit button\" href=\"$url\" title=\"Edit Office\">Edit</a>
+							<button type=\"button\" onclick=\"document.location.href='$url';\">
+						Edit Office
+						</button>
 							";
 						}
 						$offices[] = View::escape($office->getTitle()).$editOfficeButton;
@@ -86,9 +93,12 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 					<tbody><tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
 						<td>$appointer</td>
 						<td>{$term->getTerm_start('n/j/Y')} - {$term->getTerm_end('n/j/y')}</td>
-						<td>$addTermButton $editTermButton $deleteTermButton</td>
+						<td>$addTermButton</td>
+						<td>$editTermButton</td>
+						<td>$deleteTermButton</td>
 						<td>$offices</td>
 						<td>$addOfficeButton</td>
+						<td>$editOfficeButton</td>
 					</tr>
 					</tbody>
 					";
@@ -102,7 +112,9 @@ $userIsAdmin = userHasRole(array('Administrator','Clerk'));
 						$url = new URL(BASE_URL.'/terms/addTerm.php');
 						$url->seat_id = $seat->getId();
 						$addTermButton = "
-						<a class=\"add button\" href=\"$url\" title=\"Add Term\">Add</a>
+						<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
+						Add Term
+						</button>
 						";
 					}
 					echo "

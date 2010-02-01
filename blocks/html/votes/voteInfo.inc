@@ -13,7 +13,9 @@ $editButton = '';
 if (userHasRole(array('Administrator','Clerk'))) {
 	$url = new URL(BASE_URL.'/votes/updateVote.php');
 	$url->vote_id = $this->vote->getId();
-	$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+	$editButton = "<button type =\"button\" class=\"edit\" nclick=\"document.location.href='$url';\">
+	Edit
+	</a>";
 }
 ?>
 

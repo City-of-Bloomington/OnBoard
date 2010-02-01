@@ -29,9 +29,9 @@ foreach ($this->personList as $person) {
 	$addButton = '';
 	if (userHasRole(array('Administrator','Clerk'))) {
 		$addButton = "
-		<a class=\"add button\" href=\"".BASE_URL."/people/addPerson.php\" title=\"Add a person\">
-			Add
-		</a>
+		<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/people/addPerson.php';\">
+			Add a Person
+		</button>
 		";
 	}
 	foreach (array_keys($people) as $key) {
@@ -48,9 +48,9 @@ foreach ($this->personList as $person) {
 					$url = new URL(BASE_URL.'/people/updatePerson.php');
 					$url->person_id = $person->getId();
 					$editButton = "
-					<a class=\"edit button\" href=\"$url\" title=\"Edit Person\">
+					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
 						Edit
-					</a>
+					</button>
 					";
 				}
 

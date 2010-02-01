@@ -9,18 +9,26 @@
 <div class="interfaceBox">
 	<h1><?php
 			if (userHasRole(array('Administrator','Clerk'))) {
-				echo "<a class=\"add button\" href=\"".BASE_URL."/races/addRace.php\">Add</a>";
+				echo "
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/races/addRace.php';\">
+				Add
+				</button>";
 			}
 		?>
 		Races
 	</h1>
-	<ul><?php
+	<ul>
+	<?php
 			foreach ($this->raceList as $race) {
 				$editButton = '';
 				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/races/updateRace.php');
 					$url->race_id = $race->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editButton = "
+					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+					Edit
+					</button>
+					";
 				}
 				echo "<li>$editButton $race</li>";
 			}

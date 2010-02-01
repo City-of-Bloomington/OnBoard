@@ -68,7 +68,10 @@ if (count($topics) || $userCanEdit) {
 	if ($userCanEdit) {
 		$url = new URL(BASE_URL.'/topics/addTopic.php');
 		$url->committee_id = $this->committee->getId();
-		$addTopicButton = "<a class=\"add button\" href=\"$url\">Add</a>";
+		$addTopicButton = "<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
+		Add
+		</button>
+		";
 	}
 	echo "
 	<div class=\"interfaceBox legislation\">

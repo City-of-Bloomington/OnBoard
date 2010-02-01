@@ -16,7 +16,7 @@ $editRequirementsButton = '';
 if (userHasRole(array('Administrator','Clerk'))) {
 	$url = BASE_URL.'/terms/addTerm.php?seat_id='.$this->seat->getId();
 	$addTermButton = "
-	<button type=\"button\" onclick=\"document.location.href='$url';\">
+	<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
 		Add Term
 	</button>
 	";
@@ -26,7 +26,9 @@ if (userHasRole(array('Administrator','Clerk'))) {
 
 	$url = new URL(BASE_URL.'/seats/editRequirements.php');
 	$url->seat_id = $this->seat->getId();
-	$editRequirementsButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+	$editRequirementsButton = "<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+	Edit
+	</button>";
 }
 echo "
 <div class=\"interfaceBox\">

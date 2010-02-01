@@ -10,9 +10,9 @@
 	<h1><?php
 			if (userHasRole(array('Administrator','Clerk'))) {
 				echo "
-				<a class=\"add button\" href=\"".BASE_URL."/requirements/addRequirement.php\">
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/requirements/addRequirement.php';\">
 					Add
-				</a>
+				</button>
 				";
 			}
 		?>
@@ -28,7 +28,10 @@
 				{
 					$url = new URL(BASE_URL.'/requirements/updateRequirement.php');
 					$url->requirement_id = $requirement->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editButton = "
+					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+					Edit
+					</button>";
 
 					$url = new URL(BASE_URL.'/requirements/deleteRequirement.php');
 					$url->requirement_id = $requirement->getId();

@@ -10,7 +10,9 @@ $userCanEdit = userHasRole(array('Administrator','Clerk'));
 <div class="interfaceBox">
 	<h1><?php
 			if ($userCanEdit) {
-				echo "<a class=\"add button\" href=\"".BASE_URL."/tags/addTag.php\">Add Tag</a>";
+				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href'".BASE_URL."/tags/addTag.php';\">
+				Add Tag
+				</button>";
 			}
 		?>
 		Tags
@@ -22,7 +24,10 @@ $userCanEdit = userHasRole(array('Administrator','Clerk'));
 				if ($userCanEdit) {
 					$url = new URL(BASE_URL.'/tags/updateTag.php');
 					$url->tag_id = $tag->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit Tag</a>";
+					$editButton = "<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+					Edit Tag
+					</button>
+					";
 
 					$url = new URL(BASE_URL.'/tags/deleteTag.php');
 					$url->tag_id = $tag->getId();

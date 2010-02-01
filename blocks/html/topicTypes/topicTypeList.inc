@@ -9,7 +9,10 @@
 <div class="interfaceBox">
 	<h1><?php
 			if (userHasRole(array('Administrator'))) {
-				echo "<a class=\"add button\" href=\"".BASE_URL."/topicTypes/addTopicType.php\">Add</a>";
+				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/topicTypes/addTopicType.php';\">
+				Add
+				</button>
+				";
 			}
 		?>
 		TopicTypes
@@ -20,7 +23,10 @@
 				if (userHasRole(array('Administrator'))) {
 					$url = new URL(BASE_URL.'/topicTypes/updateTopicType.php');
 					$url->topicType_id = $topicType->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editButton = "<button type=\"button\" class=\"edit\" onclick=\"$url\">
+					Edit
+					</button>
+					";
 				}
 
 				$name = View::escape($topicType->getName());

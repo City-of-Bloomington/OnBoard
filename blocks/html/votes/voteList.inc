@@ -14,7 +14,9 @@ $title = isset($this->title) ? View::escape($this->title) : 'Votes';
 			if (isset($this->topic) && userHasRole(array('Administrator','Clerk'))) {
 				$url = new URL(BASE_URL.'/votes/addVote.php');
 				$url->topic_id = $this->topic->getId();
-				echo "<a class=\"add button\" href=\"$url\">Add</a>";
+				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
+				Add
+				</button>";
 			}
 			echo $title;
 		?>
@@ -39,7 +41,9 @@ $title = isset($this->title) ? View::escape($this->title) : 'Votes';
 				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/votes/updateVote.php');
 					$url->vote_id = $vote->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editButton = "<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+					Edit
+					</button>";
 				}
 
 				$number = View::escape($vote->getTopic()->getNumber());

@@ -10,9 +10,9 @@
 	<h1><?php
 			if (userHasRole('Administrator')) {
 				echo "
-				<a class=\"add button\" href=\"".BASE_URL."/users/addUser.php\" title=\"Add user account\">
-					Add
-				</a>
+				<button type='\button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/users/addUser.php';\">
+					Add User Account
+				</button>
 				";
 			}
 		?>
@@ -27,16 +27,16 @@
 				$url = new URL(BASE_URL.'/users/updateUser.php');
 				$url->user_id = $user->getId();
 				$editButton = "
-				<a class=\"edit button\" href=\"$url\" title=\"Edit user account\">
+				<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
 					Edit
-				</a>
+				</button>
 				";
 
 				$url = BASE_URL.'/users/deleteUser.php?user_id='.$user->getId();
 				$deleteButton = "
-				<a class=\"delete button\" href=\"$url\" title=\"Delete user account\">
+				<button type=\"button\" class=\"delete\" onclick=\"document.location.href=$url';\">
 					Delete
-				</a>
+				</button>
 				";
 			}
 

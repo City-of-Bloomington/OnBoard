@@ -66,7 +66,7 @@
 			$url->person_id = null;
 			echo "
 				</table>
-				<button type=\"button\" onclick=\"document.location.href='$url';\">
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
 					Add New Person
 				</button>
 			</div>
@@ -78,7 +78,7 @@
 			<div class\"interfaceBox results\">
 				<h1>Results</h1>
 				<p>No People Found</p>
-				<button type=\"button\" onclick=\"document.location.href='$url';\">
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='$url';\">
 					Add New Person
 				</button>
 			</div>

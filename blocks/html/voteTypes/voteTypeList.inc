@@ -10,9 +10,9 @@
 	<h1><?php
 			if (userHasRole(array('Administrator','Clerk'))) {
 				echo "
-				<a class=\"add button\" href=\"".BASE_URL."/voteTypes/addVoteType.php\">
-					Add
-				</a>
+				<button type=\"button\" onclick=\"document.location.href='".BASE_URL."/voteTypes/addVoteType.php';\">
+					Add Vote Type
+				</button>
 				";
 			}
 		?>
@@ -25,7 +25,10 @@
 				if (userHasRole(array('Administrator','Clerk'))) {
 					$url = new URL(BASE_URL.'/voteTypes/updateVoteType.php');
 					$url->voteType_id = $voteType->getId();
-					$editButton = "<a class=\"edit button\" href=\"$url\">Edit</a>";
+					$editButton = "<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$url';\">
+					Edit
+					</button>
+					";
 				}
 
 				$name = View::escape($voteType->getName());
