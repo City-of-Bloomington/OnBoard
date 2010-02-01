@@ -91,6 +91,7 @@ define('LDAP_PASSWORD_ATTRIBUTE','userpassword');
  * Import global functions that we use for many applications we write
  */
 include FRAMEWORK.'/globalFunctions.php';
+spl_autoload_register('__autoload');
 
 /**
  * Session Startup
@@ -101,3 +102,33 @@ if (!defined('STDIN')) {
 	ini_set('session.save_path',APPLICATION_HOME.'/data/sessions');
 	session_start();
 }
+
+/**
+ * We now do single sign-on using CAS  http://www.jasig.org/cas
+ *
+ * http://code.google.com/p/simplecas/
+ *
+ * SimpleCAS is a PHP library for handling the calls to the CAS service
+ * The version we're running right now has been modified to remove
+ * the depency on HTTP_Request2.  Instead, it uses curl
+ */
+define('CAS','/var/www/libraries/SimpleCAS');
+define('CAS_SERVER','cas.somewhere.org');
+define('CAS_URI','cas');
+define('CAS_COOKIE','cas_session');
+define('CAS_DOMAIN','.localhost');
+if (session_id()) {
+	if (!isset($_SESSION['USER']) && isset($_COOKIE[CAS_COOKIE])) {
+		require_once CAS.'/SimpleCAS/Autoload.php';
+		$options = array('hostname'=>CAS_SERVER,'uri'=>CAS_URI);
+		$protocol = new SimpleCAS_Protocol_Version2($options);
+		$client = SimpleCAS::client($protocol);
+		$client->forceAuthentication();
+
+		if ($client->isAuthenticated()) {
+			$user = new User($client->getUsername());
+			$user->startNewSession();
+		}
+	}
+}
+
