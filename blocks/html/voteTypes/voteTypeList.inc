@@ -10,7 +10,7 @@
 	<h1><?php
 			if (userHasRole(array('Administrator','Clerk'))) {
 				echo "
-				<button type=\"button\" onclick=\"document.location.href='".BASE_URL."/voteTypes/addVoteType.php';\">
+				<button type=\"button\"class=\"add\" onclick=\"document.location.href='".BASE_URL."/voteTypes/addVoteType.php';\">
 					Add Vote Type
 				</button>
 				";

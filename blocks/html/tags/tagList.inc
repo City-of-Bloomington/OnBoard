@@ -10,7 +10,7 @@ $userCanEdit = userHasRole(array('Administrator','Clerk'));
 <div class="interfaceBox">
 	<h1><?php
 			if ($userCanEdit) {
-				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href'".BASE_URL."/tags/addTag.php';\">
+				echo "<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/tags/addTag.php';\">
 				Add Tag
 				</button>";
 			}

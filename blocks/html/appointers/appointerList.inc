@@ -29,11 +29,15 @@
 					$editURL = new URL(BASE_URL.'/appointers/updateAppointer.php');
 					$editURL->appointer_id = $appointer->getId();
 					$editButton = "
-					<button type=\"button\" class=\"edit\" onclick=\"document.location.href='$editURL';\">
+					<button type=\"button\" class=\"edit\" onclick=\"$editURL\">
 						Edit
 					</button>
 					";
 				}
+				
+				$name = View::escape($appointer->getName());
+				echo "<li>$editButton $name</li>";
+			}
 		?>
 	</ul>
 </div>

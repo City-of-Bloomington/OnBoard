@@ -23,7 +23,8 @@
 				if (userHasRole(array('Administrator'))) {
 					$url = new URL(BASE_URL.'/topicTypes/updateTopicType.php');
 					$url->topicType_id = $topicType->getId();
-					$editButton = "<button type=\"button\" class=\"edit\" onclick=\"$url\">
+					$editButton = "
+					<button type=\"button\" class=\"edit\" onclick=\"$url\">
 					Edit
 					</button>
 					";
