@@ -115,20 +115,3 @@ if (!defined('STDIN')) {
 define('CAS','/var/www/libraries/SimpleCAS');
 define('CAS_SERVER','cas.somewhere.org');
 define('CAS_URI','cas');
-define('CAS_COOKIE','cas_session');
-define('CAS_DOMAIN','.localhost');
-if (session_id()) {
-	if (!isset($_SESSION['USER']) && isset($_COOKIE[CAS_COOKIE])) {
-		require_once CAS.'/SimpleCAS/Autoload.php';
-		$options = array('hostname'=>CAS_SERVER,'uri'=>CAS_URI);
-		$protocol = new SimpleCAS_Protocol_Version2($options);
-		$client = SimpleCAS::client($protocol);
-		$client->forceAuthentication();
-
-		if ($client->isAuthenticated()) {
-			$user = new User($client->getUsername());
-			$user->startNewSession();
-		}
-	}
-}
-

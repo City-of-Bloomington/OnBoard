@@ -20,7 +20,6 @@ if ($client->isAuthenticated()) {
 	try {
 		$user = new User($client->getUsername());
 		$user->startNewSession();
-		setcookie(CAS_COOKIE,'true',0,'/',CAS_DOMAIN);
 
 		if (isset($_SESSION['return_url'])) {
 			header('Location: '.$_SESSION['return_url']);
