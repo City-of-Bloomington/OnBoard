@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2012 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param GET person_id
@@ -27,18 +27,18 @@ if (isset($_POST['user'])) {
 	}
 	else {
 		// Load their information from LDAP
-		// Delete this statement if you're not using LDAP
-		if ($user->getAuthenticationMethod() == 'LDAP') {
+		if ($user->getAuthenticationMethod() != 'local') {
 			try {
-				$ldap = new LDAPEntry($user->getUsername());
+				$externalIdentity = $user->getAuthenticationMethod();
+				$identity = new $externalIdentity($user->getUsername());
 				try {
-					$person = new Person($ldap->getEmail());
+					$person = new Person($identity->getEmail());
 				}
 				catch (Exception $e) {
 					$person = new Person();
-					$person->setFirstname($ldap->getFirstname());
-					$person->setLastname($ldap->getLastname());
-					$person->setEmail($ldap->getEmail());
+					$person->setFirstname($identity->getFirstname());
+					$person->setLastname($identity->getLastname());
+					$person->setEmail($identity->getEmail());
 					$person->save();
 				}
 				$user->setPerson($person);

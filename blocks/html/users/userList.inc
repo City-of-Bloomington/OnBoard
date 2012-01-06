@@ -10,7 +10,7 @@
 	<h1><?php
 			if (userHasRole('Administrator')) {
 				echo "
-				<button type='\button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/users/addUser.php';\">
+				<button type=\"button\" class=\"add\" onclick=\"document.location.href='".BASE_URL."/users/addUser.php';\">
 					Add User Account
 				</button>
 				";

@@ -6,7 +6,7 @@
  * a city employee will have the same username and password on all applications.
  * Applications should use these public functions for their own users.
  *
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2012 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -57,7 +57,7 @@ abstract class SystemUser extends ActiveRecord
 
 			default:
 				$type = $this->getAuthenticationMethod();
-				return call_user_func(array($type,'authenticate'),$this->getUsername(),$password);
+				return $type::authenticate($this->getUsername(),$password);
 		}
 	}
 
@@ -74,8 +74,10 @@ abstract class SystemUser extends ActiveRecord
 	}
 
 	/**
-	 * Determines which authentication method is being used, and sends the password to the
-	 * appropriate method
+	 * Used to save passwords to the database
+	 *
+	 * Only local passwords should be saved.  External Identities should have
+	 * their own methods for users to change passwords
 	 */
 	public function savePassword()
 	{
@@ -83,10 +85,6 @@ abstract class SystemUser extends ActiveRecord
 			case "local":
 				$this->saveLocalPassword();
 			break;
-
-			default:
-				$type = $this->getAuthenticationMethod();
-				call_user_func(array($type,'savePassword'),$this->getUsername(),$password);
 		}
 	}
 }

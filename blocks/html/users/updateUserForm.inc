@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2009 City of Bloomington, Indiana
+ * @copyright 2006-2012 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param User $this->user
@@ -13,12 +13,14 @@
 		<table>
 			<tr><td><label for="user-authenticationMethod">Authentication</label></td>
 				<td><select name="user[authenticationMethod]" id="user-authenticationMethod">
-						<option <?php if ($this->user->getAuthenticationMethod()=='LDAP') echo "selected=\"selected\""; ?>>
-							LDAP
-						</option>
-						<option <?php if ($this->user->getAuthenticationMethod()=='local') echo "selected=\"selected\""; ?>>
-							local
-						</option>
+					<?php
+						foreach (User::getAuthenticationMethods() as $method) {
+							$selected = $this->user->getAuthenticationMethod()==$method
+								? 'selected="selected"'
+								: '';
+							echo "<option $selected>$method</option>";
+						}
+					?>
 					</select>
 				</td>
 			</tr>
