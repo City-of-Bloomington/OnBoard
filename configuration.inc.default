@@ -104,14 +104,15 @@ if (!defined('STDIN')) {
 }
 
 /**
- * We now do single sign-on using CAS  http://www.jasig.org/cas
+ * CAS authentication http://www.jasig.org/cas
  *
- * http://code.google.com/p/simplecas/
+ * This is requried only if you want to do CAS authentication
  *
- * SimpleCAS is a PHP library for handling the calls to the CAS service
- * The version we're running right now has been modified to remove
- * the depency on HTTP_Request2.  Instead, it uses curl
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
  */
-define('CAS','/var/www/libraries/SimpleCAS');
+define('CAS','/var/www/libraries/phpCAS');
 define('CAS_SERVER','cas.somewhere.org');
 define('CAS_URI','cas');

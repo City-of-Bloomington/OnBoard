@@ -160,10 +160,12 @@ if (ERROR_REPORTING != 'PHP_DEFAULT') {
 function verifyUser($roles=null)
 {
 	// Make sure they're logged in
-	if (!isset($_SESSION['USER']) || $_SESSION['IP_ADDRESS']!=$_SERVER['REMOTE_ADDR']) {
+	if (!isset($_SESSION['USER']) || !isset($_SESSION['IP_ADDRESS'])
+		|| $_SESSION['IP_ADDRESS']!=$_SERVER['REMOTE_ADDR']) {
 		// They're not logged in.  Boot them out to the login page
+		print_r($_SESSION);
 		$_SESSION['errorMessages'][] = new Exception('notLoggedIn');
-		header("Location: ".BASE_URL);
+		#header("Location: ".BASE_URL);
 		exit();
 	}
 
