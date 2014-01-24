@@ -1,0 +1,9 @@
+[submodule "libraries/phpCAS"]
+	path = libraries/phpCAS
+	url = https://github.com/Jasig/phpCAS.git
+[submodule "public/css/Font-Awesome"]
+	path = public/css/Font-Awesome
+	url = https://github.com/FortAwesome/Font-Awesome.git
+[submodule "libraries/zf2"]
+	path = libraries/zf2
+	url = https://github.com/zendframework/zf2.git
