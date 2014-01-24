@@ -1,38 +1,29 @@
 <?php
 /**
- * Replace this copyright statement with your own.  All the generated code
- * will include this copyright statement
+ * Displayed in the banner
  */
-define('COPYRIGHT',"/**
- * @copyright Copyright (C) 2007-2009 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
- */");
-/**
- * Used to keep sessions on the same webserver seperate;
- */
-define('APPLICATION_NAME','application_name');
+define('APPLICATION_NAME','application');
 
 /**
  * Where on the filesystem this application is installed
  */
-define('APPLICATION_HOME','/var/www/sites/application_name');
-
-/**
- * Where on the filesystem the framework is installed.
- */
-define('FRAMEWORK',APPLICATION_HOME.'/libraries/framework');
+define('APPLICATION_HOME','/srv/sites/application');
+define('BLOSSOM', APPLICATION_HOME.'/libraries/Blossom');
+define('ZEND',    APPLICATION_HOME.'/libraries/zf2/library/Zend');
 
 /**
  * The URL to get to this site
  * Do NOT use a trailing slash
  */
-define('BASE_URL','http://localhost');
+define('BASE_URL','http://localhost/application');
+define('BASE_URI','/application');
 
 /**
  * Used when there's an error on the site.  The Framework will
  * print out a nice error message, encouraging users to report any problems
- * See: FRAMEWORK/ITSFunctions.inc
+ * See: BLOSSOM/ITSFunctions.inc
+ *
+ * This is also the default Admin user information that gets added to the database
  */
 define('ADMINISTRATOR_NAME','Site Admin');
 define('ADMINISTRATOR_EMAIL','admin@servername.com');
@@ -43,7 +34,7 @@ define('ADMINISTRATOR_EMAIL','admin@servername.com');
  *
  * If you do not define error handling to PHP_DEFAULT
  * the custom error handlers kick in.  All of the custom error display
- * frunctions are in FRAMEWORK/globalFunctions.inc.  The custom error
+ * frunctions are in BLOSSOM/Classes/Error.php.  The custom error
  * function decide what to do based on $ERROR_REPORING array values
  *
  * PRETTY_PRINT - Display a message in the browser
@@ -54,6 +45,7 @@ define('ADMINISTRATOR_EMAIL','admin@servername.com');
 define('ERROR_REPORTING','PHP_DEFAULT');
 //define('ERROR_REPORTING','CUSTOM');
 //$ERROR_REPORTING = array('PRETTY_PRINT','SKIDDER');
+
 /**
  * Skidder is a web service for error notifications.  Error reporting supports
  * posting errors to a Skidder server.  You must register for an application_id
@@ -64,12 +56,11 @@ define('ERROR_REPORTING','PHP_DEFAULT');
 
 /**
  * Database Setup
- * Refer to the PDO documentation for DSN sytnax
- * for your database type
+ * Refer to the PDO documentation for DSN sytnax for your database type
  * http://www.php.net/manual/en/pdo.drivers.php
  */
-define('DB_TYPE','mysql');
-define('DB_DSN','host=localhost;'); # You must include the trailing semi-colon
+define('DB_ADAPTER','Pdo_Mysql');
+define('DB_HOST','localhost');
 define('DB_NAME',APPLICATION_NAME);
 define('DB_USER',APPLICATION_NAME);
 define('DB_PASS','password');
@@ -77,29 +68,66 @@ define('DB_PASS','password');
 /**
  * Directory Configuration
  *
- * This is required in order to use the LDAP or ADS authentication
- * If you do not want to use external authentication, you can comment this out
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
  */
 // Example for ADS style authentication
-define('DIRECTORY_SERVER','ldaps://example.org:636');
-define('DIRECTORY_BASE_DN','OU=Department,DC=example,DC=org');
-define('DIRECTORY_USERNAME_ATTRIBUTE', 'CN');
-define('DIRECTORY_USER_BINDING','{username}@bloomington.in.gov');
-define('DIRECTORY_ADMIN_BINDING', 'admin@bloomington.in.gov');
-define('DIRECTORY_ADMIN_PASS','password');
+$DIRECTORY_CONFIG = array(
+//	'Employee'=>array(
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636',
+//		'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
+//		'DIRECTORY_USER_BINDING'=>'{username}@example.org',
+//		'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
+//		'DIRECTORY_ADMIN_PASS'=>'password'
+//	)
+);
 // Example for LDAP style authentication
-//define('DIRECTORY_SERVER','ldaps://example.org:636');
-//define('DIRECTORY_BASE_DN','ou=people,o=ldap.domain.somewhere');
-//define('DIRECTORY_USERNAME_ATTRIBUTE', 'uid');
-//define('DIRECTORY_USER_BINDING','uid={username},'.DIRECTORY_BASE_DN);
-//define('DIRECTORY_ADMIN_BINDING', 'uid=admin,'.DIRECTORY_BASE_DN);
-//define('DIRECTORY_ADMIN_PASS','password');
+//$DIRECTORY_CONFIG = array(
+//	'Employee'=>array(
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636');
+//		'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
+//		'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_PASS'=>'password');
+//	)
+//);
 
 /**
- * Import global functions that we use for many applications we write
+ * CAS authentication http://www.jasig.org/cas
+ *
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
  */
-include FRAMEWORK.'/globalFunctions.php';
-spl_autoload_register('__autoload');
+//define('CAS',APPLICATION_HOME.'/libraries/phpCAS');
+//define('CAS_SERVER','cas.somewhere.org');
+//define('CAS_URI','cas');
+
+//-------------------------------------------------------------------
+// Bootstrap code
+// No editing is usually needed after this point
+//-------------------------------------------------------------------
+/**
+ * Enable autoloading for the PHP libraries
+ */
+require_once ZEND.'/Loader/AutoloaderFactory.php';
+$config = [
+	'Zend\Loader\StandardAutoloader' => [
+		'namespaces' => [
+			'Application' => APPLICATION_HOME,
+			'Blossom'     => BLOSSOM,
+			'Zend'        => ZEND
+		]
+	]
+];
+Zend\Loader\AutoloaderFactory::factory($config);
 
 /**
  * Session Startup
@@ -111,16 +139,17 @@ if (!defined('STDIN')) {
 	session_start();
 }
 
+if (ERROR_REPORTING != 'PHP_DEFAULT') {
+	set_error_handler    ('Blossom\Classes\Error::customErrorHandler');
+	set_exception_handler('Blossom\Classes\Error::customExceptionHandler');
+}
+
 /**
- * CAS authentication http://www.jasig.org/cas
- *
- * This is requried only if you want to do CAS authentication
- *
- * https://wiki.jasig.org/display/CASC/phpCAS
- *
- * phpCAS is a PHP library for handling the calls to the CAS service
- * It is the official library, part of the Jasig CAS project
+ * Load the Zend_Acl
  */
-define('CAS','/var/www/libraries/phpCAS');
-define('CAS_SERVER','cas.somewhere.org');
-define('CAS_URI','cas');
+include APPLICATION_HOME.'/access_control.inc';
+
+/**
+ * Grab a timestamp for calculating process time
+ */
+$startTime = microtime(1);
