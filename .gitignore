@@ -1,0 +1,5 @@
+configuration.inc
+data/sessions/*
+tests/configuration.inc
+build
+dist
