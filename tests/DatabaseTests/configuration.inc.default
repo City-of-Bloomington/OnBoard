@@ -1,0 +1,155 @@
+<?php
+/**
+ * Displayed in the banner
+ */
+define('APPLICATION_NAME','application');
+
+/**
+ * Where on the filesystem this application is installed
+ */
+define('APPLICATION_HOME','/srv/sites/application');
+define('BLOSSOM', APPLICATION_HOME.'/libraries/Blossom');
+define('ZEND',    APPLICATION_HOME.'/libraries/zf2/library/Zend');
+
+/**
+ * The URL to get to this site
+ * Do NOT use a trailing slash
+ */
+define('BASE_URL','http://localhost/application');
+define('BASE_URI','/application');
+
+/**
+ * Used when there's an error on the site.  The Framework will
+ * print out a nice error message, encouraging users to report any problems
+ * See: BLOSSOM/ITSFunctions.inc
+ *
+ * This is also the default Admin user information that gets added to the database
+ */
+define('ADMINISTRATOR_NAME','Site Admin');
+define('ADMINISTRATOR_EMAIL','admin@servername.com');
+
+/**
+ * Set how we want to handle errors
+ * PHP_DEFAULT - do whatever's configured in php.ini
+ *
+ * If you do not define error handling to PHP_DEFAULT
+ * the custom error handlers kick in.  All of the custom error display
+ * frunctions are in BLOSSOM/Classes/Error.php.  The custom error
+ * function decide what to do based on $ERROR_REPORING array values
+ *
+ * PRETTY_PRINT - Display a message in the browser
+ * EMAIL_ADMIN - email the Administrator
+ * EMAIL_USER - email the logged in user
+ * SKIDDER - post errors to a Skidder server (see config below)
+*/
+define('ERROR_REPORTING','PHP_DEFAULT');
+//define('ERROR_REPORTING','CUSTOM');
+//$ERROR_REPORTING = array('PRETTY_PRINT','SKIDDER');
+
+/**
+ * Skidder is a web service for error notifications.  Error reporting supports
+ * posting errors to a Skidder server.  You must register for an application_id
+ * on the skidder server you want to post errors to.
+ */
+//define('SKIDDER_URL','http://localhost/skidder/home.php');
+//define('SKIDDER_APPLICATION_ID',);
+
+/**
+ * Database Setup
+ * Refer to the PDO documentation for DSN sytnax for your database type
+ * http://www.php.net/manual/en/pdo.drivers.php
+ */
+define('DB_ADAPTER','Pdo_Mysql');
+define('DB_HOST','localhost');
+define('DB_NAME','test');
+define('DB_USER','test');
+define('DB_PASS','test');
+
+/**
+ * Directory Configuration
+ *
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
+ */
+// Example for ADS style authentication
+$DIRECTORY_CONFIG = array(
+//	'Employee'=>array(
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636',
+//		'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
+//		'DIRECTORY_USER_BINDING'=>'{username}@example.org',
+//		'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
+//		'DIRECTORY_ADMIN_PASS'=>'password'
+//	)
+);
+// Example for LDAP style authentication
+//$DIRECTORY_CONFIG = array(
+//	'Employee'=>array(
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636');
+//		'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
+//		'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_PASS'=>'password');
+//	)
+//);
+
+/**
+ * CAS authentication http://www.jasig.org/cas
+ *
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
+ */
+//define('CAS',APPLICATION_HOME.'/libraries/phpCAS');
+//define('CAS_SERVER','cas.somewhere.org');
+//define('CAS_URI','cas');
+
+//-------------------------------------------------------------------
+// Bootstrap code
+// No editing is usually needed after this point
+//-------------------------------------------------------------------
+/**
+ * Enable autoloading for the PHP libraries
+ */
+require_once ZEND.'/Loader/AutoloaderFactory.php';
+$config = [
+	'Zend\Loader\StandardAutoloader' => [
+		'namespaces' => [
+			'Application' => APPLICATION_HOME,
+			'Blossom'     => BLOSSOM,
+			'Zend'        => ZEND
+		]
+	]
+];
+Zend\Loader\AutoloaderFactory::factory($config);
+
+/**
+ * Session Startup
+ * Don't start a session for CLI usage.
+ * We only want sessions when PHP code is executed from the webserver
+ */
+if (!defined('STDIN')) {
+	ini_set('session.save_path',APPLICATION_HOME.'/data/sessions');
+	session_start();
+}
+
+if (ERROR_REPORTING != 'PHP_DEFAULT') {
+	set_error_handler    ('Blossom\Classes\Error::customErrorHandler');
+	set_exception_handler('Blossom\Classes\Error::customExceptionHandler');
+}
+
+/**
+ * Load the Zend_Acl
+ */
+include APPLICATION_HOME.'/access_control.inc';
+
+/**
+ * Grab a timestamp for calculating process time
+ */
+$startTime = microtime(1);

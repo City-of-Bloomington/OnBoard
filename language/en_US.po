@@ -1,0 +1,388 @@
+# Translation
+# Copyright (C) 2013 City of Bloomington
+# This file is distributed under the same license as the Blossom package.
+#
+# Cliff Ingham, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: uReport 1.9\n"
+"Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
+"POT-Creation-Date: 2013-09-20 16:33-0400\n"
+"PO-Revision-Date: 2014-01-24 10:04-0500\n"
+"Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
+"Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: en_US\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "labels.home"
+msgstr "Home"
+
+msgid "labels.add"
+msgstr "Add"
+
+msgid "labels.edit"
+msgstr "Edit"
+
+msgid "labels.delete"
+msgstr "Delete"
+
+msgid "labels.submit"
+msgstr "Submit"
+
+msgid "labels.save"
+msgstr "Save"
+
+msgid "labels.cancel"
+msgstr "Cancel"
+
+msgid "labels.done"
+msgstr "Done"
+
+#. This is the short form for "Administrator".  This should be an abbreviation
+msgid "labels.admin"
+msgstr "Admin"
+
+msgid "labels.login"
+msgstr "Login"
+
+msgid "labels.logout"
+msgstr "Logout"
+
+msgid "labels.help"
+msgstr "Help"
+
+msgid "labels.name"
+msgstr "Name"
+
+msgid "labels.firstname"
+msgstr "First Name"
+
+msgid "labels.middlename"
+msgstr "Middle Name"
+
+msgid "labels.lastname"
+msgstr "Last Name"
+
+msgid "labels.address"
+msgstr "Address"
+
+msgid "labels.city"
+msgstr "City"
+
+msgid "labels.zipcode"
+msgstr "Zip"
+
+msgid "labels.gender"
+msgstr "Gender"
+
+msgid "labels.birthdate"
+msgstr "Birthdate"
+
+msgid "labels.username"
+msgstr "Username"
+
+msgid "labels.password"
+msgstr "Password"
+
+msgid "labels.authenticationMethod"
+msgstr "Authentication"
+
+msgid "labels.role"
+msgstr "Role"
+
+msgid "labels.email"
+msgid_plural "labels.emails"
+msgstr[0] "Email"
+msgstr[1] "Email Addresses"
+
+msgid "labels.person"
+msgid_plural "labels.people"
+msgstr[0] "Person"
+msgstr[1] "People"
+
+msgid "labels.user"
+msgid_plural "labels.users"
+msgstr[0] "User Account"
+msgstr[1] "User Accounts"
+
+msgid "labels.info_person"
+msgstr "Person Info"
+
+msgid "labels.info_vote"
+msgstr "Vote Info"
+
+msgid "labels.info_term"
+msgstr "Term Info"
+
+msgid "labels.info_committee"
+msgstr "Committee Info"
+
+msgid "labels.info_topic"
+msgstr "Legislation Info"
+
+msgid "labels.info_seat"
+msgstr "Seat Info"
+
+msgid "labels.info_office"
+msgstr "Office Info"
+
+msgid "labels.add_person"
+msgstr "Add a Person"
+
+msgid "labels.edit_person"
+msgstr "Edit Person"
+
+msgid "labels.create_account"
+msgstr "Create Account"
+
+msgid "labels.edit_account"
+msgstr "Edit Account"
+
+msgid "labels.delete_account"
+msgstr "Delete Account"
+
+msgid "labels.race"
+msgid_plural "labels.races"
+msgstr[0] "Race"
+msgstr[1] "Races"
+
+msgid "labels.edit_race"
+msgstr "Edit Race"
+
+msgid "labels.add_race"
+msgstr "Add Race"
+
+msgid "labels.committee"
+msgid_plural "labels.committees"
+msgstr[0] "Committee"
+msgstr[1] "Committees"
+
+msgid "labels.add_committee"
+msgstr "Add Committee"
+
+msgid "labels.edit_committee"
+msgstr "Edit Committee"
+
+msgid "labels.council"
+msgid_plural "labels.councils"
+msgstr[0] "Council"
+msgstr[1] "Councils"
+
+msgid "labels.commission"
+msgid_plural "labels.commissions"
+msgstr[0] "Commission"
+msgstr[1] "Commissions"
+
+msgid "labels.board"
+msgid_plural "labels.boards"
+msgstr[0] "Board"
+msgstr[1] "Boards"
+
+msgid "labels.seat"
+msgid_plural "labels.seats"
+msgstr[0] "Seat"
+msgstr[1] "Seats"
+
+msgid "labels.add_seat"
+msgstr "Add Seat"
+
+msgid "labels.edit_seat"
+msgstr "Edit Seat"
+
+msgid "labels.appointer"
+msgid_plural "labels.appointers"
+msgstr[0] "Appointer"
+msgstr[1] "Appointers"
+
+msgid "labels.add_appointer"
+msgstr "Add Appointer"
+
+msgid "labels.edit_appointer"
+msgstr "Edit Appointer"
+
+msgid "labels.appointed_by"
+msgstr "Appointed By"
+
+msgid "labels.requirement"
+msgid_plural "labels.requirements"
+msgstr[0] "Requirement"
+msgstr[1] "Requirements"
+
+msgid "labels.add_requirement"
+msgstr "Add Requirement"
+
+msgid "labels.edit_requirement"
+msgstr "Edit Requirement"
+
+msgid "labels.current_requirements"
+msgstr "Current Requirements"
+
+msgid "labels.topic"
+msgid_plural "labels.topics"
+msgstr[0] "Legislation"
+msgstr[1] "Legislation"
+
+msgid "labels.add_topic"
+msgstr "Add Legislation"
+
+msgid "labels.edit_topic"
+msgstr "Edit Legislation"
+
+msgid "labels.topicType"
+msgid_plural "labels.topicTypes"
+msgstr[0] "Legislation Type"
+msgstr[1] "Legislation Types"
+
+msgid "labels.add_topicType"
+msgstr "Add Legislation Type"
+
+msgid "labels.edit_topicType"
+msgstr "Edit Topic Type"
+
+msgid "labels.vote"
+msgid_plural "labels.votes"
+msgstr[0] "Vote"
+msgstr[1] "Votes"
+
+msgid "labels.add_vote"
+msgstr "Add Vote"
+
+msgid "labels.edit_vote"
+msgstr "Edit Vote"
+
+msgid "labels.outcome"
+msgstr "Outcome"
+
+msgid "labels.invalid_votes"
+msgstr "Invalid Votes"
+
+msgid "labels.voteType"
+msgid_plural "labels.voteTypes"
+msgstr[0] "Vote Type"
+msgstr[1] "Vote Types"
+
+msgid "labels.add_voteType"
+msgstr "Add Vote Type"
+
+msgid "labels.edit_voteType"
+msgstr "Edit Vote Type"
+
+msgid "labels.votingRecord"
+msgid_plural "labels.votingRecords"
+msgstr[0] "Voting Record"
+msgstr[1] "Voting Records"
+
+msgid "labels.edit_votingRecords"
+msgstr "Enter Votes"
+
+msgid "labels.votingRecordComparison"
+msgstr "Voting Comparison"
+
+msgid "labels.tag"
+msgid_plural "labels.tags"
+msgstr[0] "Tag"
+msgstr[1] "Tags"
+
+msgid "labels.add_tag"
+msgstr "Add Tag"
+
+msgid "labels.edit_tag"
+msgstr "Edit Tag"
+
+msgid "messages.signed_in_as"
+msgstr "Signed in as %s"
+
+msgid "labels.term"
+msgid_plural "labels.terms"
+msgstr[0] "Term"
+msgstr[1] "Terms"
+
+msgid "labels.add_term"
+msgstr "Add Term"
+
+msgid "labels.edit_term"
+msgstr "Edit Term"
+
+msgid "labels.delete_term"
+msgstr "Delete Term"
+
+msgid "labels.maxCurrentTerms"
+msgstr "Max Current Terms"
+
+msgid "labels.member"
+msgid_plural "labels.members"
+msgstr[0] "Member"
+msgstr[1] "Members"
+
+msgid "labels.current_members"
+msgstr "Current Members"
+
+msgid "labels.view_current_members"
+msgstr "View Current Members"
+
+msgid "labels.past_members"
+msgstr "Past Members"
+
+msgid "labels.view_past_members"
+msgstr "View Past Members"
+
+msgid "labels.office"
+msgid_plural "labels.offices"
+msgstr[0] "Office"
+msgstr[1] "Offices"
+
+msgid "labels.add_office"
+msgstr "Add Office"
+
+msgid "labels.edit_office"
+msgstr "Edit Office"
+
+msgid "labels.vacancy"
+msgstr "Vacancy"
+
+msgid "labels.order"
+msgstr "Order"
+
+msgid "labels.date"
+msgstr "Date"
+
+msgid "labels.date_start"
+msgstr "Start Date"
+
+msgid "labels.date_end"
+msgstr "End Date"
+
+msgid "labels.date_formed"
+msgstr "Date Formed"
+
+msgid "labels.number"
+msgstr "Number"
+
+msgid "labels.description"
+msgstr "Description"
+
+msgid "labels.synopsis"
+msgstr "Synopsis"
+
+msgid "labels.statutoryName"
+msgstr "Statutory Name"
+
+msgid "labels.statuteReference"
+msgstr "Statute Reference"
+
+msgid "labels.website"
+msgstr "Website"
+
+msgid "labels.title"
+msgstr "Title"
+
+msgid "messages.add_existing_requirement"
+msgstr "Add an existing requirement"
+
+msgid "messages.add_new_requirement"
+msgstr "Add a new requirement to the system"

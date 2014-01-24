@@ -1,7 +1,8 @@
 <div id="panel-one">
 <?php
-	if (userHasRole('Administrator')) {
-		include APPLICATION_HOME.'/templates/html/partials/panel-widgets/Administrator.inc';
+	global $USER_ROLE;
+	if ($USER_ROLE == 'Administrator') {
+		include __DIR__.'/panel-widgets/Admin.inc';
 	}
 ?>
 </div>

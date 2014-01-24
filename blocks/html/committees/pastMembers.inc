@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright 2009 City of Bloomington, Indiana
+ * @copyright 2009-2014 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
+use Blossom\Classes\View;
 ?>
-<div class="interfaceBox seats">
-	<h1>Past Members</h1>
+<div>
+	<h2><?php echo $this->_('labels.past_members'); ?></h2>
 	<table>
 		<?php
 			foreach ($this->committee->getPeople() as $person) {
@@ -15,17 +16,19 @@
 				$earliestStart = time();
 				$latestEnd = null;
 
-				$terms = $person->getTerms(array('committee'=>$this->committee));
+				$terms = $person->getTerms(['committee_id'=>$this->committee->getId()]);
 				foreach ($terms as $term) {
-					if ($term->getTerm_start()<$earliestStart) {
-						$earliestStart = $term->getTerm_start();
+					$termStart = $term->getTerm_start('U');
+					$termEnd   = $term->getTerm_end  ('U');
+					if ($termStart < $earliestStart) {
+						$earliestStart = $termStart;
 					}
-					if (!$latestEnd || $term->getTerm_end()>$latestEnd) {
-						$latestEnd = $term->getTerm_end();
+					if (!$latestEnd || $termEnd > $latestEnd) {
+						$latestEnd = $termEnd;
 					}
 				}
-				$earliestStart = date('n/j/Y',$earliestStart);
-				$latestEnd = $latestEnd ? date('n/j/Y',$latestEnd) : '';
+				$earliestStart = date(DATE_FORMAT, $earliestStart);
+				$latestEnd = $latestEnd ? date(DATE_FORMAT, $latestEnd) : '';
 
 				$offices = array();
 				foreach ($person->getOffices($this->committee) as $office) {
@@ -34,7 +37,7 @@
 				$offices = implode(',',$offices);
 
 				echo "
-				<tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
+				<tr><td><a href=\"{$person->getUri()}\">$fullname</a></td>
 					<td>$earliestStart - $latestEnd</td>
 					<td>$offices</td>
 				</tr>
@@ -43,6 +46,8 @@
 		?>
 	</table>
 	<div>
-		<a href="<?php echo $this->committee->getURL(); ?>">View Current Members</a>
+		<a href="<?php echo $this->committee->getUri(); ?>">
+			<?php echo $this->_('labels.view_current_members'); ?>
+		</a>
 	</div>
 </div>

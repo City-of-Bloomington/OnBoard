@@ -1,0 +1,3 @@
+The tests do not write to the database.
+
+They can be used to test the system in production, confirming correct configuration of everything.

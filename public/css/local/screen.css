@@ -1,0 +1,117 @@
+/**
+ * Basic HTML element styles
+ */
+body { font-family:sans-serif; font-size:10pt; }
+
+h2 { font-size:131%;   font-weight:bold; margin:.5em 0; color:#036; }
+h3 { font-size:123.1%; font-weight:bold; margin:.5em 0 .25em 0; }
+h4 { font-size:100%;   font-weight:bold; }
+nav a { margin-right:1em; }
+a { text-decoration:none; color:#036; }
+p { margin:0 .5em .5em .5em; }
+
+table { margin:0 .5em .5em .5em; border:1px solid black; }
+th { background-color:#ddd; color:#666; font-weight:bold; font-size:90%; padding:0.25em; }
+td { padding:.25em; }
+thead th { text-align:left; }
+tbody th { text-align:right; }
+
+ul { list-style-type:circle; margin-left:1em; padding:0; }
+li { margin:0; }
+
+fieldset { padding:.25em 0; }
+legend { font-weight:bold; }
+label { font-weight:bold; }
+
+/**
+ * Base styles for buttons and button links
+ */
+button, .btn {
+	font-size:12px; color:black;
+	font-weight:normal;
+	display:inline-block;
+	padding:4px;
+	margin-right:.5ex;
+	border:1px solid #ccc;
+	background-image:url('images/buttonBackground.png');
+	background-position:left center;
+	background-repeat:repeat-x;
+}
+.hidden-label 		{ font-size:0; height:1px; overflow:hidden; }
+.fa-times 		{ color:red;   }
+.fa-pencil 		{ color:blue;  }
+.fa-edit        { color:blue;  }
+.fa-plus   		{ color:green; }
+.fa-ok     		{ color:green; }
+.fa-save   		{ color:green; }
+.fa-map-marker 	{ color:blue;  }
+.fa-list-ul		{ color:blue;  }
+.fa-print       { color:blue;  }
+
+/**
+ * Banner
+ */
+header { color:#fff; background-color:#036; margin:0; }
+header a { color:#fff; font-weight:bold; }
+header h1 { margin:0 4px; font-size:174%; }
+header div { margin:4px; }
+header nav {
+	margin-top:5px; padding:5px;
+	background-color:#fff;
+	border-top:2px solid #000; border-bottom:2px solid #000;
+}
+header nav a { font-weight:bold; color:black; }
+#utilityBar { float:right; width:50%; text-align:right; }
+#utilityBar li { display:inline; margin-right:1em; color:white; }
+
+/**
+ * Side Panel
+ */
+#panel-one nav {
+	border:2px solid #000; margin-bottom:0.5em;
+	border-radius:10px;
+	overflow:hidden;
+}
+#panel-one h2 {
+	background-color:#36c; color:#fff;
+	border-bottom:2px solid #000;
+	margin:0; padding:.25em;
+}
+#panel-one ul { margin:.25em; padding:0; }
+#panel-one a { font-weight:bold; color:#000; }
+
+#content-panel { padding:4px; }
+
+/**
+ * Main Content
+ */
+#errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
+#errorMessages h2 { }
+
+.breadcrumbs ul { list-style-type:none; }
+.breadcrumbs li { display:inline; }
+.breadcrumbs li a { margin-right:8px; font-size:.75em; color:#999; }
+
+
+.pageNavigation ul { list-style-type:none; }
+.pageNavigation li { display:inline; margin-right:1em; }
+.pageNavigation .current { border:2px solid green; }
+
+.tabBar { list-style-type:none; margin:0; border-bottom:4px solid #036; }
+.tabBar li { display:inline; margin:.5em; padding:4px 8px 0 8px; border-radius:4px; }
+.tabBar li.current { background-color:#036; }
+.tabBar li.current a { color:white; }
+
+/* Tag Styles */
+.tags   { font-size:20px; }
+.tags a { font-size:20px; }
+.tags .p90 a { font-size:110%; color:black; font-weight:bold; }
+.tags .p70 a { font-size:100%; color:black;   }
+.tags .p50 a { font-size:90%;  color:#150517; }
+.tags .p30 a { font-size:75%;  color:#2b1b17; }
+.tags .p10 a { font-size:60%;  color:#302226; }
+.tags .p0  a { font-size:50%;  color:#3b3131; }
+.tags a.current { color:#ee7d22; }
+
+tr.current { background-color:#ccc; }
+a.current { font-weight:bold; }
