@@ -58,6 +58,18 @@ class Seat extends ActiveRecord
 	}
 
 	/**
+	 * We are setting the default Appoint at construct time,
+	 * however, the TableGateway contructs first, then calls exchangeArray().
+	 * This means there will be a mismatch in the protected $appointer property,
+	 * which is intended to be lazy-loaded from $data
+	 * We need to clear out that property when loading an array of data
+	 */
+	public function exchangeArray($data)
+	{
+		$this->appointer = null; parent::exchangeArray($data);
+	}
+
+	/**
 	 * Throws an exception if anything's wrong
 	 * @throws Exception $e
 	 */

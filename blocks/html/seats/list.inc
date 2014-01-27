@@ -45,7 +45,7 @@ $userCanEdit = Person::isAllowed('seats', 'edit');
 						$this->translate('labels.edit_seat')
 					);
 				}
-				$name = View::escape($seat->getName());
+				$name      = View::escape($seat->getName());
 				$appointer = View::escape($seat->getAppointer());
 				$class = $seat->getId() == $currentSeatId ? 'class="current"' : '';
 				echo "

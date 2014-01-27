@@ -16,20 +16,22 @@ class AppointerTable extends TableGateway
 	public function find($fields=null, $order='name', $paginated=false, $limit=null)
 	{
 		$select = new Select('appointers');
-		$this->handleJoins($select, $fields);
+		if (count($fields)) {
+			$this->handleJoins($select, $fields);
 
-		foreach ($fields as $key=>$value) {
-			switch ($key) {
-				case 'committee_id':
-					$select->where(['s.committee_id'=>$value]);
-					break;
+			foreach ($fields as $key=>$value) {
+				switch ($key) {
+					case 'committee_id':
+						$select->where(['s.committee_id'=>$value]);
+						break;
 
-				case 'person_id':
-					$select->where(['t.person_id'=>$value]);
-					break;
+					case 'person_id':
+						$select->where(['t.person_id'=>$value]);
+						break;
 
-				default:
-					$select->where([$key=>$value]);
+					default:
+						$select->where([$key=>$value]);
+				}
 			}
 		}
 		return parent::performSelect($select, $order, $paginated, $limit);
