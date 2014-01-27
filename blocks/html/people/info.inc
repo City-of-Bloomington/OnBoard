@@ -28,7 +28,6 @@ if (Person::isAllowed('people', 'edit')) {
 
 $fullname = View::escape($this->person->getFullname());
 $about    = View::escape($this->person->getAbout());
-$birthdate = $this->person->getBirthdate(DATE_FORMAT);
 echo "
 <div>
 	<h2>$fullname $editButton</h2>
@@ -38,21 +37,13 @@ echo "
 	$fields = [
 		'email'   => $this->_(['labels.email', 'labels.emails', 1]),
 		'username'=> $this->_('labels.username'),
-		'address' => $this->_('labels.address'),
-		'city'    => $this->_('labels.city'),
-		'zipcode' => $this->_('labels.zipcode'),
 		'gender'  => $this->_('labels.gender'),
 		'race'    => $this->_(['labels.race', 'labels.races', 1]),
-		'birthdate'=>$this->_('labels.birthdate')
 	];
 	foreach ($fields as $key=>$label) {
-		if ($key == 'birthdate') {
-			$value = View::escape($this->person->getBirthdate(DATE_FORMAT));
-		}
-		else {
-			$get = 'get'.ucfirst($key);
-			$value = View::escape($this->person->$get());
-		}
+		$get = 'get'.ucfirst($key);
+		$value = View::escape($this->person->$get());
+		
 		if ($value) {
 			echo "<tr><th>$fields[$key]</th><td>$value</td></tr>";
 		}

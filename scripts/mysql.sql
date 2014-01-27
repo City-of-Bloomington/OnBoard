@@ -17,21 +17,15 @@ create table people (
 	firstname varchar(128) not null,
 	lastname varchar(128) not null,
 	email varchar(128) unique,
-	address varchar(128),
-	city varchar(128),
-	zipcode varchar(15),
 	about text,
 	gender enum('male','female'),
 	race_id int unsigned,
-	birthdate date,
-	privateFields varchar(128),
 	username varchar(40) unique,
 	password varchar(40),
 	authenticationMethod varchar(40),
 	role varchar(30),
 	foreign key (race_id) references races(id)
 );
-insert people set id=1,firstname='Administrator',lastname='';
 
 create table committees (
 	id int unsigned not null primary key auto_increment,

@@ -5,14 +5,16 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
+use Application\Models\RaceTable;
 use Blossom\Classes\View;
 
-$fields = ['firstname','lastname','email'];
-foreach ($fields as $field) {
-	$get = 'get'.ucfirst($field);
-	$$field = View::escape($this->person->$get());
+$fields = ['firstname','lastname','email', 'about', 'gender', 'race_id'];
+foreach ($fields as $f) {
+	$get = 'get'.ucfirst($f);
+	$$f  = View::escape($this->person->$get());
 }
-$title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstname()) : 'Add Someone';
+
+$title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstname()) : $this->_('labels.add_person');
 ?>
 <div class="updatePersonForm">
 	<h2><?php echo $title; ?></h2>
@@ -41,6 +43,33 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 				<tr><td><label for="email"><?php echo $this->_(['labels.email','labels.emails',1]); ?></label></td>
 					<td><input name="email" id="email" value="<?php echo $email; ?>" /></td>
 				</tr>
+
+				<tr><td><label for="about"><?php echo $this->_('labels.about'); ?></label></td>
+					<td><textarea name="about" id="about" rows="3" cols="60"><?php echo $about; ?></textarea>
+					</td>
+				</tr>
+
+				<tr><td><label><?php echo $this->_('labels.gender'); ?></label></td>
+					<td><label><input name="gender" type="radio" value="male"   <?php if ($gender=='male'  ) echo 'checked="checked"'; ?> /> M</label>
+						<label><input name="gender" type="radio" value="female" <?php if ($gender=='female') echo 'checked="checked"'; ?> /> F</label>
+					</td>
+				</tr>
+
+				<tr><td><label for="race_id"><?php echo $this->_(['labels.race', 'labels.races', 1]); ?></label></td>
+					<td><select name="race_id" id="race_id">
+							<option></option>
+							<?php
+								$table = new RaceTable();
+								$list = $table->find();
+								foreach ($list as $race) {
+									$selected = $race_id==$race->getId() ? ' selected="selected"' : '';
+									echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
+								}
+							?>
+						</select>
+					</td>
+				</tr>
+
 			</table>
 
 			<button type="submit">

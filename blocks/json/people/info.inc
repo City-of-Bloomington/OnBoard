@@ -16,21 +16,12 @@ $fields = [
 	'about',
 	'email',
 	'username',
-	'address',
-	'city',
-	'zipcode',
 	'gender',
-	'race',
-	'birthdate'
+	'race'
 ];
 foreach ($fields as $key) {
-	if ($key == 'birthdate') {
-		$value = $this->person->getBirthdate(DATE_FORMAT);
-	}
-	else {
-		$get = 'get'.ucfirst($key);
-		$value = $this->person->$get();
-	}
+	$get = 'get'.ucfirst($key);
+	$value = $this->person->$get();
 
 	if ($value) { $person[$key] = $value; }
 }

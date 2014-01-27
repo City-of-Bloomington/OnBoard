@@ -57,7 +57,6 @@ class Person extends ActiveRecord
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 			$this->setAuthenticationMethod('local');
-			$this->setPrivateFields(['email','address','city','zipcode','gender','race_id','birthdate']);
 		}
 	}
 
@@ -103,35 +102,23 @@ class Person extends ActiveRecord
 	public function getFirstname() { return parent::get('firstname'); }
 	public function getLastname()  { return parent::get('lastname');  }
 	public function getAbout()     { return parent::get('about');     }
-
-	public function getPrivateFields() { return explode(',', parent::get('privateFields')); }
-	public function getEmail()            { return $this->isPermitted('email')     ? parent::get('email') : '';     }
-	public function getAddress()          { return $this->isPermitted('address')   ? parent::get('address') : '';   }
-	public function getCity()             { return $this->isPermitted('city')      ? parent::get('city') : '';      }
-	public function getZipcode()          { return $this->isPermitted('zipcode')   ? parent::get('zipcode') : '';   }
-	public function getGender()           { return $this->isPermitted('gender')    ? parent::get('gender') : '';    }
-	public function getRace_id()          { return $this->isPermitted('race')      ? parent::get('race_id') : '';   }
-	public function getRace()             { return $this->isPermitted('race')      ? parent::getForeignKeyObject(__namespace__.'Race', 'race_id') : ''; }
-	public function getBirthdate($f=null) { return $this->isPermitted('birthdate') ? parent::getDateData('birthdate', $f) : ''; }
+	public function getEmail()     { return parent::get('email');     }
+	public function getGender()    { return parent::get('gender');    }
+	public function getRace_id()   { return parent::get('race_id');   }
+	public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
 
 	public function setFirstname($s) { parent::set('firstname', $s); }
 	public function setLastname ($s) { parent::set('lastname',  $s); }
-	public function setAbout    ($s) { parent::get('about',     $s); }
-
-	public function setPrivateFields(array $f) { parent::set('privateFields', implode(',', $f)); }
+	public function setAbout    ($s) { parent::set('about',     $s); }
 	public function setEmail    ($s) { parent::set('email',     $s); }
-	public function setAddress  ($s) { parent::set('address',   $s); }
-	public function setCity     ($s) { parent::set('city',      $s); }
-	public function setZipcode  ($s) { parent::set('zipcode',   $s); }
+	public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
+	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
 	public function setGender   ($s)
 	{
 		strtolower(trim($s)) == 'male'
 			? parent::set('gender', 'male')
 			: parent::set('gender', 'female');
 	}
-	public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
-	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
-	public function setBirthdate($d) { parent::setDateData('birthdate', $d); }
 
 	public function getUsername()             { return parent::get('username'); }
 	public function getPassword()             { return parent::get('password'); } # Encrypted
@@ -154,7 +141,7 @@ class Person extends ActiveRecord
 	 */
 	public function handleUpdate($post)
 	{
-		$fields = array( 'firstname', 'middlename', 'lastname', 'email' );
+		$fields = ['firstname', 'middlename', 'lastname', 'email', 'about', 'gender', 'race_id'];
 		foreach ($fields as $field) {
 			if (isset($post[$field])) {
 				$set = 'set'.ucfirst($field);
@@ -168,10 +155,7 @@ class Person extends ActiveRecord
 	 */
 	public function handleUpdateUserAccount($post)
 	{
-		$fields = array(
-			'firstname','lastname','email',
-			'username','authenticationMethod','role'
-		);
+		$fields = ['firstname','lastname','email', 'username','authenticationMethod','role'];
 		foreach ($fields as $f) {
 			if (isset($post[$f])) {
 				$set = 'set'.ucfirst($f);
@@ -184,7 +168,8 @@ class Person extends ActiveRecord
 
 		$method = $this->getAuthenticationMethod();
 		if ($this->getUsername() && $method && $method != 'local') {
-			$identity = new $method($this->getUsername());
+			$class = "Blossom\\Classes\\$method";
+			$identity = new $class($this->getUsername());
 			$this->populateFromExternalIdentity($identity);
 		}
 	}
@@ -204,7 +189,7 @@ class Person extends ActiveRecord
 	public static function getAuthenticationMethods()
 	{
 		global $DIRECTORY_CONFIG;
-		return array_merge(array('local'), array_keys($DIRECTORY_CONFIG));
+		return array_merge(['local'], array_keys($DIRECTORY_CONFIG));
 	}
 
 	/**
@@ -284,25 +269,6 @@ class Person extends ActiveRecord
 	 */
 	public function getUrl() { return BASE_URL.'/people/view?person_id='.$this->getId(); }
 	public function getUri() { return BASE_URI.'/people/view?person_id='.$this->getId(); }
-
-	/**
-	 * Determines whether a single field is private or not
-	 * @param string $field
-	 * @return boolean
-	 */
-	public function isPrivate($field)
-	{
-		return in_array($field, $this->getPrivateFields());
-	}
-
-	/**
-	 * @param string $field
-	 * @return boolean
-	 */
-	private function isPermitted($field)
-	{
-		return (self::isAllowed('people', 'edit') || !$this->isPrivate($field));
-	}
 
 	/**
 	 * @return Zend\Db\ResultSet
