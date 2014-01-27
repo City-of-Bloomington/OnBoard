@@ -20,9 +20,9 @@ class CommitteeTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'person_id':
-						$select->join(['s'=>'seats'], 'c.id=s.committee_id', []);
-						$select->join(['t'=>'terms'], 's.id=t.seats',        []);
-						$select->where('t.person_id=?', $value);
+						$select->join(['s'=>'seats'], 'committees.id=s.committee_id', []);
+						$select->join(['t'=>'terms'], 's.id=t.seat_id',        []);
+						$select->where(['t.person_id'=>$value]);
 					break;
 
 					default:

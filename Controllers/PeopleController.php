@@ -18,24 +18,23 @@ class PeopleController extends Controller
 	{
 		$this->template->blocks[] = new Block('people/findForm.inc');
 
-		if (isset($_GET['firstname'])) {
-			$table = new PeopleTable();
-			$people = $table->search($_GET, 'lastname', true);
+		$table = new PeopleTable();
+		$people = $table->search($_GET, 'lastname', true);
 
-			$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-			$people->setCurrentPageNumber($page);
-			$people->setItemCountPerPage(20);
+		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+		$people->setCurrentPageNumber($page);
+		$people->setItemCountPerPage(20);
 
-			$this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
-			$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
-		}
+		$this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
+		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
 	}
 
 	public function view()
 	{
 		try {
 			$person = new Person($_REQUEST['person_id']);
-			$this->template->blocks[] = new Block('people/info.inc',array('person'=>$person));
+			$this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
+			$this->template->blocks[] = new Block('people/tabs.inc', ['person'=>$person]);
 		}
 		catch (\Exception $e) {
 			$_SESSION['errorMessages'][] = $e;

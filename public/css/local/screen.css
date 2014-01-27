@@ -8,7 +8,7 @@ h3 { font-size:123.1%; font-weight:bold; margin:.5em 0 .25em 0; }
 h4 { font-size:100%;   font-weight:bold; }
 nav a { margin-right:1em; }
 a { text-decoration:none; color:#036; }
-p { margin:0 .5em .5em .5em; }
+p { margin-bottom:.5em; }
 
 table { margin:0 .5em .5em .5em; border:1px solid black; }
 th { background-color:#ddd; color:#666; font-weight:bold; font-size:90%; padding:0.25em; }
@@ -116,3 +116,8 @@ header nav a { font-weight:bold; color:black; }
 
 tr.current { background-color:#ccc; }
 a.current { font-weight:bold; }
+
+.votingRecord .yes     { padding-left:28px; background:url('images/check.gif') top left no-repeat; }
+.votingRecord .no      { padding-left:28px; background:url('images/x.gif')     top left no-repeat; }
+.votingRecord .absent  { padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
+.votingRecord .abstain { padding-left:28px; background:url('images/dash.gif')  top left no-repeat; }

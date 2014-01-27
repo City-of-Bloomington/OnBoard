@@ -41,23 +41,7 @@ class TermTable extends TableGateway
 						$select->where("v2.term_id=$value");
 						$select->where("v1.term_id!=$value");
 						break;
-
-					case 'topicList':
-						//TODO List of terms for any given set of Topics
-						// topicList used to provide a TopicList, but now, it provides
-						// a Zend\Db\ResultSet
-						throw new \Exception('queryNotImplemented');
-						/*
-						$this->joins.= "
-							left join votingRecords r on t.id=r.term_id
-							left join votes v on r.vote_id=v.id
-						";
-
-						$options[] = "v.topic_id in ({$fields['topicList']->getSQL()})";
-						$parameters = array_merge($parameters,$fields['topicList']->getParameters());
-						*/
-						break;
-
+						
 					default:
 						$select->where([$key=>$value]);
 				}
