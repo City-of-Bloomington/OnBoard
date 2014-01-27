@@ -12,4 +12,9 @@ use Zend\Db\Sql\Select;
 class VoteTypeTable extends TableGateway
 {
 	public function __construct() { parent::__construct('voteTypes', __namespace__.'\VoteType'); }
+
+	public function find($fields=null, $order='ordering', $paginated=false, $limit=null)
+	{
+		return parent::find($fields, $order, $paginated, $limit);
+	}
 }

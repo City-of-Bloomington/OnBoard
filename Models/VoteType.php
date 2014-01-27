@@ -60,7 +60,7 @@ class VoteType extends ActiveRecord
 	{
 		if (!$this->getName()) { throw new \Exception('missingName'); }
 
-		if (!$this->ordering) {
+		if (!$this->getOrdering()) {
 			$max = self::getMaxOrdering();
 			$this->setOrdering($max++);
 		}
@@ -77,6 +77,12 @@ class VoteType extends ActiveRecord
 
 	public function setName    ($s) { parent::set('name', $s); }
 	public function setOrdering($i) { parent::set('ordering', (int)$i); }
+
+	public function handleUpdate($post)
+	{
+		$this->setName($post['name']);
+		$this->setOrdering($post['ordering']);
+	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
