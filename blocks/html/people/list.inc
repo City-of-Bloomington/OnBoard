@@ -7,15 +7,23 @@
  */
 use Application\Models\Person;
 use Blossom\Classes\View;
+use Blossom\Classes\Url;
 ?>
 <div>
 	<h2><?php
 			echo $this->translate(['labels.person','labels.people',2]);
 
 			if (Person::isAllowed('people')) {
+				// Preserve any extra parameters passed in
+				$url = new Url(BASE_URL.'/people/update');
+				$fields = array('firstname','lastname','email');
+				foreach ($_REQUEST as $key=>$value) {
+					if (!in_array($key, $fields)) { $url->$key = $value; }
+				}
+
 				echo sprintf(
 					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
-					BASE_URI.'/people/update',
+					$url,
 					$this->translate('labels.add_person')
 				);
 			}
@@ -41,11 +49,25 @@ use Blossom\Classes\View;
 					);
 				}
 
+				if (isset($_REQUEST['return_url'])) {
+					$url = "$_REQUEST[return_url];person_id={$person->getId()}";
+				}
+				elseif (isset($_REQUEST['callback'])) {
+					$this->template->addToAsset('scripts',YUI.'/yui/yui-min.js');
+					$this->template->addToAsset('scripts',BASE_URI.'/js/people/chooser.js');
+
+					$callback = preg_replace('/[^a-zA-Z_\.]/', '', $_REQUEST['callback']);
+					$url = "javascript:self.opener.$callback('{$person->getId()}');";
+				}
+				else {
+					$url = $person->getUrl();
+				}
+
 				$name = View::escape($person->getFullname());
 				echo "
 				<tr><td>$editButton</td>
 					<td>{$person->getUsername()}</td>
-					<td><a href=\"{$person->getURL()}\">$name</a></td>
+					<td><a href=\"$url\">$name</a></td>
 					<td>{$person->getEmail()}</td>
 				</tr>
 				";

@@ -8,6 +8,7 @@ namespace Application\Models;
 
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Predicate\Like;
 
 class PeopleTable extends TableGateway
 {
@@ -36,24 +37,24 @@ class PeopleTable extends TableGateway
 						$select->where(['s.committee_id'=>$value]);
 						break;
 
-					case 'topicList':
-						//TODO List of people for any given set of Topics
-						// topicList used to provide a TopicList, but now, it provides
-						// a Zend\Db\ResultSet
-						throw new \Exception('queryNotImplemented');
-						/*
-						$this->joins.= "
-							left join terms t on p.id=t.person_id
-							left join votingRecords vr on t.id=vr.term_id
-							left join votes v on vr.vote_id=v.id
-						";
-						$options[] = "v.topic_id in ({$fields['topicList']->getSQL()})";
-						$parameters = array_merge($parameters,$fields['topicList']->getParameters());
-						*/
-						break;
-
 					default:
 						$select->where([$key=>$value]);
+				}
+			}
+		}
+		return parent::performSelect($select, $order, $paginated, $limit);
+	}
+
+	public function search($fields, $order='lastname', $paginated=false, $limit=null)
+	{
+		$select = new Select('people');
+
+		$searchableFields = ['firstname', 'lastname', 'email'];
+		foreach ($searchableFields as $f) {
+			if (isset($fields[$f])) {
+				$value = trim($fields[$f]);
+				if ($value) {
+					$select->where->like($f, "$value%");
 				}
 			}
 		}

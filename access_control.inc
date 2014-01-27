@@ -22,9 +22,10 @@ $ZEND_ACL->addRole(new Role('Anonymous'))
  * and with the word "Controller" stripped off.
  */
 $ZEND_ACL->addResource(new Resource('index'));
+$ZEND_ACL->addResource(new Resource('callback'));
+$ZEND_ACL->addResource(new Resource('login'));
 $ZEND_ACL->addResource(new Resource('people'));
 $ZEND_ACL->addResource(new Resource('users'));
-$ZEND_ACL->addResource(new Resource('login'));
 
 $ZEND_ACL->addResource(new Resource('appointers'));
 $ZEND_ACL->addResource(new Resource('committees'));
@@ -45,9 +46,9 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
  */
 
 // Permissions for unauthenticated browsing
-$ZEND_ACL->allow('Anonymous', 'login');
-$ZEND_ACL->allow('Anonymous', 'index', 'index');
-$ZEND_ACL->allow('Anonymous', ['committees', 'people', 'topics'], ['index','view']);
+$ZEND_ACL->allow(null, ['callback', 'login']);
+$ZEND_ACL->allow(null, 'index', 'index');
+$ZEND_ACL->allow(null, ['committees', 'people', 'topics'], ['index','view']);
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff',[

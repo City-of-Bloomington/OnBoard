@@ -19,7 +19,16 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 	<form method="post" action="<?php echo BASE_URI; ?>/people/update">
 		<fieldset><legend><?php echo $this->_('labels.info_person'); ?></legend>
 			<input name="person_id" type="hidden" value="<?php echo $this->person->getId(); ?>" />
-
+			<?php
+				// Preserve any extra parameters passed in
+				foreach ($_REQUEST as $key=>$value) {
+					if (!in_array($key, $fields)) {
+						$key   = View::escape($key);
+						$value = View::escape($value);
+						echo "<input type=\"hidden\" name=\"$key\" value=\"$value\" />\n";
+					}
+				}
+			?>
 			<table>
 				<tr><td><label for="firstname" class="required"><?php echo $this->_('labels.firstname'); ?></label></td>
 					<td><input name="firstname" id="firstname" value="<?php echo $firstname; ?>" /></td>
@@ -33,9 +42,33 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 					<td><input name="email" id="email" value="<?php echo $email; ?>" /></td>
 				</tr>
 			</table>
+
+			<button type="submit">
+				<i class="fa fa-save"></i>
+				<?php echo $this->translate('labels.save'); ?>
+			</button>
 			<?php
-				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons(BASE_URI.'/people');
+				// Set the correct URL for the cancel button
+				if (isset($_REQUEST['return_url'])) {
+					$return_url = urlencode($_REQUEST['return_url']);
+				}
+				elseif ($this->person->getId()) {
+					$return_url = $this->person->getUrl();
+				}
+				else {
+					$return_url = BASE_URI.'/people';
+				}
+
+				$onclick = isset($_REQUEST['callback'])
+					? 'onclick="self.close();"'
+					: '';
+
+				echo "
+				<a class=\"btn\" href=\"$return_url\" $onclick>
+					<i class=\"fa fa-times\"></i>
+					{$this->translate('labels.cancel')}
+				</a>
+				";
 			?>
 		</fieldset>
 	</form>

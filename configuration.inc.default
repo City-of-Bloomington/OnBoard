@@ -110,6 +110,8 @@ $DIRECTORY_CONFIG = array(
 //define('CAS_SERVER','cas.somewhere.org');
 //define('CAS_URI','cas');
 
+define('YUI', BASE_URI.'/js/yui3/build');
+
 //-------------------------------------------------------------------
 // Bootstrap code
 // No editing is usually needed after this point

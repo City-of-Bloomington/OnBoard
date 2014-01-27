@@ -7,3 +7,6 @@
 [submodule "libraries/zf2"]
 	path = libraries/zf2
 	url = https://github.com/zendframework/zf2.git
+[submodule "public/js/yui3"]
+	path = public/js/yui3
+	url = https://github.com/yui/yui3.git

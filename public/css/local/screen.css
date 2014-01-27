@@ -22,6 +22,7 @@ li { margin:0; }
 fieldset { padding:.25em 0; }
 legend { font-weight:bold; }
 label { font-weight:bold; }
+form table { border:none; }
 
 /**
  * Base styles for buttons and button links

@@ -25,7 +25,12 @@ $title = $this->term->getId() ? $this->_('labels.edit_term') : $this->_('labels.
 
 			<table>
 				<tr><td><label for="person_id" class="required"><?php echo $this->_(['labels.person', 'labels.people', 1]); ?></label></td>
-					<td><input name="person_id" id="person_id" value="<?php echo $this->term->getPerson_id(); ?>" /></td>
+					<td><?php
+							$person = $this->term->getPerson();
+							$helper = $this->template->getHelper('personChooser');
+							echo $helper->personChooser('person', $person);
+						?>
+					</td>
 				</tr>
 				<tr><td><label for="term_start" class="required">
 							<?php echo $this->_('labels.date_start'); ?>

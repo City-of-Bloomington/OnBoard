@@ -105,6 +105,6 @@ class TermsController extends Controller
 
 		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$_SESSION['pendingTerm']->getCommittee()->getId()]);
 		$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$_SESSION['pendingTerm']->getSeat()]);
-		$this->template->blocks[] = new Block('terms/confirmDeleteInvalidVotingRecords.inc', ['term'=>$_SESSION['pendingTerm']);
+		$this->template->blocks[] = new Block('terms/confirmDeleteInvalidVotingRecords.inc', ['term'=>$_SESSION['pendingTerm']]);
 	}
 }
