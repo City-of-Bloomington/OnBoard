@@ -112,6 +112,8 @@ $DIRECTORY_CONFIG = array(
 
 define('YUI', BASE_URI.'/js/yui3/build');
 
+define('DATE_FORMAT', 'Y-m-d');
+
 //-------------------------------------------------------------------
 // Bootstrap code
 // No editing is usually needed after this point

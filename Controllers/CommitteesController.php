@@ -35,70 +35,78 @@ class CommitteesController extends Controller
 			exit();
 		}
 
-		$this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$committee]);
-		$this->template->blocks[] = new Block('committees/info.inc',        ['committee'=>$committee]);
-
-		$tabs = ['members', 'topics', 'votes', 'seats'];
-		$current_tab = (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) ? $_GET['tab'] : 'members';
-		if ($this->template->outputFormat == 'html') {
-			$this->template->blocks[] = new Block(
-				'tabs.inc',
-				['tabs'=>$tabs,'current_tab'=>$current_tab,'base_url'=>new Url($committee->getURL())]
-			);
+		// Web service calls ony get a limited amount of information
+		if ($this->template->outputFormat != 'html') {
+			$this->template->blocks[] = new Block('committees/info.inc',           ['committee'=>$committee]);
+			$this->template->blocks[] = new Block('committees/currentMembers.inc', ['committee'=>$committee]);
 		}
-		switch ($current_tab) {
-			case 'members':
-				$block = (isset($_GET['members']) && $_GET['members']=='past')
-						? 'pastMembers.inc'
-						: 'currentMembers.inc';
-				$this->template->blocks[] = new Block("committees/$block", ['committee'=>$committee]);
-				break;
+		// HTML pages are more interactive
+		else {
+			$this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$committee]);
+			$this->template->blocks[] = new Block('committees/info.inc',        ['committee'=>$committee]);
 
-			case 'topics':
-				$order = !empty($_GET['sort']) ? $_GET['sort'] : null;
-
+			$tabs = ['members', 'topics', 'votes', 'seats'];
+			$current_tab = (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) ? $_GET['tab'] : 'members';
+			if ($this->template->outputFormat == 'html') {
 				$this->template->blocks[] = new Block(
-					'topics/panel.inc',
-					['topics'=>$committee->getTopics(null, $order), 'committee'=>$committee]
+					'tabs.inc',
+					['tabs'=>$tabs,'current_tab'=>$current_tab,'base_url'=>new Url($committee->getURL())]
 				);
-				break;
+			}
+			switch ($current_tab) {
+				case 'members':
+					$block = (isset($_GET['members']) && $_GET['members']=='past')
+							? 'pastMembers.inc'
+							: 'currentMembers.inc';
+					$this->template->blocks[] = new Block("committees/$block", ['committee'=>$committee]);
+					break;
 
-			case 'votes':
-				$search = ['committee_id'=>$committee->getId()];
+				case 'topics':
+					$order = !empty($_GET['sort']) ? $_GET['sort'] : null;
 
-				$table = new VoteTable();
-				$votes = $table->find($search, null, true);
+					$this->template->blocks[] = new Block(
+						'topics/panel.inc',
+						['topics'=>$committee->getTopics(null, $order), 'committee'=>$committee]
+					);
+					break;
 
-				$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-				$votes->setCurrentPageNumber($page);
-				$votes->setItemCountPerPage(10);
+				case 'votes':
+					$search = ['committee_id'=>$committee->getId()];
 
-				$this->template->blocks[] = new Block('votes/list.inc', ['votes'=>$votes]);
-				$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$votes]);
+					$table = new VoteTable();
+					$votes = $table->find($search, null, true);
 
-				$people = array();
-				foreach($committee->getCurrentTerms() as $term) {
-					$people[] = $term->getPerson();
-				}
-				$this->template->blocks[] = new Block('votingRecords/comparisonPanel.inc', ['search'=>$search, 'people'=>$people]);
-				break;
+					$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+					$votes->setCurrentPageNumber($page);
+					$votes->setItemCountPerPage(10);
 
-			case 'seats':
-				$this->template->blocks[] = new Block(
-					'seats/list.inc',
-					['seats'=>$committee->getSeats(), 'committee'=>$committee]
-				);
-				if (!empty($_GET['seat_id'])) {
-					try {
-						$seat = new Seat($_GET['seat_id']);
-						$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
-						$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$seat->getTerms()]);
+					$this->template->blocks[] = new Block('votes/list.inc', ['votes'=>$votes]);
+					$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$votes]);
+
+					$people = array();
+					foreach($committee->getCurrentTerms() as $term) {
+						$people[] = $term->getPerson();
 					}
-					catch (\Exception $e) {
-						// Just ignore them if they try to ask for a seat that doesn't exist
+					$this->template->blocks[] = new Block('votingRecords/comparisonPanel.inc', ['search'=>$search, 'people'=>$people]);
+					break;
+
+				case 'seats':
+					$this->template->blocks[] = new Block(
+						'seats/list.inc',
+						['seats'=>$committee->getSeats(), 'committee'=>$committee]
+					);
+					if (!empty($_GET['seat_id'])) {
+						try {
+							$seat = new Seat($_GET['seat_id']);
+							$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
+							$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$seat->getTerms()]);
+						}
+						catch (\Exception $e) {
+							// Just ignore them if they try to ask for a seat that doesn't exist
+						}
 					}
-				}
-				break;
+					break;
+			}
 		}
 	}
 
