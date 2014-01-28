@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: uReport 1.9\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
 "POT-Creation-Date: 2013-09-20 16:33-0400\n"
-"PO-Revision-Date: 2014-01-27 16:26-0500\n"
+"PO-Revision-Date: 2014-01-28 15:43-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
@@ -319,6 +319,12 @@ msgstr "Delete Term"
 
 msgid "labels.maxCurrentTerms"
 msgstr "Max Current Terms"
+
+msgid "labels.current_terms"
+msgstr "Current Terms"
+
+msgid "labels.past_terms"
+msgstr "Past Terms"
 
 msgid "labels.member"
 msgid_plural "labels.members"

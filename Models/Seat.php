@@ -54,6 +54,7 @@ class Seat extends ActiveRecord
 			// Set any default values for properties that need it here
 			$this->setAppointer_id   (1);
 			$this->setMaxCurrentTerms(1);
+			$this->setStartDate(date(DATE_FORMAT));
 		}
 	}
 
@@ -84,13 +85,15 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()              { return parent::get('id');   }
-	public function getName()            { return parent::get('name'); }
-	public function getMaxCurrentTerms() { return parent::get('maxCurrentTerms'); }
-	public function getCommittee_id()    { return parent::get('committee_id'); }
-	public function getAppointer_id()    { return parent::get('appointer_id'); }
-	public function getCommittee()       { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-	public function getAppointer()       { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
+	public function getId()               { return parent::get('id');   }
+	public function getName()             { return parent::get('name'); }
+	public function getMaxCurrentTerms()  { return parent::get('maxCurrentTerms'); }
+	public function getCommittee_id()     { return parent::get('committee_id'); }
+	public function getAppointer_id()     { return parent::get('appointer_id'); }
+	public function getCommittee()        { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+	public function getAppointer()        { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
+	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
+	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
 
 	public function setName($s)            { parent::set('name', $s); }
 	public function setMaxCurrentTerms($i) { parent::set('maxCurrentTerms', (int)$i); }
@@ -98,12 +101,16 @@ class Seat extends ActiveRecord
 	public function setAppointer_id($i)    { parent::setForeignKeyField (__namespace__.'\Appointer', 'appointer_id', $i); }
 	public function setCommittee($o)       { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setAppointer($o)       { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
+	public function setStartDate($d)       { parent::setDateData('startDate', $d); }
+	public function setEndDate  ($d)       { parent::setDateData('endDate',   $d); }
 
 	public function handleUpdate($post)
 	{
-		$this->setName($post['name']);
-		$this->setAppointer_id($post['appointer_id']);
-		$this->setMaxCurrentTerms($post['maxCurrentTerms']);
+		$fields = ['name', 'appointer_id', 'maxCurrentTerms', 'startDate', 'endDate'];
+		foreach ($fields as $f) {
+			$set = 'set'.ucfirst($f);
+			$this->$set($post[$f]);
+		}
 	}
 
 	//----------------------------------------------------------------
@@ -118,12 +125,18 @@ class Seat extends ActiveRecord
 	public function getUri() { return "{$this->getCommittee()->getUri()};tab=seats;seat_id={$this->getId()}"; }
 
 	/**
+	 * @param array $fields Extra fields to search on
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getTerms()
+	public function getTerms(array $fields=null)
 	{
+		$search = ['seat_id' => $this->getId()];
+		if ($fields) {
+			$search = array_merge($search, $fields);
+		}
+
 		$table = new TermTable();
-		return $table->find(['seat_id'=>$this->getId()]);
+		return $table->find($search);
 	}
 
 	/**
@@ -131,8 +144,7 @@ class Seat extends ActiveRecord
 	 */
 	public function getCurrentTerms()
 	{
-		$table = new TermTable();
-		return $table->find(['seat_id'=>$this->getId(), 'current'=>time()]);
+		return $this->getTerms(['current'=>time()]);
 	}
 
 	/**

@@ -71,7 +71,7 @@ class Term extends ActiveRecord
 		// Make sure the end date falls after the start date
 		$start = (int)$this->getTerm_start('U');
 		$end   = (int)$this->getTerm_end  ('U');
-		if ($end < $start) { throw new \Exception('terms/invalidEndDate'); }
+		if ($end && $end < $start) { throw new \Exception('terms/invalidEndDate'); }
 
 		// Make sure this term does not exceed the maxCurrentTerms for the seat
 		if ( $start <= time() && (!$end || $end >= time()) ) {
@@ -191,7 +191,7 @@ class Term extends ActiveRecord
 		$dateCheck = "?>v.date";
 		$parameters[] = $this->getTerm_start('Y-m-d');
 
-		if ($this->term_end) {
+		if ($this->getTerm_end()) {
 			$dateCheck.= " or ?<v.date";
 			$parameters[] = $this->getTerm_end('Y-m-d');
 		}

@@ -46,6 +46,12 @@ echo "
 		<tr><th>{$this->_('labels.maxCurrentTerms')}</th>
 			<td>{$this->seat->getMaxCurrentTerms()}</td>
 		</tr>
+		<tr><th>{$this->_('labels.date_start')}</th>
+			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
+		</tr>
+		<tr><th>{$this->_('labels.date_end')}</th>
+			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
+		</tr>
 		<tr><th>{$this->_(['labels.requirement', 'labels.requirements', 2])}
 			</th>
 			<td>$editRequirementsButton

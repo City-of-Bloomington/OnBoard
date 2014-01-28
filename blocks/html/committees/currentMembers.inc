@@ -19,7 +19,7 @@ use Application\Models\Person;
 			</tr>
 		</thead>
 		<?php
-			foreach ($this->committee->getSeats() as $seat) {
+			foreach ($this->committee->getSeats(time()) as $seat) {
 				$appointer = View::escape($seat->getAppointer());
 
 				//--------------------------------------------------------

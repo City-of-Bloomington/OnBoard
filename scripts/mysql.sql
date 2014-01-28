@@ -54,6 +54,8 @@ create table seats (
 	committee_id int unsigned not null,
 	appointer_id int unsigned not null default 1,
 	maxCurrentTerms tinyint unsigned not null default 1,
+	startDate date not null default CURRENT_DATE,
+	endDate date,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
 );

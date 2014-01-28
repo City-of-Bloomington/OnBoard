@@ -99,7 +99,8 @@ class CommitteesController extends Controller
 						try {
 							$seat = new Seat($_GET['seat_id']);
 							$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
-							$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$seat->getTerms()]);
+							$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['current'=>time()]), 'title'=>$this->template->_('labels.current_terms')]);
+							$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['before' =>time()]), 'title'=>$this->template->_('labels.past_terms')]);
 						}
 						catch (\Exception $e) {
 							// Just ignore them if they try to ask for a seat that doesn't exist

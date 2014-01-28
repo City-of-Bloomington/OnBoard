@@ -90,12 +90,20 @@ class Committee extends ActiveRecord
 	public function getUri() { return BASE_URI.'/committees/view?committee_id='.$this->getId(); }
 
 	/**
+	 * Returns a ResultSet containing Seats.
+	 *
+	 * If a timestamp is provided, will return seats current to that timestamp
+	 *
+	 * @param int $timestamp
 	 * @return Zend\Db\ResultSet A ResultSet containing the Seat objects
 	 */
-	public function getSeats()
+	public function getSeats($timestamp=null)
 	{
+		$search = ['committee_id'=>$this->getId()];
+		if ($timestamp) { $search['current'] = (int)$timestamp; }
+
 		$table = new SeatTable();
-		return $table->find(['committee_id'=>$this->getId()]);
+		return $table->find($search);
 	}
 
 	/**

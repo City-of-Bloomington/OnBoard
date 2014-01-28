@@ -30,6 +30,8 @@ $userCanEdit = Person::isAllowed('seats', 'edit');
 				<th><?php echo $this->_('labels.name'); ?></th>
 				<th><?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?></th>
 				<th><?php echo $this->_('labels.maxCurrentTerms'); ?></th>
+				<th><?php echo $this->_('labels.date_start'); ?></th>
+				<th><?php echo $this->_('labels.date_end'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,6 +56,8 @@ $userCanEdit = Person::isAllowed('seats', 'edit');
 					<td><a href=\"{$seat->getUrl()}\">$name</a></td>
 					<td>$appointer</td>
 					<td>{$seat->getMaxCurrentTerms()}</td>
+					<td>{$seat->getStartDate(DATE_FORMAT)}</td>
+					<td>{$seat->getEndDate(DATE_FORMAT)}</td>
 				</tr>
 				";
 			}

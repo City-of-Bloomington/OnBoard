@@ -28,3 +28,7 @@ drop table people_private_fields;
 drop table phoneNumbers;
 
 rename table officers to offices;
+
+alter table seats add startDate date;
+alter table seats add endDate   date;
+update seats s set s.startDate=(select min(term_start) from terms where terms.seat_id=s.id);

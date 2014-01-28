@@ -54,6 +54,13 @@ $title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.
 				</td>
 			</tr>
 
+			<tr><td><label for="startDate"><?php echo $this->_('labels.date_start'); ?></label></td>
+				<td><input name="startDate" id="startDate" value="<?php echo $this->seat->getStartDate(DATE_FORMAT); ?>" /></td>
+			</tr>
+			<tr><td><label for="endDate"><?php echo $this->_('labels.date_end'); ?></label></td>
+				<td><input name="endDate" id="endDate" value="<?php echo $this->seat->getEndDate(DATE_FORMAT); ?>" /></td>
+			</tr>
+
 		</table>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');

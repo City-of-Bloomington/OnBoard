@@ -14,7 +14,7 @@ class TermTable extends TableGateway
 {
 	public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
 
-	public function find($fields=null, $order='terms.term_start', $paginated=false, $limit=null)
+	public function find($fields=null, $order='terms.term_start desc', $paginated=false, $limit=null)
 	{
 		$select = new Select('terms');
 		if (count($fields)) {
@@ -24,6 +24,12 @@ class TermTable extends TableGateway
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
 						$select->where("terms.term_start<='$date'");
 						$select->where("(terms.term_end is null or terms.term_end>='$date')");
+						break;
+
+					case 'before':
+						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+						$select->where("terms.term_start < '$date'");
+						$select->where("terms.term_end   < '$date'");
 						break;
 
 					case 'committee_id':
@@ -41,7 +47,7 @@ class TermTable extends TableGateway
 						$select->where("v2.term_id=$value");
 						$select->where("v1.term_id!=$value");
 						break;
-						
+
 					default:
 						$select->where([$key=>$value]);
 				}
