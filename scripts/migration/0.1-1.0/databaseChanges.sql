@@ -18,6 +18,8 @@ and users.id=user_roles.user_id
 and user_roles.role_id=roles.id
 and p.username is not null;
 
+update people set role='Staff' where role='Clerk';
+
 drop table user_roles;
 drop table roles;
 drop table users;
