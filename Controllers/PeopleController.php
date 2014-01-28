@@ -34,7 +34,10 @@ class PeopleController extends Controller
 		try {
 			$person = new Person($_REQUEST['person_id']);
 			$this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
-			$this->template->blocks[] = new Block('people/tabs.inc', ['person'=>$person]);
+			
+			if ($this->template->outputFormat == 'html') {
+				$this->template->blocks[] = new Block('people/tabs.inc', ['person'=>$person]);
+			}
 		}
 		catch (\Exception $e) {
 			$_SESSION['errorMessages'][] = $e;

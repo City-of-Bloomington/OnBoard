@@ -23,6 +23,7 @@ namespace Application\Templates\Helpers;
 use Application\Models\Person;
 use Blossom\Classes\Template;
 use Blossom\Classes\Url;
+use Blossom\Classes\View;
 
 class PersonChooser
 {
