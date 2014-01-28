@@ -12,3 +12,7 @@ configuration.inc
 /libraries/zf2/documentation/
 /libraries/zf2/resources/
 /libraries/zf2/tests/
+/public/css/Font-Awesome/less/
+/public/css/Font-Awesome/scss/
+/public/css/Font-Awesome/src/
+/public/js/yui3/src/
