@@ -77,7 +77,7 @@ class Term extends ActiveRecord
 		if ( $start <= time() && (!$end || $end >= time()) ) {
 			// The term we're adding is current, make sure there's room
 			$count = count($this->getSeat()->getCurrentTerms());
-			if (!$this->id) {
+			if (!$this->getId()) {
 				$count++;
 			}
 			if ($count > $this->getSeat()->getMaxCurrentTerms()) {
