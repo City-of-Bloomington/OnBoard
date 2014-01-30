@@ -19,7 +19,7 @@ echo "
 
 	<table>
 		<tr><th>Date Formed</th>
-			<td>{$this->committee->getDateFormed('n/j/Y')}</td>
+			<td>{$this->committee->getDateFormed(DATE_FORMAT)}</td>
 		</tr>
 		<tr><th>Statutory Name</th>
 			<td>$statutoryName</td>

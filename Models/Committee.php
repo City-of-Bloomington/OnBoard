@@ -106,6 +106,11 @@ class Committee extends ActiveRecord
 		return $table->find($search);
 	}
 
+	public function getCurrentSeats()
+	{
+		return $this->getSeats(time());
+	}
+
 	/**
 	 * Each seat can have multiple concurrent terms
 	 *

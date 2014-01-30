@@ -14,7 +14,6 @@ $statuteReference = View::escape($this->committee->getStatuteReference());
 $description      = View::escape($this->committee->getDescription());
 
 echo "
-<committee>
 	<url>{$this->committee->getUrl()}</url>
 	<name>$name</name>
 	<dateFormed>{$this->committee->getDateFormed(DATE_FORMAT)}</dateFormed>

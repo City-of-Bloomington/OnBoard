@@ -41,7 +41,4 @@ foreach ($this->committee->getSeats() as $seat) {
 	</seat>
 	";
 }
-echo "
-</seats>
-</committee>
-";
+echo "</seats>";
