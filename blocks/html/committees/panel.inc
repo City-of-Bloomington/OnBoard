@@ -13,7 +13,9 @@ use Blossom\Classes\Url;
 include APPLICATION_HOME.'/blocks/html/committees/breadcrumbs.inc';
 include APPLICATION_HOME.'/blocks/html/committees/info.inc';
 
-$tabs = ['members', 'topics', 'votes', 'seats'];
+$tabs = ['members', 'topics', 'seats'];
+if (defined('VOTE_TRACKING') && VOTE_TRACKING) { $tabs[] = 'votes'; }
+
 $current_tab = (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) ? $_GET['tab'] : 'members';
 	$block = new Block(
 		'tabs.inc',
@@ -37,27 +39,28 @@ switch ($current_tab) {
 		break;
 
 	case 'votes':
-		$search = ['committee_id'=>$this->committee->getId()];
+		if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
+			$search = ['committee_id'=>$this->committee->getId()];
 
-		$table = new VoteTable();
-		$votes = $table->find($search, null, true);
+			$table = new VoteTable();
+			$votes = $table->find($search, null, true);
 
-		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-		$votes->setCurrentPageNumber($page);
-		$votes->setItemCountPerPage(10);
+			$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+			$votes->setCurrentPageNumber($page);
+			$votes->setItemCountPerPage(10);
 
-		$people = array();
-		foreach($this->committee->getCurrentTerms() as $term) {
-			$people[] = $term->getPerson();
+			$people = array();
+			foreach($this->committee->getCurrentTerms() as $term) {
+				$people[] = $term->getPerson();
+			}
+
+			$votesList  = new Block('votes/list.inc',         ['votes'=>$votes]);
+			$paginator  = new Block('pageNavigation.inc', ['paginator'=>$votes]);
+			$comparison = new Block('votingRecords/comparisonPanel.inc', ['search'=>$search, 'people'=>$people]);
+			echo $votesList ->render('html', $this->template);
+			echo $paginator ->render('html', $this->template);
+			echo $comparison->render('html', $this->template);
 		}
-
-		$votesList  = new Block('votes/list.inc',         ['votes'=>$votes]);
-		$paginator  = new Block('pageNavigation.inc', ['paginator'=>$votes]);
-		$comparison = new Block('votingRecords/comparisonPanel.inc', ['search'=>$search, 'people'=>$people]);
-		echo $votesList ->render('html', $this->template);
-		echo $paginator ->render('html', $this->template);
-		echo $comparison->render('html', $this->template);
-
 		break;
 
 	case 'seats':

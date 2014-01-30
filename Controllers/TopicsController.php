@@ -48,9 +48,11 @@ class TopicsController extends Controller
 		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$topic->getCommittee()]);
 		$this->template->blocks[] = new Block('topics/info.inc', ['topic'=>$topic]);
 		$this->template->blocks[] = new Block('tags/cloud.inc', ['search'=>['topic_id'=>$topic->getId()]]);
-		$this->template->blocks[] = new Block('votes/list.inc', ['topic'=>$topic, 'votes'=>$topic->getVotes()]);
-		foreach ($topic->getVotes() as $vote) {
-			$this->template->blocks[] = new Block('votingRecords/list.inc', ['vote'=>$vote]);
+		if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
+			$this->template->blocks[] = new Block('votes/list.inc', ['topic'=>$topic, 'votes'=>$topic->getVotes()]);
+			foreach ($topic->getVotes() as $vote) {
+				$this->template->blocks[] = new Block('votingRecords/list.inc', ['vote'=>$vote]);
+			}
 		}
 	}
 

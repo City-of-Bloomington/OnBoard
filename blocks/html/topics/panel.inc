@@ -18,13 +18,14 @@ $search = [];
 if (isset($this->committee)) { $search['committee_id'] = $this->committee->getId(); }
 
 
-if (isset($this->committee)) {
-	if (Person::isAllowed('votes', 'edit')) {
-		$invalidVotes = $this->committee->getInvalidVotes();
-		if (count($invalidVotes)) {
-			$block = new Block('votes/list.inc', ['votes'=>$invalidVotes, 'title'=>$this->_('labels.invalid_votes')]);
-			echo $block->render();
-		}
+if (defined('VOTE_TRACKING') && VOTE_TRACKING
+	&& isset($this->committee)
+	&& Person::isAllowed('votes', 'edit')) {
+
+	$invalidVotes = $this->committee->getInvalidVotes();
+	if (count($invalidVotes)) {
+		$block = new Block('votes/list.inc', ['votes'=>$invalidVotes, 'title'=>$this->_('labels.invalid_votes')]);
+		echo $block->render();
 	}
 }
 

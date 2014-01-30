@@ -11,12 +11,14 @@ $url = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 
 $terms = $this->person->getTerms();
 if (count($terms)) {
-	echo '<ul class="tabBar">';
-	$tabs = ['committees'  => $this->_(['labels.committee', 'labels.committees', 2]),
-			 'votingRecord'=> $this->_(['labels.votingRecord', 'labels.votingRecords', 1]),
-			 'comparisons' => $this->_('labels.votingRecordComparison')];
+	$tabs = ['committees'  => $this->_(['labels.committee', 'labels.committees', 2])];
+	if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
+		$tabs['votingRecord'] = $this->_(['labels.votingRecord', 'labels.votingRecords', 1]);
+		$tabs['comparisons' ] = $this->_('labels.votingRecordComparison');
+	}
 	$current_tab = (isset($_GET['tab']) && array_key_exists($_GET['tab'], $tabs)) ? $_GET['tab'] : 'committees';
 
+	echo '<ul class="tabBar">';
 	foreach ($tabs as $tab => $label) {
 		$class = $current_tab == $tab ? 'class="current"' : '';
 		$url->tab = $tab;

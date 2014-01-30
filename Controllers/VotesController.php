@@ -13,6 +13,18 @@ use Application\Models\VoteTable;
 
 class VotesController extends Controller
 {
+	public function __construct(\Blossom\Classes\Template $template)
+	{
+		if (!defined('VOTE_TRACKING') || !VOTE_TRACKING) {
+			$_SESSION['errorMessages'][] = new \Exception('votes/notEnabled');
+			header('Location: '.BASE_URL);
+			exit();
+		}
+		else {
+			parent::__construct($template);
+		}
+	}
+
 	/**
 	 * Tries to load and return the Vote
 	 *
