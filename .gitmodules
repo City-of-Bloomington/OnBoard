@@ -10,3 +10,6 @@
 [submodule "public/js/yui3"]
 	path = public/js/yui3
 	url = https://github.com/yui/yui3.git
+[submodule "libraries/php-markdown"]
+	path = libraries/php-markdown
+	url = https://github.com/michelf/php-markdown.git

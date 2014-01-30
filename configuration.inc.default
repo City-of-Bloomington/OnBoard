@@ -8,8 +8,9 @@ define('APPLICATION_NAME','application');
  * Where on the filesystem this application is installed
  */
 define('APPLICATION_HOME','/srv/sites/application');
-define('BLOSSOM', APPLICATION_HOME.'/libraries/Blossom');
-define('ZEND',    APPLICATION_HOME.'/libraries/zf2/library/Zend');
+define('BLOSSOM',  APPLICATION_HOME.'/libraries/Blossom');
+define('ZEND',     APPLICATION_HOME.'/libraries/zf2/library/Zend');
+define('MARKDOWN', APPLICATION_HOME.'/libraries/php-markdown/Michelf');
 
 /**
  * The URL to get to this site
@@ -127,7 +128,8 @@ $config = [
 		'namespaces' => [
 			'Application' => APPLICATION_HOME,
 			'Blossom'     => BLOSSOM,
-			'Zend'        => ZEND
+			'Zend'        => ZEND,
+			'Michelf'     => MARKDOWN
 		]
 	]
 ];

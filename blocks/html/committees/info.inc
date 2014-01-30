@@ -6,12 +6,15 @@
  * @param Committee $this->committee
  */
 use Blossom\Classes\View;
+use Michelf\MarkdownExtra;
 
 $name             = View::escape($this->committee->getName());
 $description      = View::escape($this->committee->getDescription());
 $statutoryName    = View::escape($this->committee->getStatutoryName());
 $statuteReference = View::escape($this->committee->getStatuteReference());
-$description      = View::escape($this->committee->getDescription());
+
+$markdown = new MarkdownExtra();
+$description = $markdown->transform($this->committee->getDescription());
 
 echo "
 <div>
@@ -31,6 +34,6 @@ echo "
 			<td><a href=\"{$this->committee->getWebsite()}\">{$this->committee->getWebsite()}</a></td>
 		</tr>
 	</table>
-	<p>$description</p>
+	$description
 </div>
 ";
