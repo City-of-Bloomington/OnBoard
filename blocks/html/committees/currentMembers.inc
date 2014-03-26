@@ -50,7 +50,7 @@ use Application\Models\Person;
 								$this->translate('labels.edit_office')
 							);
 						}
-						$offices[] = View::escape($office->getTitle()).$editOfficeButton;
+						$offices[] = View::escape($office->getTitle());
 					}
 					$offices = implode(',',$offices);
 
