@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
+use Application\Models\Person;
 use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
@@ -16,9 +17,20 @@ $statuteReference = View::escape($this->committee->getStatuteReference());
 $markdown = new MarkdownExtra();
 $description = $markdown->transform($this->committee->getDescription());
 
+$editButton = '';
+if (Person::isAllowed('committees', 'edit')) {
+	$editButton = sprintf(
+		'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+		BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
+		$this->_('labels.edit')
+	);
+}
+
 echo "
 <div>
-	<h2><a href=\"{$this->committee->getUri()}\">$name</a></h2>
+	<h2><a href=\"{$this->committee->getUri()}\">$name</a>
+		$editButton
+	</h2>
 
 	<table>
 		<tr><th>Date Formed</th>

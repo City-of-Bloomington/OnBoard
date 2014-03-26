@@ -8,6 +8,8 @@
 namespace Application\Models;
 
 use Blossom\Classes\View;
+
+$userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
 <div>
 	<h2><?php
@@ -17,7 +19,7 @@ use Blossom\Classes\View;
 				$this->_(['labels.committee' , 'labels.committees' , 2]),
 				$this->_(['labels.board'     , 'labels.boards'     , 2])
 			);
-			if (Person::isAllowed('committees')) {
+			if ($userCanEdit) {
 				echo sprintf(
 					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
 					BASE_URI.'/committees/update',
@@ -40,7 +42,7 @@ use Blossom\Classes\View;
 				$seats = $c->getMaxCurrentTerms();
 
 				$editButton = '';
-				if (Person::isAllowed('committees')) {
+				if ($userCanEdit) {
 					$editButton = sprintf(
 						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
 						BASE_URI.'/committees/update?committee_id='.$c->getId(),
