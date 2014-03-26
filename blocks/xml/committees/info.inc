@@ -16,7 +16,7 @@ $description      = View::escape($this->committee->getDescription());
 echo "
 	<url>{$this->committee->getUrl()}</url>
 	<name>$name</name>
-	<yearFormed>{$this->committee->getYearFormed()}</dateFormed>
+	<yearFormed>{$this->committee->getYearFormed()}</yearFormed>
 	<statutoryName>$statutoryName</statutoryName>
 	<statuteReference>$statuteReference</statuteReference>
 	<description>$description</description>
