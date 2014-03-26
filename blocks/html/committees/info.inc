@@ -33,8 +33,8 @@ echo "
 	</h2>
 
 	<table>
-		<tr><th>Date Formed</th>
-			<td>{$this->committee->getDateFormed(DATE_FORMAT)}</td>
+		<tr><th>Year Formed</th>
+			<td>{$this->committee->getYearFormed()}</td>
 		</tr>
 		<tr><th>Statutory Name</th>
 			<td>$statutoryName</td>

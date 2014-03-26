@@ -32,7 +32,7 @@ create table committees (
 	name varchar(128) not null,
 	statutoryName varchar(128),
 	statuteReference varchar(128),
-	dateFormed date,
+	yearFormed year(4),
 	website varchar(128),
 	description text
 );

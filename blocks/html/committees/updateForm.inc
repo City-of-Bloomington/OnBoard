@@ -24,9 +24,9 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
 				<td><input name="name" id="name" value="<?php echo $name; ?>" /></td>
 			</tr>
 
-			<tr><td><label for="dateFormed"><?php echo $this->_('labels.date_formed'); ?></label></td>
-				<td><input name="dateFormed" id="dateFormed" size="10" maxlength="10"
-						value="<?php echo $this->committee->getDateFormed(DATE_FORMAT); ?>" />
+			<tr><td><label for="yearFormed"><?php echo $this->_('labels.year_formed'); ?></label></td>
+				<td><input name="yearFormed" id="yearFormed" size="10" maxlength="10"
+						value="<?php echo $this->committee->getYearFormed(); ?>" />
 				</td>
 			</tr>
 
