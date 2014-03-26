@@ -91,14 +91,12 @@ class Term extends ActiveRecord
 				join seats s on t.seat_id=s.id
 				where s.committee_id=?
 				  and t.person_id=?
-				  and ((t.term_start<=? and ?>=t.term_end)
-				   or    (?<=t.term_end and ?>=t.term_end))";
+				  and (?<t.term_end and ?>t.term_start)";
 		if ($this->getId()) { $sql.= ' and t.id!='.$this->getId(); }
-		
+
 		$result = $zend_db->createStatement($sql)->execute([
 			$this->getCommittee()->getId(),
 			$this->getPerson_id(),
-			$this->getTerm_start(),$this->getTerm_end(),
 			$this->getTerm_start(),$this->getTerm_end()
 		]);
 		if (count($result) > 1) {
