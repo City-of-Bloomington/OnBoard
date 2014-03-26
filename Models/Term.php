@@ -93,6 +93,8 @@ class Term extends ActiveRecord
 				  and t.person_id=?
 				  and ((t.term_start<=? and ?>=t.term_end)
 				   or    (?<=t.term_end and ?>=t.term_end))";
+		if ($this->getId()) { $sql.= ' and t.id!='.$this->getId(); }
+		
 		$result = $zend_db->createStatement($sql)->execute([
 			$this->getCommittee()->getId(),
 			$this->getPerson_id(),
