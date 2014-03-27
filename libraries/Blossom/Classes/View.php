@@ -75,7 +75,7 @@ abstract class View
 	 * @param CONSTANT $quotes Optional, the desired constant to use for the htmlspecidalchars call
 	 * @return string
 	 */
-	public static function escape($input,$quotes=ENT_QUOTES)
+	public static function escape($input, $quotes=ENT_QUOTES)
 	{
 		if (is_array($input)) {
 			foreach ($input as $key=>$value) {
@@ -83,7 +83,7 @@ abstract class View
 			}
 		}
 		else {
-			$input = htmlspecialchars(trim($input),$quotes);
+			$input = htmlspecialchars(trim($input),$quotes, 'UTF-8');
 		}
 
 		return $input;
