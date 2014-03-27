@@ -57,23 +57,34 @@ class Committee extends ActiveRecord
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
 	public function getStatuteReference()  { return parent::get('statuteReference'); }
+	public function getStatuteUrl()        { return parent::get('statuteUrl');       }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getDescription()       { return parent::get('description');      }
+	public function getSynopsis()          { return parent::get('synopsis');         }
 	public function getYearFormed()        { return parent::get('yearFormed');       }
+	public function getContactInfo()       { return parent::get('contactInfo');      }
+	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
 	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
+	public function setStatuteUrl      ($s) { parent::set('statuteUrl',       $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
 	public function setDescription     ($s) { parent::set('description',      $s); }
+	public function setSynopsis        ($s) { parent::set('synopsis',         $s); }
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
+	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
+	public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
 
 	/**
 	 * @param array $post The POST request
 	 */
 	public function handleUpdate($post)
 	{
-		$fields = ['name', 'statutoryName', 'statuteReference', 'website', 'description', 'yearFormed'];
+		$fields = [
+			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
+			'description', 'synopsis', 'contactInfo', 'meetingSchedule'
+		];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);

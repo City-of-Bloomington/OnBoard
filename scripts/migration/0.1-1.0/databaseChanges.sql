@@ -36,3 +36,7 @@ alter table seats add endDate   date;
 update seats s set s.startDate=(select min(term_start) from terms where terms.seat_id=s.id);
 
 alter table committees change dateFormed yearFormed year(4);
+alter table committees add statuteUrl      varchar(128) after statuteReference;
+alter table committees add synopsis        varchar(255);
+alter table committees add contactInfo     varchar(255);
+alter table committees add meetingSchedule varchar(255);

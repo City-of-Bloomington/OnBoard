@@ -7,17 +7,13 @@
  */
 use Blossom\Classes\View;
 
-$name             = View::escape($this->committee->getName());
-$description      = View::escape($this->committee->getDescription());
-$statutoryName    = View::escape($this->committee->getStatutoryName());
-$statuteReference = View::escape($this->committee->getStatuteReference());
-$description      = View::escape($this->committee->getDescription());
+echo "<url>{$this->committee->getUrl()}</url>";
 
-echo "
-	<url>{$this->committee->getUrl()}</url>
-	<name>$name</name>
-	<yearFormed>{$this->committee->getYearFormed()}</yearFormed>
-	<statutoryName>$statutoryName</statutoryName>
-	<statuteReference>$statuteReference</statuteReference>
-	<description>$description</description>
-";
+$fields = [
+	'name', 'synopsis', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed',
+	'description', 'contactInfo', 'meetingSchedule', 'website'
+];
+foreach ($fields as $f) {
+	$get = 'get'.ucfirst($f);
+	echo "<$f>".View::escape($this->committee->$get())."</$f>";
+}

@@ -32,9 +32,13 @@ create table committees (
 	name varchar(128) not null,
 	statutoryName varchar(128),
 	statuteReference varchar(128),
+	statuteUrl varchar(128),
 	yearFormed year(4),
 	website varchar(128),
-	description text
+	description text,
+	synopsis varchar(255),
+	contactInfo varchar(255),
+	meetingSchedule varchar(255)
 );
 
 create table appointers (

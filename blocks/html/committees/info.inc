@@ -9,13 +9,24 @@ use Application\Models\Person;
 use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
-$name             = View::escape($this->committee->getName());
-$description      = View::escape($this->committee->getDescription());
-$statutoryName    = View::escape($this->committee->getStatutoryName());
-$statuteReference = View::escape($this->committee->getStatuteReference());
+$fields = [
+	'name', 'synopsis', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed',
+	'description', 'contactInfo', 'meetingSchedule', 'website'
+];
+foreach ($fields as $f) {
+	$get = 'get'.ucfirst($f);
+	$$f = View::escape($this->committee->$get());
+}
+
+if ($statuteUrl) {
+	$statuteReference = "<a href=\"$statuteUrl\">$statuteReference</a>";
+}
+if ($website) {
+	$website = "<a href=\"$website\">$website</a>";
+}
 
 $markdown = new MarkdownExtra();
-$description = $markdown->transform($this->committee->getDescription());
+$description = $markdown->transform($description);
 
 $editButton = '';
 if (Person::isAllowed('committees', 'edit')) {
@@ -32,20 +43,32 @@ echo "
 		$editButton
 	</h2>
 
+	<p>$synopsis</p>
+
 	<table>
-		<tr><th>Year Formed</th>
-			<td>{$this->committee->getYearFormed()}</td>
+		<tr><th>{$this->_('labels.year_formed')}</th>
+			<td>$yearFormed</td>
 		</tr>
-		<tr><th>Statutory Name</th>
+		<tr><th>{$this->_('labels.statutoryName')}</th>
 			<td>$statutoryName</td>
 		</tr>
-		<tr><th>Statute Reference</th>
+		<tr><th>{$this->_('labels.statuteReference')}</th>
 			<td>$statuteReference</td>
 		</tr>
-		<tr><th>Website</th>
-			<td><a href=\"{$this->committee->getWebsite()}\">{$this->committee->getWebsite()}</a></td>
+		<tr><th>{$this->_('labels.website')}</th>
+			<td>$website</td>
 		</tr>
 	</table>
+
+	<table>
+		<tr><th>{$this->_('labels.contactInfo')}</th>
+			<td>$contactInfo</td>
+		</tr>
+		<tr><th>{$this->_('labels.meetingSchedule')}</th>
+			<td>$meetingSchedule</td>
+		</tr>
+	</table>
+
 	$description
 </div>
 ";
