@@ -74,13 +74,15 @@ class Term extends ActiveRecord
 		if ($end && $end < $start) { throw new \Exception('terms/invalidEndDate'); }
 
 		// Make sure this term does not exceed the maxCurrentTerms for the seat
-		if ( $start <= time() && (!$end || $end >= time()) ) {
+		$seat = $this->getSeat();
+		$max  = $seat->getMaxCurrentTerms();
+		if (($start <= time() && (!$end || $end >= time())) && $max) {
 			// The term we're adding is current, make sure there's room
-			$count = count($this->getSeat()->getCurrentTerms());
+			$count = count($seat->getCurrentTerms());
 			if (!$this->getId()) {
 				$count++;
 			}
-			if ($count > $this->getSeat()->getMaxCurrentTerms()) {
+			if ($count > $max) {
 				throw new \Exception('seats/maxCurrentTermsFilled');
 			}
 		}

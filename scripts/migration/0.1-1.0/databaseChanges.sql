@@ -40,3 +40,6 @@ alter table committees add statuteUrl      varchar(128) after statuteReference;
 alter table committees add synopsis        varchar(255);
 alter table committees add contactInfo     varchar(255);
 alter table committees add meetingSchedule varchar(255);
+
+alter table seats modify appointer_id int unsigned;
+alter table seats modify maxCurrentTerms tinyint unsigned;

@@ -25,7 +25,7 @@ foreach ($this->committee->getCurrentSeats() as $seat) {
 
 	$seats[] = [
 		'name'           =>$seat->getName(),
-		'appointedBy'    =>$seat->getAppointer()->getName(),
+		'appointedBy'    =>"{$seat->getAppointer()}",
 		'maxCurrentTerms'=>$seat->getMaxCurrentTerms(),
 		'currentMembers' =>$members
 	];

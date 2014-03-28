@@ -32,7 +32,7 @@ $title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.
 						<?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?>
 					</label>
 				</td>
-				<td><select name="appointer_id" id="appointer_id">
+				<td><select name="appointer_id" id="appointer_id"><option value=""></option>
 					<?php
 						$table = new AppointerTable();
 						$list = $table->find();

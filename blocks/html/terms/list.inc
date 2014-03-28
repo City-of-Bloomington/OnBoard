@@ -43,7 +43,7 @@ $title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'l
 				$committee = $term->getSeat()->getCommittee();
 				$personName    = View::escape($term->getPerson()->getFullname());
 				$committeeName = View::escape($committee->getName());
-				$appointer     = View::escape($term->getSeat()->getAppointer()->getName());
+				$appointer     = View::escape($term->getSeat()->getAppointer());
 
 				echo "
 				<tr><td><a href=\"{$term->getPerson()->getUri()}\">$personName</a></td>
