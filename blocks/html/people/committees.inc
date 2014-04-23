@@ -21,7 +21,8 @@ foreach ($this->person->getCommittees() as $committee) {
 
 	$offices = $this->person->getOffices($committee);
 	if (count($offices)) {
-		$office = View::escape($offices[0]->getTitle());
+		$o = $offices->current();
+		$office = View::escape($o->getTitle());
 		$office = "($office)";
 	}
 	else {

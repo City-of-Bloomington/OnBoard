@@ -76,7 +76,7 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
 	</fieldset>
 
 	<fieldset><legend><?php echo $this->_('labels.description'); ?></legend>
-		<textarea name="description" id="description" rows="20" cols="80"><?php echo $description; ?></textarea>
+		<textarea name="description" id="description" rows="20" cols="80" class="markdown"><?php echo $description; ?></textarea>
 	</fieldset>
 
 	<fieldset><legend><?php echo $this->_('labels.submit'); ?></legend>

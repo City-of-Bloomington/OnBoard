@@ -7,15 +7,20 @@
  */
 use Application\Models\Person;
 use Blossom\Classes\View;
+use Michelf\MarkdownExtra;
 
-$name      = View::escape($this->seat->getName());
-$appointer = View::escape($this->seat->getAppointer());
-$committee = View::escape($this->seat->getCommittee()->getName());
+$name         = View::escape($this->seat->getName());
+$appointer    = View::escape($this->seat->getAppointer());
+$committee    = View::escape($this->seat->getCommittee()->getName());
+$requirements = View::escape($this->seat->getRequirements());
 
+if ($requirements) {
+	$markdown = new MarkdownExtra();
+	$requirements = $markdown->transform($requirements);
+}
 
 $addTermButton = '';
 $editSeatButton = '';
-$editRequirementsButton = '';
 if (Person::isAllowed('seats', 'edit')) {
 	$addTermButton = sprintf(
 		'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
@@ -26,11 +31,6 @@ if (Person::isAllowed('seats', 'edit')) {
 		'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
 		$this->translate('labels.edit_seat')
-	);
-	$editRequirementsButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
-		BASE_URI.'/seats/updateRequirements?seat_id='.$this->seat->getId(),
-		$this->translate('labels.edit')
 	);
 }
 echo "
@@ -52,20 +52,8 @@ echo "
 		<tr><th>{$this->_('labels.date_end')}</th>
 			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_(['labels.requirement', 'labels.requirements', 2])}
-			</th>
-			<td>$editRequirementsButton
-
-";
-				if ($this->seat->hasRequirements()) {
-					echo '<ul>';
-					foreach ($this->seat->getRequirements() as $requirement) {
-						echo '<li>'.View::escape($requirement).'</li>';
-					}
-					echo '</ul>';
-				}
-echo "
-			</td>
+		<tr><th>{$this->_(['labels.requirement', 'labels.requirements', 2])}</th>
+			<td>$requirements</td>
 		</tr>
 	</table>
 </div>

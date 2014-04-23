@@ -7,7 +7,6 @@
 namespace Application\Models;
 
 use Application\Models\TermTable;
-use Application\Models\RequirementTable;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
@@ -94,6 +93,7 @@ class Seat extends ActiveRecord
 	public function getAppointer()        { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
 	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
+	public function getRequirements()     { return parent::get('requirements'); }
 
 	public function setName($s)            { parent::set('name', $s); }
 	public function setMaxCurrentTerms($i) { parent::set('maxCurrentTerms', (int)$i); }
@@ -103,10 +103,11 @@ class Seat extends ActiveRecord
 	public function setAppointer($o)       { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d)       { parent::setDateData('startDate', $d); }
 	public function setEndDate  ($d)       { parent::setDateData('endDate',   $d); }
+	public function setRequirements($s)    { parent::setData('requirements', $s); }
 
 	public function handleUpdate($post)
 	{
-		$fields = ['name', 'appointer_id', 'maxCurrentTerms', 'startDate', 'endDate'];
+		$fields = ['name', 'appointer_id', 'maxCurrentTerms', 'startDate', 'endDate', 'requirements'];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
@@ -145,62 +146,5 @@ class Seat extends ActiveRecord
 	public function getCurrentTerms()
 	{
 		return $this->getTerms(['current'=>time()]);
-	}
-
-	/**
-	 * @return Zend\Db\ResultSet
-	 */
-	public function getRequirements()
-	{
-		$table = new RequirementTable();
-		return $table->find(['seat_id'=>$this->getId()]);
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function hasRequirements()
-	{
-		return count($this->getRequirements()) ? true : false;
-	}
-
-	/**
-	 * Check if this seat has a particular requirement
-	 *
-	 * @param Requirement $requirement
-	 * @return boolean
-	 */
-	public function hasRequirement(Requirement $requirement)
-	{
-		$zend_db = Database::getConnection();
-		$query = $zend_db->createStatement('select requirement_id from seat_requirements where seat_id=? and requirement_id=?');
-		$result = $query->execute([$this->getId(),$requirement->getId()]);
-		return count($result) ? true : false;
-	}
-
-	/**
-	 * @param Requirement $requirement
-	 */
-	public function addRequirement(Requirement $requirement)
-	{
-		if (!$this->hasRequirement($requirement)) {
-			$zend_db = Database::getConnection();
-
-			$query = $zend_db->createStatement('insert seat_requirements set seat_id=?,requirement_id=?');
-			$query->execute([$this->getId(),$requirement->getId()]);
-		}
-	}
-
-	/**
-	 * @param Requirement $requirement
-	 */
-	public function removeRequirement(Requirement $requirement)
-	{
-		if ($this->getId()) {
-			$zend_db = Database::getConnection();
-
-			$query = $zend_db->createStatement('delete from seat_requirements where seat_id=? and requirement_id=?');
-			$query->execute([$this->getId(),$requirement->getId()]);
-		}
 	}
 }

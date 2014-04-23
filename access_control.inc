@@ -31,7 +31,6 @@ $ZEND_ACL->addResource(new Resource('appointers'));
 $ZEND_ACL->addResource(new Resource('committees'));
 $ZEND_ACL->addResource(new Resource('offices'));
 $ZEND_ACL->addResource(new Resource('races'));
-$ZEND_ACL->addResource(new Resource('requirements'));
 $ZEND_ACL->addResource(new Resource('seats'));
 $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
@@ -53,7 +52,7 @@ $ZEND_ACL->allow(null, ['committees', 'people', 'topics'], ['index','view']);
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff',[
 	'people',
-	'appointers','committees','offices','races','requirements',
+	'appointers','committees','offices','races',
 	'seats', 'tags', 'terms', 'topics', 'topicTypes', 'votes', 'voteTypes'
 ]);
 

@@ -62,6 +62,10 @@ $title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.
 			</tr>
 
 		</table>
+		<div>
+			<div><label for="requirements"><?php echo $this->_(['labels.requirement', 'labels.requirements', 2]); ?></label></div>
+			<textarea name="requirements" id="requirements" rows="20" cols="80" class="markdown"><?php echo View::escape($this->seat->getRequirements()); ?></textarea>
+		</div>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
 			echo $helper->saveAndCancelButtons($this->seat->getUri());

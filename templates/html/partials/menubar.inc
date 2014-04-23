@@ -8,7 +8,6 @@ use Application\Models\Person;
 	$routes = [
 		'appointer'=>'appointers',
 		'committee'=>'committees',
-		'requirement'=>'requirements',
 		'topic'=>'topics',
 		'topicType'=>'topicTypes',
 		'race'=>'races',

@@ -43,3 +43,21 @@ alter table committees add meetingSchedule varchar(255);
 
 alter table seats modify appointer_id int unsigned;
 alter table seats modify maxCurrentTerms tinyint unsigned;
+
+-- 2014-04-23
+alter table seats add requirements text;
+
+-- Format all the existing requirements as markdown text and save them
+-- in the new requirements field for each seat
+update seats s
+join (
+	select y.id, group_concat(concat('* ', r.text) separator '\n') as text
+	from seats y
+	join seat_requirements sr on y.id=sr.seat_id
+	join requirements r on sr.requirement_id=r.id
+	group by y.id
+) x on s.id=x.id
+set s.requirements=x.text;
+
+drop table seat_requirements;
+drop table requirements;

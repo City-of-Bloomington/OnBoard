@@ -23,6 +23,7 @@ fieldset { padding:.25em 0; }
 legend { font-weight:bold; }
 label { font-weight:bold; }
 form table { border:none; }
+textarea.markdown { font-family:monospace; }
 
 /**
  * Base styles for buttons and button links

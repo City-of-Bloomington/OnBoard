@@ -47,11 +47,6 @@ create table appointers (
 );
 insert appointers values(1,'Elected');
 
-create table requirements (
-	id int unsigned not null primary key auto_increment,
-	text varchar(255) not null
-);
-
 create table seats (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null,
@@ -60,16 +55,9 @@ create table seats (
 	maxCurrentTerms tinyint unsigned,
 	startDate date not null default CURRENT_DATE,
 	endDate date,
+	requirements text,
 	foreign key (appointer_id) references appointers(id),
 	foreign key (committee_id) references committees(id)
-);
-
-create table seat_requirements (
-	seat_id int unsigned not null,
-	requirement_id int unsigned not null,
-	primary key (seat_id,requirement_id),
-	foreign key (seat_id) references seats(id),
-	foreign key (requirement_id) references requirements(id)
 );
 
 create table terms (
