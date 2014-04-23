@@ -14,10 +14,11 @@ use Application\Models\Person;
 		<thead>
 			<tr><th><?php echo $this->_('labels.name'); ?></th>
 				<th><?php echo $this->_('labels.appointed_by'); ?></th>
-				<th><?php echo $this->_(['labels.term','labels.term', 1]); ?></th>
+				<th colspan="2"><?php echo $this->_(['labels.term','labels.term', 1]); ?></th>
 				<th colspan="2"><?php echo $this->_(['labels.office','labels.offices', 2]); ?></th>
 			</tr>
 		</thead>
+		<tbody>
 		<?php
 			foreach ($this->committee->getSeats(time()) as $seat) {
 				$appointer = View::escape($seat->getAppointer());
@@ -29,6 +30,21 @@ use Application\Models\Person;
 				$c = 0;
 				foreach ($seat->getCurrentTerms() as $term) {
 					$c++;
+
+					$editTermButton = '';
+					$addTermButton  = '';
+					if (Person::isAllowed('terms', 'edit')) {
+						$editTermButton = sprintf(
+							'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+							BASE_URI."/terms/update?term_id={$term->getId()}",
+							$this->translate('labels.edit')
+						);
+						$addTermButton = sprintf(
+							'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+							BASE_URI."/terms/update?seat_id={$seat->getId()};person_id={$term->getPerson_id()}",
+							$this->translate('labels.add_term')
+						);
+					}
 
 					$addOfficeButton  = '';
 					$editOfficeButton = '';
@@ -56,34 +72,43 @@ use Application\Models\Person;
 
 					$fullname = View::escape($term->getPerson()->getFullname());
 					echo "
-					<tbody>
 					<tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
 						<td>$appointer</td>
-						<td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}</td>
+						<td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}
+							$editTermButton
+						</td>
+						<td>$addTermButton</td>
 						<td>$offices</td>
 						<td>$addOfficeButton $editOfficeButton</td>
 					</tr>
-					</tbody>
 					";
 				}
 				//--------------------------------------------------------
 				// Show all the vacancies
 				//--------------------------------------------------------
 				$t = $seat->getMaxCurrentTerms();
+				$addTermButton = '';
+				if (Person::isAllowed('terms', 'edit')) {
+					$addTermButton = sprintf(
+						'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+						BASE_URI."/terms/update?seat_id={$seat->getId()}",
+						$this->translate('labels.add_term')
+					);
+				}
 				for ($c; $c < $t; $c++) {
 					echo "
-					<tbody>
 					<tr><td>( {$this->_('labels.vacancy')} )</td>
 						<td>$appointer</td>
 						<td></td>
+						<td>$addTermButton</td>
 						<td></td>
 						<td></td>
 					</tr>
-					</tbody>
 					";
 				}
 			}
 		?>
+		</tbody>
 	</table>
 	<div>
 		<?php
