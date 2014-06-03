@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
+use Blossom\Classes\Url;
 use Blossom\Classes\View;
 use Application\Models\Person;
 ?>
@@ -20,6 +21,8 @@ use Application\Models\Person;
 		</thead>
 		<tbody>
 		<?php
+			$currentUrl = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+
 			foreach ($this->committee->getSeats(time()) as $seat) {
 				$appointer = View::escape($seat->getAppointer());
 
@@ -36,12 +39,12 @@ use Application\Models\Person;
 					if (Person::isAllowed('terms', 'edit')) {
 						$editTermButton = sprintf(
 							'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
-							BASE_URI."/terms/update?term_id={$term->getId()}",
+							BASE_URI."/terms/update?term_id={$term->getId()};return_url=$currentUrl",
 							$this->translate('labels.edit')
 						);
 						$addTermButton = sprintf(
 							'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
-							BASE_URI."/terms/update?seat_id={$seat->getId()};person_id={$term->getPerson_id()}",
+							BASE_URI."/terms/update?seat_id={$seat->getId()};person_id={$term->getPerson_id()};return_url=$currentUrl",
 							$this->translate('labels.add_term')
 						);
 					}
@@ -91,7 +94,7 @@ use Application\Models\Person;
 				if (Person::isAllowed('terms', 'edit')) {
 					$addTermButton = sprintf(
 						'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
-						BASE_URI."/terms/update?seat_id={$seat->getId()}",
+						BASE_URI."/terms/update?seat_id={$seat->getId()};return_url=$currentUrl",
 						$this->translate('labels.add_term')
 					);
 				}

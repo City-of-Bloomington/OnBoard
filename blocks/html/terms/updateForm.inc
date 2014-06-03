@@ -48,7 +48,7 @@ $title = $this->term->getId() ? $this->_('labels.edit_term') : $this->_('labels.
 			</table>
 			<?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons($this->term->getSeat()->getUri());
+				echo $helper->saveAndCancelButtons($this->return_url);
 			?>
 		</fieldset>
 	</form>

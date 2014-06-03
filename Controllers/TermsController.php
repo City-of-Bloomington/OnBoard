@@ -50,6 +50,10 @@ class TermsController extends Controller
 		}
 
 		if (isset($term)) {
+			$return_url = !empty($_REQUEST['return_url'])
+				? $_REQUEST['return_url']
+				: $term->getSeat()->getUrl();
+
 			if (isset($_POST['term_start'])) {
 				try {
 					$term->handleUpdate($_POST);
@@ -62,7 +66,7 @@ class TermsController extends Controller
 						exit();
 					}
 					$term->save();
-					header('Location: '.$term->getSeat()->getUrl());
+					header('Location: '.$return_url);
 					exit();
 				}
 				catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -70,7 +74,7 @@ class TermsController extends Controller
 			$seat = $term->getSeat();
 			$this->template->blocks[] = new Block('committees/info.inc',  ['committee'=>$seat->getCommittee()]);
 			$this->template->blocks[] = new BlocK('seats/info.inc',       ['seat'=>$seat]);
-			$this->template->blocks[] = new Block('terms/updateForm.inc', ['term'=>$term]);
+			$this->template->blocks[] = new Block('terms/updateForm.inc', ['term'=>$term, 'return_url'=>$return_url]);
 		}
 		else {
 			header('Location: '.BASE_URL."/committees");
