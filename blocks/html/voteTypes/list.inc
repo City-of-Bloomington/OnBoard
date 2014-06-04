@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->voteTypes
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <div>
@@ -13,10 +14,11 @@ use Blossom\Classes\View;
 			echo $this->_(['labels.voteType','labels.voteTypes',2]);
 
 			if (Person::isAllowed('voteTypes')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/voteTypes/update',
-					$this->translate('labels.add_voteType')
+					$this->translate('labels.add_voteType'),
+					'add'
 				);
 			}
 		?>
@@ -27,10 +29,11 @@ use Blossom\Classes\View;
 			foreach ($this->voteTypes as $voteType) {
 				$editButton = '';
 				if (Person::isAllowed('voteTypes')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/voteTypes/update?voteType_id='.$voteType->getId(),
-						$this->translate('labels.edit_voteType')
+						$this->translate('labels.edit_voteType'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

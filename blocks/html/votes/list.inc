@@ -9,20 +9,22 @@
  */
 use Application\Models\Person;
 use Application\Models\VotingRecord;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 
 $title = isset($this->title) ? View::escape($this->title) : $this->_(['labels.vote', 'labels.votes', 2]);
 $userCanEditVotes = Person::isAllowed('votes', 'edit');
+$helper = $this->template->getHelper('buttonLink');
 ?>
 <div>
 	<h2><?php
 			echo $title;
 
 			if (isset($this->topic) && $userCanEditVotes) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				echo $helper->buttonLink(
 					BASE_URI.'/votes/update?topic_id='.$this->topic->getId(),
-					$this->translate('labels.add_vote')
+					$this->translate('labels.add_vote'),
+					'add'
 				);
 			}
 		?>
@@ -47,10 +49,11 @@ $userCanEditVotes = Person::isAllowed('votes', 'edit');
 			foreach ($this->votes as $vote) {
 				$editButton = '';
 				if ($userCanEditVotes) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/votes/update?vote_id='.$vote->getId(),
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->tags
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <div>
@@ -13,10 +14,11 @@ use Blossom\Classes\View;
 			echo $this->translate(['labels.tag','labels.tags',2]);
 
 			if (Person::isAllowed('tags')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/tags/update',
-					$this->translate('labels.add_tag')
+					$this->translate('labels.add_tag'),
+					'add'
 				);
 			}
 		?>
@@ -27,15 +29,17 @@ use Blossom\Classes\View;
 				$editButton = '';
 				$deleteButton = '';
 				if (Person::isAllowed('tags')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/tags/update?tag_id='.$tag->getId(),
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
-					$deleteButton = sprintf(
-						'<a class="fa fa-times" href="%s"><i class="hidden-label">$s</i></a>',
+					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/tags/delete?tag_id='.$tag->getId(),
-						$this->translate('labels.delete')
+						$this->translate('labels.delete'),
+						'delete',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

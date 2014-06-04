@@ -13,10 +13,11 @@ use Blossom\Classes\View;
 			echo View::escape($this->vote->getVoteType());
 
 			if (Person::isAllowed('votes', 'edit')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/votes/recordVotes?vote_id='.$this->vote->getId(),
-					$this->translate('labels.edit_votingRecords')
+					$this->translate('labels.edit_votingRecords'),
+					'edit'
 				);
 			}
 		?>

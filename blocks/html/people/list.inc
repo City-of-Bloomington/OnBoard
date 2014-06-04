@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->people
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 use Blossom\Classes\Url;
 ?>
@@ -21,10 +22,11 @@ use Blossom\Classes\Url;
 					if (!in_array($key, $fields)) { $url->$key = $value; }
 				}
 
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					$url,
-					$this->translate('labels.add_person')
+					$this->translate('labels.add_person'),
+					'add'
 				);
 			}
 		?>
@@ -42,10 +44,11 @@ use Blossom\Classes\Url;
 			foreach ($this->people as $person) {
 				$editButton = '';
 				if (Person::isAllowed('people')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/people/update?person_id='.$person->getId(),
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

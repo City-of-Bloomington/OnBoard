@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->topicTypes
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <div>
@@ -13,10 +14,11 @@ use Blossom\Classes\View;
 			echo $this->translate(['labels.topicType','labels.topicTypes',2]);
 
 			if (Person::isAllowed('topicTypes')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/topicTypes/update',
-					$this->translate('labels.add_topicType')
+					$this->translate('labels.add_topicType'),
+					'add'
 				);
 			}
 		?>
@@ -26,10 +28,11 @@ use Blossom\Classes\View;
 			foreach ($this->topicTypes as $topicType) {
 				$editButton = '';
 				if (Person::isAllowed('topicTypes')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/topicTypes/update?topicType_id='.$topicType->getId(),
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

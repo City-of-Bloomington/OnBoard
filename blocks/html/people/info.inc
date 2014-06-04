@@ -6,23 +6,27 @@
  * @param Person $this->person
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
+
+$helper = $this->template->getHelper('buttonLink');
 
 $username = $this->person->getUsername();
 if (!$username && Person::isAllowed('users')) {
-	$username = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-plus"></a> %s</a>',
+	$username = $helper->buttonLink(
 		BASE_URI.'/users/update?user_id='.$this->person->getId(),
-		$this->translate('labels.create_account')
+		$this->translate('labels.create_account'),
+		'add'
 	);
 }
 
 $editButton = '';
 if (Person::isAllowed('people', 'edit')) {
-	$editButton = sprintf(
-		'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/people/update?person_id='.$this->person->getId(),
-		$this->translate('labels.edit_person')
+		$this->translate('labels.edit_person'),
+		'edit',
+		ButtonLink::SIZE_ICON
 	);
 }
 
@@ -43,7 +47,7 @@ echo "
 	foreach ($fields as $key=>$label) {
 		$get = 'get'.ucfirst($key);
 		$value = View::escape($this->person->$get());
-		
+
 		if ($value) {
 			echo "<tr><th>$fields[$key]</th><td>$value</td></tr>";
 		}

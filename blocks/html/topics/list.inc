@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->topics
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 
 $userCanEdit = Person::isAllowed('topics', 'edit');
@@ -13,10 +14,12 @@ $userCanEdit = Person::isAllowed('topics', 'edit');
 foreach ($this->topics as $topic) {
 	$editButton = '';
 	if ($userCanEdit) {
-		$editButton = sprintf(
-			'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+		$helper = $this->template->getHelper('buttonLink');
+		$editButton = $helper->buttonLink(
 			BASE_URI.'/topics/update?topic_id='.$topic->getId(),
-			$this->translate('labels.edit')
+			$this->translate('labels.edit'),
+			'edit',
+			ButtonLink::SIZE_ICON
 		);
 	}
 	$date        = $topic->getDate('n/j/Y');

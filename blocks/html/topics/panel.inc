@@ -57,10 +57,11 @@ echo $block->render('html', $this->template);
 
 $addTopicButton = '';
 if (isset($this->committee) && Person::isAllowed('topics', 'edit')) {
-	$addTopicButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+	$helper = $this->template->getHelper('buttonLink');
+	$addTopicButton = $helper->buttonLink(
 		BASE_URI.'/topics/update?committee_id='.$this->committee->getId(),
-		$this->translate('labels.add_topic')
+		$this->translate('labels.add_topic'),
+		'add'
 	);
 }
 echo "

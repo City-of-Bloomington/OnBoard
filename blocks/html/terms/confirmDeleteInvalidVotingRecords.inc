@@ -53,8 +53,12 @@ $end   = $this->term->getTerm_end  (DATE_FORMAT);
 	<a href="<?php echo BASE_URI; ?>/terms/confirmDeleteInvalidVotingRecords?confirm=1">
 		Update term and delete invalid voting records
 	</a>
-	<a class="btn" href="<?php echo $this->term->getSeat()->getUri(); ?>">
-		<i class="fa fa-times"></i> Cancel</a>
-		Cancel
-	</a>
+	<?php
+		$helper = $this->template->getHelper('buttonLink');
+		echo $helper->buttonLink(
+			$this->term->getSeat()->getUri(),
+			$this->_('labels.cancel'),
+			'cancel'
+		);
+	?>
 </div>

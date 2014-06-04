@@ -6,6 +6,7 @@
  * @param Committee $this->committee
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
@@ -30,10 +31,12 @@ $description = $markdown->transform($description);
 
 $editButton = '';
 if (Person::isAllowed('committees', 'edit')) {
-	$editButton = sprintf(
-		'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+	$helper = $this->template->getHelper('buttonLink');
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
-		$this->_('labels.edit')
+		$this->_('labels.edit'),
+		'edit',
+		ButtonLink::SIZE_ICON
 	);
 }
 

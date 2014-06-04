@@ -49,10 +49,10 @@ use Blossom\Classes\View;
 					</td>
 				</tr>
 			</table>
-			<button type="submit" class="submit"><?php echo $this->_('labels.submit'); ?></button>
-			<a class="cancel" href="<?php echo BASE_URI; ?>/users">
-				<?php echo $this->_('labels.cancel'); ?>
-			</a>
+			<?php
+				$helper = $this->template->getHelper('saveAndCancelButtons');
+				echo $helper->saveAndCancelButtons(BASE_URI.'/users');
+			?>
 		</fieldset>
 	</form>
 </div>

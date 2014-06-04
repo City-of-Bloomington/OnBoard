@@ -14,10 +14,11 @@ $outcome = ucfirst($this->vote->getOutcome());
 
 $editButton = '';
 if (Person::isAllowed('votes', 'edit')) {
-	$editButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
+	$helper = $this->template->getHelper('buttonLink');
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/votes/update?vote_id='.$this->vote->getId(),
-		$this->translate('labels.edit_vote')
+		$this->translate('labels.edit_vote'),
+		'edit'
 	);
 }
 ?>

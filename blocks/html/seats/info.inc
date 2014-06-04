@@ -19,18 +19,19 @@ if ($requirements) {
 	$requirements = $markdown->transform($requirements);
 }
 
+$helper = $this->template->getHelper('buttonLink');
 $addTermButton = '';
 $editSeatButton = '';
 if (Person::isAllowed('seats', 'edit')) {
-	$addTermButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+	$addTermButton = $helper->buttonLink(
 		BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.add_term')
+		$this->translate('labels.add_term'),
+		'add'
 	);
-	$editSeatButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
+	$editSeatButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.edit_seat')
+		$this->translate('labels.edit_seat'),
+		'edit'
 	);
 }
 echo "

@@ -6,6 +6,7 @@
  * @param Zend\Db\Sql\Select $users
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <div class="interfaceBox">
@@ -13,10 +14,11 @@ use Blossom\Classes\View;
 			echo $this->_(['labels.user','labels.users',2]);
 
 			if (Person::isAllowed('users')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/users/update',
-					$this->translate('labels.create_account')
+					$this->translate('labels.create_account'),
+					'add'
 				);
 			}
 		?>
@@ -37,15 +39,17 @@ use Blossom\Classes\View;
 				$editButton = '';
 				$deleteButton = '';
 				if (Person::isAllowed('users')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/users/update?user_id='.$user->getId(),
-						$this->translate('labels.edit_account')
+						$this->translate('labels.edit_account'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
-					$deleteButton = sprintf(
-						'<a class="fa fa-times" href="%s"><i class="hidden-label">%s</i></a>',
+					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
-						$this->translate('labels.delete_account')
+						$this->translate('labels.delete_account'),
+						'delete',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

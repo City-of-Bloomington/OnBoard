@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->races
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <div>
@@ -13,10 +14,11 @@ use Blossom\Classes\View;
 			echo $this->translate(['labels.race','labels.races',2]);
 
 			if (Person::isAllowed('races')) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/races/update',
-					$this->translate('labels.add_race')
+					$this->translate('labels.add_race'),
+					'add'
 				);
 			}
 		?>
@@ -26,10 +28,11 @@ use Blossom\Classes\View;
 			foreach ($this->races as $race) {
 				$editButton = '';
 				if (Person::isAllowed('races')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/races/update?race_id='.$race->getId(),
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 

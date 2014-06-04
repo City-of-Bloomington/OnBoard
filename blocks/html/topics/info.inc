@@ -16,10 +16,11 @@ $date        = $this->topic->getDate(DATE_FORMAT);
 
 $editButton = '';
 if (Person::isAllowed('topics', 'edit')) {
-	$editButton = sprintf(
-		'<a class="btn" href="%s"><i class="fa fa-edit"></i> %s</a>',
+	$helper = $this->template->getHelper('buttonLink');
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/topics/update?topic_id='.$this->topic->getId(),
-		$this->translate('labels.edit_topic')
+		$this->translate('labels.edit_topic'),
+		'edit'
 	);
 }
 

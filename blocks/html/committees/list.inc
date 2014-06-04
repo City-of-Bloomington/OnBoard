@@ -8,6 +8,7 @@
 namespace Application\Models;
 
 use Blossom\Classes\View;
+use Application\Templates\Helpers\ButtonLink;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
@@ -20,10 +21,12 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 				$this->_(['labels.board'     , 'labels.boards'     , 2])
 			);
 			if ($userCanEdit) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				$helper = $this->template->getHelper('buttonLink');
+				echo $helper->buttonLink(
 					BASE_URI.'/committees/update',
-					$this->_('labels.add_committee')
+					$this->_('labels.add_committee'),
+					'add'
+
 				);
 			}
 		?>
@@ -43,10 +46,11 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 
 				$editButton = '';
 				if ($userCanEdit) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/committees/update?committee_id='.$c->getId(),
-						$this->_('labels.edit')
+						$this->_('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 				$url = BASE_URI.'/committees/view?committee_id='.$c->getId();

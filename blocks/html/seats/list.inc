@@ -7,19 +7,21 @@
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 
 $userCanEdit = Person::isAllowed('seats', 'edit');
+$helper = $this->template->getHelper('buttonLink');
 ?>
 <div>
 	<h2><?php
 			echo $this->_(['labels.seat', 'labels.seats', 2]);
 
 			if (isset($this->committee) && $userCanEdit) {
-				echo sprintf(
-					'<a class="btn" href="%s"><i class="fa fa-plus"></i> %s</a>',
+				echo $helper->buttonLink(
 					BASE_URI.'/seats/update?committee_id='.$this->committee->getId(),
-					$this->translate('labels.add_seat')
+					$this->translate('labels.add_seat'),
+					'add'
 				);
 			}
 		?>
@@ -41,10 +43,11 @@ $userCanEdit = Person::isAllowed('seats', 'edit');
 
 			foreach ($this->seats as $seat) {
 				if ($userCanEdit) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$editButton = $helper->buttonLink(
 						BASE_URI.'/seats/update?seat_id='.$seat->getId(),
-						$this->translate('labels.edit_seat')
+						$this->translate('labels.edit_seat'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 				}
 				$name      = View::escape($seat->getName());

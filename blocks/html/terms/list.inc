@@ -6,6 +6,7 @@
  * @param Zend\Db\ResultSet $this->terms
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 $title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'labels.terms', 2]);
 ?>
@@ -26,17 +27,20 @@ $title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'l
 				$editButton = '';
 				$deleteButton = '';
 				if (Person::isAllowed('terms', 'edit')) {
-					$editButton = sprintf(
-						'<a class="fa fa-edit" href="%s"><i class="hidden-label">%s</i></a>',
+					$helper = $this->template->getHelper('buttonLink');
+					$editButton = $helper->buttonLink(
 						BASE_URI."/terms/update?term_id={$term->getId()}",
-						$this->translate('labels.edit')
+						$this->translate('labels.edit'),
+						'edit',
+						ButtonLink::SIZE_ICON
 					);
 
 					if ($term->isSafeToDelete()) {
-						$deleteButton = sprintf(
-							'<a class="fa fa-times" href="%s"><i class="hidden-label">%s</i></a>',
+						$deleteButton = $helper->buttonLink(
 							BASE_URI."/terms/delete?term_id={$term->getId()}",
-							$this->translate('labels.delete')
+							$this->translate('labels.delete'),
+							'delete',
+							ButtonLink::SIZE_ICON
 						);
 					}
 				}
