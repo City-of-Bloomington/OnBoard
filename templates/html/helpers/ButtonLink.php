@@ -19,7 +19,7 @@ class ButtonLink
 
 	public static $types = [
 		'add'    => 'fa fa-plus',
-		'edit'   => 'fa fa-edit',
+		'edit'   => 'fa fa-pencil',
 		'delete' => 'fa fa-times',
 		'cancel' => 'fa fa-times'
 	];
