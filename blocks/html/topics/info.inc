@@ -30,7 +30,7 @@ foreach ($this->topic->getTags() as $tag) {
 }
 $tags = implode(', ',$tags);
 if ($tags) {
-	$tags = "<p><strong>Tags: </strong>$tags</p>";
+	$tags = "<p><strong>{$this->_(['labels.tag', 'labels.tags', 2])}: </strong>$tags</p>";
 }
 
 echo "

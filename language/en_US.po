@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: uReport 1.9\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
 "POT-Creation-Date: 2013-09-20 16:33-0400\n"
-"PO-Revision-Date: 2014-03-27 10:51-0500\n"
+"PO-Revision-Date: 2014-06-05 13:43-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,9 @@ msgstr "Edit"
 
 msgid "labels.delete"
 msgstr "Delete"
+
+msgid "labels.search"
+msgstr "Search"
 
 msgid "labels.submit"
 msgstr "Submit"
@@ -139,6 +142,9 @@ msgstr "Add a Person"
 
 msgid "labels.edit_person"
 msgstr "Edit Person"
+
+msgid "labels.find_person"
+msgstr "Find a Person"
 
 msgid "labels.create_account"
 msgstr "Create Account"
@@ -331,8 +337,10 @@ msgid_plural "labels.members"
 msgstr[0] "Member"
 msgstr[1] "Members"
 
-msgid "labels.current_members"
-msgstr "Current Members"
+msgid "labels.current_member"
+msgid_plural "labels.current_members"
+msgstr[0] "Current Member"
+msgstr[1] "Current Members"
 
 msgid "labels.view_current_members"
 msgstr "View Current Members"

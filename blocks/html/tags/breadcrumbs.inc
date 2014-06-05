@@ -8,8 +8,8 @@
 use Blossom\Classes\View;
 ?>
 <div class="breadcrumbs">
-	<ul><li><a href="<?php echo BASE_URI; ?>">Home</a></li>
-		<li><a href="<?php echo BASE_URI; ?>/tags">Tags</a></li>
+	<ul><li><a href="<?php echo BASE_URI; ?>"><?php echo $this->_('labels.home'); ?></a></li>
+		<li><a href="<?php echo BASE_URI; ?>/tags"><?php echo $this->_(['labels.tag', 'labels.tags', 2]); ?></a></li>
 		<?php
 			if (isset($this->tag)) {
 				$name = View::escape($this->tag->getName());

@@ -9,10 +9,10 @@
 use Blossom\Classes\View;
 ?>
 <div class="breadcrumbs">
-	<ul><li><a href="<?php echo BASE_URI; ?>">Home</a></li>
+	<ul><li><a href="<?php echo BASE_URI; ?>"><?php echo $this->_('labels.home'); ?></a></li>
 		<?php
 			$topicsLabel = $this->_(['labels.topic', 'labels.topics', 1]);
-			
+
 			if (isset($this->topic)) {
 				$committee = $this->topic->getCommittee();
 

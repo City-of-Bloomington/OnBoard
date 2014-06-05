@@ -28,7 +28,9 @@ foreach ($this->person->getCommittees() as $committee) {
 	else {
 		$office = '';
 	}
-	$current = $this->person->isCurrentlyServing($committee) ? '(Current Member)' : '';
+	$current = $this->person->isCurrentlyServing($committee)
+		? '('.$this->_(['labels.current_member', 'labels.current_members', 1]).')'
+		: '';
 	$committees[] = "<li>$name-$appointers $office $current</li>";
 }
 

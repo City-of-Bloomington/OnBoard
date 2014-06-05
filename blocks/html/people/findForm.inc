@@ -11,7 +11,7 @@ foreach ($fields as $f) {
 	$$f = isset($_GET[$f]) ? View::escape($_GET[$f]) : '';
 }
 ?>
-<h2>Find a person</h2>
+<h2><?php echo $this->_('labels.find_person'); ?></h2>
 <form method="get" action="<?php echo BASE_URI; ?>/people">
 	<fieldset>
 		<table>
@@ -38,6 +38,6 @@ foreach ($fields as $f) {
 				}
 			}
 		?>
-		<button type="submit"><i class="fa fa-search"></i> Search</button>
+		<button type="submit"><i class="fa fa-search"></i> <?php echo $this->_('labels.search'); ?></button>
 	</fieldset>
 </form>

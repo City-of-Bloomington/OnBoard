@@ -31,7 +31,7 @@ $firstname = View::escape($this->person->getFirstname());
 							$topicTypes[] = $t;
 						}
 					?>
-				<th>All Votes</th>
+				<th><?php echo $this->_('labels.all_votes'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

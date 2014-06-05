@@ -23,5 +23,5 @@ if (Person::isAllowed('votes', 'edit')) {
 }
 ?>
 <div>
-	<h2><?php echo "$editButton Vote: $type $date $outcome"; ?></h2>
+	<h2><?php echo "$editButton {$this->_(['labels.vote', 'labels.votes', 1])}: $type $date $outcome"; ?></h2>
 </div>

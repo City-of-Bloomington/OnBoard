@@ -8,7 +8,7 @@ use Blossom\Classes\Template;
 
 require_once '../../configuration.inc';
 
-class RaceTableTest extends PHPUnit_Framework_TestCase
+class LanguageTest extends PHPUnit_Framework_TestCase
 {
 	public function testTranslationsAreSetup()
 	{

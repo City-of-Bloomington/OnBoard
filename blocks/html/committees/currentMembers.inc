@@ -11,7 +11,7 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
 <div>
-	<h2><?php echo $this->_('labels.current_members'); ?></h2>
+	<h2><?php echo $this->_(['labels.current_member', 'labels.current_members', 2]); ?></h2>
 	<table>
 		<thead>
 			<tr><th><?php echo $this->_('labels.name'); ?></th>

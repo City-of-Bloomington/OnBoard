@@ -71,11 +71,6 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 				</tr>
 
 			</table>
-
-			<button type="submit">
-				<i class="fa fa-save"></i>
-				<?php echo $this->translate('labels.save'); ?>
-			</button>
 			<?php
 				// Set the correct URL for the cancel button
 				if (isset($_REQUEST['return_url'])) {
@@ -92,12 +87,8 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 					? 'onclick="self.close();"'
 					: '';
 
-				echo "
-				<a class=\"btn\" href=\"$return_url\" $onclick>
-					<i class=\"fa fa-times\"></i>
-					{$this->translate('labels.cancel')}
-				</a>
-				";
+				$helper = $this->template->getHelper('saveAndCancelButtons');
+				echo $helper->saveAndCancelButtons($return_url, $onclick);
 			?>
 		</fieldset>
 	</form>

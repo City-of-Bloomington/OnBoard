@@ -17,13 +17,13 @@ class SaveAndCancelButtons
 		$this->template = $template;
 	}
 
-	public function saveAndCancelButtons($cancelURL)
+	public function saveAndCancelButtons($cancelURL, $onclick=null)
 	{
 		$buttons = "
-		<button type=\"submit\"><span class=\"fa fa-save\"></span>
+		<button type=\"submit\"><i class=\"fa fa-save\"></i>
 			{$this->template->_('labels.save')}
 		</button>
-		<a class=\"btn\" href=\"$cancelURL\"><span class=\"fa fa-undo\"></span>
+		<a class=\"btn\" href=\"$cancelURL\" $onclick><i class=\"fa fa-undo\"></i>
 			{$this->template->_('labels.cancel')}
 		</a>
 		";

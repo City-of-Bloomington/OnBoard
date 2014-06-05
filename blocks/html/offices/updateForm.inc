@@ -12,7 +12,7 @@ $title = $this->office->getId() ? $this->_('labels.edit_office') : $this->_('lab
 <h2><?php echo $title; ?></h2>
 <h3><?php echo View::escape($this->office->getPerson()->getFullname()); ?></h3>
 <form method="post" action="<?php echo BASE_URI; ?>/offices/update">
-	<fieldset><legend>Office Info</legend>
+	<fieldset><legend><?php echo $this->_('labels.info_office'); ?></legend>
 		<?php
 			if ($this->office->getId()) {
 				echo "
