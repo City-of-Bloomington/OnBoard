@@ -8,6 +8,7 @@
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
+use Michelf\MarkdownExtra;
 
 $helper = $this->template->getHelper('buttonLink');
 
@@ -31,7 +32,8 @@ if (Person::isAllowed('people', 'edit')) {
 }
 
 $fullname = View::escape($this->person->getFullname());
-$about    = View::escape($this->person->getAbout());
+$markdown = new MarkdownExtra();
+$about = $markdown->transform($this->person->getAbout());
 echo "
 <div>
 	<h2>$fullname $editButton</h2>
