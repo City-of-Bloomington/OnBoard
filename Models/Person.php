@@ -212,7 +212,8 @@ class Person extends ActiveRecord
 
 				default:
 					$method = $this->getAuthenticationMethod();
-					return $method::authenticate($this->getUsername(),$password);
+					$class = "Blossom\\Classes\\$method";
+					return $class::authenticate($this->getUsername(),$password);
 			}
 		}
 	}
