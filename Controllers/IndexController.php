@@ -14,9 +14,7 @@ class IndexController extends Controller
 {
 	public function index()
 	{
-		$table = new CommitteeTable();
-		$committees = $table->find();
-		$this->template->blocks[] = new Block('committees/breadcrumbs.inc');
-		$this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
+        header('Location: '.BASE_URL.'/committees');
+        exit();
 	}
 }

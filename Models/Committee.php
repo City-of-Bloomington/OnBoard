@@ -178,6 +178,14 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function hasVacancy()
+	{
+        return $this->getMaxCurrentTerms() > count($this->getCurrentTerms());
+	}
+
+	/**
 	 * Returns all the terms for this committee
 	 *
 	 * @return Zend\Db\ResultSet

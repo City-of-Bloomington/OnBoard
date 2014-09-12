@@ -26,7 +26,6 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 					BASE_URI.'/committees/update',
 					$this->_('labels.add_committee'),
 					'add'
-
 				);
 			}
 		?>

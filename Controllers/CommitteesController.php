@@ -16,43 +16,39 @@ use Blossom\Classes\Url;
 
 class CommitteesController extends Controller
 {
+    private function loadCommittee($id)
+    {
+        try {
+            return new Committee($id);
+        }
+        catch (\Exception $e) {
+            $_SESSION['errorMessages'][] = $e;
+            header('Location: '.BASE_URL.'/committees');
+            exit();
+        }
+    }
+
 	public function index()
 	{
 		$table = new CommitteeTable();
 		$committees = $table->find();
-		$this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+		if ($this->template->outputFormat == 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+        }
 		$this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
 	}
 
 	public function view()
 	{
-		try {
-			$committee = new Committee($_GET['committee_id']);
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-			header('Location: '.BASE_URL.'/committees');
-			exit();
-		}
-
+        $committee = $this->loadCommittee($_GET['committee_id']);
 		$this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$committee]);
 	}
 
 	public function update()
 	{
-		if (!empty($_REQUEST['committee_id'])) {
-			try {
-				$committee = new Committee($_REQUEST['committee_id']);
-			}
-			catch (\Exception $e) {
-				$_SESSION['errorMessages'][] = $e;
-				header('Location: '.BASE_URL.'/committees');
-				exit();
-			}
-		}
-		else {
-			$committee = new Committee();
-		}
+        $committee = !empty($_REQUEST['committee_id'])
+            ? $this->loadCommittee($_REQUEST['committee_id'])
+            : new Committee();
 
 		if (isset($_POST['name'])) {
 			try {

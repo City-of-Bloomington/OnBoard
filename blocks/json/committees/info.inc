@@ -5,6 +5,10 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
+use Michelf\MarkdownExtra;
+
+$markdown = new MarkdownExtra();
+$description = $markdown->transform($this->committee->getDescription());
 $c = [
 	'name'             => $this->committee->getName(),
 	'statutoryName'    => $this->committee->getStatutoryName(),
@@ -14,7 +18,8 @@ $c = [
 	'synopsis'         => $this->committee->getSynopsis(),
 	'contactInfo'      => $this->committee->getContactInfo(),
 	'meetingSchedule'  => $this->committee->getMeetingSchedule(),
-	'description'      => $this->committee->getDescription(),
+	'vacancy'          => $this->committee->hasVacancy(),
+    'description'      => $description,
 ];
 
 echo json_encode($c, JSON_PRETTY_PRINT);
