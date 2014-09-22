@@ -35,6 +35,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 			<tr><th></th>
 				<th><?php echo $this->_('labels.name'); ?></th>
 				<th><?php echo $this->_(['labels.seat','labels.seats',2]); ?></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -53,10 +54,12 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 					);
 				}
 				$url = BASE_URI.'/committees/view?committee_id='.$c->getId();
+				$vacancy = $c->hasVacancy() ? $this->_('labels.vacancy') : '';
 				echo "
 				<tr><td>$editButton</td>
 					<td><a href=\"$url\">$name</a></td>
 					<td>$seats</td>
+					<td>$vacancy</td>
 				</tr>
 				";
 			}
