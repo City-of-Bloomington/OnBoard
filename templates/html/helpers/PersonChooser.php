@@ -41,8 +41,8 @@ class PersonChooser
 	 */
 	public function personChooser($fieldname, Person $person=null)
 	{
-		$this->template->addToAsset('scripts',YUI.'/yui/yui-min.js');
-		$this->template->addToAsset('scripts',BASE_URI.'/js/people/chooser.js');
+		$this->template->addToAsset('scripts', JQUERY.'/jquery.min.js');
+		$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
 
 		$id   = '';
 		$name = '';

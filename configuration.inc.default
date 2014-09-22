@@ -111,7 +111,7 @@ $DIRECTORY_CONFIG = array(
 //define('CAS_SERVER','cas.somewhere.org');
 //define('CAS_URI','cas');
 
-define('YUI', BASE_URI.'/js/yui3/build');
+define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
 
 define('DATE_FORMAT', 'Y-m-d');
 

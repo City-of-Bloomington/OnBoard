@@ -56,8 +56,8 @@ use Blossom\Classes\Url;
 					$url = "$_REQUEST[return_url];person_id={$person->getId()}";
 				}
 				elseif (isset($_REQUEST['callback'])) {
-					$this->template->addToAsset('scripts',YUI.'/yui/yui-min.js');
-					$this->template->addToAsset('scripts',BASE_URI.'/js/people/chooser.js');
+					$this->template->addToAsset('scripts', JQUERY.'/jquery.min.js');
+					$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
 
 					$callback = preg_replace('/[^a-zA-Z_\.]/', '', $_REQUEST['callback']);
 					$url = "javascript:self.opener.$callback('{$person->getId()}');";
