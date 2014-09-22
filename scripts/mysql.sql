@@ -35,7 +35,6 @@ create table committees (
 	statuteUrl varchar(128),
 	yearFormed year(4),
 	website varchar(128),
-	synopsis varchar(255),
     description     text,
 	contactInfo     text,
 	meetingSchedule text

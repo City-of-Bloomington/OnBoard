@@ -8,7 +8,7 @@ use Blossom\Classes\View;
 
 $fields = [
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
-	'description', 'synopsis', 'contactInfo', 'meetingSchedule'
+	'description', 'contactInfo', 'meetingSchedule'
 ];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
@@ -58,26 +58,20 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
 						value="<?php echo $website; ?>" />
 				</td>
 			</tr>
-
 		</table>
+    </fieldset>
 
-		<div>
-			<div><label for="synopsis"><?php echo $this->_('labels.synopsis'); ?></label></div>
-			<textarea name="synopsis" id="synopsis" rows="3" cols="60"><?php echo $synopsis; ?></textarea>
-		</div>
-		<div>
-			<div><label for="contactInfo"><?php echo $this->_('labels.contactInfo'); ?></label></div>
-			<textarea name="contactInfo" id="contactInfo" rows="3" cols="60"><?php echo $contactInfo; ?></textarea>
-		</div>
-		<div>
-			<div><label for="meetingSchedule"><?php echo $this->_('labels.meetingSchedule'); ?></label></div>
-			<textarea name="meetingSchedule" id="meetingSchedule" rows="3" cols="60"><?php echo $meetingSchedule; ?></textarea>
-		</div>
-	</fieldset>
+    <fieldset><legend><?php echo $this->_('labels.description'); ?></legend>
+        <textarea name="description" id="description" rows="20" cols="80" class="markdown"><?php echo $description; ?></textarea>
+    </fieldset>
 
-	<fieldset><legend><?php echo $this->_('labels.description'); ?></legend>
-		<textarea name="description" id="description" rows="20" cols="80" class="markdown"><?php echo $description; ?></textarea>
-	</fieldset>
+    <fieldset><legend><?php echo $this->_('labels.meetingSchedule'); ?></legend>
+        <textarea name="meetingSchedule" id="meetingSchedule" rows="6" cols="80"><?php echo $meetingSchedule; ?></textarea>
+    </fieldset>
+
+    <fieldset><legend><?php echo $this->_('labels.contactInfo'); ?></legend>
+        <textarea name="contactInfo" id="contactInfo" rows="6" cols="80"><?php echo $contactInfo; ?></textarea>
+    </fieldset>
 
 	<fieldset><legend><?php echo $this->_('labels.submit'); ?></legend>
 		<?php

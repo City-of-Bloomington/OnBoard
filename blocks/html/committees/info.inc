@@ -11,7 +11,7 @@ use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $fields = [
-	'name', 'synopsis', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website'
+	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website'
 ];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
@@ -46,8 +46,6 @@ echo "
 	<h2><a href=\"{$this->committee->getUri()}\">$name</a>
 		$editButton
 	</h2>
-
-	<p>$synopsis</p>
 
 	<table>
 		<tr><th>{$this->_('labels.year_formed')}</th>

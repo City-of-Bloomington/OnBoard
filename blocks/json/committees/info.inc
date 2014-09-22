@@ -18,7 +18,6 @@ $c = [
 	'statuteReference' => $this->committee->getStatuteReference(),
 	'statuteUrl'       => $this->committee->getStatuteUrl(),
 	'website'          => $this->committee->getWebsite(),
-	'synopsis'         => $this->committee->getSynopsis(),
 	'contactInfo'      => $contactInfo,
 	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),
