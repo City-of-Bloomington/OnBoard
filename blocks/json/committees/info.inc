@@ -8,7 +8,10 @@
 use Michelf\MarkdownExtra;
 
 $markdown = new MarkdownExtra();
-$description = $markdown->transform($this->committee->getDescription());
+$description     = $markdown->transform($this->committee->getDescription());
+$contactInfo     = $markdown->transform($this->committee->getContactInfo());
+$meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
+
 $c = [
 	'name'             => $this->committee->getName(),
 	'statutoryName'    => $this->committee->getStatutoryName(),
@@ -16,8 +19,8 @@ $c = [
 	'statuteUrl'       => $this->committee->getStatuteUrl(),
 	'website'          => $this->committee->getWebsite(),
 	'synopsis'         => $this->committee->getSynopsis(),
-	'contactInfo'      => $this->committee->getContactInfo(),
-	'meetingSchedule'  => $this->committee->getMeetingSchedule(),
+	'contactInfo'      => $contactInfo,
+	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),
     'description'      => $description,
 ];

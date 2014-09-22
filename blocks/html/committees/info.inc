@@ -11,8 +11,7 @@ use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $fields = [
-	'name', 'synopsis', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed',
-	'description', 'contactInfo', 'meetingSchedule', 'website'
+	'name', 'synopsis', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website'
 ];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
@@ -27,7 +26,9 @@ if ($website) {
 }
 
 $markdown = new MarkdownExtra();
-$description = $markdown->transform($description);
+$description     = $markdown->transform($this->committee->getDescription());
+$contactInfo     = $markdown->transform($this->committee->getContactInfo());
+$meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $editButton = '';
 if (Person::isAllowed('committees', 'edit')) {
@@ -63,15 +64,12 @@ echo "
 		</tr>
 	</table>
 
-	<table>
-		<tr><th>{$this->_('labels.contactInfo')}</th>
-			<td>$contactInfo</td>
-		</tr>
-		<tr><th>{$this->_('labels.meetingSchedule')}</th>
-			<td>$meetingSchedule</td>
-		</tr>
-	</table>
+    $description
 
-	$description
+    <h3>{$this->_('labels.meetingSchedule')}</h3>
+    $meetingSchedule
+
+    <h3>{$this->_('labels.contactInfo')}</h3>
+    $contactInfo
 </div>
 ";

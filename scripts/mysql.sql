@@ -35,10 +35,10 @@ create table committees (
 	statuteUrl varchar(128),
 	yearFormed year(4),
 	website varchar(128),
-	description text,
 	synopsis varchar(255),
-	contactInfo varchar(255),
-	meetingSchedule varchar(255)
+    description     text,
+	contactInfo     text,
+	meetingSchedule text
 );
 
 create table appointers (

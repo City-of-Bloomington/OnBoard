@@ -43,6 +43,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 			foreach ($this->committees as $c) {
 				$name = View::escape($c->getName());
 				$seats = $c->getMaxCurrentTerms();
+				if (!$seats) { $seats = ''; }
 
 				$editButton = '';
 				if ($userCanEdit) {

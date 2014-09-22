@@ -38,8 +38,8 @@ update seats s set s.startDate=(select min(term_start) from terms where terms.se
 alter table committees change dateFormed yearFormed year(4);
 alter table committees add statuteUrl      varchar(128) after statuteReference;
 alter table committees add synopsis        varchar(255);
-alter table committees add contactInfo     varchar(255);
-alter table committees add meetingSchedule varchar(255);
+alter table committees add contactInfo     text;
+alter table committees add meetingSchedule text;
 
 alter table seats modify appointer_id int unsigned;
 alter table seats modify maxCurrentTerms tinyint unsigned;

@@ -99,7 +99,7 @@ header nav a { font-weight:bold; color:black; }
 .pageNavigation li { display:inline; margin-right:1em; }
 .pageNavigation .current { border:2px solid green; }
 
-.tabBar { list-style-type:none; margin:0; border-bottom:4px solid #036; }
+.tabBar { list-style-type:none; margin:8px; border-bottom:4px solid #036; }
 .tabBar li { display:inline; margin:.5em; padding:4px 8px 0 8px; border-radius:4px; }
 .tabBar li.current { background-color:#036; }
 .tabBar li.current a { color:white; }
