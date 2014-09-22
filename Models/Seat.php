@@ -103,7 +103,7 @@ class Seat extends ActiveRecord
 	public function setAppointer($o)       { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d)       { parent::setDateData('startDate', $d); }
 	public function setEndDate  ($d)       { parent::setDateData('endDate',   $d); }
-	public function setRequirements($s)    { parent::setData('requirements', $s); }
+	public function setRequirements($s)    { parent::set('requirements', $s); }
 
 	public function handleUpdate($post)
 	{
