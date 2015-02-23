@@ -1,0 +1,29 @@
+<?php
+/**
+ * @copyright 2015 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ */
+function civiclegislation_install() { }
+
+function civiclegislation_uninstall()
+{
+    variable_del('civiclegislation_url');
+    variable_del('civiclegislation_repositoryId');
+    variable_del('civiclegislation_username');
+    variable_del('civiclegislation_password');
+}
+
+function civiclegislation_field_schema($field)
+{
+    return [
+        'columns'=>[
+            'civiclegislation_folder' => [
+                'type'     => 'varchar',
+                'length'   => '128',
+                'not null' => false
+            ]
+        ],
+        'indexes'=>['civiclegislation_folder'=>['civiclegislation_folder']]
+    ];
+}

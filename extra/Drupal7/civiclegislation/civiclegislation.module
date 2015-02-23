@@ -1,0 +1,117 @@
+<?php
+/**
+ * @copyright 2015 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ */
+function civiclegislation_libraries_info()
+{
+    return ['chemistry' => [
+        'name'             => 'COB Fork of Chemistry PHP CMIS library',
+        'vendor url'       => 'http://github.com/City-of-Bloomington/chemistry-phpclient',
+        'download url'     => 'http://github.com/City-of-Bloomington/chemistry-phpclient',
+        'files' => [
+            'php' => [
+                'browser/cmis_service.php'
+            ]
+        ],
+        'version callback' => 'chemistry_version_callback',
+    ]];
+}
+function chemistry_version_callback() { return true; }
+
+function civiclegislation_admin_form()
+{
+    return system_settings_form([
+        'civiclegislation_url' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('civiclegislation_url'),
+            '#title'         => 'CMIS endpoint',
+            '#description'   => 'The server where your boards and commission documents are stored.  This should be the full url to CMIS 1.1 browser binding.',
+            '#required'      => true
+        ],
+        'civiclegislation_repositoryId' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('civiclegislation_repositoryId'),
+            '#title'         => 'CMIS Repository ID',
+            '#description'   => 'The ID of your CMIS repository.',
+            '#required'      => true
+        ],
+        'civiclegislation_username' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('civiclegislation_username'),
+            '#title'         => 'CMIS Username',
+            '#description'   => 'A username that should have read-only access to your CMIS server',
+            '#required'      => true
+        ],
+        'civiclegislation_password' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('civiclegislation_password'),
+            '#title'         => 'CMIS Password',
+            '#description'   => 'The password for the read-only account on your CMIS server',
+            '#required'      => true
+        ]
+    ]);
+}
+
+/**
+ * Verifies the connection to the CMIS server
+ *
+ * @implements hook_admin_validate()
+ */
+function civiclegislation_admin_form_validate($form, &$form_state)
+{
+    if (($library = libraries_load('chemistry')) && !empty($library['loaded'])) {
+        if (   !empty($form_state['values']['civiclegislation_url'])
+            && !empty($form_state['values']['civiclegislation_username'])
+            && !empty($form_state['values']['civiclegislation_password'])
+            && !empty($form_state['values']['civiclegislation_repositoryId'])) {
+            try {
+                $service = new CMISService(
+                    $form_state['values']['civiclegislation_url'],
+                    $form_state['values']['civiclegislation_username'],
+                    $form_state['values']['civiclegislation_password'],
+                    $form_state['values']['civiclegislation_repositoryId']
+                );
+            }
+            catch (Exception $e) {
+                form_set_error('civiclegislation_url', 'Cannot connect to CMIS server.  Make sure the URL is valid.');
+            }
+        }
+    }
+    else {
+        form_set_error('civiclegislation_library', 'Failed to load Chemistry library');
+    }
+}
+
+function civiclegislation_menu()
+{
+    return [
+        'admin/config/services/civiclegislation' => [
+            'title'           => 'Civic Legislation settings',
+            'description'     => 'Settings for the boards and committees module',
+            'page callback'   => 'drupal_get_form',
+            'page arguments'  => ['civiclegislation_admin_form'],
+            'access arguments'=> ['administer site configuration'],
+            'type'            => MENU_NORMAL_ITEM
+        ]
+    ];
+}
+
+function civiclegislation_field_info()
+{
+    return [
+        'civiclegislation_folder' => [
+            'label'            => 'CMIS Folder ID',
+            'description'      => 'Stores the CMIS object ID of the folder to look in for board related documents',
+            'default_widget'   => 'text_textfield',
+            'default_formatter'=> 'text_default'
+        ]
+    ];
+}
+
+function civiclegislation_field_widget_info_alter(&$info)
+{
+    $info['text_textfield']['field types'][] = 'civiclegislation_folder';
+}
+
