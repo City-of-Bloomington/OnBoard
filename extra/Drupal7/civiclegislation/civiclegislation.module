@@ -1,9 +1,12 @@
 <?php
 /**
  * @copyright 2015 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+require_once __DIR__.'/civiclegislation.admin.inc';
+require_once __DIR__.'/civiclegislation.fields.inc';
+
 function civiclegislation_libraries_info()
 {
     return ['chemistry' => [
@@ -20,180 +23,61 @@ function civiclegislation_libraries_info()
 }
 function chemistry_version_callback() { return true; }
 
-function civiclegislation_admin_form()
-{
-    return system_settings_form([
-        'civiclegislation_url' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_url'),
-            '#title'         => 'CMIS endpoint',
-            '#description'   => 'The server where your boards and commission documents are stored.  This should be the full url to CMIS 1.1 browser binding.',
-            '#required'      => true
-        ],
-        'civiclegislation_repositoryId' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_repositoryId'),
-            '#title'         => 'CMIS Repository ID',
-            '#description'   => 'The ID of your CMIS repository.',
-            '#required'      => true
-        ],
-        'civiclegislation_username' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_username'),
-            '#title'         => 'CMIS Username',
-            '#description'   => 'A username that should have read-only access to your CMIS server',
-            '#required'      => true
-        ],
-        'civiclegislation_password' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_password'),
-            '#title'         => 'CMIS Password',
-            '#description'   => 'The password for the read-only account on your CMIS server',
-            '#required'      => true
-        ]
-    ]);
-}
-
-/**
- * Verifies the connection to the CMIS server
- *
- * @implements hook_admin_validate()
- */
-function civiclegislation_admin_form_validate($form, &$form_state)
-{
-    if (($library = libraries_load('chemistry')) && !empty($library['loaded'])) {
-        if (   !empty($form_state['values']['civiclegislation_url'])
-            && !empty($form_state['values']['civiclegislation_username'])
-            && !empty($form_state['values']['civiclegislation_password'])
-            && !empty($form_state['values']['civiclegislation_repositoryId'])) {
-            try {
-                $service = new CMISService(
-                    $form_state['values']['civiclegislation_url'],
-                    $form_state['values']['civiclegislation_username'],
-                    $form_state['values']['civiclegislation_password'],
-                    $form_state['values']['civiclegislation_repositoryId']
-                );
-            }
-            catch (Exception $e) {
-                form_set_error('civiclegislation_url', 'Cannot connect to CMIS server.  Make sure the URL is valid.');
-            }
-        }
-    }
-    else {
-        form_set_error('civiclegislation_library', 'Failed to load Chemistry library');
-    }
-}
 
 function civiclegislation_menu()
 {
     return [
         'admin/config/services/civiclegislation' => [
-            'title'           => 'Civic Legislation settings',
-            'description'     => 'Settings for the boards and committees module',
-            'page callback'   => 'drupal_get_form',
-            'page arguments'  => ['civiclegislation_admin_form'],
-            'access arguments'=> ['administer site configuration'],
-            'type'            => MENU_NORMAL_ITEM
+            'title'            => 'Civic Legislation settings',
+            'description'      => 'Settings for the boards and committees module',
+            'page callback'    => 'drupal_get_form',
+            'page arguments'   => ['civiclegislation_admin_form'],
+            'access arguments' => ['administer site configuration'],
+            'type'             => MENU_NORMAL_ITEM
+        ],
+        'node/%node/meetings' => [
+            'title'            => 'Meeting Materials',
+            'description'      => 'Minutes and Agendas for the board or commission',
+            'page callback'    => 'civiclegislation_meetings',
+            'page arguments'   => [1],
+            'access arguments' => ['access content']
         ]
     ];
 }
 
-function civiclegislation_field_info()
+function civiclegislation_meetings($node)
 {
-    return [
-        'civiclegislation_cmis' => [
-            'label'            => 'CMIS Integration for boards and commission',
-            'description'      => 'Stores configuration integrating with a CMIS server storing documents related to a board or commission.',
-            'default_widget'   => 'civiclegislation_fieldset',
-            'default_formatter'=> 'civiclegislation_default'
-        ]
-    ];
-}
-
-function civiclegislation_field_widget_info()
-{
-    return [
-        'civiclegislation_fieldset' => [
-            'label' => 'CMIS Integration',
-            'field types' => ['civiclegislation_cmis']
-        ]
-    ];
-}
-
-function civiclegislation_field_is_empty($item, $field)
-{
-    return empty($item['civiclegislation_fieldset']['folder']);
-}
-
-function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$instance, &$langcode, &$items, &$delta, &$element)
-{
-    if ($instance['widget']['type'] == 'civiclegislation_fieldset') {
-        $element['civiclegislation_fieldset'] = [
-            '#type' => 'fieldset',
-            '#title' => $element['#title'],
-            '#tree' => true,
-            'folder' => [
-                '#type'     => 'textfield',
-                '#title'    => 'CMIS Folder',
-                '#required' => $element['#required'],
-                '#default_value' => isset($items[$delta]['folder']) ? $items[$delta]['folder'] : ''
-            ],
-            'doctypes_meetings' => [
-                '#type'     => 'textfield',
-                '#title'    => 'Meeting materials document types',
-                '#default_value' => isset($items[$delta]['doctypes_meetings']) ? $items[$delta]['doctypes_meetings'] : ''
-            ],
-            'doctypes_legislation' => [
-                '#type'     => 'textfield',
-                '#title'    => 'Legislation document types',
-                '#default_value' => isset($items[$delta]['doctypes_legislation']) ? $items[$delta]['doctypes_legislation'] : ''
-            ],
-            'doctypes_reports' => [
-                '#type'     => 'textfield',
-                '#title'    => 'Reports document types',
-                '#default_value' => isset($items[$delta]['doctypes_reports']) ? $items[$delta]['doctypes_reports'] : ''
-            ],
-        ];
+    $html = '';
+    if (!empty($node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
+        $cmis = _civiclegislation_get_service();
+        $sql = "select * from cob:meetingfile where in_tree('f2c92a70-a9f2-4519-b779-bd7d05fcf84a')";
+        $result = $cmis->query($sql);
+        $html = print_r($result, true);
     }
-    return $element;
-}
 
-function civiclegislation_field_presave(&$entity_type, &$entity, &$field, &$instance, &$lang, &$items)
-{
-    $fields = ['folder', 'doctypes_meetings', 'doctypes_legislation', 'doctypes_reports'];
-    foreach ($items as $i => $item) {
-        foreach ($fields as $f) {
-            if (isset($item['civiclegislation_fieldset'][$f])) {
-                $items[$i][$f] = $item['civiclegislation_fieldset'][$f];
-            }
-        }
-    }
-}
-
-function civiclegislation_field_formatter_info()
-{
     return [
-        'civiclegislation_default' => [
-            'label' => t('Default'),
-            'field types' => ['civiclegislation_fieldset']
-        ]
+        '#markup' => "<h3>Meetings</h3>$html"
     ];
 }
 
-function civiclegislation_field_formatter_view($entity_type, $entity, $field, $instance, $lang, &$items, &$display)
+/**
+ * Instantantiates the CMISService using variables from the admin form
+ *
+ * @return CMISService
+ */
+function _civiclegislation_get_service()
 {
-    $element = [];
+    static $cmis;
 
-    switch ($display['type']) {
-        case 'civiclegislation_default':
-            foreach ($items as $i => $item) {
-                $html = "<h3>$item[folder]</h3>";
-                if (!empty($item['doctypes_meetings'])) { $html.="<div>$item[doctypes_meetings]</div>"; }
-                if (!empty($item['doctypes_legislation'])) { $html.="<div>$item[doctypes_legislation]</div>"; }
-                if (!empty($item['doctypes_reports'])) { $html.= "<div>$item[doctypes_reports]</div>"; }
-                $element[$i] = ['#markup' => $html];
-            }
-        break;
+    if (!$cmis) {
+        libraries_load('chemistry');
+
+        $cmis = new CMISService(
+            variable_get('civiclegislation_url'),
+            variable_get('civiclegislation_username'),
+            variable_get('civiclegislation_password'),
+            variable_get('civiclegislation_repositoryId')
+        );
     }
-    return $element;
+    return $cmis;
 }
