@@ -45,14 +45,74 @@ function civiclegislation_menu()
     ];
 }
 
-function civiclegislation_meetings($node)
+function civiclegislation_meetings($node, $year=null)
 {
+    global $base_url;
+    $year = $year ? $year : date('Y');
+
     $html = '';
-    if (!empty($node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
+    if (!empty(   $node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
+        $folder = $node->field_cmis_documents['und'][0]['folder'];
+
+
+        $types  = explode(',', $node->field_cmis_documents['und'][0]['doctypes_meetings']);
+        $t      = [];
+        foreach ($types as $type) {
+            $t[] = '\''.trim($type).'\'';
+        }
+        $t = implode(',',$t);
+        $sql = "select * from cob:meetingfile where in_tree('$folder') and cmis:objectTypeId in ($t)";
+
         $cmis = _civiclegislation_get_service();
-        $sql = "select * from cob:meetingfile where in_tree('f2c92a70-a9f2-4519-b779-bd7d05fcf84a')";
         $result = $cmis->query($sql);
-        $html = print_r($result, true);
+        #$html.= print_r($result, true);
+
+        $dates = [];
+        foreach ($result->results as $row) {
+            $d = &$row->succinctProperties;
+            // CMIS returns timestamps in milliseconds.  However,
+            // PHP only reads timestamps in seconds.
+            $date = date('Y-m-d', $d->{'cob:meetingDate'}/1000);
+            $dates[$date][$d->{'cmis:objectTypeId'}][] = [
+                'id'       => $d->{'cmis:versionSeriesId'},
+                'filename' => $d->{'cmis:name'},
+                'mimeType' => $d->{'cmis:contentStreamMimeType'}
+            ];
+        }
+        $html.= "
+        <table>
+            <thead>
+                <tr><th>Date</th>
+        ";
+                foreach ($types as $type) {
+                    $html.= "<th>$type</th>";
+                }
+        $html.= "
+                </tr>
+            </thead>
+            <tbody>
+        ";
+            foreach ($dates as $date=>$docs) {
+                $html.= "<tr><td>$date</td>";
+                foreach ($types as $type) {
+                    $html.= "<td>";
+                    if (!empty($docs[$type])) {
+                        $html.= "<ul>";
+                        foreach ($docs[$type] as $d) {
+                            $url = "{$base_url}/{$node->nid}/meetings/download/$d[id]";
+                            $html.= "<li><a href=\"$url\" class=\"$d[mimeType]\">$d[filename]</a></li>";
+                        }
+                        $html.= "</ul>";
+                    }
+                    $html.= "</td>";
+                }
+                $html.= "</tr>";
+            }
+        $html.= "
+            </tbody>
+        </table>
+        ";
+
     }
 
     return [
@@ -78,6 +138,7 @@ function _civiclegislation_get_service()
             variable_get('civiclegislation_password'),
             variable_get('civiclegislation_repositoryId')
         );
+        $cmis->succinct = true;
     }
     return $cmis;
 }
