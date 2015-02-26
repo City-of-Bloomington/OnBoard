@@ -329,6 +329,7 @@ class Apache_Solr_Service
 	 */
 	protected function _sendRawGet($url, $timeout = FALSE)
 	{
+        echo "$url\n";
 		$httpTransport = $this->getHttpTransport();
 
 		$httpResponse = $httpTransport->performGetRequest($url, $timeout);

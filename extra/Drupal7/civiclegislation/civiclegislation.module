@@ -47,85 +47,82 @@ function civiclegislation_menu()
 
 function civiclegislation_meetings($node, $year=null)
 {
-    global $base_url;
     $year = $year ? $year : date('Y');
+    $namespace_short = 'D:cob:';
+    $namespace_long  = 'http://bloomington.in.gov/alfresco/models';
 
-    $html = '';
     if (!empty(   $node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
         $folder = $node->field_cmis_documents['und'][0]['folder'];
 
-
         $types  = explode(',', $node->field_cmis_documents['und'][0]['doctypes_meetings']);
-        $t      = [];
+        $types_cmis = [];
+        $types_solr = [];
         foreach ($types as $type) {
-            $t[] = '\''.trim($type).'\'';
+            // Quote the types for CMIS queries
+            $types_cmis[] = '\''.trim($type).'\'';
+            // Expand the COB namespace for Solr queries
+            $types_solr[] = str_replace($namespace_short, "\{$namespace_long\}", $type);
         }
-        $t = implode(',',$t);
-        $sql = "select * from cob:meetingfile where in_tree('$folder') and cmis:objectTypeId in ($t)";
+        $types_cmis = implode(','   , $types_cmis);
+        $types_solr = implode(' OR ', $types_solr);
 
-        $cmis = _civiclegislation_get_service();
+        /*
+        $solr = _civiclegislation_get_solr();
+        $solrResponse = $solr->search('*.*',1,0,[
+            'fq' => [
+                "ANCESTOR:workspace://SpacesStore/$folder",
+                "TYPE:$types_solr"
+            ],
+            'facet'             => true,
+            'facet.field'       => "date@sd@\{$namespace_long\}meetingDate",
+            'facet.range'       => "date@sd@\{$namespace_long\}meetingDate",
+            'facet.range.gap'   => "+1YEAR",
+            'facet.range.start' => "1980-01-01T00:00:00Z",
+            'facet.range.end'   => 'NOW',
+            'facet.mincount'    => 1
+        ]);
+        print_r($solrResponse);
+        exit();
+        */
+
+        $start = strtotime("$year-01-01") * 1000;
+        $end   = strtotime("$year-12-31") * 1000;
+
+        $sql =  "select * from cob:meetingfile
+                 where in_tree('$folder')
+                   and cmis:objectTypeId in ($types_cmis)
+                   and cob:meetingDate >= $start and cob:meetingDate <= $end";
+
+        $cmis = _civiclegislation_get_cmis();
         $result = $cmis->query($sql);
-        #$html.= print_r($result, true);
 
-        $dates = [];
-        foreach ($result->results as $row) {
-            $d = &$row->succinctProperties;
-            // CMIS returns timestamps in milliseconds.  However,
-            // PHP only reads timestamps in seconds.
-            $date = date('Y-m-d', $d->{'cob:meetingDate'}/1000);
-            $dates[$date][$d->{'cmis:objectTypeId'}][] = [
-                'id'       => $d->{'cmis:versionSeriesId'},
-                'filename' => $d->{'cmis:name'},
-                'mimeType' => $d->{'cmis:contentStreamMimeType'}
-            ];
-        }
-        $html.= "
-        <table>
-            <thead>
-                <tr><th>Date</th>
-        ";
-                foreach ($types as $type) {
-                    $html.= "<th>$type</th>";
-                }
-        $html.= "
-                </tr>
-            </thead>
-            <tbody>
-        ";
-            foreach ($dates as $date=>$docs) {
-                $html.= "<tr><td>$date</td>";
-                foreach ($types as $type) {
-                    $html.= "<td>";
-                    if (!empty($docs[$type])) {
-                        $html.= "<ul>";
-                        foreach ($docs[$type] as $d) {
-                            $url = "{$base_url}/{$node->nid}/meetings/download/$d[id]";
-                            $html.= "<li><a href=\"$url\" class=\"$d[mimeType]\">$d[filename]</a></li>";
-                        }
-                        $html.= "</ul>";
-                    }
-                    $html.= "</td>";
-                }
-                $html.= "</tr>";
-            }
-        $html.= "
-            </tbody>
-        </table>
-        ";
-
+        return theme('civiclegislation_documents', [
+            'documents'=>$result->results, 'types'=>$types, 'year'=>$year, 'node'=>$node
+        ]);
     }
+}
 
+/**
+ * @implements hook_theme()
+ * @see https://www.drupal.org/node/933976
+ */
+function civiclegislation_theme()
+{
     return [
-        '#markup' => "<h3>Meetings</h3>$html"
+        'civiclegislation_documents'=> [
+            'template' => 'civiclegislation_documents',
+            'variables' => ['documents'=>null, 'types'=>null, 'year'=>null]
+        ]
     ];
 }
+
 
 /**
  * Instantantiates the CMISService using variables from the admin form
  *
  * @return CMISService
  */
-function _civiclegislation_get_service()
+function _civiclegislation_get_cmis()
 {
     static $cmis;
 
@@ -141,4 +138,24 @@ function _civiclegislation_get_service()
         $cmis->succinct = true;
     }
     return $cmis;
+}
+
+/**
+ * Instantantiates the Solr Service using variables from the admin form
+ *
+ * @return Apache_Solr_Service
+ */
+function _civiclegislation_get_solr()
+{
+    require_once __DIR__.'/solr-php-client/Apache/Solr/Service.php';
+    static $solr;
+
+    if (!$solr) {
+        $solr = new Apache_Solr_Service(
+            variable_get('civiclegislation_solr_hostname'),
+            variable_get('civiclegislation_solr_port'),
+            variable_get('civiclegislation_solr_path')
+        );
+    }
+    return $solr;
 }
