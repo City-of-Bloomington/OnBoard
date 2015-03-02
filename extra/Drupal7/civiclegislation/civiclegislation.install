@@ -12,6 +12,7 @@ function civiclegislation_uninstall()
     variable_del('civiclegislation_repositoryId');
     variable_del('civiclegislation_username');
     variable_del('civiclegislation_password');
+    variable_del('civiclegislation_solr_url');
 }
 
 function civiclegislation_field_schema($field)

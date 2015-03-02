@@ -35,25 +35,11 @@ function civiclegislation_admin_form()
             '#description'   => 'The password for the read-only account on your CMIS server',
             '#required'      => true
         ],
-        'civiclegislation_solr_hostname' => [
+        'civiclegislation_solr_url' => [
             '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_solr_hostname'),
+            '#default_value' => variable_get('civiclegislation_solr_url'),
             '#title'         => 'Solr Server',
-            '#description'   => "The hostname for CMIS server's Solr index.  This is usually the same host as the CMIS endpoint.",
-            '#required'      => true
-        ],
-        'civiclegislation_solr_port' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_solr_port'),
-            '#title'         => 'Solr Port',
-            '#description'   => "The port number for the CMIS server's Solr index.  This is usually 8080, since Solr is a Tomcat application.  Remember to open this port on the server's firewall.",
-            '#required'      => true
-        ],
-        'civiclegislation_solr_path' => [
-            '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_solr_path'),
-            '#title'         => 'Solr Port',
-            '#description'   => "The path to the Solr core for the CMIS index.",
+            '#description'   => "The URL for CMIS server's Solr index.  This is usually the same server as the CMIS endpoint.",
             '#required'      => true
         ]
     ]);
@@ -87,17 +73,5 @@ function civiclegislation_admin_form_validate($form, &$form_state)
     }
     else {
         form_set_error('civiclegislation_library', 'Failed to load Chemistry library');
-    }
-
-    require_once __DIR__.'/solr-php-client/Apache/Solr/Service.php';
-    try {
-        $solr = new Apache_Solr_Service(
-            $form_state['values']['civiclegislation_solr_hostname'],
-            $form_state['values']['civiclegislation_solr_port'],
-            $form_state['values']['civiclegislation_solr_path']
-        );
-    }
-    catch (Exception $e) {
-        form_set_error('civiclegislation_solr_hostname', 'Cannot connect to Solr server');
     }
 }

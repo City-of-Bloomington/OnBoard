@@ -3,6 +3,7 @@
  * Displays one year of documents from a CMIS query
  *
  * $documents The raw results from the CMIS query
+ * $years     The available years of documents that we have in Alfresco
  * $types     The list of CMIS types of documents that are being listed
  * $year      The year for the documents being listed
  * $node      The node object for the board or commission page
@@ -27,7 +28,15 @@ foreach ($documents as $row) {
 }
 echo "
 <h3>$year Meetings</h3>
-<table>
+<nav id=\"years\">
+";
+    foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
+        $y = substr($y, 0, 4);
+        echo l($y, "node/{$node->nid}/meetings/$y", ['class'=>['current']]);
+    }
+echo "
+</nav>
+<table id=\"documents\">
     <thead>
         <tr><th>Date</th>
 ";

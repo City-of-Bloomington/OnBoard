@@ -48,8 +48,9 @@ function civiclegislation_menu()
 function civiclegislation_meetings($node, $year=null)
 {
     $year = $year ? $year : date('Y');
-    $namespace_short = 'D:cob:';
-    $namespace_long  = 'http://bloomington.in.gov/alfresco/models';
+    $namespace_short  = 'D:cob:';
+    $namespace_long   = '{http://bloomington.in.gov/alfresco/model}';
+    $meetingDateField = "date@sd@{$namespace_long}meetingDate";
 
     if (!empty(   $node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
         $folder = $node->field_cmis_documents['und'][0]['folder'];
@@ -61,44 +62,24 @@ function civiclegislation_meetings($node, $year=null)
             // Quote the types for CMIS queries
             $types_cmis[] = '\''.trim($type).'\'';
             // Expand the COB namespace for Solr queries
-            $types_solr[] = str_replace($namespace_short, "\{$namespace_long\}", $type);
+            $types_solr[] = str_replace($namespace_short, $namespace_long, $type);
         }
         $types_cmis = implode(','   , $types_cmis);
-        $types_solr = implode(' OR ', $types_solr);
 
-        /*
-        $solr = _civiclegislation_get_solr();
-        $solrResponse = $solr->search('*.*',1,0,[
-            'fq' => [
-                "ANCESTOR:workspace://SpacesStore/$folder",
-                "TYPE:$types_solr"
-            ],
-            'facet'             => true,
-            'facet.field'       => "date@sd@\{$namespace_long\}meetingDate",
-            'facet.range'       => "date@sd@\{$namespace_long\}meetingDate",
-            'facet.range.gap'   => "+1YEAR",
-            'facet.range.start' => "1980-01-01T00:00:00Z",
-            'facet.range.end'   => 'NOW',
-            'facet.mincount'    => 1
-        ]);
-        print_r($solrResponse);
-        exit();
-        */
+        $cmis = _civiclegislation_cmis_documents($folder, $types_cmis, $year);
+        $solr = _civiclegislation_solr_years    ($folder, $types_solr, $meetingDateField);
 
-        $start = strtotime("$year-01-01") * 1000;
-        $end   = strtotime("$year-12-31") * 1000;
-
-        $sql =  "select * from cob:meetingfile
-                 where in_tree('$folder')
-                   and cmis:objectTypeId in ($types_cmis)
-                   and cob:meetingDate >= $start and cob:meetingDate <= $end";
-
-        $cmis = _civiclegislation_get_cmis();
-        $result = $cmis->query($sql);
-
-        return theme('civiclegislation_documents', [
-            'documents'=>$result->results, 'types'=>$types, 'year'=>$year, 'node'=>$node
-        ]);
+        $solr = json_decode($solr);
+        if ($solr) {
+            return theme('civiclegislation_documents', [
+                'types'=>$types, 'year'=>$year, 'node'=>$node,
+                'documents' => $cmis->results,
+                'years'     => $solr->facet_counts->facet_ranges->$meetingDateField->counts
+            ]);
+        }
+        else {
+            return json_last_error_msg();
+        }
     }
 }
 
@@ -111,7 +92,7 @@ function civiclegislation_theme()
     return [
         'civiclegislation_documents'=> [
             'template' => 'civiclegislation_documents',
-            'variables' => ['documents'=>null, 'types'=>null, 'year'=>null]
+            'variables' => ['documents'=>null, 'types'=>null, 'year'=>null, 'years'=>null]
         ]
     ];
 }
@@ -141,21 +122,83 @@ function _civiclegislation_get_cmis()
 }
 
 /**
- * Instantantiates the Solr Service using variables from the admin form
- *
- * @return Apache_Solr_Service
+ * @param string $url
+ * @return string
  */
-function _civiclegislation_get_solr()
+function _civiclegislation_get($url)
 {
-    require_once __DIR__.'/solr-php-client/Apache/Solr/Service.php';
-    static $solr;
-
-    if (!$solr) {
-        $solr = new Apache_Solr_Service(
-            variable_get('civiclegislation_solr_hostname'),
-            variable_get('civiclegislation_solr_port'),
-            variable_get('civiclegislation_solr_path')
-        );
+    $session = curl_init($url);
+    curl_setopt($session, CURLOPT_HEADER,         false);
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+    if (substr($url, 0, 5) == 'https') {
+        curl_setopt($session, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($session, CURLOPT_SSLVERSION, 3);
     }
-    return $solr;
+    return curl_exec($session);
+}
+
+
+/**
+ * Adds slashes in front of special characters used in Solr queries
+ *
+ * @param string $string
+ * @return string
+ */
+function _civiclegislation_solr_escape($string)
+{
+    return str_replace(
+        [chr(92),          '+',  '-',  '&',  '|',  '!',  '(',  ')',  '{',  '}',  '[',  ']',  '^',  '"',  '~',  '*',  '?',  ':',  '/'],
+        [chr(92).chr(92), '\+', '\-', '\&', '\|', '\!', '\(', '\)', '\{', '\}', '\[', '\]', '\^', '\"', '\~', '\*', '\?', '\:', '\/'],
+        $string
+    );
+}
+
+/**
+ * @param string $folder The CMIS:ObjectId of a folder
+ * @param array $types The array of fully namespaced names for the types
+ * @param string $dateField Fully namespaced name for the date field
+ * @return string The raw http response from Solr
+ */
+function _civiclegislation_solr_years($folder, $types, $dateField)
+{
+    foreach ($types as $i=>$t) {
+        $types[$i] = 'TYPE:'._civiclegislation_solr_escape($t);
+    }
+
+    $params = [
+        'q'       => '*:*',
+        'start'   => 0,
+        'rows'    => 0,
+        'wt'      => 'json',
+        'json.nl' => 'map',
+        'indent'  => 'true',
+        'facet'   => 'true',
+        'facet.field'       => $dateField,
+        'facet.range'       => $dateField,
+        'facet.range.gap'   => '+1YEAR',
+        'facet.range.start' => '1980-01-01T00:00:00Z',
+        'facet.range.end'   => 'NOW',
+        'facet.mincount'    => 1
+    ];
+    $p = http_build_query($params, null, '&');
+    $p.='&fq='.urlencode('ANCESTOR:'._civiclegislation_solr_escape("workspace://SpacesStore/$folder"));
+    $p.='&fq='.urlencode(implode(' OR ', $types));
+    $url = variable_get('civiclegislation_solr_url')."/select?$p";
+    return _civiclegislation_get($url);
+}
+
+function _civiclegislation_cmis_documents($folder, $types, $year)
+{
+    $start = strtotime("$year-01-01") * 1000;
+    $end   = strtotime("$year-12-31") * 1000;
+
+    $sql =  "select * from cob:meetingfile
+                where in_tree('$folder')
+                and cmis:objectTypeId in ($types)
+                and cob:meetingDate >= $start and cob:meetingDate <= $end";
+
+    $cmis = _civiclegislation_get_cmis();
+    return $cmis->query($sql);
 }

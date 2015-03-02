@@ -38,7 +38,6 @@ ANCESTOR:workspace\:\/\/SpacesStore\/fd491d2b\-43b1\-4463\-bc9b\-9e61c617ecc3  A
 ANCESTOR:workspace\:\/\/SpacesStore\/f2c92a70\-a9f2\-4519\-b779\-bd7d05fcf84a  Document Library
 
 facet.field=date@sd@{http://bloomington.in.gov/alfresco/model}meetingDate
-
 facet.range=date@sd@{http://bloomington.in.gov/alfresco/model}meetingDate
 facet.range.gap=%2B1YEAR
 facet.range.start=1980-01-01T00:00:00Z
@@ -50,3 +49,9 @@ cmisselctor=query&succinct=true&statement=select * from cmis:document where cmis
 
 cmisselector=query&q=select+*+from+cmis%3Adocument+where+cmis%3AobjectTypeId+in+('D%3Acob%3Aagenda'%2C+'D%3Acob%3Aminutes')+and+in_tree('f2c92a70-a9f2-4519-b779-bd7d05fcf84a')&maxItems=10&succinct=true
 select * from cmis:document where cmis:objectTypeId in ('D:cob:agenda','D:cob:minutes')
+
+ANCESTOR
+
+ANCESTOR%3Aworkspace\%3A\%2F\%2FSpacesStore\%2Ff2c92a70\-a9f2\-4519\-b779\-bd7d05fcf84a
+
+ANCESTOR%3Aworkspace\%3A\%2F\%2FSpacesStore\%2Ff2c92a70\-a9f2\-4519\-b779\-bd7d05fcf84a
