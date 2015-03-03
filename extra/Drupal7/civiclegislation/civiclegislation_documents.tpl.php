@@ -7,6 +7,7 @@
  * $types     The list of CMIS types of documents that are being listed
  * $year      The year for the documents being listed
  * $node      The node object for the board or commission page
+ * $namespace The short namespace that is prepended to the types
  *
  * @copyright 2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
@@ -43,6 +44,8 @@ echo "
                 <tr><th>Date</th>
 ";
         foreach ($types as $type) {
+            // Strip the namespace off the front of the type
+            $type = ucfirst(substr($type, strlen($namespace)));
             echo "<th>$type</th>";
         }
 echo "
@@ -57,8 +60,8 @@ echo "
             if (!empty($docs[$type])) {
                 echo "<ul>";
                 foreach ($docs[$type] as $d) {
-                    $url = "{$base_url}/{$node->nid}/download/$d[id]";
-                    echo "<li><a href=\"$url\" class=\"$d[mimeType]\">$d[filename]</a></li>";
+                    $a = l($d['filename'], "node/{$node->nid}/download/$d[id]", ['attributes'=>['class'=>[$d['mimeType']]]]);
+                    echo "<li>$a</li>";
                 }
                 echo "</ul>";
             }

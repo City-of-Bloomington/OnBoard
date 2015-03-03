@@ -88,13 +88,29 @@ function civiclegislation_document_index($node, $documentType, $year=null)
             return theme('civiclegislation_documents', [
                 'types'=>$types, 'year'=>$year, 'node'=>$node,
                 'documents' => $cmis->results,
-                'years'     => $solr->facet_counts->facet_ranges->$dateField->counts
+                'years'     => $solr->facet_counts->facet_ranges->$dateField->counts,
+                'namespace' => $namespace_short
             ]);
         }
         else {
             return json_last_error_msg();
         }
     }
+}
+
+function civiclegislation_document_download($node, $objectId)
+{
+    $cmis = _civiclegislation_get_cmis();
+    $o = $cmis->getObject($objectId);
+
+    $mime = $o->succinctProperties->{'cmis:contentStreamMimeType'};
+    $file = $o->succinctProperties->{'cmis:contentStreamFileName'};
+    $size = $o->succinctProperties->{'cmis:contentStreamLength'};
+
+    header("Content-Type: $mime");
+    header("Content-Disposition: attachment; filename=\"$file\"");
+    header("Content-Length: $size");
+    echo $cmis->getContentStream($objectId);
 }
 
 /**
@@ -106,7 +122,9 @@ function civiclegislation_theme()
     return [
         'civiclegislation_documents'=> [
             'template' => 'civiclegislation_documents',
-            'variables' => ['documents'=>null, 'types'=>null, 'year'=>null, 'years'=>null]
+            'variables' => [
+                'documents'=>null, 'types'=>null, 'year'=>null, 'years'=>null, 'namespace'=>null
+            ]
         ]
     ];
 }
