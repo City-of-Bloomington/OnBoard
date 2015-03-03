@@ -114,6 +114,17 @@ function civiclegislation_document_download($node, $objectId)
 }
 
 /**
+ * @param int $committee_id
+ * @return stdClass The json object
+ */
+function civiclegislation_committee_info($committee_id)
+{
+    $url = variable_get('civiclegislation_url').'/committees/view?format=json;committee_id='.$committee_id;
+    $r   = _civiclegislation_get($url);
+    return json_decode($r);
+}
+
+/**
  * @implements hook_theme()
  * @see https://www.drupal.org/node/933976
  */
@@ -143,10 +154,10 @@ function _civiclegislation_get_cmis()
         libraries_load('chemistry');
 
         $cmis = new CMISService(
-            variable_get('civiclegislation_url'),
-            variable_get('civiclegislation_username'),
-            variable_get('civiclegislation_password'),
-            variable_get('civiclegislation_repositoryId')
+            variable_get('civiclegislation_cmis_url'),
+            variable_get('civiclegislation_cmis_username'),
+            variable_get('civiclegislation_cmis_password'),
+            variable_get('civiclegislation_cmis_repositoryId')
         );
         $cmis->succinct = true;
     }

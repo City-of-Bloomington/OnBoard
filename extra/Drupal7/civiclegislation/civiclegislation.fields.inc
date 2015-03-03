@@ -12,6 +12,12 @@ function civiclegislation_field_info()
             'description'      => 'Stores configuration integrating with a CMIS server storing documents related to a board or commission.',
             'default_widget'   => 'civiclegislation_fieldset',
             'default_formatter'=> 'civiclegislation_default'
+        ],
+        'civiclegislation_committee' => [
+            'label'            => 'Committee ID',
+            'description'      => 'Committee ID from Civic Legislation web application',
+            'default_widget'   => 'number',
+            'default_formatter'=> 'number_integer'
         ]
     ];
 }
@@ -28,7 +34,9 @@ function civiclegislation_field_widget_info()
 
 function civiclegislation_field_is_empty($item, $field)
 {
-    return empty($item['civiclegislation_fieldset']['folder']);
+    print_r($field);
+    print_r($item);
+    #return empty($item['civiclegislation_fieldset']['folder']);
 }
 
 function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$instance, &$langcode, &$items, &$delta, &$element)
@@ -64,13 +72,20 @@ function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$ins
     return $element;
 }
 
+function civiclegislation_field_widget_info_alter(&$info)
+{
+    $info['number']['field types'][] = 'civiclegislation_committee';
+}
+
 function civiclegislation_field_presave(&$entity_type, &$entity, &$field, &$instance, &$lang, &$items)
 {
-    $fields = ['folder', 'doctypes_meetings', 'doctypes_legislation', 'doctypes_reports'];
-    foreach ($items as $i => $item) {
-        foreach ($fields as $f) {
-            if (isset($item['civiclegislation_fieldset'][$f])) {
-                $items[$i][$f] = $item['civiclegislation_fieldset'][$f];
+    if ($instance['widget']['type'] == 'civiclegislation_fieldset') {
+        $fields = ['folder', 'doctypes_meetings', 'doctypes_legislation', 'doctypes_reports'];
+        foreach ($items as $i => $item) {
+            foreach ($fields as $f) {
+                if (isset($item['civiclegislation_fieldset'][$f])) {
+                    $items[$i][$f] = $item['civiclegislation_fieldset'][$f];
+                }
             }
         }
     }

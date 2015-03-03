@@ -9,9 +9,10 @@ function civiclegislation_install() { }
 function civiclegislation_uninstall()
 {
     variable_del('civiclegislation_url');
-    variable_del('civiclegislation_repositoryId');
-    variable_del('civiclegislation_username');
-    variable_del('civiclegislation_password');
+    variable_del('civiclegislation_cmis_url');
+    variable_del('civiclegislation_cmis_repositoryId');
+    variable_del('civiclegislation_cmis_username');
+    variable_del('civiclegislation_cmis_password');
     variable_del('civiclegislation_solr_url');
 }
 
@@ -37,6 +38,11 @@ function civiclegislation_field_schema($field)
             'doctypes_reports' => [
                 'type'     => 'varchar',
                 'length'   => '255',
+                'not null' => false
+            ],
+            'committee_id' => [
+                'type'     => 'int',
+                'unsigned' => true,
                 'not null' => false
             ]
         ]
