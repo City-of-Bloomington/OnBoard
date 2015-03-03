@@ -35,27 +35,41 @@ function civiclegislation_menu()
             'access arguments' => ['administer site configuration'],
             'type'             => MENU_NORMAL_ITEM
         ],
-        'node/%node/meetings' => [
-            'title'            => 'Meeting Materials',
-            'description'      => 'Minutes and Agendas for the board or commission',
-            'page callback'    => 'civiclegislation_meetings',
-            'page arguments'   => [1],
+        'node/%node/%' => [
+            'title'            => 'Document Index',
+            'description'      => 'Browsable index of documents from Alfresco.',
+            'page callback'    => 'civiclegislation_document_index',
+            'page arguments'   => [1, 2],
+            'access arguments' => ['access content']
+        ],
+        'node/%node/download/%' => [
+            'title'            => 'Document Download',
+            'description'      => 'Download a document stored in Alfresco.',
+            'page callback'    => 'civiclegislation_document_download',
+            'page arguments'   => [1, 3],
             'access arguments' => ['access content']
         ]
     ];
 }
 
-function civiclegislation_meetings($node, $year=null)
+function civiclegislation_document_index($node, $documentType, $year=null)
 {
-    $year = $year ? $year : date('Y');
-    $namespace_short  = 'D:cob:';
-    $namespace_long   = '{http://bloomington.in.gov/alfresco/model}';
-    $meetingDateField = "date@sd@{$namespace_long}meetingDate";
+    $knownTypes = [
+        'meetings'    => 'meeting',
+        'records'     => 'record',
+        'legislation' => 'legislation'
+    ];
 
-    if (!empty(   $node->field_cmis_documents['und'][0]['doctypes_meetings'])) {
+
+    if (!empty(   $node->field_cmis_documents['und'][0]["doctypes_$documentType"])) {
         $folder = $node->field_cmis_documents['und'][0]['folder'];
 
-        $types  = explode(',', $node->field_cmis_documents['und'][0]['doctypes_meetings']);
+        $namespace_short = 'D:cob:';
+        $namespace_long  = '{http://bloomington.in.gov/alfresco/model}';
+        $dateField       = "date@sd@{$namespace_long}{$knownTypes[$documentType]}Date";
+        $year = $year ? $year : date('Y');
+
+        $types  = explode(',', $node->field_cmis_documents['und'][0]["doctypes_$documentType"]);
         $types_cmis = [];
         $types_solr = [];
         foreach ($types as $type) {
@@ -67,14 +81,14 @@ function civiclegislation_meetings($node, $year=null)
         $types_cmis = implode(','   , $types_cmis);
 
         $cmis = _civiclegislation_cmis_documents($folder, $types_cmis, $year);
-        $solr = _civiclegislation_solr_years    ($folder, $types_solr, $meetingDateField);
+        $solr = _civiclegislation_solr_years    ($folder, $types_solr, $dateField);
 
         $solr = json_decode($solr);
         if ($solr) {
             return theme('civiclegislation_documents', [
                 'types'=>$types, 'year'=>$year, 'node'=>$node,
                 'documents' => $cmis->results,
-                'years'     => $solr->facet_counts->facet_ranges->$meetingDateField->counts
+                'years'     => $solr->facet_counts->facet_ranges->$dateField->counts
             ]);
         }
         else {

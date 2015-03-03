@@ -33,7 +33,7 @@ echo "
 ";
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
-        echo l($y, "node/{$node->nid}/meetings/$y", ['class'=>['current']]);
+        echo l($y, "node/{$node->nid}/meetings/$y", ['attributes'=>['class'=>['current']]]);
     }
 echo "
     </nav>
@@ -57,7 +57,7 @@ echo "
             if (!empty($docs[$type])) {
                 echo "<ul>";
                 foreach ($docs[$type] as $d) {
-                    $url = "{$base_url}/{$node->nid}/meetings/download/$d[id]";
+                    $url = "{$base_url}/{$node->nid}/download/$d[id]";
                     echo "<li><a href=\"$url\" class=\"$d[mimeType]\">$d[filename]</a></li>";
                 }
                 echo "</ul>";
