@@ -3,3 +3,6 @@ data/sessions/*
 tests/configuration.inc
 build
 dist
+node_modules
+gulpfile.js
+.ftppass

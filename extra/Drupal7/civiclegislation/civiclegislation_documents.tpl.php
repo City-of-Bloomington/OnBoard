@@ -27,26 +27,28 @@ foreach ($documents as $row) {
     ];
 }
 echo "
-<h3>$year Meetings</h3>
-<nav id=\"years\">
+<div class=\"civiclegislation-container\">
+    <h3>$year Meetings</h3>
+    <nav id=\"years\">
 ";
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
         echo l($y, "node/{$node->nid}/meetings/$y", ['class'=>['current']]);
     }
 echo "
-</nav>
-<table id=\"documents\">
-    <thead>
-        <tr><th>Date</th>
+    </nav>
+    <div class=\"civiclegislation-listing\">
+        <table id=\"documents\">
+            <thead>
+                <tr><th>Date</th>
 ";
         foreach ($types as $type) {
             echo "<th>$type</th>";
         }
 echo "
-        </tr>
-    </thead>
-    <tbody>
+                </tr>
+            </thead>
+            <tbody>
 ";
     foreach ($dates as $date=>$docs) {
         echo "<tr><td>$date</td>";
@@ -65,6 +67,8 @@ echo "
         echo "</tr>";
     }
 echo "
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
+</div>
 ";
