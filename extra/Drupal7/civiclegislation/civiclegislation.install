@@ -39,11 +39,6 @@ function civiclegislation_field_schema($field)
                 'type'     => 'varchar',
                 'length'   => '255',
                 'not null' => false
-            ],
-            'committee_id' => [
-                'type'     => 'int',
-                'unsigned' => true,
-                'not null' => false
             ]
         ]
     ];
