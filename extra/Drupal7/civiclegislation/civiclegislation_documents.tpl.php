@@ -28,7 +28,7 @@ foreach ($documents as $row) {
     ];
 }
 echo "
-<div class=\"civiclegislation-container\">
+<div class=\"cl-container\">
     <h3>$year Meetings</h3>
     <nav id=\"years\">
 ";
@@ -38,40 +38,49 @@ echo "
     }
 echo "
     </nav>
-    <div class=\"civiclegislation-listing\">
-        <table id=\"documents\">
-            <thead>
-                <tr><th>Date</th>
+    <div class=\"cl-listing\">
+        <dl id=\"documents\">
 ";
-        foreach ($types as $type) {
+/*        foreach ($types as $type) {
             // Strip the namespace off the front of the type
             $type = ucfirst(substr($type, strlen($namespace)));
             echo "<th>$type</th>";
         }
-echo "
-                </tr>
-            </thead>
-            <tbody>
-";
+*/
     foreach ($dates as $date=>$docs) {
-        echo "<tr><td>$date</td>";
+        $dateObj = new DateTime($date);
+        echo "
+            <dt><time datetime=\"{$dateObj->format('Y-m-d')}\">
+                <span class=\"cl-month\">{$dateObj->format('F')}</span>
+                <span class=\"cl-dayOfMonth\">{$dateObj->format('j')}</span>
+            </dt>
+        ";
         foreach ($types as $type) {
-            echo "<td>";
+            $typeName = ucfirst(substr($type, strlen($namespace)));
+            echo "
+                <dd>
+                    <dl>
+                        <dt>$typeName</dt>
+            ";
             if (!empty($docs[$type])) {
-                echo "<ul>";
                 foreach ($docs[$type] as $d) {
                     $a = l($d['filename'], "node/{$node->nid}/download/$d[id]", ['attributes'=>['class'=>[$d['mimeType']]]]);
-                    echo "<li>$a</li>";
+                    echo "
+                        <dd>$a</dd>
+                    ";
                 }
-                echo "</ul>";
+            } else {
+                echo '<dd>None</dd>';
             }
-            echo "</td>";
+            echo "
+                    </dl>
+                </dd>
+            ";
         }
-        echo "</tr>";
     }
 echo "
-            </tbody>
-        </table>
+        </dl>
     </div>
 </div>
 ";
+
