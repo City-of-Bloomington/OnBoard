@@ -34,7 +34,8 @@ echo "
 ";
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
-        echo l($y, "node/{$node->nid}/meetings/$y", ['attributes'=>['class'=>['current']]]);
+        $attr = $y == $year ? ['attributes'=>['class'=>['current']]] : [];
+        echo l($y, "node/{$node->nid}/meetings/$y", $attr);
     }
 echo "
     </nav>
