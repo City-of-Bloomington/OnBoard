@@ -64,9 +64,7 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
     <fieldset><legend><?= $this->_('labels.contactInfo'); ?></legend>
         <table>
             <tr><td><label  for="address"><?php echo $this->_('labels.address'); ?></label></td>
-                <td><input name="address" id="address" size="40"
-                        value="<?php echo $address; ?>" />
-                </td>
+                <td><textarea name="address" id="address" rows="3" cols="40"><?= $address; ?></textarea></td>
             </tr>
             <tr><td><label  for="city"><?php echo $this->_('labels.city'); ?></label></td>
                 <td><input name="city" id="city" size="40"
