@@ -13,9 +13,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-global $base_url;
 $dates = [];
-
 foreach ($documents as $row) {
     $d = &$row->succinctProperties;
     // CMIS returns timestamps in milliseconds.  However,
@@ -42,12 +40,6 @@ echo "
     <div class=\"cl-listing\">
         <dl id=\"documents\">
 ";
-/*        foreach ($types as $type) {
-            // Strip the namespace off the front of the type
-            $type = ucfirst(substr($type, strlen($namespace)));
-            echo "<th>$type</th>";
-        }
-*/
     foreach ($dates as $date=>$docs) {
         $dateObj = new DateTime($date);
         echo "
@@ -57,25 +49,24 @@ echo "
             </dt>
         ";
         foreach ($types as $type) {
+            // Strip the namespace off the front of the type
             $typeName = ucfirst(substr($type, strlen($namespace)));
+
             echo "
-                <dd>
-                    <dl>
-                        <dt>$typeName</dt>
+            <dd><dl><dt>$typeName</dt>
             ";
             if (!empty($docs[$type])) {
                 foreach ($docs[$type] as $d) {
                     $a = l($d['filename'], "node/{$node->nid}/download/$d[id]", ['attributes'=>['class'=>[$d['mimeType']]]]);
-                    echo "
-                        <dd>$a</dd>
-                    ";
+                    echo "<dd>$a</dd>";
                 }
-            } else {
+            }
+            else {
                 echo '<dd>None</dd>';
             }
             echo "
-                    </dl>
-                </dd>
+                </dl>
+            </dd>
             ";
         }
     }
