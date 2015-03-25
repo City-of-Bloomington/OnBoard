@@ -37,6 +37,10 @@ create table committees (
 	website varchar(128),
 	email   varchar(128),
 	phone   varchar(128),
+	address varchar(128),
+	city    varchar(128),
+	state   varchar(32),
+	zip     varchar(32),
     description     text,
 	contactInfo     text,
 	meetingSchedule text

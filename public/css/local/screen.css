@@ -9,6 +9,7 @@ h4 { font-size:100%;   font-weight:bold; }
 nav a { margin-right:1em; }
 a { text-decoration:none; color:#036; }
 p { margin-bottom:.5em; }
+address { white-space:pre-line; }
 
 table { margin:0 .5em .5em .5em; border:1px solid black; }
 th { background-color:#ddd; color:#666; font-weight:bold; font-size:90%; padding:0.25em; }

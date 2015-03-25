@@ -61,6 +61,10 @@ class Committee extends ActiveRecord
 	public function getWebsite()           { return parent::get('website');          }
 	public function getEmail()             { return parent::get('email');            }
 	public function getPhone()             { return parent::get('phone');            }
+    public function getAddress()           { return parent::get('address');          }
+    public function getCity()              { return parent::get('city');             }
+    public function getState()             { return parent::get('state');            }
+    public function getZip()               { return parent::get('zip');              }
 	public function getDescription()       { return parent::get('description');      }
 	public function getYearFormed()        { return parent::get('yearFormed');       }
 	public function getContactInfo()       { return parent::get('contactInfo');      }
@@ -73,6 +77,10 @@ class Committee extends ActiveRecord
 	public function setWebsite         ($s) { parent::set('website',          $s); }
     public function setEmail           ($s) { parent::set('email',            $s); }
     public function setPhone           ($s) { parent::set('phone',            $s); }
+    public function setAddress         ($s) { parent::set('address',          $s); }
+    public function setCity            ($s) { parent::set('city',             $s); }
+    public function setState           ($s) { parent::set('state',            $s); }
+    public function setZip             ($s) { parent::set('zip',              $s); }
 	public function setDescription     ($s) { parent::set('description',      $s); }
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
 	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
@@ -85,7 +93,7 @@ class Committee extends ActiveRecord
 	{
 		$fields = [
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
-			'email', 'phone',
+			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule'
 		];
 		foreach ($fields as $f) {

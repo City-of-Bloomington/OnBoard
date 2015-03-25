@@ -12,7 +12,7 @@ use Michelf\MarkdownExtra;
 
 $fields = [
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
-	'email', 'phone'
+	'email', 'phone', 'address', 'city', 'state', 'zip'
 ];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
@@ -67,6 +67,11 @@ echo "
         <tr><th>{$this->_('labels.phone')}</th>
             <td>$phone</td>
         </tr>
+        <tr><th>{$this->_('labels.address')}</th>
+            <td><address>$address
+                $city $state $zip
+                </address>
+            </td>
 	</table>
 
     $description

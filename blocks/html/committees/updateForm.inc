@@ -8,7 +8,7 @@ use Blossom\Classes\View;
 
 $fields = [
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
-	'email', 'phone',
+	'email', 'phone', 'address', 'city', 'state', 'zip',
 	'description', 'contactInfo', 'meetingSchedule'
 ];
 foreach ($fields as $f) {
@@ -59,13 +59,35 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
 						value="<?php echo $website; ?>" />
 				</td>
 			</tr>
+        </table>
+    </fieldset>
+    <fieldset><legend><?= $this->_('labels.contactInfo'); ?></legend>
+        <table>
+            <tr><td><label  for="address"><?php echo $this->_('labels.address'); ?></label></td>
+                <td><input name="address" id="address" size="40"
+                        value="<?php echo $address; ?>" />
+                </td>
+            </tr>
+            <tr><td><label  for="city"><?php echo $this->_('labels.city'); ?></label></td>
+                <td><input name="city" id="city" size="40"
+                        value="<?php echo $city; ?>" />
+                </td>
+            </tr>
+            <tr><td><label  for="state"><?php echo $this->_('labels.state'); ?></label></td>
+                <td><input name="state" id="state" size="2"
+                        value="<?php echo $state; ?>" />
+                    <label><?= $this->_('labels.zipcode'); ?>
+                        <input name="zip" size="7" value="<?= $zip; ?>" />
+                    </label>
+                </td>
+            </tr>
             <tr><td><label  for="email"><?php echo $this->_(['labels.email', 'labels.emails', 1]); ?></label></td>
                 <td><input name="email" id="email" size="40"
                         value="<?php echo $email; ?>" />
                 </td>
             </tr>
             <tr><td><label  for="phone"><?php echo $this->_('labels.phone'); ?></label></td>
-                <td><input name="phone" id="website" size="40"
+                <td><input name="phone" id="phone" size="40"
                         value="<?php echo $phone; ?>" />
                 </td>
             </tr>
