@@ -59,6 +59,8 @@ class Committee extends ActiveRecord
 	public function getStatuteReference()  { return parent::get('statuteReference'); }
 	public function getStatuteUrl()        { return parent::get('statuteUrl');       }
 	public function getWebsite()           { return parent::get('website');          }
+	public function getEmail()             { return parent::get('email');            }
+	public function getPhone()             { return parent::get('phone');            }
 	public function getDescription()       { return parent::get('description');      }
 	public function getYearFormed()        { return parent::get('yearFormed');       }
 	public function getContactInfo()       { return parent::get('contactInfo');      }
@@ -69,6 +71,8 @@ class Committee extends ActiveRecord
 	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
 	public function setStatuteUrl      ($s) { parent::set('statuteUrl',       $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
+    public function setEmail           ($s) { parent::set('email',            $s); }
+    public function setPhone           ($s) { parent::set('phone',            $s); }
 	public function setDescription     ($s) { parent::set('description',      $s); }
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
 	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
@@ -81,6 +85,7 @@ class Committee extends ActiveRecord
 	{
 		$fields = [
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
+			'email', 'phone',
 			'description', 'contactInfo', 'meetingSchedule'
 		];
 		foreach ($fields as $f) {

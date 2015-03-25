@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -8,6 +8,7 @@ use Blossom\Classes\View;
 
 $fields = [
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
+	'email', 'phone',
 	'description', 'contactInfo', 'meetingSchedule'
 ];
 foreach ($fields as $f) {
@@ -58,6 +59,16 @@ $title = $this->committee->getId() ? $this->_('labels.edit_committee') : $this->
 						value="<?php echo $website; ?>" />
 				</td>
 			</tr>
+            <tr><td><label  for="email"><?php echo $this->_(['labels.email', 'labels.emails', 1]); ?></label></td>
+                <td><input name="email" id="email" size="40"
+                        value="<?php echo $email; ?>" />
+                </td>
+            </tr>
+            <tr><td><label  for="phone"><?php echo $this->_('labels.phone'); ?></label></td>
+                <td><input name="phone" id="website" size="40"
+                        value="<?php echo $phone; ?>" />
+                </td>
+            </tr>
 		</table>
     </fieldset>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
@@ -18,6 +18,8 @@ $c = [
 	'statuteReference' => $this->committee->getStatuteReference(),
 	'statuteUrl'       => $this->committee->getStatuteUrl(),
 	'website'          => $this->committee->getWebsite(),
+	'email'            => $this->committee->getEmail(),
+	'phone'            => $this->committee->getPhone(),
 	'contactInfo'      => $contactInfo,
 	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),

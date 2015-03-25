@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
@@ -11,7 +11,8 @@ use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $fields = [
-	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website'
+	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
+	'email', 'phone'
 ];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
@@ -60,6 +61,12 @@ echo "
 		<tr><th>{$this->_('labels.website')}</th>
 			<td>$website</td>
 		</tr>
+		<tr><th>{$this->_(['labels.email', 'labels.emails', 1])}</th>
+            <td>$email</td>
+        </tr>
+        <tr><th>{$this->_('labels.phone')}</th>
+            <td>$phone</td>
+        </tr>
 	</table>
 
     $description
