@@ -5,7 +5,7 @@
        name="cob:meetingmodel">
     <description>Files pertaining to meetings for boards or commissions</description>
     <author>Cliff Ingham</author>
-    <version>0.1</version>
+    <version>0.2</version>
 
     <imports>
         <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
