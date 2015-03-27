@@ -237,11 +237,11 @@ function _civiclegislation_cmis_documents($folder, $types, $year)
     $start = strtotime("$year-01-01") * 1000;
     $end   = strtotime("$year-12-31") * 1000;
 
-    $sql =  "select * from cob:meetingfile
-                where in_tree('$folder')
-                and cmis:objectTypeId in ($types)
-                and cob:meetingDate >= $start and cob:meetingDate <= $end
-                order by cob:meetingDate desc";
+    $sql =  "select * from cob:meetingfile"
+           ." where in_tree('$folder')"
+           ." and cmis:objectTypeId in ($types)"
+           ." and cob:meetingDate >= $start and cob:meetingDate <= $end"
+           ." order by cob:meetingDate desc";
 
     $cmis = _civiclegislation_get_cmis();
     return $cmis->query($sql);

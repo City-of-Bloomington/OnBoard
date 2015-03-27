@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.alfresco.org/model/dictionary/1.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="modelSchema.xsd"
+       name="cob:meetingmodel">
+    <description>Files pertaining to meetings for boards or commissions</description>
+    <author>Cliff Ingham</author>
+    <version>0.1</version>
+
+    <imports>
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+        <import uri="http://www.alfresco.org/model/content/1.0"    prefix="cm" />
+    </imports>
+
+    <namespaces>
+        <namespace uri="http://bloomington.in.gov/alfresco/model" prefix="cob" />
+    </namespaces>
+
+    <types>
+        <type name="cob:meetingfile">
+            <title>Meeting File</title>
+            <parent>cm:content</parent>
+            <properties>
+                <property name="cob:meetingDate">
+                    <title>Meeting Date</title>
+                    <type>d:date</type>
+                    <mandatory enforced="true">true</mandatory>
+                    <index enabled="true">
+                        <atomic>true</atomic>
+                        <stored>false</stored>
+                        <tokenised>both</tokenised>
+                        <facetable>true</facetable>
+                    </index>
+                </property>
+            </properties>
+        </type>
+
+        <type name="cob:agenda">
+            <title>Agenda</title>
+            <parent>cob:meetingfile</parent>
+        </type>
+
+        <type name="cob:minutes">
+            <title>Minutes</title>
+            <parent>cob:meetingfile</parent>
+        </type>
+
+        <type name="cob:packet">
+            <title>Packet</title>
+            <parent>cob:meetingfile</parent>
+        </type>
+    </types>
+</model>
