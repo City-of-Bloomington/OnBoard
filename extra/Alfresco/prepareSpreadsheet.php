@@ -4,6 +4,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+$directory = __DIR__.'/files/Agendas';
+
 $FILES = fopen('./files.txt','w');
 
 $xml = <<<EOT
@@ -34,6 +36,6 @@ function prep(DirectoryIterator $dir)
         }
     }
 }
-prep(new DirectoryIterator(__DIR__.'/files/Agendas'));
+prep(new DirectoryIterator($directory));
 
 fclose($FILES);

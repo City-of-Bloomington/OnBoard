@@ -4,6 +4,9 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+$type = 'cob:agenda';
+$time = 'T17:00:00.000+05:00';
+
 foreach (file('./files.csv') as $line) {
     list($filename, $date) = explode('|', $line);
     $filename = trim($filename);
@@ -14,8 +17,8 @@ foreach (file('./files.csv') as $line) {
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="type">cob:minutes</entry>
-    <entry key="cob:meetingDate">{$date}T17:30:00.000+05:00</entry>
+    <entry key="type">$type</entry>
+    <entry key="cob:meetingDate">{$date}{$time}</entry>
 </properties>
 EOT;
         file_put_contents("$filename.metadata.properties.xml", $xml);
