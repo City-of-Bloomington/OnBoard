@@ -18,10 +18,15 @@ function civiclegislation_libraries_info()
                 'browser/cmis_service.php'
             ]
         ],
-        'version callback' => 'chemistry_version_callback',
+        'version callback' => 'civiclegislation_chemistry_version_check',
     ]];
 }
-function chemistry_version_callback() { return true; }
+function civiclegislation_chemistry_version_check()
+{
+    // Right now, we do not care about versions.
+    // Any version of the Chemistry fork from COB will do
+    return true;
+}
 
 
 function civiclegislation_menu()
@@ -36,7 +41,8 @@ function civiclegislation_menu()
             'type'             => MENU_NORMAL_ITEM
         ],
         'node/%node/%' => [
-            'title'            => 'Document Index',
+            'title callback'   => 'civiclegislation_document_index_title',
+            'title arguments'  => [1],
             'description'      => 'Browsable index of documents from Alfresco.',
             'page callback'    => 'civiclegislation_document_index',
             'page arguments'   => [1, 2],
@@ -50,6 +56,11 @@ function civiclegislation_menu()
             'access arguments' => ['access content']
         ]
     ];
+}
+
+function civiclegislation_document_index_title($node)
+{
+    return $node->title;
 }
 
 function civiclegislation_document_index($node, $documentType, $year=null)

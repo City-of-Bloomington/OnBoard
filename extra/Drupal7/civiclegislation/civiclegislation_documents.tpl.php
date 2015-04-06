@@ -50,10 +50,12 @@ echo "
         ";
         foreach ($types as $type) {
             // Strip the namespace off the front of the type
-            $typeName = ucfirst(substr($type, strlen($namespace)));
+            $class    = substr($type, strlen($namespace));
+            $typeName = ucfirst($class);
 
             echo "
-            <dd><dl><dt>$typeName</dt>
+            <dd class=\"$class\">
+                <dl><dt>$typeName</dt>
             ";
             if (!empty($docs[$type])) {
                 foreach ($docs[$type] as $d) {
