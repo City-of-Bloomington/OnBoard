@@ -144,6 +144,7 @@ Zend\Loader\AutoloaderFactory::factory($config);
  */
 if (!defined('STDIN')) {
 	ini_set('session.save_path',APPLICATION_HOME.'/data/sessions');
+	ini_set('session.cookie_path', BASE_URI);
 	session_start();
 }
 

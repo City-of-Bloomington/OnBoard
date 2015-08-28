@@ -17,6 +17,7 @@ foreach ($this->committee->getCurrentSeats() as $seat) {
 		}
 		$members[] = [
 			'name'     =>$term->getPerson()->getFullname(),
+			'email'    =>$term->getPerson()->getEmail(),
 			'termStart'=>$term->getTerm_start(DATE_FORMAT),
 			'termEnd'  =>$term->getTerm_end(DATE_FORMAT),
 			'offices'  =>implode($offices)

@@ -171,6 +171,7 @@ function _civiclegislation_get_cmis()
             variable_get('civiclegislation_cmis_repositoryId')
         );
         $cmis->succinct = true;
+        $cmis->maxItems = 200;
     }
     return $cmis;
 }
@@ -185,6 +186,7 @@ function _civiclegislation_get($url)
     curl_setopt($session, CURLOPT_HEADER,         false);
     curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($session, CURLOPT_TIMEOUT,           3);
     if (substr($url, 0, 5) == 'https') {
         curl_setopt($session, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
