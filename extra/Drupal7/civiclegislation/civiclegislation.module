@@ -4,30 +4,20 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-require_once __DIR__.'/civiclegislation.admin.inc';
 require_once __DIR__.'/civiclegislation.fields.inc';
 
-function civiclegislation_libraries_info()
+function civiclegislation_admin_form()
 {
-    return ['chemistry' => [
-        'name'             => 'COB Fork of Chemistry PHP CMIS library',
-        'vendor url'       => 'http://github.com/City-of-Bloomington/chemistry-phpclient',
-        'download url'     => 'http://github.com/City-of-Bloomington/chemistry-phpclient',
-        'files' => [
-            'php' => [
-                'browser/cmis_service.php'
-            ]
-        ],
-        'version callback' => 'civiclegislation_chemistry_version_check',
-    ]];
+    return system_settings_form([
+        'civiclegislation_solr_url' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('civiclegislation_solr_url'),
+            '#title'         => 'Solr Server',
+            '#description'   => "The URL for CMIS server's Solr index.  This is usually the same server as the CMIS endpoint.",
+            '#required'      => true
+        ]
+    ]);
 }
-function civiclegislation_chemistry_version_check()
-{
-    // Right now, we do not care about versions.
-    // Any version of the Chemistry fork from COB will do
-    return true;
-}
-
 
 function civiclegislation_menu()
 {
@@ -40,19 +30,12 @@ function civiclegislation_menu()
             'access arguments' => ['administer site configuration'],
             'type'             => MENU_NORMAL_ITEM
         ],
-        'node/%node/%' => [
+        'civiclegislation/%node/%/%' => [
             'title callback'   => 'civiclegislation_document_index_title',
             'title arguments'  => [1],
             'description'      => 'Browsable index of documents from Alfresco.',
             'page callback'    => 'civiclegislation_document_index',
-            'page arguments'   => [1, 2],
-            'access arguments' => ['access content']
-        ],
-        'node/%node/download/%' => [
-            'title'            => 'Document Download',
-            'description'      => 'Download a document stored in Alfresco.',
-            'page callback'    => 'civiclegislation_document_download',
-            'page arguments'   => [1, 3],
+            'page arguments'   => [1, 2, 3],
             'access arguments' => ['access content']
         ]
     ];
@@ -63,7 +46,7 @@ function civiclegislation_document_index_title($node)
     return $node->title;
 }
 
-function civiclegislation_document_index($node, $documentType, $year=null)
+function civiclegislation_document_index($node, $field, $documentType, $year=null)
 {
     $knownTypes = [
         'meetings'    => 'meeting',
@@ -71,16 +54,15 @@ function civiclegislation_document_index($node, $documentType, $year=null)
         'legislation' => 'legislation'
     ];
 
-
-    if (!empty(   $node->field_cmis_documents['und'][0]["doctypes_$documentType"])) {
-        $folder = $node->field_cmis_documents['und'][0]['folder'];
+    if (!empty(   $node->$field['und'][0]["doctypes_$documentType"])) {
+        $folder = $node->$field['und'][0]['folder'];
 
         $namespace_short = 'D:cob:';
         $namespace_long  = '{http://bloomington.in.gov/alfresco/model}';
         $dateField       = "date@sd@{$namespace_long}{$knownTypes[$documentType]}Date";
         $year = $year ? $year : date('Y');
 
-        $types  = explode(',', $node->field_cmis_documents['und'][0]["doctypes_$documentType"]);
+        $types  = explode(',', $node->$field['und'][0]["doctypes_$documentType"]);
         $types_cmis = [];
         $types_solr = [];
         foreach ($types as $type) {
@@ -107,21 +89,6 @@ function civiclegislation_document_index($node, $documentType, $year=null)
             return json_last_error_msg();
         }
     }
-}
-
-function civiclegislation_document_download($node, $objectId)
-{
-    $cmis = _civiclegislation_get_cmis();
-    $o = $cmis->getObject($objectId);
-
-    $mime = $o->succinctProperties->{'cmis:contentStreamMimeType'};
-    $file = $o->succinctProperties->{'cmis:contentStreamFileName'};
-    $size = $o->succinctProperties->{'cmis:contentStreamLength'};
-
-    header("Content-Type: $mime");
-    header("Content-Disposition: attachment; filename=\"$file\"");
-    header("Content-Length: $size");
-    echo $cmis->getContentStream($objectId);
 }
 
 /**
@@ -151,30 +118,6 @@ function civiclegislation_theme()
     ];
 }
 
-
-/**
- * Instantantiates the CMISService using variables from the admin form
- *
- * @return CMISService
- */
-function _civiclegislation_get_cmis()
-{
-    static $cmis;
-
-    if (!$cmis) {
-        libraries_load('chemistry');
-
-        $cmis = new CMISService(
-            variable_get('civiclegislation_cmis_url'),
-            variable_get('civiclegislation_cmis_username'),
-            variable_get('civiclegislation_cmis_password'),
-            variable_get('civiclegislation_cmis_repositoryId')
-        );
-        $cmis->succinct = true;
-        $cmis->maxItems = 200;
-    }
-    return $cmis;
-}
 
 /**
  * @param string $url
@@ -256,6 +199,5 @@ function _civiclegislation_cmis_documents($folder, $types, $year)
            ." and cob:meetingDate >= $start and cob:meetingDate <= $end"
            ." order by cob:meetingDate desc";
 
-    $cmis = _civiclegislation_get_cmis();
-    return $cmis->query($sql);
+    return _cmisro_getQuery($sql);
 }

@@ -4,37 +4,53 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+/**
+ * @implements hook_field_info()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_info/7
+ */
 function civiclegislation_field_info()
 {
     return [
-        'civiclegislation_cmis' => [
-            'label'            => 'CMIS Integration for boards and commission',
+        'civiclegislation_links' => [
+            'label'            => 'Civic Legislation Links',
             'description'      => 'Stores configuration integrating with a CMIS server storing documents related to a board or commission.',
-            'default_widget'   => 'civiclegislation_fieldset',
-            'default_formatter'=> 'civiclegislation_default'
+            'default_widget'   => 'civiclegislation_links_fieldset',
+            'default_formatter'=> 'civiclegislation_links_formatter'
         ]
     ];
 }
 
+/**
+ * @implements hook_field_widget_info()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_widget_info/7
+ */
 function civiclegislation_field_widget_info()
 {
     return [
-        'civiclegislation_fieldset' => [
-            'label' => 'CMIS Integration',
-            'field types' => ['civiclegislation_cmis']
+        'civiclegislation_links_fieldset' => [
+            'label'       => 'Civic Legislation Fieldset',
+            'field types' => ['civiclegislation_links']
         ]
     ];
 }
 
+/**
+ * @implements hook_field_is_empty()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_is_empty/7
+ */
 function civiclegislation_field_is_empty($item, $field)
 {
-    return empty($item['civiclegislation_fieldset']['folder']);
+    return empty($item['civiclegislation_links_fieldset']['folder']);
 }
 
+/**
+ * @implements hook_field_widget_form()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_widget_form/7
+ */
 function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$instance, &$langcode, &$items, &$delta, &$element)
 {
-    if ($instance['widget']['type'] == 'civiclegislation_fieldset') {
-        $element['civiclegislation_fieldset'] = [
+    if ($instance['widget']['type'] == 'civiclegislation_links_fieldset') {
+        $element['civiclegislation_links_fieldset'] = [
             '#type' => 'fieldset',
             '#title' => $element['#title'],
             '#tree' => true,
@@ -66,39 +82,53 @@ function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$ins
 
 function civiclegislation_field_presave(&$entity_type, &$entity, &$field, &$instance, &$lang, &$items)
 {
-    if ($instance['widget']['type'] == 'civiclegislation_fieldset') {
+    if ($instance['widget']['type'] == 'civiclegislation_links_fieldset') {
         $fields = ['folder', 'doctypes_meetings', 'doctypes_legislation', 'doctypes_reports'];
         foreach ($items as $i => $item) {
             foreach ($fields as $f) {
-                if (isset($item['civiclegislation_fieldset'][$f])) {
-                    $items[$i][$f] = $item['civiclegislation_fieldset'][$f];
+                if (isset($item['civiclegislation_links_fieldset'][$f])) {
+                    $items[$i][$f] = $item['civiclegislation_links_fieldset'][$f];
                 }
             }
         }
     }
 }
 
+/**
+ * @implements hook_field_formatter_info()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_formatter_info/7
+ */
 function civiclegislation_field_formatter_info()
 {
     return [
-        'civiclegislation_default' => [
-            'label' => t('Default'),
-            'field types' => ['civiclegislation_fieldset']
+        'civiclegislation_links_formatter' => [
+            'label'       => t('Default'),
+            'field types' => ['civiclegislation_links']
         ]
     ];
 }
 
+/**
+ * @implements hook_field_formatter_view()
+ * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_formatter_view/7
+ */
 function civiclegislation_field_formatter_view($entity_type, $entity, $field, $instance, $lang, &$items, &$display)
 {
     $element = [];
 
     switch ($display['type']) {
-        case 'civiclegislation_default':
+        case 'civiclegislation_links_formatter':
+            $uri = "civiclegislation/{$entity->nid}/$field[field_name]";
+            $class_current = ['attributes' => ['class' => ['current']]];
+
             foreach ($items as $i => $item) {
-                $html = "<h3>$item[folder]</h3>";
-                if (!empty($item['doctypes_meetings'])) { $html.="<div>$item[doctypes_meetings]</div>"; }
-                if (!empty($item['doctypes_legislation'])) { $html.="<div>$item[doctypes_legislation]</div>"; }
-                if (!empty($item['doctypes_reports'])) { $html.= "<div>$item[doctypes_reports]</div>"; }
+                $html = '';
+                foreach (['meetings', 'legislation', 'reports'] as $type) {
+                    if (!empty($item["doctypes_$type"])) {
+                        $attr = (current_path() === "$uri/$type") ? $class_current : [];
+                        $html.= l(ucfirst($type), "$uri/$type", $attr);
+                    }
+                }
                 $element[$i] = ['#markup' => $html];
             }
         break;

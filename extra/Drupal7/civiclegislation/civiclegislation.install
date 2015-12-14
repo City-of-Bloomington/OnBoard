@@ -8,11 +8,6 @@ function civiclegislation_install() { }
 
 function civiclegislation_uninstall()
 {
-    variable_del('civiclegislation_url');
-    variable_del('civiclegislation_cmis_url');
-    variable_del('civiclegislation_cmis_repositoryId');
-    variable_del('civiclegislation_cmis_username');
-    variable_del('civiclegislation_cmis_password');
     variable_del('civiclegislation_solr_url');
 }
 

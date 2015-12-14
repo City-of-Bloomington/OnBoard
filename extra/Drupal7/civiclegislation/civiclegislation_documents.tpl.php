@@ -20,9 +20,9 @@ foreach ($documents as $row) {
     // PHP only reads timestamps in seconds.
     $date = date('Y-m-d', $d->{'cob:meetingDate'}/1000);
     $dates[$date][$d->{'cmis:objectTypeId'}][] = [
-        'id'       => $d->{'cmis:versionSeriesId'},
-        'filename' => $d->{'cmis:name'},
-        'mimeType' => $d->{'cmis:contentStreamMimeType'}
+        'id'    => $d->{'cmis:versionSeriesId'},
+        'title' => $d->{'cmis:name'},
+        'type'  => $d->{'cmis:contentStreamMimeType'}
     ];
 }
 echo "
@@ -57,9 +57,9 @@ echo "
             <dd class=\"$class\">
                 <dl><dt>$typeName</dt>
             ";
-            if (!empty($docs[$type])) {
+            if (!empty  ($docs[$type])) {
                 foreach ($docs[$type] as $d) {
-                    $a = l($d['filename'], "node/{$node->nid}/download/$d[id]", ['attributes'=>['class'=>[$d['mimeType']]]]);
+                    $a = theme('cmisro_item', ['object'=>$d]);
                     echo "<dd>$a</dd>";
                 }
             }
