@@ -26,9 +26,9 @@ foreach ($documents as $row) {
     ];
 }
 echo "
-<div class=\"cl-container\">
-    <h3>$year Meetings</h3>
-    <nav id=\"years\">
+<section class=\"civiclegislation container\">
+    <h1>$year Meetings</h1>
+    <nav>
 ";
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
@@ -37,15 +37,15 @@ echo "
     }
 echo "
     </nav>
-    <div class=\"cl-listing\">
-        <dl id=\"documents\">
+    <div class=\"listing\">
+        <dl>
 ";
     foreach ($dates as $date=>$docs) {
         $dateObj = new DateTime($date);
         echo "
             <dt><time datetime=\"{$dateObj->format('Y-m-d')}\">
-                <span class=\"cl-month\">{$dateObj->format('F')}</span>
-                <span class=\"cl-dayOfMonth\">{$dateObj->format('j')}</span>
+                <span class=\"month\">{$dateObj->format('F')}</span>
+                <span class=\"dayOfMonth\">{$dateObj->format('j')}</span>
             </dt>
         ";
         foreach ($types as $type) {
@@ -75,6 +75,5 @@ echo "
 echo "
         </dl>
     </div>
-</div>
+</section>
 ";
-
