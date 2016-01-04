@@ -33,7 +33,7 @@ echo "
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
         $attr = $y == $year ? ['attributes'=>['class'=>['current']]] : [];
-        echo l($y, "node/{$node->nid}/meetings/$y", $attr);
+        echo l($y, "civiclegislation/{$node->nid}/field_civiclegislation_links/meetings/$y", $attr);
     }
 echo "
     </nav>
