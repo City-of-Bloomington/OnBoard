@@ -58,7 +58,8 @@ $config = [
 		'namespaces' => [
 			'Application' => APPLICATION_HOME,
             'Blossom'     => BLOSSOM.'/src',
-            'Aura\Router'          => APPLICATION_HOME.'/vendor/aura/router/src',
+            'Michelf'              => APPLICATION_HOME.'/vendor/michelf/php-markdown/Michelf',
+            #'Aura\Router'          => APPLICATION_HOME.'/vendor/aura/router/src',
             'Zend\Stdlib'          => APPLICATION_HOME.'/vendor/zendframework/zend-stdlib/src',
             'Zend\Permissions\Acl' => APPLICATION_HOME.'/vendor/zendframework/zend-permissions-acl/src',
             'Zend\Paginator'       => APPLICATION_HOME.'/vendor/zendframework/zend-paginator/src',
@@ -70,7 +71,7 @@ $config = [
 ];
 Zend\Loader\AutoloaderFactory::factory($config);
 
-include APPLICATION_HOME.'/routes.inc';
+#include APPLICATION_HOME.'/routes.inc';
 include APPLICATION_HOME.'/access_control.inc';
 
 /**
