@@ -12,7 +12,7 @@ $firstname = View::escape($this->person->getFirstname());
 ?>
 <div>
 	<p><?php
-			echo sprintf($this->_('messages.votingRecordComparison_explanation'), $firstname);
+			echo sprintf($this->_('votingRecordComparison_explanation', 'messages'), $firstname);
 		?>
 	</p>
 	<table>

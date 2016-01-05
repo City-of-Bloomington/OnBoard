@@ -23,11 +23,5 @@ msgstr ""
 msgid "signed_in_as"
 msgstr "Signed in as %s"
 
-msgid "add_existing_requirement"
-msgstr "Add an existing requirement"
-
-msgid "add_new_requirement"
-msgstr "Add a new requirement to the system"
-
 msgid "votingRecordComparison_explanation"
 msgstr "Shows how often (as a percentage) that other members vote the same way as %s"
