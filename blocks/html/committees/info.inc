@@ -11,6 +11,7 @@ use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $fields = [
+    'type',
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
 	'email', 'phone', 'address', 'city', 'state', 'zip'
 ];
@@ -49,6 +50,9 @@ echo "
 	</h2>
 
 	<table>
+        <tr><th>{$this->_('type')}</th>
+            <td>$type</td>
+        </tr>
 		<tr><th>{$this->_('year_formed')}</th>
 			<td>$yearFormed</td>
 		</tr>

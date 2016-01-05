@@ -29,6 +29,7 @@ create table people (
 
 create table committees (
 	id int unsigned not null primary key auto_increment,
+	type enum('seated', 'open') not null default 'seated',
 	name varchar(128) not null,
 	statutoryName varchar(128),
 	statuteReference varchar(128),

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -17,6 +17,8 @@ use Blossom\Classes\Database;
 
 class Committee extends ActiveRecord
 {
+    public static $types = ['seated', 'open'];
+
 	protected $tablename = 'committees';
 
 	public function __construct($id=null)
@@ -40,11 +42,13 @@ class Committee extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->setType('seated');
 		}
 	}
 
 	public function validate()
 	{
+        if (!$this->getType()) { $this->setType('seated'); }
 		if (!$this->getName()) { throw new \Exception('missingName'); }
 	}
 
@@ -54,6 +58,7 @@ class Committee extends ActiveRecord
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
 	public function getId()                { return parent::get('id');               }
+	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
 	public function getStatuteReference()  { return parent::get('statuteReference'); }
@@ -70,6 +75,7 @@ class Committee extends ActiveRecord
 	public function getContactInfo()       { return parent::get('contactInfo');      }
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 
+	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
 	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
@@ -92,6 +98,7 @@ class Committee extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
+            'type',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule'
@@ -140,11 +147,13 @@ class Committee extends ActiveRecord
 	 */
 	public function getMaxCurrentTerms()
 	{
-		$positions = 0;
-		foreach ($this->getSeats() as $seat) {
-			$positions += $seat->getMaxCurrentTerms();
-		}
-		return $positions;
+        if ($this->getType() === 'seated') {
+            $positions = 0;
+            foreach ($this->getSeats() as $seat) {
+                $positions += $seat->getMaxCurrentTerms();
+            }
+            return $positions;
+        }
 	}
 
 	/**
@@ -193,7 +202,9 @@ class Committee extends ActiveRecord
 	 */
 	public function hasVacancy()
 	{
-        return $this->getMaxCurrentTerms() > count($this->getCurrentTerms());
+        return $this->getType() === 'seated'
+            ? $this->getMaxCurrentTerms() > count($this->getCurrentTerms())
+            : true;
 	}
 
 	/**

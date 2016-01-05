@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright 2009-2015 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
+use Application\Models\Committee;
 use Blossom\Classes\View;
 
 $fields = [
+    'type',
 	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
 	'email', 'phone', 'address', 'city', 'state', 'zip',
 	'description', 'contactInfo', 'meetingSchedule'
@@ -24,6 +26,19 @@ $title = $this->committee->getId() ? $this->_('edit_committee') : $this->_('add_
 		<input name="committee_id" type="hidden" value="<?php echo $this->committee->getId(); ?>" />
 
 		<table>
+            <tr><td><label   for="type"><?= $this->_('type'); ?></label></td>
+                <td><select name="type" class="required">
+                    <?php
+                        foreach (Committee::$types as $t) {
+                            $selected = $type === $t
+                                ? 'selected="true"'
+                                : '';
+                            echo "<option value=\"$t\" $selected>$t</option>";
+                        }
+                    ?>
+                    </select>
+                </td>
+            </tr>
 			<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
 				<td><input name="name" id="name" size="40"
 						value="<?php echo $name; ?>" />

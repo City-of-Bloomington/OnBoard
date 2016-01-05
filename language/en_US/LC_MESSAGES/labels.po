@@ -184,6 +184,9 @@ msgstr "Add Committee"
 msgid "edit_committee"
 msgstr "Edit Committee"
 
+msgid "type"
+msgstr "Type"
+
 msgid "council"
 msgid_plural "councils"
 msgstr[0] "Council"

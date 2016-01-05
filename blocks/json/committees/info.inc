@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2009-2015 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
 use Michelf\MarkdownExtra;
@@ -13,6 +12,7 @@ $contactInfo     = $markdown->transform($this->committee->getContactInfo());
 $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $c = [
+    'type'             => $this->committee->getType(),
 	'name'             => $this->committee->getName(),
 	'statutoryName'    => $this->committee->getStatutoryName(),
 	'statuteReference' => $this->committee->getStatuteReference(),
