@@ -36,7 +36,7 @@ if (Person::isAllowed('committees', 'edit')) {
 	$helper = $this->template->getHelper('buttonLink');
 	$editButton = $helper->buttonLink(
 		BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
-		$this->_('labels.edit'),
+		$this->_('edit'),
 		'edit',
 		ButtonLink::SIZE_ICON
 	);
@@ -49,25 +49,25 @@ echo "
 	</h2>
 
 	<table>
-		<tr><th>{$this->_('labels.year_formed')}</th>
+		<tr><th>{$this->_('year_formed')}</th>
 			<td>$yearFormed</td>
 		</tr>
-		<tr><th>{$this->_('labels.statutoryName')}</th>
+		<tr><th>{$this->_('statutoryName')}</th>
 			<td>$statutoryName</td>
 		</tr>
-		<tr><th>{$this->_('labels.statuteReference')}</th>
+		<tr><th>{$this->_('statuteReference')}</th>
 			<td>$statuteReference</td>
 		</tr>
-		<tr><th>{$this->_('labels.website')}</th>
+		<tr><th>{$this->_('website')}</th>
 			<td>$website</td>
 		</tr>
-		<tr><th>{$this->_(['labels.email', 'labels.emails', 1])}</th>
+		<tr><th>{$this->_(['email', 'emails', 1])}</th>
             <td>$email</td>
         </tr>
-        <tr><th>{$this->_('labels.phone')}</th>
+        <tr><th>{$this->_('phone')}</th>
             <td>$phone</td>
         </tr>
-        <tr><th>{$this->_('labels.address')}</th>
+        <tr><th>{$this->_('address')}</th>
             <td><address>$address
                 $city $state $zip
                 </address>
@@ -76,10 +76,10 @@ echo "
 
     $description
 
-    <h3>{$this->_('labels.meetingSchedule')}</h3>
+    <h3>{$this->_('meetingSchedule')}</h3>
     $meetingSchedule
 
-    <h3>{$this->_('labels.contactInfo')}</h3>
+    <h3>{$this->_('contactInfo')}</h3>
     $contactInfo
 </div>
 ";

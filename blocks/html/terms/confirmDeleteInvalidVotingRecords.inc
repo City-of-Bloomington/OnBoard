@@ -12,7 +12,7 @@ $end   = $this->term->getTerm_end  (DATE_FORMAT);
 	<h2>You are about to delete voting records.</h2>
 	<p>These voting records are no longer valid.
 		The date of the vote no longer occurs during this term.</p>
-	<h2><?php echo "{$this->_(['labels.term', 'labels.terms', 1])}: $start - $end"; ?></h2>
+	<h2><?php echo "{$this->_(['term', 'terms', 1])}: $start - $end"; ?></h2>
 	<?php
 		foreach ($this->term->getInvalidVotingRecords() as $record) {
 			$position = View::escape($record->getPosition());
@@ -57,7 +57,7 @@ $end   = $this->term->getTerm_end  (DATE_FORMAT);
 		$helper = $this->template->getHelper('buttonLink');
 		echo $helper->buttonLink(
 			$this->term->getSeat()->getUri(),
-			$this->_('labels.cancel'),
+			$this->_('cancel'),
 			'cancel'
 		);
 	?>

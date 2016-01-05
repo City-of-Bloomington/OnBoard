@@ -8,7 +8,7 @@
 use Blossom\Classes\View;
 ?>
 <div>
-	<h2><?php echo $this->_('labels.past_members'); ?></h2>
+	<h2><?php echo $this->_('past_members'); ?></h2>
 	<table>
 		<?php
 			foreach ($this->committee->getPeople() as $person) {
@@ -47,7 +47,7 @@ use Blossom\Classes\View;
 	</table>
 	<div>
 		<a href="<?php echo $this->committee->getUri(); ?>">
-			<?php echo $this->_('labels.view_current_members'); ?>
+			<?php echo $this->_('view_current_members'); ?>
 		</a>
 	</div>
 </div>

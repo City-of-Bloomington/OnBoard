@@ -17,10 +17,10 @@ $firstname = View::escape($this->person->getFirstname());
 	</p>
 	<table>
 		<thead>
-			<tr><th><?php echo $this->_(['labels.member', 'labels.members', 1]); ?></th>
+			<tr><th><?php echo $this->_(['member', 'members', 1]); ?></th>
 					<?php
 						$finalVoteType = VoteType::getFinalVoteType();
-						echo "<th>$finalVoteType {$this->_(['labels.vote', 'labels.votes', 2])}</th>";
+						echo "<th>$finalVoteType {$this->_(['vote', 'votes', 2])}</th>";
 
 						$topicTypes = [];
 						$table = new TopicTypeTable();
@@ -31,7 +31,7 @@ $firstname = View::escape($this->person->getFirstname());
 							$topicTypes[] = $t;
 						}
 					?>
-				<th><?php echo $this->_('labels.all_votes'); ?></th>
+				<th><?php echo $this->_('all_votes'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

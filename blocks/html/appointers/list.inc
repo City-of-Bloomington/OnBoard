@@ -11,13 +11,13 @@ use Blossom\Classes\View;
 ?>
 <div>
 	<h2><?php
-			echo $this->translate(['labels.appointer','labels.appointers',2]);
+			echo $this->translate(['appointer','appointers',2]);
 
 			$helper = $this->template->getHelper('buttonLink');
 			if (Person::isAllowed('appointers')) {
 				echo $helper->buttonLink(
 					BASE_URI.'/appointers/update',
-					$this->translate('labels.add_appointer'),
+					$this->translate('add_appointer'),
 					'add'
 				);
 			}
@@ -30,7 +30,7 @@ use Blossom\Classes\View;
 				if (Person::isAllowed('appointers')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/appointers/update?appointer_id='.$appointer->getId(),
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);

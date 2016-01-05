@@ -9,9 +9,9 @@ use Blossom\Classes\View;
 ?>
 <div class="breadcrumbs">
 	<ul>
-		<li><a href="<?php echo BASE_URI; ?>"><?php echo $this->_('labels.home'); ?></a></li>
+		<li><a href="<?php echo BASE_URI; ?>"><?php echo $this->_('home'); ?></a></li>
 		<li><a href="<?php echo BASE_URI; ?>/committees">
-				<?php echo $this->translate(['labels.committee','labels.committees',2]); ?>
+				<?php echo $this->translate(['committee','committees',2]); ?>
 			</a>
 		</li>
 		<?php

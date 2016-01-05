@@ -7,14 +7,14 @@ use Blossom\Classes\View;
 			$li = '<li><a href="%s">%s</a></li>';
 
 			if (isset($_SESSION['USER'])) {
-				echo sprintf($li, BASE_URI.'/login/logout', $this->translate('labels.logout'));
+				echo sprintf($li, BASE_URI.'/login/logout', $this->translate('logout'));
 
 				$name = View::escape($_SESSION['USER']->getFullname());
 				echo sprintf('<li>'.sprintf($this->translate('messages.signed_in_as'), $name).'</li>');
 			}
 			else {
 				$return_url = View::escape($_SERVER['REQUEST_URI']);
-				echo sprintf($li, BASE_URI.'/login?return_url='.$return_url, $this->translate('labels.login'));
+				echo sprintf($li, BASE_URI.'/login?return_url='.$return_url, $this->translate('login'));
 			}
 		?>
 	</ul>

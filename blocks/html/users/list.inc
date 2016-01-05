@@ -11,13 +11,13 @@ use Blossom\Classes\View;
 ?>
 <div class="interfaceBox">
 	<h2><?php
-			echo $this->_(['labels.user','labels.users',2]);
+			echo $this->_(['user','users',2]);
 
 			if (Person::isAllowed('users')) {
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/users/update',
-					$this->translate('labels.create_account'),
+					$this->translate('create_account'),
 					'add'
 				);
 			}
@@ -26,10 +26,10 @@ use Blossom\Classes\View;
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('labels.username'); ?></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_('labels.authenticationMethod'); ?></th>
-				<th><?php echo $this->_('labels.role'); ?></th>
+				<th><?php echo $this->_('username'); ?></th>
+				<th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_('authenticationMethod'); ?></th>
+				<th><?php echo $this->_('role'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -41,13 +41,13 @@ use Blossom\Classes\View;
 				if (Person::isAllowed('users')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/users/update?user_id='.$user->getId(),
-						$this->translate('labels.edit_account'),
+						$this->translate('edit_account'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
-						$this->translate('labels.delete_account'),
+						$this->translate('delete_account'),
 						'delete',
 						ButtonLink::SIZE_ICON
 					);

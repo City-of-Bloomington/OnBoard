@@ -75,8 +75,8 @@ switch ($current_tab) {
 				$seat = new Seat($_GET['seat_id']);
 
 				$seatInfo      = new Block('seats/info.inc', ['seat'=>$seat]);
-				$currentTerms  = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['current'=>time()]), 'title'=>$this->template->_('labels.current_terms')]);
-				$pastTerms     = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['before' =>time()]), 'title'=>$this->template->_('labels.past_terms')]);
+				$currentTerms  = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['current'=>time()]), 'title'=>$this->template->_('current_terms')]);
+				$pastTerms     = new Block('terms/list.inc', ['terms'=>$seat->getTerms(['before' =>time()]), 'title'=>$this->template->_('past_terms')]);
 				echo $seatInfo    ->render('html', $this->template);
 				echo $currentTerms->render('html', $this->template);
 				echo $pastTerms   ->render('html', $this->template);

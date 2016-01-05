@@ -8,16 +8,16 @@
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
-$title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'labels.terms', 2]);
+$title = $this->title ? View::escape($this->title) : $this->_(['term', 'terms', 2]);
 ?>
 <div>
 	<h2><?php echo $title; ?></h2>
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_(['labels.committee', 'labels.committees', 1]); ?></th>
-				<th><?php echo $this->_('labels.appointed_by'); ?></th>
-				<th><?php echo $this->_(['labels.term', 'labels.terms', 1]); ?></th>
+				<th><?php echo $this->_(['committee', 'committees', 1]); ?></th>
+				<th><?php echo $this->_('appointed_by'); ?></th>
+				<th><?php echo $this->_(['term', 'terms', 1]); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -30,7 +30,7 @@ $title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'l
 					$helper = $this->template->getHelper('buttonLink');
 					$editButton = $helper->buttonLink(
 						BASE_URI."/terms/update?term_id={$term->getId()}",
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
@@ -38,7 +38,7 @@ $title = $this->title ? View::escape($this->title) : $this->_(['labels.term', 'l
 					if ($term->isSafeToDelete()) {
 						$deleteButton = $helper->buttonLink(
 							BASE_URI."/terms/delete?term_id={$term->getId()}",
-							$this->translate('labels.delete'),
+							$this->translate('delete'),
 							'delete',
 							ButtonLink::SIZE_ICON
 						);

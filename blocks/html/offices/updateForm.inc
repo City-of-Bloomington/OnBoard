@@ -7,12 +7,12 @@
  */
 use Blossom\Classes\View;
 
-$title = $this->office->getId() ? $this->_('labels.edit_office') : $this->_('labels.add_office');
+$title = $this->office->getId() ? $this->_('edit_office') : $this->_('add_office');
 ?>
 <h2><?php echo $title; ?></h2>
 <h3><?php echo View::escape($this->office->getPerson()->getFullname()); ?></h3>
 <form method="post" action="<?php echo BASE_URI; ?>/offices/update">
-	<fieldset><legend><?php echo $this->_('labels.info_office'); ?></legend>
+	<fieldset><legend><?php echo $this->_('info_office'); ?></legend>
 		<?php
 			if ($this->office->getId()) {
 				echo "
@@ -28,18 +28,18 @@ $title = $this->office->getId() ? $this->_('labels.edit_office') : $this->_('lab
 		?>
 
 		<table>
-			<tr><td><label for="title"><?php echo $this->_('labels.title'); ?></label></td>
+			<tr><td><label for="title"><?php echo $this->_('title'); ?></label></td>
 				<td><input name="title" id="title"
 							value="<?php echo View::escape($this->office->getTitle()); ?>" />
 				</td>
 			</tr>
 
-			<tr><td><label for="startDate"><?php echo $this->_('labels.date_start'); ?></label></td>
+			<tr><td><label for="startDate"><?php echo $this->_('date_start'); ?></label></td>
 				<td><input name="startDate" id="startDate"
 							value="<?php echo $this->office->getStartDate(DATE_FORMAT); ?>" />
 				</td>
 			</tr>
-			<tr><td><label for="endDate"><?php echo $this->_('labels.date_end'); ?></label></td>
+			<tr><td><label for="endDate"><?php echo $this->_('date_end'); ?></label></td>
 				<td><input name="endDate" id="endDate"
 							value="<?php echo $this->office->getEndDate(DATE_FORMAT); ?>" />
 				</td>

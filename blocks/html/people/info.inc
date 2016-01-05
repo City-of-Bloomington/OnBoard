@@ -16,7 +16,7 @@ $username = $this->person->getUsername();
 if (!$username && Person::isAllowed('users')) {
 	$username = $helper->buttonLink(
 		BASE_URI.'/users/update?user_id='.$this->person->getId(),
-		$this->translate('labels.create_account'),
+		$this->translate('create_account'),
 		'add'
 	);
 }
@@ -25,7 +25,7 @@ $editButton = '';
 if (Person::isAllowed('people', 'edit')) {
 	$editButton = $helper->buttonLink(
 		BASE_URI.'/people/update?person_id='.$this->person->getId(),
-		$this->translate('labels.edit_person'),
+		$this->translate('edit_person'),
 		'edit',
 		ButtonLink::SIZE_ICON
 	);
@@ -41,10 +41,10 @@ echo "
 	<table>
 ";
 	$fields = [
-		'email'   => $this->_(['labels.email', 'labels.emails', 1]),
-		'username'=> $this->_('labels.username'),
-		'gender'  => $this->_('labels.gender'),
-		'race'    => $this->_(['labels.race', 'labels.races', 1]),
+		'email'   => $this->_(['email', 'emails', 1]),
+		'username'=> $this->_('username'),
+		'gender'  => $this->_('gender'),
+		'race'    => $this->_(['race', 'races', 1]),
 	];
 	foreach ($fields as $key=>$label) {
 		$get = 'get'.ucfirst($key);

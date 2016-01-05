@@ -1,8 +1,11 @@
 configuration.inc
+site_config.inc
 data/sessions/*
-tests/configuration.inc
+*.mo
 build
 dist
+vendor
+composer.lock
 node_modules
 gulpfile.js
 .ftppass

@@ -8,11 +8,11 @@
 use Application\Models\AppointerTable;
 use Blossom\Classes\View;
 
-$title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.add_seat');
+$title = $this->seat->getId() ? $this->_('edit_seat') : $this->_('add_seat');
 ?>
 <h2><?php echo $title; ?></h2>
 <form method="post" action="<?php echo BASE_URI; ?>/seats/update">
-	<fieldset><legend><?php echo $this->_('labels.info_seat'); ?></legend>
+	<fieldset><legend><?php echo $this->_('info_seat'); ?></legend>
 		<?php
 			if ($this->seat->getId()) {
 				echo "<input name=\"seat_id\" type=\"hidden\" value=\"{$this->seat->getId()}\" />";
@@ -22,14 +22,14 @@ $title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.
 			}
 		?>
 		<table>
-			<tr><td><label for="name" class="required"><?php echo $this->_('labels.name'); ?></label></td>
+			<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
 				<td><input name="name" id="name"
 						value="<?php echo View::escape($this->seat->getName()); ?>" />
 				</td>
 			</tr>
 
 			<tr><td><label for="appointer_id" class="required">
-						<?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?>
+						<?php echo $this->_(['appointer', 'appointers', 1]); ?>
 					</label>
 				</td>
 				<td><select name="appointer_id" id="appointer_id"><option value=""></option>
@@ -48,22 +48,22 @@ $title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.
 				</td>
 			</tr>
 
-			<tr><td><label for="maxCurrentTerms"><?php echo $this->_('labels.maxCurrentTerms'); ?></label></td>
+			<tr><td><label for="maxCurrentTerms"><?php echo $this->_('maxCurrentTerms'); ?></label></td>
 				<td><input name="maxCurrentTerms" id="maxCurrentTerms" size="3" maxlength="3"
 						value="<?php echo $this->seat->getMaxCurrentTerms(); ?>" />
 				</td>
 			</tr>
 
-			<tr><td><label for="startDate"><?php echo $this->_('labels.date_start'); ?></label></td>
+			<tr><td><label for="startDate"><?php echo $this->_('date_start'); ?></label></td>
 				<td><input name="startDate" id="startDate" value="<?php echo $this->seat->getStartDate(DATE_FORMAT); ?>" /></td>
 			</tr>
-			<tr><td><label for="endDate"><?php echo $this->_('labels.date_end'); ?></label></td>
+			<tr><td><label for="endDate"><?php echo $this->_('date_end'); ?></label></td>
 				<td><input name="endDate" id="endDate" value="<?php echo $this->seat->getEndDate(DATE_FORMAT); ?>" /></td>
 			</tr>
 
 		</table>
 		<div>
-			<div><label for="requirements"><?php echo $this->_(['labels.requirement', 'labels.requirements', 2]); ?></label></div>
+			<div><label for="requirements"><?php echo $this->_(['requirement', 'requirements', 2]); ?></label></div>
 			<textarea name="requirements" id="requirements" rows="20" cols="80" class="markdown"><?php echo View::escape($this->seat->getRequirements()); ?></textarea>
 		</div>
 		<?php

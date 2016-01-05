@@ -11,13 +11,13 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
 <div>
-	<h2><?php echo $this->_(['labels.current_member', 'labels.current_members', 2]); ?></h2>
+	<h2><?php echo $this->_(['current_member', 'current_members', 2]); ?></h2>
 	<table>
 		<thead>
-			<tr><th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_('labels.appointed_by'); ?></th>
-				<th colspan="2"><?php echo $this->_(['labels.term','labels.term', 1]); ?></th>
-				<th colspan="2"><?php echo $this->_(['labels.office','labels.offices', 2]); ?></th>
+			<tr><th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_('appointed_by'); ?></th>
+				<th colspan="2"><?php echo $this->_(['term','term', 1]); ?></th>
+				<th colspan="2"><?php echo $this->_(['office','offices', 2]); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,13 +41,13 @@ use Application\Templates\Helpers\ButtonLink;
 					if (Person::isAllowed('terms', 'edit')) {
 						$editTermButton = $helper->buttonLink(
 							BASE_URI."/terms/update?term_id={$term->getId()};return_url=$currentUrl",
-							$this->translate('labels.edit'),
+							$this->translate('edit'),
 							'edit',
 							ButtonLink::SIZE_ICON
 						);
 						$addTermButton = $helper->buttonLink(
 							BASE_URI."/terms/update?seat_id={$seat->getId()};person_id={$term->getPerson_id()};return_url=$currentUrl",
-							$this->translate('labels.add_term'),
+							$this->translate('add_term'),
 							'add'
 						);
 					}
@@ -57,7 +57,7 @@ use Application\Templates\Helpers\ButtonLink;
 					if (Person::isAllowed('offices', 'edit')) {
 						$addOfficeButton = $helper->buttonLink(
 							BASE_URI."/offices/update?committee_id={$seat->getCommittee()->getId()};person_id={$term->getPerson_id()}",
-							$this->translate('labels.add_office'),
+							$this->translate('add_office'),
 							'add'
 						);
 					}
@@ -68,7 +68,7 @@ use Application\Templates\Helpers\ButtonLink;
 						if (Person::isAllowed('offices','edit')) {
 							$editOfficeButton = $helper->buttonLink(
 								BASE_URI.'/offices/update?office_id='.$office->getId(),
-								$this->translate('labels.edit_office'),
+								$this->translate('edit_office'),
 								'edit'
 							);
 						}
@@ -97,13 +97,13 @@ use Application\Templates\Helpers\ButtonLink;
 				if (Person::isAllowed('terms', 'edit')) {
 					$addTermButton = $helper->buttonLink(
 						BASE_URI."/terms/update?seat_id={$seat->getId()};return_url=$currentUrl",
-						$this->translate('labels.add_term'),
+						$this->translate('add_term'),
 						'add'
 					);
 				}
 				for ($c; $c < $t; $c++) {
 					echo "
-					<tr><td>( {$this->_('labels.vacancy')} )</td>
+					<tr><td>( {$this->_('vacancy')} )</td>
 						<td>$appointer</td>
 						<td></td>
 						<td>$addTermButton</td>
@@ -120,7 +120,7 @@ use Application\Templates\Helpers\ButtonLink;
 		<?php
 			echo "
 			<a href=\"{$this->committee->getUri()};members=past\">
-				{$this->_('labels.view_past_members')}
+				{$this->_('view_past_members')}
 			</a>
 			";
 		?>

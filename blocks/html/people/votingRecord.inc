@@ -10,7 +10,7 @@ use Blossom\Classes\View;
 if ($this->person->hasVotingRecord()) {
 	echo "
 	<div class=\"votingRecord\">
-		<h2>{$this->_(['labels.votingRecord', 'labels.votingRecords', 1])}</h2>
+		<h2>{$this->_(['votingRecord', 'votingRecords', 1])}</h2>
 	";
 
 	foreach ($this->person->getVotingRecords() as $record) {

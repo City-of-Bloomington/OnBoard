@@ -12,7 +12,7 @@ use Application\Models\VotingRecord;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 
-$title = isset($this->title) ? View::escape($this->title) : $this->_(['labels.vote', 'labels.votes', 2]);
+$title = isset($this->title) ? View::escape($this->title) : $this->_(['vote', 'votes', 2]);
 $userCanEditVotes = Person::isAllowed('votes', 'edit');
 $helper = $this->template->getHelper('buttonLink');
 ?>
@@ -23,7 +23,7 @@ $helper = $this->template->getHelper('buttonLink');
 			if (isset($this->topic) && $userCanEditVotes) {
 				echo $helper->buttonLink(
 					BASE_URI.'/votes/update?topic_id='.$this->topic->getId(),
-					$this->translate('labels.add_vote'),
+					$this->translate('add_vote'),
 					'add'
 				);
 			}
@@ -32,16 +32,16 @@ $helper = $this->template->getHelper('buttonLink');
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_(['labels.vote',  'labels.votes',  1]); ?></th>
-				<th><?php echo $this->_(['labels.topic', 'labels.topics', 1]); ?></th>
-				<th><?php echo $this->_('labels.date'); ?></th>
+				<th><?php echo $this->_(['vote',  'votes',  1]); ?></th>
+				<th><?php echo $this->_(['topic', 'topics', 1]); ?></th>
+				<th><?php echo $this->_('date'); ?></th>
 				<?php
 					foreach (VotingRecord::$positions as $position) {
 						$position = ucfirst($position);
 						echo "<th>$position</th>";
 					}
 				?>
-				<th><?php echo $this->_('labels.outcome'); ?></th>
+				<th><?php echo $this->_('outcome'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,7 +51,7 @@ $helper = $this->template->getHelper('buttonLink');
 				if ($userCanEditVotes) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/votes/update?vote_id='.$vote->getId(),
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);

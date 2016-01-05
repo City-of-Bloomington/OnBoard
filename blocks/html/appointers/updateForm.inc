@@ -8,7 +8,7 @@
 use Blossom\Classes\View;
 
 $name = View::escape($this->appointer->getName());
-$title = $this->appointer->getId() ? $this->_('labels.edit_appointer') : $this->_('labels.add_appointer');
+$title = $this->appointer->getId() ? $this->_('edit_appointer') : $this->_('add_appointer');
 ?>
 <div>
 	<h2><?php echo $title; ?></h2>
@@ -17,7 +17,7 @@ $title = $this->appointer->getId() ? $this->_('labels.edit_appointer') : $this->
 			<input name="appointer_id" type="hidden" value="<?php echo $this->appointer->getId(); ?>" />
 
 			<table>
-				<tr><td><label for="name" class="required"><?php echo $this->_('labels.name'); ?></label></td>
+				<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
 					<td><input name="name" id="name" value="<?php echo $name; ?>" /></td>
 				</tr>
 			</table>

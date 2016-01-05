@@ -29,7 +29,7 @@ foreach ($this->person->getCommittees() as $committee) {
 		$office = '';
 	}
 	$current = $this->person->isCurrentlyServing($committee)
-		? '('.$this->_(['labels.current_member', 'labels.current_members', 1]).')'
+		? '('.$this->_(['current_member', 'current_members', 1]).')'
 		: '';
 	$committees[] = "<li>$name-$appointers $office $current</li>";
 }

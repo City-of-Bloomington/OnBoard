@@ -15,16 +15,16 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 <div>
 	<h2><?php
 			echo sprintf('%s, %s, %s, &amp; %s',
-				$this->_(['labels.council'   , 'labels.councils'   , 2]),
-				$this->_(['labels.commission', 'labels.commissions', 2]),
-				$this->_(['labels.committee' , 'labels.committees' , 2]),
-				$this->_(['labels.board'     , 'labels.boards'     , 2])
+				$this->_(['council'   , 'councils'   , 2]),
+				$this->_(['commission', 'commissions', 2]),
+				$this->_(['committee' , 'committees' , 2]),
+				$this->_(['board'     , 'boards'     , 2])
 			);
 			if ($userCanEdit) {
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/committees/update',
-					$this->_('labels.add_committee'),
+					$this->_('add_committee'),
 					'add'
 				);
 			}
@@ -33,8 +33,8 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_(['labels.seat','labels.seats',2]); ?></th>
+				<th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_(['seat','seats',2]); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -49,13 +49,13 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/committees/update?committee_id='.$c->getId(),
-						$this->_('labels.edit'),
+						$this->_('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
 				}
 				$url = BASE_URI.'/committees/view?committee_id='.$c->getId();
-				$vacancy = $c->hasVacancy() ? $this->_('labels.vacancy') : '';
+				$vacancy = $c->hasVacancy() ? $this->_('vacancy') : '';
 				echo "
 				<tr><td>$editButton</td>
 					<td><a href=\"$url\">$name</a></td>

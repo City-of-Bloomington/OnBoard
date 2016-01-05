@@ -14,12 +14,12 @@ foreach ($fields as $f) {
 	$$f  = View::escape($this->person->$get());
 }
 
-$title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstname()) : $this->_('labels.add_person');
+$title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstname()) : $this->_('add_person');
 ?>
 <div class="updatePersonForm">
 	<h2><?php echo $title; ?></h2>
 	<form method="post" action="<?php echo BASE_URI; ?>/people/update">
-		<fieldset><legend><?php echo $this->_('labels.info_person'); ?></legend>
+		<fieldset><legend><?php echo $this->_('info_person'); ?></legend>
 			<input name="person_id" type="hidden" value="<?php echo $this->person->getId(); ?>" />
 			<?php
 				// Preserve any extra parameters passed in
@@ -32,30 +32,30 @@ $title = $this->person->getId() ? View::escape('Edit '.$this->person->getFirstna
 				}
 			?>
 			<table>
-				<tr><td><label for="firstname" class="required"><?php echo $this->_('labels.firstname'); ?></label></td>
+				<tr><td><label for="firstname" class="required"><?php echo $this->_('firstname'); ?></label></td>
 					<td><input name="firstname" id="firstname" value="<?php echo $firstname; ?>" /></td>
 				</tr>
 
-				<tr><td><label for="lastname" class="required"><?php echo $this->_('labels.lastname'); ?></label></td>
+				<tr><td><label for="lastname" class="required"><?php echo $this->_('lastname'); ?></label></td>
 					<td><input name="lastname" id="lastname" value="<?php echo $lastname; ?>" /></td>
 				</tr>
 
-				<tr><td><label for="email"><?php echo $this->_(['labels.email','labels.emails',1]); ?></label></td>
+				<tr><td><label for="email"><?php echo $this->_(['email','emails',1]); ?></label></td>
 					<td><input name="email" id="email" value="<?php echo $email; ?>" /></td>
 				</tr>
 
-				<tr><td><label for="about"><?php echo $this->_('labels.about'); ?></label></td>
+				<tr><td><label for="about"><?php echo $this->_('about'); ?></label></td>
 					<td><textarea name="about" id="about" rows="3" cols="60"><?php echo $about; ?></textarea>
 					</td>
 				</tr>
 
-				<tr><td><label><?php echo $this->_('labels.gender'); ?></label></td>
+				<tr><td><label><?php echo $this->_('gender'); ?></label></td>
 					<td><label><input name="gender" type="radio" value="male"   <?php if ($gender=='male'  ) echo 'checked="checked"'; ?> /> M</label>
 						<label><input name="gender" type="radio" value="female" <?php if ($gender=='female') echo 'checked="checked"'; ?> /> F</label>
 					</td>
 				</tr>
 
-				<tr><td><label for="race_id"><?php echo $this->_(['labels.race', 'labels.races', 1]); ?></label></td>
+				<tr><td><label for="race_id"><?php echo $this->_(['race', 'races', 1]); ?></label></td>
 					<td><select name="race_id" id="race_id">
 							<option></option>
 							<?php

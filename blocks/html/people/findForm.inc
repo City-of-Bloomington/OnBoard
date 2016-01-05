@@ -11,19 +11,19 @@ foreach ($fields as $f) {
 	$$f = isset($_GET[$f]) ? View::escape($_GET[$f]) : '';
 }
 ?>
-<h2><?php echo $this->_('labels.find_person'); ?></h2>
+<h2><?php echo $this->_('find_person'); ?></h2>
 <form method="get" action="<?php echo BASE_URI; ?>/people">
 	<fieldset>
 		<table>
-			<tr><td><label for="firstname"><?php echo $this->_('labels.firstname'); ?></label></td>
+			<tr><td><label for="firstname"><?php echo $this->_('firstname'); ?></label></td>
 				<td><input name="firstname" id="firstname" value="<?php echo $firstname; ?>" /></td>
 			</tr>
 
-			<tr><td><label for="lastname"><?php echo $this->_('labels.lastname'); ?></label></td>
+			<tr><td><label for="lastname"><?php echo $this->_('lastname'); ?></label></td>
 				<td><input name="lastname" id="lastname" value="<?php echo $lastname; ?>" /></td>
 			</tr>
 
-			<tr><td><label for="email"><?php echo $this->_(['labels.email','labels.emails',1]); ?></label></td>
+			<tr><td><label for="email"><?php echo $this->_(['email','emails',1]); ?></label></td>
 				<td><input name="email" id="email" value="<?php echo $email; ?>" /></td>
 			</tr>
 		</table>
@@ -38,6 +38,6 @@ foreach ($fields as $f) {
 				}
 			}
 		?>
-		<button type="submit"><i class="fa fa-search"></i> <?php echo $this->_('labels.search'); ?></button>
+		<button type="submit"><i class="fa fa-search"></i> <?php echo $this->_('search'); ?></button>
 	</fieldset>
 </form>

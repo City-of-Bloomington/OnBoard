@@ -11,13 +11,13 @@ use Blossom\Classes\View;
 ?>
 <div>
 	<h2><?php
-			echo $this->translate(['labels.tag','labels.tags',2]);
+			echo $this->translate(['tag','tags',2]);
 
 			if (Person::isAllowed('tags')) {
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/tags/update',
-					$this->translate('labels.add_tag'),
+					$this->translate('add_tag'),
 					'add'
 				);
 			}
@@ -31,13 +31,13 @@ use Blossom\Classes\View;
 				if (Person::isAllowed('tags')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/tags/update?tag_id='.$tag->getId(),
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/tags/delete?tag_id='.$tag->getId(),
-						$this->translate('labels.delete'),
+						$this->translate('delete'),
 						'delete',
 						ButtonLink::SIZE_ICON
 					);

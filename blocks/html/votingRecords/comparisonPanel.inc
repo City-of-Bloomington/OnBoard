@@ -32,7 +32,7 @@ if (isset($_GET['tag_id'])) {
 
 // Show the voting comparison data
 $title = isset($tag) ? View::escape(ucfirst($tag->getName())) : '';
-echo "<div><h2>$title {$this->_('labels.votingRecordComparison')}</h2>";
+echo "<div><h2>$title {$this->_('votingRecordComparison')}</h2>";
 
 $table = new TopicTable();
 $this->topics = $table->find($this->search);

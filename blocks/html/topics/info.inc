@@ -19,7 +19,7 @@ if (Person::isAllowed('topics', 'edit')) {
 	$helper = $this->template->getHelper('buttonLink');
 	$editButton = $helper->buttonLink(
 		BASE_URI.'/topics/update?topic_id='.$this->topic->getId(),
-		$this->translate('labels.edit_topic'),
+		$this->translate('edit_topic'),
 		'edit'
 	);
 }
@@ -30,7 +30,7 @@ foreach ($this->topic->getTags() as $tag) {
 }
 $tags = implode(', ',$tags);
 if ($tags) {
-	$tags = "<p><strong>{$this->_(['labels.tag', 'labels.tags', 2])}: </strong>$tags</p>";
+	$tags = "<p><strong>{$this->_(['tag', 'tags', 2])}: </strong>$tags</p>";
 }
 
 echo "

@@ -25,12 +25,12 @@ $editSeatButton = '';
 if (Person::isAllowed('seats', 'edit')) {
 	$addTermButton = $helper->buttonLink(
 		BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.add_term'),
+		$this->translate('add_term'),
 		'add'
 	);
 	$editSeatButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.edit_seat'),
+		$this->translate('edit_seat'),
 		'edit'
 	);
 }
@@ -38,22 +38,22 @@ echo "
 <div>
 	<h2>$name $editSeatButton $addTermButton</h2>
 	<table>
-		<tr><th>{$this->_('labels.appointed_by')}</th>
+		<tr><th>{$this->_('appointed_by')}</th>
 			<td>$appointer</td>
 		</tr>
-		<tr><th>{$this->_(['labels.committee', 'labels.committees', 1])}</th>
+		<tr><th>{$this->_(['committee', 'committees', 1])}</th>
 			<td>$committee</td>
 		</tr>
-		<tr><th>{$this->_('labels.maxCurrentTerms')}</th>
+		<tr><th>{$this->_('maxCurrentTerms')}</th>
 			<td>{$this->seat->getMaxCurrentTerms()}</td>
 		</tr>
-		<tr><th>{$this->_('labels.date_start')}</th>
+		<tr><th>{$this->_('date_start')}</th>
 			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_('labels.date_end')}</th>
+		<tr><th>{$this->_('date_end')}</th>
 			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_(['labels.requirement', 'labels.requirements', 2])}</th>
+		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
 			<td>$requirements</td>
 		</tr>
 	</table>

@@ -20,7 +20,7 @@ use Application\Models\Person;
 	}
 	foreach ($routes as $singular=>$plural) {
 		if (Person::isAllowed($plural, 'index')) {
-			echo sprintf($a, BASE_URI.'/'.$plural, $this->_(["labels.$singular", "labels.$plural", 2]));
+			echo sprintf($a, BASE_URI.'/'.$plural, $this->_(["$singular", "$plural", 2]));
 		}
 	}
 ?>

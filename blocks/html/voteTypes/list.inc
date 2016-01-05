@@ -11,13 +11,13 @@ use Blossom\Classes\View;
 ?>
 <div>
 	<h2><?php
-			echo $this->_(['labels.voteType','labels.voteTypes',2]);
+			echo $this->_(['voteType','voteTypes',2]);
 
 			if (Person::isAllowed('voteTypes')) {
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/voteTypes/update',
-					$this->translate('labels.add_voteType'),
+					$this->translate('add_voteType'),
 					'add'
 				);
 			}
@@ -31,7 +31,7 @@ use Blossom\Classes\View;
 				if (Person::isAllowed('voteTypes')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/voteTypes/update?voteType_id='.$voteType->getId(),
-						$this->translate('labels.edit_voteType'),
+						$this->translate('edit_voteType'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);

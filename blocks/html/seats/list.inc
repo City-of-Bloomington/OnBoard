@@ -15,12 +15,12 @@ $helper = $this->template->getHelper('buttonLink');
 ?>
 <div>
 	<h2><?php
-			echo $this->_(['labels.seat', 'labels.seats', 2]);
+			echo $this->_(['seat', 'seats', 2]);
 
 			if (isset($this->committee) && $userCanEdit) {
 				echo $helper->buttonLink(
 					BASE_URI.'/seats/update?committee_id='.$this->committee->getId(),
-					$this->translate('labels.add_seat'),
+					$this->translate('add_seat'),
 					'add'
 				);
 			}
@@ -29,11 +29,11 @@ $helper = $this->template->getHelper('buttonLink');
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?></th>
-				<th><?php echo $this->_('labels.maxCurrentTerms'); ?></th>
-				<th><?php echo $this->_('labels.date_start'); ?></th>
-				<th><?php echo $this->_('labels.date_end'); ?></th>
+				<th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_(['appointer', 'appointers', 1]); ?></th>
+				<th><?php echo $this->_('maxCurrentTerms'); ?></th>
+				<th><?php echo $this->_('date_start'); ?></th>
+				<th><?php echo $this->_('date_end'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,7 +45,7 @@ $helper = $this->template->getHelper('buttonLink');
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/seats/update?seat_id='.$seat->getId(),
-						$this->translate('labels.edit_seat'),
+						$this->translate('edit_seat'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);

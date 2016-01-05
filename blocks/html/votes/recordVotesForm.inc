@@ -8,15 +8,15 @@
 use Application\Models\VotingRecord;
 use Blossom\Classes\View;
 ?>
-<h2><?php echo $this->_('labels.edit_votingRecords'); ?></h2>
+<h2><?php echo $this->_('edit_votingRecords'); ?></h2>
 <form method="post" action="<?php echo BASE_URI; ?>/votes/recordVotes">
-	<fieldset><legend><?php echo $this->_(['labels.votingRecord', 'labels.votingRecords', 1]); ?></legend>
+	<fieldset><legend><?php echo $this->_(['votingRecord', 'votingRecords', 1]); ?></legend>
 		<input name="vote_id" type="hidden" value="<?php echo $this->vote->getId(); ?>" />
 
 		<table>
 			<thead>
-			<tr><th><?php echo $this->_(['labels.member', 'labels.members', 1]); ?></th>
-				<th><?php echo $this->_(['labels.term',   'labels.terms',   1]); ?></th>
+			<tr><th><?php echo $this->_(['member', 'members', 1]); ?></th>
+				<th><?php echo $this->_(['term',   'terms',   1]); ?></th>
 				<?php
 					foreach (VotingRecord::$positions as $position) {
 						echo '<th>'.ucfirst($position).'</td>';

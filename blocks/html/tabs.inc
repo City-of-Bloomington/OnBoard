@@ -23,7 +23,7 @@ foreach ($this->tabs as $tab) {
 	// We know what all the database tables are, and they're simple.
 	// We have pluralized entries in the en_US.po for each of these.
 	$singular = substr($tab, 0, -1);
-	$name = $this->_(["labels.$singular", "labels.$tab", 2]);
+	$name = $this->_(["$singular", "$tab", 2]);
 	echo "<li $class><a href=\"$url\">$name</a></li>";
 }
 echo "</ul>";

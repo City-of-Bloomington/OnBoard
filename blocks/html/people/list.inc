@@ -12,7 +12,7 @@ use Blossom\Classes\Url;
 ?>
 <div>
 	<h2><?php
-			echo $this->translate(['labels.person','labels.people',2]);
+			echo $this->translate(['person','people',2]);
 
 			if (Person::isAllowed('people')) {
 				// Preserve any extra parameters passed in
@@ -25,7 +25,7 @@ use Blossom\Classes\Url;
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					$url,
-					$this->translate('labels.add_person'),
+					$this->translate('add_person'),
 					'add'
 				);
 			}
@@ -34,9 +34,9 @@ use Blossom\Classes\Url;
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('labels.username'); ?></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_(['labels.email','labels.emails',1]); ?></th>
+				<th><?php echo $this->_('username'); ?></th>
+				<th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_(['email','emails',1]); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,7 +46,7 @@ use Blossom\Classes\Url;
 				if (Person::isAllowed('people')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/people/update?person_id='.$person->getId(),
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
