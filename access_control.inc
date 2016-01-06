@@ -55,6 +55,8 @@ $ZEND_ACL->allow('Staff',[
 	'appointers','committees','offices','races',
 	'seats', 'tags', 'terms', 'topics', 'topicTypes', 'votes', 'voteTypes'
 ]);
+$ZEND_ACL->deny('Staff', 'seats', 'delete');
+$ZEND_ACL->deny('Staff', 'committees', 'changeType');
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

@@ -2,9 +2,11 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
 use Application\Models\Committee;
+use Application\Models\Person;
 use Blossom\Classes\View;
 
 $fields = [
@@ -27,16 +29,22 @@ $title = $this->committee->getId() ? $this->_('edit_committee') : $this->_('add_
 
 		<table>
             <tr><td><label   for="type"><?= $this->_('type'); ?></label></td>
-                <td><select name="type" class="required">
-                    <?php
+                <td>
+                <?php
+                    if (Person::isAllowed('committees', 'changeType')) {
+                        echo '<select name="type" class="required">';
                         foreach (Committee::$types as $t) {
                             $selected = $type === $t
                                 ? 'selected="true"'
                                 : '';
                             echo "<option value=\"$t\" $selected>$t</option>";
                         }
-                    ?>
-                    </select>
+                        echo '</select>';
+                    }
+                    else {
+                        echo $type;
+                    }
+                ?>
                 </td>
             </tr>
 			<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>

@@ -98,7 +98,6 @@ class Committee extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
-            'type',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule'
@@ -106,6 +105,10 @@ class Committee extends ActiveRecord
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
+		}
+
+		if (Person::isAllowed('committees', 'changeType') && isset($post['type'])) {
+            $this->setType($post['type']);
 		}
 	}
 
