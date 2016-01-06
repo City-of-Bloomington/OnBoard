@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -13,6 +13,7 @@ class Term extends ActiveRecord
 {
 	protected $tablename = 'terms';
 
+	protected $committee;
 	protected $seat;
 	protected $person;
 
@@ -59,10 +60,16 @@ class Term extends ActiveRecord
 	 */
 	public function validate()
 	{
-		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->getSeat_id() || !$this->getPerson_id()) {
-			throw new \Exception('missingRequiredFields');
-		}
+        $committee = $this->getCommittee();
+        if (!$committee) {
+            throw new \Exception('terms/missingCommittee');
+        }
+        if ($committee->getType() === 'seated' && !$this->getSeat_id()) {
+            throw new \Exception('terms/missingSeat');
+        }
+        if (!$this->getPerson_id()) {
+            throw new \Exception('terms/missingPerson');
+        }
 
 		if (!$this->getTerm_start()) {
 			$this->setTerm_start(date(DATE_FORMAT));
@@ -74,24 +81,25 @@ class Term extends ActiveRecord
 		if ($end && $end < $start) { throw new \Exception('terms/invalidEndDate'); }
 
 		// Make sure this term does not exceed the maxCurrentTerms for the seat
-		$seat = $this->getSeat();
-		$max  = $seat->getMaxCurrentTerms();
-		if (($start <= time() && (!$end || $end >= time())) && $max) {
-			// The term we're adding is current, make sure there's room
-			$count = count($seat->getCurrentTerms());
-			if (!$this->getId()) {
-				$count++;
-			}
-			if ($count > $max) {
-				throw new \Exception('seats/maxCurrentTermsFilled');
-			}
-		}
+		if ($committee->getType() === 'seated') {
+            $seat = $this->getSeat();
+            $max  = $seat->getMaxCurrentTerms();
+            if (($start <= time() && (!$end || $end >= time())) && $max) {
+                // The term we're adding is current, make sure there's room
+                $count = count($seat->getCurrentTerms());
+                if (!$this->getId()) {
+                    $count++;
+                }
+                if ($count > $max) {
+                    throw new \Exception('seats/maxCurrentTermsFilled');
+                }
+            }
+        }
 
 		// Make sure this person is not serving overlapping terms for the same committee
 		$zend_db = Database::getConnection();
 		$sql = "select t.id from terms t
-				join seats s on t.seat_id=s.id
-				where s.committee_id=?
+				where t.committee_id=?
 				  and t.person_id=?
 				  and (?<t.term_end and ?>t.term_start)";
 		if ($this->getId()) { $sql.= ' and t.id!='.$this->getId(); }
@@ -125,40 +133,45 @@ class Term extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()        { return parent::get('id');   }
-	public function getSeat_id()   { return parent::get('seat_id'); }
-	public function getPerson_id() { return parent::get('person_id'); }
-	public function getSeat()      { return parent::getForeignKeyObject(__namespace__.'\Seat',   'seat_id'); }
-	public function getPerson()    { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
+	public function getId()           { return parent::get('id'          ); }
+	public function getCommittee_id() { return parent::get('committee_id'); }
+	public function getSeat_id()      { return parent::get('seat_id'     ); }
+	public function getPerson_id()    { return parent::get('person_id'   ); }
+	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+	public function getSeat()         { return parent::getForeignKeyObject(__namespace__.'\Seat',      'seat_id'     ); }
+	public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person',    'person_id'   ); }
 	public function getTerm_start($f=null) { return parent::getDateData('term_start', $f); }
 	public function getTerm_end  ($f=null) { return parent::getDateData('term_end',   $f); }
 
-	public function setSeat_id   ($i) { parent::setForeignKeyField (__namespace__.'\Seat',   'seat_id',   $i); }
-	public function setPerson_id ($i) { parent::setForeignKeyField (__namespace__.'\Person', 'person_id', $i); }
-	public function setSeat      ($o) { parent::setForeignKeyObject(__namespace__.'\Seat',   'seat_id',   $o); }
-	public function setPerson    ($o) { parent::setForeignKeyObject(__namespace__.'\Person', 'person_id', $o); }
+	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
+	public function setSeat_id     ($i) { parent::setForeignKeyField (__namespace__.'\Seat',      'seat_id',      $i); }
+	public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
+	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
+	public function setSeat        ($o) { parent::setForeignKeyObject(__namespace__.'\Seat',      'seat_id',      $o); }
+	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
 	public function setTerm_start($d) { parent::setDateData('term_start', $d); }
 	public function setTerm_end  ($d) { parent::setDateData('term_end',   $d); }
 
 	public function handleUpdate($post)
 	{
-		$this->setPerson_id($post['person_id']);
-		$this->setTerm_start($post['term_start']);
-		$this->setTerm_end($post['term_end']);
+        $fields = ['committee_id', 'seat_id', 'person_id', 'term_start', 'term_end'];
+        foreach ($fields as $f) {
+            $set = 'set'.ucfirst($f);
+            $this->$set($post[$f]);
+        }
 	}
-
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
 	public function __toString() { return parent::get('text'); }
 
-	/**
-	 * @return Committee
-	 */
-	public function getCommittee()
+	public function getAppointer()
 	{
-		return $this->getSeat()->getCommittee();
+        $seat = $this->getSeat();
+        if ($seat) {
+            return $seat->getAppointer();
+        }
 	}
 
 	/**

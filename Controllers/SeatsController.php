@@ -65,6 +65,23 @@ class SeatsController extends Controller
 		$this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
 	}
 
+	public function delete()
+	{
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+                $committee_id = $seat->getCommittee_id();
+
+                $seat->delete();
+                header('Location: '.BASE_URL."/committees/view?committee_id=$committee_id;tab=seats");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $this->template->blocks[] = new Block('404.inc');
+	}
+
 	public function updateRequirements()
 	{
 		$seat = $this->loadSeat($_REQUEST['seat_id']);
@@ -97,7 +114,7 @@ class SeatsController extends Controller
 	public function removeRequirement()
 	{
 		$seat = $this->loadSeat($_REQUEST['seat_id']);
-		
+
 		$requirement = new Requirement($_REQUEST['requirement_id']);
 
 		$seat->removeRequirement($requirement);

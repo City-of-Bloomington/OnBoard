@@ -32,11 +32,6 @@ class TermTable extends TableGateway
 						$select->where("terms.term_end   < '$date'");
 						break;
 
-					case 'committee_id':
-						$select->join(['s'=>'seats'], 'terms.seat_id=s.id', []);
-						$select->where(['s.committee_id' => $value]);
-						break;
-
 					case 'term_id':
 						$order = "p.lastname,p.firstname";
 						$select->join(['p' =>'people'],        'terms.person_id=p.id',      [], $select::JOIN_LEFT);

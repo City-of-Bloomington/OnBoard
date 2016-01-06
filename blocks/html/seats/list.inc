@@ -10,7 +10,9 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 
-$userCanEdit = Person::isAllowed('seats', 'edit');
+$userCanEdit   = Person::isAllowed('seats', 'edit');
+$userCanDelete = Person::isAllowed('seats', 'delete');
+
 $helper = $this->template->getHelper('buttonLink');
 ?>
 <div>
@@ -34,6 +36,7 @@ $helper = $this->template->getHelper('buttonLink');
 				<th><?php echo $this->_('maxCurrentTerms'); ?></th>
 				<th><?php echo $this->_('date_start'); ?></th>
 				<th><?php echo $this->_('date_end'); ?></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,9 +45,11 @@ $helper = $this->template->getHelper('buttonLink');
 			$editButton = '';
 
 			foreach ($this->seats as $seat) {
+                $seat_id = $seat->getId();
+
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
-						BASE_URI.'/seats/update?seat_id='.$seat->getId(),
+						BASE_URI."/seats/update?seat_id=$seat_id",
 						$this->translate('edit_seat'),
 						'edit',
 						ButtonLink::SIZE_ICON
@@ -52,7 +57,16 @@ $helper = $this->template->getHelper('buttonLink');
 				}
 				$name      = View::escape($seat->getName());
 				$appointer = View::escape($seat->getAppointer());
-				$class = $seat->getId() == $currentSeatId ? 'class="current"' : '';
+				$class = $seat_id == $currentSeatId ? 'class="current"' : '';
+
+				$deleteButton = '';
+				if ($userCanDelete && $seat->canBeDeleted()) {
+                    $deleteButton = $helper->buttonLink(
+                        BASE_URI."/seats/delete?seat_id=$seat_id",
+                        $this->_('seat_delete'),
+                        'delete'
+                    );
+				}
 				echo "
 				<tr $class>
 					<td>$editButton</td>
@@ -61,6 +75,7 @@ $helper = $this->template->getHelper('buttonLink');
 					<td>{$seat->getMaxCurrentTerms()}</td>
 					<td>{$seat->getStartDate(DATE_FORMAT)}</td>
 					<td>{$seat->getEndDate(DATE_FORMAT)}</td>
+					<td>$deleteButton</td>
 				</tr>
 				";
 			}

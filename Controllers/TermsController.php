@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -26,13 +26,37 @@ class TermsController extends Controller
 		if (empty($_REQUEST['term_id'])) {
 			$term = new Term();
 
+			if (!empty($_REQUEST['committee_id'])) {
+                try {
+                    $term->setCommittee_id($_REQUEST['committee_id']);
+                }
+                catch (\Exception $e) {
+                    $requiredFieldMissing = true;
+                    $_SESSION['errorMessages'][] = $e;
+                }
+			}
+
 			if (!empty($_REQUEST['seat_id'])) {
 				try {
 					$term->setSeat_id($_REQUEST['seat_id']);
 				}
 				catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 			}
-			else { $_SESSION['errorMessages'][] = new \Exception('terms/missingSeat'); }
+
+            // If we don't have a committee and/or seat, we should error out right now
+			$committee_id = $term->getCommittee_id();
+			if (   !$committee_id
+                || ($term->getCommittee()->getType() === 'seated' && !$term->getSeat_id())) {
+
+                if (!empty($_REQUEST['return_url'])) { $r = $_REQUEST['return_url']; }
+                else {
+                    $r = BASE_URL.'/committees';
+                    if ($committee_id) { $r .="/view?committee_id=$committee_id"; }
+                }
+                header("Location: $r");
+                exit();
+            }
+
 
 			if (!empty($_REQUEST['person_id'])) {
 				try {
@@ -71,9 +95,12 @@ class TermsController extends Controller
 				}
 				catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 			}
+
+			$this->template->blocks[] = new Block('committees/info.inc',  ['committee'=>$term->getCommittee()]);
 			$seat = $term->getSeat();
-			$this->template->blocks[] = new Block('committees/info.inc',  ['committee'=>$seat->getCommittee()]);
-			$this->template->blocks[] = new BlocK('seats/info.inc',       ['seat'=>$seat]);
+			if ($seat) {
+                $this->template->blocks[] = new BlocK('seats/info.inc',   ['seat'=>$seat]);
+            }
 			$this->template->blocks[] = new Block('terms/updateForm.inc', ['term'=>$term, 'return_url'=>$return_url]);
 		}
 		else {

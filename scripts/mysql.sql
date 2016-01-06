@@ -68,12 +68,14 @@ create table seats (
 
 create table terms (
 	id int unsigned not null primary key auto_increment,
-	seat_id int unsigned not null,
-	person_id int unsigned not null,
+	committee_id int unsigned not null,
+	seat_id      int unsigned,
+	person_id    int unsigned not null,
 	term_start date,
-	term_end date,
-	foreign key (seat_id) references seats(id),
-	foreign key (person_id) references people(id)
+	term_end   date,
+	foreign key (committee_id) references committees(id),
+	foreign key (seat_id)      references seats     (id),
+	foreign key (person_id)    references people    (id)
 );
 
 create table offices (

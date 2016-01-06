@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -81,6 +81,17 @@ class Seat extends ActiveRecord
 
 	public function save() { parent::save(); }
 
+	public function delete()
+	{
+        if ($this->canBeDeleted()) {
+            $zend_db = Database::getConnection();
+            $sql = 'update terms set seat_id=null where seat_id=?';
+            $zend_db->query($sql, [$this->getId()]);
+
+            parent::delete();
+        }
+	}
+
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
@@ -146,5 +157,37 @@ class Seat extends ActiveRecord
 	public function getCurrentTerms()
 	{
 		return $this->getTerms(['current'=>time()]);
+	}
+
+	/**
+	 * Checks whether it is safe to delete a seat.
+	 *
+     * Seats on 'seated' committees can only be deleted if there are no terms
+     * associated with the seat.
+     *
+     * Open committees do not need seats.
+     * When you change a committee's type from seated to open, the seats
+     * will still be there.  For 'open' committees we allow users to delete the
+     * unneeded seats.  The system will preserve the terms.  We simply remove the
+     * seat_id from all the terms before deleting the seat.
+     *
+	 * @return bool
+	 */
+	public function canBeDeleted()
+	{
+        $committee = $this->getCommittee();
+
+        if ($committee->getType() === 'seated') {
+            // Seats on seated committees can only be deleted if there are no terms
+            $zend_db = Database::getConnection();
+            $sql = 'select count(*) as count from terms where seat_id=?';
+            $result = $zend_db->query($sql, [$this->getId()]);
+            $row = $result->current();
+            return $row['count'] === 0;
+        }
+        else {
+            // Terms for open committees do not need seats.
+            return true;
+        }
 	}
 }
