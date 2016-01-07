@@ -16,3 +16,8 @@ configuration.inc
 /public/css/Font-Awesome/scss/
 /public/css/Font-Awesome/src/
 /public/js/yui3/src/
+/gulpfile.js
+/node_modules/
+/.ftppass
+/.gulp-build
+/package.json
