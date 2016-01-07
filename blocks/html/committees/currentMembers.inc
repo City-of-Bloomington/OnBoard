@@ -67,8 +67,11 @@ use Application\Templates\Helpers\ButtonLink;
 
                 $appointer = self::escape($term->getAppointer());
                 $fullname  = self::escape($term->getPerson()->getFullname());
+
+                $class = $term->isCarryingOver() ? 'class="carryover"' : '';
                 echo "
-                <tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
+                <tr $class>
+                    <td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
                     <td>$appointer</td>
                     <td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}
                         $editTermButton
@@ -123,7 +126,7 @@ use Application\Templates\Helpers\ButtonLink;
             );
             echo '</div>';
         }
-        
+
         echo "
         <div>
             <a href=\"{$this->committee->getUri()};members=past\">

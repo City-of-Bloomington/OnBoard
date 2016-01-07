@@ -23,7 +23,7 @@ class TermTable extends TableGateway
 					case 'current':
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
 						$select->where("terms.term_start<='$date'");
-						$select->where("(terms.term_end is null or terms.term_end>='$date')");
+						$select->where("((terms.term_end is null or terms.term_end>='$date') or terms.carryover=1)");
 						break;
 
 					case 'before':

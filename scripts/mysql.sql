@@ -73,6 +73,7 @@ create table terms (
 	person_id    int unsigned not null,
 	term_start date,
 	term_end   date,
+	carryover boolean,
 	foreign key (committee_id) references committees(id),
 	foreign key (seat_id)      references seats     (id),
 	foreign key (person_id)    references people    (id)

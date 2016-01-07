@@ -142,6 +142,7 @@ class Term extends ActiveRecord
 	public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person',    'person_id'   ); }
 	public function getTerm_start($f=null) { return parent::getDateData('term_start', $f); }
 	public function getTerm_end  ($f=null) { return parent::getDateData('term_end',   $f); }
+	public function getCarryOver() { return parent::get('carryover'); }
 
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setSeat_id     ($i) { parent::setForeignKeyField (__namespace__.'\Seat',      'seat_id',      $i); }
@@ -151,6 +152,7 @@ class Term extends ActiveRecord
 	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
 	public function setTerm_start($d) { parent::setDateData('term_start', $d); }
 	public function setTerm_end  ($d) { parent::setDateData('term_end',   $d); }
+	public function setCarryOver($b) { parent::set('carryover', $b ? 1 : null); }
 
 	public function handleUpdate($post)
 	{
@@ -159,6 +161,8 @@ class Term extends ActiveRecord
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
+
+        $this->setCarryOver(!empty($post['carryover']));
 	}
 
 	//----------------------------------------------------------------
@@ -181,6 +185,14 @@ class Term extends ActiveRecord
 	{
 		$table = new VotingRecordTable();
 		return $table->find(['term_id'=>$this->getId()]);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isCarryingOver()
+	{
+        return $this->getCarryOver() ? true : false;
 	}
 
 	/**

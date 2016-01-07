@@ -390,6 +390,9 @@ msgstr "Start Date"
 msgid "date_end"
 msgstr "End Date"
 
+msgid "carryover"
+msgstr "Carry Over"
+
 msgid "year_formed"
 msgstr "Year Formed"
 

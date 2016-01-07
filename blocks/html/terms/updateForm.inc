@@ -42,6 +42,10 @@ $title = $this->term->getId() ? $this->_('edit_term') : $this->_('add_term');
 							value="<?= $this->term->getTerm_end(DATE_FORMAT); ?>" />
 					</td>
 				</tr>
+				<tr><td><label for="carryover"><?= $this->_('carryover'); ?></label></td>
+                    <td><input name="carryover" id="carryover" type="checkbox" value="1"
+                            <?= $this->term->isCarryingOver() ? 'checked="true"' : ''; ?> />
+                    </td>
 			</table>
 			<?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');

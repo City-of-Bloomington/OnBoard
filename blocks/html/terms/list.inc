@@ -49,8 +49,11 @@ $title = $this->title ? View::escape($this->title) : $this->_(['term', 'terms', 
 				$committeeName = View::escape($committee->getName());
 				$appointer     = View::escape($term->getSeat()->getAppointer());
 
+				$class = $term->isCarryingOver() ? 'class="carryover"' : '';
+
 				echo "
-				<tr><td><a href=\"{$term->getPerson()->getUri()}\">$personName</a></td>
+				<tr $class>
+                    <td><a href=\"{$term->getPerson()->getUri()}\">$personName</a></td>
 					<td><a href=\"{$committee->getUri()}\">$committeeName</a></td>
 					<td>$appointer</td>
 					<td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}</td>
