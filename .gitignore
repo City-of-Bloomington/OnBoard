@@ -2,6 +2,8 @@ configuration.inc
 site_config.inc
 data/sessions/*
 *.mo
+screen.css
+screen.css.map
 build
 dist
 vendor
