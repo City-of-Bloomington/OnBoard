@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->seats
- * @param Committee $this->allocation (optional)
+ * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -18,6 +18,7 @@ $helper = $this->template->getHelper('buttonLink');
 		<thead>
 			<tr><th></th>
 				<th><?= $this->_('name'); ?></th>
+				<th><?= $this->_(['appointer', 'appointers', 1]); ?></th>
 				<th><?= $this->_('startDate'); ?></th>
 				<th><?= $this->_('endDate'); ?></th>
 			</tr>
@@ -37,12 +38,14 @@ $helper = $this->template->getHelper('buttonLink');
 						ButtonLink::SIZE_ICON
 					);
 				}
-				$name = self::escape($seat->getName());
+				$name      = self::escape($seat->getName());
+				$appointer = self::escape($seat->getAppointer());
 				$uri  = BASE_URI."/seats/view?seat_id=$seat_id";
 
 				echo "
 				<tr><td>$editButton</td>
 					<td><a href=\"$uri\">$name</a></td>
+					<td>$appointer</td>
 					<td>{$seat->getStartDate(DATE_FORMAT)}</td>
 					<td>{$seat->getEndDate(DATE_FORMAT)}</td>
 				</tr>
@@ -52,9 +55,9 @@ $helper = $this->template->getHelper('buttonLink');
 		</tbody>
 	</table>
 	<?php
-        if (isset($this->allocation) && Person::isAllowed('seats', 'add')) {
+        if (isset($this->committee) && Person::isAllowed('seats', 'add')) {
             echo $helper->buttonLink(
-                BASE_URI."/seats/update?allocation_id={$this->allocation->getId()}",
+                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
                 $this->translate('seat_add'),
                 'add'
             );

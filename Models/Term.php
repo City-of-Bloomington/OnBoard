@@ -72,6 +72,21 @@ class Term extends ActiveRecord
 		$start = (int)$this->getStartDate('U');
 		$end   = (int)$this->getEndDate  ('U');
 		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
+
+		// Make sure this term is not overlapping terms for the seat
+		$zend_db = Database::getConnection();
+		$sql = "select id from terms
+                where seat_id=?
+                and (?<endDate and ?>startDate)";
+		if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
+
+		$result = $zend_db->createStatement($sql)->execute([
+            $this->getSeat_id(),
+			$this->getStartDate(), $this->getEndDate()
+		]);
+		if (count($result) > 0) {
+			throw new \Exception('overlappingTerms');
+		}
 	}
 
 	public function save() { parent::save(); }
@@ -92,7 +107,7 @@ class Term extends ActiveRecord
 
 	public function handleUpdate($post)
 	{
-        $fields = ['seat_id', 'person_id', 'startDate', 'endDate'];
+        $fields = ['seat_id', 'startDate', 'endDate'];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);

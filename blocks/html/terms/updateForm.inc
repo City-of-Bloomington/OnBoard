@@ -6,7 +6,7 @@
  * @param Term $this->term
  */
 
-$title = $this->term->getId() ? $this->_('edit_term') : $this->_('add_term');
+$title = $this->term->getId() ? $this->_('term_edit') : $this->_('term_add');
 ?>
 <div>
 	<h2><?= $title; ?></h2>

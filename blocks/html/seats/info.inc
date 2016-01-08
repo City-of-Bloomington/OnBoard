@@ -8,7 +8,15 @@
 use Application\Models\Person;
 use Michelf\MarkdownExtra;
 
-$name = self::escape($this->seat->getName());
+$name         = self::escape($this->seat->getName());
+$appointer    = self::escape($this->seat->getAppointer());
+$committee    = self::escape($this->seat->getCommittee()->getName());
+$requirements = self::escape($this->seat->getRequirements());
+
+if ($requirements) {
+	$markdown = new MarkdownExtra();
+	$requirements = $markdown->transform($requirements);
+}
 
 $helper = $this->template->getHelper('buttonLink');
 $editSeatButton = '';
@@ -23,11 +31,23 @@ echo "
 <div>
 	<h2>$name $editSeatButton</h2>
 	<table>
+        <tr><th>{$this->_('type')}</th>
+            <td>{$this->seat->getType()}</td>
+        </tr>
+		<tr><th>{$this->_('appointed_by')}</th>
+			<td>$appointer</td>
+		</tr>
+		<tr><th>{$this->_(['committee', 'committees', 1])}</th>
+			<td>$committee</td>
+		</tr>
 		<tr><th>{$this->_('startDate')}</th>
 			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
 		</tr>
 		<tr><th>{$this->_('endDate')}</th>
 			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
+		</tr>
+		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
+			<td>$requirements</td>
 		</tr>
     </table>
 </div>

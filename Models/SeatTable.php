@@ -13,4 +13,18 @@ use Zend\Db\Sql\Select;
 class SeatTable extends TableGateway
 {
 	public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
+
+	public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+	{
+		$select = new Select('seats');
+		if (count($fields)) {
+			foreach ($fields as $key=>$value) {
+				switch ($key) {
+					default:
+						$select->where([$key=>$value]);
+				}
+			}
+		}
+		return parent::performSelect($select, $order, $paginated, $limit);
+	}
 }

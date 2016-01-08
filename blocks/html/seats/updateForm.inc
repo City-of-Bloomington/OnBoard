@@ -5,7 +5,10 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
-$fields = ['id', 'allocation_id', 'name'];
+use Application\Models\AppointerTable;
+use Application\Models\Seat;
+
+$fields = ['id', 'type', 'committee_id', 'appointer_id', 'name', 'requirements'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = $this->seat->$get();
@@ -17,11 +20,40 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 <form method="post" action="<?php echo BASE_URI; ?>/seats/update">
 	<fieldset><legend><?php echo $this->_('info_seat'); ?></legend>
         <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
-        <input name="allocation_id" type="hidden" value="<?= $allocation_id; ?>" />
+        <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
 
 		<table>
+            <tr><td><label  for="type" class="required"><?= $this->_('type'); ?></label></td>
+                <td><select name="type">
+                    <?php
+                        foreach (Seat::$types as $t) {
+                            $selected = $t === $type
+                                ? 'selected="true"'
+                                : '';
+                            echo "<option $selected>$t</option>";
+                        }
+                    ?>
+                    </select>
+                </td>
+            </tr>
 			<tr><td><label  for="name" class="required"><?= $this->_('name'); ?></label></td>
 				<td><input name="name" id="name" value="<?= $name; ?>" /></td>
+			</tr>
+			<tr><td><label   for="appointer_id" class="required"><?= $this->_(['appointer', 'appointers', 1]); ?></label></td>
+				<td><select name="appointer_id" id="appointer_id"><option value=""></option>
+					<?php
+						$table = new AppointerTable();
+						$list = $table->find();
+						foreach ($list as $a) {
+							$name = self::escape($a->getName());
+							$selected = ($appointer_id === $a->getId())
+										? 'selected="true"'
+										: '';
+							echo "<option value=\"{$a->getId()}\" $selected>$name</option>";
+						}
+					?>
+					</select>
+				</td>
 			</tr>
             <tr><td><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></td>
                 <td><input name="startDate" id="startDate"
@@ -34,9 +66,13 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
                 </td>
             </tr>
         </table>
+		<div>
+			<div><label for="requirements"><?= $this->_(['requirement', 'requirements', 2]); ?></label></div>
+			<textarea  name="requirements" id="requirements" class="markdown"><?= $requirements; ?></textarea>
+		</div>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons(BASE_URI."/allocations/view?allocation_id=$allocation_id");
+			echo $helper->saveAndCancelButtons(BASE_URI."/committees/view?committee_id=$committee_id");
 		?>
 	</fieldset>
 </form>

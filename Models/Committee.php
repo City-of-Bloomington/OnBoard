@@ -121,12 +121,6 @@ class Committee extends ActiveRecord
 	public function getUrl() { return BASE_URL.'/committees/view?committee_id='.$this->getId(); }
 	public function getUri() { return BASE_URI.'/committees/view?committee_id='.$this->getId(); }
 
-	public function getAllocations()
-	{
-        $table = new AllocationTable();
-        return $table->find(['committee_id' => $this->getId()]);
-	}
-
 	/**
 	 * Returns a ResultSet containing Seats.
 	 *

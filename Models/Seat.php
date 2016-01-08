@@ -16,7 +16,8 @@ class Seat extends ActiveRecord
 
 	protected $tablename = 'seats';
 
-	protected $allocation;
+	protected $committee;
+	protected $appointer;
 
 	/**
 	 * Populates the object with data
@@ -52,7 +53,21 @@ class Seat extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->setAppointer_id   (1);
+			$this->setStartDate(date(DATE_FORMAT));
 		}
+	}
+
+	/**
+	 * We are setting the default Appoint at construct time,
+	 * however, the TableGateway contructs first, then calls exchangeArray().
+	 * This means there will be a mismatch in the protected $appointer property,
+	 * which is intended to be lazy-loaded from $data
+	 * We need to clear out that property when loading an array of data
+	 */
+	public function exchangeArray($data)
+	{
+		$this->appointer = null; parent::exchangeArray($data);
 	}
 
 	/**
@@ -63,12 +78,12 @@ class Seat extends ActiveRecord
 	{
         if (!$this->getType()) { $this->setType('termed'); }
 
-		if (!$this->getName())          { throw new \Exception('missingName'); }
-		if (!$this->getAllocation_id()) { throw new \Exception('seats/missingAllocation'); }
+		if (!$this->getName())         { throw new \Exception('missingName'); }
+		if (!$this->getCommittee_id()) { throw new \Exception('seats/missingCommittee'); }
 
 		// Make sure the end date falls after the start date
-		$start = (int)$this->getTerm_start('U');
-		$end   = (int)$this->getTerm_end  ('U');
+		$start = (int)$this->getStartDate('U');
+		$end   = (int)$this->getEndDate  ('U');
 		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
 	}
 
@@ -77,31 +92,33 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()            { return parent::get('id');   }
-	public function getType()          { return parent::get('type'); }
-	public function getName()          { return parent::get('name'); }
-	public function getAllocation_id() { return parent::get('allocation_id'); }
-	public function getAllocation()    { return parent::getForeignKeyObject(__namespace__.'\Allocation', 'allocation_id'); }
+	public function getId()           { return parent::get('id');   }
+	public function getType()         { return parent::get('type'); }
+	public function getName()         { return parent::get('name'); }
+	public function getRequirements() { return parent::get('requirements'); }
+	public function getCommittee_id() { return parent::get('committee_id'); }
+	public function getAppointer_id() { return parent::get('appointer_id'); }
+	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
 	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
 
-	public function setType($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
-	public function setName($s)          { parent::set('name', $s); }
-	public function setAllocation_id($i) { parent::setForeignKeyField (__namespace__.'\Allocation', 'allocation_id', $i); }
-	public function setAllocation   ($o) { parent::setForeignKeyObject(__namespace__.'\Allocation', 'allocation_id', $o); }
+	public function setType        ($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
+	public function setName        ($s) { parent::set('name', $s); }
+	public function setRequirements($s) { parent::set('requirements', $s); }
+	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
+	public function setAppointer_id($i) { parent::setForeignKeyField (__namespace__.'\Appointer', 'appointer_id', $i); }
+	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
+	public function setAppointer($o)    { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d) { parent::setDateData('startDate', $d); }
 	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
 
 	public function handleUpdate($post)
 	{
-		$fields = ['name', 'allocation_id', 'startDate', 'endDate'];
+		$fields = ['name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type'];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
-		}
-
-		if (Person::isAllowed('seats', 'changeType') && isset($post['type'])) {
-            $this->setType($post['type']);
 		}
 	}
 

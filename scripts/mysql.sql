@@ -56,26 +56,17 @@ insert appointers values(1,'Elected');
 --
 -- Begin 2.0 changes
 --
-create table allocations (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null,
-	committee_id int unsigned not null,
-	appointer_id int unsigned,
-	startDate date not null,
-	endDate   date,
-	requirements text,
-	foreign key (appointer_id) references appointers(id),
-	foreign key (committee_id) references committees(id)
-);
-
 create table seats (
     id int unsigned not null primary key auto_increment,
     type enum('termed', 'open'),
     name varchar(128) not null,
-    allocation_id int unsigned not null,
+	committee_id int unsigned not null,
+	appointer_id int unsigned,
     startDate date,
     endDate   date,
-    foreign key (allocation_id) references allocations(id)
+    requirements text,
+	foreign key (committee_id) references committees(id),
+	foreign key (appointer_id) references appointers(id)
 );
 
 create table terms (

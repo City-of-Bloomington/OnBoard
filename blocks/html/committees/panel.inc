@@ -13,11 +13,13 @@ use Blossom\Classes\Url;
 include APPLICATION_HOME.'/blocks/html/committees/breadcrumbs.inc';
 include APPLICATION_HOME.'/blocks/html/committees/info.inc';
 
-$block = new Block('allocations/list.inc', [
-    'committee'   => $this->committee,
-    'allocations' => $this->committee->getAllocations()
-]);
-echo $block->render('html', $this->template);
+if ($this->committee->getType() === 'seated') {
+    $block = new Block('seats/list.inc', [
+        'committee' => $this->committee,
+        'seats'     => $this->committee->getSeats()
+    ]);
+    echo $block->render('html', $this->template);
+}
 
 /*
 $tabs = ['members', 'topics', 'seats'];

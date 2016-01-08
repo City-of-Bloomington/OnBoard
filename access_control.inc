@@ -31,7 +31,6 @@ $ZEND_ACL->addResource(new Resource('appointers'));
 $ZEND_ACL->addResource(new Resource('committees'));
 $ZEND_ACL->addResource(new Resource('offices'));
 $ZEND_ACL->addResource(new Resource('races'));
-$ZEND_ACL->addResource(new Resource('allocations'));
 $ZEND_ACL->addResource(new Resource('seats'));
 $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
