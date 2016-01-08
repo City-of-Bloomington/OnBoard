@@ -418,7 +418,7 @@ class Person extends ActiveRecord
 	 *
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getOffices(Committee $committee=null,$date=null)
+	public function getOffices(Committee $committee=null, $date=null)
 	{
 		$search = ['person_id'=>$this->getId()];
 		if ($committee) {

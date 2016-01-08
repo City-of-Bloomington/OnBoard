@@ -19,7 +19,6 @@ use Application\Templates\Helpers\ButtonLink;
                 <th><?= $this->_('term'); ?></th>
                 <th><?= $this->_('startDate'); ?></th>
                 <th><?= $this->_('endDate'); ?></th>
-                <th><?= $this->_(['office', 'offices', 2]); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -31,11 +30,13 @@ use Application\Templates\Helpers\ButtonLink;
                 $editButton = '';
                 if ($userCanEdit) {
                     $editButton = $helper->buttonLink(
-                        BASE_URI."/members/update?term_id={$term->getId()}",
+                        BASE_URI."/members/update?term_id={$member->getTerm_id()}",
                         $this->_('member_edit'),
                         'edit'
                     );
                 }
+
+                $name = self::escape($member->getPerson()->getFullname());
 
                 $seat = $member->getSeat_id() ? self::escape($member->getSeat()->getName()) : '';
                 $t = $member->getTerm();
@@ -45,6 +46,7 @@ use Application\Templates\Helpers\ButtonLink;
 
                 echo "
                 <tr><td>$editButton</td>
+                    <td>$name</td>
                     <td>$seat</td>
                     <td>$term</td>
                     <td>{$member->getStartDate(DATE_FORMAT)}</td>

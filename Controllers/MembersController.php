@@ -45,7 +45,7 @@ class MembersController extends Controller
         if (isset($member)) {
             if (isset($_POST['committee_id'])) {
                 try {
-                    $member->handleUpdate($post);
+                    $member->handleUpdate($_POST);
                     $member->save();
                     header('Location: '.BASE_URL."/committees/view?committee_id={$member->getCommittee_id()}");
                     exit();
