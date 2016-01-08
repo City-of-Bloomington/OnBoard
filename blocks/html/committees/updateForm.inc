@@ -130,7 +130,11 @@ $title = $this->committee->getId() ? $this->_('edit_committee') : $this->_('add_
 	<fieldset><legend><?php echo $this->_('submit'); ?></legend>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons(BASE_URI.'/committees');
+
+			$uri = $this->committee->getId()
+                ? BASE_URI."/committees/view?committee_id={$this->committee->getId()}"
+                : BASE_URI."/committees";
+			echo $helper->saveAndCancelButtons($uri);
 		?>
 	</fieldset>
 </form>

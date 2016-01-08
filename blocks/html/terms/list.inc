@@ -1,67 +1,57 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2016 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->terms
+ * @param Seat $this->seat (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
-$title = $this->title ? View::escape($this->title) : $this->_(['term', 'terms', 2]);
+$title = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 2]);
 ?>
 <div>
-	<h2><?php echo $title; ?></h2>
+	<h2><?= $title; ?></h2>
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_(['committee', 'committees', 1]); ?></th>
-				<th><?php echo $this->_('appointed_by'); ?></th>
-				<th><?php echo $this->_(['term', 'terms', 1]); ?></th>
+				<th><?= $this->_('startDate'); ?></th>
+				<th><?= $this->_('endDate'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
+            $helper = $this->template->getHelper('buttonLink');
+
 			foreach ($this->terms as $term) {
 				$editButton = '';
-				$deleteButton = '';
 				if (Person::isAllowed('terms', 'edit')) {
-					$helper = $this->template->getHelper('buttonLink');
 					$editButton = $helper->buttonLink(
 						BASE_URI."/terms/update?term_id={$term->getId()}",
-						$this->translate('edit'),
+						$this->_('term_edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
-
-					if ($term->isSafeToDelete()) {
-						$deleteButton = $helper->buttonLink(
-							BASE_URI."/terms/delete?term_id={$term->getId()}",
-							$this->translate('delete'),
-							'delete',
-							ButtonLink::SIZE_ICON
-						);
-					}
 				}
-				$committee = $term->getSeat()->getCommittee();
-				$personName    = View::escape($term->getPerson()->getFullname());
-				$committeeName = View::escape($committee->getName());
-				$appointer     = View::escape($term->getSeat()->getAppointer());
-
-				$class = $term->isCarryingOver() ? 'class="carryover"' : '';
 
 				echo "
-				<tr $class>
-                    <td><a href=\"{$term->getPerson()->getUri()}\">$personName</a></td>
-					<td><a href=\"{$committee->getUri()}\">$committeeName</a></td>
-					<td>$appointer</td>
-					<td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}</td>
-					<td>$editButton $deleteButton</td>
+				<tr><td>$editButton</td>
+					<td>{$term->getStartDate(DATE_FORMAT)}</td>
+					<td>{$term->getEndDate(DATE_FORMAT)}</td>
 				</tr>
 				";
 			}
 		?>
 		</tbody>
 	</table>
+	<?php
+        if (isset($this->seat) && Person::isAllowed('terms', 'add')) {
+            echo $helper->buttonLink(
+                BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
+                $this->_('term_add'),
+                'add'
+            );
+        }
+	?>
 </div>

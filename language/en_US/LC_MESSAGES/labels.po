@@ -178,10 +178,10 @@ msgid_plural "committees"
 msgstr[0] "Committee"
 msgstr[1] "Committees"
 
-msgid "add_committee"
+msgid "committee_add"
 msgstr "Add Committee"
 
-msgid "edit_committee"
+msgid "committee_edit"
 msgstr "Edit Committee"
 
 msgid "type"
@@ -202,15 +202,26 @@ msgid_plural "boards"
 msgstr[0] "Board"
 msgstr[1] "Boards"
 
+msgid "allocation"
+msgid_plural "allocations"
+msgstr[0] "Allocation"
+msgstr[1] "Allocations"
+
+msgid "allocation_add"
+msgstr "New Allocation"
+
+msgid "allocation_edit"
+msgstr "Edit Allocation"
+
 msgid "seat"
 msgid_plural "seats"
 msgstr[0] "Seat"
 msgstr[1] "Seats"
 
-msgid "add_seat"
+msgid "seat_add"
 msgstr "Add Seat"
 
-msgid "edit_seat"
+msgid "seat_edit"
 msgstr "Edit Seat"
 
 msgid "seat_delete"
@@ -327,13 +338,13 @@ msgid_plural "terms"
 msgstr[0] "Term"
 msgstr[1] "Terms"
 
-msgid "add_term"
+msgid "term_add"
 msgstr "Add Term"
 
-msgid "edit_term"
+msgid "term_edit"
 msgstr "Edit Term"
 
-msgid "delete_term"
+msgid "term_delete"
 msgstr "Delete Term"
 
 msgid "maxCurrentTerms"
@@ -349,6 +360,12 @@ msgid "member"
 msgid_plural "members"
 msgstr[0] "Member"
 msgstr[1] "Members"
+
+msgid "member_add"
+msgstr "Add Membership"
+
+msgid "member_edit"
+msgstr "Edit Membership"
 
 msgid "current_member"
 msgid_plural "current_members"
@@ -369,10 +386,10 @@ msgid_plural "offices"
 msgstr[0] "Office"
 msgstr[1] "Offices"
 
-msgid "add_office"
+msgid "office_add"
 msgstr "Add Office"
 
-msgid "edit_office"
+msgid "office_edit"
 msgstr "Edit Office"
 
 msgid "vacancy"
@@ -384,10 +401,10 @@ msgstr "Order"
 msgid "date"
 msgstr "Date"
 
-msgid "date_start"
+msgid "startDate"
 msgstr "Start Date"
 
-msgid "date_end"
+msgid "endDate"
 msgstr "End Date"
 
 msgid "carryover"

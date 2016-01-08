@@ -41,7 +41,7 @@ class CommitteesController extends Controller
 	public function view()
 	{
         $committee = $this->loadCommittee($_GET['committee_id']);
-		$this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$committee]);
+        $this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$committee]);
 	}
 
 	public function update()

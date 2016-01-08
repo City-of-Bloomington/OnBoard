@@ -1,61 +1,34 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\Person;
-use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
-$name         = View::escape($this->seat->getName());
-$appointer    = View::escape($this->seat->getAppointer());
-$committee    = View::escape($this->seat->getCommittee()->getName());
-$requirements = View::escape($this->seat->getRequirements());
-
-if ($requirements) {
-	$markdown = new MarkdownExtra();
-	$requirements = $markdown->transform($requirements);
-}
+$name = self::escape($this->seat->getName());
 
 $helper = $this->template->getHelper('buttonLink');
-$addTermButton = '';
 $editSeatButton = '';
 if (Person::isAllowed('seats', 'edit')) {
-	$addTermButton = $helper->buttonLink(
-		BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
-		$this->translate('add_term'),
-		'add'
-	);
 	$editSeatButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
-		$this->translate('edit_seat'),
+		$this->translate('seat_edit'),
 		'edit'
 	);
 }
 echo "
 <div>
-	<h2>$name $editSeatButton $addTermButton</h2>
+	<h2>$name $editSeatButton</h2>
 	<table>
-		<tr><th>{$this->_('appointed_by')}</th>
-			<td>$appointer</td>
-		</tr>
-		<tr><th>{$this->_(['committee', 'committees', 1])}</th>
-			<td>$committee</td>
-		</tr>
-		<tr><th>{$this->_('maxCurrentTerms')}</th>
-			<td>{$this->seat->getMaxCurrentTerms()}</td>
-		</tr>
-		<tr><th>{$this->_('date_start')}</th>
+		<tr><th>{$this->_('startDate')}</th>
 			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_('date_end')}</th>
+		<tr><th>{$this->_('endDate')}</th>
 			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
-			<td>$requirements</td>
-		</tr>
-	</table>
+    </table>
 </div>
 ";

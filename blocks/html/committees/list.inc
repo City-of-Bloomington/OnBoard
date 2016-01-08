@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->committees
  */
 namespace Application\Models;
 
-use Blossom\Classes\View;
 use Application\Templates\Helpers\ButtonLink;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
@@ -24,7 +23,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/committees/update',
-					$this->_('add_committee'),
+					$this->_('committee_add'),
 					'add'
 				);
 			}
@@ -33,34 +32,28 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('name'); ?></th>
-				<th><?php echo $this->_(['seat','seats',2]); ?></th>
+				<th><?= $this->_('name'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php
 			foreach ($this->committees as $c) {
-				$name = View::escape($c->getName());
-				$seats = $c->getMaxCurrentTerms();
-				if (!$seats) { $seats = ''; }
+				$name = self::escape($c->getName());
 
 				$editButton = '';
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/committees/update?committee_id='.$c->getId(),
-						$this->_('edit'),
+						$this->_('committee_edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
 				}
 				$url = BASE_URI.'/committees/view?committee_id='.$c->getId();
-				$vacancy = $c->hasVacancy() ? $this->_('vacancy') : '';
 				echo "
 				<tr><td>$editButton</td>
 					<td><a href=\"$url\">$name</a></td>
-					<td>$seats</td>
-					<td>$vacancy</td>
 				</tr>
 				";
 			}

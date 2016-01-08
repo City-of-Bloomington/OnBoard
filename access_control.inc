@@ -31,6 +31,7 @@ $ZEND_ACL->addResource(new Resource('appointers'));
 $ZEND_ACL->addResource(new Resource('committees'));
 $ZEND_ACL->addResource(new Resource('offices'));
 $ZEND_ACL->addResource(new Resource('races'));
+$ZEND_ACL->addResource(new Resource('allocations'));
 $ZEND_ACL->addResource(new Resource('seats'));
 $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
@@ -56,7 +57,7 @@ $ZEND_ACL->allow('Staff',[
 	'seats', 'tags', 'terms', 'topics', 'topicTypes', 'votes', 'voteTypes'
 ]);
 $ZEND_ACL->deny('Staff', 'seats', 'delete');
-$ZEND_ACL->deny('Staff', 'committees', 'changeType');
+$ZEND_ACL->deny('Staff', ['committees', 'seats'], 'changeType');
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

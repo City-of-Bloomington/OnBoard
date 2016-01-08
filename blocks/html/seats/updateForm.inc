@@ -1,74 +1,42 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2016 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
-use Application\Models\AppointerTable;
-use Blossom\Classes\View;
+$fields = ['id', 'allocation_id', 'name'];
+foreach ($fields as $f) {
+    $get = 'get'.ucfirst($f);
+    $$f = $this->seat->$get();
+}
 
-$title = $this->seat->getId() ? $this->_('edit_seat') : $this->_('add_seat');
+$title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 ?>
-<h2><?php echo $title; ?></h2>
+<h2><?= $title; ?></h2>
 <form method="post" action="<?php echo BASE_URI; ?>/seats/update">
 	<fieldset><legend><?php echo $this->_('info_seat'); ?></legend>
-		<?php
-			if ($this->seat->getId()) {
-				echo "<input name=\"seat_id\" type=\"hidden\" value=\"{$this->seat->getId()}\" />";
-			}
-			else {
-				echo "<input name=\"committee_id\" type=\"hidden\" value=\"{$this->seat->getCommittee_id()}\" />";
-			}
-		?>
+        <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
+        <input name="allocation_id" type="hidden" value="<?= $allocation_id; ?>" />
+
 		<table>
-			<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
-				<td><input name="name" id="name"
-						value="<?php echo View::escape($this->seat->getName()); ?>" />
-				</td>
+			<tr><td><label  for="name" class="required"><?= $this->_('name'); ?></label></td>
+				<td><input name="name" id="name" value="<?= $name; ?>" /></td>
 			</tr>
-
-			<tr><td><label for="appointer_id" class="required">
-						<?php echo $this->_(['appointer', 'appointers', 1]); ?>
-					</label>
-				</td>
-				<td><select name="appointer_id" id="appointer_id"><option value=""></option>
-					<?php
-						$table = new AppointerTable();
-						$list = $table->find();
-						foreach ($list as $appointer) {
-							$name = View::escape($appointer->getName());
-							$selected = ($this->seat->getAppointer_id()==$appointer->getId())
-										? ' selected="selected"'
-										: '';
-							echo "<option value=\"{$appointer->getId()}\"$selected>$name</option>";
-						}
-					?>
-					</select>
-				</td>
-			</tr>
-
-			<tr><td><label for="maxCurrentTerms"><?php echo $this->_('maxCurrentTerms'); ?></label></td>
-				<td><input name="maxCurrentTerms" id="maxCurrentTerms" size="3" maxlength="3"
-						value="<?php echo $this->seat->getMaxCurrentTerms(); ?>" />
-				</td>
-			</tr>
-
-			<tr><td><label for="startDate"><?php echo $this->_('date_start'); ?></label></td>
-				<td><input name="startDate" id="startDate" value="<?php echo $this->seat->getStartDate(DATE_FORMAT); ?>" /></td>
-			</tr>
-			<tr><td><label for="endDate"><?php echo $this->_('date_end'); ?></label></td>
-				<td><input name="endDate" id="endDate" value="<?php echo $this->seat->getEndDate(DATE_FORMAT); ?>" /></td>
-			</tr>
-
-		</table>
-		<div>
-			<div><label for="requirements"><?php echo $this->_(['requirement', 'requirements', 2]); ?></label></div>
-			<textarea name="requirements" id="requirements" rows="20" cols="80" class="markdown"><?php echo View::escape($this->seat->getRequirements()); ?></textarea>
-		</div>
+            <tr><td><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></td>
+                <td><input name="startDate" id="startDate"
+                        value="<?= $this->seat->getStartDate(DATE_FORMAT); ?>" />
+                </td>
+            </tr>
+            <tr><td><label  for="endDate"><?= $this->_('endDate'); ?></label></td>
+                <td><input name="endDate" id="endDate"
+                        value="<?= $this->seat->getEndDate(DATE_FORMAT); ?>" />
+                </td>
+            </tr>
+        </table>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons($this->seat->getUri());
+			echo $helper->saveAndCancelButtons(BASE_URI."/allocations/view?allocation_id=$allocation_id");
 		?>
 	</fieldset>
 </form>

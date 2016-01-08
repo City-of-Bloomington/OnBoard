@@ -6,6 +6,7 @@
  */
 namespace Application\Controllers;
 
+use Application\Models\Allocation;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 use Application\Models\Requirement;
@@ -14,112 +15,62 @@ use Blossom\Classes\Controller;
 
 class SeatsController extends Controller
 {
-	/**
-	 * @param int $id
-	 * @return Seat
-	 */
-	private function loadSeat($id)
-	{
-		try {
-			$seat = new Seat($id);
-			return $seat;
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-			header('Location: '.BASE_URL.'/commitees');
-			exit();
-		}
-	}
 	public function index()
 	{
 	}
 
-	public function update()
-	{
-		if (empty($_REQUEST['seat_id']) && !empty($_REQUEST['committee_id'])) {
-			try {
-				$seat = new Seat();
-				$seat->setCommittee_id($_REQUEST['committee_id']);
-			}
-			catch (\Exception $e) {
-				$_SESSION['errorMessages'][] = $e;
-				header('Location: '.BASE_URL.'/commitees');
-				exit();
-			}
-		}
-		else {
-			$seat = $this->loadSeat($_REQUEST['seat_id']);
-		}
-
-		if (isset($_POST['name'])) {
-			try {
-				$seat->handleUpdate($_POST);
-				$seat->save();
-				header('Location: '.$seat->getUrl());
-				exit();
-			}
-			catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-		}
-
-		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$seat->getCommittee()]);
-		$this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
-	}
-
-	public function delete()
+	public function view()
 	{
         if (!empty($_REQUEST['seat_id'])) {
             try {
                 $seat = new Seat($_REQUEST['seat_id']);
-                $committee_id = $seat->getCommittee_id();
-
-                $seat->delete();
-                header('Location: '.BASE_URL."/committees/view?committee_id=$committee_id;tab=seats");
-                exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        header('HTTP/1.1 404 Not Found', true, 404);
-        $this->template->blocks[] = new Block('404.inc');
+
+        if (isset($seat)) {
+            $this->template->blocks[] = new Block('seats/panel.inc', ['seat'=>$seat]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
 	}
 
-	public function updateRequirements()
+	public function update()
 	{
-		$seat = $this->loadSeat($_REQUEST['seat_id']);
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        elseif (!empty($_REQUEST['allocation_id'])) {
+            try {
+                $allocation = new Allocation($_REQUEST['allocation_id']);
+                $seat = new Seat();
+                $seat->setAllocation($allocation);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
 
-		try {
-			if (isset($_POST['text'])) {
-				$text = trim($_POST['text']);
-				if ($text) {
-					$requirement = new Requirement();
-					$requirement->setText($text);
-					$requirement->save();
-				}
-				elseif (!empty($_POST['requirement_id'])) {
-					$requirement = new Requirement($_POST['requirement_id']);
-				}
-			}
-			if (isset($requirement)) {
-				$seat->addRequirement($requirement);
-			}
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-		}
+        if (isset($seat)) {
+            if (isset($_POST['allocation_id'])) {
+                try {
+                    $seat->handleUpdate($_POST);
+                    $seat->save();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                header('Location: '.BASE_URL."/allocations/view?allocation_id={$seat->getAllocation_id()}");
+                exit();
+            }
+            $this->template->blocks[] = new Block('allocations/panel.inc', ['allocation'=>$seat->getAllocation()]);
+            $this->template->blocks[] = new Block('seats/updateForm.inc',  ['seat'=>$seat]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
 
-		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$seat->getCommittee()]);
-		$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
-		$this->template->blocks[] = new Block('seats/requirementsForm.inc', ['seat'=>$seat]);
-	}
-
-	public function removeRequirement()
-	{
-		$seat = $this->loadSeat($_REQUEST['seat_id']);
-
-		$requirement = new Requirement($_REQUEST['requirement_id']);
-
-		$seat->removeRequirement($requirement);
-
-		header('Location: '.BASE_URL.'/seats/updateRequirements?seat_id='.$seat->getId());
-		exit();
 	}
 }

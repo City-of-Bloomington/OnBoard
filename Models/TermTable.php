@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -14,7 +14,7 @@ class TermTable extends TableGateway
 {
 	public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
 
-	public function find($fields=null, $order='terms.term_start desc', $paginated=false, $limit=null)
+	public function find($fields=null, $order='terms.startDate desc', $paginated=false, $limit=null)
 	{
 		$select = new Select('terms');
 		if (count($fields)) {
@@ -22,25 +22,14 @@ class TermTable extends TableGateway
 				switch ($key) {
 					case 'current':
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-						$select->where("terms.term_start<='$date'");
-						$select->where("((terms.term_end is null or terms.term_end>='$date') or terms.carryover=1)");
+						$select->where("terms.startDate<='$date'");
+						$select->where("(terms.endDate is null or terms.endDate>='$date')");
 						break;
 
 					case 'before':
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-						$select->where("terms.term_start < '$date'");
-						$select->where("terms.term_end   < '$date'");
-						break;
-
-					case 'term_id':
-						$order = "p.lastname,p.firstname";
-						$select->join(['p' =>'people'],        'terms.person_id=p.id',      [], $select::JOIN_LEFT);
-						$select->join(['v1'=>'votingRecords'], 'terms.id=v1.term_id',       [], $select::JOIN_INNER);
-						$select->join(['v2'=>'votingRecords'], 'v1.vote_id=v2.vote_id', [], $select::JOIN_INNER);
-
-						$value = (int)$value;
-						$select->where("v2.term_id=$value");
-						$select->where("v1.term_id!=$value");
+						$select->where("terms.startDate < '$date'");
+						$select->where("terms.endDate   < '$date'");
 						break;
 
 					default:
