@@ -35,10 +35,11 @@ $title = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 
 					);
 				}
 
+				$uri = BASE_URI.'/terms/view?term_id='.$term->getId();
 				echo "
 				<tr><td>$editButton</td>
-					<td>{$term->getStartDate(DATE_FORMAT)}</td>
-					<td>{$term->getEndDate(DATE_FORMAT)}</td>
+					<td><a href=\"$uri\">{$term->getStartDate(DATE_FORMAT)}</a></td>
+					<td><a href=\"$uri\">{$term->getEndDate(DATE_FORMAT)}</a></td>
 				</tr>
 				";
 			}

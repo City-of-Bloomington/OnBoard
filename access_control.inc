@@ -34,6 +34,8 @@ $ZEND_ACL->addResource(new Resource('races'));
 $ZEND_ACL->addResource(new Resource('seats'));
 $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
+$ZEND_ACL->addResource(new Resource('members'));
+
 $ZEND_ACL->addResource(new Resource('topics'));
 $ZEND_ACL->addResource(new Resource('topicTypes'));
 $ZEND_ACL->addResource(new Resource('votes'));

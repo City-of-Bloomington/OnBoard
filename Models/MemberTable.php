@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -10,13 +10,13 @@ use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
 
-class TermTable extends TableGateway
+class MemberTable extends TableGateway
 {
-	public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
+	public function __construct() { parent::__construct('members', __namespace__.'\Member'); }
 
 	public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
 	{
-		$select = new Select('terms');
+		$select = new Select('members');
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {

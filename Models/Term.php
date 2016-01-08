@@ -117,4 +117,14 @@ class Term extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getMembers()
+	{
+        $table = new MemberTable();
+        return $table->find(['term_id'=>$this->getId()]);
+	}
+
+	public function getCommittee()
+	{
+        return $this->getSeat()->getCommittee();
+	}
 }
