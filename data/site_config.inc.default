@@ -7,6 +7,7 @@ define('APPLICATION_NAME','application');
  */
 define('BASE_URL','http://localhost/application');
 define('BASE_URI','/application');
+define('FN1_URL', '//domain/path');
 
 define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
 
