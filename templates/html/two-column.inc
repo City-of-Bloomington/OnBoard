@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <?php
 	$this->layout = 'two-column';
-	include __DIR__.'/partials/header.inc';
+	include __DIR__.'/partials/head.inc';
 ?>
 <body>
 	<?php
-		include __DIR__.'/partials/banner.inc';
+		include __DIR__.'/partials/header.inc';
 	?>
 	<div id="panel-container">
 		<?php

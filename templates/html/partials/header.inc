@@ -1,12 +1,28 @@
-<head>
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>/css/local/reset.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>/css/local/layouts/<?php echo $this->layout; ?>.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URL; ?>/css/local/screen.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URI; ?>/css/Font-Awesome/css/font-awesome.css" />
-	<title><?php echo isset($this->title) ? self::escape($this->title) : APPLICATION_NAME; ?></title>
-	<script type="text/javascript">
-		var APPLICATION = {
-			BASE_URL: '<?php echo BASE_URL; ?>'
-		};
-	</script>
-</head>
+<?php
+use Blossom\Classes\View;
+?>
+<header>
+	<ul id="utilityBar">
+		<?php
+			$li = '<li><a href="%s">%s</a></li>';
+
+			if (isset($_SESSION['USER'])) {
+				echo sprintf($li, BASE_URI.'/login/logout', $this->translate('logout'));
+
+				$name = View::escape($_SESSION['USER']->getFullname());
+				echo sprintf('<li>'.sprintf($this->translate('messages.signed_in_as'), $name).'</li>');
+			}
+			else {
+				$return_url = View::escape($_SERVER['REQUEST_URI']);
+				echo sprintf($li, BASE_URI.'/login?return_url='.$return_url, $this->translate('login'));
+			}
+		?>
+	</ul>
+	<h1><a href="<?php echo BASE_URI; ?>"><?php echo APPLICATION_NAME; ?></a></h1>
+	<div id="location_name">
+		<a href="<?php echo BASE_URI; ?>">City of Bloomington, Mark Kruzan, Mayor</a>
+	</div>
+	<?php
+		include __DIR__.'/menubar.inc';
+	?>
+</header>

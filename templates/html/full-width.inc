@@ -3,12 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <?php
 	$this->layout = 'full-width';
-	include __DIR__.'/partials/header.inc';
+	include __DIR__.'/partials/head.inc';
 ?>
 <body>
 	<?php
 		if (!isset($_REQUEST['popup'])) {
-			include __DIR__.'/partials/banner.inc';
+			include __DIR__.'/partials/header.inc';
 		}
 	?>
 	<div id="panel-container">
