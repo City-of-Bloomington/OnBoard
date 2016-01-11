@@ -62,7 +62,9 @@ use Application\Templates\Helpers\ButtonLink;
         if (isset($this->committee) && Person::isAllowed('terms', 'add')) {
             $uri = BASE_URI."/members/update?committee_id={$this->committee->getId()}";
             if (isset($this->seat)) { $uri.= ";seat_id={$this->seat->getId()}"; }
-            if (isset($this->term)) { $uri.= ";term_id={$this->term->getId()}"; }
+            if (isset($this->term)) {
+                $uri.= ";term_id={$this->term->getId()}";
+            }
 
             echo $helper->buttonLink( $uri, $this->_('member_add'), 'add');
         }

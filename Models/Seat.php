@@ -127,28 +127,67 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	public function __toString() { return parent::get('name'); }
 
+	public function getMembers()
+	{
+		$table = new MemberTable();
+		return $table->find(['seat_id'=>$this->getId()]);
+	}
+
+	public function getMember($timestamp=null)
+	{
+        if (!$timestamp) { $timestamp = time(); }
+
+        $table = new MemberTable();
+        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (count($list)) {
+            return $list->current();
+        }
+	}
+
 	/**
-	 * @param array $fields Extra fields to search on
+	 * @return Member
+	 */
+	public function newMember()
+	{
+        if ($this->getType() === 'open') {
+            $member = new Member();
+            $member->setSeat($this);
+            $member->setCommittee_id($this->getCommittee_id());
+            return $member;
+        }
+
+        throw new \Exception('seats/invalidMember');
+	}
+
+	/**
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getTerms(array $fields=null)
+	public function getTerms()
 	{
 		$search = ['seat_id' => $this->getId()];
-		if ($fields) {
-			$search = array_merge($search, $fields);
-		}
 
 		$table = new TermTable();
 		return $table->find($search);
 	}
 
 	/**
-	 * @return Zend\Db\ResultSet
+	 * Returns the term for a seat at a given point in time
+	 *
+	 * If no timestamp is provided, returns the current term
+	 *
+	 * @param int $timestamp
 	 */
-	public function getCurrentTerms()
+	public function getTerm($timestamp=null)
 	{
-		return $this->getTerms(['current'=>time()]);
+        if (!$timestamp) { $timestamp = time(); }
+
+        $table = new TermTable();
+        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (count($list)) {
+            return $list->current();
+        }
 	}
+
 
 	/**
 	 * Checks whether it is safe to delete a seat.
@@ -180,5 +219,15 @@ class Seat extends ActiveRecord
             // Terms for open committees do not need seats.
             return true;
         }
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasVacancy($timestamp=null)
+	{
+        if (!$timestamp) { $timestamp = time(); }
+
+        return count($this->getMembers($timestamp)) ? true : false;
 	}
 }

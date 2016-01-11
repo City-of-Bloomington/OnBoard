@@ -19,35 +19,33 @@ class MembersController extends Controller
 
     public function update()
     {
-        if (isset($_REQUEST['member_id'])) {
-            try { $member = new Member($_REQUEST['member_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        try {
+            if (isset($_REQUEST['member_id'])) { $member = new Member($_REQUEST['member_id']); }
+            else {
+                if     (isset($_REQUEST['term_id'     ])) { $o = new Term($_REQUEST['term_id']); }
+                elseif (isset($_REQUEST['seat_id'     ])) { $o = new Seat($_REQUEST['seat_id']); }
+                elseif (isset($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
+                $member = $o->newMember();
+            }
         }
-        elseif (isset($_REQUEST['term_id'])) {
-            $term = new Term($_REQUEST['term_id']);
-            $member = new Member();
-            $member->setTerm($term);
-            $member->setSeat($term->getSeat());
-            $member->setCommittee($term->getCommittee());
-        }
-        elseif (isset($_REQUEST['seat_id'])) {
-            $seat = new Seat($_REQUEST['seat_id']);
-            $member = new Member();
-            $member->setSeat($seat);
-            $member->setCommittee($seat->getCommittee());
-        }
-        elseif (isset($_REQUEST['committee_id'])) {
-            $committee = new Committee($_REQUEST['committee_id']);
-            $member = new Member();
-            $member->setCommittee($committee);
-        }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
         if (isset($member)) {
             if (isset($_POST['committee_id'])) {
                 try {
                     $member->handleUpdate($_POST);
                     $member->save();
-                    header('Location: '.BASE_URL."/committees/view?committee_id={$member->getCommittee_id()}");
+
+                    if ($member->getTerm_id()) {
+                        $url = BASE_URL.'/terms/view?term_id='.$member->getTerm_id();
+                    }
+                    elseif ($member->getSeat_id()) {
+                        $url = BASE_URL.'/seats/view?seat_id='.$member->getSeat_id();
+                    }
+                    else {
+                        $url = BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id();
+                    }
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

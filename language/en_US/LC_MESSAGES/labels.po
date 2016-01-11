@@ -132,9 +132,6 @@ msgstr "Vote Info"
 msgid "info_term"
 msgstr "Term Info"
 
-msgid "info_committee"
-msgstr "Committee Info"
-
 msgid "info_topic"
 msgstr "Legislation Info"
 
@@ -183,6 +180,9 @@ msgstr "Add Committee"
 
 msgid "committee_edit"
 msgstr "Edit Committee"
+
+msgid "committee_info"
+msgstr "Committee Info"
 
 msgid "type"
 msgstr "Type"

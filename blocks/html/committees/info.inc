@@ -45,7 +45,7 @@ if (Person::isAllowed('committees', 'edit')) {
 
 echo "
 <div>
-	<h2><a href=\"{$this->committee->getUri()}\">$name</a>
+	<h2>$name
 		$editButton
 	</h2>
 

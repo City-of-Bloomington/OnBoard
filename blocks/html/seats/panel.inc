@@ -7,7 +7,7 @@
 use Blossom\Classes\Block;
 
 $this->committee = $this->seat->getCommittee();
-include APPLICATION_HOME.'/blocks/html/committees/panel.inc';
+include APPLICATION_HOME.'/blocks/html/committees/breadcrumbs.inc';
 include APPLICATION_HOME.'/blocks/html/seats/info.inc';
 
 if ($this->seat->getType() === 'termed') {

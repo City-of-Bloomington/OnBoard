@@ -50,7 +50,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 						ButtonLink::SIZE_ICON
 					);
 				}
-				$url = BASE_URI.'/committees/view?committee_id='.$c->getId();
+				$url = BASE_URI.'/committees/members?committee_id='.$c->getId();
 				echo "
 				<tr><td>$editButton</td>
 					<td><a href=\"$url\">$name</a></td>

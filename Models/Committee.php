@@ -116,10 +116,35 @@ class Committee extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	/**
-	 * @return string
+	 * @return Member
 	 */
-	public function getUrl() { return BASE_URL.'/committees/view?committee_id='.$this->getId(); }
-	public function getUri() { return BASE_URI.'/committees/view?committee_id='.$this->getId(); }
+	public function newMember()
+	{
+        if ($this->getType() === 'open') {
+            $member = new Member();
+            $member->setCommittee($this);
+            return $member;
+        }
+
+        throw new \Exception('committees/invalidMember');
+	}
+	/**
+	 * Returns members for the committee
+	 *
+	 * If timestamp is provided, will provide members current
+	 * as of the provided timestamp
+	 *
+	 * @param int $timestamp
+	 * @return Zend\Db\ResultSet
+	 */
+	public function getMembers($timestamp=null)
+	{
+		$search = ['committee_id'=>$this->getId()];
+		if ($timestamp) { $search['current'] = (int)$timestamp; }
+
+		$table = new MemberTable();
+		return $table->find($search);
+	}
 
 	/**
 	 * Returns a ResultSet containing Seats.

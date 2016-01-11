@@ -24,7 +24,7 @@ $title = $this->committee->getId() ? $this->_('edit_committee') : $this->_('add_
 ?>
 <h2><?php echo $title; ?></h2>
 <form method="post" action="<?php echo BASE_URI; ?>/committees/update">
-	<fieldset><legend><?php echo $this->_('info_committee'); ?></legend>
+	<fieldset><legend><?php echo $this->_('committee_info'); ?></legend>
 		<input name="committee_id" type="hidden" value="<?php echo $this->committee->getId(); ?>" />
 
 		<table>

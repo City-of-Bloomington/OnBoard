@@ -20,6 +20,12 @@ class SeatTable extends TableGateway
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
+					case 'current':
+						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+						$select->where("startDate<='$date'");
+						$select->where("(endDate is null or endDate>='$date')");
+						break;
+						
 					default:
 						$select->where([$key=>$value]);
 				}

@@ -90,6 +90,17 @@ class Member extends ActiveRecord
 		if (count($result) > 0) {
 			throw new \Exception('members/overlappingTerms');
 		}
+
+		// Make sure this service does not overlap with another member for the same term
+		if ($this->getTerm_id()) {
+            $sql = "select id from members where term_id=? and (?<endDate and ?>startDate)";
+            $resut = $zend_db->createStatement($sql)->execute([
+                $this->getTerm_id(), $this->getStartDate(), $this->getEndDate()
+            ]);
+            if (count($result) > 0) {
+                throw new \Exception('members/overlappingTerms');
+            }
+		}
 	}
 
 	public function save() { parent::save(); }

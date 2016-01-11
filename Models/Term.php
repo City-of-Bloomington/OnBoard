@@ -117,14 +117,63 @@ class Term extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	/**
+	 * @return Member
+	 */
+	public function newMember()
+	{
+        $seat = $this->getSeat();
+
+        $member = new Member();
+        $member->setTerm($this);
+        $member->setSeat($seat);
+        $member->setCommittee_id($seat->getCommittee_id());
+
+        return $member;
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return Member
+	 */
+	public function getMember($timestamp=null)
+	{
+        if (!$timestamp) { $timestamp = time(); }
+        $table = new MemberTable();
+        return $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
+	}
+
+	/**
+	 * @return Zend\Db\Result
+	 */
 	public function getMembers()
 	{
         $table = new MemberTable();
         return $table->find(['term_id'=>$this->getId()]);
 	}
 
+	/**
+	 * @return Committee
+	 */
 	public function getCommittee()
 	{
         return $this->getSeat()->getCommittee();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLatestVacantStartDate()
+	{
+        if ($this->getId()) {
+            $sql = 'select max(endDate) from terms where id=?';
+            $zend_db = Database::getConnection();
+            $result = $zend_db->query($sql, [$this->getId()]);
+            if (count($result)) {
+                $row = $result->current();
+                return $row['endDate'];
+            }
+        }
+        return $this->getStartDate();
 	}
 }

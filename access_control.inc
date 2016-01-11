@@ -49,7 +49,9 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
-$ZEND_ACL->allow(null, ['committees', 'people', 'topics'], ['index','view']);
+$ZEND_ACL->allow(null, ['people', 'topics'], ['index','view']);
+$ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
+
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff',[
