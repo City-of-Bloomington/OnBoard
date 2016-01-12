@@ -8,6 +8,7 @@ use Application\Models\Person;
 
     $routes = [
       'committee'=>'committees',
+      'person'=>'people',
     ];
     if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
       $routes['voteType']   = 'voteTypes';

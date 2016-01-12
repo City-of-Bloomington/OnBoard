@@ -24,7 +24,6 @@ use Application\Models\Person;
               'appointer'=>'appointers',
               'race'=>'races',
               'tag'=>'tags',
-              'person'=>'people',
               'user'=>'users'
             ];
             foreach ($routes as $singular=>$plural) {
