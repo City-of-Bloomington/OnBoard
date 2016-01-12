@@ -8,18 +8,18 @@
 use Application\Models\Person;
 ?>
 <div class="breadcrumbs">
-	<ul><li><a href="<?= BASE_URI; ?>"><?= $this->_('home'); ?></a></li>
-		<li><a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee','committees',2]); ?></a></li>
-		<?php
-			if (isset($this->committee)) {
-				$info = BASE_URI.'/committees/info?committee_id='.$this->committee->getId();
+  <ul><li><a href="<?= BASE_URI; ?>"><?= $this->_('home'); ?></a></li>
+    <li><a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee','committees',2]); ?></a></li>
+    <?php
+      if (isset($this->committee)) {
+        $info = BASE_URI.'/committees/info?committee_id='.$this->committee->getId();
 
-				$name = self::escape($this->committee->getName());
+        $name = self::escape($this->committee->getName());
 
-				echo "<li><a href=\"$info\">$name</a></li>";
-			}
-		?>
-	</ul>
+        echo "<li><a href=\"$info\">$name</a></li>";
+      }
+    ?>
+  </ul>
 </div>
 <?php
     if (isset($this->committee)) {
@@ -29,16 +29,16 @@ use Application\Models\Person;
         echo "
         <div>
             <h1>$name</h1>
-            <nav>
+            <nav class=\"fn1-btn-container\">
         ";
             if (Person::isAllowed('committees', 'info')) {
-                echo "<a href=\"$info\">{$this->_('committee_info')}</a>";
+                echo "<a href=\"$info\" class=\"fn1-btn\">{$this->_('committee_info')}</a>";
             }
             if (Person::isAllowed('committees', 'members')) {
-                echo "<a href=\"$members\">{$this->_(['member', 'members', 2])}</a>";
+                echo "<a href=\"$members\" class=\"fn1-btn\">{$this->_(['member', 'members', 2])}</a>";
             }
             if (Person::isAllowed('committees', 'seats')) {
-                echo "<a href=\"$seats\">{$this->_(['seat', 'seats', 2])}</a>";
+                echo "<a href=\"$seats\" class=\"fn1-btn\">{$this->_(['seat', 'seats', 2])}</a>";
             }
         echo "
             </nav>

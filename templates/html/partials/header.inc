@@ -1,12 +1,13 @@
 <?php
 use Blossom\Classes\View;
+use Application\Models\Person;
 ?>
 <header class="fn1-siteHeader">
   <div class="fn1-siteHeader-container">
     <div class="fn1-site-title">
       <h1><a href="<?php echo BASE_URI; ?>"><?php echo APPLICATION_NAME; ?></a></h1>
       <div class="fn1-site-location">
-        <a href="<?php echo BASE_URI; ?>">City of Bloomington, Mark Kruzan, Mayor</a>
+        <a href="<?php echo BASE_URI; ?>">City of Bloomington, John Hamilton, Mayor</a>
       </div>
     </div>
 
@@ -16,6 +17,26 @@ use Blossom\Classes\View;
       ?>
       <nav class="fn1-dropdown fn1-siteMenu">
         <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false">Admin</button>
+        <div class="fn1-dropdown-links">
+          <?php
+            $a = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+            $routes = [
+              'appointer'=>'appointers',
+              'race'=>'races',
+              'tag'=>'tags',
+              'person'=>'people',
+              'user'=>'users'
+            ];
+            foreach ($routes as $singular=>$plural) {
+              if (Person::isAllowed($plural, 'index')) {
+                echo sprintf($a, BASE_URI.'/'.$plural, $this->_(["$singular", "$plural", 2]));
+              }
+            }
+          ?>
+        </div>
+      </nav>
+      <nav class="fn1-dropdown fn1-siteMenu">
+        <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false">Session</button>
         <div class="fn1-dropdown-links">
           <?php
             $li = '<a href="%s" class="fn1-dropdown-link">%s</a>';

@@ -442,3 +442,6 @@ msgstr "Website"
 
 msgid "title"
 msgstr "Title"
+
+msgid "actions"
+msgstr "Actions"

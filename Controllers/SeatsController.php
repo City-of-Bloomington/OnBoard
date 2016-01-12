@@ -64,7 +64,7 @@ class SeatsController extends Controller
                 header('Location: '.BASE_URL."/committees/seats?committee_id={$seat->getCommittee_id()}");
                 exit();
             }
-            $this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$seat->getCommittee()]);
+#            $this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$seat->getCommittee()]);
             $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
         }
         else {

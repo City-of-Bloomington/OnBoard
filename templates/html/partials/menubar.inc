@@ -7,12 +7,7 @@ use Application\Models\Person;
     $a = '<a href="%s">%s</a>';
 
     $routes = [
-      'appointer'=>'appointers',
       'committee'=>'committees',
-      'race'=>'races',
-      'tag'=>'tags',
-      'person'=>'people',
-      'user'=>'users'
     ];
     if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
       $routes['voteType']   = 'voteTypes';

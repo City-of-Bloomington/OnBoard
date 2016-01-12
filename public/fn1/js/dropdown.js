@@ -7,6 +7,7 @@
         for (i=0; i<len; i++) {
             openLaunchers[i].setAttribute("aria-expanded", "");
             openLaunchers[i].parentElement.focus();
+            openLaunchers[i].parentElement.style.zIndex = '10';
             openLaunchers[i].setAttribute("aria-expanded", "false");
             (function (i) {
                 setTimeout(function() { openLaunchers[i].parentElement.querySelector('.fn1-dropdown-links').style.display = 'none'; }, 300);
@@ -15,11 +16,13 @@
         document.removeEventListener('click', closeMenus);
     },
     launcherClick = function(e) {
-        var launcher = e.target,
-            menu     = launcher.parentElement.querySelector('.fn1-dropdown-links');
+        var launcher  = e.target,
+            container = launcher.parentElement,
+            menu      = launcher.parentElement.querySelector('.fn1-dropdown-links');
         launcher.blur();
         closeMenus();
         menu.style.display = 'block';
+        container.style.zIndex = '20';
         setTimeout(function() {
             launcher.setAttribute("aria-expanded", "true");
         }, 50);
@@ -34,5 +37,7 @@
 
     for (i=0; i<len; i++) {
         launchers[i].addEventListener('click', launcherClick);
+        launchers[i].parentElement.querySelector('.fn1-dropdown-links').style.display = 'none';
+        launchers[i].parentElement.style.zIndex = '10';
     }
 })();
