@@ -9,22 +9,25 @@ use Blossom\Classes\Url;
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
-<div>
-	<h2><?= $this->_(['current_member', 'current_members', 2]); ?></h2>
-	<table>
-		<thead>
-			<tr><th><?= $this->_('name'); ?></th>
+<section class="fn1-uiBlock">
+  <header class="fn1-uiBlock-header">
+    <h2><?= $this->_(['current_member', 'current_members', 2]); ?></h2>
+  </header>
+  <div class="fn1-uiBlock-content">
+    <table class="fn1-table">
+        <thead>
+            <tr><th><?= $this->_('name'); ?></th>
                 <th><?= $this->_('seat'); ?></th>
-				<th><?= $this->_('appointed_by'); ?></th>
-				<th><?= $this->_(['term','term', 1]); ?></th>
-				<th><?= $this->_(['office','offices', 2]); ?></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-			$currentUrl = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-			$helper = $this->template->getHelper('buttonLink');
+                <th><?= $this->_('appointed_by'); ?></th>
+                <th><?= $this->_(['term','term', 1]); ?></th>
+                <th><?= $this->_('actions'); ?></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $currentUrl = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+            $helper = $this->template->getHelper('buttonLink');
 
             $committee_id = $this->committee->getId();
 
@@ -47,7 +50,11 @@ use Application\Templates\Helpers\ButtonLink;
                         foreach ($member->getPerson()->getOffices($this->committee, date('Y-m-d')) as $office) {
                             $offices[] = self::escape($office->getTitle());
                         }
-                        $offices = implode(',',$offices);
+                        if(count($offices < 0)) {
+                          $offices = '<span class="onboard-offices">'.implode(', ',$offices).'</span> ';
+                        } else {
+                          $offices = '';
+                        }
                     }
                     else {
                         $memberName = $this->_('vacancy');
@@ -61,11 +68,11 @@ use Application\Templates\Helpers\ButtonLink;
                     }
 
                     echo "
-                    <tr><td>$memberName</td>
+                    <tr><td>{$offices}{$memberName}</td>
                         <td>$seatName</td>
                         <td>$appointer</td>
                         <td>$term</td>
-                        <td>$offices</td>
+                        <td></td>
                         <td></td>
                     </tr>
                     ";
@@ -86,7 +93,8 @@ use Application\Templates\Helpers\ButtonLink;
                     ";
                 }
             }
-		?>
-		</tbody>
-	</table>
-</div>
+        ?>
+        </tbody>
+    </table>
+  </div>
+</section>
