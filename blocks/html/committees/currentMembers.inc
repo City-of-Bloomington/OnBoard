@@ -14,6 +14,7 @@ use Application\Templates\Helpers\ButtonLink;
 	<table>
 		<thead>
 			<tr><th><?= $this->_('name'); ?></th>
+                <th><?= $this->_('seat'); ?></th>
 				<th><?= $this->_('appointed_by'); ?></th>
 				<th><?= $this->_(['term','term', 1]); ?></th>
 				<th><?= $this->_(['office','offices', 2]); ?></th>
@@ -30,42 +31,44 @@ use Application\Templates\Helpers\ButtonLink;
 
             if ($this->committee->getType() === 'seated') {
                 foreach ($this->committee->getSeats(time()) as $seat) {
-                    $appointer = $seat->getAppointer_id()
-                        ? self::escape($seat->getAppointer()->getName())
-                        : '';
+                    $seatName  = self::escape($seat);
+                    $appointer = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
+                    $term      = '';
+                    $offices   = '';
+
                     $member = $seat->getMember(time());
                     if ($member) {
-                        $name = self::escape($member->getPerson()->getFullname());
+                        $memberName = self::escape($member->getPerson()->getFullname());
                         $term = $member->getTerm_id()
                             ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
                             : '';
+
                         $offices = [];
                         foreach ($member->getPerson()->getOffices($this->committee, date('Y-m-d')) as $office) {
                             $offices[] = self::escape($office->getTitle());
                         }
                         $offices = implode(',',$offices);
-                        echo "
-                        <tr><td>$name</td>
-                            <td>$appointer</td>
-                            <td>$term</td>
-                            <td>$offices</td>
-                            <td></td>
-                        </tr>
-                        ";
                     }
                     else {
-                        $t = $seat->getTerm(time());
-                        $term = $t ? "{$t->getStartDate(DATE_FORMAT)} - {$t->getEndDate(DATE_FORMAT)}" : '';
+                        $memberName = $this->_('vacancy');
 
-                        echo "
-                        <tr><td>{$this->_('vacancy')}</td>
-                            <td>$appointer</td>
-                            <td>$term</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        ";
+                        if ($seat->getType() === 'termed') {
+                            $t = $seat->getTerm(time());
+                            if ($t) {
+                                $term = "{$t->getStartDate(DATE_FORMAT)} - {$t->getEndDate(DATE_FORMAT)}";
+                            }
+                        }
                     }
+
+                    echo "
+                    <tr><td>$memberName</td>
+                        <td>$seatName</td>
+                        <td>$appointer</td>
+                        <td>$term</td>
+                        <td>$offices</td>
+                        <td></td>
+                    </tr>
+                    ";
                 }
             }
             else {
