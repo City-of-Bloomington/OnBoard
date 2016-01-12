@@ -33,15 +33,16 @@ class CommitteesController extends Controller
     $table = new CommitteeTable();
     $committees = $table->find();
     if ($this->template->outputFormat == 'html') {
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
-        }
+      $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+    }
     $this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
   }
 
   public function info()
   {
         $committee = $this->loadCommittee($_GET['committee_id']);
-        $this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$committee]);
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/info.inc',        ['committee'=>$committee]);
   }
 
   public function members()

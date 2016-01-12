@@ -36,9 +36,20 @@
 #errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
 #errorMessages h2 { }
 
-.breadcrumbs ul { list-style-type:none; }
-.breadcrumbs li { display:inline; }
-.breadcrumbs li a { margin-right:8px; font-size:.75em; color:#999; }
+.breadcrumbs > ul {
+  list-style-type:none;
+  margin: 0;
+  > li {
+    display:inline;
+    &:not(:last-of-type):after {
+      content: '>';
+    }
+    > a {
+      font-size: .75em;
+      margin-right: 8px;
+    }
+  }
+}
 
 
 .pageNavigation ul { list-style-type:none; }
