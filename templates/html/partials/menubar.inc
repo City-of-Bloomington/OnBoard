@@ -9,15 +9,15 @@ use Application\Models\Person;
     $routes = [
       'appointer'=>'appointers',
       'committee'=>'committees',
-      'topic'=>'topics',
-      'topicType'=>'topicTypes',
       'race'=>'races',
       'tag'=>'tags',
       'person'=>'people',
       'user'=>'users'
     ];
     if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
-      $routes['voteType'] = 'voteTypes';
+      $routes['voteType']   = 'voteTypes';
+      $routes['topic']      = 'topics';
+      $routes['topicTypes'] = 'topicTypes';
     }
     foreach ($routes as $singular=>$plural) {
       if (Person::isAllowed($plural, 'index')) {

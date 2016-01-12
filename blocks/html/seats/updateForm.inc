@@ -8,7 +8,7 @@
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
 
-$fields = ['id', 'type', 'committee_id', 'appointer_id', 'name', 'requirements'];
+$fields = ['id', 'type', 'committee_id', 'appointer_id', 'name', 'requirements', 'termLength'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = $this->seat->$get();
@@ -65,6 +65,9 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
                         value="<?= $this->seat->getEndDate(DATE_FORMAT); ?>" />
                 </td>
             </tr>
+            <tr><td><label  for="termLength"><?= $this->_('termLength'); ?></label></td>
+                <td><input name="termLength" id="termLength" value="<?= $termLength; ?>" /></td>
+            </tr>
         </table>
 		<div>
 			<div><label for="requirements"><?= $this->_(['requirement', 'requirements', 2]); ?></label></div>
@@ -72,7 +75,7 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 		</div>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons(BASE_URI."/committees/view?committee_id=$committee_id");
+			echo $helper->saveAndCancelButtons(BASE_URI."/committees/seats?committee_id=$committee_id");
 		?>
 	</fieldset>
 </form>

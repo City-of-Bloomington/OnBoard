@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee (optional)
  */
+use Application\Models\Person;
 ?>
 <div class="breadcrumbs">
 	<ul><li><a href="<?= BASE_URI; ?>"><?= $this->_('home'); ?></a></li>
@@ -29,9 +30,17 @@
         <div>
             <h1>$name</h1>
             <nav>
-                <a href=\"$info\">{$this->_('committee_info')}</a>
-                <a href=\"$members\">{$this->_(['member', 'members', 2])}</a>
-                <a href=\"$seats\">{$this->_(['seat', 'seats', 2])}</a>
+        ";
+            if (Person::isAllowed('committees', 'info')) {
+                echo "<a href=\"$info\">{$this->_('committee_info')}</a>";
+            }
+            if (Person::isAllowed('committees', 'members')) {
+                echo "<a href=\"$members\">{$this->_(['member', 'members', 2])}</a>";
+            }
+            if (Person::isAllowed('committees', 'seats')) {
+                echo "<a href=\"$seats\">{$this->_(['seat', 'seats', 2])}</a>";
+            }
+        echo "
             </nav>
         </div>
         ";

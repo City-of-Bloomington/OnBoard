@@ -61,7 +61,7 @@ class SeatsController extends Controller
                     $seat->save();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-                header('Location: '.BASE_URL."/committees/view?committee_id={$seat->getCommittee_id()}");
+                header('Location: '.BASE_URL."/committees/seats?committee_id={$seat->getCommittee_id()}");
                 exit();
             }
             $this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$seat->getCommittee()]);

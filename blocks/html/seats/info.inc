@@ -12,6 +12,7 @@ $name         = self::escape($this->seat->getName());
 $appointer    = self::escape($this->seat->getAppointer());
 $committee    = self::escape($this->seat->getCommittee()->getName());
 $requirements = self::escape($this->seat->getRequirements());
+$termLength   = self::escape($this->seat->getTermLength());
 
 if ($requirements) {
 	$markdown = new MarkdownExtra();
@@ -49,6 +50,9 @@ echo "
 		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
 			<td>$requirements</td>
 		</tr>
+		<tr><th>{$this->_('termLength')}</th>
+            <td>{$termLength}</td>
+        </tr>
     </table>
 </div>
 ";

@@ -98,6 +98,7 @@ class Seat extends ActiveRecord
 	public function getRequirements() { return parent::get('requirements'); }
 	public function getCommittee_id() { return parent::get('committee_id'); }
 	public function getAppointer_id() { return parent::get('appointer_id'); }
+	public function getTermLength()   { return parent::get('termLength'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
@@ -106,6 +107,7 @@ class Seat extends ActiveRecord
 	public function setType        ($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
 	public function setName        ($s) { parent::set('name', $s); }
 	public function setRequirements($s) { parent::set('requirements', $s); }
+	public function setTermLength  ($s) { parent::set('termLength', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setAppointer_id($i) { parent::setForeignKeyField (__namespace__.'\Appointer', 'appointer_id', $i); }
 	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
@@ -115,7 +117,7 @@ class Seat extends ActiveRecord
 
 	public function handleUpdate($post)
 	{
-		$fields = ['name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type'];
+		$fields = ['name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type', 'termLength'];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);

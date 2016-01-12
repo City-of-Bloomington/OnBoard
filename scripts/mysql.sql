@@ -65,6 +65,7 @@ create table seats (
     startDate date,
     endDate   date,
     requirements text,
+    termLength varchar(32),
 	foreign key (committee_id) references committees(id),
 	foreign key (appointer_id) references appointers(id)
 );
