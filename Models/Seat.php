@@ -13,6 +13,9 @@ use Blossom\Classes\Database;
 class Seat extends ActiveRecord
 {
     public static $types = ['termed', 'open'];
+    public static $termIntervals = [
+        'P2Y' => '2 years'
+    ];
 
 	protected $tablename = 'seats';
 
@@ -107,13 +110,18 @@ class Seat extends ActiveRecord
 	public function setType        ($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
 	public function setName        ($s) { parent::set('name', $s); }
 	public function setRequirements($s) { parent::set('requirements', $s); }
-	public function setTermLength  ($s) { parent::set('termLength', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setAppointer_id($i) { parent::setForeignKeyField (__namespace__.'\Appointer', 'appointer_id', $i); }
 	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setAppointer($o)    { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d) { parent::setDateData('startDate', $d); }
 	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
+	public function setTermLength($s) {
+        if ($s) {
+            if (array_key_exists($s, self::$termIntervals)) { parent::set('termLength', $s); }
+        }
+        else { parent::set('termLength', null); }
+    }
 
 	public function handleUpdate($post)
 	{
@@ -184,12 +192,67 @@ class Seat extends ActiveRecord
         if (!$timestamp) { $timestamp = time(); }
 
         $table = new TermTable();
+
         $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
         if (count($list)) {
             return $list->current();
         }
+        else {
+            echo "Generate the next term in the sequence\n";
+            // Generate the next term in the sequence
+            $latestTerm = $this->getLatestTerm();
+
+            if ($latestTerm) {
+                $newTerm = $this->generateTermForTimestamp($latestTerm, $timestamp);
+                $newTerm->save();
+
+                return $newTerm;
+            }
+        }
 	}
 
+	public function generateTermForTimestamp(Term $latestTerm, $timestamp)
+	{
+        $c = 0;
+        $maxIterations = 3;
+
+        while ($c < $maxIterations) {
+            // Check to if the latest term will work for the target time
+            if (   $timestamp > $latestTerm->getStartDate('U')
+                && $timestamp < $latestTerm->getEndDate('U')) {
+
+                return $latestTerm;
+            }
+            else {
+                // Generate the next term in the sequence
+                $latestStart = new \DateTime($latestTerm->getStartDate());
+                $latestEnd   = new \DateTime($latestTerm->getEndDate());
+
+                $termLength = new \DateInterval($this->getTermLength());
+
+                $start = $latestStart->add($termLength);
+                $end   = $latestEnd  ->add($termLength);
+
+                $term = new Term();
+                $term->setStartDate($start->format(DATE_FORMAT));
+                $term->setEndDate  ($end  ->format(DATE_FORMAT));
+                $term->setSeat($this);
+
+                $latestTerm = $term;
+                $c++;
+            }
+        }
+	}
+
+
+	public function getLatestTerm()
+	{
+        $table = new TermTable();
+        $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
+        if (count($list)) {
+            return $list->current();
+        }
+	}
 
 	/**
 	 * Checks whether it is safe to delete a seat.
