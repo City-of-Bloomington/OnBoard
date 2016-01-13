@@ -179,4 +179,19 @@ class Term extends ActiveRecord
         }
         return $this->getStartDate();
 	}
+
+	/**
+	 * @return Term
+	 */
+	public function getNextTerm()
+	{
+        $seat = $this->getSeat();
+
+        $twoDays = new \DateInterval('P2D');
+
+        $d = new \DateTime($this->getEndDate());
+        $d->add($twoDays);
+
+        return $seat->getTerm($d->format('U'));
+	}
 }

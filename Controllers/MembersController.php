@@ -66,4 +66,43 @@ class MembersController extends Controller
             $this->template->blocks[] = new Block('404.inc');
         }
     }
+
+    public function reappoint()
+    {
+        if (!empty($_REQUEST['member_id'])) {
+            try {
+                $member = new Member($_REQUEST['member_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($member)) {
+            $seat = $member->getSeat();
+            if ($seat) {
+                if ($seat->getType() === 'termed') {
+                    try {
+                        $term = $member->getTerm();
+                        if (!$member->getEndDate()) {
+                            $member->setEndDate($term->getEndDate());
+                            $member->save();
+                        }
+
+                        $next      = $term->getNextTerm();
+                        $newMember = $next->newMember();
+                        $newMember->setPerson_id($member->getPerson_id());
+                        $newMember->setStartDate($next->getStartDate());
+                        $newMember->save();
+                    }
+                    catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                }
+            }
+
+            header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+            exit();
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }
