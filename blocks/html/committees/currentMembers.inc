@@ -40,7 +40,9 @@ use Application\Templates\Helpers\ButtonLink;
                     $offices   = '';
                     $buttons   = '';
 
-                    if ($seat->hasVacancy()) {
+                    $seatIsVacant = $seat->hasVacancy();
+
+                    if ($seatIsVacant) {
                         $memberName = $this->_('vacancy');
                         $appointURI = BASE_URI.'/seats/appoint';
 
@@ -72,6 +74,13 @@ use Application\Templates\Helpers\ButtonLink;
                         $offices = count($offices)
                             ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
                             : '';
+                        if ($seatIsVacant && Person::isAllowed('members', 'reappoint')) {
+                            $buttons.= $helper->buttonLink(
+                                BASE_URI.'/members/reappoint?member_id='.$member->getId(),
+                                $this->_('reappoint'),
+                                'add'
+                            );
+                        }
                     }
 
                     echo "
