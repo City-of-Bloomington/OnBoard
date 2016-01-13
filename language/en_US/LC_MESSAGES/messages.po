@@ -25,3 +25,6 @@ msgstr "Signed in as %s"
 
 msgid "votingRecordComparison_explanation"
 msgstr "Shows how often (as a percentage) that other members vote the same way as %s"
+
+msgid "appointToSeat"
+msgstr "Add an appointee to %s"

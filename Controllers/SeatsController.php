@@ -127,7 +127,8 @@ class SeatsController extends Controller
         $form = new Block('seats/appointForm.inc', ['newMember' => $newMember]);
         if (isset($currentMember)) { $form->currentMember = $currentMember; }
 
-        $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $seat->getCommittee()]);
+        $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
         $this->template->blocks[] = $form;
     }
 }
