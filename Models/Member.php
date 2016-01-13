@@ -76,12 +76,23 @@ class Member extends ActiveRecord
 		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
 
 		// Make sure this person is not serving overlapping terms for the same committee
-		$zend_db = Database::getConnection();
-		$sql = "select id from members
-				where committee_id=?
-				  and person_id=?
-				  and (?<endDate and ?>startDate)";
+		$sql = "select id from members where committee_id=? and person_id=?";
+        $params = [$this->getCommittee_id(), $this->getPerson_id()];
+
+        if ($this->getEndDate()) {
+            $sql.= "and ((endDate is not null and ? > endDate) or
+                         (endDate is null     and startDate < ?))";
+            $params[] = $this->getStartDate();
+            $params[] = $this->getEndDate();
+        }
+        else {
+            $sql.= "and startDate < ? and (endDate is null or ? < endDate)";
+            $params[] = $this->getStartDate();
+            $params[] = $this->getStartDate();
+        }
 		if ($this->getId()) { $sql.= ' and m.id!='.$this->getId(); }
+
+		$zend_db = Database::getConnection();
 		$result = $zend_db->createStatement($sql)->execute([
 			$this->getCommittee_id(),
 			$this->getPerson_id(),

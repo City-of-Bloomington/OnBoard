@@ -137,6 +137,33 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	public function __toString() { return parent::get('name'); }
 
+	public function handleAppointment($post)
+	{
+        if ($this->getType() === 'termed') {
+            if (!empty($post['term_id'])) {
+                $term   = new Term($post['term_id']);
+                $member = new Member();
+                $member->handleUpdate([
+                    'committee_id' => $this->getCommittee_id(),
+                    'seat_id'      => $this->getId(),
+                    'term_id'      => $term->getId(),
+                    'person_id'    => $post['person_id'],
+                    'startDate'    => $post['startDate']
+                ]);
+
+                $latestMember = $this->getLatestMember();
+
+                if (!$latestMember->getEndDate()) {
+                    $end = new \DateTime($member->getStartDate());
+                    $end->sub(new \DateInterval('P1D'));
+                    $latestMember->setEndDate($end->format(DATE_FORMAT));
+                }
+            }
+        }
+        else {
+        }
+	}
+
 	public function getMembers()
 	{
 		$table = new MemberTable();
@@ -155,6 +182,24 @@ class Seat extends ActiveRecord
 	}
 
 	/**
+	 * Returns the most recent member for this seat
+	 *
+	 * @return Member
+	 */
+	public function getLatestMember()
+	{
+        $table = new MemberTable();
+        $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
+        if (count($list)) {
+            return $list->current();
+        }
+	}
+
+	/**
+	 * Factory function for instantiating a new member
+	 *
+	 * Instantiates a Member object that is valid for this seat
+	 *
 	 * @return Member
 	 */
 	public function newMember()
@@ -211,6 +256,16 @@ class Seat extends ActiveRecord
         }
 	}
 
+	/**
+	 * Factory function for creating a Term for a particular time
+	 *
+	 * This function only instantiates a valid Term object.  It does
+	 * not save the new term in the database.
+	 *
+	 * @param Term $latestTerm The most recent term in the database
+	 * @param int $timestamp   The target timestamp
+	 * @return Term  A newly created Term that has not been saved in the database
+	 */
 	public function generateTermForTimestamp(Term $latestTerm, $timestamp)
 	{
         $c = 0;
@@ -245,6 +300,11 @@ class Seat extends ActiveRecord
 	}
 
 
+	/**
+	 * Returns the most recent term in the database
+	 *
+	 * @return Term
+	 */
 	public function getLatestTerm()
 	{
         $table = new TermTable();
