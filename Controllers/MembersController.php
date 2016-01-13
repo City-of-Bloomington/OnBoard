@@ -105,4 +105,40 @@ class MembersController extends Controller
             $this->template->blocks[] = new Block('404.inc');
         }
     }
+
+    public function resign()
+    {
+        try {
+            if (              !empty($_REQUEST['member_id'])) {
+                $member = new Member($_REQUEST['member_id']);
+            }
+            elseif (          !empty($_REQUEST['currentMember']['member_id'])) {
+                $member = new Member($_REQUEST['currentMember']['member_id']);
+            }
+        }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+        if (isset($member)) {
+            if (!empty($_POST['currentMember'])) {
+                try {
+                    $member->setEndDate($_POST['currentMember']['endDate']);
+                    $member->save();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+                header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+                exit();
+            }
+
+            $seat = $member->getSeat();
+            if ($seat) {
+                $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
+            }
+            $this->template->blocks[] = new Block('members/resignForm.inc', ['currentMember'=>$member]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }

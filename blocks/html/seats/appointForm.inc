@@ -17,18 +17,7 @@ use Application\Models\Seat;
         <form method="post" action="<?= BASE_URI; ?>/seats/appoint">
             <?php
                 if ($this->currentMember) {
-                    echo "
-                    <fieldset><legend>{$this->_('previous_member')}</legend>
-                        <input name=\"currentMember[member_id]\" type=\"hidden\" value=\"{$this->currentMember->getId()}\" />
-                        <table>
-                            <tr><td><label  for=\"currentMember-endDate\">{$this->_('endDate')}</label></td>
-                                <td><input name=\"currentMember[endDate]\" id=\"currentMember-endDate\"
-                                        value=\"{$this->currentMember->getEndDate(DATE_FORMAT)}\" />
-                                </td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                    ";
+                    include APPLICATION_HOME.'/blocks/html/members/partials/memberEndFieldset.inc';
                 }
             ?>
 

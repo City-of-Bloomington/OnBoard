@@ -81,6 +81,14 @@ use Application\Templates\Helpers\ButtonLink;
                                 'add'
                             );
                         }
+
+                        if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
+                            $buttons.= $helper->buttonLink(
+                                BASE_URI.'/members/resign?member_id='.$member->getId(),
+                                $this->_('resign'),
+                                'delete'
+                            );
+                        }
                     }
 
                     echo "

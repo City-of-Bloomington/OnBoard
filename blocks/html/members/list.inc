@@ -30,7 +30,7 @@ use Application\Templates\Helpers\ButtonLink;
                 $editButton = '';
                 if ($userCanEdit) {
                     $editButton = $helper->buttonLink(
-                        BASE_URI."/members/update?term_id={$member->getTerm_id()}",
+                        BASE_URI."/members/update?member_id={$member->getId()}",
                         $this->_('member_edit'),
                         'edit'
                     );

@@ -364,7 +364,10 @@ msgstr "Appoint"
 msgid "member_edit"
 msgstr "Edit Membership"
 
-msgid "reappoint"
+msgid "member_end"
+msgstr "Resign"
+
+msgid "member_continue"
 msgstr "Reappoint"
 
 msgid "current_member"
