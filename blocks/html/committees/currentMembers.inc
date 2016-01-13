@@ -62,12 +62,13 @@ use Application\Templates\Helpers\ButtonLink;
                             $term = $seat->getTerm(time());
                             if ($term) {
                                 $termDates = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                                $buttons.= $helper->buttonLink(
-                                    BASE_URI."/seats/appoint?term_id={$term->getId()}",
-                                    $this->_('member_add'),
-                                    'add'
-                                );
-
+                                if (Person::isAllowed('seats', 'appoint')) {
+                                    $buttons.= $helper->buttonLink(
+                                        BASE_URI."/seats/appoint?term_id={$term->getId()}",
+                                        $this->_('member_add'),
+                                        'add'
+                                    );
+                                }
                             }
                         }
                     }

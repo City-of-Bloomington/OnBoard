@@ -9,7 +9,7 @@ namespace Application\Controllers;
 use Application\Models\Committee;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
-use Application\Models\Requirement;
+use Application\Models\Term;
 use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
 
@@ -73,7 +73,41 @@ class SeatsController extends Controller
         }
     }
 
-    public function appoint() {
-        $this->template->blocks[] = new Block('seats/appointForm.inc');
+    public function appoint()
+    {
+        if (!empty($_REQUEST['term_id'])) {
+            try {
+                $term = new Term($_REQUEST['term_id']);
+                $seat = $term->getSeat();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        elseif (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($seat)) {
+            if (isset($_POST['seat_id'])) {
+                try {
+                    $seat->handleAppointment($_POST);
+                    header('Location: '.BASE_URL."/committees/members?committee_id={$seat->getCommittee_id()}");
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+
+            $form = new Block('seats/appointForm.inc', ['seat' => $seat]);
+            if (isset($term)) { $form->term = $term; }
+
+            $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
+            $this->template->blocks[] = $form;
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
     }
 }
