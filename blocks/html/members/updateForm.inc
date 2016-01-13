@@ -27,7 +27,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 					<td><?php
 							$person = $this->member->getPerson();
 							$helper = $this->template->getHelper('personChooser');
-							echo $helper->personChooser('person', $person);
+							echo $helper->personChooser('person_id', 'person_id', $person);
 						?>
 					</td>
 				</tr>
@@ -44,7 +44,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 			</table>
 			<?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				
+
 				$uri = BASE_URI.'/terms/view?term_id='.$term_id;
 				echo $helper->saveAndCancelButtons($uri);
 			?>

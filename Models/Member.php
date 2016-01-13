@@ -56,18 +56,26 @@ class Member extends ActiveRecord
 
 	public function validate()
 	{
-        if (!$this->getCommittee_id()) { throw new \Exception('missingCommittee'); }
-        if (!$this->getPerson_id())    { throw new \Exception('missingPerson'); }
-
-        if ($this->getCommittee()->getType() === 'seated'
-            && !$this->getSeat_id()) {
-            throw new \Exception('missingSeat');
-        }
+        if (!$this->getPerson_id()) { throw new \Exception('missingPerson'); }
 
         $seat = $this->getSeat();
         if ($seat && $seat->getType() === 'termed'
             && !$this->getTerm_id()) {
             throw new \Exception('missingTerm');
+        }
+
+        if (!$this->getCommittee_id()) {
+            if ($seat && $seat->getCommittee_id()) {
+                $this->setCommittee_id($seat->getCommittee_id());
+            }
+            else {
+                throw new \Exception('missingCommittee');
+            }
+        }
+
+        if ($this->getCommittee()->getType() === 'seated'
+            && !$this->getSeat_id()) {
+            throw new \Exception('missingSeat');
         }
 
 		// Make sure the end date falls after the start date
@@ -90,7 +98,7 @@ class Member extends ActiveRecord
             $params[] = $this->getStartDate();
             $params[] = $this->getStartDate();
         }
-		if ($this->getId()) { $sql.= ' and m.id!='.$this->getId(); }
+		if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
 
 		$zend_db = Database::getConnection();
 		$result = $zend_db->createStatement($sql)->execute([
@@ -146,8 +154,10 @@ class Member extends ActiveRecord
 	{
         $fields = ['committee_id', 'seat_id', 'term_id', 'person_id', 'startDate', 'endDate'];
         foreach ($fields as $f) {
-            $set = 'set'.ucfirst($f);
-            $this->$set($post[$f]);
+            if (isset($post[$f])) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
+            }
         }
 	}
 

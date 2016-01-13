@@ -140,7 +140,10 @@ class Term extends ActiveRecord
 	{
         if (!$timestamp) { $timestamp = time(); }
         $table = new MemberTable();
-        return $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
+        $list = $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (count($list)) {
+            return $list->current();
+        }
 	}
 
 	/**

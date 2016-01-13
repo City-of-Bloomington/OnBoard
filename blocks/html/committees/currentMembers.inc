@@ -21,7 +21,6 @@ use Application\Templates\Helpers\ButtonLink;
                 <th><?= $this->_('appointed_by'); ?></th>
                 <th><?= $this->_(['term','term', 1]); ?></th>
                 <th><?= $this->_('actions'); ?></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -34,15 +33,34 @@ use Application\Templates\Helpers\ButtonLink;
 
             if ($this->committee->getType() === 'seated') {
                 foreach ($this->committee->getSeats(time()) as $seat) {
+                    $memberName = '';
                     $seatName  = self::escape($seat);
                     $appointer = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
                     $termDates = '';
                     $offices   = '';
                     $buttons   = '';
 
+                    if ($seat->hasVacancy()) {
+                        $memberName = $this->_('vacancy');
+                        $appointURI = BASE_URI.'/seats/appoint';
+
+                        if ($seat->getType() === 'termed') {
+                            $term = $seat->getTerm(time());
+                            if ($term) {
+                                $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
+                                $appointURI.= "?term_id={$term->getid()}";
+                            }
+                        }
+                        else {  $appointURI.= "?seat_id={$seat->getId()}"; }
+
+                        if (Person::isAllowed('seats', 'appoint')) {
+                            $buttons.= $helper->buttonLink($appointURI, $this->_('member_add'), 'add');
+                        }
+                    }
+
                     $member = $seat->getMember(time());
                     if ($member) {
-                        $memberName = self::escape($member->getPerson()->getFullname());
+                        $memberName.= self::escape($member->getPerson()->getFullname());
                         $termDates = $member->getTerm_id()
                             ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
                             : '';
@@ -54,23 +72,6 @@ use Application\Templates\Helpers\ButtonLink;
                         $offices = count($offices)
                             ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
                             : '';
-                    }
-                    else {
-                        $memberName = $this->_('vacancy');
-
-                        if ($seat->getType() === 'termed') {
-                            $term = $seat->getTerm(time());
-                            if ($term) {
-                                $termDates = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                                if (Person::isAllowed('seats', 'appoint')) {
-                                    $buttons.= $helper->buttonLink(
-                                        BASE_URI."/seats/appoint?term_id={$term->getId()}",
-                                        $this->_('member_add'),
-                                        'add'
-                                    );
-                                }
-                            }
-                        }
                     }
 
                     echo "

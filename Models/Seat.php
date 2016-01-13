@@ -88,6 +88,10 @@ class Seat extends ActiveRecord
 		$start = (int)$this->getStartDate('U');
 		$end   = (int)$this->getEndDate  ('U');
 		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
+
+		if ($this->getType() === 'termed') {
+            if (!$this->getTermLength()) { throw new \Exception('missingTermLength'); }
+		}
 	}
 
 	public function save() { parent::save(); }
@@ -230,6 +234,7 @@ class Seat extends ActiveRecord
 	 *
 	 * If no timestamp is provided, returns the current term
 	 *
+	 * @TODO Generate previous terms for timestamps in the past
 	 * @param int $timestamp
 	 */
 	public function getTerm($timestamp=null)
@@ -243,17 +248,39 @@ class Seat extends ActiveRecord
             return $list->current();
         }
         else {
-            echo "Generate the next term in the sequence\n";
-            // Generate the next term in the sequence
-            $latestTerm = $this->getLatestTerm();
+            if ($timestamp >= time()) {
+                // Generate the next term in the sequence
+                $latestTerm = $this->getLatestTerm();
 
-            if ($latestTerm) {
-                $newTerm = $this->generateTermForTimestamp($latestTerm, $timestamp);
-                $newTerm->save();
+                if ($latestTerm) {
+                    $newTerm = $this->generateTermForTimestamp($latestTerm, $timestamp);
+                    $newTerm->save();
 
-                return $newTerm;
+                    return $newTerm;
+                }
+            }
+            else {
+                // Generate the previous term in the sequence
+
             }
         }
+	}
+
+	/**
+	 * Return terms using the number of terms away from current
+	 *
+	 * The indexes for terms are defined using the current term as 0.
+	 * The indexes count away from 0.
+	 *
+	 * The previous term would be -1.
+	 * Two terms from now would be 2.
+	 *
+	 * @TODO
+	 * @param int $start
+	 * @param int $end
+	 */
+	public function getTermsByIndex($start, $end)
+	{
 	}
 
 	/**
@@ -262,6 +289,7 @@ class Seat extends ActiveRecord
 	 * This function only instantiates a valid Term object.  It does
 	 * not save the new term in the database.
 	 *
+	 * @TODO Generate terms for timestamps in the past
 	 * @param Term $latestTerm The most recent term in the database
 	 * @param int $timestamp   The target timestamp
 	 * @return Term  A newly created Term that has not been saved in the database
@@ -298,7 +326,6 @@ class Seat extends ActiveRecord
             }
         }
 	}
-
 
 	/**
 	 * Returns the most recent term in the database
@@ -353,6 +380,23 @@ class Seat extends ActiveRecord
 	{
         if (!$timestamp) { $timestamp = time(); }
 
-        return count($this->getMembers($timestamp)) ? true : false;
+        // Seats cannot be vacant if they're not active anymore
+        if (!$this->getEndDate() || $this->getEndDate('U') > $timestamp) {
+            if ($this->getType() === 'termed') {
+                $term = $this->getTerm($timestamp);
+                if ($term) {
+                    return $term->getMember($timestamp) ? false : true;
+                }
+                // If the seat is active, and there's no current term
+                // there probably should be.  It means that no one is serving
+                // the current term
+                return true;
+            }
+            else {
+                return count($this->getMembers($timestamp)) ? false : true;
+            }
+        }
+
+        return false;
 	}
 }

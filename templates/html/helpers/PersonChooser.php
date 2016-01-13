@@ -36,12 +36,12 @@ class PersonChooser
 
 	/**
 	 * @param string $fieldname The name of the person field
+	 * @param string $fieldId   The ID of the person field
 	 * @param Person $person The currently selected Person object
 	 * @return string
 	 */
-	public function personChooser($fieldname, Person $person=null)
+	public function personChooser($fieldname, $fieldId, Person $person=null)
 	{
-		$this->template->addToAsset('scripts', JQUERY.'/jquery.min.js');
 		$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
 
 		$id   = '';
@@ -54,11 +54,11 @@ class PersonChooser
 		$personChooser = BASE_URI.'/people?return_url='.$return_url;
 
 		$html = "
-		<input type=\"hidden\" name=\"{$fieldname}_id\" id=\"{$fieldname}_id\" value=\"$id\" />
-		<span id=\"{$fieldname}-name\">$name</span>
+		<input type=\"hidden\" name=\"{$fieldname}\" id=\"{$fieldId}\" value=\"$id\" />
+		<span id=\"{$fieldId}-name\">$name</span>
 		<a class=\"btn\"
 			href=\"$personChooser\"
-			onclick=\"PERSON_CHOOSER.open('$fieldname');return false;\">
+			onclick=\"PERSON_CHOOSER.open('$fieldId');return false;\">
 			<i class=\"fa fa-user\"></i>
 			Change Person
 		</a>

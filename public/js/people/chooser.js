@@ -8,24 +8,24 @@
  * passing in the fieldname you are using for your inputs elements.
  *
  * Here is the minimal HTML required:
- * <input id="{$fieldname}_id" value="" />
- * <span  id="{$fieldname}-name"></span>
- * <a onclick=\"PERSON_CHOOSER.open('$fieldname');\">Change Person</a>
+ * <input id="{$fieldId}" value="" />
+ * <span  id="{$fieldId}-name"></span>
+ * <a onclick=\"PERSON_CHOOSER.open('$fieldId');\">Change Person</a>
  *
  * Example as it would appear in the final HTML:
  * <input id="reportedByPerson_id" value="" />
- * <span  id="reportedByPerson-name"></span>
- * <a onclick=\"PERSON_CHOOSER.open('reportedByPerson');\">Change Person</a>
+ * <span  id="reportedByPerson_id-name"></span>
+ * <a onclick=\"PERSON_CHOOSER.open('reportedByPerson_id');\">Change Person</a>
  *
- * @copyright 2013-2014 City of Bloomington, Indiana
+ * @copyright 2013-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 var PERSON_CHOOSER = {
-	fieldname: '',
+	fieldId: '',
 	popup: {},
-	open: function (fieldname) {
-		PERSON_CHOOSER.fieldname = fieldname;
+	open: function (fieldId) {
+		PERSON_CHOOSER.fieldId = fieldId;
 		PERSON_CHOOSER.popup = window.open(
 			APPLICATION.BASE_URL + '/people?popup=1;callback=PERSON_CHOOSER.setPerson',
 			'popup',
@@ -33,15 +33,23 @@ var PERSON_CHOOSER = {
 		);
 	},
 	setPerson: function (person_id) {
-        jQuery.ajax(APPLICATION.BASE_URL + '/people/view?format=json;person_id=' + person_id, {
-            dataType: 'json',
-            success: function (person, status, xhr) {
-                var id   = PERSON_CHOOSER.fieldname + '_id',
-                    name = PERSON_CHOOSER.fieldname + '-name';
-                document.getElementById(id).value       = person.id;
-                document.getElementById(name).innerHTML = person.fullname;
-                PERSON_CHOOSER.popup.close();
+        var request = new XMLHttpRequest(),
+            url     = APPLICATION.BASE_URL + '/people/view?format=json;person_id=' + person_id,
+            person  = {},
+            id      = PERSON_CHOOSER.fieldId,
+            name    = PERSON_CHOOSER.fieldId + '-name';
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    person = JSON.parse(request.responseText);
+                    document.getElementById(id).value       = person.id;
+                    document.getElementById(name).innerHTML = person.fullname;
+                    PERSON_CHOOSER.popup.close();
+                }
             }
-        });
-	}
+        }
+        request.open('GET', url);
+        request.send();
+    }
 }

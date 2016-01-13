@@ -75,39 +75,59 @@ class SeatsController extends Controller
 
     public function appoint()
     {
-        if (!empty($_REQUEST['term_id'])) {
-            try {
+        try {
+            if (          !empty($_REQUEST['term_id'])) {
                 $term = new Term($_REQUEST['term_id']);
                 $seat = $term->getSeat();
+                $newMember = $term->newMember();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
-        elseif (!empty($_REQUEST['seat_id'])) {
-            try {
+            elseif (      !empty($_REQUEST['seat_id'])) {
                 $seat = new Seat($_REQUEST['seat_id']);
+                $newMember = $seat->newMember();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
-
-        if (isset($seat)) {
-            if (isset($_POST['seat_id'])) {
-                try {
-                    $seat->handleAppointment($_POST);
-                    header('Location: '.BASE_URL."/committees/members?committee_id={$seat->getCommittee_id()}");
-                    exit();
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            elseif (      !empty($_REQUEST['newMember']['term_id'])) {
+                $term = new Term($_REQUEST['newMember']['term_id']);
+                $seat = $term->getSeat();
+                $newMember = $term->newMember();
+            }
+            elseif (      !empty($_REQUEST['newMember']['seat_id'])) {
+                $seat = new Seat($_REQUEST['newMember']['seat_id']);
+                $newMember = $seat->newMember();
             }
 
-            $form = new Block('seats/appointForm.inc', ['seat' => $seat]);
-            if (isset($term)) { $form->term = $term; }
-
-            $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
-            $this->template->blocks[] = $form;
+            // If the current member has already been closed out,
+            // there's no reason to include them in the form
+            $currentMember = $seat->getLatestMember();
+            if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
         }
-        else {
+        catch (\Exception $e) {
+            $_SESSION['errorMessages'][] = $e;
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
+            return;
         }
+
+
+        if (isset($_POST['newMember'])) {
+            try {
+                if (isset($currentMember)) {
+                    $currentMember->handleUpdate($_POST['currentMember']);
+                    $currentMember->save();
+                }
+
+                $newMember->handleUpdate($_POST['newMember']);
+                $newMember->save();
+
+                header('Location: '.BASE_URL."/committees/members?committee_id={$seat->getCommittee_id()}");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        $form = new Block('seats/appointForm.inc', ['newMember' => $newMember]);
+        if (isset($currentMember)) { $form->currentMember = $currentMember; }
+
+        $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
+        $this->template->blocks[] = $form;
     }
 }

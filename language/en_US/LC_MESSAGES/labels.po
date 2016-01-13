@@ -372,14 +372,10 @@ msgid_plural "current_members"
 msgstr[0] "Current Member"
 msgstr[1] "Current Members"
 
-msgid "view_current_members"
-msgstr "View Current Members"
-
-msgid "past_members"
-msgstr "Past Members"
-
-msgid "view_past_members"
-msgstr "View Past Members"
+msgid "previous_member"
+msgid_plural "previous_members"
+msgstr[0] "Previous Member"
+msgstr[1] "Previous Members"
 
 msgid "office"
 msgid_plural "offices"
