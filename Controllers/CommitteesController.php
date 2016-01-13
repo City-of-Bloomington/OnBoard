@@ -70,7 +70,8 @@ class CommitteesController extends Controller
       catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
     }
 
-    $this->template->blocks[] = new Block('committees/updateForm.inc', ['committee'=>$committee]);
+    $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+    $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee'=>$committee]);
   }
 
   public function seats()

@@ -10,7 +10,7 @@ use Application\Models\Person;
 use Blossom\Classes\View;
 
 $fields = [
-    'type',
+  'type',
   'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
   'email', 'phone', 'address', 'city', 'state', 'zip',
   'description', 'contactInfo', 'meetingSchedule'

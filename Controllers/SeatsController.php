@@ -15,12 +15,12 @@ use Blossom\Classes\Controller;
 
 class SeatsController extends Controller
 {
-	public function index()
-	{
-	}
+  public function index()
+  {
+  }
 
-	public function view()
-	{
+  public function view()
+  {
         if (!empty($_REQUEST['seat_id'])) {
             try {
                 $seat = new Seat($_REQUEST['seat_id']);
@@ -35,42 +35,45 @@ class SeatsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
-	}
+  }
 
-	public function update()
-	{
-        if (!empty($_REQUEST['seat_id'])) {
+  public function update()
+  {
+    if (!empty($_REQUEST['seat_id'])) {
+        try {
+            $seat = new Seat($_REQUEST['seat_id']);
+        }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+    }
+    elseif (!empty($_REQUEST['committee_id'])) {
+        try {
+            $committee = new Committee($_REQUEST['committee_id']);
+            $seat = new Seat();
+            $seat->setCommittee($committee);
+        }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+    }
+
+    if (isset($seat)) {
+        if (isset($_POST['committee_id'])) {
             try {
-                $seat = new Seat($_REQUEST['seat_id']);
+                $seat->handleUpdate($_POST);
+                $seat->save();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            header('Location: '.BASE_URL."/committees/seats?committee_id={$seat->getCommittee_id()}");
+            exit();
         }
-        elseif (!empty($_REQUEST['committee_id'])) {
-            try {
-                $committee = new Committee($_REQUEST['committee_id']);
-                $seat = new Seat();
-                $seat->setCommittee($committee);
-            }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
-
-        if (isset($seat)) {
-            if (isset($_POST['committee_id'])) {
-                try {
-                    $seat->handleUpdate($_POST);
-                    $seat->save();
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-                header('Location: '.BASE_URL."/committees/seats?committee_id={$seat->getCommittee_id()}");
-                exit();
-            }
 #            $this->template->blocks[] = new Block('committees/panel.inc', ['committee'=>$seat->getCommittee()]);
-            $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
-        }
-        else {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            $this->template->blocks[] = new Block('404.inc');
-        }
+        $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
+    }
+    else {
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $this->template->blocks[] = new Block('404.inc');
+    }
+  }
 
-	}
+  public function appoint() {
+    $this->template->blocks[] = new Block('seats/appointForm.inc');
+  }
 }
