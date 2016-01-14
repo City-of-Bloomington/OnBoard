@@ -54,13 +54,10 @@ $ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
 
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Staff',[
-	'people',
-	'appointers','committees','offices','races',
-	'seats', 'tags', 'terms', 'topics', 'topicTypes', 'votes', 'voteTypes'
-]);
-$ZEND_ACL->deny('Staff', 'seats', 'delete');
-$ZEND_ACL->deny('Staff', ['committees', 'seats'], 'changeType');
+$ZEND_ACL->allow('Staff', 'people');
+$ZEND_ACL->allow('Staff', 'members', ['index', 'reappoint', 'resign']);
+$ZEND_ACL->allow('Staff', 'seats', 'appoint');
+
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
