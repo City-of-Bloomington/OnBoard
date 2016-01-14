@@ -24,7 +24,6 @@ use Application\Models\Seat;
             <fieldset><legend><?= $this->_('member_add'); ?></legend>
                 <input name="newMember[seat_id]" type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
-                <table>
                     <?php
                         $seat = $this->newMember->getSeat();
                         if ($seat->getType() === 'termed') {
@@ -51,30 +50,29 @@ use Application\Models\Seat;
                                 }
 
                                 echo "
-                                <tr><td><label   for=\"newMember-term_id\" class=\"required\">{$this->_('term')}</label></td>
-                                    <td><select name=\"newMember[term_id]\" id=\"newMember-term_id\">
+                                <dl class=\"fn1-input-field--select\"><dt><label   for=\"newMember-term_id\" class=\"required\">{$this->_('term')}</label></dt>
+                                    <dd><select name=\"newMember[term_id]\" id=\"newMember-term_id\">
                                             $options
                                         </select>
-                                    </td>
-                                </tr>
+                                    </dd>
+                                </dl>
                                 ";
                             }
                         }
                     ?>
-                    <tr><td><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></td>
-                        <td><?php
-                                $person = $this->newMember->getPerson();
-                                $helper = $this->template->getHelper('personChooser');
-                                echo $helper->personChooser('newMember[person_id]', 'newMember-person_id', $person);
-                            ?>
-                        </td>
-                    </tr>
-                    <tr><td><label for="newMember-startDate"><?= $this->_('startDate'); ?></label></td>
-                        <td><input name="newMember[startDate]" id="newMember-startDate"
-                                value="<?= $this->newMember->getStartDate(DATE_FORMAT); ?>" />
-                        </td>
-                    </tr>
-                </table>
+                <dl class="fn1-input-field"><dt><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
+                    <dd><?php
+                            $person = $this->newMember->getPerson();
+                            $helper = $this->template->getHelper('personChooser');
+                            echo $helper->personChooser('newMember[person_id]', 'newMember-person_id', $person);
+                        ?>
+                    </dd>
+                </dl>
+                <dl class="fn1-input-field"><dt><label for="newMember-startDate"><?= $this->_('startDate'); ?></label></dt>
+                    <dd><input name="newMember[startDate]" id="newMember-startDate"
+                            value="<?= $this->newMember->getStartDate(DATE_FORMAT); ?>" />
+                    </dd>
+                </dl>
             </fieldset>
 
             <fieldset>
