@@ -132,7 +132,8 @@ class MembersController extends Controller
 
             $seat = $member->getSeat();
             if ($seat) {
-                $this->template->blocks[] = new Block('seats/panel.inc', ['seat' => $seat]);
+                $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $member->getCommittee()]);
+                $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
             }
             $this->template->blocks[] = new Block('members/resignForm.inc', ['currentMember'=>$member]);
         }
