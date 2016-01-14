@@ -284,13 +284,13 @@ class Person extends ActiveRecord
 	 * @param array $fields Extra fields to search on
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getTerms($fields=null)
+	public function getMembers($fields=null)
 	{
 		$search = ['person_id'=>$this->getId()];
 		if (is_array($fields)) {
 			$search = array_merge($search, $fields);
 		}
-		$table = new TermTable();
+		$table = new MemberTable();
 		return $table->find($search);
 	}
 
@@ -300,7 +300,7 @@ class Person extends ActiveRecord
 	 */
 	public function isCurrentlyServing(Committee $committee)
 	{
-		return count($this->getTerms(['committee_id'=>$committee->getId()])) ? true : false;
+		return count($this->getMembers(['committee_id'=>$committee->getId()])) ? true : false;
 	}
 
 	/**

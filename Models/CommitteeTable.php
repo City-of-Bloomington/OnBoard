@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -20,9 +20,8 @@ class CommitteeTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'person_id':
-						$select->join(['s'=>'seats'], 'committees.id=s.committee_id', []);
-						$select->join(['t'=>'terms'], 's.id=t.seat_id',        []);
-						$select->where(['t.person_id'=>$value]);
+						$select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
+						$select->where(['m.person_id' => $value]);
 					break;
 
 					default:

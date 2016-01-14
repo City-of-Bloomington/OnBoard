@@ -9,7 +9,7 @@ use Blossom\Classes\Url;
 
 $url = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 
-$terms = $this->person->getTerms();
+$terms = $this->person->getMembers();
 if (count($terms)) {
 	$tabs = ['committees'  => $this->_(['committee', 'committees', 2])];
 	if (defined('VOTE_TRACKING') && VOTE_TRACKING) {

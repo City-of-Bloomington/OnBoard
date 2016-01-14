@@ -392,7 +392,9 @@ msgid "office_edit"
 msgstr "Edit Office"
 
 msgid "vacancy"
-msgstr "Vacancy"
+msgid_plural "vacancies"
+msgstr[0] "Vacancy"
+msgstr[1] "Vacancies"
 
 msgid "order"
 msgstr "Order"
