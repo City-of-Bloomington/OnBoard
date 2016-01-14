@@ -39,18 +39,24 @@ use Application\Templates\Helpers\ButtonLink;
                     $termDates = '';
                     $offices   = '';
                     $buttons   = '';
+                    $classes   = [];
 
                     $seatIsVacant = $seat->hasVacancy();
 
                     if ($seatIsVacant) {
                         $memberName = $this->_('vacancy');
                         $appointURI = BASE_URI.'/seats/appoint';
+                        $classes[] = 'vacant';
 
                         if ($seat->getType() === 'termed') {
                             $term = $seat->getTerm(time());
                             if ($term) {
                                 $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
                                 $appointURI.= "?term_id={$term->getid()}";
+
+                                if (strtotime('+3 days') > (int)$term->getEndDate('U')) {
+                                    $classes[] = 'termEndsSoon';
+                                }
                             }
                         }
                         else {  $appointURI.= "?seat_id={$seat->getId()}"; }
@@ -84,6 +90,8 @@ use Application\Templates\Helpers\ButtonLink;
                             $buttons .= '<a href="'.BASE_URI.'/members/resign?member_id='.$member->getId().'" class="fn1-dropdown-link">'
                                 .$this->_('member_end').'</a>';
                         }
+
+                        if ($seatIsVacant) { $classes[] = 'carryover'; }
                     }
 
                     if ($buttons != '') {
@@ -97,8 +105,10 @@ use Application\Templates\Helpers\ButtonLink;
                         ';
                     }
 
+                    $classes = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
                     echo "
-                    <tr><td>{$offices}{$memberName}</td>
+                    <tr $classes>
+                        <td>{$offices}{$memberName}</td>
                         <td>$seatName</td>
                         <td>$appointer</td>
                         <td>$termDates</td>
