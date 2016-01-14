@@ -54,6 +54,39 @@
 }
 
 
+
+table > tbody > tr {
+    &.carryOver {
+        > td {
+            background-color: #ed9a9c;
+            &:first-child:before {
+                background-image: url('images/danger-opt.svg');
+                content: '';
+                display: inline-block;
+                height: 1em;
+                margin: 0 .5em 0 0;
+                width: 1em;
+            }
+        }
+    }
+    &.termEndsSoon {
+        > td {
+            background-color: #edea9a;
+            &:first-child:before {
+                background-image: url('images/warning-opt.svg');
+                content: '';
+                display: inline-block;
+                height: 1em;
+                margin: 0 .5em 0 0;
+                width: 1em;
+            }
+        }
+    }
+    &.vacant {
+    }
+}
+
+
 .pageNavigation ul { list-style-type:none; }
 .pageNavigation li { display:inline; margin-right:1em; }
 .pageNavigation .current { border:2px solid green; }
