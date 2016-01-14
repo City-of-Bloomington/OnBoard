@@ -226,13 +226,38 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param int $timestamp
 	 * @return boolean
 	 */
-	public function hasVacancy()
+	public function hasVacancy($timestamp=null)
 	{
-        return $this->getType() === 'seated'
-            ? $this->getMaxCurrentTerms() > count($this->getCurrentTerms())
-            : true;
+        $timestamp = $timestamp ? (int)$timestamp : time();
+
+        if ($this->getType() === 'seated') {
+            $seats = $this->getSeats($timestamp);
+            foreach ($seats as $s) {
+                if ($seat->hasVacancy($timestamp)) { return true; }
+            }
+        }
+        return false;
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return int
+	 */
+	public function getVacancyCount($timestamp=null)
+	{
+        $timestamp = $timestamp ? (int)$timestamp : time();
+
+        $c = 0;
+        if ($this->getType() === 'seated') {
+            $seats = $this->getSeats($timestamp);
+            foreach ($seats as $s) {
+                if ($s->hasVacancy($timestamp)) { $c++; }
+            }
+        }
+        return $c;
 	}
 
 	/**

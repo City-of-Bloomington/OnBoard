@@ -34,17 +34,28 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
         ?>
       </div>
   </header>
-  <div class="fn1-uiBlock-content">
-    <ul>
-      <?php
-        foreach ($this->committees as $c) {
-          $name = self::escape($c->getName());
-          $url = BASE_URI.'/committees/members?committee_id='.$c->getId();
-          echo "
-            <li><a href=\"$url\">$name</a></li>
-          ";
-        }
-      ?>
-    </ul>
-  </div>
+    <table class="fn1-table">
+        <thead>
+            <tr><th><?= $this->_('committee'); ?></th>
+                <th><?= $this->_(['vacancy', 'vacancies', 2]); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            foreach ($this->committees as $c) {
+                $name = self::escape($c->getName());
+                $url = BASE_URI.'/committees/members?committee_id='.$c->getId();
+
+                $vacancies = $c->getVacancyCount();
+                if ($vacancies === 0) { $vacancies = ''; }
+                
+                echo "
+                <tr><td><a href=\"$url\">$name</a></td>
+                    <td>$vacancies</td>
+                </tr>
+                ";
+            }
+        ?>
+        </tbody>
+    </table>
 </section>
