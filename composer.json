@@ -9,9 +9,11 @@
         "michelf/php-markdown": "~1",
         "jasig/phpcas": "~1",
         "aura/router": "~2",
+        "container-interop/container-interop": "~1",
         "zendframework/zend-db": "~2.5",
         "zendframework/zend-loader": "~2.5",
         "zendframework/zend-paginator": "~2.5",
-        "zendframework/zend-permissions-acl": "~2.5"
+        "zendframework/zend-permissions-acl": "~2.5",
+        "zendframework/zend-servicemanager": "~2.5"
     }
 }
