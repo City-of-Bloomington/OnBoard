@@ -56,7 +56,8 @@ use Application\Templates\Helpers\ButtonLink;
                         else {  $appointURI.= "?seat_id={$seat->getId()}"; }
 
                         if (Person::isAllowed('seats', 'appoint')) {
-                            $buttons.= $helper->buttonLink($appointURI, $this->_('member_add'), 'add');
+                            $buttons.= '<a href="'.$appointURI.'" class="fn1-dropdown-link">'
+                                .$this->_('member_add').'</a>';
                         }
                     }
 
@@ -75,20 +76,25 @@ use Application\Templates\Helpers\ButtonLink;
                             ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
                             : '';
                         if ($seatIsVacant && Person::isAllowed('members', 'reappoint')) {
-                            $buttons.= $helper->buttonLink(
-                                BASE_URI.'/members/reappoint?member_id='.$member->getId(),
-                                $this->_('member_continue'),
-                                'add'
-                            );
+                            $buttons.= '<a href="'.BASE_URI.'/members/reappoint?member_id='.$member->getId().'" class="fn1-dropdown-link">'
+                                .$this->_('member_continue').'</a>';
                         }
 
                         if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
-                            $buttons.= $helper->buttonLink(
-                                BASE_URI.'/members/resign?member_id='.$member->getId(),
-                                $this->_('member_end'),
-                                'delete'
-                            );
+                            $buttons .= '<a href="'.BASE_URI.'/members/resign?member_id='.$member->getId().'" class="fn1-dropdown-link">'
+                                .$this->_('member_end').'</a>';
                         }
+                    }
+
+                    if ($buttons != '') {
+                        $buttons = '
+                            <div class="fn1-dropdown fn1-table-actions">
+                                <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="fn1-dropdown-links">
+                                '.$buttons.'
+                                </div>
+                            </div>
+                        ';
                     }
 
                     echo "
