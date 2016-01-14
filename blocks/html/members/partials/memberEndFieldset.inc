@@ -5,13 +5,12 @@
  * @param Member $this->currentMember
  */
 ?>
-<fieldset><legend><?= $this->_('previous_member'); ?></legend>
+<fieldset><legend><?= $this->_('endDate'); ?></legend>
     <input name="currentMember[member_id]" type="hidden" value="<?= $this->currentMember->getId(); ?>" />
-    <table>
-        <tr><td><label  for="currentMember-endDate"><?= $this->_('endDate'); ?></label></td>
-            <td><input name="currentMember[endDate]" id="currentMember-endDate"
-                    value="<?= $this->currentMember->getEndDate(DATE_FORMAT); ?>" />
-            </td>
-        </tr>
-    </table>
+    <dl class="fn1-input-field">
+        <dt><label  for="currentMember-endDate"><?= $this->_('endDate'); ?></label></dt>
+        <dd><input name="currentMember[endDate]" id="currentMember-endDate"
+                value="<?= $this->currentMember->getEndDate(DATE_FORMAT); ?>" />
+        </dd>
+    </dl>
 </fieldset>
