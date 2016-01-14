@@ -36,19 +36,21 @@
 #errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
 #errorMessages h2 { }
 
-.breadcrumbs > ul {
-  list-style-type:none;
-  margin: 0;
-  > li {
-    display:inline;
-    &:not(:last-of-type):after {
-      content: '>';
+.onboard {
+    &-breadcrumbs > ul {
+        list-style-type:none;
+            margin: 0;
+            > li {
+                display:inline;
+            &:not(:last-of-type):after {
+                content: '>';
+            }
+            > a {
+                font-size: .75em;
+                margin-right: 8px;
+            }
+        }
     }
-    > a {
-      font-size: .75em;
-      margin-right: 8px;
-    }
-  }
 }
 
 

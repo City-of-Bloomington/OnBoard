@@ -7,7 +7,7 @@
  */
 use Application\Models\Person;
 ?>
-<div class="breadcrumbs">
+<div class="onboard-breadcrumbs">
   <ul><li><a href="<?= BASE_URI; ?>"><?= $this->_('home'); ?></a></li>
     <li><a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee','committees',2]); ?></a></li>
     <?php
@@ -21,28 +21,3 @@ use Application\Models\Person;
     ?>
   </ul>
 </div>
-<?php
-    if (isset($this->committee)) {
-        $members = BASE_URI.'/committees/members?committee_id='.$this->committee->getId();
-        $seats   = BASE_URI.'/committees/seats?committee_id='.$this->committee->getId();
-
-        echo "
-        <div>
-            <h1>$name</h1>
-            <nav class=\"fn1-btn-container\">
-        ";
-            if (Person::isAllowed('committees', 'info')) {
-                echo "<a href=\"$info\" class=\"fn1-btn\">{$this->_('committee_info')}</a>";
-            }
-            if (Person::isAllowed('committees', 'members')) {
-                echo "<a href=\"$members\" class=\"fn1-btn\">{$this->_(['member', 'members', 2])}</a>";
-            }
-            if (Person::isAllowed('committees', 'seats')) {
-                echo "<a href=\"$seats\" class=\"fn1-btn\">{$this->_(['seat', 'seats', 2])}</a>";
-            }
-        echo "
-            </nav>
-        </div>
-        ";
-    }
-?>

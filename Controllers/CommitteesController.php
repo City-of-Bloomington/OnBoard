@@ -34,6 +34,7 @@ class CommitteesController extends Controller
     $committees = $table->find();
     if ($this->template->outputFormat == 'html') {
       $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+      $this->template->blocks[] = new Block('committees/header.inc');
     }
     $this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
   }
@@ -42,6 +43,7 @@ class CommitteesController extends Controller
   {
         $committee = $this->loadCommittee($_GET['committee_id']);
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc', ['committee'=>$committee]);
         $this->template->blocks[] = new Block('committees/info.inc',        ['committee'=>$committee]);
   }
 
@@ -49,6 +51,7 @@ class CommitteesController extends Controller
   {
         $committee = $this->loadCommittee($_GET['committee_id']);
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc',    ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc', ['committee'=>$committee]);
         $this->template->blocks[] = new Block('committees/currentMembers.inc', ['committee' => $committee]);
   }
 
@@ -71,6 +74,7 @@ class CommitteesController extends Controller
     }
 
     $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+    $this->template->blocks[] = new Block('committees/header.inc', ['committee'=>$committee]);
     $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee'=>$committee]);
   }
 
@@ -78,6 +82,7 @@ class CommitteesController extends Controller
   {
         $committee = $this->loadCommittee($_GET['committee_id']);
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$committee]);
+        $this->template->blocks[] = new Block('committees/header.inc', ['committee'=>$committee]);
         $this->template->blocks[] = new block('seats/list.inc', [
             'seats'     => $committee->getSeats(),
             'committee' => $committee
