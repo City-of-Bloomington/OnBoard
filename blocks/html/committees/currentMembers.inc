@@ -77,7 +77,7 @@ use Application\Templates\Helpers\ButtonLink;
                         if ($seatIsVacant && Person::isAllowed('members', 'reappoint')) {
                             $buttons.= $helper->buttonLink(
                                 BASE_URI.'/members/reappoint?member_id='.$member->getId(),
-                                $this->_('reappoint'),
+                                $this->_('member_continue'),
                                 'add'
                             );
                         }
@@ -85,7 +85,7 @@ use Application\Templates\Helpers\ButtonLink;
                         if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
                             $buttons.= $helper->buttonLink(
                                 BASE_URI.'/members/resign?member_id='.$member->getId(),
-                                $this->_('resign'),
+                                $this->_('member_end'),
                                 'delete'
                             );
                         }
