@@ -3,15 +3,22 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
+ *
  * @param Committee $this->committee
  * @param Seat $this->seat
+ * @param string $this->title
+ * @param boolean $this->disableButtons
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
-<div>
-    <h2><?= $this->_(['member', 'members', 2]); ?></h2>
-    <table>
+<section    class="fn1-uiBlock">
+    <header class="fn1-uiBlock-header">
+        <h1 class="fn1-uiBlock-title">
+            <?= $this->title ? $this->title : $this->_(['member', 'members', 2]); ?>
+        </h1>
+    </header>
+    <table class="fn1-table">
         <thead>
             <tr><th></th>
                 <th><?= $this->_('name'); ?></th>
@@ -23,7 +30,7 @@ use Application\Templates\Helpers\ButtonLink;
         </thead>
         <tbody>
         <?php
-            $userCanEdit = Person::isAllowed('members', 'edit');
+            $userCanEdit = Person::isAllowed('members', 'edit') && !$this->disableButtons;
             $helper = $this->template->getHelper('buttonLink');
 
             foreach ($this->members as $member) {
@@ -59,7 +66,10 @@ use Application\Templates\Helpers\ButtonLink;
 
     </table>
     <?php
-        if (isset($this->committee) && Person::isAllowed('terms', 'add')) {
+        if (isset($this->committee)
+            && !$this->disableButtons
+            && Person::isAllowed('terms', 'add')) {
+
             $uri = BASE_URI."/members/update?committee_id={$this->committee->getId()}";
             if (isset($this->seat)) { $uri.= ";seat_id={$this->seat->getId()}"; }
             if (isset($this->term)) {
@@ -69,4 +79,4 @@ use Application\Templates\Helpers\ButtonLink;
             echo $helper->buttonLink( $uri, $this->_('member_add'), 'add');
         }
     ?>
-</div>
+</section>

@@ -129,6 +129,13 @@ class SeatsController extends Controller
 
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $seat->getCommittee()]);
         $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
+        if (isset($currentMember)) {
+            $this->template->blocks[] = new Block('members/list.inc', [
+                'members' => [$currentMember],
+                'title'   => $this->template->_('previous_member'),
+                'disableButtons' => true
+            ]);
+        }
         $this->template->blocks[] = $form;
     }
 }

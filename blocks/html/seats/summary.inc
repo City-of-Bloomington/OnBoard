@@ -11,7 +11,7 @@ use Blossom\Classes\Block;
 
 <dl class="fn1-output-field">
     <dt><?= $this->_('appointed_by') ?></dt>
-    <dd><?= $this->seat->getCommittee()->getName(); ?></dd>
+    <dd><?= $this->seat->getAppointer(); ?></dd>
 </dl>
 
 <dl class="fn1-output-field">
