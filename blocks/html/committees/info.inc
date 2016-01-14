@@ -45,7 +45,7 @@ if (Person::isAllowed('committees', 'edit')) {
 ?>
 <section class="fn1-uiBlock">
   <header class="fn1-uiBlock-header">
-    <h1 class="fn1-uiBlock-title"><?= $name ?></h1>
+    <h1 class="fn1-uiBlock-title"><?= $this->_('committee_info') ?></h1>
     <div class="fn1-uiBlock-headerTools">
       <?= $editButton ?>
     </div>

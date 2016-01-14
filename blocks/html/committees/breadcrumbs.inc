@@ -12,11 +12,11 @@ use Application\Models\Person;
     <li><a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee','committees',2]); ?></a></li>
     <?php
       if (isset($this->committee)) {
-        $info = BASE_URI.'/committees/info?committee_id='.$this->committee->getId();
+        $url = BASE_URI.'/committees/members?committee_id='.$this->committee->getId();
 
         $name = self::escape($this->committee->getName());
 
-        echo "<li><a href=\"$info\">$name</a></li>";
+        echo "<li><a href=\"$url\">$name</a></li>";
       }
     ?>
   </ul>
