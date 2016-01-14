@@ -14,7 +14,7 @@ if (isset($this->committee)) {
     $seats   = BASE_URI.'/committees/seats?committee_id='.$this->committee->getId();
 
     $c = $this->committee->getVacancyCount();
-    $vacancies = $c ? "( $c )" : '';
+    $vacancies = $c ? "($c {$this->_(['vacancy', 'vacancies', $c])})" : '';
 
     echo "
     <section>
