@@ -138,5 +138,14 @@ use Application\Templates\Helpers\ButtonLink;
         ?>
         </tbody>
     </table>
+    <?php
+        if (Person::isAllowed('seats', 'add')) {
+            echo $helper->buttonLink(
+                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                $this->translate('seat_add'),
+                'add'
+            );
+        }
+    ?>
   </div>
 </section>
