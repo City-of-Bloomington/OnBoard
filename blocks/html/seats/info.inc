@@ -28,9 +28,11 @@ if (Person::isAllowed('seats', 'edit')) {
 		'edit'
 	);
 }
+
+$uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 echo "
-<div>
-	<h2>$name $editSeatButton</h2>
+<section>
+	<h1><a href=\"$uri\">$name</a> $editSeatButton</h1>
 	<table>
         <tr><th>{$this->_('type')}</th>
             <td>{$this->seat->getType()}</td>
@@ -54,5 +56,5 @@ echo "
             <td>{$termLength}</td>
         </tr>
     </table>
-</div>
+</section>
 ";

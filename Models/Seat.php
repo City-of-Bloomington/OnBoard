@@ -219,14 +219,18 @@ class Seat extends ActiveRecord
 	}
 
 	/**
-	 * @return Zend\Db\ResultSet
+	 * @return array
 	 */
 	public function getTerms()
 	{
 		$search = ['seat_id' => $this->getId()];
 
 		$table = new TermTable();
-		return $table->find($search);
+		$list = $table->find($search);
+
+		$terms = [];
+		foreach ($list as $t) { $terms[] = $t; }
+		return $terms;
 	}
 
 	/**
@@ -307,21 +311,9 @@ class Seat extends ActiveRecord
                 return $latestTerm;
             }
             else {
-                // Generate the next term in the sequence
-                $latestStart = new \DateTime($latestTerm->getStartDate());
-                $latestEnd   = new \DateTime($latestTerm->getEndDate());
-
-                $termLength = new \DateInterval($this->getTermLength());
-
-                $start = $latestStart->add($termLength);
-                $end   = $latestEnd  ->add($termLength);
-
-                $term = new Term();
-                $term->setStartDate($start->format(DATE_FORMAT));
-                $term->setEndDate  ($end  ->format(DATE_FORMAT));
-                $term->setSeat($this);
-
-                $latestTerm = $term;
+                $latestTerm = ($timestamp > $latestTerm->getEndDate('U'))
+                    ? $latestTerm->generateNextTerm()
+                    : $latestTerm->generatePreviousTerm();
                 $c++;
             }
         }

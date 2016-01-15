@@ -12,7 +12,7 @@ class SeatTest extends PHPUnit_Framework_TestCase
 {
     public static $DATE_FORMAT = 'Y-m-d';
 
-    public function termDateProvider()
+    public function futureTermDateProvider()
     {
         return [
             [['start'=>'2013-02-01', 'end'=>'2015-01-31', 'target'=>'2016-01-15', 'length'=>'P2Y'] , ['start'=>'2015-02-01', 'end'=>'2017-01-31']],
@@ -22,14 +22,15 @@ class SeatTest extends PHPUnit_Framework_TestCase
 
 
 	/**
-	 * @dataProvider termDateProvider
+	 * @dataProvider futureTermDateProvider
 	 */
-    public function testGenerateTerms($in, $out)
+    public function testGenerateFutureTerms($in, $out)
     {
         $seat = new Seat();
         $seat->setTermLength($in['length']);
 
         $latestTerm = new Term();
+        $latestTerm->setSeat($seat);
         $latestTerm->setStartDate($in['start'], self::$DATE_FORMAT);
         $latestTerm->setEndDate  ($in['end'],   self::$DATE_FORMAT);
 
@@ -40,4 +41,5 @@ class SeatTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($term->getStartDate(self::$DATE_FORMAT), $out['start']);
         $this->assertEquals($term->getEndDate  (self::$DATE_FORMAT), $out['end']);
     }
+
 }

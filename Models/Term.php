@@ -58,20 +58,30 @@ class Term extends ActiveRecord
 	 */
 	public function validate()
 	{
-        if (!$this->getSeat_id()) {
-            throw new \Exception('terms/missingSeat');
-        }
-
 		if (!$this->getStartDate()) {
 			 $this->setStartDate(date(DATE_FORMAT));
 		}
 
-		if (!$this->getEndDate()) { throw new \Exception('missingDate'); }
+        $seat = $this->getSeat();
+        if (!$seat) { throw new \Exception('terms/missingSeat'); }
 
-		// Make sure the end date falls after the start date
-		$start = (int)$this->getStartDate('U');
-		$end   = (int)$this->getEndDate  ('U');
-		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
+        // Create a valid endDate if there isn't one already
+        $termLength = new \DateInterval($seat->getTermLength());
+        $oneDay     = new \DateInterval('P1D');
+		if (!$this->getEndDate()) {
+            $s = new \DateTime($this->getStartDate());
+            $s->add($termLength);
+            $s->sub($oneDay);
+            $this->setEndDate($s->format(DATE_FORMAT));
+        }
+
+		// Make sure the endDate is valid
+		$s = new \DateTime($this->getStartDate());
+		$s->add($termLength);
+		$s->sub($oneDay);
+		if ($s->format(DATE_FORMAT) != $this->getEndDate(DATE_FORMAT)) {
+            throw new \Exception('invalidEndDate');
+		}
 
 		// Make sure this term is not overlapping terms for the seat
 		$zend_db = Database::getConnection();
@@ -193,5 +203,55 @@ class Term extends ActiveRecord
         $d->add($twoDays);
 
         return $seat->getTerm($d->format('U'));
+	}
+
+	/**
+	 * Returns a Term object for the next in the series
+	 *
+	 * This term object is not, yet saved in the database
+	 *
+	 * @return Term
+	 */
+	public function generateNextTerm()
+	{
+        $seat = $this->getSeat();
+        $termLength = new \DateInterval($seat->getTermLength());
+
+        $s = new \DateTime($this->getStartDate());
+        $e = new \DateTime($this->getEndDate());
+
+        $start = $s->add($termLength)->format(DATE_FORMAT);
+        $end   = $e->add($termLength)->format(DATE_FORMAT);
+
+        $term = new Term();
+        $term->setStartDate($start);
+        $term->setEndDate  ($end);
+        $term->setSeat($seat);
+        return $term;
+	}
+
+	/**
+	 * Returns a Term object for the previous one in the series
+	 *
+	 * This term object is not, yet saved in the database.
+	 *
+	 * @return Term
+	 */
+	public function generatePreviousTerm()
+	{
+        $seat = $this->getSeat();
+        $termLength = new \DateInterval($seat->getTermLength());
+
+        $s = new \DateTime($this->getStartDate());
+        $e = new \DateTime($this->getEndDate());
+
+        $start = $s->sub($termLength)->format(DATE_FORMAT);
+        $end   = $e->sub($termLength)->format(DATE_FORMAT);
+
+        $term = new Term();
+        $term->setStartDate($start);
+        $term->setEndDate  ($end);
+        $term->setSeat($seat);
+        return $term;
 	}
 }

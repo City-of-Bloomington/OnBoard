@@ -8,6 +8,10 @@ use Blossom\Classes\Block;
 
 $this->committee = $this->seat->getCommittee();
 include APPLICATION_HOME.'/blocks/html/committees/breadcrumbs.inc';
+
+$block = new Block('seats/list.inc', ['seats'=>$this->committee->getSeats()]);
+echo $block->render('html', $this->template);
+
 include APPLICATION_HOME.'/blocks/html/seats/info.inc';
 
 if ($this->seat->getType() === 'termed') {
