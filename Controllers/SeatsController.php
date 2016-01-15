@@ -75,7 +75,7 @@ class SeatsController extends Controller
                     $seat->save();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-                header('Location: '.BASE_URL."/committees/seats?committee_id={$seat->getCommittee_id()}");
+                header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
                 exit();
             }
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$seat->getCommittee()]);
