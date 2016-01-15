@@ -47,6 +47,9 @@ msgstr "Cancel"
 msgid "done"
 msgstr "Done"
 
+msgid "more"
+msgstr "More"
+
 #. This is the short form for "Administrator".  This should be an abbreviation
 msgid "admin"
 msgstr "Admin"

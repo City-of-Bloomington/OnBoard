@@ -95,14 +95,16 @@ use Application\Templates\Helpers\ButtonLink;
                     }
 
                     if ($buttons != '') {
-                        $buttons = '
-                            <div class="fn1-dropdown fn1-table-actions">
-                                <button class="fn1-dropdown-launcher" aria-haspopup="true" aria-expanded="false">More</button>
-                                <div class="fn1-dropdown-links">
-                                '.$buttons.'
+                        $buttons = "
+                            <div        class=\"fn1-dropdown fn1-table-actions\">
+                                <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                                    {$this->_('more')}
+                                </button>
+                                <div    class=\"fn1-dropdown-links\">
+                                    $buttons
                                 </div>
                             </div>
-                        ';
+                        ";
                     }
 
                     $classes = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
