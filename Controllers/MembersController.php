@@ -82,21 +82,33 @@ class MembersController extends Controller
                         $term = $member->getTerm();
                         if (!$member->getEndDate()) {
                             $member->setEndDate($term->getEndDate());
-                            $member->save();
                         }
 
                         $next      = $term->getNextTerm();
                         $newMember = $next->newMember();
                         $newMember->setPerson_id($member->getPerson_id());
                         $newMember->setStartDate($next->getStartDate());
-                        $newMember->save();
                     }
                     catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+                    if (empty($_SESSION['errorMessages'])
+                        && !empty($_POST['confirm']) && $_POST['confirm']==='yes') {
+                        try {
+                            $member->save();
+                            $newMember->save();
+
+                            header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+                            exit();
+                        }
+                        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                    }
+                    $this->template->blocks[] = new Block('members/reappointForm.inc', [
+                        'member'    => $member,
+                        'newMember' => $newMember
+                    ]);
                 }
             }
 
-            header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
-            exit();
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);

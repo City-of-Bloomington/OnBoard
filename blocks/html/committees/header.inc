@@ -27,9 +27,6 @@ if (isset($this->committee)) {
         if (Person::isAllowed('committees', 'info')) {
             echo "<a href=\"$info\" class=\"fn1-btn\">{$this->_('committee_info')}</a>";
         }
-        if (Person::isAllowed('committees', 'seats')) {
-            echo "<a href=\"$seats\" class=\"fn1-btn\">{$this->_(['seat', 'seats', 2])}</a>";
-        }
     echo "
         </nav>
     </section>

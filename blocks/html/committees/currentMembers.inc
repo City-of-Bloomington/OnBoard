@@ -45,25 +45,29 @@ use Application\Templates\Helpers\ButtonLink;
 
                     if ($seatIsVacant) {
                         $memberName = $this->_('vacancy');
-                        $appointURI = BASE_URI.'/seats/appoint';
                         $classes[] = 'vacant';
 
                         if ($seat->getType() === 'termed') {
                             $term = $seat->getTerm(time());
                             if ($term) {
                                 $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                                $appointURI.= "?term_id={$term->getid()}";
+                                $appointURI = BASE_URI."/seats/appoint?term_id={$term->getid()}";
 
                                 if (strtotime('+3 days') > (int)$term->getEndDate('U')) {
                                     $classes[] = 'termEndsSoon';
                                 }
                             }
                         }
-                        else {  $appointURI.= "?seat_id={$seat->getId()}"; }
+                        else {
+                            $appointURI = BASE_URI."/seats/appoint?seat_id={$seat->getId()}";
+                        }
 
-                        if (Person::isAllowed('seats', 'appoint')) {
-                            $buttons.= '<a href="'.$appointURI.'" class="fn1-dropdown-link">'
-                                .$this->_('member_add').'</a>';
+                        if (isset($appointURI) && Person::isAllowed('seats', 'appoint')) {
+                            $buttons.= "
+                            <a href=\"$appointURI\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_add')}
+                            </a>
+                            ";
                         }
                     }
 
@@ -81,14 +85,23 @@ use Application\Templates\Helpers\ButtonLink;
                         $offices = count($offices)
                             ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
                             : '';
-                        if ($seatIsVacant && Person::isAllowed('members', 'reappoint')) {
-                            $buttons.= '<a href="'.BASE_URI.'/members/reappoint?member_id='.$member->getId().'" class="fn1-dropdown-link">'
-                                .$this->_('member_continue').'</a>';
+
+                        if (Person::isAllowed('members', 'reappoint')) {
+                            $uri = BASE_URI."/members/reappoint?member_id={$member->getId()}";
+                            $buttons.= "
+                            <a href=\"$uri\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_continue')}
+                            </a>
+                            ";
                         }
 
                         if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
-                            $buttons .= '<a href="'.BASE_URI.'/members/resign?member_id='.$member->getId().'" class="fn1-dropdown-link">'
-                                .$this->_('member_end').'</a>';
+                            $uri = BASE_URI."/members/resign?member_id={$member->getId()}";
+                            $buttons.= "
+                            <a href=\"$uri\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_end')}
+                            </a>
+                            ";
                         }
 
                         if ($seatIsVacant) { $classes[] = 'carryover'; }

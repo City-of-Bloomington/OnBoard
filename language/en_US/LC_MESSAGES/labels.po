@@ -50,6 +50,15 @@ msgstr "Done"
 msgid "more"
 msgstr "More"
 
+msgid "confirm"
+msgstr "Confirm"
+
+msgid "yes"
+msgstr "Yes"
+
+msgid "no"
+msgstr "No"
+
 #. This is the short form for "Administrator".  This should be an abbreviation
 msgid "admin"
 msgstr "Admin"
