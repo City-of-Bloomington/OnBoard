@@ -51,12 +51,10 @@ class MembersController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            $this->template->blocks[] = $member->getSeat_id()
-                ? new Block('seats/panel.inc',      ['seat'      => $member->getSeat()])
-                : new Block('committees/panel.inc', ['committee' => $member->getCommittee()]);
-
-            if ($member->getTerm_id()) {
-                $this->template->blocks[] = new Block('members/list.inc', ['members'=>$member->getTerm()->getMembers()]);
+            $committee = $member->getCommittee();
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+            if ($member->getSeat_id()) {
+                $this->template->blocks[] = new Block('seats/info.inc', ['seat' => $member->getSeat()]);
             }
 
             $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);

@@ -29,7 +29,21 @@ class SeatsController extends Controller
         }
 
         if (isset($seat)) {
-            $this->template->blocks[] = new Block('seats/panel.inc', ['seat'=>$seat]);
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$seat->getCommittee()]);
+            $this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
+            if ($seat->getType() === 'termed') {
+                $this->template->blocks[] = new Block('terms/list.inc', [
+                    'terms' => $seat->getTerms(),
+                    'seat'  => $seat
+                ]);
+            }
+            else {
+                $this->template->blocks[] = new Block('members/list.inc', [
+                    'members'   => $seat->getMembers(),
+                    'seat'      => $seat,
+                    'committee' => $seat->getCommittee()
+                ]);
+            }
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);

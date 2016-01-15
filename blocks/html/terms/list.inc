@@ -8,60 +8,55 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
+use Blossom\Classes\Block;
+
 $title = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 2]);
 $helper = $this->template->getHelper('buttonLink');
 ?>
-<div>
-	<h2><?= $title; ?></h2>
+<section class="termsList">
+	<h1><?= $title; ?></h1>
 	<?php
         $t = current($this->terms);
         if ($t && Person::isAllowed('terms', 'generate')) {
             echo $helper->buttonLink(
                 BASE_URI.'/terms/generate?direction=next;term_id='.$t->getId(),
-                $this->_('term_add'),
+                $this->_('term_add_next'),
                 'add'
             );
         }
-        #$this->terms->rewind();
-	?>
-	<table>
-		<thead>
-			<tr><th></th>
-				<th><?= $this->_('startDate'); ?></th>
-				<th><?= $this->_('endDate'); ?></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
 
-			foreach ($this->terms as $term) {
-				$editButton = '';
-				if (Person::isAllowed('terms', 'edit')) {
-					$editButton = $helper->buttonLink(
-						BASE_URI."/terms/update?term_id={$term->getId()}",
-						$this->_('term_edit'),
-						'edit',
-						ButtonLink::SIZE_ICON
-					);
-				}
+        $memberList = new Block('members/list.inc');
+        if ($this->seat) {
+            $memberList->seat      = $this->seat;
+            $memberList->committee = $this->seat->getCommittee();
+        }
 
-				$uri = BASE_URI.'/terms/view?term_id='.$term->getId();
-				echo "
-				<tr><td>$editButton</td>
-					<td><a href=\"$uri\">{$term->getStartDate(DATE_FORMAT)}</a></td>
-					<td><a href=\"$uri\">{$term->getEndDate(DATE_FORMAT)}</a></td>
-				</tr>
-				";
-			}
-		?>
-		</tbody>
-	</table>
-	<?php
+        foreach ($this->terms as $term) {
+            $editButton = '';
+            if (Person::isAllowed('terms', 'edit')) {
+                $editButton = $helper->buttonLink(
+                    BASE_URI."/terms/update?term_id={$term->getId()}",
+                    $this->_('term_edit'),
+                    'edit'
+                );
+            }
+
+            $uri = BASE_URI.'/terms/view?term_id='.$term->getId();
+            $memberList->members = $term->getMembers();
+            echo "
+            <article>
+                <h1>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
+                    $editButton
+                </h1>
+                {$memberList->render('html', $this->template)}
+            </article>
+            ";
+        }
+
         if ($term && Person::isAllowed('terms', 'generate')) {
             echo $helper->buttonLink(
                 BASE_URI.'/terms/generate?direction=previous;term_id='.$term->getId(),
-                $this->_('term_add'),
+                $this->_('term_add_previous'),
                 'add'
             );
         }
@@ -74,4 +69,4 @@ $helper = $this->template->getHelper('buttonLink');
             );
         }
 	?>
-</div>
+</section>

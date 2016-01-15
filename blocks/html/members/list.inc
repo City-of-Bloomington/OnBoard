@@ -12,22 +12,8 @@
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header">
-        <h1 class="fn1-uiBlock-title">
-            <?= $this->title ? $this->title : $this->_(['member', 'members', 2]); ?>
-        </h1>
-    </header>
-    <table class="fn1-table">
-        <thead>
-            <tr><th></th>
-                <th><?= $this->_('name'); ?></th>
-                <th><?= $this->_('seat'); ?></th>
-                <th><?= $this->_('term'); ?></th>
-                <th><?= $this->_('startDate'); ?></th>
-                <th><?= $this->_('endDate'); ?></th>
-            </tr>
-        </thead>
+<section class="membersList">
+    <table>
         <tbody>
         <?php
             $userCanEdit = Person::isAllowed('members', 'edit') && !$this->disableButtons;
@@ -45,25 +31,15 @@ use Application\Templates\Helpers\ButtonLink;
 
                 $name = self::escape($member->getPerson()->getFullname());
 
-                $seat = $member->getSeat_id() ? self::escape($member->getSeat()->getName()) : '';
-                $t = $member->getTerm();
-                if ($t) {
-                    $term = "{$t->getStartDate(DATE_FORMAT)} - {$t->getEndDate(DATE_FORMAT)}";
-                }
-
                 echo "
-                <tr><td>$editButton</td>
-                    <td>$name</td>
-                    <td>$seat</td>
-                    <td>$term</td>
-                    <td>{$member->getStartDate(DATE_FORMAT)}</td>
-                    <td>{$member->getEndDate(DATE_FORMAT)}</td>
+                <tr><td>$name</td>
+                    <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
+                    <td>$editButton</td>
                 </tr>
                 ";
             }
         ?>
         </tbody>
-
     </table>
     <?php
         if (isset($this->committee)

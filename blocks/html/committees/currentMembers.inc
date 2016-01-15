@@ -108,10 +108,11 @@ use Application\Templates\Helpers\ButtonLink;
                     }
 
                     $classes = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+                    $uri = BASE_URI.'/seats/view?seat_id='.$seat->getId();
                     echo "
                     <tr $classes>
                         <td>{$offices}{$memberName}</td>
-                        <td>$seatName</td>
+                        <td><a href=\"$uri\">$seatName</a></td>
                         <td>$appointer</td>
                         <td>$termDates</td>
                         <td>$buttons</td>

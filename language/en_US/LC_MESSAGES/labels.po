@@ -341,6 +341,12 @@ msgstr[1] "Terms"
 msgid "term_add"
 msgstr "Add Term"
 
+msgid "term_add_previous"
+msgstr "Create Previous Term"
+
+msgid "term_add_next"
+msgstr "Create Next Term"
+
 msgid "term_edit"
 msgstr "Edit Term"
 

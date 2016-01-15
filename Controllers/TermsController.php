@@ -21,31 +21,6 @@ class TermsController extends Controller
 		$this->template->blocks[] = new Block('terms/list.inc', ['terms'=>$terms]);
 	}
 
-	public function view()
-	{
-        if (!empty($_REQUEST['term_id'])) {
-            try {
-                $term = new Term($_REQUEST['term_id']);
-            }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
-
-        if (isset($term)) {
-            $seat = $term->getSeat();
-            $this->template->blocks[] = new Block('seats/panel.inc', ['seat'   => $seat]);
-            $this->template->blocks[] = new Block('members/list.inc', [
-                'members'   => $term->getMembers(),
-                'committee' => $seat->getCommittee(),
-                'seat'      => $seat,
-                'term'      => $term
-            ]);
-        }
-        else {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            $this->template->blocks[] = new Block('404.inc');
-        }
-	}
-
 	public function update()
 	{
         // Loading
@@ -75,7 +50,10 @@ class TermsController extends Controller
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
-            $this->template->blocks[] = new Block('seats/panel.inc',      ['seat' => $term->getSeat()]);
+
+            $seat = $term->getSeat();
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$seat->getCommittee()]);
+            $this->template->blocks[] = new Block('seats/info.inc',       ['seat' => $seat]);
             $this->template->blocks[] = new Block('terms/updateForm.inc', ['term' => $term]);
         }
         else {
