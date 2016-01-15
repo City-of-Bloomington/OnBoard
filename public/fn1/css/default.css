@@ -652,6 +652,8 @@ section > header {
   .fn1-table > tbody > tr th, .fn1-table > tbody > tr td {
     background: #edf0f5;
     border-top: 1px solid #c0c0c0;
+    font-size: 1rem;
+    line-height: 1.2em;
     transition: background-color .2s linear;
     vertical-align: top; }
     .fn1-table > tbody > tr th:first-child, .fn1-table > tbody > tr td:first-child {
@@ -668,21 +670,28 @@ section > header {
       border: none;
       padding: .05em 1em .05em .05em; } }
   .fn1-table-actions.fn1-dropdown > .fn1-dropdown-launcher {
-    float: right;
-    border: 1px solid #e0e0e0; }
+    background-color: rgba(0, 0, 0, 0.075);
+    border: 1px solid #e0e0e0;
+    font-size: 0.8125rem;
+    margin: -0.3125rem -1.5rem -0.3125rem -0.5rem;
+    transition: background-color .25s ease-in-out;
+    white-space: nowrap; }
+    .fn1-table-actions.fn1-dropdown > .fn1-dropdown-launcher:hover {
+      background-color: rgba(172, 242, 255, 0.1); }
     .fn1-table-actions.fn1-dropdown > .fn1-dropdown-launcher:before {
-      border: 0.375rem solid transparent;
-      border-top: 0.5rem solid #444;
+      border: 0.25em solid transparent;
+      border-top: 0.375em solid #444;
       content: '';
       color: #e0e0e0;
-      display: block;
+      display: inline-block;
       height: 0;
+      margin: 0 .25em 0 .25em;
       position: relative;
-      top: .25em;
+      top: .125em;
       width: 0; }
   .fn1-table-actions.fn1-dropdown > .fn1-dropdown-links {
     left: inherit;
-    right: 0; }
+    right: -.5em; }
 
 /*dl*/
 .fn1-input-field, .fn1-input-field--checkbox, .fn1-input-field--radio, .fn1-input-field--select {
