@@ -101,6 +101,13 @@ class Term extends ActiveRecord
 
 	public function save() { parent::save(); }
 
+	public function delete()
+	{
+        if ($this->isSafeToDelete()) {
+            parent::delete();
+        }
+	}
+
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
@@ -127,6 +134,20 @@ class Term extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	/**
+	 * @return boolean
+	 */
+	public function isSafeToDelete()
+	{
+        $sql = 'select count(*) as count from members where term_id=?';
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql, [$this->getId()]);
+        if ($result) {
+            $row = $result->current();
+            return ((int)$row['count'] === 0) ? true : false;
+        }
+	}
+
 	/**
 	 * @return Member
 	 */

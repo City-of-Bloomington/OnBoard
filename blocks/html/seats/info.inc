@@ -20,19 +20,27 @@ if ($requirements) {
 }
 
 $helper = $this->template->getHelper('buttonLink');
-$editSeatButton = '';
+$editButton   = '';
+$deleteButton = '';
 if (Person::isAllowed('seats', 'edit')) {
-	$editSeatButton = $helper->buttonLink(
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
-		$this->translate('seat_edit'),
+		$this->_('seat_edit'),
 		'edit'
 	);
+}
+if (Person::isAllowed('seats', 'delete') && $this->seat->isSafeToDelete()) {
+    $deleteButton = $helper->buttonLink(
+        BASE_URI.'/seats/delete?seat_id='.$this->seat->getId(),
+        $this->_('seat_delete'),
+        'delete'
+    );
 }
 
 $uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 echo "
 <section>
-	<h1><a href=\"$uri\">$name</a> $editSeatButton</h1>
+	<h1>$editButton<a href=\"$uri\">$name</a>$deleteButton</h1>
 	<table>
         <tr><th>{$this->_('type')}</th>
             <td>{$this->seat->getType()}</td>

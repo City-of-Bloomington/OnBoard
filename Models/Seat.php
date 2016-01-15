@@ -96,6 +96,13 @@ class Seat extends ActiveRecord
 
 	public function save() { parent::save(); }
 
+	public function delete()
+	{
+        if ($this->isSafeToDelete()) {
+            parent::delete();
+        }
+	}
+
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
@@ -139,32 +146,21 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
-	public function __toString() { return parent::get('name'); }
-
-	public function handleAppointment($post)
+	/**
+	 * @return boolean
+	 */
+	public function isSafeToDelete()
 	{
-        if ($this->getType() === 'termed') {
-            if (!empty($post['term_id'])) {
-                $term   = new Term($post['term_id']);
-                $member = new Member();
-                $member->handleUpdate([
-                    'committee_id' => $this->getCommittee_id(),
-                    'seat_id'      => $this->getId(),
-                    'term_id'      => $term->getId(),
-                    'person_id'    => $post['person_id'],
-                    'startDate'    => $post['startDate']
-                ]);
-
-                $latestMember = $this->getLatestMember();
-
-                if (!$latestMember->getEndDate()) {
-                    $end = new \DateTime($member->getStartDate());
-                    $end->sub(new \DateInterval('P1D'));
-                    $latestMember->setEndDate($end->format(DATE_FORMAT));
-                }
-            }
-        }
-        else {
+        $sql = "select count(*) as count from (
+                    select id from terms where seat_id=?
+                    union
+                    select id from members where seat_id=?
+                ) foreignKeys";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql, [$this->getId(), $this->getId()]);
+        if ($result) {
+            $row = $result->current();
+            return (int)$row['count'] === 0 ? true : false;
         }
 	}
 

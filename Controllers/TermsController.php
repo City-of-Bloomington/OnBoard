@@ -88,4 +88,22 @@ class TermsController extends Controller
         }
 	}
 
+	public function delete()
+	{
+        if (!empty($_REQUEST['term_id'])) {
+            try {
+                $term = new Term($_REQUEST['term_id']);
+                $seat = $term->getSeat();
+
+                $term->delete();
+                header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
+                exit();
+
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        header('Location: '.BASE_URL.'/committees');
+        exit();
+	}
+
 }

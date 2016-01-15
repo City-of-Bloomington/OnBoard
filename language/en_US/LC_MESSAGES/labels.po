@@ -388,6 +388,9 @@ msgstr "Resign"
 msgid "member_continue"
 msgstr "Reappoint"
 
+msgid "member_delete"
+msgstr "Delete Member"
+
 msgid "current_member"
 msgid_plural "current_members"
 msgstr[0] "Current Member"

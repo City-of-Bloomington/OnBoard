@@ -32,21 +32,32 @@ $helper = $this->template->getHelper('buttonLink');
         }
 
         foreach ($this->terms as $term) {
-            $editButton = '';
+            $term_id = $term->getId();
+
+            $editButton   = '';
+            $deleteButton = '';
             if (Person::isAllowed('terms', 'edit')) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI."/terms/update?term_id={$term->getId()}",
+                    BASE_URI."/terms/update?term_id=$term_id",
                     $this->_('term_edit'),
                     'edit'
                 );
             }
+            if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
+                $deleteButton = $helper->buttonLink(
+                    BASE_URI."/terms/delete?term_id=$term_id",
+                    $this->_('term_delete'),
+                    'delete'
+                );
+            }
 
-            $uri = BASE_URI.'/terms/view?term_id='.$term->getId();
+            $uri = BASE_URI."/terms/view?term_id=$term_id";
             $memberList->members = $term->getMembers();
             echo "
             <article>
-                <h1>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
-                    $editButton
+                <h1>$editButton
+                    {$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
+                    $deleteButton
                 </h1>
                 {$memberList->render('html', $this->template)}
             </article>

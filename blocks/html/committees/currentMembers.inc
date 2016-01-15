@@ -34,7 +34,7 @@ use Application\Templates\Helpers\ButtonLink;
             if ($this->committee->getType() === 'seated') {
                 foreach ($this->committee->getSeats(time()) as $seat) {
                     $memberName = '';
-                    $seatName  = self::escape($seat);
+                    $seatName  = self::escape($seat->getName());
                     $appointer = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
                     $termDates = '';
                     $offices   = '';

@@ -152,4 +152,21 @@ class SeatsController extends Controller
         }
         $this->template->blocks[] = $form;
     }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+                $committee_id = $seat->getCommittee_id();
+
+                $seat->delete();
+                header('Location: '.BASE_URL."/committees/members?committee_id=$committee_id");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        header('Location: '.BASE_URL.'/committees');
+        exit();
+    }
 }

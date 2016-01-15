@@ -152,4 +152,22 @@ class MembersController extends Controller
             $this->template->blocks[] = new Block('404.inc');
         }
     }
+
+    public function delete()
+    {
+        try {
+            if (!empty($_REQUEST['member_id'])) {
+                $member = new Member($_REQUEST['member_id']);
+                $seat = $member->getSeat();
+
+                $member->delete();
+                header('Location: '.BASE_URL.'/seats/view?seat_id='.$seat->getId());
+                exit();
+            }
+        }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+        header('Location: '.BASE_URL.'/committees');
+        exit();
+    }
 }

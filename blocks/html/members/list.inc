@@ -7,7 +7,6 @@
  * @param Committee $this->committee
  * @param Seat $this->seat
  * @param string $this->title
- * @param boolean $this->disableButtons
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -16,25 +15,33 @@ use Application\Templates\Helpers\ButtonLink;
     <table>
         <tbody>
         <?php
-            $userCanEdit = Person::isAllowed('members', 'edit') && !$this->disableButtons;
             $helper = $this->template->getHelper('buttonLink');
 
             foreach ($this->members as $member) {
-                $editButton = '';
-                if ($userCanEdit) {
+                $editButton   = '';
+                $deleteButton = '';
+                if (Person::isAllowed('members', 'edit')) {
                     $editButton = $helper->buttonLink(
                         BASE_URI."/members/update?member_id={$member->getId()}",
                         $this->_('member_edit'),
                         'edit'
                     );
                 }
+                if (Person::isAllowed('members', 'delete')) {
+                    $deleteButton = $helper->buttonLink(
+                        BASE_URI.'/members/delete?member_id='.$member->getId(),
+                        $this->_('member_delete'),
+                        'delete'
+                    );
+                }
 
                 $name = self::escape($member->getPerson()->getFullname());
 
                 echo "
-                <tr><td>$name</td>
+                <tr><td>$editButton</td>
+                    <td>$name</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
-                    <td>$editButton</td>
+                    <td>$deleteButton</td>
                 </tr>
                 ";
             }
@@ -42,9 +49,7 @@ use Application\Templates\Helpers\ButtonLink;
         </tbody>
     </table>
     <?php
-        if (isset($this->committee)
-            && !$this->disableButtons
-            && Person::isAllowed('terms', 'add')) {
+        if (isset($this->committee) && Person::isAllowed('terms', 'add')) {
 
             $uri = BASE_URI."/members/update?committee_id={$this->committee->getId()}";
             if (isset($this->seat)) { $uri.= ";seat_id={$this->seat->getId()}"; }
