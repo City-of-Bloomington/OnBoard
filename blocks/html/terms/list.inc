@@ -53,7 +53,7 @@ $helper = $this->template->getHelper('buttonLink');
             ";
         }
 
-        if ($term && Person::isAllowed('terms', 'generate')) {
+        if (isset($term) && Person::isAllowed('terms', 'generate')) {
             echo $helper->buttonLink(
                 BASE_URI.'/terms/generate?direction=previous;term_id='.$term->getId(),
                 $this->_('term_add_previous'),
