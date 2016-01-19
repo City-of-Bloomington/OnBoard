@@ -5,6 +5,7 @@
 .git/
 .git*
 configuration.inc
+site_config.inc
 /data/sessions/*
 /scripts/backup.cnf
 /public/css/Font-Awesome/less/
