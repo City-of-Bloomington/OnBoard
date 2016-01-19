@@ -1,5 +1,5 @@
 #!/bin/bash
-APPNAME=civic-legislation
+APPNAME=OnBoard
 DIR=`pwd`
 BUILD=$DIR/build
 

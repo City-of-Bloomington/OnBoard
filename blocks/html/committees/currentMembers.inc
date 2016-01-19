@@ -73,7 +73,11 @@ use Application\Templates\Helpers\ButtonLink;
 
                     $member = $seat->getMember(time());
                     if ($member) {
-                        $memberName.= self::escape($member->getPerson()->getFullname());
+                        $person_uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
+                        $name = self::escape($member->getPerson()->getFullname());
+                        $name = "<a href=\"$person_uri\">$name</a>";
+
+                        $memberName.= $name;
                         $termDates = $member->getTerm_id()
                             ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
                             : '';
@@ -120,12 +124,12 @@ use Application\Templates\Helpers\ButtonLink;
                         ";
                     }
 
-                    $classes = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
-                    $uri = BASE_URI.'/seats/view?seat_id='.$seat->getId();
+                    $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+                    $seat_uri = BASE_URI.'/seats/view?seat_id='.$seat->getId();
                     echo "
                     <tr $classes>
                         <td>{$offices}{$memberName}</td>
-                        <td><a href=\"$uri\">$seatName</a></td>
+                        <td><a href=\"$seat_uri\">$seatName</a></td>
                         <td>$appointer</td>
                         <td>$termDates</td>
                         <td>$buttons</td>

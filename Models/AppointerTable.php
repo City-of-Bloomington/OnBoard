@@ -26,7 +26,7 @@ class AppointerTable extends TableGateway
 						break;
 
 					case 'person_id':
-						$select->where(['t.person_id'=>$value]);
+						$select->where(['m.person_id'=>$value]);
 						break;
 
 					default:
@@ -46,8 +46,8 @@ class AppointerTable extends TableGateway
 					break;
 
 				case 'person_id':
-					$joins['s'] = ['table'=>'seats', 'on'=>'appointers.id=s.appointer_id'];
-					$joins['t'] = ['table'=>'terms', 'on'=>'s.id=t.seat_id'];
+					$joins['s'] = ['table'=>'seats',   'on'=>'appointers.id=s.appointer_id'];
+					$joins['m'] = ['table'=>'members', 'on'=>'s.id=m.seat_id'];
 					break;
 			}
 		}
