@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->terms
  * @param Seat $this->seat (optional)
+ * @param boolean $this->disableButtons
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -17,7 +18,9 @@ $helper = $this->template->getHelper('buttonLink');
 	<h1><?= $title; ?></h1>
 	<?php
         $t = current($this->terms);
-        if ($t && Person::isAllowed('terms', 'generate')) {
+        if ($t && !$this->disableButtons
+            && Person::isAllowed('terms', 'generate')) {
+
             echo $helper->buttonLink(
                 BASE_URI.'/terms/generate?direction=next;term_id='.$t->getId(),
                 $this->_('term_add_next'),
@@ -25,7 +28,7 @@ $helper = $this->template->getHelper('buttonLink');
             );
         }
 
-        $memberList = new Block('members/list.inc');
+        $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
         if ($this->seat) {
             $memberList->seat      = $this->seat;
             $memberList->committee = $this->seat->getCommittee();
@@ -34,21 +37,31 @@ $helper = $this->template->getHelper('buttonLink');
         foreach ($this->terms as $term) {
             $term_id = $term->getId();
 
+            $addButton    = '';
             $editButton   = '';
             $deleteButton = '';
-            if (Person::isAllowed('terms', 'edit')) {
-                $editButton = $helper->buttonLink(
-                    BASE_URI."/terms/update?term_id=$term_id",
-                    $this->_('term_edit'),
-                    'edit'
-                );
-            }
-            if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
-                $deleteButton = $helper->buttonLink(
-                    BASE_URI."/terms/delete?term_id=$term_id",
-                    $this->_('term_delete'),
-                    'delete'
-                );
+            if (!$this->disableButtons) {
+                if (Person::isAllowed('members', 'edit') && $term->isVacant()) {
+                    $addButton = $helper->buttonLink(
+                        BASE_URI."/members/update?term_id=$term_id",
+                        $this->_('member_add'),
+                        'add'
+                    );
+                }
+                if (Person::isAllowed('terms', 'edit')) {
+                    $editButton = $helper->buttonLink(
+                        BASE_URI."/terms/update?term_id=$term_id",
+                        $this->_('term_edit'),
+                        'edit'
+                    );
+                }
+                if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
+                    $deleteButton = $helper->buttonLink(
+                        BASE_URI."/terms/delete?term_id=$term_id",
+                        $this->_('term_delete'),
+                        'delete'
+                    );
+                }
             }
 
             $uri = BASE_URI."/terms/view?term_id=$term_id";
@@ -60,24 +73,27 @@ $helper = $this->template->getHelper('buttonLink');
                     $deleteButton
                 </h1>
                 {$memberList->render('html', $this->template)}
+                $addButton
             </article>
             ";
         }
 
-        if (isset($term) && Person::isAllowed('terms', 'generate')) {
-            echo $helper->buttonLink(
-                BASE_URI.'/terms/generate?direction=previous;term_id='.$term->getId(),
-                $this->_('term_add_previous'),
-                'add'
-            );
+        if (!$this->disableButtons) {
+            if (isset($term) && Person::isAllowed('terms', 'generate')) {
+                echo $helper->buttonLink(
+                    BASE_URI.'/terms/generate?direction=previous;term_id='.$term->getId(),
+                    $this->_('term_add_previous'),
+                    'add'
+                );
+            }
+            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'add')) {
+                echo $helper->buttonLink(
+                    BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
+                    $this->_('term_add'),
+                    'add'
+                );
+            }
         }
-        if (isset($this->seat)  && !count($this->terms)
-            && Person::isAllowed('terms', 'add')) {
-            echo $helper->buttonLink(
-                BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
-                $this->_('term_add'),
-                'add'
-            );
-        }
+
 	?>
 </section>

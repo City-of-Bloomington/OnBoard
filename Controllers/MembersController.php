@@ -36,10 +36,7 @@ class MembersController extends Controller
                     $member->handleUpdate($_POST);
                     $member->save();
 
-                    if ($member->getTerm_id()) {
-                        $url = BASE_URL.'/terms/view?term_id='.$member->getTerm_id();
-                    }
-                    elseif ($member->getSeat_id()) {
+                    if ($member->getSeat_id()) {
                         $url = BASE_URL.'/seats/view?seat_id='.$member->getSeat_id();
                     }
                     else {

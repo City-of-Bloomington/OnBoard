@@ -197,15 +197,22 @@ class Term extends ActiveRecord
 	/**
 	 * @return string
 	 */
-	public function getLatestVacantStartDate()
+	public function isVacant()
 	{
         if ($this->getId()) {
-            $sql = 'select max(endDate) from terms where id=?';
             $zend_db = Database::getConnection();
+
+            $sql = 'select count(*) as count from members where endDate is null and term_id=?';
+            $result = $zend_db->query($sql, [$this->getId()]);
+            $row = $result->current();
+            if ($row['count'] > 0) { return false; }
+
+            $sql = 'select max(endDate) as endDate from members where term_id=?';
             $result = $zend_db->query($sql, [$this->getId()]);
             if (count($result)) {
                 $row = $result->current();
-                return $row['endDate'];
+                $endDate = new \DateTime($row['endDate']);
+                return (int)$endDate->format('U') < (int)$this->getEndDate('U');
             }
         }
         return $this->getStartDate();

@@ -8,6 +8,7 @@
  */
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
+use Blossom\Classes\Block;
 ?>
 <section    class="fn1-uiBlock">
     <header class="fn1-uiBlock-header">
@@ -43,10 +44,16 @@ use Application\Models\Seat;
                                 if ($previousTerm) {
                                     $list[] = $previousTerm;
                                 }
+
+                                $block = new Block('terms/list.inc', ['terms'=>$list, 'disableButtons'=>true]);
+                                echo $block->render('html', $this->template);
+
                                 $options = '';
                                 foreach ($list as $term) {
-                                    $dates   = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                                    $options.= "<option value=\"{$term->getId()}\">$dates</option>";
+                                    if ($term->isVacant()) {
+                                        $dates   = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
+                                        $options.= "<option value=\"{$term->getId()}\">$dates</option>";
+                                    }
                                 }
 
                                 echo "
