@@ -42,16 +42,20 @@ class CommitteesController extends Controller
     public function info()
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        }
         $this->template->blocks[] = new Block('committees/info.inc',        ['committee' => $committee]);
     }
 
     public function members()
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',    ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',         ['committee' => $committee]);
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        }
         $this->template->blocks[] = new Block('committees/currentMembers.inc', ['committee' => $committee]);
     }
 
@@ -73,16 +77,20 @@ class CommitteesController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        }
         $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee' => $committee]);
     }
 
     public function seats()
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        }
         $this->template->blocks[] = new block('seats/list.inc', [
             'seats'     => $committee->getSeats(),
             'committee' => $committee

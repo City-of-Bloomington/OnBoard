@@ -9,6 +9,13 @@ require_once __DIR__.'/onboard.fields.inc';
 function onboard_admin_form()
 {
     return system_settings_form([
+        'onboard_url' => [
+            '#type'          => 'textfield',
+            '#default_value' => variable_get('onboard_url'),
+            '#title'         => 'OnBoard url',
+            '#description'   => 'The URL for OnBoard',
+            '#required'      => true
+        ],
         'onboard_solr_url' => [
             '#type'          => 'textfield',
             '#default_value' => variable_get('onboard_solr_url'),
@@ -54,15 +61,15 @@ function onboard_document_index($node, $field, $documentType, $year=null)
         'legislation' => 'legislation'
     ];
 
-    if (!empty(   $node->$field['und'][0]["doctypes_$documentType"])) {
-        $folder = $node->$field['und'][0]['folder'];
+    if (!empty(   $node->{$field}['und'][0]["doctypes_$documentType"])) {
+        $folder = $node->{$field}['und'][0]['folder'];
 
         $namespace_short = 'D:cob:';
         $namespace_long  = '{http://bloomington.in.gov/alfresco/model}';
         $dateField       = "date@sd@{$namespace_long}{$knownTypes[$documentType]}Date";
         $year = $year ? $year : date('Y');
 
-        $types  = explode(',', $node->$field['und'][0]["doctypes_$documentType"]);
+        $types  = explode(',', $node->{$field}['und'][0]["doctypes_$documentType"]);
         $types_cmis = [];
         $types_solr = [];
         foreach ($types as $type) {

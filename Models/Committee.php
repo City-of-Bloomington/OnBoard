@@ -236,7 +236,7 @@ class Committee extends ActiveRecord
         if ($this->getType() === 'seated') {
             $seats = $this->getSeats($timestamp);
             foreach ($seats as $s) {
-                if ($seat->hasVacancy($timestamp)) { return true; }
+                if ($s->hasVacancy($timestamp)) { return true; }
             }
         }
         return false;

@@ -8,6 +8,7 @@ function onboard_install() { }
 
 function onboard_uninstall()
 {
+    variable_del('onboard_url');
     variable_del('onboard_solr_url');
 }
 
