@@ -1,17 +1,17 @@
 <?php
 /**
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-require_once __DIR__.'/civiclegislation.fields.inc';
+require_once __DIR__.'/onboard.fields.inc';
 
-function civiclegislation_admin_form()
+function onboard_admin_form()
 {
     return system_settings_form([
-        'civiclegislation_solr_url' => [
+        'onboard_solr_url' => [
             '#type'          => 'textfield',
-            '#default_value' => variable_get('civiclegislation_solr_url'),
+            '#default_value' => variable_get('onboard_solr_url'),
             '#title'         => 'Solr Server',
             '#description'   => "The URL for CMIS server's Solr index.  This is usually the same server as the CMIS endpoint.",
             '#required'      => true
@@ -19,34 +19,34 @@ function civiclegislation_admin_form()
     ]);
 }
 
-function civiclegislation_menu()
+function onboard_menu()
 {
     return [
-        'admin/config/services/civiclegislation' => [
-            'title'            => 'Civic Legislation settings',
+        'admin/config/services/onboard' => [
+            'title'            => 'OnBoard settings',
             'description'      => 'Settings for the boards and committees module',
             'page callback'    => 'drupal_get_form',
-            'page arguments'   => ['civiclegislation_admin_form'],
+            'page arguments'   => ['onboard_admin_form'],
             'access arguments' => ['administer site configuration'],
             'type'             => MENU_NORMAL_ITEM
         ],
-        'civiclegislation/%node/%/%' => [
-            'title callback'   => 'civiclegislation_document_index_title',
+        'onboard/%node/%/%' => [
+            'title callback'   => 'onboard_document_index_title',
             'title arguments'  => [1],
             'description'      => 'Browsable index of documents from Alfresco.',
-            'page callback'    => 'civiclegislation_document_index',
+            'page callback'    => 'onboard_document_index',
             'page arguments'   => [1, 2, 3],
             'access arguments' => ['access content']
         ]
     ];
 }
 
-function civiclegislation_document_index_title($node)
+function onboard_document_index_title($node)
 {
     return $node->title;
 }
 
-function civiclegislation_document_index($node, $field, $documentType, $year=null)
+function onboard_document_index($node, $field, $documentType, $year=null)
 {
     $knownTypes = [
         'meetings'    => 'meeting',
@@ -73,12 +73,12 @@ function civiclegislation_document_index($node, $field, $documentType, $year=nul
         }
         $types_cmis = implode(','   , $types_cmis);
 
-        $cmis = _civiclegislation_cmis_documents($folder, $types_cmis, $year);
-        $solr = _civiclegislation_solr_years    ($folder, $types_solr, $dateField);
+        $cmis = _onboard_cmis_documents($folder, $types_cmis, $year);
+        $solr = _onboard_solr_years    ($folder, $types_solr, $dateField);
 
         $solr = json_decode($solr);
         if ($solr) {
-            return theme('civiclegislation_documents', [
+            return theme('onboard_documents', [
                 'types'=>$types, 'year'=>$year, 'node'=>$node,
                 'documents' => $cmis->results,
                 'years'     => $solr->facet_counts->facet_ranges->$dateField->counts,
@@ -95,10 +95,10 @@ function civiclegislation_document_index($node, $field, $documentType, $year=nul
  * @param int $committee_id
  * @return stdClass The json object
  */
-function civiclegislation_committee_info($committee_id)
+function onboard_committee_info($committee_id)
 {
-    $url = variable_get('civiclegislation_url').'/committees/view?format=json;committee_id='.$committee_id;
-    $r   = _civiclegislation_get($url);
+    $url = variable_get('onboard_url').'/committees/members?format=json;committee_id='.$committee_id;
+    $r   = _onboard_get($url);
     return json_decode($r);
 }
 
@@ -106,11 +106,11 @@ function civiclegislation_committee_info($committee_id)
  * @implements hook_theme()
  * @see https://www.drupal.org/node/933976
  */
-function civiclegislation_theme()
+function onboard_theme()
 {
     return [
-        'civiclegislation_documents'=> [
-            'template' => 'civiclegislation_documents',
+        'onboard_documents'=> [
+            'template' => 'onboard_documents',
             'variables' => [
                 'documents'=>null, 'types'=>null, 'year'=>null, 'years'=>null, 'namespace'=>null
             ]
@@ -123,7 +123,7 @@ function civiclegislation_theme()
  * @param string $url
  * @return string
  */
-function _civiclegislation_get($url)
+function _onboard_get($url)
 {
     $session = curl_init($url);
     curl_setopt($session, CURLOPT_HEADER,         false);
@@ -145,7 +145,7 @@ function _civiclegislation_get($url)
  * @param string $string
  * @return string
  */
-function _civiclegislation_solr_escape($string)
+function _onboard_solr_escape($string)
 {
     return str_replace(
         [chr(92),          '+',  '-',  '&',  '|',  '!',  '(',  ')',  '{',  '}',  '[',  ']',  '^',  '"',  '~',  '*',  '?',  ':',  '/'],
@@ -160,10 +160,10 @@ function _civiclegislation_solr_escape($string)
  * @param string $dateField Fully namespaced name for the date field
  * @return string The raw http response from Solr
  */
-function _civiclegislation_solr_years($folder, $types, $dateField)
+function _onboard_solr_years($folder, $types, $dateField)
 {
     foreach ($types as $i=>$t) {
-        $types[$i] = 'TYPE:'._civiclegislation_solr_escape($t);
+        $types[$i] = 'TYPE:'._onboard_solr_escape($t);
     }
 
     $params = [
@@ -182,13 +182,13 @@ function _civiclegislation_solr_years($folder, $types, $dateField)
         'facet.mincount'    => 1
     ];
     $p = http_build_query($params, null, '&');
-    $p.='&fq='.urlencode('ANCESTOR:'._civiclegislation_solr_escape("workspace://SpacesStore/$folder"));
+    $p.='&fq='.urlencode('ANCESTOR:'._onboard_solr_escape("workspace://SpacesStore/$folder"));
     $p.='&fq='.urlencode(implode(' OR ', $types));
-    $url = variable_get('civiclegislation_solr_url')."/select?$p";
-    return _civiclegislation_get($url);
+    $url = variable_get('onboard_solr_url')."/select?$p";
+    return _onboard_get($url);
 }
 
-function _civiclegislation_cmis_documents($folder, $types, $year)
+function _onboard_cmis_documents($folder, $types, $year)
 {
     $start = strtotime("$year-01-01") * 1000;
     $end   = strtotime("$year-12-31") * 1000;

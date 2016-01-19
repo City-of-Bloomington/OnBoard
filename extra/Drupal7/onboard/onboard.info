@@ -1,6 +1,6 @@
-name = Civic Legislation
+name = OnBoard
 description = Integration with external boards and commissions data
 core = 7.x
-configure = admin/config/services/civiclegislation
+configure = admin/config/services/onboard
 dependencies[] = field_ui
 dependencies[] = cmisro

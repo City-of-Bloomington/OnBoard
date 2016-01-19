@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -8,14 +8,14 @@
  * @implements hook_field_info()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_info/7
  */
-function civiclegislation_field_info()
+function onboard_field_info()
 {
     return [
-        'civiclegislation_links' => [
-            'label'            => 'Civic Legislation Links',
+        'onboard_links' => [
+            'label'            => 'OnBoard Links',
             'description'      => 'Stores configuration integrating with a CMIS server storing documents related to a board or commission.',
-            'default_widget'   => 'civiclegislation_links_fieldset',
-            'default_formatter'=> 'civiclegislation_links_formatter'
+            'default_widget'   => 'onboard_links_fieldset',
+            'default_formatter'=> 'onboard_links_formatter'
         ]
     ];
 }
@@ -24,12 +24,12 @@ function civiclegislation_field_info()
  * @implements hook_field_widget_info()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_widget_info/7
  */
-function civiclegislation_field_widget_info()
+function onboard_field_widget_info()
 {
     return [
-        'civiclegislation_links_fieldset' => [
-            'label'       => 'Civic Legislation Fieldset',
-            'field types' => ['civiclegislation_links']
+        'onboard_links_fieldset' => [
+            'label'       => 'OnBoard Fieldset',
+            'field types' => ['onboard_links']
         ]
     ];
 }
@@ -38,19 +38,19 @@ function civiclegislation_field_widget_info()
  * @implements hook_field_is_empty()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_is_empty/7
  */
-function civiclegislation_field_is_empty($item, $field)
+function onboard_field_is_empty($item, $field)
 {
-    return empty($item['civiclegislation_links_fieldset']['folder']);
+    return empty($item['onboard_links_fieldset']['folder']);
 }
 
 /**
  * @implements hook_field_widget_form()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_widget_form/7
  */
-function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$instance, &$langcode, &$items, &$delta, &$element)
+function onboard_field_widget_form(&$form, &$form_state, &$field, &$instance, &$langcode, &$items, &$delta, &$element)
 {
-    if ($instance['widget']['type'] == 'civiclegislation_links_fieldset') {
-        $element['civiclegislation_links_fieldset'] = [
+    if ($instance['widget']['type'] == 'onboard_links_fieldset') {
+        $element['onboard_links_fieldset'] = [
             '#type' => 'fieldset',
             '#title' => $element['#title'],
             '#tree' => true,
@@ -80,14 +80,14 @@ function civiclegislation_field_widget_form(&$form, &$form_state, &$field, &$ins
     return $element;
 }
 
-function civiclegislation_field_presave(&$entity_type, &$entity, &$field, &$instance, &$lang, &$items)
+function onboard_field_presave(&$entity_type, &$entity, &$field, &$instance, &$lang, &$items)
 {
-    if ($instance['widget']['type'] == 'civiclegislation_links_fieldset') {
+    if ($instance['widget']['type'] == 'onboard_links_fieldset') {
         $fields = ['folder', 'doctypes_meetings', 'doctypes_legislation', 'doctypes_reports'];
         foreach ($items as $i => $item) {
             foreach ($fields as $f) {
-                if (isset($item['civiclegislation_links_fieldset'][$f])) {
-                    $items[$i][$f] = $item['civiclegislation_links_fieldset'][$f];
+                if (isset($item['onboard_links_fieldset'][$f])) {
+                    $items[$i][$f] = $item['onboard_links_fieldset'][$f];
                 }
             }
         }
@@ -98,12 +98,12 @@ function civiclegislation_field_presave(&$entity_type, &$entity, &$field, &$inst
  * @implements hook_field_formatter_info()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_formatter_info/7
  */
-function civiclegislation_field_formatter_info()
+function onboard_field_formatter_info()
 {
     return [
-        'civiclegislation_links_formatter' => [
+        'onboard_links_formatter' => [
             'label'       => t('Default'),
-            'field types' => ['civiclegislation_links']
+            'field types' => ['onboard_links']
         ]
     ];
 }
@@ -112,13 +112,13 @@ function civiclegislation_field_formatter_info()
  * @implements hook_field_formatter_view()
  * @see https://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_formatter_view/7
  */
-function civiclegislation_field_formatter_view($entity_type, $entity, $field, $instance, $lang, &$items, &$display)
+function onboard_field_formatter_view($entity_type, $entity, $field, $instance, $lang, &$items, &$display)
 {
     $element = [];
 
     switch ($display['type']) {
-        case 'civiclegislation_links_formatter':
-            $uri = "civiclegislation/{$entity->nid}/$field[field_name]";
+        case 'onboard_links_formatter':
+            $uri = "onboard/{$entity->nid}/$field[field_name]";
             $class_current = ['attributes' => ['class' => ['current']]];
 
             foreach ($items as $i => $item) {

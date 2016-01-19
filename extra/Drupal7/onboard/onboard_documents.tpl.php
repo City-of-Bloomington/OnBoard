@@ -9,7 +9,7 @@
  * $node      The node object for the board or commission page
  * $namespace The short namespace that is prepended to the types
  *
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -26,14 +26,14 @@ foreach ($documents as $row) {
     ];
 }
 echo "
-<section class=\"civiclegislation container\">
+<section class=\"onboard container\">
     <h1>$year Meetings</h1>
     <nav>
 ";
     foreach (array_reverse(array_keys(get_object_vars($years))) as $y) {
         $y = substr($y, 0, 4);
         $attr = $y == $year ? ['attributes'=>['class'=>['current']]] : [];
-        echo l($y, "civiclegislation/{$node->nid}/field_civiclegislation_links/meetings/$y", $attr);
+        echo l($y, "onboard/{$node->nid}/field_onboard_links/meetings/$y", $attr);
     }
 echo "
     </nav>
