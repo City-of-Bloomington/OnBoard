@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->people
@@ -10,33 +10,35 @@ use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 use Blossom\Classes\Url;
 ?>
-<div>
-	<h2><?php
-			echo $this->translate(['labels.person','labels.people',2]);
+<section>
+    <header>
+        <h1><?php
+                echo $this->translate(['person','people',2]);
 
-			if (Person::isAllowed('people')) {
-				// Preserve any extra parameters passed in
-				$url = new Url(BASE_URL.'/people/update');
-				$fields = array('firstname','lastname','email');
-				foreach ($_REQUEST as $key=>$value) {
-					if (!in_array($key, $fields)) { $url->$key = $value; }
-				}
+                if (Person::isAllowed('people')) {
+                    // Preserve any extra parameters passed in
+                    $url = new Url(BASE_URL.'/people/update');
+                    $fields = array('firstname','lastname','email');
+                    foreach ($_REQUEST as $key=>$value) {
+                        if (!in_array($key, $fields)) { $url->$key = $value; }
+                    }
 
-				$helper = $this->template->getHelper('buttonLink');
-				echo $helper->buttonLink(
-					$url,
-					$this->translate('labels.add_person'),
-					'add'
-				);
-			}
-		?>
-	</h2>
-	<table>
+                    $helper = $this->template->getHelper('buttonLink');
+                    echo $helper->buttonLink(
+                        $url,
+                        $this->translate('add_person'),
+                        'add'
+                    );
+                }
+            ?>
+        </h1>
+    </header>
+	<table class="fn1-table">
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('labels.username'); ?></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_(['labels.email','labels.emails',1]); ?></th>
+				<th><?php echo $this->_('username'); ?></th>
+				<th><?php echo $this->_('name'); ?></th>
+				<th><?php echo $this->_(['email','emails',1]); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,7 +48,7 @@ use Blossom\Classes\Url;
 				if (Person::isAllowed('people')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/people/update?person_id='.$person->getId(),
-						$this->translate('labels.edit'),
+						$this->translate('edit'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
@@ -78,4 +80,4 @@ use Blossom\Classes\Url;
 		?>
 		</tbody>
 	</table>
-</div>
+</section>

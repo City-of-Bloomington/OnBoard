@@ -32,8 +32,8 @@ class ButtonLink
 	public function buttonLink($url, $label, $type, $size=self::SIZE_BUTTON)
 	{
 		$a = $size == self::SIZE_BUTTON
-			? '<a href="%s" class="btn"><i class="%s"></i> %s</a>'
-			: '<a href="%s" class="%s" ><i class="hidden-label">%s</i></a>';
+			? '<a href="%s" class="fn1-btn"><i class="%s"></i> %s</a>'
+			: '<a href="%s" class="fn1-btn %s" ><i class="hidden-label">%s</i></a>';
 		$class = array_key_exists($type, self::$types) ? self::$types[$type] : $type;
 		return sprintf($a, $url, $class, $label);
 	}

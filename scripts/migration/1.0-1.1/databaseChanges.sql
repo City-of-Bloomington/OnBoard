@@ -1,6 +1,10 @@
-alter table committees add email   varchar(128) after website;
-alter table committees add phone   varchar(128) after email;
-alter table committees add address varchar(128) after phone;
-alter table committees add city    varchar(128) after address;
-alter table committees add state   varchar(32)  after city;
-alter table committees add zip     varchar(32)  after state;
+alter table committees add type enum('seated', 'open') not null default 'seated';
+update committees set type='seated';
+
+alter table terms add committee_id int unsigned not null after id;
+update terms t, seats s set t.committee_id=s.committee_id where s.id=t.seat_id;
+alter table terms add foreign key (committee_id) references committees(id);
+
+alter table terms modify seat_id int unsigned;
+
+alter table terms add carryover boolean;

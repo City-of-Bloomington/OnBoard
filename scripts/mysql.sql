@@ -1,5 +1,5 @@
--- @copyright 2006-2014 City of Bloomington, Indiana
--- @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+-- @copyright 2006-2016 City of Bloomington, Indiana
+-- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
 -- @author Cliff Ingham <inghamn@bloomington.in.gov>
 create table races (
 	id int unsigned not null primary key auto_increment,
@@ -29,6 +29,7 @@ create table people (
 
 create table committees (
 	id int unsigned not null primary key auto_increment,
+	type enum('seated', 'open') not null default 'seated',
 	name varchar(128) not null,
 	statutoryName varchar(128),
 	statuteReference varchar(128),
@@ -52,28 +53,47 @@ create table appointers (
 );
 insert appointers values(1,'Elected');
 
+--
+-- Begin 2.0 changes
+--
 create table seats (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null,
+    id int unsigned not null primary key auto_increment,
+    type enum('termed', 'open'),
+    name varchar(128) not null,
 	committee_id int unsigned not null,
 	appointer_id int unsigned,
-	maxCurrentTerms tinyint unsigned,
-	startDate date not null default CURRENT_DATE,
-	endDate date,
-	requirements text,
-	foreign key (appointer_id) references appointers(id),
-	foreign key (committee_id) references committees(id)
+    startDate date,
+    endDate   date,
+    requirements text,
+    termLength varchar(32),
+	foreign key (committee_id) references committees(id),
+	foreign key (appointer_id) references appointers(id)
 );
 
 create table terms (
-	id int unsigned not null primary key auto_increment,
-	seat_id int unsigned not null,
-	person_id int unsigned not null,
-	term_start date,
-	term_end date,
-	foreign key (seat_id) references seats(id),
-	foreign key (person_id) references people(id)
+    id      int unsigned not null primary key auto_increment,
+	seat_id int unsigned,
+	startDate date not null,
+	endDate   date not null,
+	foreign key (seat_id) references seats(id)
 );
+
+create table members (
+	id int unsigned not null primary key auto_increment,
+	committee_id int unsigned not null,
+	seat_id      int unsigned,
+	term_id      int unsigned,
+	person_id    int unsigned not null,
+	startDate date,
+	endDate   date,
+	foreign key (committee_id) references committees(id),
+	foreign key (seat_id)      references seats     (id),
+	foreign key (term_id)      references terms     (id),
+	foreign key (person_id)    references people    (id)
+);
+--
+-- End 2.0 changes
+--
 
 create table offices (
 	id int unsigned not null primary key auto_increment,

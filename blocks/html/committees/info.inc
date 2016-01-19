@@ -11,19 +11,20 @@ use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $fields = [
-	'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
-	'email', 'phone', 'address', 'city', 'state', 'zip'
+    'type',
+    'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
+    'email', 'phone', 'address', 'city', 'state', 'zip'
 ];
 foreach ($fields as $f) {
-	$get = 'get'.ucfirst($f);
-	$$f = View::escape($this->committee->$get());
+    $get = 'get'.ucfirst($f);
+    $$f = View::escape($this->committee->$get());
 }
 
 if ($statuteUrl) {
-	$statuteReference = "<a href=\"$statuteUrl\">$statuteReference</a>";
+    $statuteReference = "<a href=\"$statuteUrl\">$statuteReference</a>";
 }
 if ($website) {
-	$website = "<a href=\"$website\">$website</a>";
+    $website = "<a href=\"$website\">$website</a>";
 }
 
 $markdown = new MarkdownExtra();
@@ -33,53 +34,66 @@ $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $editButton = '';
 if (Person::isAllowed('committees', 'edit')) {
-	$helper = $this->template->getHelper('buttonLink');
-	$editButton = $helper->buttonLink(
-		BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
-		$this->_('labels.edit'),
-		'edit',
-		ButtonLink::SIZE_ICON
-	);
+    $helper = $this->template->getHelper('buttonLink');
+    $editButton = $helper->buttonLink(
+        BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
+        $this->_('edit'),
+        'edit',
+        ButtonLink::SIZE_ICON
+    );
 }
+?>
+<section class="fn1-uiBlock">
+  <header class="fn1-uiBlock-header">
+    <h1 class="fn1-uiBlock-title"><?= $this->_('committee_info') ?></h1>
+    <div class="fn1-uiBlock-headerTools">
+      <?= $editButton ?>
+    </div>
+  </header>
+  <div class="fn1-uiBlock-content">
 
-echo "
-<div>
-	<h2><a href=\"{$this->committee->getUri()}\">$name</a>
-		$editButton
-	</h2>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('type') ?></dt>
+      <dd><?= $type ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('year_formed') ?></dt>
+      <dd><?= $yearFormed ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('statutoryName') ?></dt>
+      <dd><?= $statutoryName ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('statuteReference') ?></dt>
+      <dd><?= $statuteReference ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('website') ?></dt>
+      <dd><?= $website ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_(['email', 'emails', 1]) ?></dt>
+      <dd><?= $email ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('phone') ?></dt>
+      <dd><?= $phone ?></dd>
+    </dl>
+    <dl class="fn1-output-field">
+      <dt><?= $this->_('address') ?></dt>
+      <dd><address><?= $address ?>
+        <?= $city ?> <?= $state ?> <?= $zip ?>
+        </address>
+      </dd>
+    </dl>
 
-	<table>
-		<tr><th>{$this->_('labels.year_formed')}</th>
-			<td>$yearFormed</td>
-		</tr>
-		<tr><th>{$this->_('labels.statutoryName')}</th>
-			<td>$statutoryName</td>
-		</tr>
-		<tr><th>{$this->_('labels.statuteReference')}</th>
-			<td>$statuteReference</td>
-		</tr>
-		<tr><th>{$this->_('labels.website')}</th>
-			<td>$website</td>
-		</tr>
-		<tr><th>{$this->_(['labels.email', 'labels.emails', 1])}</th>
-            <td>$email</td>
-        </tr>
-        <tr><th>{$this->_('labels.phone')}</th>
-            <td>$phone</td>
-        </tr>
-        <tr><th>{$this->_('labels.address')}</th>
-            <td><address>$address
-                $city $state $zip
-                </address>
-            </td>
-	</table>
+    <?= $description ?>
 
-    $description
+    <h2><?= $this->_('meetingSchedule') ?></h2>
+    <?= $meetingSchedule ?>
 
-    <h3>{$this->_('labels.meetingSchedule')}</h3>
-    $meetingSchedule
-
-    <h3>{$this->_('labels.contactInfo')}</h3>
-    $contactInfo
-</div>
-";
+    <h2><?= $this->_('contactInfo') ?></h2>
+    <?= $contactInfo ?>
+  </div>
+</section>

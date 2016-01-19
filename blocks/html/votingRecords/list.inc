@@ -16,7 +16,7 @@ use Blossom\Classes\View;
 				$helper = $this->template->getHelper('buttonLink');
 				echo $helper->buttonLink(
 					BASE_URI.'/votes/recordVotes?vote_id='.$this->vote->getId(),
-					$this->translate('labels.edit_votingRecords'),
+					$this->translate('edit_votingRecords'),
 					'edit'
 				);
 			}

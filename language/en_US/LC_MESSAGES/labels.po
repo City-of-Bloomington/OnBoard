@@ -1,0 +1,469 @@
+# Translation
+# Copyright (C) 2013-2016 City of Bloomington
+# This file is distributed under the same license as the civic-Legislation package.
+#
+domain "labels"
+
+msgid ""
+msgstr ""
+"Project-Id-Version: uReport 1.9\n"
+"Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
+"POT-Creation-Date: 2013-09-20 16:33-0400\n"
+"PO-Revision-Date: 2016-01-05 12:25-0500\n"
+"Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
+"Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: en_US\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "home"
+msgstr "Home"
+
+msgid "add"
+msgstr "Add"
+
+msgid "edit"
+msgstr "Edit"
+
+msgid "delete"
+msgstr "Delete"
+
+msgid "search"
+msgstr "Search"
+
+msgid "submit"
+msgstr "Submit"
+
+msgid "save"
+msgstr "Save"
+
+msgid "cancel"
+msgstr "Cancel"
+
+msgid "done"
+msgstr "Done"
+
+msgid "more"
+msgstr "More"
+
+msgid "confirm"
+msgstr "Confirm"
+
+msgid "yes"
+msgstr "Yes"
+
+msgid "no"
+msgstr "No"
+
+#. This is the short form for "Administrator".  This should be an abbreviation
+msgid "admin"
+msgstr "Admin"
+
+msgid "login"
+msgstr "Login"
+
+msgid "logout"
+msgstr "Logout"
+
+msgid "help"
+msgstr "Help"
+
+msgid "about"
+msgstr "About"
+
+msgid "name"
+msgstr "Name"
+
+msgid "firstname"
+msgstr "First Name"
+
+msgid "middlename"
+msgstr "Middle Name"
+
+msgid "lastname"
+msgstr "Last Name"
+
+msgid "address"
+msgstr "Address"
+
+msgid "city"
+msgstr "City"
+
+msgid "state"
+msgstr "State"
+
+msgid "zipcode"
+msgstr "Zip"
+
+msgid "gender"
+msgstr "Gender"
+
+msgid "birthdate"
+msgstr "Birthdate"
+
+msgid "username"
+msgstr "Username"
+
+msgid "password"
+msgstr "Password"
+
+msgid "authenticationMethod"
+msgstr "Authentication"
+
+msgid "role"
+msgstr "Role"
+
+msgid "email"
+msgid_plural "emails"
+msgstr[0] "Email"
+msgstr[1] "Email Addresses"
+
+msgid "phone"
+msgstr "Phone Number"
+
+msgid "person"
+msgid_plural "people"
+msgstr[0] "Person"
+msgstr[1] "People"
+
+msgid "user"
+msgid_plural "users"
+msgstr[0] "User Account"
+msgstr[1] "User Accounts"
+
+msgid "info_person"
+msgstr "Person Info"
+
+msgid "info_vote"
+msgstr "Vote Info"
+
+msgid "info_term"
+msgstr "Term Info"
+
+msgid "info_topic"
+msgstr "Legislation Info"
+
+msgid "info_seat"
+msgstr "Seat Info"
+
+msgid "info_office"
+msgstr "Office Info"
+
+msgid "add_person"
+msgstr "Add a Person"
+
+msgid "edit_person"
+msgstr "Edit Person"
+
+msgid "find_person"
+msgstr "Find a Person"
+
+msgid "create_account"
+msgstr "Create Account"
+
+msgid "edit_account"
+msgstr "Edit Account"
+
+msgid "delete_account"
+msgstr "Delete Account"
+
+msgid "race"
+msgid_plural "races"
+msgstr[0] "Ethnicity"
+msgstr[1] "Ethnicities"
+
+msgid "edit_race"
+msgstr "Edit Ethnicity"
+
+msgid "add_race"
+msgstr "Add Ethnicity"
+
+msgid "committee"
+msgid_plural "committees"
+msgstr[0] "Committee"
+msgstr[1] "Committees"
+
+msgid "committee_add"
+msgstr "Add Committee"
+
+msgid "committee_edit"
+msgstr "Edit Committee"
+
+msgid "committee_info"
+msgstr "Committee Info"
+
+msgid "type"
+msgstr "Type"
+
+msgid "council"
+msgid_plural "councils"
+msgstr[0] "Council"
+msgstr[1] "Councils"
+
+msgid "commission"
+msgid_plural "commissions"
+msgstr[0] "Commission"
+msgstr[1] "Commissions"
+
+msgid "board"
+msgid_plural "boards"
+msgstr[0] "Board"
+msgstr[1] "Boards"
+
+msgid "allocation"
+msgid_plural "allocations"
+msgstr[0] "Allocation"
+msgstr[1] "Allocations"
+
+msgid "allocation_add"
+msgstr "New Allocation"
+
+msgid "allocation_edit"
+msgstr "Edit Allocation"
+
+msgid "seat"
+msgid_plural "seats"
+msgstr[0] "Seat"
+msgstr[1] "Seats"
+
+msgid "seat_add"
+msgstr "Add Seat"
+
+msgid "seat_edit"
+msgstr "Edit Seat"
+
+msgid "seat_delete"
+msgstr "Delete Seat"
+
+msgid "appointer"
+msgid_plural "appointers"
+msgstr[0] "Appointer"
+msgstr[1] "Appointers"
+
+msgid "add_appointer"
+msgstr "Add Appointer"
+
+msgid "edit_appointer"
+msgstr "Edit Appointer"
+
+msgid "appointed_by"
+msgstr "Appointed By"
+
+msgid "requirement"
+msgid_plural "requirements"
+msgstr[0] "Requirement"
+msgstr[1] "Requirements"
+
+msgid "add_requirement"
+msgstr "Add Requirement"
+
+msgid "edit_requirement"
+msgstr "Edit Requirement"
+
+msgid "current_requirements"
+msgstr "Current Requirements"
+
+msgid "topic"
+msgid_plural "topics"
+msgstr[0] "Legislation"
+msgstr[1] "Legislation"
+
+msgid "add_topic"
+msgstr "Add Legislation"
+
+msgid "edit_topic"
+msgstr "Edit Legislation"
+
+msgid "topicType"
+msgid_plural "topicTypes"
+msgstr[0] "Legislation Type"
+msgstr[1] "Legislation Types"
+
+msgid "add_topicType"
+msgstr "Add Legislation Type"
+
+msgid "edit_topicType"
+msgstr "Edit Topic Type"
+
+msgid "vote"
+msgid_plural "votes"
+msgstr[0] "Vote"
+msgstr[1] "Votes"
+
+msgid "add_vote"
+msgstr "Add Vote"
+
+msgid "edit_vote"
+msgstr "Edit Vote"
+
+msgid "outcome"
+msgstr "Outcome"
+
+msgid "invalid_votes"
+msgstr "Invalid Votes"
+
+msgid "all_votes"
+msgstr "All Votes"
+
+msgid "voteType"
+msgid_plural "voteTypes"
+msgstr[0] "Vote Type"
+msgstr[1] "Vote Types"
+
+msgid "add_voteType"
+msgstr "Add Vote Type"
+
+msgid "edit_voteType"
+msgstr "Edit Vote Type"
+
+msgid "votingRecord"
+msgid_plural "votingRecords"
+msgstr[0] "Voting Record"
+msgstr[1] "Voting Records"
+
+msgid "edit_votingRecords"
+msgstr "Enter Votes"
+
+msgid "votingRecordComparison"
+msgstr "Voting Comparison"
+
+msgid "tag"
+msgid_plural "tags"
+msgstr[0] "Tag"
+msgstr[1] "Tags"
+
+msgid "add_tag"
+msgstr "Add Tag"
+
+msgid "edit_tag"
+msgstr "Edit Tag"
+
+msgid "term"
+msgid_plural "terms"
+msgstr[0] "Term"
+msgstr[1] "Terms"
+
+msgid "term_add"
+msgstr "Add Term"
+
+msgid "term_add_previous"
+msgstr "Create Previous Term"
+
+msgid "term_add_next"
+msgstr "Create Next Term"
+
+msgid "term_edit"
+msgstr "Edit Term"
+
+msgid "term_delete"
+msgstr "Delete Term"
+
+msgid "maxCurrentTerms"
+msgstr "Max Current Terms"
+
+msgid "current_terms"
+msgstr "Current Terms"
+
+msgid "past_terms"
+msgstr "Past Terms"
+
+msgid "member"
+msgid_plural "members"
+msgstr[0] "Member"
+msgstr[1] "Members"
+
+msgid "member_add"
+msgstr "Appoint"
+
+msgid "member_edit"
+msgstr "Edit Membership"
+
+msgid "member_end"
+msgstr "Resign"
+
+msgid "member_continue"
+msgstr "Reappoint"
+
+msgid "member_delete"
+msgstr "Delete Member"
+
+msgid "current_member"
+msgid_plural "current_members"
+msgstr[0] "Current Member"
+msgstr[1] "Current Members"
+
+msgid "previous_member"
+msgid_plural "previous_members"
+msgstr[0] "Previous Member"
+msgstr[1] "Previous Members"
+
+msgid "office"
+msgid_plural "offices"
+msgstr[0] "Office"
+msgstr[1] "Offices"
+
+msgid "office_add"
+msgstr "Add Office"
+
+msgid "office_edit"
+msgstr "Edit Office"
+
+msgid "vacancy"
+msgid_plural "vacancies"
+msgstr[0] "Vacancy"
+msgstr[1] "Vacancies"
+
+msgid "order"
+msgstr "Order"
+
+msgid "date"
+msgstr "Date"
+
+msgid "startDate"
+msgstr "Start Date"
+
+msgid "endDate"
+msgstr "End Date"
+
+msgid "carryover"
+msgstr "Carry Over"
+
+msgid "year_formed"
+msgstr "Year Formed"
+
+msgid "number"
+msgstr "Number"
+
+msgid "description"
+msgstr "Description"
+
+msgid "synopsis"
+msgstr "Synopsis"
+
+msgid "contactInfo"
+msgstr "Contact Information"
+
+msgid "meetingSchedule"
+msgstr "Meeting Schedule"
+
+msgid "statutoryName"
+msgstr "Statutory Name"
+
+msgid "statuteReference"
+msgstr "Statute Reference"
+
+msgid "statuteUrl"
+msgstr "Statute Url"
+
+msgid "website"
+msgstr "Website"
+
+msgid "title"
+msgstr "Title"
+
+msgid "actions"
+msgstr "Actions"

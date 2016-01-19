@@ -17,11 +17,11 @@ if (Person::isAllowed('votes', 'edit')) {
 	$helper = $this->template->getHelper('buttonLink');
 	$editButton = $helper->buttonLink(
 		BASE_URI.'/votes/update?vote_id='.$this->vote->getId(),
-		$this->translate('labels.edit_vote'),
+		$this->translate('edit_vote'),
 		'edit'
 	);
 }
 ?>
 <div>
-	<h2><?php echo "$editButton {$this->_(['labels.vote', 'labels.votes', 1])}: $type $date $outcome"; ?></h2>
+	<h2><?php echo "$editButton {$this->_(['vote', 'votes', 1])}: $type $date $outcome"; ?></h2>
 </div>

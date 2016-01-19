@@ -24,7 +24,7 @@ if (defined('VOTE_TRACKING') && VOTE_TRACKING
 
 	$invalidVotes = $this->committee->getInvalidVotes();
 	if (count($invalidVotes)) {
-		$block = new Block('votes/list.inc', ['votes'=>$invalidVotes, 'title'=>$this->_('labels.invalid_votes')]);
+		$block = new Block('votes/list.inc', ['votes'=>$invalidVotes, 'title'=>$this->_('invalid_votes')]);
 		echo $block->render();
 	}
 }
@@ -60,13 +60,13 @@ if (isset($this->committee) && Person::isAllowed('topics', 'edit')) {
 	$helper = $this->template->getHelper('buttonLink');
 	$addTopicButton = $helper->buttonLink(
 		BASE_URI.'/topics/update?committee_id='.$this->committee->getId(),
-		$this->translate('labels.add_topic'),
+		$this->translate('add_topic'),
 		'add'
 	);
 }
 echo "
 <div>
-	<h2>{$this->_(['labels.topic','labels.topics',2])}
+	<h2>{$this->_(['topic','topics',2])}
 		$addTopicButton
 	</h2>
 	<ul class=\"tabBar\">

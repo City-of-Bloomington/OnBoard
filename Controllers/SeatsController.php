@@ -6,103 +6,167 @@
  */
 namespace Application\Controllers;
 
+use Application\Models\Committee;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
-use Application\Models\Requirement;
+use Application\Models\Term;
 use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
 
 class SeatsController extends Controller
 {
-	/**
-	 * @param int $id
-	 * @return Seat
-	 */
-	private function loadSeat($id)
-	{
-		try {
-			$seat = new Seat($id);
-			return $seat;
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-			header('Location: '.BASE_URL.'/commitees');
-			exit();
-		}
-	}
-	public function index()
-	{
-	}
+    public function index()
+    {
+    }
 
-	public function update()
-	{
-		if (empty($_REQUEST['seat_id']) && !empty($_REQUEST['committee_id'])) {
-			try {
-				$seat = new Seat();
-				$seat->setCommittee_id($_REQUEST['committee_id']);
-			}
-			catch (\Exception $e) {
-				$_SESSION['errorMessages'][] = $e;
-				header('Location: '.BASE_URL.'/commitees');
-				exit();
-			}
-		}
-		else {
-			$seat = $this->loadSeat($_REQUEST['seat_id']);
-		}
+    public function view()
+    {
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
 
-		if (isset($_POST['name'])) {
-			try {
-				$seat->handleUpdate($_POST);
-				$seat->save();
-				header('Location: '.$seat->getUrl());
-				exit();
-			}
-			catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-		}
+        if (isset($seat)) {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$seat->getCommittee()]);
+            $this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
+            if ($seat->getType() === 'termed') {
+                $this->template->blocks[] = new Block('terms/list.inc', [
+                    'terms' => $seat->getTerms(),
+                    'seat'  => $seat
+                ]);
+            }
+            else {
+                $this->template->blocks[] = new Block('members/list.inc', [
+                    'members'   => $seat->getMembers(),
+                    'seat'      => $seat,
+                    'committee' => $seat->getCommittee()
+                ]);
+            }
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 
-		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$seat->getCommittee()]);
-		$this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
-	}
+    public function update()
+    {
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        elseif (!empty($_REQUEST['committee_id'])) {
+            try {
+                $committee = new Committee($_REQUEST['committee_id']);
+                $seat = new Seat();
+                $seat->setCommittee($committee);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
 
-	public function updateRequirements()
-	{
-		$seat = $this->loadSeat($_REQUEST['seat_id']);
+        if (isset($seat)) {
+            if (isset($_POST['committee_id'])) {
+                try {
+                    $seat->handleUpdate($_POST);
+                    $seat->save();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
+                exit();
+            }
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$seat->getCommittee()]);
+            $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 
-		try {
-			if (isset($_POST['text'])) {
-				$text = trim($_POST['text']);
-				if ($text) {
-					$requirement = new Requirement();
-					$requirement->setText($text);
-					$requirement->save();
-				}
-				elseif (!empty($_POST['requirement_id'])) {
-					$requirement = new Requirement($_POST['requirement_id']);
-				}
-			}
-			if (isset($requirement)) {
-				$seat->addRequirement($requirement);
-			}
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-		}
+    public function appoint()
+    {
+        try {
+            if (          !empty($_REQUEST['term_id'])) {
+                $term = new Term($_REQUEST['term_id']);
+                $seat = $term->getSeat();
+                $newMember = $term->newMember();
+            }
+            elseif (      !empty($_REQUEST['seat_id'])) {
+                $seat = new Seat($_REQUEST['seat_id']);
+                $newMember = $seat->newMember();
+            }
+            elseif (      !empty($_REQUEST['newMember']['term_id'])) {
+                $term = new Term($_REQUEST['newMember']['term_id']);
+                $seat = $term->getSeat();
+                $newMember = $term->newMember();
+            }
+            elseif (      !empty($_REQUEST['newMember']['seat_id'])) {
+                $seat = new Seat($_REQUEST['newMember']['seat_id']);
+                $newMember = $seat->newMember();
+            }
 
-		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$seat->getCommittee()]);
-		$this->template->blocks[] = new Block('seats/info.inc', ['seat'=>$seat]);
-		$this->template->blocks[] = new Block('seats/requirementsForm.inc', ['seat'=>$seat]);
-	}
+            // If the current member has already been closed out,
+            // there's no reason to include them in the form
+            $currentMember = $seat->getLatestMember();
+            if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
+        }
+        catch (\Exception $e) {
+            $_SESSION['errorMessages'][] = $e;
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+            return;
+        }
 
-	public function removeRequirement()
-	{
-		$seat = $this->loadSeat($_REQUEST['seat_id']);
-		
-		$requirement = new Requirement($_REQUEST['requirement_id']);
 
-		$seat->removeRequirement($requirement);
+        if (isset($_POST['newMember'])) {
+            try {
+                if (isset($currentMember)) {
+                    $currentMember->handleUpdate($_POST['currentMember']);
+                    $currentMember->save();
+                }
 
-		header('Location: '.BASE_URL.'/seats/updateRequirements?seat_id='.$seat->getId());
-		exit();
-	}
+                $newMember->handleUpdate($_POST['newMember']);
+                $newMember->save();
+
+                header('Location: '.BASE_URL."/committees/members?committee_id={$seat->getCommittee_id()}");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        $form = new Block('seats/appointForm.inc', ['newMember' => $newMember]);
+        if (isset($currentMember)) { $form->currentMember = $currentMember; }
+
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $seat->getCommittee()]);
+        $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
+        if (isset($currentMember)) {
+            $this->template->blocks[] = new Block('members/list.inc', [
+                'members' => [$currentMember],
+                'title'   => $this->template->_('previous_member'),
+                'disableButtons' => true
+            ]);
+        }
+        $this->template->blocks[] = $form;
+    }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+                $committee_id = $seat->getCommittee_id();
+
+                $seat->delete();
+                header('Location: '.BASE_URL."/committees/members?committee_id=$committee_id");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        header('Location: '.BASE_URL.'/committees');
+        exit();
+    }
 }

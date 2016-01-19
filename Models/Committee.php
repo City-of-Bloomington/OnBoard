@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -17,6 +17,8 @@ use Blossom\Classes\Database;
 
 class Committee extends ActiveRecord
 {
+    public static $types = ['seated', 'open'];
+
 	protected $tablename = 'committees';
 
 	public function __construct($id=null)
@@ -40,11 +42,13 @@ class Committee extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->setType('seated');
 		}
 	}
 
 	public function validate()
 	{
+        if (!$this->getType()) { $this->setType('seated'); }
 		if (!$this->getName()) { throw new \Exception('missingName'); }
 	}
 
@@ -54,6 +58,7 @@ class Committee extends ActiveRecord
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
 	public function getId()                { return parent::get('id');               }
+	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
 	public function getStatuteReference()  { return parent::get('statuteReference'); }
@@ -70,6 +75,7 @@ class Committee extends ActiveRecord
 	public function getContactInfo()       { return parent::get('contactInfo');      }
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 
+	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
 	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
@@ -100,16 +106,45 @@ class Committee extends ActiveRecord
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
+
+		if (Person::isAllowed('committees', 'changeType') && isset($post['type'])) {
+            $this->setType($post['type']);
+		}
 	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
 	/**
-	 * @return string
+	 * @return Member
 	 */
-	public function getUrl() { return BASE_URL.'/committees/view?committee_id='.$this->getId(); }
-	public function getUri() { return BASE_URI.'/committees/view?committee_id='.$this->getId(); }
+	public function newMember()
+	{
+        if ($this->getType() === 'open') {
+            $member = new Member();
+            $member->setCommittee($this);
+            return $member;
+        }
+
+        throw new \Exception('committees/invalidMember');
+	}
+	/**
+	 * Returns members for the committee
+	 *
+	 * If timestamp is provided, will provide members current
+	 * as of the provided timestamp
+	 *
+	 * @param int $timestamp
+	 * @return Zend\Db\ResultSet
+	 */
+	public function getMembers($timestamp=null)
+	{
+		$search = ['committee_id'=>$this->getId()];
+		if ($timestamp) { $search['current'] = (int)$timestamp; }
+
+		$table = new MemberTable();
+		return $table->find($search);
+	}
 
 	/**
 	 * Returns a ResultSet containing Seats.
@@ -140,11 +175,13 @@ class Committee extends ActiveRecord
 	 */
 	public function getMaxCurrentTerms()
 	{
-		$positions = 0;
-		foreach ($this->getSeats() as $seat) {
-			$positions += $seat->getMaxCurrentTerms();
-		}
-		return $positions;
+        if ($this->getType() === 'seated') {
+            $positions = 0;
+            foreach ($this->getSeats() as $seat) {
+                $positions += $seat->getMaxCurrentTerms();
+            }
+            return $positions;
+        }
 	}
 
 	/**
@@ -189,11 +226,38 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param int $timestamp
 	 * @return boolean
 	 */
-	public function hasVacancy()
+	public function hasVacancy($timestamp=null)
 	{
-        return $this->getMaxCurrentTerms() > count($this->getCurrentTerms());
+        $timestamp = $timestamp ? (int)$timestamp : time();
+
+        if ($this->getType() === 'seated') {
+            $seats = $this->getSeats($timestamp);
+            foreach ($seats as $s) {
+                if ($seat->hasVacancy($timestamp)) { return true; }
+            }
+        }
+        return false;
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return int
+	 */
+	public function getVacancyCount($timestamp=null)
+	{
+        $timestamp = $timestamp ? (int)$timestamp : time();
+
+        $c = 0;
+        if ($this->getType() === 'seated') {
+            $seats = $this->getSeats($timestamp);
+            foreach ($seats as $s) {
+                if ($s->hasVacancy($timestamp)) { $c++; }
+            }
+        }
+        return $c;
 	}
 
 	/**

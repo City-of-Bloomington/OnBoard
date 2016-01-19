@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -13,7 +13,7 @@ class LanguageTest extends PHPUnit_Framework_TestCase
 	public function testTranslationsAreSetup()
 	{
 		$template = new Template();
-		$name = $template->_('labels.name', 'labels.names', 1);
+		$name = $template->_(['name', 'names', 1]);
 		$this->assertEquals('Name', $name);
 	}
 
@@ -33,7 +33,7 @@ class LanguageTest extends PHPUnit_Framework_TestCase
 			'user'=>'users'
 		];
 		foreach ($routes as $singular=>$plural) {
-			$label = $template->_(["labels.$singular", "labels.$plural", 2]);
+			$label = $template->_(["$singular", "$plural", 2]);
 			$this->assertEquals(ucfirst($plural), $label);
 		}
 	}

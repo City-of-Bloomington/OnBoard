@@ -9,7 +9,7 @@ use Blossom\Classes\View;
 
 $name = View::escape($this->voteType->getName());
 $order = (int)$this->voteType->getOrdering();
-$title = $this->voteType->getId() ? $this->_('labels.edit_voteType') : $this->_('labels.add_voteType');
+$title = $this->voteType->getId() ? $this->_('edit_voteType') : $this->_('add_voteType');
 ?>
 <div>
 	<h2><?php echo $title; ?></h2>
@@ -18,10 +18,10 @@ $title = $this->voteType->getId() ? $this->_('labels.edit_voteType') : $this->_(
 			<input name="voteType_id" type="hidden" value="<?php echo $this->voteType->getId(); ?>" />
 
 			<table>
-				<tr><td><label for="name" class="required"><?php echo $this->_('labels.name'); ?></label></td>
+				<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
 					<td><input name="name" id="name" value="<?php echo $name; ?>" /></td>
 				</tr>
-				<tr><td><label for="ordering" class="required"><?php echo $this->_('labels.order'); ?></label></td>
+				<tr><td><label for="ordering" class="required"><?php echo $this->_('order'); ?></label></td>
 					<td><input name="ordering" id="ordering" value="<?php echo $order; ?>" /></td>
 				</tr>
 			</table>

@@ -1,18 +1,18 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\Person;
-use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
-$name         = View::escape($this->seat->getName());
-$appointer    = View::escape($this->seat->getAppointer());
-$committee    = View::escape($this->seat->getCommittee()->getName());
-$requirements = View::escape($this->seat->getRequirements());
+$name         = self::escape($this->seat->getName());
+$appointer    = self::escape($this->seat->getAppointer());
+$committee    = self::escape($this->seat->getCommittee()->getName());
+$requirements = self::escape($this->seat->getRequirements());
+$termLength   = self::escape($this->seat->getTermLength());
 
 if ($requirements) {
 	$markdown = new MarkdownExtra();
@@ -20,42 +20,49 @@ if ($requirements) {
 }
 
 $helper = $this->template->getHelper('buttonLink');
-$addTermButton = '';
-$editSeatButton = '';
+$editButton   = '';
+$deleteButton = '';
 if (Person::isAllowed('seats', 'edit')) {
-	$addTermButton = $helper->buttonLink(
-		BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.add_term'),
-		'add'
-	);
-	$editSeatButton = $helper->buttonLink(
+	$editButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
-		$this->translate('labels.edit_seat'),
+		$this->_('seat_edit'),
 		'edit'
 	);
 }
+if (Person::isAllowed('seats', 'delete') && $this->seat->isSafeToDelete()) {
+    $deleteButton = $helper->buttonLink(
+        BASE_URI.'/seats/delete?seat_id='.$this->seat->getId(),
+        $this->_('seat_delete'),
+        'delete'
+    );
+}
+
+$uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 echo "
-<div>
-	<h2>$name $editSeatButton $addTermButton</h2>
+<section>
+	<h1>$editButton<a href=\"$uri\">$name</a>$deleteButton</h1>
 	<table>
-		<tr><th>{$this->_('labels.appointed_by')}</th>
+        <tr><th>{$this->_('type')}</th>
+            <td>{$this->seat->getType()}</td>
+        </tr>
+		<tr><th>{$this->_('appointed_by')}</th>
 			<td>$appointer</td>
 		</tr>
-		<tr><th>{$this->_(['labels.committee', 'labels.committees', 1])}</th>
+		<tr><th>{$this->_(['committee', 'committees', 1])}</th>
 			<td>$committee</td>
 		</tr>
-		<tr><th>{$this->_('labels.maxCurrentTerms')}</th>
-			<td>{$this->seat->getMaxCurrentTerms()}</td>
-		</tr>
-		<tr><th>{$this->_('labels.date_start')}</th>
+		<tr><th>{$this->_('startDate')}</th>
 			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_('labels.date_end')}</th>
+		<tr><th>{$this->_('endDate')}</th>
 			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
 		</tr>
-		<tr><th>{$this->_(['labels.requirement', 'labels.requirements', 2])}</th>
+		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
 			<td>$requirements</td>
 		</tr>
-	</table>
-</div>
+		<tr><th>{$this->_('termLength')}</th>
+            <td>{$termLength}</td>
+        </tr>
+    </table>
+</section>
 ";

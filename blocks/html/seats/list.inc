@@ -1,70 +1,66 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2016 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->seats
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
 
-$userCanEdit = Person::isAllowed('seats', 'edit');
 $helper = $this->template->getHelper('buttonLink');
 ?>
-<div>
-	<h2><?php
-			echo $this->_(['labels.seat', 'labels.seats', 2]);
+<section>
+    <h1><?= $this->_(['seat', 'seats', 2]); ?></h1>
+    <table class="fn1-table">
+        <thead>
+            <tr><th></th>
+                <th><?= $this->_('name'); ?></th>
+                <th><?= $this->_(['appointer', 'appointers', 1]); ?></th>
+                <th><?= $this->_('startDate'); ?></th>
+                <th><?= $this->_('endDate'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $editButton = '';
 
-			if (isset($this->committee) && $userCanEdit) {
-				echo $helper->buttonLink(
-					BASE_URI.'/seats/update?committee_id='.$this->committee->getId(),
-					$this->translate('labels.add_seat'),
-					'add'
-				);
-			}
-		?>
-	</h2>
-	<table>
-		<thead>
-			<tr><th></th>
-				<th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?></th>
-				<th><?php echo $this->_('labels.maxCurrentTerms'); ?></th>
-				<th><?php echo $this->_('labels.date_start'); ?></th>
-				<th><?php echo $this->_('labels.date_end'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-			$currentSeatId = !empty($_GET['seat_id']) ? $_GET['seat_id'] : null;
-			$editButton = '';
+            foreach ($this->seats as $seat) {
+                $seat_id = $seat->getId();
 
-			foreach ($this->seats as $seat) {
-				if ($userCanEdit) {
-					$editButton = $helper->buttonLink(
-						BASE_URI.'/seats/update?seat_id='.$seat->getId(),
-						$this->translate('labels.edit_seat'),
-						'edit',
-						ButtonLink::SIZE_ICON
-					);
-				}
-				$name      = View::escape($seat->getName());
-				$appointer = View::escape($seat->getAppointer());
-				$class = $seat->getId() == $currentSeatId ? 'class="current"' : '';
-				echo "
-				<tr $class>
-					<td>$editButton</td>
-					<td><a href=\"{$seat->getUrl()}\">$name</a></td>
-					<td>$appointer</td>
-					<td>{$seat->getMaxCurrentTerms()}</td>
-					<td>{$seat->getStartDate(DATE_FORMAT)}</td>
-					<td>{$seat->getEndDate(DATE_FORMAT)}</td>
-				</tr>
-				";
-			}
-		?>
-		</tbody>
-	</table>
-</div>
+                if (Person::isAllowed('seats', 'edit')) {
+                    $editButton = $helper->buttonLink(
+                    BASE_URI."/seats/update?seat_id=$seat_id",
+                    $this->translate('seat_edit'),
+                    'edit',
+                    ButtonLink::SIZE_ICON
+                    );
+                }
+                $name      = self::escape($seat->getName());
+                $appointer = self::escape($seat->getAppointer());
+                $uri  = BASE_URI."/seats/view?seat_id=$seat_id";
+
+
+                echo "
+                <tr><td>$editButton</td>
+                    <td><a href=\"$uri\">$name</a></td>
+                    <td>$appointer</td>
+                    <td>{$seat->getStartDate(DATE_FORMAT)}</td>
+                    <td>{$seat->getEndDate(DATE_FORMAT)}</td>
+                </tr>
+                ";
+            }
+        ?>
+        </tbody>
+    </table>
+    <?php
+        if (isset($this->committee) && Person::isAllowed('seats', 'add')) {
+            echo $helper->buttonLink(
+                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                $this->translate('seat_add'),
+                'add'
+            );
+        }
+    ?>
+</section>

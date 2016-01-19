@@ -1,20 +1,18 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
-use Blossom\Classes\View;
-
 $committees = [];
 foreach ($this->person->getCommittees() as $committee) {
-	$name = View::escape($committee->getName());
-	$name = "<a href=\"{$committee->getUri()}\">$name</a>";
+	$uri = BASE_URI.'/committees/members?committee_id='.$committee->getId();
+	$name = "<a href=\"$uri\">".self::escape($committee->getName())."</a>";
 
-	$appointers = array();
+	$appointers = [];
 	foreach ($this->person->getAppointers($committee) as $appointer) {
-		$appointers[] = View::escape($appointer);
+		$appointers[] = self::escape($appointer);
 	}
 	$appointers = implode(', ',$appointers);
 
@@ -22,14 +20,14 @@ foreach ($this->person->getCommittees() as $committee) {
 	$offices = $this->person->getOffices($committee);
 	if (count($offices)) {
 		$o = $offices->current();
-		$office = View::escape($o->getTitle());
+		$office = self::escape($o->getTitle());
 		$office = "($office)";
 	}
 	else {
 		$office = '';
 	}
 	$current = $this->person->isCurrentlyServing($committee)
-		? '('.$this->_(['labels.current_member', 'labels.current_members', 1]).')'
+		? '('.$this->_(['current_member', 'current_members', 1]).')'
 		: '';
 	$committees[] = "<li>$name-$appointers $office $current</li>";
 }

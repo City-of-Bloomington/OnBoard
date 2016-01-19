@@ -8,12 +8,12 @@
 use Application\Models\VoteTypeTable;
 use Blossom\Classes\View;
 
-$title = $this->vote->getId() ? $this->_('labels.edit_vote') : $this->_('labels.add_vote');
+$title = $this->vote->getId() ? $this->_('edit_vote') : $this->_('add_vote');
 ?>
 <div>
 	<h2><?php echo $title; ?></h2>
 	<form method="post" action="<?php echo BASE_URI; ?>/votes/update">
-		<fieldset><legend><?php echo $this->_('labels.info_vote'); ?></legend>
+		<fieldset><legend><?php echo $this->_('info_vote'); ?></legend>
 			<?php
 				if ($this->vote->getId()) {
 					echo "<input name=\"vote_id\" type=\"hidden\" value=\"{$this->vote->getId()}\" />";
@@ -24,12 +24,12 @@ $title = $this->vote->getId() ? $this->_('labels.edit_vote') : $this->_('labels.
 			?>
 
 			<table>
-				<tr><td><label for="date"><?php echo $this->_('labels.date'); ?></label></td><td>
+				<tr><td><label for="date"><?php echo $this->_('date'); ?></label></td><td>
 						<input name="date" id="date" size="10" maxlength="10"
 								value="<?php echo $this->vote->getDate(DATE_FORMAT); ?>" />
 					</td>
 				</tr>
-				<tr><td><label for="voteType_id"><?php echo $this->_(['labels.voteType', 'labels.voteTypes', 1]); ?></label></td>
+				<tr><td><label for="voteType_id"><?php echo $this->_(['voteType', 'voteTypes', 1]); ?></label></td>
 					<td><select name="voteType_id" id="voteType_id">
 						<?php
 							$table = new VoteTypeTable();
@@ -43,7 +43,7 @@ $title = $this->vote->getId() ? $this->_('labels.edit_vote') : $this->_('labels.
 						</select>
 					</td>
 				</tr>
-				<tr><td><label for='outcome'><?php echo $this->_('labels.outcome'); ?></td>
+				<tr><td><label for='outcome'><?php echo $this->_('outcome'); ?></td>
 					<td><select name='outcome' id='outcome'>
 							<option></option>
 							<option<?php echo $this->vote->getOutcome()=='pass' ? ' selected="selected"' : ''; ?>>pass</option>

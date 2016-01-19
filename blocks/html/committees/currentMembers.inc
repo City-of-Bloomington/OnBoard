@@ -1,128 +1,164 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
 use Blossom\Classes\Url;
-use Blossom\Classes\View;
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
-<div>
-	<h2><?php echo $this->_(['labels.current_member', 'labels.current_members', 2]); ?></h2>
-	<table>
-		<thead>
-			<tr><th><?php echo $this->_('labels.name'); ?></th>
-				<th><?php echo $this->_('labels.appointed_by'); ?></th>
-				<th colspan="2"><?php echo $this->_(['labels.term','labels.term', 1]); ?></th>
-				<th colspan="2"><?php echo $this->_(['labels.office','labels.offices', 2]); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php
-			$currentUrl = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-			$helper = $this->template->getHelper('buttonLink');
+<section class="fn1-uiBlock">
+  <header class="fn1-uiBlock-header">
+    <h2><?= $this->_(['current_member', 'current_members', 2]); ?></h2>
+  </header>
+  <div class="fn1-uiBlock-content">
+    <table class="fn1-table">
+        <thead>
+            <tr><th><?= $this->_('name'); ?></th>
+                <th><?= $this->_('seat'); ?></th>
+                <th><?= $this->_('appointed_by'); ?></th>
+                <th><?= $this->_(['term','term', 1]); ?></th>
+                <th><?= $this->_('actions'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $currentUrl = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+            $helper = $this->template->getHelper('buttonLink');
 
-			foreach ($this->committee->getSeats(time()) as $seat) {
-				$appointer = View::escape($seat->getAppointer());
+            $committee_id = $this->committee->getId();
 
-				//--------------------------------------------------------
-				// Show all the current terms
-				//--------------------------------------------------------
-				$terms = array();
-				$c = 0;
-				foreach ($seat->getCurrentTerms() as $term) {
-					$c++;
 
-					$editTermButton = '';
-					$addTermButton  = '';
-					if (Person::isAllowed('terms', 'edit')) {
-						$editTermButton = $helper->buttonLink(
-							BASE_URI."/terms/update?term_id={$term->getId()};return_url=$currentUrl",
-							$this->translate('labels.edit'),
-							'edit',
-							ButtonLink::SIZE_ICON
-						);
-						$addTermButton = $helper->buttonLink(
-							BASE_URI."/terms/update?seat_id={$seat->getId()};person_id={$term->getPerson_id()};return_url=$currentUrl",
-							$this->translate('labels.add_term'),
-							'add'
-						);
-					}
+            if ($this->committee->getType() === 'seated') {
+                foreach ($this->committee->getSeats(time()) as $seat) {
+                    $memberName = '';
+                    $seatName  = self::escape($seat->getName());
+                    $appointer = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
+                    $termDates = '';
+                    $offices   = '';
+                    $buttons   = '';
+                    $classes   = [];
 
-					$addOfficeButton  = '';
-					$editOfficeButton = '';
-					if (Person::isAllowed('offices', 'edit')) {
-						$addOfficeButton = $helper->buttonLink(
-							BASE_URI."/offices/update?committee_id={$seat->getCommittee()->getId()};person_id={$term->getPerson_id()}",
-							$this->translate('labels.add_office'),
-							'add'
-						);
-					}
+                    $seatIsVacant = $seat->hasVacancy();
 
-					$offices = array();
-					foreach ($term->getPerson()->getOffices($seat->getCommittee(), date('Y-m-d')) as $office) {
-						$editOfficeButton = '';
-						if (Person::isAllowed('offices','edit')) {
-							$editOfficeButton = $helper->buttonLink(
-								BASE_URI.'/offices/update?office_id='.$office->getId(),
-								$this->translate('labels.edit_office'),
-								'edit'
-							);
-						}
-						$offices[] = View::escape($office->getTitle());
-					}
-					$offices = implode(',',$offices);
+                    if ($seatIsVacant) {
+                        $memberName = $this->_('vacancy');
+                        $classes[] = 'vacant';
 
-					$fullname = View::escape($term->getPerson()->getFullname());
-					echo "
-					<tr><td><a href=\"{$term->getPerson()->getURL()}\">$fullname</a></td>
-						<td>$appointer</td>
-						<td>{$term->getTerm_start(DATE_FORMAT)} - {$term->getTerm_end(DATE_FORMAT)}
-							$editTermButton
-						</td>
-						<td>$addTermButton</td>
-						<td>$offices</td>
-						<td>$addOfficeButton $editOfficeButton</td>
-					</tr>
-					";
-				}
-				//--------------------------------------------------------
-				// Show all the vacancies
-				//--------------------------------------------------------
-				$t = $seat->getMaxCurrentTerms();
-				$addTermButton = '';
-				if (Person::isAllowed('terms', 'edit')) {
-					$addTermButton = $helper->buttonLink(
-						BASE_URI."/terms/update?seat_id={$seat->getId()};return_url=$currentUrl",
-						$this->translate('labels.add_term'),
-						'add'
-					);
-				}
-				for ($c; $c < $t; $c++) {
-					echo "
-					<tr><td>( {$this->_('labels.vacancy')} )</td>
-						<td>$appointer</td>
-						<td></td>
-						<td>$addTermButton</td>
-						<td></td>
-						<td></td>
-					</tr>
-					";
-				}
-			}
-		?>
-		</tbody>
-	</table>
-	<div>
-		<?php
-			echo "
-			<a href=\"{$this->committee->getUri()};members=past\">
-				{$this->_('labels.view_past_members')}
-			</a>
-			";
-		?>
-	</div>
-</div>
+                        if ($seat->getType() === 'termed') {
+                            $term = $seat->getTerm(time());
+                            if ($term) {
+                                $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
+                                $appointURI = BASE_URI."/seats/appoint?term_id={$term->getid()}";
+
+                                if (strtotime('+3 days') > (int)$term->getEndDate('U')) {
+                                    $classes[] = 'termEndsSoon';
+                                }
+                            }
+                        }
+                        else {
+                            $appointURI = BASE_URI."/seats/appoint?seat_id={$seat->getId()}";
+                        }
+
+                        if (isset($appointURI) && Person::isAllowed('seats', 'appoint')) {
+                            $buttons.= "
+                            <a href=\"$appointURI\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_add')}
+                            </a>
+                            ";
+                        }
+                    }
+
+                    $member = $seat->getMember(time());
+                    if ($member) {
+                        $memberName.= self::escape($member->getPerson()->getFullname());
+                        $termDates = $member->getTerm_id()
+                            ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
+                            : '';
+
+                        $offices = [];
+                        foreach ($member->getPerson()->getOffices($this->committee, date('Y-m-d')) as $office) {
+                            $offices[] = self::escape($office->getTitle());
+                        }
+                        $offices = count($offices)
+                            ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
+                            : '';
+
+                        if (Person::isAllowed('members', 'reappoint')) {
+                            $uri = BASE_URI."/members/reappoint?member_id={$member->getId()}";
+                            $buttons.= "
+                            <a href=\"$uri\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_continue')}
+                            </a>
+                            ";
+                        }
+
+                        if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
+                            $uri = BASE_URI."/members/resign?member_id={$member->getId()}";
+                            $buttons.= "
+                            <a href=\"$uri\" class=\"fn1-dropdown-link\">
+                                {$this->_('member_end')}
+                            </a>
+                            ";
+                        }
+
+                        if ($seatIsVacant) { $classes[] = 'carryover'; }
+                    }
+
+                    if ($buttons != '') {
+                        $buttons = "
+                            <div        class=\"fn1-dropdown fn1-table-actions\">
+                                <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                                    {$this->_('more')}
+                                </button>
+                                <div    class=\"fn1-dropdown-links\">
+                                    $buttons
+                                </div>
+                            </div>
+                        ";
+                    }
+
+                    $classes = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+                    $uri = BASE_URI.'/seats/view?seat_id='.$seat->getId();
+                    echo "
+                    <tr $classes>
+                        <td>{$offices}{$memberName}</td>
+                        <td><a href=\"$uri\">$seatName</a></td>
+                        <td>$appointer</td>
+                        <td>$termDates</td>
+                        <td>$buttons</td>
+                    </tr>
+                    ";
+                }
+            }
+            else {
+                // Display current committee members
+                // These members will not be associated with a seat
+                foreach ($this->committee->getMembers() as $m) {
+                    $name = self::escape($m->getPerson()->getFullname());
+                    echo "
+                    <tr><td>$name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    ";
+                }
+            }
+        ?>
+        </tbody>
+    </table>
+    <?php
+        if (Person::isAllowed('seats', 'add')) {
+            echo $helper->buttonLink(
+                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                $this->translate('seat_add'),
+                'add'
+            );
+        }
+    ?>
+  </div>
+</section>

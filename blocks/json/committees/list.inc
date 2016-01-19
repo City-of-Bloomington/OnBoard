@@ -9,6 +9,7 @@ $data = [];
 foreach ($this->committees as $c) {
     $data[] = [
         'id'               => $c->getId(),
+        'type'             => $c->getType(),
         'name'             => $c->getName(),
         'website'          => $c->getWebsite(),
         'email'            => $c->getEmail(),

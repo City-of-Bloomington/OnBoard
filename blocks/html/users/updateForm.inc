@@ -11,10 +11,10 @@ use Blossom\Classes\View;
 ?>
 <div class="updateUserForm">
 	<form method="post" action="<?php echo BASE_URI; ?>/users/update">
-		<fieldset><legend><?php echo $this->_(['labels.user','labels.users',2]); ?></legend>
+		<fieldset><legend><?php echo $this->_(['user','users',2]); ?></legend>
 			<input name="user_id" type="hidden" value="<?php echo $this->user->getId(); ?>" />
 			<table>
-				<tr><td><label for="authenticationMethod"><?php echo $this->_('labels.authenticationMethod'); ?></label></td>
+				<tr><td><label for="authenticationMethod"><?php echo $this->_('authenticationMethod'); ?></label></td>
 					<td><select name="authenticationMethod" id="authenticationMethod">
 						<?php
 							foreach (Person::getAuthenticationMethods() as $method) {
@@ -27,14 +27,14 @@ use Blossom\Classes\View;
 						</select>
 					</td>
 				</tr>
-				<tr><td><label for="username"><?php echo $this->_('labels.username'); ?></label></td>
+				<tr><td><label for="username"><?php echo $this->_('username'); ?></label></td>
 					<td><input name="username" id="username" value="<?php echo View::escape($this->user->getUsername()); ?>" />
 					</td>
 				</tr>
-				<tr><td><label for="password"><?php echo $this->_('labels.password'); ?></label></td>
+				<tr><td><label for="password"><?php echo $this->_('password'); ?></label></td>
 					<td><input name="password" id="password" /></td>
 				</tr>
-				<tr><td><label for="role"><?php echo $this->_('labels.role'); ?></label></td>
+				<tr><td><label for="role"><?php echo $this->_('role'); ?></label></td>
 					<td><select name="role" id="role"><option></option>
 						<?php
 							global $ZEND_ACL;

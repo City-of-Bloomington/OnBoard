@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -14,7 +14,6 @@ class Term extends ActiveRecord
 	protected $tablename = 'terms';
 
 	protected $seat;
-	protected $person;
 
 	/**
 	 * Populates the object with data
@@ -59,175 +58,228 @@ class Term extends ActiveRecord
 	 */
 	public function validate()
 	{
-		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->getSeat_id() || !$this->getPerson_id()) {
-			throw new \Exception('missingRequiredFields');
+		if (!$this->getStartDate()) {
+			 $this->setStartDate(date(DATE_FORMAT));
 		}
 
-		if (!$this->getTerm_start()) {
-			$this->setTerm_start(date(DATE_FORMAT));
+        $seat = $this->getSeat();
+        if (!$seat) { throw new \Exception('terms/missingSeat'); }
+
+        // Create a valid endDate if there isn't one already
+        $termLength = new \DateInterval($seat->getTermLength());
+        $oneDay     = new \DateInterval('P1D');
+		if (!$this->getEndDate()) {
+            $s = new \DateTime($this->getStartDate());
+            $s->add($termLength);
+            $s->sub($oneDay);
+            $this->setEndDate($s->format(DATE_FORMAT));
+        }
+
+		// Make sure the endDate is valid
+		$s = new \DateTime($this->getStartDate());
+		$s->add($termLength);
+		$s->sub($oneDay);
+		if ($s->format(DATE_FORMAT) != $this->getEndDate(DATE_FORMAT)) {
+            throw new \Exception('invalidEndDate');
 		}
 
-		// Make sure the end date falls after the start date
-		$start = (int)$this->getTerm_start('U');
-		$end   = (int)$this->getTerm_end  ('U');
-		if ($end && $end < $start) { throw new \Exception('terms/invalidEndDate'); }
-
-		// Make sure this term does not exceed the maxCurrentTerms for the seat
-		$seat = $this->getSeat();
-		$max  = $seat->getMaxCurrentTerms();
-		if (($start <= time() && (!$end || $end >= time())) && $max) {
-			// The term we're adding is current, make sure there's room
-			$count = count($seat->getCurrentTerms());
-			if (!$this->getId()) {
-				$count++;
-			}
-			if ($count > $max) {
-				throw new \Exception('seats/maxCurrentTermsFilled');
-			}
-		}
-
-		// Make sure this person is not serving overlapping terms for the same committee
+		// Make sure this term is not overlapping terms for the seat
 		$zend_db = Database::getConnection();
-		$sql = "select t.id from terms t
-				join seats s on t.seat_id=s.id
-				where s.committee_id=?
-				  and t.person_id=?
-				  and (?<t.term_end and ?>t.term_start)";
-		if ($this->getId()) { $sql.= ' and t.id!='.$this->getId(); }
+		$sql = "select id from terms
+                where seat_id=?
+                and (?<endDate and ?>startDate)";
+		if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
 
 		$result = $zend_db->createStatement($sql)->execute([
-			$this->getCommittee()->getId(),
-			$this->getPerson_id(),
-			$this->getTerm_start(),$this->getTerm_end()
+            $this->getSeat_id(),
+			$this->getStartDate(), $this->getEndDate()
 		]);
-		if (count($result) > 1) {
-			throw new \Exception('terms/overlappingTerms');
+		if (count($result) > 0) {
+			throw new \Exception('overlappingTerms');
 		}
 	}
 
-	public function save()
-	{
-		parent::save();
-		$this->deleteInvalidVotingRecords();
-	}
+	public function save() { parent::save(); }
 
 	public function delete()
 	{
-		if ($this->getId()) {
-			$zend_db = Database::getConnection();
-			$zend_db->query('delete from votingRecords where term_id=?', [$this->getId()]);
-
-			parent::delete();
-		}
+        if ($this->isSafeToDelete()) {
+            parent::delete();
+        }
 	}
 
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()        { return parent::get('id');   }
-	public function getSeat_id()   { return parent::get('seat_id'); }
-	public function getPerson_id() { return parent::get('person_id'); }
-	public function getSeat()      { return parent::getForeignKeyObject(__namespace__.'\Seat',   'seat_id'); }
-	public function getPerson()    { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
-	public function getTerm_start($f=null) { return parent::getDateData('term_start', $f); }
-	public function getTerm_end  ($f=null) { return parent::getDateData('term_end',   $f); }
+	public function getId()           { return parent::get('id'          ); }
+	public function getSeat_id()      { return parent::get('seat_id'     ); }
+	public function getSeat()         { return parent::getForeignKeyObject(__namespace__.'\Seat', 'seat_id'); }
+	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
+	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
 
-	public function setSeat_id   ($i) { parent::setForeignKeyField (__namespace__.'\Seat',   'seat_id',   $i); }
-	public function setPerson_id ($i) { parent::setForeignKeyField (__namespace__.'\Person', 'person_id', $i); }
-	public function setSeat      ($o) { parent::setForeignKeyObject(__namespace__.'\Seat',   'seat_id',   $o); }
-	public function setPerson    ($o) { parent::setForeignKeyObject(__namespace__.'\Person', 'person_id', $o); }
-	public function setTerm_start($d) { parent::setDateData('term_start', $d); }
-	public function setTerm_end  ($d) { parent::setDateData('term_end',   $d); }
+	public function setSeat_id     ($i) { parent::setForeignKeyField (__namespace__.'\Seat', 'seat_id', $i); }
+	public function setSeat        ($o) { parent::setForeignKeyObject(__namespace__.'\Seat', 'seat_id', $o); }
+	public function setStartDate($d) { parent::setDateData('startDate', $d); }
+	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
 
 	public function handleUpdate($post)
 	{
-		$this->setPerson_id($post['person_id']);
-		$this->setTerm_start($post['term_start']);
-		$this->setTerm_end($post['term_end']);
+        $fields = ['seat_id', 'startDate', 'endDate'];
+        foreach ($fields as $f) {
+            $set = 'set'.ucfirst($f);
+            $this->$set($post[$f]);
+        }
 	}
-
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
-	public function __toString() { return parent::get('text'); }
+	/**
+	 * @return boolean
+	 */
+	public function isSafeToDelete()
+	{
+        $sql = 'select count(*) as count from members where term_id=?';
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql, [$this->getId()]);
+        if ($result) {
+            $row = $result->current();
+            return ((int)$row['count'] === 0) ? true : false;
+        }
+	}
+
+	/**
+	 * @return Member
+	 */
+	public function newMember()
+	{
+        $seat = $this->getSeat();
+
+        $member = new Member();
+        $member->setTerm($this);
+        $member->setSeat($seat);
+        $member->setCommittee_id($seat->getCommittee_id());
+
+        return $member;
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return Member
+	 */
+	public function getMember($timestamp=null)
+	{
+        if (!$timestamp) { $timestamp = time(); }
+        $table = new MemberTable();
+        $list = $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (count($list)) {
+            return $list->current();
+        }
+	}
+
+	/**
+	 * @return Zend\Db\Result
+	 */
+	public function getMembers()
+	{
+        $table = new MemberTable();
+        return $table->find(['term_id'=>$this->getId()]);
+	}
 
 	/**
 	 * @return Committee
 	 */
 	public function getCommittee()
 	{
-		return $this->getSeat()->getCommittee();
+        return $this->getSeat()->getCommittee();
 	}
 
 	/**
-	 * @return VotingRecordList
+	 * @return string
 	 */
-	public function getVotingRecords()
+	public function isVacant()
 	{
-		$table = new VotingRecordTable();
-		return $table->find(['term_id'=>$this->getId()]);
+        if ($this->getId()) {
+            $zend_db = Database::getConnection();
+
+            $sql = 'select count(*) as count from members where endDate is null and term_id=?';
+            $result = $zend_db->query($sql, [$this->getId()]);
+            $row = $result->current();
+            if ($row['count'] > 0) { return false; }
+
+            $sql = 'select max(endDate) as endDate from members where term_id=?';
+            $result = $zend_db->query($sql, [$this->getId()]);
+            if (count($result)) {
+                $row = $result->current();
+                $endDate = new \DateTime($row['endDate']);
+                return (int)$endDate->format('U') < (int)$this->getEndDate('U');
+            }
+        }
+        return $this->getStartDate();
 	}
 
 	/**
-	 * @return boolean
+	 * @return Term
 	 */
-	public function isSafeToDelete()
+	public function getNextTerm()
 	{
-		return (count($this->getVotingRecords()) == 0) ? true : false;
+        $seat = $this->getSeat();
+
+        $twoDays = new \DateInterval('P2D');
+
+        $d = new \DateTime($this->getEndDate());
+        $d->add($twoDays);
+
+        return $seat->getTerm($d->format('U'));
 	}
 
 	/**
-	 * Invalid Voting Records are votingRecords where the vote date does not occur
-	 * during the term for the votingRecord.  This happens as people change term dates
-	 * or vote dates after votingRecords are entered.
+	 * Returns a Term object for the next in the series
 	 *
-	 * @return array VotingRecords
+	 * This term object is not, yet saved in the database
+	 *
+	 * @return Term
 	 */
-	public function getInvalidVotingRecords()
+	public function generateNextTerm()
 	{
-		$zend_db = Database::getConnection();
-		$parameters = [$this->getId()];
+        $seat = $this->getSeat();
+        $termLength = new \DateInterval($seat->getTermLength());
 
-		$dateCheck = "?>v.date";
-		$parameters[] = $this->getTerm_start('Y-m-d');
+        $s = new \DateTime($this->getStartDate());
+        $e = new \DateTime($this->getEndDate());
 
-		if ($this->getTerm_end()) {
-			$dateCheck.= " or ?<v.date";
-			$parameters[] = $this->getTerm_end('Y-m-d');
-		}
+        $start = $s->add($termLength)->format(DATE_FORMAT);
+        $end   = $e->add($termLength)->format(DATE_FORMAT);
 
-		$sql = "select vr.id from votingRecords vr
-				left join terms t on vr.term_id=t.id
-				left join votes v on vr.vote_id=v.id
-				where vr.term_id=?
-				and ($dateCheck)";
-
-		$result = $zend_db->createStatement($sql)->execute($parameters);
-
-		$invalidVotingRecords = array();
-		foreach ($result as $row) {
-			$invalidVotingRecords[] = new VotingRecord($row['id']);
-		}
-		return $invalidVotingRecords;
+        $term = new Term();
+        $term->setStartDate($start);
+        $term->setEndDate  ($end);
+        $term->setSeat($seat);
+        return $term;
 	}
 
 	/**
-	 * @return boolean
+	 * Returns a Term object for the previous one in the series
+	 *
+	 * This term object is not, yet saved in the database.
+	 *
+	 * @return Term
 	 */
-	public function hasInvalidVotingRecords()
+	public function generatePreviousTerm()
 	{
-		return count($this->getInvalidVotingRecords()) ? true : false;
-	}
+        $seat = $this->getSeat();
+        $termLength = new \DateInterval($seat->getTermLength());
 
-	/**
-	 * Deletes all the invalid voting records for this term
-	 */
-	public function deleteInvalidVotingRecords()
-	{
-		foreach ($this->getInvalidVotingRecords() as $votingRecord) {
-			$votingRecord->delete();
-		}
+        $s = new \DateTime($this->getStartDate());
+        $e = new \DateTime($this->getEndDate());
+
+        $start = $s->sub($termLength)->format(DATE_FORMAT);
+        $end   = $e->sub($termLength)->format(DATE_FORMAT);
+
+        $term = new Term();
+        $term->setStartDate($start);
+        $term->setEndDate  ($end);
+        $term->setSeat($seat);
+        return $term;
 	}
 }

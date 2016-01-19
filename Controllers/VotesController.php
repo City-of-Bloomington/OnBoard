@@ -59,7 +59,7 @@ class VotesController extends Controller
 
 		$topic = $vote->getTopic();
 
-		$this->template->title = $this->template->_('labels.edit_votingRecords');
+		$this->template->title = $this->template->_('edit_votingRecords');
 
 		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$topic->getCommittee()]);
 		$this->template->blocks[] = new Block('topics/info.inc', ['topic'=>$topic]);
@@ -106,7 +106,7 @@ class VotesController extends Controller
 				$_SESSION['errorMessages'][] = $e;
 			}
 		}
-		$this->template->title = $this->template->_('labels.edit_vote');
+		$this->template->title = $this->template->_('edit_vote');
 		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$vote->getCommittee()]);
 		$this->template->blocks[] = new Block('topics/info.inc', ['topic'=>$vote->getTopic()]);
 		$this->template->blocks[] = new Block('votes/updateForm.inc', ['vote'=>$vote]);

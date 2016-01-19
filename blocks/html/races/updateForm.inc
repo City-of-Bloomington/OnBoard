@@ -8,7 +8,7 @@
 use Blossom\Classes\View;
 
 $name = View::escape($this->race->getName());
-$title = $this->race->getId() ? $this->_('labels.edit_race') : $this->_('labels.add_race');
+$title = $this->race->getId() ? $this->_('edit_race') : $this->_('add_race');
 ?>
 <div>
 	<h2><?php echo $title; ?></h2>
@@ -17,7 +17,7 @@ $title = $this->race->getId() ? $this->_('labels.edit_race') : $this->_('labels.
 			<input name="race_id" type="hidden" value="<?php echo $this->race->getId(); ?>" />
 
 			<table>
-				<tr><td><label for="name" class="required"><?php echo $this->_('labels.name'); ?></label></td>
+				<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
 					<td><input name="name" id="name" value="<?php echo $name; ?>" /></td>
 				</tr>
 			</table>

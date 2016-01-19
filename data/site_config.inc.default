@@ -1,0 +1,88 @@
+<?php
+define('APPLICATION_NAME','application');
+
+/**
+ * The URL to get to this site
+ * Do NOT use a trailing slash
+ */
+define('BASE_URL','http://localhost/application');
+define('BASE_URI','/application');
+define('FN1_URL', BASE_URI.'/fn1');
+#define('THEME', 'kirkwood');
+
+define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
+
+/**
+ * Used when there's an error on the site.  The Framework will
+ * print out a nice error message, encouraging users to report any problems
+ * See: Blossom\Classes\Error
+ */
+define('ADMINISTRATOR_NAME','Site Admin');
+define('ADMINISTRATOR_EMAIL','admin@servername.com');
+
+/**
+ * Database Setup
+ * Refer to the PDO documentation for DSN sytnax for your database type
+ * http://www.php.net/manual/en/pdo.drivers.php
+ */
+define('DB_ADAPTER','Pdo_Mysql');
+define('DB_HOST','localhost');
+define('DB_NAME','application');
+define('DB_USER','application');
+define('DB_PASS','password');
+
+/**
+ * Directory Configuration
+ *
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
+ */
+// Example for ADS style authentication
+$DIRECTORY_CONFIG = [
+//	'Ldap' => [
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636',
+//		'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
+//		'DIRECTORY_USER_BINDING'=>'{username}@example.org',
+//		'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
+//		'DIRECTORY_ADMIN_PASS'=>'password'
+//	]
+//
+// Example for LDAP style authentication
+//	'Ldap' => [
+//		'DIRECTORY_SERVER'=>'ldaps://example.org:636');
+//		'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
+//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
+//		'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
+//		'DIRECTORY_ADMIN_PASS'=>'password');
+//	]
+// Example for Directory webservice
+//  'Employee' => [
+//      'DIRECTORY_SERVER' => 'http://apps.bloomington.in.gov/directory'
+//  ]
+];
+
+/**
+ * CAS authentication http://www.jasig.org/cas
+ *
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
+ */
+//define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
+//define('CAS_SERVER','cas.somewhere.org');
+//define('CAS_URI','cas');
+
+define('DATE_FORMAT', 'n/j/Y');
+define('TIME_FORMAT', 'H:i:s');
+define('DATETIME_FORMAT', 'n/j/Y H:i:s');
+
+define('LOCALE', 'en_US');
+
+define('VOTE_TRACKING', true);

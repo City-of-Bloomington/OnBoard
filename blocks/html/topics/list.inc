@@ -17,7 +17,7 @@ foreach ($this->topics as $topic) {
 		$helper = $this->template->getHelper('buttonLink');
 		$editButton = $helper->buttonLink(
 			BASE_URI.'/topics/update?topic_id='.$topic->getId(),
-			$this->translate('labels.edit'),
+			$this->translate('edit'),
 			'edit',
 			ButtonLink::SIZE_ICON
 		);

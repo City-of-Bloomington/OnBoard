@@ -1,74 +1,104 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2016 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\AppointerTable;
-use Blossom\Classes\View;
+use Application\Models\Seat;
 
-$title = $this->seat->getId() ? $this->_('labels.edit_seat') : $this->_('labels.add_seat');
+$fields = ['id', 'type', 'committee_id', 'appointer_id', 'name', 'requirements', 'termLength'];
+foreach ($fields as $f) {
+    $get = 'get'.ucfirst($f);
+    $$f = $this->seat->$get();
+}
+
+$title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 ?>
-<h2><?php echo $title; ?></h2>
-<form method="post" action="<?php echo BASE_URI; ?>/seats/update">
-	<fieldset><legend><?php echo $this->_('labels.info_seat'); ?></legend>
-		<?php
-			if ($this->seat->getId()) {
-				echo "<input name=\"seat_id\" type=\"hidden\" value=\"{$this->seat->getId()}\" />";
-			}
-			else {
-				echo "<input name=\"committee_id\" type=\"hidden\" value=\"{$this->seat->getCommittee_id()}\" />";
-			}
-		?>
-		<table>
-			<tr><td><label for="name" class="required"><?php echo $this->_('labels.name'); ?></label></td>
-				<td><input name="name" id="name"
-						value="<?php echo View::escape($this->seat->getName()); ?>" />
-				</td>
-			</tr>
+<section  class="fn1-uiBlock">
+  <header class="fn1-uiBlock-header">
+    <h1   class="fn1-uiBlock-title"><?= $title; ?></h1>
+  </header>
+  <div    class="fn1-uiBlock-content">
+    <form method="post" action="<?php echo BASE_URI; ?>/seats/update">
+      <fieldset><legend><?php echo $this->_('info_seat'); ?></legend>
+            <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
+            <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
 
-			<tr><td><label for="appointer_id" class="required">
-						<?php echo $this->_(['labels.appointer', 'labels.appointers', 1]); ?>
-					</label>
-				</td>
-				<td><select name="appointer_id" id="appointer_id"><option value=""></option>
-					<?php
-						$table = new AppointerTable();
-						$list = $table->find();
-						foreach ($list as $appointer) {
-							$name = View::escape($appointer->getName());
-							$selected = ($this->seat->getAppointer_id()==$appointer->getId())
-										? ' selected="selected"'
-										: '';
-							echo "<option value=\"{$appointer->getId()}\"$selected>$name</option>";
-						}
-					?>
-					</select>
-				</td>
-			</tr>
+            <dl class="fn1-input-field">
+                <dt><label  for="type" class="required"><?= $this->_('type'); ?></label></dt>
+                <dd><select name="type">
+                    <?php
+                        foreach (Seat::$types as $t) {
+                            $selected = $t === $type
+                                ? 'selected="true"'
+                                : '';
+                            echo "<option $selected>$t</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label  for="name" class="required"><?= $this->_('name'); ?></label></dt>
+                <dd><input name="name" id="name" value="<?= $name; ?>" /></dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label   for="appointer_id" class="required"><?= $this->_(['appointer', 'appointers', 1]); ?></label></dt>
+                <dd><select name="appointer_id" id="appointer_id"><option value=""></option>
+                    <?php
+                        $table = new AppointerTable();
+                        $list = $table->find();
+                        foreach ($list as $a) {
+                            $name = self::escape($a->getName());
+                            $selected = ($appointer_id === $a->getId())
+                                        ? 'selected="true"'
+                                        : '';
+                            echo "<option value=\"{$a->getId()}\" $selected>$name</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
+                <dd><input name="startDate" id="startDate"
+                        value="<?= $this->seat->getStartDate(DATE_FORMAT); ?>" />
+                </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
+                <dd><input name="endDate" id="endDate"
+                        value="<?= $this->seat->getEndDate(DATE_FORMAT); ?>" />
+                </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label   for="termLength"><?= $this->_('termLength'); ?></label></dt>
+                <dd><select name="termLength" id="termLength">
+                    <?php
+                        foreach (Seat::$termIntervals as $interval => $label) {
+                            $selected = $termLength === $interval
+                                ? 'selected="true"'
+                                : '';
+                            echo "<option value=\"$interval\" $selected>$label</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
+        </fieldset>
 
-			<tr><td><label for="maxCurrentTerms"><?php echo $this->_('labels.maxCurrentTerms'); ?></label></td>
-				<td><input name="maxCurrentTerms" id="maxCurrentTerms" size="3" maxlength="3"
-						value="<?php echo $this->seat->getMaxCurrentTerms(); ?>" />
-				</td>
-			</tr>
+        <fieldset><legend><?= $this->_(['requirement', 'requirements', 2]); ?></legend>
+            <textarea name="requirements" class="markdown"><?= $requirements; ?></textarea>
+        </fieldset>
 
-			<tr><td><label for="startDate"><?php echo $this->_('labels.date_start'); ?></label></td>
-				<td><input name="startDate" id="startDate" value="<?php echo $this->seat->getStartDate(DATE_FORMAT); ?>" /></td>
-			</tr>
-			<tr><td><label for="endDate"><?php echo $this->_('labels.date_end'); ?></label></td>
-				<td><input name="endDate" id="endDate" value="<?php echo $this->seat->getEndDate(DATE_FORMAT); ?>" /></td>
-			</tr>
-
-		</table>
-		<div>
-			<div><label for="requirements"><?php echo $this->_(['labels.requirement', 'labels.requirements', 2]); ?></label></div>
-			<textarea name="requirements" id="requirements" rows="20" cols="80" class="markdown"><?php echo View::escape($this->seat->getRequirements()); ?></textarea>
-		</div>
-		<?php
-			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons($this->seat->getUri());
-		?>
-	</fieldset>
-</form>
+        <fieldset>
+        <?php
+            $helper = $this->template->getHelper('saveAndCancelButtons');
+            echo $helper->saveAndCancelButtons(BASE_URI."/committees/seats?committee_id=$committee_id");
+        ?>
+        </fieldset>
+    </form>
+  </div>
+</section>

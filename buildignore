@@ -7,12 +7,11 @@
 configuration.inc
 /data/sessions/*
 /scripts/backup.cnf
-/libraries/zf2/bin/
-/libraries/zf2/demos/
-/libraries/zf2/documentation/
-/libraries/zf2/resources/
-/libraries/zf2/tests/
 /public/css/Font-Awesome/less/
 /public/css/Font-Awesome/scss/
 /public/css/Font-Awesome/src/
-/public/js/yui3/src/
+/gulpfile.js
+/node_modules/
+/.ftppass
+/.gulp-build
+/package.json

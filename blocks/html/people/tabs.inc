@@ -9,12 +9,12 @@ use Blossom\Classes\Url;
 
 $url = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 
-$terms = $this->person->getTerms();
+$terms = $this->person->getMembers();
 if (count($terms)) {
-	$tabs = ['committees'  => $this->_(['labels.committee', 'labels.committees', 2])];
+	$tabs = ['committees'  => $this->_(['committee', 'committees', 2])];
 	if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
-		$tabs['votingRecord'] = $this->_(['labels.votingRecord', 'labels.votingRecords', 1]);
-		$tabs['comparisons' ] = $this->_('labels.votingRecordComparison');
+		$tabs['votingRecord'] = $this->_(['votingRecord', 'votingRecords', 1]);
+		$tabs['comparisons' ] = $this->_('votingRecordComparison');
 	}
 	$current_tab = (isset($_GET['tab']) && array_key_exists($_GET['tab'], $tabs)) ? $_GET['tab'] : 'committees';
 
