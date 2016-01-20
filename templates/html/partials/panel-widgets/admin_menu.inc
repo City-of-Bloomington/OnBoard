@@ -13,7 +13,7 @@ $routes = [
     'users'      => 'user'
 ];
 if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
-    $routes['tags' => 'tag'];
+    $routes['tags' => 'tag']
 }
 
 foreach ($routes as $plural=>$singular) {
