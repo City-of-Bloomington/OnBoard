@@ -61,7 +61,7 @@ class CommitteesController extends Controller
 
     public function update()
     {
-        $committee = !empty($_REQUEST['committee_id'])
+        $committee =        !empty($_REQUEST['committee_id'])
             ? $this->loadCommittee($_REQUEST['committee_id'])
             : new Committee();
 
@@ -70,7 +70,7 @@ class CommitteesController extends Controller
                 $committee->handleUpdate($_POST);
                 $committee->save();
 
-                $url = BASE_URL."/committees/members?committee_id=$committee_id";
+                $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
                 exit();
             }
@@ -95,5 +95,37 @@ class CommitteesController extends Controller
             'seats'     => $committee->getSeats(),
             'committee' => $committee
         ]);
+    }
+
+    public function appoint()
+    {
+        if (!empty($_REQUEST['committee_id'])) {
+            try {
+                $committee = new Committee($_REQUEST['committee_id']);
+                $member = new Member();
+                $member->setCommittee($committee);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($member)) {
+            if (isset($_POST['person_id'])) {
+                try {
+                    $member->handleUpdate($_POST);
+                    $member->save();
+                    header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $member->getCommittee()]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $member->getCommittee()]);
+            $this->template->blocks[] = new Block('committees/appointForm.inc', ['member'=>$member]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
     }
 }

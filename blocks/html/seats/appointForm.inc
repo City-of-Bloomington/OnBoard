@@ -2,7 +2,6 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Member $this->newMember
  * @param Member $this->currentMember (optional)
  */
@@ -10,12 +9,12 @@ use Application\Models\AppointerTable;
 use Application\Models\Seat;
 use Blossom\Classes\Block;
 ?>
-<section    class="fn1-uiBlock">
-    <div    class="fn1-uiBlock-content">
-        <form method="post" action="<?= BASE_URI; ?>/seats/appoint">
+<section   class="fn1-uiBlock">
+    <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/seats/appoint">
+        <fieldset>
             <?php
                 if ($this->currentMember) {
-                    include APPLICATION_HOME.'/blocks/html/members/partials/memberEndFieldset.inc';
+                    $this->_include('htnl/members/partials/memberEndFieldset.inc');
                 }
             ?>
 
@@ -88,13 +87,13 @@ use Blossom\Classes\Block;
             </dl>
 
             <div class="fn1-btn-container">
-    			<?php
-    				$helper = $this->template->getHelper('saveAndCancelButtons');
-    				echo $helper->saveAndCancelButtons(
+                <?php
+                    $helper = $this->template->getHelper('saveAndCancelButtons');
+                    echo $helper->saveAndCancelButtons(
                         BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
-    				);
-    			?>
+                    );
+                ?>
             </div>
-        </form>
-    </div>
+        </fieldset>
+    </form>
 </section>
