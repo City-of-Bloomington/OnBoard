@@ -7,6 +7,8 @@
  */
 
 $title = $this->term->getId() ? $this->_('term_edit') : $this->_('term_add');
+
+$picker = $this->template->getHelper('datePicker');
 ?>
 <section    class="fn1-uiBlock">
     <header class="fn1-uiBlock-header">
@@ -18,15 +20,11 @@ $title = $this->term->getId() ? $this->_('term_edit') : $this->_('term_add');
 
         <dl class="fn1-input-field">
             <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
-            <dd><input name="startDate" id="startDate"
-                    value="<?= $this->term->getStartDate(DATE_FORMAT); ?>" />
-            </dd>
+            <dd><?= $picker->datePicker('startDate', 'startDate', $this->term->getStartDate('U')); ?></dd>
         </dl>
         <dl class="fn1-input-field">
             <dt><label  for="endDate" class="required"><?= $this->_('endDate'); ?></label></dt>
-            <dd><input name="endDate" id="endDate"
-                    value="<?= $this->term->getEndDate(DATE_FORMAT); ?>" />
-            </dd>
+            <dd><?= $picker->datePicker('endDate', 'endDate', $this->term->getEndDate('U')); ?></dd>
         </dl>
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');

@@ -40,14 +40,14 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 			</dd>
 		</dl>
 		<dl class="fn1-input-field"><dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
-			<dd><input name="startDate" id="startDate"
-					value="<?= $this->member->getStartDate(DATE_FORMAT); ?>" />
+			<dd><?php
+                    $helper = $this->template->getHelper('datePicker');
+                    echo $helper->datePicker('startDate', 'startDate', $this->member->getStartDate('U'));
+                ?>
 			</dd>
 		</dl>
 		<dl class="fn1-input-field"><dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
-			<dd><input name="endDate" id="endDate"
-					value="<?= $this->member->getEndDate(DATE_FORMAT); ?>" />
-			</dd>
+			<dd><?= $helper->datePicker('endDate', 'endDate', $this->member->getEndDate('U')); ?></dd>
 		</dl>
         <div class="fn1-btn-container">
 		<?php

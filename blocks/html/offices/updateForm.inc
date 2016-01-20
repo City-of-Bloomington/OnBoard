@@ -8,6 +8,7 @@
 use Blossom\Classes\View;
 
 $title = $this->office->getId() ? $this->_('edit_office') : $this->_('add_office');
+$picker = $this->template->getHelper('datePicker');
 ?>
 <h2><?php echo $title; ?></h2>
 <h3><?php echo View::escape($this->office->getPerson()->getFullname()); ?></h3>
@@ -35,14 +36,10 @@ $title = $this->office->getId() ? $this->_('edit_office') : $this->_('add_office
 			</tr>
 
 			<tr><td><label for="startDate"><?php echo $this->_('date_start'); ?></label></td>
-				<td><input name="startDate" id="startDate"
-							value="<?php echo $this->office->getStartDate(DATE_FORMAT); ?>" />
-				</td>
+				<td><?= $picker->datePicker('startDate', 'startDate', $this->office->getStartDate('U')); ?></td>
 			</tr>
 			<tr><td><label for="endDate"><?php echo $this->_('date_end'); ?></label></td>
-				<td><input name="endDate" id="endDate"
-							value="<?php echo $this->office->getEndDate(DATE_FORMAT); ?>" />
-				</td>
+				<td><?= $picker->datePicker('endDate', 'endDate', $this->office->getEndDate('U')); ?></td>
 			</tr>
 		</table>
 		<?php

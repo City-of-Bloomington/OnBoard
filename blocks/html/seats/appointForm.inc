@@ -76,8 +76,14 @@ use Blossom\Classes\Block;
                 }
             ?>
             <dl class="fn1-input-field"><dt><label for="newMember-startDate"><?= $this->_('startDate'); ?></label></dt>
-                <dd><input name="newMember[startDate]" id="newMember-startDate"
-                        value="<?= $this->newMember->getStartDate(DATE_FORMAT); ?>" />
+                <dd><?php
+                        $picker = $this->template->getHelper('datePicker');
+                        echo $picker->datePicker(
+                            'newMember[startDate]',
+                            'newMember-startDate',
+                            $this->newMember->getStartDate('U')
+                        );
+                    ?>
                 </dd>
             </dl>
 

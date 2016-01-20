@@ -15,6 +15,7 @@ foreach ($fields as $f) {
 }
 
 $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
+$picker = $this->template->getHelper('datePicker');
 ?>
 <section  class="fn1-uiBlock">
   <header class="fn1-uiBlock-header">
@@ -63,15 +64,11 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
             </dl>
             <dl class="fn1-input-field">
                 <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
-                <dd><input name="startDate" id="startDate"
-                        value="<?= $this->seat->getStartDate(DATE_FORMAT); ?>" />
-                </dd>
+                <dd><?= $picker->datePicker('startDate', 'startDate', $this->seat->getStartDate('U')); ?></dd>
             </dl>
             <dl class="fn1-input-field">
                 <dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
-                <dd><input name="endDate" id="endDate"
-                        value="<?= $this->seat->getEndDate(DATE_FORMAT); ?>" />
-                </dd>
+                <dd><?= $picker->datePicker('endDate', 'endDate', $this->seat->getEndDate('U')); ?></dd>
             </dl>
             <dl class="fn1-input-field--select">
                 <dt><label   for="termLength"><?= $this->_('termLength'); ?></label></dt>
