@@ -96,7 +96,10 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
         <fieldset>
         <?php
             $helper = $this->template->getHelper('saveAndCancelButtons');
-            echo $helper->saveAndCancelButtons(BASE_URI."/committees/seats?committee_id=$committee_id");
+            $uri = $id
+                ? BASE_URI."/seats/view?seat_id=$id"
+                : BASE_URI."/committees/seats?committee_id=$committee_id"
+            echo $helper->saveAndCancelButtons($uri);
         ?>
         </fieldset>
     </form>
