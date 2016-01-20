@@ -11,29 +11,31 @@ use Application\Templates\Helpers\ButtonLink;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
-<section class="fn1-uiBlock">
-  <header class="fn1-uiBlock-header">
-    <h1 class="fn1-uiBlock-title"><?php
-        echo sprintf('%s, %s, %s, &amp; %s',
-          $this->_(['council'   , 'councils'   , 2]),
-          $this->_(['commission', 'commissions', 2]),
-          $this->_(['committee' , 'committees' , 2]),
-          $this->_(['board'     , 'boards'     , 2])
-        );
-      ?></h2>
-      <div class="fn1-uiBlock-headerTools">
+<section    class="fn1-uiBlock">
+    <header class="fn1-uiBlock-header">
+        <h1 class="fn1-uiBlock-title">
         <?php
-          if ($userCanEdit) {
-            $helper = $this->template->getHelper('buttonLink');
-            echo $helper->buttonLink(
-              BASE_URI.'/committees/update',
-              $this->_('committee_add'),
-              'add'
+            echo sprintf('%s, %s, %s, &amp; %s',
+                $this->_(['council'   , 'councils'   , 2]),
+                $this->_(['commission', 'commissions', 2]),
+                $this->_(['committee' , 'committees' , 2]),
+                $this->_(['board'     , 'boards'     , 2])
             );
-          }
         ?>
-      </div>
-  </header>
+        </h1>
+        <div class="fn1-uiBlock-headerTools">
+        <?php
+            if ($userCanEdit) {
+                $helper = $this->template->getHelper('buttonLink');
+                echo $helper->buttonLink(
+                    BASE_URI.'/committees/update',
+                    $this->_('committee_add'),
+                    'add'
+                );
+            }
+        ?>
+        </div>
+    </header>
     <table class="fn1-table">
         <thead>
             <tr><th><?= $this->_('committee'); ?></th>
@@ -48,7 +50,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 
                 $vacancies = $c->getVacancyCount();
                 if ($vacancies === 0) { $vacancies = ''; }
-                
+
                 echo "
                 <tr><td><a href=\"$url\">$name</a></td>
                     <td>$vacancies</td>
