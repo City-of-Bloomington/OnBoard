@@ -10,9 +10,12 @@ $links = '';
 $routes = [
     'appointers' => 'appointer',
     'races'      => 'race',
-    'tags'       => 'tag',
     'users'      => 'user'
 ];
+if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
+    $routes['tags' => 'tag'];
+}
+
 foreach ($routes as $plural=>$singular) {
     $requiredAction = 'index';
     if (Person::isAllowed($plural, $requiredAction)) {
