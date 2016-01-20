@@ -11,11 +11,6 @@ use Application\Models\Seat;
 use Blossom\Classes\Block;
 ?>
 <section    class="fn1-uiBlock">
-<?php /*
-    <header class="fn1-uiBlock-header">
-        <h1 class="fn1-uiBlock-title"><?= $this->_('member_add'); ?></h1>
-    </header>
-*/ ?>
     <div    class="fn1-uiBlock-content">
         <form method="post" action="<?= BASE_URI; ?>/seats/appoint">
             <?php

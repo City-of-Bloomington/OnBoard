@@ -404,6 +404,11 @@ msgid_plural "previous_members"
 msgstr[0] "Previous Member"
 msgstr[1] "Previous Members"
 
+msgid "recent_member"
+msgid_plural "recent_members"
+msgstr[0] "Recent Member"
+msgstr[1] "Recent Members"
+
 msgid "office"
 msgid_plural "offices"
 msgstr[0] "Office"
@@ -470,6 +475,3 @@ msgstr "Title"
 
 msgid "actions"
 msgstr "Actions"
-
-msgid "recent_appointees"
-msgstr "Recent appointees"
