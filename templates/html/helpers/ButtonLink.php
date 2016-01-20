@@ -18,10 +18,11 @@ class ButtonLink
 	const SIZE_ICON   = 'icon';
 
 	public static $types = [
-		'add'    => 'fa fa-plus',
-		'edit'   => 'fa fa-pencil',
-		'delete' => 'fa fa-times',
-		'cancel' => 'fa fa-times'
+		'add'      => 'fa fa-plus',
+		'edit'     => 'fa fa-pencil',
+		'delete'   => 'fa fa-times',
+		'cancel'   => 'fa fa-times',
+		'download' => 'fa fa-download'
 	];
 
 	public function __construct(Template $template)

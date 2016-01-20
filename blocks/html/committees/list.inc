@@ -13,16 +13,6 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
 <section    class="fn1-uiBlock">
     <header class="fn1-uiBlock-header">
-        <h1 class="fn1-uiBlock-title">
-        <?php
-            echo sprintf('%s, %s, %s, &amp; %s',
-                $this->_(['council'   , 'councils'   , 2]),
-                $this->_(['commission', 'commissions', 2]),
-                $this->_(['committee' , 'committees' , 2]),
-                $this->_(['board'     , 'boards'     , 2])
-            );
-        ?>
-        </h1>
         <div class="fn1-uiBlock-headerTools">
         <?php
             if ($userCanEdit) {
@@ -33,12 +23,13 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
                     'add'
                 );
             }
+            echo $helper->buttonLink(BASE_URI.'/committees?format=csv', 'CSV', 'download');
         ?>
         </div>
     </header>
     <table class="fn1-table">
         <thead>
-            <tr><th><?= $this->_('committee'); ?></th>
+            <tr><th></th>
                 <th><?= $this->_(['vacancy', 'vacancies', 2]); ?></th>
             </tr>
         </thead>
