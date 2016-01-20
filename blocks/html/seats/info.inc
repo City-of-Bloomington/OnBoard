@@ -8,11 +8,12 @@
 use Application\Models\Person;
 use Michelf\MarkdownExtra;
 
-$name         = self::escape($this->seat->getName());
-$appointer    = self::escape($this->seat->getAppointer());
-$committee    = self::escape($this->seat->getCommittee()->getName());
-$requirements = self::escape($this->seat->getRequirements());
-$termLength   = self::escape($this->seat->getTermLength());
+$name          = self::escape($this->seat->getName());
+$appointer     = self::escape($this->seat->getAppointer());
+$committee     = self::escape($this->seat->getCommittee()->getName());
+$committee_url = BASE_URI.'/committees/info?committee_id='.$this->seat->getCommittee_id();
+$requirements  = self::escape($this->seat->getRequirements());
+$termLength    = self::escape($this->seat->getTermLength());
 
 if ($requirements) {
 	$markdown = new MarkdownExtra();
@@ -51,7 +52,7 @@ echo "
 		</dl>
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_(['committee', 'committees', 1])}</dt>
-			<dd>$committee</dd>
+			<dd><a href=\"$committee_url\">$committee</a></dd>
 		</dl>
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('startDate')}</dt>
