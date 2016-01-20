@@ -150,6 +150,9 @@ msgstr "Legislation Info"
 msgid "info_seat"
 msgstr "Seat Info"
 
+msgid "about_seat"
+msgstr "About this seat"
+
 msgid "info_office"
 msgstr "Office Info"
 
@@ -467,3 +470,6 @@ msgstr "Title"
 
 msgid "actions"
 msgstr "Actions"
+
+msgid "recent_appointees"
+msgstr "Recent appointees"

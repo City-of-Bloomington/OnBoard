@@ -115,6 +115,7 @@ class MembersController extends Controller
 
     public function resign()
     {
+        $this->template->setFilename('two-column');
         try {
             if (              !empty($_REQUEST['member_id'])) {
                 $member = new Member($_REQUEST['member_id']);
@@ -140,7 +141,7 @@ class MembersController extends Controller
             $seat = $member->getSeat();
             if ($seat) {
                 $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $member->getCommittee()]);
-                $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
+                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
             }
             $this->template->blocks[] = new Block('members/resignForm.inc', ['currentMember'=>$member]);
         }

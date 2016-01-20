@@ -13,7 +13,7 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
 <section class="membersList">
-    <table>
+    <table class="fn1-table">
         <tbody>
         <?php
             $helper = $this->template->getHelper('buttonLink');

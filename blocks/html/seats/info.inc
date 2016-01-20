@@ -41,28 +41,33 @@ $uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 echo "
 <section>
 	<h1>$editButton<a href=\"$uri\">$name</a>$deleteButton</h1>
-	<table>
-        <tr><th>{$this->_('type')}</th>
-            <td>{$this->seat->getType()}</td>
-        </tr>
-		<tr><th>{$this->_('appointed_by')}</th>
-			<td>$appointer</td>
-		</tr>
-		<tr><th>{$this->_(['committee', 'committees', 1])}</th>
-			<td>$committee</td>
-		</tr>
-		<tr><th>{$this->_('startDate')}</th>
-			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
-		</tr>
-		<tr><th>{$this->_('endDate')}</th>
-			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
-		</tr>
-		<tr><th>{$this->_(['requirement', 'requirements', 2])}</th>
-			<td>$requirements</td>
-		</tr>
-		<tr><th>{$this->_('termLength')}</th>
-            <td>{$termLength}</td>
-        </tr>
-    </table>
+        <dl class=\"fn1-output-field\">
+			<dt>{$this->_('type')}</dt>
+            <dd>{$this->seat->getType()}</dd>
+        </dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_('appointed_by')}</dt>
+			<dd>$appointer</dd>
+		</dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_(['committee', 'committees', 1])}</dt>
+			<dd>$committee</dd>
+		</dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_('startDate')}</dt>
+			<dd>{$this->seat->getStartDate(DATE_FORMAT)}</dd>
+		</dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_('endDate')}</dt>
+			<dd>{$this->seat->getEndDate(DATE_FORMAT)}</dd>
+		</dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_(['requirement', 'requirements', 2])}</dt>
+			<dd>$requirements</dd>
+		</dl>
+		<dl class=\"fn1-output-field\">
+			<dt>{$this->_('termLength')}</dt>
+            <dd>{$termLength}</dd>
+        </dl>
 </section>
 ";

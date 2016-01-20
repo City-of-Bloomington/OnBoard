@@ -20,10 +20,10 @@ class SaveAndCancelButtons
 	public function saveAndCancelButtons($cancelURL, $onclick=null)
 	{
 		$buttons = "
-		<button type=\"submit\"><i class=\"fa fa-save\"></i>
+		<button type=\"submit\" class=\"fn1-btn\"><i class=\"fa fa-save\"></i>
 			{$this->template->_('save')}
 		</button>
-		<a class=\"btn\" href=\"$cancelURL\" $onclick><i class=\"fa fa-undo\"></i>
+		<a class=\"fn1-btn\" href=\"$cancelURL\" $onclick>
 			{$this->template->_('cancel')}
 		</a>
 		";

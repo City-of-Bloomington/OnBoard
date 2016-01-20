@@ -26,7 +26,7 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
             <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
 
-            <dl class="fn1-input-field">
+            <dl class="fn1-input-field--select">
                 <dt><label  for="type" class="required"><?= $this->_('type'); ?></label></dt>
                 <dd><select name="type">
                     <?php
@@ -73,7 +73,7 @@ $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
                         value="<?= $this->seat->getEndDate(DATE_FORMAT); ?>" />
                 </dd>
             </dl>
-            <dl class="fn1-input-field">
+            <dl class="fn1-input-field--select">
                 <dt><label   for="termLength"><?= $this->_('termLength'); ?></label></dt>
                 <dd><select name="termLength" id="termLength">
                     <?php

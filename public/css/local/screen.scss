@@ -51,6 +51,25 @@
             }
         }
     }
+    &-contextInfo {
+        float: right;
+        margin: 3rem 0 0 0;
+        width: 33%;
+        .fn1-output-field {
+            border-top: none;
+            > dt {
+                color: #777;
+                float: none;
+            }
+            > dd {
+                margin-left: 0;
+            }
+        }
+        &+ .onboard-content {
+            float: left;
+            width: 64%;
+        }
+    }
 }
 
 

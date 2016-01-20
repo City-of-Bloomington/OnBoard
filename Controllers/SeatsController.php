@@ -138,11 +138,12 @@ class SeatsController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
+        $this->template->setFilename('two-column');
         $form = new Block('seats/appointForm.inc', ['newMember' => $newMember]);
         if (isset($currentMember)) { $form->currentMember = $currentMember; }
 
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $seat->getCommittee()]);
-        $this->template->blocks[] = new Block('seats/summary.inc', ['seat' => $seat]);
+        $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
         if (isset($currentMember)) {
             $this->template->blocks[] = new Block('members/list.inc', [
                 'members' => [$currentMember],
