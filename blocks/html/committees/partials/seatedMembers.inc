@@ -94,7 +94,7 @@ use Application\Models\Person;
                     ";
                 }
 
-                if ($seatIsVacant) { $classes[] = 'carryover'; }
+                if ($seatIsVacant) { $classes[] = 'carryOver'; }
             }
 
             if ($buttons != '') {
