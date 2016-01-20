@@ -43,7 +43,7 @@ echo "
 	<h1>$editButton<a href=\"$uri\">$name</a>$deleteButton</h1>
         <dl class=\"fn1-output-field\">
 			<dt>{$this->_('type')}</dt>
-            <dd>{$this->seat->getType()}</dd>
+            <dd>{$this->_($this->seat->getType())}</dd>
         </dl>
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('appointed_by')}</dt>

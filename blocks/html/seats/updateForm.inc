@@ -35,7 +35,7 @@ $picker = $this->template->getHelper('datePicker');
                             $selected = $t === $type
                                 ? 'selected="true"'
                                 : '';
-                            echo "<option $selected>$t</option>";
+                            echo "<option $selected>{$this->_($t)}</option>";
                         }
                     ?>
                     </select>

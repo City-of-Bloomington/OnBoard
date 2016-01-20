@@ -247,6 +247,12 @@ msgid_plural "appointers"
 msgstr[0] "Appointer"
 msgstr[1] "Appointers"
 
+msgid "termed"
+msgstr "Termed"
+
+msgid "open"
+msgstr "Open"
+
 msgid "add_appointer"
 msgstr "Add Appointer"
 
