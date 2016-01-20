@@ -11,8 +11,8 @@ use Application\Templates\Helpers\ButtonLink;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header">
+<section     class="fn1-uiBlock">
+    <header  class="fn1-uiBlock-header">
         <div class="fn1-uiBlock-headerTools">
         <?php
             $helper = $this->template->getHelper('buttonLink');

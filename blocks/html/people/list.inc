@@ -2,43 +2,40 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->people
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
 use Blossom\Classes\Url;
 ?>
-<section>
-    <header>
-        <h1><?php
-                echo $this->translate(['person','people',2]);
-
-                if (Person::isAllowed('people')) {
-                    // Preserve any extra parameters passed in
-                    $url = new Url(BASE_URL.'/people/update');
-                    $fields = array('firstname','lastname','email');
-                    foreach ($_REQUEST as $key=>$value) {
-                        if (!in_array($key, $fields)) { $url->$key = $value; }
-                    }
-
-                    $helper = $this->template->getHelper('buttonLink');
-                    echo $helper->buttonLink(
-                        $url,
-                        $this->translate('add_person'),
-                        'add'
-                    );
+<section     class="fn1-uiBlock">
+    <header  class="fn1-uiBlock-header"><h1><?= $this->translate(['person','people',2]); ?></h1>
+        <div class="fn1-uiBlock-headerTools">
+        <?php
+            if (Person::isAllowed('people')) {
+                // Preserve any extra parameters passed in
+                $url = new Url(BASE_URL.'/people/update');
+                $fields = array('firstname','lastname','email');
+                foreach ($_REQUEST as $key=>$value) {
+                    if (!in_array($key, $fields)) { $url->$key = $value; }
                 }
-            ?>
-        </h1>
+
+                $helper = $this->template->getHelper('buttonLink');
+                echo $helper->buttonLink(
+                    $url,
+                    $this->translate('add_person'),
+                    'add'
+                );
+            }
+        ?>
+        </div>
     </header>
 	<table class="fn1-table">
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('username'); ?></th>
-				<th><?php echo $this->_('name'); ?></th>
-				<th><?php echo $this->_(['email','emails',1]); ?></th>
+				<th><?= $this->_('username'); ?></th>
+				<th><?= $this->_('name'); ?></th>
+				<th><?= $this->_(['email','emails',1]); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -68,7 +65,7 @@ use Blossom\Classes\Url;
 					$url = $person->getUrl();
 				}
 
-				$name = View::escape($person->getFullname());
+				$name = self::escape($person->getFullname());
 				echo "
 				<tr><td>$editButton</td>
 					<td>{$person->getUsername()}</td>

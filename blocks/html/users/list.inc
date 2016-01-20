@@ -1,35 +1,34 @@
 <?php
 /**
- * @copyright 2007-2013 City of Bloomington, Indiana
+ * @copyright 2007-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\Sql\Select $users
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
 ?>
-<div class="interfaceBox">
-	<h2><?php
-			echo $this->_(['user','users',2]);
-
-			if (Person::isAllowed('users')) {
-				$helper = $this->template->getHelper('buttonLink');
-				echo $helper->buttonLink(
-					BASE_URI.'/users/update',
-					$this->translate('create_account'),
-					'add'
-				);
-			}
-		?>
-	</h2>
-	<table>
+<section     class="fn1-uiBlock">
+    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['user','users',2]); ?></h1>
+        <div class="fn1-uiBlock-headerTools">
+        <?php
+            if (Person::isAllowed('users')) {
+                $helper = $this->template->getHelper('buttonLink');
+                echo $helper->buttonLink(
+                    BASE_URI.'/users/update',
+                    $this->translate('create_account'),
+                    'add'
+                );
+            }
+        ?>
+        </div>
+    </header>
+	<table class="fn1-table">
 		<thead>
 			<tr><th></th>
-				<th><?php echo $this->_('username'); ?></th>
-				<th><?php echo $this->_('name'); ?></th>
-				<th><?php echo $this->_('authenticationMethod'); ?></th>
-				<th><?php echo $this->_('role'); ?></th>
+				<th><?= $this->_('username'); ?></th>
+				<th><?= $this->_('name'); ?></th>
+				<th><?= $this->_('authenticationMethod'); ?></th>
+				<th><?= $this->_('role'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -53,7 +52,7 @@ use Blossom\Classes\View;
 					);
 				}
 
-				$name = View::escape($user->getFullname());
+				$name = self::escape($user->getFullname());
 				echo "
 				<tr><td>$editButton</td>
 					<td>{$user->getUsername()}</td>
@@ -67,4 +66,4 @@ use Blossom\Classes\View;
 		?>
 		</tbody>
 	</table>
-</div>
+</section>

@@ -9,20 +9,21 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
-<div>
-	<h2><?php
-			echo $this->translate(['race','races',2]);
-
-			if (Person::isAllowed('races')) {
-				$helper = $this->template->getHelper('buttonLink');
-				echo $helper->buttonLink(
-					BASE_URI.'/races/update',
-					$this->translate('add_race'),
-					'add'
-				);
-			}
-		?>
-	</h2>
+<section     class="fn1-uiBlock">
+    <header  class="fn1-uiBlock-header"><h1><?= $this->translate(['race','races',2]); ?></h1>
+        <div class="fn1-uiBlock-headerTools">
+        <?php
+            if (Person::isAllowed('races')) {
+                $helper = $this->template->getHelper('buttonLink');
+                echo $helper->buttonLink(
+                    BASE_URI.'/races/update',
+                    $this->translate('add_race'),
+                    'add'
+                );
+            }
+        ?>
+        </div>
+    </header>
 	<table>
 		<?php
 			foreach ($this->races as $race) {
@@ -45,4 +46,4 @@ use Blossom\Classes\View;
 			}
 		?>
 	</table>
-</div>
+</section>

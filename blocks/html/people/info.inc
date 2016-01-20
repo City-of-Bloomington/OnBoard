@@ -1,13 +1,11 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
 use Michelf\MarkdownExtra;
 
 $helper = $this->template->getHelper('buttonLink');
@@ -31,30 +29,37 @@ if (Person::isAllowed('people', 'edit')) {
 	);
 }
 
-$fullname = View::escape($this->person->getFullname());
+$fullname = self::escape($this->person->getFullname());
 $markdown = new MarkdownExtra();
 $about = $markdown->transform($this->person->getAbout());
 echo "
-<div>
-	<h2>$fullname $editButton</h2>
-	<p>$about</p>
-	<table>
-";
-	$fields = [
-		'email'   => $this->_(['email', 'emails', 1]),
-		'username'=> $this->_('username'),
-		'gender'  => $this->_('gender'),
-		'race'    => $this->_(['race', 'races', 1]),
-	];
-	foreach ($fields as $key=>$label) {
-		$get = 'get'.ucfirst($key);
-		$value = View::escape($this->person->$get());
+<section     class=\"fn1-uiBlock\">
+    <header  class=\"fn1-uiBlock-header\"><h1>$fullname</h1>
+        <div class=\"fn1-uiBlock-headerTools\">$editButton</div>
+    </header>
 
-		if ($value) {
-			echo "<tr><th>$fields[$key]</th><td>$value</td></tr>";
-		}
-	}
+    <div class=\"fn1-uiBlock-content\">
+        <p>$about</p>
+";
+        $fields = [
+            'email'   => $this->_(['email', 'emails', 1]),
+            'username'=> $this->_('username'),
+            'gender'  => $this->_('gender'),
+            'race'    => $this->_(['race', 'races', 1]),
+        ];
+        foreach ($fields as $key=>$label) {
+            $get = 'get'.ucfirst($key);
+            $value = self::escape($this->person->$get());
+
+            if ($value) {
+                echo "
+                <dl class=\"fn1-output-field\">
+                    <dt>$fields[$key]</dt>
+                    <dd>$value</dd>
+                </dl>";
+            }
+        }
 echo "
-	</table>
-</div>
+    </div>
+</section>
 ";

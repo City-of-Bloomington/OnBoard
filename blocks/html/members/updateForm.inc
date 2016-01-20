@@ -31,7 +31,8 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 		<input name="seat_id"      type="hidden" value="<?= $seat_id;      ?>" />
 		<input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
 
-		<dl class="fn1-input-field--select"><dt><label for="person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
+		<dl class="fn1-input-field--select">
+            <dt><label for="person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
 			<dd><?php
 					$person = $this->member->getPerson();
 					$helper = $this->template->getHelper('personChooser');
@@ -39,14 +40,16 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 				?>
 			</dd>
 		</dl>
-		<dl class="fn1-input-field"><dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
+		<dl class="fn1-input-field">
+            <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
 			<dd><?php
                     $helper = $this->template->getHelper('datePicker');
                     echo $helper->datePicker('startDate', 'startDate', $this->member->getStartDate('U'));
                 ?>
 			</dd>
 		</dl>
-		<dl class="fn1-input-field"><dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
+		<dl class="fn1-input-field">
+            <dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
 			<dd><?= $helper->datePicker('endDate', 'endDate', $this->member->getEndDate('U')); ?></dd>
 		</dl>
         <div class="fn1-btn-container">

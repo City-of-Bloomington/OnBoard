@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Race $this->race
  */
 use Blossom\Classes\View;
@@ -10,17 +9,16 @@ use Blossom\Classes\View;
 $name = View::escape($this->race->getName());
 $title = $this->race->getId() ? $this->_('edit_race') : $this->_('add_race');
 ?>
-<div>
-	<h2><?php echo $title; ?></h2>
-	<form method="post" action="<?php echo BASE_URI; ?>/races/update">
-		<fieldset><legend><?php echo $name; ?></legend>
-			<input name="race_id" type="hidden" value="<?php echo $this->race->getId(); ?>" />
+<section>
+	<h1><?= $title; ?></h1>
+	<form method="post" action="<?= BASE_URI; ?>/races/update">
+		<fieldset><legend><?= $name; ?></legend>
+			<input name="race_id" type="hidden" value="<?= $this->race->getId(); ?>" />
 
-			<table>
-				<tr><td><label for="name" class="required"><?php echo $this->_('name'); ?></label></td>
-					<td><input name="name" id="name" value="<?php echo $name; ?>" /></td>
-				</tr>
-			</table>
+            <dl class="fn1-input-field">
+                <dt><label for="name" class="required"><?= $this->_('name'); ?></label></dt>
+                <dd><input name="name" id="name" value="<?= $name; ?>" /></dd>
+            </dl>
 
 			<?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');
@@ -28,4 +26,4 @@ $title = $this->race->getId() ? $this->_('edit_race') : $this->_('add_race');
 			?>
 		</fieldset>
 	</form>
-</div>
+</section>
