@@ -15,8 +15,8 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
     <header class="fn1-uiBlock-header">
         <div class="fn1-uiBlock-headerTools">
         <?php
+            $helper = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
-                $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
                     BASE_URI.'/committees/update',
                     $this->_('committee_add'),

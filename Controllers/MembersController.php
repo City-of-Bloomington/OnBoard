@@ -48,12 +48,12 @@ class MembersController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
+            $this->template->setFilename('two-column');
             $committee = $member->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             if ($member->getSeat_id()) {
-                $this->template->blocks[] = new Block('seats/info.inc', ['seat' => $member->getSeat()]);
+                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $member->getSeat()]);
             }
-
             $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
         }
         else {

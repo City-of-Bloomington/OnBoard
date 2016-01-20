@@ -12,9 +12,19 @@ foreach ($fields as $f) {
 }
 
 $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add');
+
 ?>
-<div>
-	<h2><?= $title; ?></h2>
+<section>
+    <header>
+        <h1><?= $title; ?></h1>
+        <?php
+            if ($term_id) {
+                $term = $this->member->getTerm();
+                echo "<h2>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}</h2>";
+            }
+        ?>
+    </header>
+
 	<form method="post" action="<?= BASE_URI; ?>/members/update">
         <input name="member_id"    type="hidden" value="<?= $id;           ?>" />
 		<input name="term_id"      type="hidden" value="<?= $term_id;      ?>" />
@@ -48,4 +58,4 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 		?>
         </div>
 	</form>
-</div>
+</section>

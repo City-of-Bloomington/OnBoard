@@ -195,7 +195,7 @@ class Term extends ActiveRecord
 	}
 
 	/**
-	 * @return string
+	 * @return boolean
 	 */
 	public function isVacant()
 	{
@@ -205,17 +205,25 @@ class Term extends ActiveRecord
             $sql = 'select count(*) as count from members where endDate is null and term_id=?';
             $result = $zend_db->query($sql, [$this->getId()]);
             $row = $result->current();
-            if ($row['count'] > 0) { return false; }
+            if ($row['count'] > 0) {
+                echo "There are members with endDate of null\n";
+                return false;
+            }
 
             $sql = 'select max(endDate) as endDate from members where term_id=?';
             $result = $zend_db->query($sql, [$this->getId()]);
             if (count($result)) {
                 $row = $result->current();
-                $endDate = new \DateTime($row['endDate']);
-                return (int)$endDate->format('U') < (int)$this->getEndDate('U');
+                if ($row['endDate']) {
+                    $endDate = new \DateTime($row['endDate']);
+                    return (int)$endDate->format('U') < (int)$this->getEndDate('U');
+                }
+
+                // No max(endDate) for members means there are no members
+                return true;
             }
         }
-        return $this->getStartDate();
+        return false;
 	}
 
 	/**
