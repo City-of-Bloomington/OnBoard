@@ -10,11 +10,11 @@ use Application\Models\Seat;
 use Blossom\Classes\Block;
 ?>
 <section   class="fn1-uiBlock">
-    <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/seats/appoint">
+    <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
         <fieldset>
             <?php
                 if ($this->currentMember) {
-                    $this->_include('htnl/members/partials/memberEndFieldset.inc');
+                    $this->_include('html/members/partials/memberEndFieldset.inc');
                 }
             ?>
 

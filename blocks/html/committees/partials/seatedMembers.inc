@@ -37,7 +37,7 @@ use Application\Models\Person;
                     $term = $seat->getTerm(time());
                     if ($term) {
                         $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                        $appointURI = BASE_URI."/seats/appoint?term_id={$term->getid()}";
+                        $appointURI = BASE_URI."/members/appoint?term_id={$term->getid()}";
 
                         if (strtotime('+3 days') > (int)$term->getEndDate('U')) {
                             $classes[] = 'termEndsSoon';
@@ -45,7 +45,7 @@ use Application\Models\Person;
                     }
                 }
                 else {
-                    $appointURI = BASE_URI."/seats/appoint?seat_id={$seat->getId()}";
+                    $appointURI = BASE_URI."/members/appoint?seat_id={$seat->getId()}";
                 }
 
                 if (isset($appointURI) && Person::isAllowed('seats', 'appoint')) {
