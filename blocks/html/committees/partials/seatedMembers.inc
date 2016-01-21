@@ -48,7 +48,7 @@ use Application\Models\Person;
                     $appointURI = BASE_URI."/members/appoint?seat_id={$seat->getId()}";
                 }
 
-                if (isset($appointURI) && Person::isAllowed('seats', 'appoint')) {
+                if (isset($appointURI) && Person::isAllowed('members', 'appoint')) {
                     $buttons.= "
                     <a href=\"$appointURI\" class=\"fn1-dropdown-link\">
                         {$this->_('member_add')}

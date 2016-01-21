@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
+use Application\Models\Person;
 ?>
 <table class="fn1-table">
     <thead>
@@ -29,3 +30,13 @@
     ?>
     </tbody>
 </table>
+<?php
+    if (Person::isAllowed('members', 'appoint')) {
+        $helper = $this->template->getHelper('buttonLink');
+        echo $helper->buttonLink(
+            BASE_URI.'/members/appoint?committee_id='.$this->committee->getid(),
+            $this->_('member_add'),
+            'add'
+        );
+    }
+?>

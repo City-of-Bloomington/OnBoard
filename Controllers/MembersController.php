@@ -65,29 +65,21 @@ class MembersController extends Controller
     public function appoint()
     {
         try {
-            if (          !empty($_REQUEST['term_id'])) {
-                $term = new Term($_REQUEST['term_id']);
-                $seat = $term->getSeat();
-                $newMember = $term->newMember();
-            }
-            elseif (      !empty($_REQUEST['seat_id'])) {
-                $seat = new Seat($_REQUEST['seat_id']);
-                $newMember = $seat->newMember();
-            }
-            elseif (      !empty($_REQUEST['newMember']['term_id'])) {
-                $term = new Term($_REQUEST['newMember']['term_id']);
-                $seat = $term->getSeat();
-                $newMember = $term->newMember();
-            }
-            elseif (      !empty($_REQUEST['newMember']['seat_id'])) {
-                $seat = new Seat($_REQUEST['newMember']['seat_id']);
-                $newMember = $seat->newMember();
-            }
+            if (    !empty($_REQUEST['term_id'     ])) { $o = new Term     ($_REQUEST['term_id']); }
+            elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat     ($_REQUEST['seat_id']); }
+            elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
+            elseif (!empty($_REQUEST['newMember']['term_id'     ])) { $o = new Term     ($_REQUEST['newMember']['term_id']); }
+            elseif (!empty($_REQUEST['newMember']['seat_id'     ])) { $o = new Seat     ($_REQUEST['newMember']['seat_id']); }
+            elseif (!empty($_REQUEST['newMember']['committee_id'])) { $o = new Committee($_REQUEST['newMember']['committee_id']); }
+            $newMember = $o->newMember();
 
-            // If the current member has already been closed out,
-            // there's no reason to include them in the form
-            $currentMember = $seat->getLatestMember();
-            if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
+            $seat = $newMember->getSeat();
+            if ($seat) {
+                // If the current member has already been closed out,
+                // there's no reason to include them in the form
+                $currentMember = $seat->getLatestMember();
+                if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
+            }
         }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e;
@@ -106,7 +98,7 @@ class MembersController extends Controller
                 $newMember->handleUpdate($_POST['newMember']);
                 $newMember->save();
 
-                header('Location: '.BASE_URL."/committees/members?committee_id={$seat->getCommittee_id()}");
+                header('Location: '.BASE_URL."/committees/members?committee_id={$newMember->getCommittee_id()}");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -114,11 +106,13 @@ class MembersController extends Controller
 
         $this->template->setFilename('two-column');
         $form = new Block('members/appointForm.inc', ['newMember' => $newMember]);
-        if (isset($currentMember)) { $form->currentMember = $currentMember; }
 
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $seat->getCommittee()]);
-        $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $newMember->getCommittee()]);
+        if (isset($seat)) {
+            $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
+        }
         if (isset($currentMember)) {
+            $form->currentMember = $currentMember;
             $this->template->blocks[] = new Block('members/list.inc', [
                 'members' => [$currentMember],
                 'title'   => $this->template->_('previous_member'),

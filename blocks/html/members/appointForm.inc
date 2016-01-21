@@ -17,8 +17,8 @@ use Blossom\Classes\Block;
                     $this->_include('html/members/partials/memberEndFieldset.inc');
                 }
             ?>
-
-            <input name="newMember[seat_id]" type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
+            <input name="newMember[committee_id]" type="hidden" value="<?= $this->newMember->getCommittee_id(); ?>" />
+            <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
             <h2><?= $this->_('member_add') ?></h2>
             <dl class="fn1-input-field--select"><dt><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
