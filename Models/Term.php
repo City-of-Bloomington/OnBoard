@@ -206,7 +206,6 @@ class Term extends ActiveRecord
             $result = $zend_db->query($sql, [$this->getId()]);
             $row = $result->current();
             if ($row['count'] > 0) {
-                echo "There are members with endDate of null\n";
                 return false;
             }
 
