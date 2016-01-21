@@ -87,25 +87,32 @@ class Member extends ActiveRecord
 		$sql = "select id from members where committee_id=? and person_id=?";
         $params = [$this->getCommittee_id(), $this->getPerson_id()];
 
+        $S = $this->getStartDate('Y-m-d');
         if ($this->getEndDate()) {
-            $sql.= "and ((endDate is not null and ? > endDate) or
-                         (endDate is null     and startDate < ?))";
-            $params[] = $this->getStartDate();
-            $params[] = $this->getEndDate();
+            $E = $this->getEndDate('Y-m-d');
+
+            $sql.= " and (
+                (endDate is null and startDate < '$S')
+                or
+                (endDate is not null and
+                    (startDate < '$S' and '$S' < endDate)
+                    or
+                    (startDate < '$E' and '$E' < endDate)
+                )
+            )";
         }
         else {
-            $sql.= "and startDate < ? and (endDate is null or ? < endDate)";
-            $params[] = $this->getStartDate();
-            $params[] = $this->getStartDate();
+            $sql.= " and (
+                (endDate is null and startDate < '$S')
+                or
+                (endDate is not null and (startDate < '$S' and '$S' < endDate))
+            )";
+
         }
 		if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
 
 		$zend_db = Database::getConnection();
-		$result = $zend_db->createStatement($sql)->execute([
-			$this->getCommittee_id(),
-			$this->getPerson_id(),
-			$this->getStartDate(),$this->getEndDate()
-		]);
+		$result = $zend_db->createStatement($sql)->execute($params);
 		if (count($result) > 0) {
 			throw new \Exception('members/overlappingTerms');
 		}
