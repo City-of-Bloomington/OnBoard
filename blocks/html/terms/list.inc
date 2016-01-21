@@ -43,7 +43,7 @@ $helper = $this->template->getHelper('buttonLink');
             $editButton   = '';
             $deleteButton = '';
             if (!$this->disableButtons) {
-                if (Person::isAllowed('members', 'edit') && $term->isVacant()) {
+                if (Person::isAllowed('members', 'edit')) {
                     $addButton = $helper->buttonLink(
                         BASE_URI."/members/update?term_id=$term_id",
                         $this->_('member_add'),
