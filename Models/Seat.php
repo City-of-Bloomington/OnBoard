@@ -254,9 +254,10 @@ class Seat extends ActiveRecord
 
                 if ($latestTerm) {
                     $newTerm = $this->generateTermForTimestamp($latestTerm, $timestamp);
-                    $newTerm->save();
-
-                    return $newTerm;
+                    if ($newTerm) {
+                        $newTerm->save();
+                        return $newTerm;
+                    }
                 }
             }
             else {
@@ -378,7 +379,7 @@ class Seat extends ActiveRecord
                 // If the seat is active, and there's no current term
                 // there probably should be.  It means that no one is serving
                 // the current term
-                return true;
+                return false;
             }
             else {
                 return count($this->getMembers($timestamp)) ? false : true;
