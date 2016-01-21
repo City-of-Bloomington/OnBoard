@@ -96,4 +96,26 @@ class CommitteesController extends Controller
             'committee' => $committee
         ]);
     }
+
+    public function membership()
+    {
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+            $this->template->blocks[] = new Block('committees/header.inc');
+        }
+
+        $data = Committee::getMembershipData();
+        $this->template->blocks[] = new Block('committees/membershipData.inc', ['data'=>$data]);
+    }
+
+    public function vacancies()
+    {
+        if ($this->template->outputFormat === 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+            $this->template->blocks[] = new Block('committees/header.inc');
+        }
+        
+        $data = Committee::getVacancyData();
+        $this->template->blocks[] = new Block('committees/vacancies.inc', ['data'=>$data]);
+    }
 }

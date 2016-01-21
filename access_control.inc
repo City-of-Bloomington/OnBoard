@@ -50,7 +50,7 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
 $ZEND_ACL->allow(null, ['people', 'topics', 'seats'], ['index','view']);
-$ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
+$ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'membership', 'vacancies']);
 
 
 // Allow Staff to do stuff

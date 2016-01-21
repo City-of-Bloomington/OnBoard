@@ -23,7 +23,6 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
                     'add'
                 );
             }
-            echo $helper->buttonLink(BASE_URI.'/committees?format=csv', 'CSV', 'download');
         ?>
         </div>
     </header>
