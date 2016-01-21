@@ -253,6 +253,9 @@ msgstr "Termed"
 msgid "open"
 msgstr "Open"
 
+msgid "termLength"
+msgstr "Term Length"
+
 msgid "add_appointer"
 msgstr "Add Appointer"
 

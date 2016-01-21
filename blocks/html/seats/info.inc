@@ -66,9 +66,15 @@ echo "
 			<dt>{$this->_(['requirement', 'requirements', 2])}</dt>
 			<dd>$requirements</dd>
 		</dl>
+";
+    if ($this->seat->getType() === 'termed') {
+        echo "
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('termLength')}</dt>
             <dd>{$termLength}</dd>
         </dl>
+        ";
+    }
+echo "
 </section>
 ";
