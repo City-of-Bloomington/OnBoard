@@ -9,6 +9,11 @@ echo "Committee,Seat,Appointer,Firstname,Lastname,Term Start,Term End,Appointmen
 
 $out = fopen('php://output', 'w');
 foreach ($this->data as $row) {
+    // We had to add these to the query in order to support
+    // the HTML version.  We don't want them in the CSV data
+    unset($row['committee_id']);
+    unset($row['seat_id']);
+    
     fputcsv($out, $row);
 }
 fclose($out);

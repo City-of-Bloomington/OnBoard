@@ -321,8 +321,8 @@ class Committee extends ActiveRecord
 	 */
 	public static function getMembershipData()
 	{
-        $sql = "select c.name as committee,
-                    s.name as seat,
+        $sql = "select c.name as committee, c.id as committee_id,
+                    s.name as seat,         s.id as seat_id,
                     a.name as appointer,
                     p.firstname, p.lastname,
                     t.startDate as termStart,        t.endDate as termEnd,
@@ -352,8 +352,8 @@ class Committee extends ActiveRecord
 	 */
 	public static function getVacancyData()
 	{
-        $sql = "select  c.name as committee,
-                        s.name as seat,
+        $sql = "select  c.name as committee, c.id as committee_id,
+                        s.name as seat,      s.id as seat_id,
                         a.name as appointer,
                         p.firstname, p.lastname,
                         t.startDate as termStart, t.endDate as termEnd,

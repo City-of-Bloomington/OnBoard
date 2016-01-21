@@ -31,8 +31,11 @@
                     $$f = self::escape($row[$f]);
                 }
                 echo "
-                <tr><td>$committee</td>
-                    <td>$seat</td>
+                <tr><td><a href=\"".BASE_URI."/committees/members?committee_id=$committee_id\">
+                            $committee
+                        </a>
+                    </td>
+                    <td><a href=\"".BASE_URI."/seats/view?seat_id=$seat_id\">$seat</a></td>
                     <td>$appointer</td>
                     <td>$firstname $lastname</td>
                     <td>$termStart $termEnd</td>
