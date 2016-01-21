@@ -14,7 +14,9 @@ class Seat extends ActiveRecord
 {
     public static $types = ['termed', 'open'];
     public static $termIntervals = [
-        'P2Y' => '2 years'
+        'P2Y' => '2 years',
+        'P3Y' => '3 years',
+        'P4Y' => '4 years'
     ];
 
 	protected $tablename = 'seats';
