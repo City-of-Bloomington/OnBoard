@@ -12,7 +12,7 @@ if (isset($_SESSION['USER'])) {
             $name
         </button>
         <div    class=\"fn1-dropdown-links\">
-            <a href=\"".BASE_URI."/login/logout\">{$this->_('logout')}</a>
+            <a href=\"".BASE_URI."/login/logout\" class=\"fn1-dropdown-link\">{$this->_('logout')}</a>
         </div>
     </nav>
     ";
