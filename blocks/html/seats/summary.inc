@@ -12,8 +12,8 @@ $markdown       = new MarkdownExtra();
 $requirements   = $markdown->transform($requirements);
 
 ?>
-<div>
-    <h2><?= $this->_('about_seat'); ?></h2>
+<section>
+    <h1><?= self::escape($this->seat->getName()); ?></h1>
     <dl class="fn1-output-field">
         <dt><?= $this->_('appointed_by') ?></dt>
         <dd><?= $this->seat->getAppointer(); ?></dd>
@@ -23,4 +23,4 @@ $requirements   = $markdown->transform($requirements);
         <dt><?= $this->_(['requirement', 'requirements', 2]) ?></dt>
         <dd><?= $requirements; ?></dd>
     </dl>
-</div>
+</section>
