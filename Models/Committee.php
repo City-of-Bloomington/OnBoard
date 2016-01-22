@@ -273,7 +273,7 @@ class Committee extends ActiveRecord
 	 *
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getPeople()
+	public function getMemberPeople()
 	{
 		$people = new PeopleTable();
 		return $people->find(['committee_id'=>$this->getId()]);
@@ -282,7 +282,7 @@ class Committee extends ActiveRecord
 	/**
 	 * @return array An array of Person objects
 	 */
-	public function getLiasons()
+	public function getLiasonPeople()
 	{
         $sql = 'select p.*
                 from committee_liasons l

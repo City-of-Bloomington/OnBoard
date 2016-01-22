@@ -6,7 +6,7 @@
  */
 use Application\Models\Person;
 
-$liasons = $this->committee->getLiasons();
+$liasons = $this->committee->getLiasonPeople();
 
 $addButton = '';
 if (Person::isAllowed('liasons', 'add')) {

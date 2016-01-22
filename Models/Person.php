@@ -278,10 +278,29 @@ class Person extends ActiveRecord
 	/**
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getCommittees()
+	public function getMemberCommittees()
 	{
 		$table = new CommitteeTable();
 		return $table->find(['person_id'=>$this->getId()]);
+	}
+
+	/**
+	 * @return array An array of Committee objects
+	 */
+	public function getLiasonCommittees()
+	{
+        $sql = 'select distinct c.*
+                from committee_liasons l
+                join committees c on l.committee_id=c.id
+                where l.person_id=?';
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql, [$this->getId()]);
+
+        $committees = [];
+        foreach ($result->toArray() as $row) {
+            $committees[] = new Committee($row);
+        }
+        return $committees;
 	}
 
 	/**
@@ -315,7 +334,7 @@ class Person extends ActiveRecord
 		$peers = array();
 
 		$committees = array();
-		foreach ($this->getCommittees() as $committee) {
+		foreach ($this->getMemberCommittees() as $committee) {
 			$committees[] = $committee->getId();
 		}
 		if (count($committees)) {

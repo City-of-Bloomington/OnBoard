@@ -11,7 +11,7 @@ use Blossom\Classes\View;
 	<h2><?php echo $this->_('past_members'); ?></h2>
 	<table>
 		<?php
-			foreach ($this->committee->getPeople() as $person) {
+			foreach ($this->committee->getMemberPeople() as $person) {
 				$fullname = View::escape($person->getFullname());
 				$earliestStart = time();
 				$latestEnd = null;
