@@ -85,41 +85,9 @@ class Member extends ActiveRecord
 
 		// Make sure this person is not serving overlapping terms for the same committee
 		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
-		$sql = "select id from members
-                where committee_id=? and person_id=?
-                and ((startDate is null) or (? is null)       or (startDate <= ?) )
-                and ((? is null)         or (endDate is null) or (? <= endDate)   )";
-        $params = [
-            $this->getCommittee_id(), $this->getPerson_id(),
-            $this->getEndDate(),      $this->getEndDate(),
-            $this->getStartDate(),    $this->getStartDate()
-        ];
-        if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
-
-		$zend_db = Database::getConnection();
-		$result = $zend_db->createStatement($sql)->execute($params);
-		if (count($result) > 0) {
-            echo "Member is overlapping with themselves\n";
-			throw new \Exception('members/overlappingTerms');
-		}
-
-		// Make sure this service does not overlap with another member for the same term
-		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
-		if ($this->getSeat_id()) {
-            $sql = "select id from members where seat_id=?
-                    and ((startDate is null) or (? is null)       or (startDate <= ?) )
-                    and ((? is null)         or (endDate is null) or (? <= endDate)   )";
-            $params = [
-                $this->getSeat_id(),
-                $this->getEndDate(),      $this->getEndDate(),
-                $this->getStartDate(),    $this->getStartDate()
-            ];
-
-            $result = $zend_db->createStatement($sql)->execute($params);
-            if (count($result) > 0) {
-                echo "Overlaps other members for the same term\n";
-                throw new \Exception('members/overlappingTerms');
-            }
+		$overlap = $this->overlapsExistingMember();
+		if ($overlap) {
+            throw new \Exception('members/overlapping');
 		}
 	}
 
@@ -143,14 +111,24 @@ class Member extends ActiveRecord
 
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setSeat_id     ($i) { parent::setForeignKeyField (__namespace__.'\Seat',      'seat_id',      $i); }
-	public function setTerm_id     ($i) { parent::setForeignKeyField (__namespace__.'\Term',      'term_id',      $i); }
 	public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setSeat        ($o) { parent::setForeignKeyObject(__namespace__.'\Seat',      'seat_id',      $o); }
-	public function setTerm        ($o) { parent::setForeignKeyObject(__namespace__.'\Term',      'term_id',      $o); }
 	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
 	public function setStartDate($d) { parent::setDateData('startDate', $d); }
 	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
+
+	public function setTerm_id($i)
+	{
+        parent::setForeignKeyField (__namespace__.'\Term', 'term_id', $i);
+        $this->populateDates($this->getTerm());
+    }
+	public function setTerm($o)
+	{
+        parent::setForeignKeyObject(__namespace__.'\Term', 'term_id', $o);
+        $this->populateDates($o);
+    }
+
 
 	public function handleUpdate($post)
 	{
@@ -166,4 +144,56 @@ class Member extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	/**
+	 * Make sure this member is not overlapping any existing members
+	 *
+	 * @see http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
+	 * @return array An array of member IDs that overlap this member
+	 */
+	private function overlapsExistingMember()
+	{
+		$zend_db = Database::getConnection();
+
+		$sql = "select id from members
+                where committee_id=? and person_id=?
+                and ((startDate is null) or (? is null)       or (startDate <= ?) )
+                and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+        $params = [
+            $this->getCommittee_id(), $this->getPerson_id(),
+            $this->getEndDate(),      $this->getEndDate(),
+            $this->getStartDate(),    $this->getStartDate()
+        ];
+        if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
+
+        $result = $zend_db->query($sql, $params);
+		if (count($result)) { return $result->toArray(); }
+
+		// Make sure this service does not overlap with another member for the same seat
+		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
+		if ($this->getSeat_id()) {
+            $sql = "select id from members where seat_id=?
+                    and ((startDate is null) or (? is null)       or (startDate <= ?) )
+                    and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+            $params = [
+                $this->getSeat_id(),
+                $this->getEndDate(),      $this->getEndDate(),
+                $this->getStartDate(),    $this->getStartDate()
+            ];
+
+            $result = $zend_db->query($sql, $params);
+            if (count($result)) { return $result->toArray(); }
+		}
+	}
+
+    private function populateDates($term)
+    {
+        $members = $term->getMembers();
+        if (!count($members)) {
+            if ($term->getEndDate('U') < time()) {
+                $this->setStartDate($term->getStartDate());
+                $this->setEndDate  ($term->getEndDate());
+            }
+            else { $this->setStartDate(date(DATE_FORMAT)); }
+        }
+    }
 }
