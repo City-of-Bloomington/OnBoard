@@ -29,6 +29,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
     <table class="fn1-table">
         <thead>
             <tr><th></th>
+                <th><?= $this->_(['seat', 'seats', 2]); ?></th>
                 <th><?= $this->_(['vacancy', 'vacancies', 2]); ?></th>
             </tr>
         </thead>
@@ -38,11 +39,15 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
                 $name = self::escape($c->getName());
                 $url = BASE_URI.'/committees/members?committee_id='.$c->getId();
 
+                $seatCount = count($c->getSeats());
+                if ($seatCount === 0) { $seatCount = ''; }
+
                 $vacancies = $c->getVacancyCount();
                 if ($vacancies === 0) { $vacancies = ''; }
 
                 echo "
                 <tr><td><a href=\"$url\">$name</a></td>
+                    <td>$seatCount</td>
                     <td>$vacancies</td>
                 </tr>
                 ";
