@@ -84,46 +84,40 @@ class Member extends ActiveRecord
 		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
 
 		// Make sure this person is not serving overlapping terms for the same committee
-		$sql = "select id from members where committee_id=? and person_id=?";
-        $params = [$this->getCommittee_id(), $this->getPerson_id()];
-
-        $S = $this->getStartDate('Y-m-d');
-        if ($this->getEndDate()) {
-            $E = $this->getEndDate('Y-m-d');
-
-            $sql.= " and (
-                (endDate is null and startDate < '$S')
-                or
-                (endDate is not null and
-                    (startDate < '$S' and '$S' < endDate)
-                    or
-                    (startDate < '$E' and '$E' < endDate)
-                )
-            )";
-        }
-        else {
-            $sql.= " and (
-                (endDate is null and startDate < '$S')
-                or
-                (endDate is not null and (startDate < '$S' and '$S' < endDate))
-            )";
-
-        }
-		if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
+		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
+		$sql = "select id from members
+                where committee_id=? and person_id=?
+                and ((startDate is null) or (? is null)       or (startDate <= ?) )
+                and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+        $params = [
+            $this->getCommittee_id(), $this->getPerson_id(),
+            $this->getEndDate(),      $this->getEndDate(),
+            $this->getStartDate(),    $this->getStartDate()
+        ];
+        if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
 
 		$zend_db = Database::getConnection();
 		$result = $zend_db->createStatement($sql)->execute($params);
 		if (count($result) > 0) {
+            echo "Member is overlapping with themselves\n";
 			throw new \Exception('members/overlappingTerms');
 		}
 
 		// Make sure this service does not overlap with another member for the same term
-		if ($this->getTerm_id()) {
-            $sql = "select id from members where term_id=? and (?<endDate and ?>startDate)";
-            $resut = $zend_db->createStatement($sql)->execute([
-                $this->getTerm_id(), $this->getStartDate(), $this->getEndDate()
-            ]);
+		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
+		if ($this->getSeat_id()) {
+            $sql = "select id from members where seat_id=?
+                    and ((startDate is null) or (? is null)       or (startDate <= ?) )
+                    and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+            $params = [
+                $this->getSeat_id(),
+                $this->getEndDate(),      $this->getEndDate(),
+                $this->getStartDate(),    $this->getStartDate()
+            ];
+
+            $result = $zend_db->createStatement($sql)->execute($params);
             if (count($result) > 0) {
+                echo "Overlaps other members for the same term\n";
                 throw new \Exception('members/overlappingTerms');
             }
 		}
