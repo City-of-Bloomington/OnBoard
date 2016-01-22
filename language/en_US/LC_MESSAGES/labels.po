@@ -418,6 +418,17 @@ msgid_plural "recent_members"
 msgstr[0] "Recent Member"
 msgstr[1] "Recent Members"
 
+msgid "liason"
+msgid_plural "liasons"
+msgstr[0] "Liason"
+msgstr[1] "Liasons"
+
+msgid "liason_add"
+msgstr "Add Liason"
+
+msgid "liason_remove"
+msgstr "Remove Liason"
+
 msgid "office"
 msgid_plural "offices"
 msgstr[0] "Office"

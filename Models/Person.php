@@ -30,7 +30,7 @@ class Person extends ActiveRecord
 	public function __construct($id=null)
 	{
 		if ($id) {
-			if (is_array($id)) {
+			if (is_array($id) || $id instanceof ArrayObject) {
 				$this->exchangeArray($id);
 			}
 			else {
@@ -103,6 +103,7 @@ class Person extends ActiveRecord
 	public function getLastname()  { return parent::get('lastname');  }
 	public function getAbout()     { return parent::get('about');     }
 	public function getEmail()     { return parent::get('email');     }
+	public function getPhone()     { return parent::get('phone');     }
 	public function getGender()    { return parent::get('gender');    }
 	public function getRace_id()   { return parent::get('race_id');   }
 	public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
@@ -111,6 +112,7 @@ class Person extends ActiveRecord
 	public function setLastname ($s) { parent::set('lastname',  $s); }
 	public function setAbout    ($s) { parent::set('about',     $s); }
 	public function setEmail    ($s) { parent::set('email',     $s); }
+	public function setPhone    ($s) { parent::set('phone',     $s); }
 	public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
 	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
 	public function setGender   ($s)
@@ -141,7 +143,9 @@ class Person extends ActiveRecord
 	 */
 	public function handleUpdate($post)
 	{
-		$fields = ['firstname', 'middlename', 'lastname', 'email', 'about', 'gender', 'race_id'];
+		$fields = [
+            'firstname', 'middlename', 'lastname', 'email', 'phone', 'about', 'gender', 'race_id'
+        ];
 		foreach ($fields as $field) {
 			if (isset($post[$field])) {
 				$set = 'set'.ucfirst($field);

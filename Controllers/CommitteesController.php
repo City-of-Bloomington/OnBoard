@@ -46,7 +46,8 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
-        $this->template->blocks[] = new Block('committees/info.inc',        ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/info.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('liasons/list.inc',    ['committee' => $committee]);
     }
 
     public function members()
@@ -114,7 +115,7 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('committees/header.inc');
         }
-        
+
         $data = Committee::getVacancyData();
         $this->template->blocks[] = new Block('committees/vacancies.inc', ['data'=>$data]);
     }

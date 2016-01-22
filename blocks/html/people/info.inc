@@ -42,10 +42,11 @@ echo "
         <p>$about</p>
 ";
         $fields = [
-            'email'   => $this->_(['email', 'emails', 1]),
+            'email'   => $this->_('email'),
+            'phone'   => $this->_('phone'),
             'username'=> $this->_('username'),
             'gender'  => $this->_('gender'),
-            'race'    => $this->_(['race', 'races', 1]),
+            'race'    => $this->_('race'),
         ];
         foreach ($fields as $key=>$label) {
             $get = 'get'.ucfirst($key);

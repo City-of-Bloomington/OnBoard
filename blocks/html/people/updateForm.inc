@@ -7,7 +7,7 @@
  */
 use Application\Models\RaceTable;
 
-$fields = ['firstname','lastname','email', 'about', 'gender', 'race_id'];
+$fields = ['firstname','lastname','email', 'phone', 'about', 'gender', 'race_id'];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
 	$$f  = self::escape($this->person->$get());
@@ -16,10 +16,10 @@ foreach ($fields as $f) {
 $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstname()) : $this->_('add_person');
 ?>
 <section class="updatePersonForm">
-	<h1><?php echo $title; ?></h1>
-	<form method="post" action="<?php echo BASE_URI; ?>/people/update">
-		<fieldset><legend><?php echo $this->_('info_person'); ?></legend>
-			<input name="person_id" type="hidden" value="<?php echo $this->person->getId(); ?>" />
+	<h1><?= $title; ?></h1>
+	<form method="post" action="<?= BASE_URI; ?>/people/update">
+		<fieldset><legend><?= $this->_('info_person'); ?></legend>
+			<input name="person_id" type="hidden" value="<?= $this->person->getId(); ?>" />
 			<?php
 				// Preserve any extra parameters passed in
 				foreach ($_REQUEST as $key=>$value) {
@@ -31,29 +31,34 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
 				}
 			?>
             <dl class="fn1-input-field">
-                <dt><label for="firstname" class="required"><?php echo $this->_('firstname'); ?></label></dt>
-                <dd><input name="firstname" id="firstname" value="<?php echo $firstname; ?>" /></dd>
+                <dt><label  for="firstname" class="required"><?= $this->_('firstname'); ?></label></dt>
+                <dd><input name="firstname" id="firstname" value="<?= $firstname; ?>" /></dd>
             </dl>
 
             <dl class="fn1-input-field">
-                <dt><label for="lastname" class="required"><?php echo $this->_('lastname'); ?></label></dt>
-                <dd><input name="lastname" id="lastname" value="<?php echo $lastname; ?>" /></dd>
+                <dt><label  for="lastname" class="required"><?= $this->_('lastname'); ?></label></dt>
+                <dd><input name="lastname" id="lastname" value="<?= $lastname; ?>" /></dd>
             </dl>
 
             <dl class="fn1-input-field">
-                <dt><label for="email"><?php echo $this->_(['email','emails',1]); ?></label></dt>
-                <dd><input name="email" id="email" value="<?php echo $email; ?>" /></dd>
+                <dt><label  for="email"><?= $this->_('email'); ?></label></dt>
+                <dd><input name="email" id="email" value="<?= $email; ?>" /></dd>
             </dl>
 
             <dl class="fn1-input-field">
-                <dt><label><?php echo $this->_('gender'); ?></label></dt>
+                <dt><label  for="phone"><?= $this->_('phone'); ?></label></dt>
+                <dd><input name="phone" id="phone" type="tel" value="<?= $phone; ?>" /></dd>
+            </dl>
+
+            <dl class="fn1-input-field">
+                <dt><label><?= $this->_('gender'); ?></label></dt>
                 <dd><label><input name="gender" type="radio" value="male"   <?php if ($gender=='male'  ) echo 'checked="checked"'; ?> /> M</label>
                     <label><input name="gender" type="radio" value="female" <?php if ($gender=='female') echo 'checked="checked"'; ?> /> F</label>
                 </dd>
             </dl>
 
             <dl class="fn1-input-field">
-                <dt><label for="race_id"><?php echo $this->_(['race', 'races', 1]); ?></label></dt>
+                <dt><label   for="race_id"><?= $this->_('race'); ?></label></dt>
                 <dd><select name="race_id" id="race_id">
                         <option></option>
                         <?php
@@ -70,7 +75,7 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
         </fieldset>
 
         <fieldset><legend><?= $this->_('about'); ?></legend>
-            <textarea name="about" id="about" rows="3" cols="60"><?php echo $about; ?></textarea>
+            <textarea name="about" id="about" rows="3" cols="60"><?= $about; ?></textarea>
         </fieldset>
 
         <fieldset>

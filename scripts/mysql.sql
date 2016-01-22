@@ -17,6 +17,7 @@ create table people (
 	firstname varchar(128) not null,
 	lastname varchar(128) not null,
 	email varchar(128) unique,
+	phone varchar(32),
 	about text,
 	gender enum('male','female'),
 	race_id int unsigned,
@@ -90,6 +91,14 @@ create table members (
 	foreign key (seat_id)      references seats     (id),
 	foreign key (term_id)      references terms     (id),
 	foreign key (person_id)    references people    (id)
+);
+
+create table committee_liasons (
+    committee_id int unsigned not null,
+    person_id    int unsigned not null,
+    primary key (committee_id, person_id),
+    foreign key (committee_id) references committees(id),
+    foreign key (person_id)    references people(id)
 );
 --
 -- End 2.0 changes

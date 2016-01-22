@@ -31,13 +31,6 @@ use Blossom\Classes\Url;
         </div>
     </header>
 	<table class="fn1-table">
-		<thead>
-			<tr><th></th>
-				<th><?= $this->_('username'); ?></th>
-				<th><?= $this->_('name'); ?></th>
-				<th><?= $this->_(['email','emails',1]); ?></th>
-			</tr>
-		</thead>
 		<tbody>
 		<?php
 			foreach ($this->people as $person) {
@@ -55,7 +48,6 @@ use Blossom\Classes\Url;
 					$url = "$_REQUEST[return_url];person_id={$person->getId()}";
 				}
 				elseif (isset($_REQUEST['callback'])) {
-					$this->template->addToAsset('scripts', JQUERY.'/jquery.min.js');
 					$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
 
 					$callback = preg_replace('/[^a-zA-Z_\.]/', '', $_REQUEST['callback']);
@@ -65,12 +57,14 @@ use Blossom\Classes\Url;
 					$url = $person->getUrl();
 				}
 
-				$name = self::escape($person->getFullname());
+				$name  = self::escape($person->getFullname());
+				$email = self::escape($person->getEmail());
+				$phone = self::escape($person->getPhone());
 				echo "
 				<tr><td>$editButton</td>
-					<td>{$person->getUsername()}</td>
 					<td><a href=\"$url\">$name</a></td>
-					<td>{$person->getEmail()}</td>
+					<td>$email</td>
+					<td>$phone</td>
 				</tr>
 				";
 			}
