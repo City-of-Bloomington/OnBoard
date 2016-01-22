@@ -104,20 +104,11 @@ class MembersController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        $this->template->setFilename('two-column');
         $form = new Block('members/appointForm.inc', ['newMember' => $newMember]);
 
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $newMember->getCommittee()]);
-        if (isset($seat)) {
-            $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
-        }
         if (isset($currentMember)) {
             $form->currentMember = $currentMember;
-            $this->template->blocks[] = new Block('members/list.inc', [
-                'members' => [$currentMember],
-                'title'   => $this->template->_('previous_member'),
-                'disableButtons' => true
-            ]);
         }
         $this->template->blocks[] = $form;
     }

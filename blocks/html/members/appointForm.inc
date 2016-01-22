@@ -9,18 +9,47 @@ use Application\Models\AppointerTable;
 use Application\Models\Seat;
 use Blossom\Classes\Block;
 ?>
-<section   class="fn1-uiBlock">
-    <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
-        <fieldset>
-            <?php
-                if ($this->currentMember) {
-                    $this->_include('html/members/partials/memberEndFieldset.inc');
-                }
-            ?>
+<form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
+    <?php if ($this->currentMember): ?>
+        <?php $appointeeName = $this->currentMember->getPerson()->getFirstname().' '.$this->currentMember->getPerson()->getLastname(); ?>
+        <section   class="fn1-uiBlock">
+            <header class="fn1-uiBlock-header">
+                <h1 class="fn1-uiBlock-title"><?= $this->_('retirePrevious'); ?></h1>
+            </header>
+            <div class="fn1-uiBlock-content">
+                <p><?= sprintf($this->_('endServiceHelpText', 'messages'), $appointeeName, $appointeeName); ?></p>
+                <?= $this->_include('html/members/partials/memberEndFieldset.inc'); ?>
+            </div>
+        </section>
+    <?php endif ?>
+
+    <section   class="fn1-uiBlock">
+        <header class="fn1-uiBlock-header">
+            <h1 class="fn1-uiBlock-title"><?= sprintf($this->_('appointToSeat', 'messages'), $this->newMember->getCommittee()->getName()); ?></h1>
+        </header>
+        <?php
+            $seat = $this->newMember->getSeat();
+            if ($seat) {
+                $summaryBlock = new Block('seats/summary.inc', ['seat' => $seat]);
+                echo '<aside class="onboard-contextInfo">';
+                echo $summaryBlock->render('html', $this->template);
+                echo '</aside>';
+            }
+        ?>
+        <div class="fn1-uiBlock-content">
+
             <input name="newMember[committee_id]" type="hidden" value="<?= $this->newMember->getCommittee_id(); ?>" />
             <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
-            <h2><?= $this->_('member_add') ?></h2>
+            <?php
+                if ($seat) {
+                    if ($seat->getType() === 'termed') {
+                        $block = new Block('terms/recentHolders.inc', ['seat'=>$seat]);
+                        echo $block->render('html', $this->template);
+                    }
+                }
+            ?>
+            <h2><?= $this->_('new_member') ?></h2>
             <dl class="fn1-input-field--select"><dt><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
                 <dd><?php
                         $person = $this->newMember->getPerson();
@@ -30,12 +59,8 @@ use Blossom\Classes\Block;
                 </dd>
             </dl>
             <?php
-                $seat = $this->newMember->getSeat();
                 if ($seat) {
                     if ($seat->getType() === 'termed') {
-                        $block = new Block('terms/recentHolders.inc', ['seat'=>$seat]);
-                        echo $block->render('html', $this->template);
-
                         $block = new Block('members/partials/termPicker.inc', ['seat'=>$seat]);
                         echo $block->render('html', $this->template);
                     }
@@ -61,6 +86,5 @@ use Blossom\Classes\Block;
                     );
                 ?>
             </div>
-        </fieldset>
-    </form>
-</section>
+        </section>
+</form>

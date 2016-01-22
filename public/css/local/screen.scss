@@ -65,10 +65,14 @@
                 margin-left: 0;
             }
         }
-        &+ .onboard-content {
+        &+ .onboard-content, &+.fn1-uiBlock-content {
             float: left;
             width: 64%;
         }
+    }
+    &-termDates {
+        color: #777;
+        font-size: .9em;
     }
 }
 
@@ -103,6 +107,9 @@ table > tbody > tr {
     }
     &.vacant {
     }
+}
+p {
+    max-width: 40em;
 }
 
 

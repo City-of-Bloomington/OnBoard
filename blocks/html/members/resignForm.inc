@@ -14,14 +14,15 @@
             <?php
                 include __DIR__.'/partials/memberEndFieldset.inc';
             ?>
-            <div class="fn1-btn-container">
+
+            <fieldset>
             <?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');
 				echo $helper->saveAndCancelButtons(
                     BASE_URI.'/committees/members?committee_id='.$this->currentMember->getCommittee_id()
 				);
             ?>
-            </div>
+            </fieldset>
         </form>
     </div>
 </section>

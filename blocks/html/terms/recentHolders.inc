@@ -26,22 +26,25 @@ if ($currentTerm) {
         $list[] = $previousTerm;
     }
 
-    echo '<section>';
+    echo '<div>';
+    echo "<h2>{$this->_(['recent_member', 'recent_members', count($list)])}</h2>";
     foreach ($list as $term) {
-        $members = [];
-        foreach ($term->getMembers() as $m) {
-            $members[] = $m->getPerson()->getFullname();
-        }
-        $members = implode(', ', $members);
+        if (count($term->getMembers()) > 0 ) {
+            $members = [];
+            foreach ($term->getMembers() as $m) {
+                $members[] = $m->getPerson()->getFullname();
+            }
+            $members = implode(', ', $members);
 
-        echo "
-        <div>
-            <span class=\"onboard-dates\">
-                {$term->getStartDate(DATE_FORMAT)}-{$term->getEndDate(DATE_FORMAT)}
-            </span>
-            $members
-        </div>
-        ";
+            echo "
+                <div>
+                    $members
+                    <span class=\"onboard-termDates\">
+                        {$term->getStartDate(DATE_FORMAT)}-{$term->getEndDate(DATE_FORMAT)}
+                    </span>
+                </div>
+            ";
+        }
     }
-    echo '</section>';
+    echo '</div>';
 }

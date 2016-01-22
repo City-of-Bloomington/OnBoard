@@ -415,8 +415,13 @@ msgstr[1] "Previous Members"
 
 msgid "recent_member"
 msgid_plural "recent_members"
-msgstr[0] "Recent Member"
-msgstr[1] "Recent Members"
+msgstr[0] "Recent Appointee"
+msgstr[1] "Recent Appointees"
+
+msgid "new_member"
+msgid_plural "new_members"
+msgstr[0] "New Appointee"
+msgstr[1] "New Appointees"
 
 msgid "liason"
 msgid_plural "liasons"
@@ -495,3 +500,6 @@ msgstr "Title"
 
 msgid "actions"
 msgstr "Actions"
+
+msgid "retirePrevious"
+msgstr "Retire Previous Appointee"
