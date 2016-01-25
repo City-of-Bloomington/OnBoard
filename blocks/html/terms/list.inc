@@ -36,6 +36,8 @@ $helper = $this->template->getHelper('buttonLink');
             $memberList->committee = $this->seat->getCommittee();
         }
 
+        echo '<table class="onboard-termsTable"><tbody>';
+
         foreach ($terms as $term) {
             $term_id = $term->getId();
 
@@ -48,38 +50,41 @@ $helper = $this->template->getHelper('buttonLink');
                         BASE_URI."/members/update?term_id=$term_id",
                         $this->_('member_add'),
                         'add'
-                    );
-                }
+                    );                }
                 if (Person::isAllowed('terms', 'edit')) {
-                    $editButton = $helper->buttonLink(
-                        BASE_URI."/terms/update?term_id=$term_id",
-                        $this->_('term_edit'),
-                        'edit'
-                    );
+                    $editButton = '<a href="'.BASE_URI.'/terms/update?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_edit').'</a>';
                 }
                 if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
-                    $deleteButton = $helper->buttonLink(
-                        BASE_URI."/terms/delete?term_id=$term_id",
-                        $this->_('term_delete'),
-                        'delete'
-                    );
+                    $deleteButton = '<a href="'.BASE_URI.'/terms/delete?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_delete').'</a>';
                 }
             }
 
             $uri = BASE_URI."/terms/view?term_id=$term_id";
             $memberList->members = $term->getMembers();
             echo "
-            <article>
-                <h1>$editButton
-                    {$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
-                    $deleteButton
-                </h1>
-                {$memberList->render('html', $this->template)}
-                $addButton
-            </article>
+                <tr>
+                    <th>
+                        {$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
+                        <div class=\"fn1-dropdown\">
+                            <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                                {$this->_('more')}
+                            </button>
+                            <div    class=\"fn1-dropdown-links\">
+								<div class=\"fn1-dropdown-subgroup\">
+									$editButton
+								</div>
+								<div class=\"fn1-dropdown-subgroup\">
+									$deleteButton
+								</div>
+                            </div>
+                        </div>
+                    </th>
+                    <td>{$memberList->render('html', $this->template)} $addButton</td>
+                </tr>
+
             ";
         }
-
+        echo '</tbody></table>';
         if (!$this->disableButtons) {
             if (isset($term) && Person::isAllowed('terms', 'generate')) {
                 echo $helper->buttonLink(

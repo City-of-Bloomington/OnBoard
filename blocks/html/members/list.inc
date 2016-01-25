@@ -23,18 +23,10 @@ use Application\Templates\Helpers\ButtonLink;
                 $deleteButton = '';
                 if (!$this->disableButtons) {
                     if (Person::isAllowed('members', 'edit')) {
-                        $editButton = $helper->buttonLink(
-                            BASE_URI."/members/update?member_id={$member->getId()}",
-                            $this->_('member_edit'),
-                            'edit'
-                        );
+                        $editButton = '<a href="'.BASE_URI.'/members/update?member_id='.$member->getId().'" class="fn1-dropdown-link">'.$this->_('member_edit').'</a>';
                     }
                     if (Person::isAllowed('members', 'delete')) {
-                        $deleteButton = $helper->buttonLink(
-                            BASE_URI.'/members/delete?member_id='.$member->getId(),
-                            $this->_('member_delete'),
-                            'delete'
-                        );
+                        $deleteButton = '<a href="'.BASE_URI.'/members/delete?member_id='.$member->getId().'" class="fn1-dropdown-link">'.$this->_('member_delete').'</a>';
                     }
                 }
 
@@ -45,6 +37,7 @@ use Application\Templates\Helpers\ButtonLink;
                         $this->_('office_add'),
                         'add'
                     );
+                    $addOfficeButton = '<a href="'.BASE_URI.'/offices/update?committee_id='.$member->getCommittee_id().';person_id='.$member->getPerson_id().'." class="fn1-dropdown-link">'.$this->_('office_add').'</a>';
                 }
 
                 $offices = [];
@@ -60,16 +53,32 @@ use Application\Templates\Helpers\ButtonLink;
                     $offices[] = self::escape($office->getTitle()).$editOfficeButton;
                 }
                 $offices = implode(',',$offices);
+                if (count($offices > 0)) {
+                    $offices = " <span class=\"onboard-offices\">$offices</span>";
+                }
 
                 $name = self::escape($member->getPerson()->getFullname());
 
                 echo "
-                <tr><td>$editButton</td>
-                    <td>$name</td>
+                <tr><td></td>
+                    <td>$name{$offices}</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
-                    <td>$offices</td>
-                    <td>$addOfficeButton</td>
-                    <td>$deleteButton</td>
+                    <td>
+                        <div class=\"fn1-dropdown fn1-table-actions\">
+                            <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                                {$this->_('more')}
+                            </button>
+                            <div    class=\"fn1-dropdown-links\">
+                                <div class=\"fn1-dropdown-subgroup\">
+                                    $addOfficeButton
+                                    $editButton
+                                </div>
+                                <div class=\"fn1-dropdown-subgroup\">
+                                    $deleteButton
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 ";
             }

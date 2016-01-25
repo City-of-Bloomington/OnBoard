@@ -389,7 +389,7 @@ msgstr[0] "Member"
 msgstr[1] "Members"
 
 msgid "member_add"
-msgstr "Appoint"
+msgstr "Add Appointee"
 
 msgid "member_edit"
 msgstr "Edit Membership"

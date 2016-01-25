@@ -74,6 +74,25 @@
         color: #777;
         font-size: .9em;
     }
+    &-termsTable {
+        border-collapse: collapse;
+        th, td {
+            border: 1px solid #666;
+            padding: .5em;
+        }
+        > tbody {
+            > tr {
+                > th {
+                    background-color: #909090;
+                    color: #fff;
+                    vertical-align: top;
+                }
+                > td {
+                    background-color: #e0e0e0;
+                }
+            }
+        }
+    }
 }
 
 
