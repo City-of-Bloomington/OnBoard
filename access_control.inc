@@ -24,6 +24,7 @@ $ZEND_ACL->addRole(new Role('Anonymous'))
 $ZEND_ACL->addResource(new Resource('index'));
 $ZEND_ACL->addResource(new Resource('callback'));
 $ZEND_ACL->addResource(new Resource('login'));
+$ZEND_ACL->addResource(new Resource('departments'));
 $ZEND_ACL->addResource(new Resource('people'));
 $ZEND_ACL->addResource(new Resource('users'));
 

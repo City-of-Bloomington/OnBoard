@@ -503,3 +503,14 @@ msgstr "Actions"
 
 msgid "retirePrevious"
 msgstr "Retire Previous Appointee"
+
+msgid "department"
+msgid_plural "departments"
+msgstr[0] "Department"
+msgstr[1] "Departments"
+
+msgid "department_add"
+msgstr "New Department"
+
+msgid "department_edit"
+msgstr "Edit Department"
