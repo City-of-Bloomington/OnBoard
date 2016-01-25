@@ -41,18 +41,20 @@ use Application\Templates\Helpers\ButtonLink;
                 }
 
                 $offices = [];
+                $editOfficeLinks = '';
                 foreach ($member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d')) as $office) {
-                    $editOfficeButton = '';
                     if (Person::isAllowed('offices','edit')) {
                         $editOfficeButton = $helper->buttonLink(
                             BASE_URI.'/offices/update?office_id='.$office->getId(),
                             $this->_('office_edit'),
                             'edit'
                         );
+                        $editOfficeLinks .= ' <a href="'.BASE_URI.'/offices/update?office_id='.$office->getId().'" class="fn1-dropdown-link">';
+                        $editOfficeLinks .= 'Edit '.self::escape($office->getTitle()).' Office</a>';
                     }
-                    $offices[] = self::escape($office->getTitle()).$editOfficeButton;
+                    $offices[] = self::escape($office->getTitle());
                 }
-                $offices = implode(',',$offices);
+                $offices = implode(', ',$offices);
                 if (count($offices > 0)) {
                     $offices = " <span class=\"onboard-offices\">$offices</span>";
                 }
@@ -60,7 +62,7 @@ use Application\Templates\Helpers\ButtonLink;
                 $name = self::escape($member->getPerson()->getFullname());
 
                 echo "
-                <tr><td></td>
+                <tr>
                     <td>$name{$offices}</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
                     <td>
@@ -70,7 +72,9 @@ use Application\Templates\Helpers\ButtonLink;
                             </button>
                             <div    class=\"fn1-dropdown-links\">
                                 <div class=\"fn1-dropdown-subgroup\">
-                                    $addOfficeButton
+                                    $addOfficeButton $editOfficeLinks
+                                </div>
+                                <div class=\"fn1-dropdown-subgroup\">
                                     $editButton
                                 </div>
                                 <div class=\"fn1-dropdown-subgroup\">
