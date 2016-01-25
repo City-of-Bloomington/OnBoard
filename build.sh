@@ -13,7 +13,7 @@ cd $DIR/language
 cd $DIR
 
 # Compile the SASS
-cd $DIR/public/css
+cd $DIR/public/css/local
 ./build_css.sh
 cd $DIR
 
