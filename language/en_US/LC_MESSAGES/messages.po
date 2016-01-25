@@ -31,3 +31,6 @@ msgstr "Add an appointee to %s"
 
 msgid "endServiceHelpText"
 msgstr "%s is still assigned to this seat. Before you report a new appointee, <strong>please report the end service date</strong> for %s."
+
+msgid "office_edit"
+msgstr "Edit %s Office"

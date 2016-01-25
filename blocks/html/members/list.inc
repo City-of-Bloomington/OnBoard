@@ -17,42 +17,40 @@ use Application\Templates\Helpers\ButtonLink;
         <tbody>
         <?php
             $helper = $this->template->getHelper('buttonLink');
+            $actionLink = $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
 
             foreach ($this->members as $member) {
+                $member_id = $member->getId();
+
                 $editButton   = '';
                 $deleteButton = '';
                 if (!$this->disableButtons) {
                     if (Person::isAllowed('members', 'edit')) {
-                        $editButton = '<a href="'.BASE_URI.'/members/update?member_id='.$member->getId().'" class="fn1-dropdown-link">'.$this->_('member_edit').'</a>';
+                        $uri = BASE_URI."/members/update?member_id=$member_id";
+                        $editButton = sprintf($actionLink, $uri, $this->_('member_edit'));
                     }
                     if (Person::isAllowed('members', 'delete')) {
-                        $deleteButton = '<a href="'.BASE_URI.'/members/delete?member_id='.$member->getId().'" class="fn1-dropdown-link">'.$this->_('member_delete').'</a>';
+                        $uri = BASE_URI."/members/delete?member_id=$member_id";
+                        $deleteButton = sprintf($actionLink, $uri, $this->_('member_delete'));
                     }
                 }
 
                 $addOfficeButton  = '';
                 if (!$this->disableButtons && Person::isAllowed('offices', 'edit')) {
-                    $addOfficeButton = $helper->buttonLink(
-                        BASE_URI."/offices/update?committee_id={$member->getCommittee_id()};person_id={$member->getPerson_id()}",
-                        $this->_('office_add'),
-                        'add'
-                    );
-                    $addOfficeButton = '<a href="'.BASE_URI.'/offices/update?committee_id='.$member->getCommittee_id().';person_id='.$member->getPerson_id().'." class="fn1-dropdown-link">'.$this->_('office_add').'</a>';
+                    $uri = BASE_URI."/offices/update?committee_id={$member->getCommittee_id()};person_id={$member->getPerson_id()}";
+                    $addOfficeButton = sprintf($actionLink, $uri, $this->_('office_add'));
                 }
 
                 $offices = [];
                 $editOfficeLinks = '';
                 foreach ($member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d')) as $office) {
+                    $title = self::escape($office->getTitle());
+
                     if (Person::isAllowed('offices','edit')) {
-                        $editOfficeButton = $helper->buttonLink(
-                            BASE_URI.'/offices/update?office_id='.$office->getId(),
-                            $this->_('office_edit'),
-                            'edit'
-                        );
-                        $editOfficeLinks .= ' <a href="'.BASE_URI.'/offices/update?office_id='.$office->getId().'" class="fn1-dropdown-link">';
-                        $editOfficeLinks .= 'Edit '.self::escape($office->getTitle()).' Office</a>';
+                        $uri = BASE_URI."/offices/update?office_id={$office->getId()}";
+                        $editOfficeLinks.= sprintf($actionLink, $uri, sprintf($this->_('office_edit', 'messages'), $title));
                     }
-                    $offices[] = self::escape($office->getTitle());
+                    $offices[] = $title;
                 }
                 $offices = implode(', ',$offices);
                 if (count($offices > 0)) {
@@ -62,24 +60,14 @@ use Application\Templates\Helpers\ButtonLink;
                 $name = self::escape($member->getPerson()->getFullname());
 
                 echo "
-                <tr>
-                    <td>$name{$offices}</td>
+                <tr><td>$name{$offices}</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
-                    <td>
-                        <div class=\"fn1-dropdown fn1-table-actions\">
-                            <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
-                                {$this->_('more')}
-                            </button>
-                            <div    class=\"fn1-dropdown-links\">
-                                <div class=\"fn1-dropdown-subgroup\">
-                                    $addOfficeButton $editOfficeLinks
-                                </div>
-                                <div class=\"fn1-dropdown-subgroup\">
-                                    $editButton
-                                </div>
-                                <div class=\"fn1-dropdown-subgroup\">
-                                    $deleteButton
-                                </div>
+                    <td><div         class=\"fn1-dropdown fn1-table-actions\">
+                            <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
+                            <div     class=\"fn1-dropdown-links\">
+                                <div class=\"fn1-dropdown-subgroup\">$addOfficeButton $editOfficeLinks</div>
+                                <div class=\"fn1-dropdown-subgroup\">$editButton</div>
+                                <div class=\"fn1-dropdown-subgroup\">$deleteButton</div>
                             </div>
                         </div>
                     </td>
