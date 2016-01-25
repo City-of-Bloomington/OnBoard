@@ -22,11 +22,16 @@ $picker = $this->template->getHelper('datePicker');
             <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
             <dd><?= $picker->datePicker('startDate', 'startDate', $this->term->getStartDate('U')); ?></dd>
         </dl>
-        <dl class="fn1-input-field">
-            <dt><label  for="endDate" class="required"><?= $this->_('endDate'); ?></label></dt>
-            <dd><?= $picker->datePicker('endDate', 'endDate', $this->term->getEndDate('U')); ?></dd>
-        </dl>
-		<?php
+        <?php
+            if ($this->term->getId()) {
+                echo "
+                <dl class=\"fn1-input-field\">
+                    <dt><label  for=\"endDate\" class=\"required\">{$this->_('endDate')}</label></dt>
+                    <dd>{$picker->datePicker('endDate', 'endDate', $this->term->getEndDate('U'))}</dd>
+                </dl>
+                ";
+            }
+            
 			$helper = $this->template->getHelper('saveAndCancelButtons');
 			echo $helper->saveAndCancelButtons(BASE_URI.'/seats/view?seat_id='.$this->term->getSeat_id());
 		?>
