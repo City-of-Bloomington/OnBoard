@@ -111,4 +111,5 @@ class Office extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function __toString() { return $this->getTitle(); }
 }

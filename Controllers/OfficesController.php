@@ -47,13 +47,15 @@ class OfficesController extends Controller
 			try {
 				$office->handleUpdate($_POST);
 				$office->save();
-				header('Location: '.$office->getCommittee()->getUrl());
+				header('Location: '.BASE_URL.'/committees/members?committee_id='.$office->getCommittee_id());
 				exit();
 			}
 			catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 		}
 
-		$this->template->blocks[] = new Block('committees/info.inc', ['committee'=>$office->getCommittee()]);
-		$this->template->blocks[] = new Block('offices/updateForm.inc', ['office'=>$office]);
+		$committee = $office->getCommittee();
+		$this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+		$this->template->blocks[] = new Block('offices/list.inc',           ['offices'   => $committee->getOffices(date('Y-m-d'))]);
+		$this->template->blocks[] = new Block('offices/updateForm.inc',     ['office'    => $office]);
 	}
 }

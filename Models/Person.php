@@ -439,7 +439,9 @@ class Person extends ActiveRecord
 	 *
 	 * If a date is given, it will return only offices held on that date
 	 *
-	 * @return Zend\Db\ResultSet
+	 * @param Committee $committee
+	 * @param string $date
+	 * @return array An array of Office objects
 	 */
 	public function getOffices(Committee $committee=null, $date=null)
 	{
@@ -451,8 +453,13 @@ class Person extends ActiveRecord
 			$search['current'] = $date;
 		}
 
+
+		$offices = [];
 		$table = new OfficeTable();
-		return $table->find($search);
+		foreach ($table->find($search) as $o) {
+            $offices[] = $o;
+		}
+		return $offices;
 	}
 
 	/**

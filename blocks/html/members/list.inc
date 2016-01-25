@@ -38,12 +38,37 @@ use Application\Templates\Helpers\ButtonLink;
                     }
                 }
 
+                $addOfficeButton  = '';
+                if (!$this->disableButtons && Person::isAllowed('offices', 'edit')) {
+                    $addOfficeButton = $helper->buttonLink(
+                        BASE_URI."/offices/update?committee_id={$member->getCommittee_id()};person_id={$member->getPerson_id()}",
+                        $this->_('office_add'),
+                        'add'
+                    );
+                }
+
+                $offices = [];
+                foreach ($member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d')) as $office) {
+                    $editOfficeButton = '';
+                    if (Person::isAllowed('offices','edit')) {
+                        $editOfficeButton = $helper->buttonLink(
+                            BASE_URI.'/offices/update?office_id='.$office->getId(),
+                            $this->_('office_edit'),
+                            'edit'
+                        );
+                    }
+                    $offices[] = self::escape($office->getTitle()).$editOfficeButton;
+                }
+                $offices = implode(',',$offices);
+
                 $name = self::escape($member->getPerson()->getFullname());
 
                 echo "
                 <tr><td>$editButton</td>
                     <td>$name</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
+                    <td>$offices</td>
+                    <td>$addOfficeButton</td>
                     <td>$deleteButton</td>
                 </tr>
                 ";

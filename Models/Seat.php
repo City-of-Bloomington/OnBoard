@@ -271,23 +271,6 @@ class Seat extends ActiveRecord
 	}
 
 	/**
-	 * Return terms using the number of terms away from current
-	 *
-	 * The indexes for terms are defined using the current term as 0.
-	 * The indexes count away from 0.
-	 *
-	 * The previous term would be -1.
-	 * Two terms from now would be 2.
-	 *
-	 * @TODO
-	 * @param int $start
-	 * @param int $end
-	 */
-	public function getTermsByIndex($start, $end)
-	{
-	}
-
-	/**
 	 * Factory function for creating a Term for a particular time
 	 *
 	 * This function only instantiates a valid Term object.  It does

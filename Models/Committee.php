@@ -144,6 +144,19 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param string $date
+	 * @return Zend\Db\Result
+	 */
+	public function getOffices($date=null)
+	{
+        $search = ['committee_id'=>$this->getId()];
+        if (!empty($date)) { $search['current'] = $date; }
+
+        $table = new OfficeTable();
+        return $table->find($search);
+	}
+
+	/**
 	 * Returns a ResultSet containing Seats.
 	 *
 	 * If a timestamp is provided, will return seats current to that timestamp
@@ -163,22 +176,6 @@ class Committee extends ActiveRecord
 	public function getCurrentSeats()
 	{
 		return $this->getSeats(time());
-	}
-
-	/**
-	 * Each seat can have multiple concurrent terms
-	 *
-	 * @return int
-	 */
-	public function getMaxCurrentTerms()
-	{
-        if ($this->getType() === 'seated') {
-            $positions = 0;
-            foreach ($this->getSeats() as $seat) {
-                $positions += $seat->getMaxCurrentTerms();
-            }
-            return $positions;
-        }
 	}
 
 	/**

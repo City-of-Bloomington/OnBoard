@@ -1,50 +1,44 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Office $this->office
  */
-use Blossom\Classes\View;
 
-$title = $this->office->getId() ? $this->_('edit_office') : $this->_('add_office');
+$title = $this->office->getId() ? $this->_('office_edit') : $this->_('office_add');
 $picker = $this->template->getHelper('datePicker');
 ?>
-<h2><?php echo $title; ?></h2>
-<h3><?php echo View::escape($this->office->getPerson()->getFullname()); ?></h3>
-<form method="post" action="<?php echo BASE_URI; ?>/offices/update">
-	<fieldset><legend><?php echo $this->_('info_office'); ?></legend>
-		<?php
-			if ($this->office->getId()) {
-				echo "
-				<input name=\"office_id\" type=\"hidden\" value=\"{$this->office->getId()}\" />
-				";
-			}
-			else {
-				echo "
-				<input name=\"committee_id\" type=\"hidden\" value=\"{$this->office->getCommittee_id()}\" />
-				<input name=\"person_id\" type=\"hidden\" value=\"{$this->office->getPerson_id()}\" />
-				";
-			}
-		?>
+<section>
+    <header>
+        <h1><?= $title; ?></h1>
+        <h2><?= self::escape($this->office->getPerson()->getFullname()); ?></h2>
+    </header>
+    <form method="post" action="<?= BASE_URI; ?>/offices/update">
+        <fieldset><legend><?= $this->_('info_office'); ?></legend>
+            <input name="office_id"    type="hidden" value="<?= $this->office->getId(); ?>" />
+            <input name="committee_id" type="hidden" value="<?= $this->office->getCommittee_id(); ?>" />
+            <input name="person_id"    type="hidden" value="<?= $this->office->getPerson_id(); ?>" />
 
-		<table>
-			<tr><td><label for="title"><?php echo $this->_('title'); ?></label></td>
-				<td><input name="title" id="title"
-							value="<?php echo View::escape($this->office->getTitle()); ?>" />
-				</td>
-			</tr>
-
-			<tr><td><label for="startDate"><?php echo $this->_('date_start'); ?></label></td>
-				<td><?= $picker->datePicker('startDate', 'startDate', $this->office->getStartDate('U')); ?></td>
-			</tr>
-			<tr><td><label for="endDate"><?php echo $this->_('date_end'); ?></label></td>
-				<td><?= $picker->datePicker('endDate', 'endDate', $this->office->getEndDate('U')); ?></td>
-			</tr>
-		</table>
-		<?php
-			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons($this->office->getCommittee()->getUri());
-		?>
-	</fieldset>
-</form>
+            <dl class="fn1-input-field">
+                <dt><label  for="title"><?= $this->_('title'); ?></label></dt>
+                <dd><input name="title" id="title"
+                            value="<?= self::escape($this->office->getTitle()); ?>" />
+                </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label for="startDate"><?= $this->_('startDate'); ?></label></dt>
+                <dd><?= $picker->datePicker('startDate', 'startDate', $this->office->getStartDate('U')); ?></dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label for="endDate"><?= $this->_('endDate'); ?></label></dt>
+                <dd><?= $picker->datePicker('endDate', 'endDate', $this->office->getEndDate('U')); ?></dd>
+            </dl>
+            <?php
+                $helper = $this->template->getHelper('saveAndCancelButtons');
+                echo $helper->saveAndCancelButtons(
+                    BASE_URI.'/committees/members?committee_id='.$this->office->getCommittee_id()
+                );
+            ?>
+        </fieldset>
+    </form>
+</section>

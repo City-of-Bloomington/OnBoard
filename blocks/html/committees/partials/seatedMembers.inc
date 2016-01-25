@@ -5,6 +5,8 @@
  * @param Committee $this->committee
  */
 use Application\Models\Person;
+
+$committee_id = $this->committee->getId();
 ?>
 <table class="fn1-table">
     <thead>
@@ -19,18 +21,19 @@ use Application\Models\Person;
     <?php
 
         foreach ($this->committee->getSeats(time()) as $seat) {
+            $seat_id    = $seat->getId();
             $memberName = '';
-            $seatName  = self::escape($seat->getName());
-            $appointer = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
-            $termDates = '';
-            $offices   = '';
-            $buttons   = '';
-            $classes   = [];
+            $seatName   = self::escape($seat->getName());
+            $appointer  = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
+            $termDates  = '';
+            $offices    = '';
+            $actions    = '';
+            $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+            $classes    = [];
 
             $seatIsVacant = $seat->hasVacancy();
 
             if ($seatIsVacant) {
-                $memberName = $this->_('vacancy');
                 $classes[] = 'vacant';
 
                 if ($seat->getType() === 'termed') {
@@ -45,21 +48,19 @@ use Application\Models\Person;
                     }
                 }
                 else {
-                    $appointURI = BASE_URI."/members/appoint?seat_id={$seat->getId()}";
+                    $appointURI = BASE_URI."/members/appoint?seat_id=$seat_id";
                 }
 
                 if (isset($appointURI) && Person::isAllowed('members', 'appoint')) {
-                    $buttons.= "
-                    <a href=\"$appointURI\" class=\"fn1-dropdown-link\">
-                        {$this->_('member_add')}
-                    </a>
-                    ";
+                    $actions.= sprintf($actionLink, $appointURI, $this->_('member_add'));
                 }
             }
 
             $member = $seat->getMember(time());
             if ($member) {
-                $person_uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
+                $member_id = $member->getId();
+                $person_id = $member->getPerson_id();
+                $person_uri = BASE_URI."/people/view?person_id=$person_id";
                 $name = self::escape($member->getPerson()->getFullname());
                 $name = "<a href=\"$person_uri\">$name</a>";
 
@@ -68,57 +69,56 @@ use Application\Models\Person;
                     ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
                     : '';
 
-                $offices = [];
-                foreach ($member->getPerson()->getOffices($this->committee, date('Y-m-d')) as $office) {
-                    $offices[] = self::escape($office->getTitle());
-                }
-                $offices = count($offices)
-                    ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
-                    : '';
-
                 if (Person::isAllowed('members', 'reappoint')) {
-                    $uri = BASE_URI."/members/reappoint?member_id={$member->getId()}";
-                    $buttons.= "
-                    <a href=\"$uri\" class=\"fn1-dropdown-link\">
-                        {$this->_('member_continue')}
-                    </a>
-                    ";
+                    $uri = BASE_URI."/members/reappoint?member_id=$member_id";
+                    $actions.= sprintf($actionLink, $uri, $this->_('member_continue'));
                 }
 
                 if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
-                    $uri = BASE_URI."/members/resign?member_id={$member->getId()}";
-                    $buttons.= "
-                    <a href=\"$uri\" class=\"fn1-dropdown-link\">
-                        {$this->_('member_end')}
-                    </a>
-                    ";
+                    $uri = BASE_URI."/members/resign?member_id=$member_id";
+                    $actions.= sprintf($actionLink, $uri, $this->_('member_end'));
                 }
+
+                $offices      = $member->getPerson()->getOffices($this->committee, date('Y-m-d'));
+                if (Person::isAllowed('offices', 'add')) {
+                    $uri = BASE_URI."/offices/update?committee_id=$committee_id;person_id=$person_id";
+                    $actions.= sprintf($actionLink, $uri, $this->_('office_add'));
+                }
+                if (Person::isAllowed('offices', 'edit')) {
+                    foreach ($offices as $o) {
+                        $uri = BASE_URI."/offices/update?office_id={$o->getId()}";
+                        $actions.= sprintf($actionLink, $uri, "{$this->_('edit')} {$o->getTitle()}");
+                    }
+                }
+                $officeTitles = count($offices)
+                    ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
+                    : '';
 
                 if ($seatIsVacant) { $classes[] = 'carryOver'; }
             }
 
-            if ($buttons != '') {
-                $buttons = "
+            if ($actions != '') {
+                $actions = "
                     <div        class=\"fn1-dropdown fn1-table-actions\">
                         <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
                             {$this->_('more')}
                         </button>
                         <div    class=\"fn1-dropdown-links\">
-                            $buttons
+                            $actions
                         </div>
                     </div>
                 ";
             }
 
             $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
-            $seat_uri = BASE_URI.'/seats/view?seat_id='.$seat->getId();
+            $seat_uri = BASE_URI."/seats/view?seat_id=$seat_id";
             echo "
             <tr $classes>
-                <td>{$offices}{$memberName}</td>
+                <td>{$officeTitles}{$memberName}</td>
                 <td><a href=\"$seat_uri\">$seatName</a></td>
                 <td>$appointer</td>
                 <td>$termDates</td>
-                <td>$buttons</td>
+                <td>$actions</td>
             </tr>
             ";
         }
