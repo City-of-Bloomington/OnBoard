@@ -14,3 +14,10 @@ create table departments (
     email varchar(128),
     phone varchar(32)
 );
+create table committee_departments (
+    committee_id  int unsigned not null,
+    department_id int unsigned not null,
+    primary key (committee_id, department_id),
+    foreign key (committee_id)  references committees (id),
+    foreign key (department_id) references departments(id)
+);

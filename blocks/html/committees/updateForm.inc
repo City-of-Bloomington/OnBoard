@@ -6,6 +6,7 @@
  * @param Committee $this->committee
  */
 use Application\Models\Committee;
+use Application\Models\DepartmentTable;
 use Application\Models\Person;
 use Blossom\Classes\View;
 
@@ -74,6 +75,24 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 <dd><input name="website" id="website" value="<?= $website; ?>" /></dd>
             </dl>
         </fieldset>
+
+        <fieldset><legend><?= $this->_(['department', 'departments', 2]); ?></legend>
+            <select name="departments[]" id="departments" multiple="true" size="8">
+                <option value=""></option>
+                <?php
+                    $table = new DepartmentTable();
+                    $list = $table->find();
+                    foreach ($list as $d) {
+                        $name = self::escape($d->getName());
+                        $selected = $this->committee->hasDepartment($d)
+                            ? 'selected="true"'
+                            : '';
+                        echo "<option value=\"{$d->getId()}\" $selected>$name</option>";
+                    }
+                ?>
+            </select>
+        </fieldset>
+
         <fieldset><legend><?= $this->_('contactInfo'); ?></legend>
             <dl class="fn1-input-field">
                 <dt><label     for="address"><?= $this->_('address'); ?></label></dt>

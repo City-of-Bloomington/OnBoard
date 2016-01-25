@@ -33,10 +33,10 @@ class Department extends ActiveRecord
 			else {
 				$zend_db = Database::getConnection();
 				if (ActiveRecord::isId($id)) {
-					$sql = 'select * from appointers where id=?';
+					$sql = 'select * from departments where id=?';
 				}
 				else {
-					$sql = 'select * from appointers where name=?';
+					$sql = 'select * from departments where name=?';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
 				if ($result) {

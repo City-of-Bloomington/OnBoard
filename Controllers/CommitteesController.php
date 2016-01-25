@@ -47,6 +47,10 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
         $this->template->blocks[] = new Block('committees/info.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('departments/list.inc', [
+            'departments'    => $committee->getDepartments(),
+            'disableButtons' => true
+        ]);
         $this->template->blocks[] = new Block('liasons/list.inc',    ['committee' => $committee]);
     }
 

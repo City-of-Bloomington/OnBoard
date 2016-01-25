@@ -55,6 +55,14 @@ create table committees (
 	meetingSchedule text
 );
 
+create table committee_departments (
+    committee_id  int unsigned not null,
+    department_id int unsigned not null,
+    primary key (committee_id, department_id),
+    foreign key (committee_id)  references committees (id),
+    foreign key (department_id) references departments(id)
+);
+
 create table appointers (
 	id int unsigned not null primary key auto_increment,
 	name varchar(128) not null unique

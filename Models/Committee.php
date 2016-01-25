@@ -20,6 +20,8 @@ class Committee extends ActiveRecord
     public static $types = ['seated', 'open'];
 
 	protected $tablename = 'committees';
+	protected $departments = [];
+	private $departmentsHaveChanged = false;
 
 	public function __construct($id=null)
 	{
@@ -52,7 +54,24 @@ class Committee extends ActiveRecord
 		if (!$this->getName()) { throw new \Exception('missingName'); }
 	}
 
-	public function save() { parent::save(); }
+	public function save()
+	{
+        parent::save();
+
+        if ($this->departmentsHaveChanged) {
+            $zend_db = Database::getConnection();
+            $sql = 'delete from committee_departments where committee_id=?';
+            $zend_db->query($sql, [$this->getId()]);
+
+            $sql = 'insert committee_departments set committee_id=?,department_id=?';
+            $insert = $zend_db->createStatement($sql);
+            foreach (array_keys($this->departments) as $id) {
+                $params = [$this->getId(), $id];
+                try { $insert->execute($params); }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+        }
+    }
 
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
@@ -98,7 +117,7 @@ class Committee extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
-            'type',
+            'type', 'departments',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule'
@@ -423,5 +442,51 @@ class Committee extends ActiveRecord
         $sql = 'delete from committee_liasons where committee_id=? and person_id=?';
         $zend_db = Database::getConnection();
         $zend_db->query($sql)->execute([$this->getId(), $person_id]);
+	}
+
+	/**
+	 * Returns an array of Department objects with ID as the key
+	 *
+	 * @return array
+	 */
+	public function getDepartments()
+	{
+        if (!$this->departments) {
+            $table = new DepartmentTable();
+            $list = $table->find(['committee_id'=>$this->getId()]);
+            foreach ($list as $d) {
+                $this->departments[$d->getId()] = $d;
+            }
+        }
+        return $this->departments;
+	}
+
+	/**
+	 * @param Department $d
+	 * @return boolean
+	 */
+	public function hasDepartment(Department $d)
+	{
+        return array_key_exists($d->getId(), $this->getDepartments());
+	}
+
+	/**
+	 * @param array $ids An array of (int) department_ids
+	 */
+	public function setDepartments(array $ids)
+	{
+        $current = array_keys($this->getDepartments());
+
+        if (array_diff($current, $ids) || array_diff($ids, $current)) {
+            $this->departments = [];
+            $this->departmentsHaveChanged = true;
+
+            foreach ($ids as $id) {
+                try { $this->departments[$id] = new Department($id); }
+                catch (\Exception $e) {
+                    // Just ignore invalid departments for now
+                }
+            }
+        }
 	}
 }
