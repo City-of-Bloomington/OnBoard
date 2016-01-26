@@ -49,7 +49,6 @@ $title = $this->title
             $actions    = '';
             $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
             $classes    = [];
-            $termEndWarningDays = $seat->getCommittee()->getTermEndWarningDays();
 
             $seatIsVacant = $seat->hasVacancy();
 
@@ -62,9 +61,6 @@ $title = $this->title
                         $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
                         $appointURI = BASE_URI."/members/appoint?term_id={$term->getid()}";
 
-                        if ($termEndWarningDays && strtotime("+$termEndWarningDays days") > (int)$term->getEndDate('U')) {
-                            $classes[] = 'termEndsSoon';
-                        }
                     }
                 }
                 else {
@@ -88,6 +84,12 @@ $title = $this->title
                 $termDates = $member->getTerm_id()
                     ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
                     : '';
+
+                $termEndWarningDays = $seat->getCommittee()->getTermEndWarningDays();
+                if ($termEndWarningDays
+                    && (strtotime("+$termEndWarningDays days") > (int)$member->getTerm()->getEndDate('U'))) {
+                    $classes[] = 'termEndsSoon';
+                }
 
                 if (Person::isAllowed('members', 'reappoint')) {
                     $uri = BASE_URI."/members/reappoint?member_id=$member_id";
