@@ -2,10 +2,10 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\Person;
+use Application\Models\Seat;
 use Michelf\MarkdownExtra;
 
 $name          = self::escape($this->seat->getName());
@@ -13,7 +13,6 @@ $appointer     = self::escape($this->seat->getAppointer());
 $committee     = self::escape($this->seat->getCommittee()->getName());
 $committee_url = BASE_URI.'/committees/info?committee_id='.$this->seat->getCommittee_id();
 $requirements  = self::escape($this->seat->getRequirements());
-$termLength    = self::escape($this->seat->getTermLength());
 
 if ($requirements) {
 	$markdown = new MarkdownExtra();
@@ -54,20 +53,33 @@ echo "
 			<dt>{$this->_(['committee', 'committees', 1])}</dt>
 			<dd><a href=\"$committee_url\">$committee</a></dd>
 		</dl>
-		<dl class=\"fn1-output-field\">
+";
+    if ($this->seat->getStartDate()) {
+        echo "
+        <dl class=\"fn1-output-field\">
 			<dt>{$this->_('startDate')}</dt>
 			<dd>{$this->seat->getStartDate(DATE_FORMAT)}</dd>
 		</dl>
+        ";
+    }
+    if ($this->seat->getEndDate()) {
+        echo "
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('endDate')}</dt>
 			<dd>{$this->seat->getEndDate(DATE_FORMAT)}</dd>
 		</dl>
+        ";
+    }
+    if ($requirements) {
+        echo "
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_(['requirement', 'requirements', 2])}</dt>
 			<dd>$requirements</dd>
 		</dl>
-";
+		";
+    }
     if ($this->seat->getType() === 'termed') {
+        $termLength = Seat::$termIntervals[$this->seat->getTermLength()];
         echo "
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('termLength')}</dt>
