@@ -86,3 +86,4 @@ define('DATETIME_FORMAT', 'n/j/Y H:i:s');
 define('LOCALE', 'en_US');
 
 define('VOTE_TRACKING', true);
+define('TERM_END_WARNING_DEFAULT', 60);
