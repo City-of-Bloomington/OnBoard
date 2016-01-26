@@ -14,7 +14,7 @@ $fields = [
     'type', 'yearFormed',
     'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
     'email', 'phone', 'address', 'city', 'state', 'zip',
-    'description', 'contactInfo', 'meetingSchedule'
+    'description', 'contactInfo', 'meetingSchedule', 'termEndWarningDays'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -45,35 +45,21 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                     </select>
                 </dd>
             </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="name" class="required"><?= $this->_('name'); ?></label></dt>
-                <dd><input name="name" id="name" value="<?= $name; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="yearFormed"><?= $this->_('year_formed'); ?></label></dt>
-                <dd><input name="yearFormed" id="yearFormed" value="<?= $yearFormed; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="statutoryName"><?= $this->_('statutoryName'); ?></label></dt>
-                <dd><input name="statutoryName" id="statutoryName" value="<?= $statutoryName; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="statuteReference"><?= $this->_('statuteReference'); ?></label></dt>
-                <dd><input name="statuteReference" id="statuteReference" value="<?= $statuteReference; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="statuteUrl"><?= $this->_('statuteUrl'); ?></label></dt>
-                <dd><input name="statuteUrl" id="statuteUrl" value="<?= $statuteUrl; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="website"><?= $this->_('website'); ?></label></dt>
-                <dd><input name="website" id="website" value="<?= $website; ?>" /></dd>
-            </dl>
+            <?php
+                $fields = [
+                    'name', 'yearFormed',
+                    'statutoryName', 'statuteReference', 'statuteUrl',
+                    'website', 'termEndWarningDays'
+                ];
+                foreach ($fields as $f) {
+                    echo "
+                    <dl class=\"fn1-input-field\">
+                        <dt><label  for=\"$f\">{$this->_($f)}</label></td>
+                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
+                    </dl>
+                    ";
+                }
+            ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_(['department', 'departments', 2]); ?></legend>

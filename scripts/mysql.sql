@@ -52,7 +52,8 @@ create table committees (
 	zip     varchar(32),
     description     text,
 	contactInfo     text,
-	meetingSchedule text
+	meetingSchedule text,
+	termEndWarningDays tinyint unsigned not null default 0
 );
 
 create table committee_departments (

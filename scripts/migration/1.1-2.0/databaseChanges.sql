@@ -21,3 +21,5 @@ create table committee_departments (
     foreign key (committee_id)  references committees (id),
     foreign key (department_id) references departments(id)
 );
+
+alter table committees add termEndWarningDays tinyint unsigned not null default 0;

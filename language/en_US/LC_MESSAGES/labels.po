@@ -465,7 +465,7 @@ msgstr "End Date"
 msgid "carryover"
 msgstr "Carry Over"
 
-msgid "year_formed"
+msgid "yearFormed"
 msgstr "Year Formed"
 
 msgid "number"
@@ -482,6 +482,9 @@ msgstr "Contact Information"
 
 msgid "meetingSchedule"
 msgstr "Meeting Schedule"
+
+msgid "termEndWarningDays"
+msgstr "termEndWarningDays"
 
 msgid "statutoryName"
 msgstr "Statutory Name"

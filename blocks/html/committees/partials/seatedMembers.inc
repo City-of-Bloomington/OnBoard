@@ -49,6 +49,7 @@ $title = $this->title
             $actions    = '';
             $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
             $classes    = [];
+            $termEndWarningDays = $seat->getCommittee()->getTermEndWarningDays();
 
             $seatIsVacant = $seat->hasVacancy();
 
@@ -61,7 +62,7 @@ $title = $this->title
                         $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
                         $appointURI = BASE_URI."/members/appoint?term_id={$term->getid()}";
 
-                        if (strtotime('+3 days') > (int)$term->getEndDate('U')) {
+                        if ($termEndWarningDays && strtotime("+$termEndWarningDays days") > (int)$term->getEndDate('U')) {
                             $classes[] = 'termEndsSoon';
                         }
                     }
