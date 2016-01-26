@@ -18,7 +18,7 @@ class SeatsController extends Controller
     public function index()
     {
         $table = new SeatTable();
-        $list = $table->find(['current' => time()]);
+        $list = $table->find(['current' => time()], ['c.name', 's.name']);
 
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
@@ -32,7 +32,7 @@ class SeatsController extends Controller
     public function vacancies()
     {
         $table = new SeatTable();
-        $list = $table->find(['vacant' => time()]);
+        $list = $table->find(['vacant' => time()], ['c.name', 's.name']);
 
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');

@@ -25,6 +25,12 @@ class SeatTable extends TableGateway
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
 						$select->where("(s.startDate is null or s.startDate<='$date')");
 						$select->where("(s.endDate   is null or s.endDate>='$date')");
+
+						// If they want to order by committee, we have to join the committees table
+						if (  (is_array($order) && in_array('c.name', $order))
+                            || false !== strpos($order, 'c.name')) {
+                            $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
+                        }
                     break;
 
                     case 'vacant':
@@ -42,7 +48,6 @@ class SeatTable extends TableGateway
                         $select->join(['p'=>'people'], 'm.person_id=p.id', [], Select::JOIN_LEFT);
                         $select->where("(t.startDate is not null and p.firstname is null)
                                     or  (t.startDate is null     and p.firstname is null)");
-                        $order = ['c.name', 's.name'];
                     break;
 
 					default:
