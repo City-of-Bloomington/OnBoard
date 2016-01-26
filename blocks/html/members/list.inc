@@ -46,7 +46,7 @@ use Application\Templates\Helpers\ButtonLink;
                 foreach ($member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d')) as $office) {
                     $title = self::escape($office->getTitle());
 
-                    if (Person::isAllowed('offices','edit')) {
+                    if (!$this->disableButtons && Person::isAllowed('offices','edit')) {
                         $uri = BASE_URI."/offices/update?office_id={$office->getId()}";
                         $editOfficeLinks.= sprintf($actionLink, $uri, sprintf($this->_('office_edit', 'messages'), $title));
                     }
@@ -59,18 +59,27 @@ use Application\Templates\Helpers\ButtonLink;
 
                 $name = self::escape($member->getPerson()->getFullname());
 
+                $moreLinks = '';
+                if ($addOfficeButton || $editOfficeLinks || $editButton || $deleteButton) {
+                    $moreLinks = "
+                    <div         class=\"fn1-dropdown fn1-table-actions\">
+                        <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
+                        <div     class=\"fn1-dropdown-links\">
+                    ";
+                    if ($addOfficeButton || $editOfficeLinks) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$addOfficeButton $editOfficeLinks</div>"; }
+                    if ($editButton)                          { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$editButton</div>"; }
+                    if ($deleteButton)                        { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$deleteButton</div>"; }
+                    $moreLinks.= "
+                        </div>
+                    </div>
+                    ";
+
+                }
+
                 echo "
                 <tr><td>$name{$offices}</td>
                     <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
-                    <td><div         class=\"fn1-dropdown fn1-table-actions\">
-                            <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
-                            <div     class=\"fn1-dropdown-links\">
-                                <div class=\"fn1-dropdown-subgroup\">$addOfficeButton $editOfficeLinks</div>
-                                <div class=\"fn1-dropdown-subgroup\">$editButton</div>
-                                <div class=\"fn1-dropdown-subgroup\">$deleteButton</div>
-                            </div>
-                        </div>
-                    </td>
+                    <td>$moreLinks</td>
                 </tr>
                 ";
             }

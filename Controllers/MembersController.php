@@ -51,10 +51,15 @@ class MembersController extends Controller
             $this->template->setFilename('two-column');
             $committee = $member->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            if ($member->getSeat_id()) {
-                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $member->getSeat()]);
+
+            $seat = $member->getSeat();
+            if ($seat) {
+                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
+                $this->template->blocks[] = new Block('members/list.inc', [
+                    'members'        => $seat->getMembers(),
+                    'disableButtons' => true
+                ]);
             }
-            $this->template->blocks[] = new Block('members/list.inc', ['members'=>$member->getSeat()->getMembers()]);
             $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
         }
         else {
