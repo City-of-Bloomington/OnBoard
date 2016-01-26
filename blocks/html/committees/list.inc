@@ -13,6 +13,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
 <section     class="fn1-uiBlock">
     <header  class="fn1-uiBlock-header">
+        <h1><?= $this->_(['committee', 'committees', count($this->committees)]); ?></h1>
         <div class="fn1-uiBlock-headerTools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
