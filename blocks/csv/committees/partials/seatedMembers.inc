@@ -1,0 +1,52 @@
+<?php
+/**
+ * @copyright 2016 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param array $this->seats
+ */
+header('Content-Disposition: attachment; filename="membership.csv"');
+echo "Committee,Seat,Appointer,Firstname,Lastname,Term Start,Term End,Appointment Start, Appointment End\n";
+
+$out = fopen('php://output', 'w');
+foreach ($this->seats as $seat) {
+    $appointer   = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
+    $firstname   = '';
+    $lastname    = '';
+    $termStart   = '';
+    $termEnd     = '';
+    $memberStart = '';
+    $memberEnd   = '';
+
+    if ($seat->getType() === 'termed') {
+        $term = $seat->getTerm(time());
+        if ($term) {
+            $termStart = $term->getStartDate(DATE_FORMAT);
+            $termEnd   = $term->getEndDate  (DATE_FORMAT);
+        }
+    }
+
+    $member = $seat->getMember(time());
+    if ($member) {
+        $person      = $member->getPerson();
+        $firstname   = $person->getFirstname();
+        $lastname    = $person->getLastname();
+        $memberStart = $member->getStartDate(DATE_FORMAT);
+        $memberEnd   = $member->getEndDate  (DATE_FORMAT);
+
+    }
+
+    $row = [
+        $seat->getCommittee()->getName(),
+        $seat->getName(),
+        $appointer,
+        $firstname,
+        $lastname,
+        $termStart,
+        $termEnd,
+        $memberStart,
+        $memberEnd
+    ];
+
+    fputcsv($out, $row);
+}
+fclose($out);

@@ -7,13 +7,23 @@
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
+use Blossom\Classes\Url;
 
 $title = $this->title
     ? self::escape($this->title)
     : $this->_(['seat', 'seats', count($this->seats)]);
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header"><h1><?= $title; ?></h1></header>
+<section     class="fn1-uiBlock">
+    <header  class="fn1-uiBlock-header"><h1><?= $title; ?></h1>
+        <div class="fn1-uiBlock-headerTools">
+        <?php
+            $helper = $this->template->getHelper('buttonLink');
+            $url = new Url(Url::current_url());
+            $url->format = 'csv';
+            echo $helper->buttonLink($url, $this->_('csv'), 'download');
+        ?>
+        </div>
+    </header>
     <div    class="fn1-uiBlock-content">
 
 <table class="fn1-table">
