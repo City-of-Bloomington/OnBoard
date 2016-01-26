@@ -34,7 +34,6 @@ class CommitteesController extends Controller
         $committees = $table->find();
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
-            $this->template->blocks[] = new Block('committees/header.inc');
         }
         $this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
     }

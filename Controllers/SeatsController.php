@@ -21,6 +21,7 @@ class SeatsController extends Controller
         $list = $table->find(['current' => time()]);
 
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+        $this->template->blocks[] = new Block('seats/header.inc');
         $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
             'seats' => $list
         ]);
@@ -32,6 +33,7 @@ class SeatsController extends Controller
         $list = $table->find(['vacant' => time()]);
 
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
+        $this->template->blocks[] = new Block('seats/header.inc');
         $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
             'seats' => $list,
             'title' => $this->template->_(['vacancy', 'vacancies', count($list)])

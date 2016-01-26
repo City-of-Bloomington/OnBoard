@@ -10,7 +10,6 @@ use Application\Models\Person;
         <a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee', 'committees', 2]); ?></a>
         <a href="<?= BASE_URI; ?>/people"><?= $this->_(['person', 'people', 2]); ?></a>
         <a href="<?= BASE_URI; ?>/seats"><?= $this->_(['seat', 'seats', 2]); ?></a>
-        <a href="<?= BASE_URI; ?>/seats/vacancies"><?= $this->_(['vacancy', 'vacancies', 2]); ?></a>
         <?php
             if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
                 $routes = [
