@@ -12,7 +12,7 @@ use Blossom\Classes\Block;
 <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
     <?php if ($this->currentMember): ?>
         <?php $appointeeName = $this->currentMember->getPerson()->getFirstname().' '.$this->currentMember->getPerson()->getLastname(); ?>
-        <section   class="fn1-uiBlock">
+        <section    class="fn1-uiBlock">
             <header class="fn1-uiBlock-header">
                 <h1 class="fn1-uiBlock-title"><?= $this->_('retirePrevious'); ?></h1>
             </header>
@@ -23,7 +23,7 @@ use Blossom\Classes\Block;
         </section>
     <?php endif ?>
 
-    <section   class="fn1-uiBlock">
+    <section    class="fn1-uiBlock">
         <header class="fn1-uiBlock-header">
             <h1 class="fn1-uiBlock-title"><?= sprintf($this->_('appointToSeat', 'messages'), $this->newMember->getCommittee()->getName()); ?></h1>
         </header>
@@ -37,7 +37,6 @@ use Blossom\Classes\Block;
             }
         ?>
         <div class="fn1-uiBlock-content">
-
             <input name="newMember[committee_id]" type="hidden" value="<?= $this->newMember->getCommittee_id(); ?>" />
             <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
@@ -50,7 +49,8 @@ use Blossom\Classes\Block;
                 }
             ?>
             <h2><?= $this->_('new_member') ?></h2>
-            <dl class="fn1-input-field--select"><dt><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
+            <dl class="fn1-input-field--select">
+                <dt><label for="newMember-person_id" class="required"><?= $this->_(['person', 'people', 1]); ?></label></dt>
                 <dd><?php
                         $person = $this->newMember->getPerson();
                         $helper = $this->template->getHelper('personChooser');
@@ -66,7 +66,8 @@ use Blossom\Classes\Block;
                     }
                 }
             ?>
-            <dl class="fn1-input-field"><dt><label for="newMember-startDate"><?= $this->_('startDate'); ?></label></dt>
+            <dl class="fn1-input-field">
+                <dt><label for="newMember-startDate"><?= $this->_('startDate'); ?></label></dt>
                 <dd><?php
                         $picker = $this->template->getHelper('datePicker');
                         echo $picker->datePicker(
@@ -79,12 +80,12 @@ use Blossom\Classes\Block;
             </dl>
 
             <div class="fn1-btn-container">
-                <?php
-                    $helper = $this->template->getHelper('saveAndCancelButtons');
-                    echo $helper->saveAndCancelButtons(
-                        BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
-                    );
-                ?>
+            <?php
+                $helper = $this->template->getHelper('saveAndCancelButtons');
+                echo $helper->saveAndCancelButtons(
+                    BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
+                );
+            ?>
             </div>
         </section>
 </form>
