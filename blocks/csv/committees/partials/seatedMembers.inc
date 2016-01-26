@@ -3,8 +3,13 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->seats
+ * @param string $this->title
  */
-header('Content-Disposition: attachment; filename="membership.csv"');
+$filename = APPLICATION_NAME.'-';
+$filename.= $this->title ? $this->title : $this->_(['seat', 'seats', count($this->seats)]);
+$filename.= '-'.date('Ymd');
+
+header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 echo "Committee,Seat,Appointer,Firstname,Lastname,Term Start,Term End,Appointment Start, Appointment End\n";
 
 $out = fopen('php://output', 'w');
