@@ -158,12 +158,12 @@ class Member extends ActiveRecord
                 where committee_id=? and person_id=?
                 and ((startDate is null) or (? is null)       or (startDate <= ?) )
                 and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+        if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
         $params = [
             $this->getCommittee_id(), $this->getPerson_id(),
             $this->getEndDate(),      $this->getEndDate(),
             $this->getStartDate(),    $this->getStartDate()
         ];
-        if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
 
         $result = $zend_db->query($sql, $params);
 		if (count($result)) { return $result->toArray(); }
@@ -174,6 +174,7 @@ class Member extends ActiveRecord
             $sql = "select id from members where seat_id=?
                     and ((startDate is null) or (? is null)       or (startDate <= ?) )
                     and ((? is null)         or (endDate is null) or (? <= endDate)   )";
+            if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
             $params = [
                 $this->getSeat_id(),
                 $this->getEndDate(),      $this->getEndDate(),

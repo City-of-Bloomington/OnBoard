@@ -148,8 +148,19 @@ class MembersController extends Controller
                             header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
                             exit();
                         }
-                        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                        catch (\Exception $e) {
+                            $_SESSION['errorMessages'][] = $e;
+                            print_r($member);
+                            print_r($newMember);
+                            exit();
+                        }
                     }
+
+                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $newMember->getCommittee()]);
+                    $this->template->blocks[] = new Block('members/appointInfo.inc', [
+                        'currentMember' => $member,
+                        'newMember'     => $newMember
+                    ]);
                     $this->template->blocks[] = new Block('members/reappointForm.inc', [
                         'member'    => $member,
                         'newMember' => $newMember

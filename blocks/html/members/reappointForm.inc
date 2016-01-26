@@ -26,6 +26,12 @@
                         </label>
                     </dd>
             </fieldset>
+            <?php
+                $helper = $this->template->getHelper('saveAndCancelButtons');
+                echo $helper->saveAndCancelButtons(
+                    BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
+                );
+            ?>
         </form>
     </div>
 </section>

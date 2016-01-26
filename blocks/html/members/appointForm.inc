@@ -11,31 +11,21 @@ use Blossom\Classes\Block;
 ?>
 <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
     <?php if ($this->currentMember): ?>
-        <?php $appointeeName = $this->currentMember->getPerson()->getFirstname().' '.$this->currentMember->getPerson()->getLastname(); ?>
         <section    class="fn1-uiBlock">
-            <header class="fn1-uiBlock-header">
-                <h1 class="fn1-uiBlock-title"><?= $this->_('retirePrevious'); ?></h1>
-            </header>
+            <?= $this->_include('html/members/partials/appointCurrentMemberHeader.inc'); ?>
             <div class="fn1-uiBlock-content">
-                <p><?= sprintf($this->_('endServiceHelpText', 'messages'), $appointeeName, $appointeeName); ?></p>
-                <?= $this->_include('html/members/partials/memberEndFieldset.inc'); ?>
+                <p><?php
+                        $name = $this->currentMember->getPerson()->getFullname();
+                        echo sprintf($this->_('endServiceHelpText', 'messages'), $name, $name);
+                    ?>
+                </p>
+                <?= $this->_include('html/members/partials/memberEndFields.inc'); ?>
             </div>
         </section>
     <?php endif ?>
 
     <section    class="fn1-uiBlock">
-        <header class="fn1-uiBlock-header">
-            <h1 class="fn1-uiBlock-title"><?= sprintf($this->_('appointToSeat', 'messages'), $this->newMember->getCommittee()->getName()); ?></h1>
-        </header>
-        <?php
-            $seat = $this->newMember->getSeat();
-            if ($seat) {
-                $summaryBlock = new Block('seats/summary.inc', ['seat' => $seat]);
-                echo '<aside class="onboard-contextInfo">';
-                echo $summaryBlock->render('html', $this->template);
-                echo '</aside>';
-            }
-        ?>
+        <?= $this->_include('html/members/partials/appointNewMemberHeader.inc'); ?>
         <div class="fn1-uiBlock-content">
             <input name="newMember[committee_id]" type="hidden" value="<?= $this->newMember->getCommittee_id(); ?>" />
             <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />

@@ -12,7 +12,7 @@
     <div    class="fn1-uiBlock-content">
         <form method="post" action="<?= BASE_URI; ?>/members/resign">
             <?php
-                include __DIR__.'/partials/memberEndFieldset.inc';
+                include __DIR__.'/partials/memberEndFields.inc';
             ?>
 
             <fieldset>
