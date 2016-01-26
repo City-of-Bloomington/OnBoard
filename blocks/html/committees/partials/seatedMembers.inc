@@ -110,7 +110,7 @@ $title = $this->title
                     }
                 }
                 $officeTitles = count($offices)
-                    ? '<span class="onboard-offices">'.implode(', ',$offices).'</span> '
+                    ? ' <span class="onboard-offices">'.implode(', ',$offices).'</span>'
                     : '';
 
                 if ($seatIsVacant) { $classes[] = 'carryOver'; }
@@ -133,7 +133,7 @@ $title = $this->title
             $seat_uri = BASE_URI."/seats/view?seat_id=$seat_id";
             echo "
             <tr $classes>
-                <td>{$officeTitles}{$memberName}</td>
+                <td>{$memberName}{$officeTitles}</td>
                 <td><a href=\"$seat_uri\">$seatName</a></td>
                 <td>$appointer</td>
                 <td>$termDates</td>
