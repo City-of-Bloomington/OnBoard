@@ -31,6 +31,7 @@ use Blossom\Classes\Block;
             <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
             <?php
+                $seat = $this->newMember->getSeat();
                 if ($seat) {
                     if ($seat->getType() === 'termed') {
                         $block = new Block('terms/recentHolders.inc', ['seat'=>$seat]);

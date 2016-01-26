@@ -11,9 +11,8 @@ use Blossom\Classes\Block;
     <h1 class="fn1-uiBlock-title"><?= sprintf($this->_('appointToSeat', 'messages'), $this->newMember->getCommittee()->getName()); ?></h1>
 </header>
 <?php
-    $seat = $this->newMember->getSeat();
-    if ($seat) {
-        $summaryBlock = new Block('seats/summary.inc', ['seat' => $seat]);
+    if ($this->newMember->getSeat()) {
+        $summaryBlock = new Block('seats/summary.inc', ['seat' => $this->newMember->getSeat()]);
         echo '<aside class="onboard-contextInfo">';
         echo $summaryBlock->render('html', $this->template);
         echo '</aside>';
