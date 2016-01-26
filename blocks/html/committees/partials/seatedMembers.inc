@@ -2,12 +2,20 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Committee $this->committee
+ * @param array $this->seats
+ * @param string $this->title (optional)
+ * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
 
-$committee_id = $this->committee->getId();
+$title = $this->title
+    ? self::escape($this->title)
+    : $this->_(['seat', 'seats', count($this->seats)]);
 ?>
+<section    class="fn1-uiBlock">
+    <header class="fn1-uiBlock-header"><h1><?= $title; ?></h1></header>
+    <div    class="fn1-uiBlock-content">
+
 <table class="fn1-table">
     <thead>
         <tr><th><?= $this->_('name'); ?></th>
@@ -20,13 +28,14 @@ $committee_id = $this->committee->getId();
     <tbody>
     <?php
 
-        foreach ($this->committee->getSeats(time()) as $seat) {
+        foreach ($this->seats as $seat) {
             $seat_id    = $seat->getId();
             $memberName = '';
             $seatName   = self::escape($seat->getName());
             $appointer  = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
             $termDates  = '';
             $offices    = '';
+            $officeTitles = '';
             $actions    = '';
             $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
             $classes    = [];
@@ -79,9 +88,9 @@ $committee_id = $this->committee->getId();
                     $actions.= sprintf($actionLink, $uri, $this->_('member_end'));
                 }
 
-                $offices      = $member->getPerson()->getOffices($this->committee, date('Y-m-d'));
+                $offices = $member->getPerson()->getOffices($seat->getCommittee(), date('Y-m-d'));
                 if (Person::isAllowed('offices', 'add')) {
-                    $uri = BASE_URI."/offices/update?committee_id=$committee_id;person_id=$person_id";
+                    $uri = BASE_URI."/offices/update?committee_id={$seat->getCommittee_id()};person_id=$person_id";
                     $actions.= sprintf($actionLink, $uri, $this->_('office_add'));
                 }
                 if (Person::isAllowed('offices', 'edit')) {
@@ -126,7 +135,7 @@ $committee_id = $this->committee->getId();
     </tbody>
 </table>
 <?php
-    if (Person::isAllowed('seats', 'add')) {
+    if ($this->committee && Person::isAllowed('seats', 'add')) {
         $helper = $this->template->getHelper('buttonLink');
         echo $helper->buttonLink(
             BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
@@ -135,3 +144,5 @@ $committee_id = $this->committee->getId();
         );
     }
 ?>
+    </div>
+</section>

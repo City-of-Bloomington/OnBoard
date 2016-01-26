@@ -43,7 +43,6 @@ $ZEND_ACL->addResource(new Resource('topicTypes'));
 $ZEND_ACL->addResource(new Resource('votes'));
 $ZEND_ACL->addResource(new Resource('voteTypes'));
 
-
 /**
  * Assign permissions to the resources
  */
@@ -51,14 +50,14 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
-$ZEND_ACL->allow(null, ['people', 'topics', 'seats', 'liasons'], ['index','view']);
-$ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'membership', 'vacancies']);
+$ZEND_ACL->allow(null, ['people', 'topics', 'liasons'], ['index','view']);
+$ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
+$ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff', ['people', 'liasons']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'reappoint', 'resign']);
-$ZEND_ACL->allow('Staff', 'seats', 'appoint');
 
 
 // Administrator is allowed access to everything

@@ -61,7 +61,23 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
-        $this->template->blocks[] = new Block('committees/currentMembers.inc', ['committee' => $committee]);
+        if ($committee->getType() === 'seated') {
+            $seats = $committee->getSeats(time());
+            $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
+                'committee' => $committee,
+                'seats'     => $seats,
+                'title'     => $this->template->_(['current_member', 'current_members', count($seats)])
+            ]);
+        }
+        else {
+            $members = $committee->getMembers();
+            $this->template->blocks[] = new Block('committees/partials/openMembers.inc', [
+                'committee' => $committee,
+                'members'   => $members,
+                'title'     => $this->template->_(['current_member', 'current_members', count($members)])
+            ]);
+        }
+
     }
 
     public function update()
@@ -100,27 +116,5 @@ class CommitteesController extends Controller
             'seats'     => $committee->getSeats(),
             'committee' => $committee
         ]);
-    }
-
-    public function membership()
-    {
-        if ($this->template->outputFormat === 'html') {
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
-            $this->template->blocks[] = new Block('committees/header.inc');
-        }
-
-        $data = Committee::getMembershipData();
-        $this->template->blocks[] = new Block('committees/membershipData.inc', ['data'=>$data]);
-    }
-
-    public function vacancies()
-    {
-        if ($this->template->outputFormat === 'html') {
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
-            $this->template->blocks[] = new Block('committees/header.inc');
-        }
-
-        $data = Committee::getVacancyData();
-        $this->template->blocks[] = new Block('committees/vacancies.inc', ['data'=>$data]);
     }
 }

@@ -2,10 +2,19 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Committee $this->committee
+ * @param array $this->members
+ * @param string $this->title (optional)
+ * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
+$title = $this->title
+    ? self::escape($this->title)
+    : $this->_(['member', 'members', count($this->members)]);
 ?>
+<section    class="fn1-uiBlock">
+    <header class="fn1-uiBlock-header"><h1><?= $title; ?></h1></header>
+    <div    class="fn1-uiBlock-content">
+
 <table class="fn1-table">
     <thead>
         <tr><th></th>
@@ -17,7 +26,7 @@ use Application\Models\Person;
     <?php
         // Display current committee members
         // These members will not be associated with a seat
-        foreach ($this->committee->getMembers() as $m) {
+        foreach ($this->members as $m) {
             $name = self::escape($m->getPerson()->getFullname());
 
             echo "
@@ -31,7 +40,7 @@ use Application\Models\Person;
     </tbody>
 </table>
 <?php
-    if (Person::isAllowed('members', 'appoint')) {
+    if ($this->committee && Person::isAllowed('members', 'appoint')) {
         $helper = $this->template->getHelper('buttonLink');
         echo $helper->buttonLink(
             BASE_URI.'/members/appoint?committee_id='.$this->committee->getid(),
@@ -40,3 +49,5 @@ use Application\Models\Person;
         );
     }
 ?>
+    </div>
+</section>

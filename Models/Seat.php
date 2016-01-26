@@ -365,7 +365,7 @@ class Seat extends ActiveRecord
                 // If the seat is active, and there's no current term
                 // there probably should be.  It means that no one is serving
                 // the current term
-                return false;
+                return true;
             }
             else {
                 return $this->getMember($timestamp) ? false : true;
