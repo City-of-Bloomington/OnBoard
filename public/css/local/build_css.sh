@@ -1,2 +1,2 @@
 #!/bin/bash
-node-sass --output-style compressed --source-map ./ screen.scss ./screen.css
+node-sass --output-style compact --source-map ./ screen.scss ./screen.css
