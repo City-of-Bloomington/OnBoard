@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->seats
  * @param Committee $this->committee (optional)
+ * @param boolean $this->disableButtons (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -29,7 +30,7 @@ $helper = $this->template->getHelper('buttonLink');
             foreach ($this->seats as $seat) {
                 $seat_id = $seat->getId();
 
-                if (Person::isAllowed('seats', 'edit')) {
+                if (!$this->disableButtons && Person::isAllowed('seats', 'edit')) {
                     $editButton = $helper->buttonLink(
                     BASE_URI."/seats/update?seat_id=$seat_id",
                     $this->translate('seat_edit'),
@@ -55,7 +56,7 @@ $helper = $this->template->getHelper('buttonLink');
         </tbody>
     </table>
     <?php
-        if (isset($this->committee) && Person::isAllowed('seats', 'add')) {
+        if (!$this->disableButtons && isset($this->committee) && Person::isAllowed('seats', 'add')) {
             echo $helper->buttonLink(
                 BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
                 $this->translate('seat_add'),
