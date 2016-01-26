@@ -55,7 +55,9 @@ $helper = $this->template->getHelper('buttonLink');
                     $editButton = '<a href="'.BASE_URI.'/terms/update?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_edit').'</a>';
                 }
                 if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
-                    $deleteButton = '<a href="'.BASE_URI.'/terms/delete?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_delete').'</a>';
+                    $deleteButton  = '<div class=\"fn1-dropdown-subgroup\">';
+                    $deleteButton .= '<a href="'.BASE_URI.'/terms/delete?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_delete').'</a>';
+                    $deleteButton .= '</div>';
                 }
             }
 
@@ -72,9 +74,6 @@ $helper = $this->template->getHelper('buttonLink');
                             <div    class=\"fn1-dropdown-links\">
 								<div class=\"fn1-dropdown-subgroup\">
 									$editButton
-								</div>
-								<div class=\"fn1-dropdown-subgroup\">
-									$deleteButton
 								</div>
                             </div>
                         </div>

@@ -83,18 +83,25 @@
         width: 100%;
 
         th, td {
-            border: 1px solid #666;
-            padding: .5em;
         }
         > tbody {
             > tr {
                 > th {
                     background-color: #909090;
+                    border: 1px solid #666;
                     color: #fff;
+                    padding: .5em;
                     vertical-align: top;
+                    > .fn1-dropdown {
+                        .fn1-dropdown-launcher {
+                            background-color: #707070;
+                        }
+                    }
                 }
                 > td {
                     background-color: #e0e0e0;
+                    border: 1px solid #666;
+                    padding: .5em;
                 }
             }
         }
