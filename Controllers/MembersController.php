@@ -54,6 +54,7 @@ class MembersController extends Controller
             if ($member->getSeat_id()) {
                 $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $member->getSeat()]);
             }
+            $this->template->blocks[] = new Block('members/list.inc', ['members'=>$member->getSeat()->getMembers()]);
             $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
         }
         else {

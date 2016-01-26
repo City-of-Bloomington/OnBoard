@@ -78,15 +78,21 @@ use Application\Templates\Helpers\ButtonLink;
         </tbody>
     </table>
     <?php
-        if ($this->seat && $this->seat->getType() === 'open'
-            && !$this->disableButtons
-            && Person::isAllowed('members', 'appoint')) {
-
-            echo $helper->buttonLink(
-                BASE_URI.'/members/appoint?seat_id='.$this->seat->getId(),
-                $this->_('member_add'),
-                'add'
-            );
+        if ($this->seat && $this->seat->getType() === 'open' && !$this->disableButtons) {
+            if (Person::isAllowed('members', 'update')) {
+                echo $helper->buttonLink(
+                    BASE_URI.'/members/update?seat_id='.$this->seat->getId(),
+                    $this->_('member_add'),
+                    'add'
+                );
+            }
+            elseif (Person::isAllowed('members', 'appoint')) {
+                echo $helper->buttonLink(
+                    BASE_URI.'/members/appoint?seat_id='.$this->seat->getId(),
+                    $this->_('member_add'),
+                    'add'
+                );
+            }
         }
     ?>
 </section>

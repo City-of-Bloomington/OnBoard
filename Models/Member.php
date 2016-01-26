@@ -186,15 +186,20 @@ class Member extends ActiveRecord
 		}
 	}
 
-    private function populateDates($term)
+    /**
+     * @param Term $term
+     */
+    private function populateDates(Term $term=null)
     {
-        $members = $term->getMembers();
-        if (!count($members)) {
-            if ($term->getEndDate('U') < time()) {
-                $this->setStartDate($term->getStartDate());
-                $this->setEndDate  ($term->getEndDate());
+        if ($term) {
+            $members = $term->getMembers();
+            if (!count($members)) {
+                if ($term->getEndDate('U') < time()) {
+                    $this->setStartDate($term->getStartDate());
+                    $this->setEndDate  ($term->getEndDate());
+                }
+                else { $this->setStartDate(date(DATE_FORMAT)); }
             }
-            else { $this->setStartDate(date(DATE_FORMAT)); }
         }
     }
 }

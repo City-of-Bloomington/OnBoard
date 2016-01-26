@@ -81,13 +81,14 @@ $title = $this->title
                 $name = "<a href=\"$person_uri\">$name</a>";
 
                 $memberName.= $name;
-                $termDates = $member->getTerm_id()
-                    ? "{$member->getTerm()->getStartDate(DATE_FORMAT)} - {$member->getTerm()->getEndDate(DATE_FORMAT)}"
-                    : '';
+                $term = $member->getTerm();
+                $termDates = $term
+                    ? "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}"
+                    : "{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}";
 
                 $termEndWarningDays = $seat->getCommittee()->getTermEndWarningDays();
-                if ($termEndWarningDays
-                    && (strtotime("+$termEndWarningDays days") > (int)$member->getTerm()->getEndDate('U'))) {
+                if ($term && $termEndWarningDays
+                    && (strtotime("+$termEndWarningDays days") > (int)$term->getEndDate('U'))) {
                     $classes[] = 'termEndsSoon';
                 }
 

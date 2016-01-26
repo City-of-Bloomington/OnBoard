@@ -11,9 +11,11 @@ $requirements   = self::escape($this->seat->getRequirements());
 $markdown       = new MarkdownExtra();
 $requirements   = $markdown->transform($requirements);
 
+$name = self::escape($this->seat->getName());
+$uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 ?>
 <section>
-    <h1><?= self::escape($this->seat->getName()); ?></h1>
+    <h1><a href="<?= $uri; ?>"><?= $name; ?></a></h1>
     <dl class="fn1-output-field">
         <dt><?= $this->_('appointed_by') ?></dt>
         <dd><?= $this->seat->getAppointer(); ?></dd>
