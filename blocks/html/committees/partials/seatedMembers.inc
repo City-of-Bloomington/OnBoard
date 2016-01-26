@@ -132,6 +132,7 @@ $title = $this->title
 
             $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
             $seat_uri = BASE_URI."/seats/view?seat_id=$seat_id";
+            if (!$memberName) { $memberName = $this->_('vacant'); }
             echo "
             <tr $classes>
                 <td>{$memberName}{$officeTitles}</td>

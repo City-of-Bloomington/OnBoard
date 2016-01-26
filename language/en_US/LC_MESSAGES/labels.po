@@ -445,6 +445,9 @@ msgstr "Add Office"
 msgid "office_edit"
 msgstr "Edit Office"
 
+msgid "vacant"
+msgstr "Vacant"
+
 msgid "vacancy"
 msgid_plural "vacancies"
 msgstr[0] "Vacancy"
