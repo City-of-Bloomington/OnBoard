@@ -456,6 +456,11 @@ msgstr[1] "Vacancies"
 msgid "order"
 msgstr "Order"
 
+msgid "day"
+msgid_plural "days"
+msgstr[0] "day"
+msgstr[1] "days"
+
 msgid "date"
 msgstr "Date"
 
@@ -487,7 +492,7 @@ msgid "meetingSchedule"
 msgstr "Meeting Schedule"
 
 msgid "termEndWarningDays"
-msgstr "termEndWarningDays"
+msgstr "End of Term Warning"
 
 msgid "statutoryName"
 msgstr "Statutory Name"

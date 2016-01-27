@@ -58,6 +58,9 @@ if (Person::isAllowed('committees', 'edit')) {
 
         foreach ($fields as $f) {
             if ($$f) {
+                if ($f === 'termEndWarningDays') {
+                    $$f = $$f.' '.$this->_(['day', 'days', $$f]);
+                }
                 echo "
                 <dl class=\"fn1-output-field\">
                     <dt>{$this->_($f)}</dt>
