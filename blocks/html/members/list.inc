@@ -16,8 +16,7 @@ use Application\Templates\Helpers\ButtonLink;
     <table class="fn1-table">
         <tbody>
         <?php
-            $helper = $this->template->getHelper('buttonLink');
-            $actionLink = $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+            $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
 
             foreach ($this->members as $member) {
                 $member_id = $member->getId();
@@ -88,19 +87,17 @@ use Application\Templates\Helpers\ButtonLink;
     </table>
     <?php
         if ($this->seat && $this->seat->getType() === 'open' && !$this->disableButtons) {
+
             if (Person::isAllowed('members', 'update')) {
-                echo $helper->buttonLink(
-                    BASE_URI.'/members/update?seat_id='.$this->seat->getId(),
-                    $this->_('member_add'),
-                    'add'
-                );
+                $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
             }
             elseif (Person::isAllowed('members', 'appoint')) {
-                echo $helper->buttonLink(
-                    BASE_URI.'/members/appoint?seat_id='.$this->seat->getId(),
-                    $this->_('member_add'),
-                    'add'
-                );
+                $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
+            }
+
+            if (isset($uri)) {
+                $helper = $this->template->getHelper('buttonLink');
+                echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
             }
         }
     ?>

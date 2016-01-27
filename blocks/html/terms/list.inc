@@ -38,6 +38,8 @@ $helper = $this->template->getHelper('buttonLink');
 
         echo '<table class="onboard-termsTable"><tbody>';
 
+        $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+
         foreach ($terms as $term) {
             $term_id = $term->getId();
 
@@ -52,35 +54,38 @@ $helper = $this->template->getHelper('buttonLink');
                         'add'
                     );                }
                 if (Person::isAllowed('terms', 'edit')) {
-                    $editButton = '<a href="'.BASE_URI.'/terms/update?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_edit').'</a>';
+                    $uri = BASE_URI."/terms/update?term_id=$term_id";
+                    $editButton = sprintf($actionLink, $uri, $this->_('term_edit'));
                 }
                 if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
-                    $deleteButton  = '<div class=\"fn1-dropdown-subgroup\">';
-                    $deleteButton .= '<a href="'.BASE_URI.'/terms/delete?term_id='.$term_id.'" class="fn1-dropdown-link">'.$this->_('term_delete').'</a>';
-                    $deleteButton .= '</div>';
+                    $uri = BASE_URI."/terms/delete?term_id=$term_id";
+                    $deleteButton = sprintf($actionLink, $uri, $this->_('term_delete'));
                 }
+            }
+
+            $moreLinks = '';
+            if ($editButton || $deleteButton) {
+                $moreLinks = "
+                <div         class=\"fn1-dropdown\">
+                    <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
+                    <div     class=\"fn1-dropdown-links\">
+                ";
+                    if ($editButton  ) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$editButton</div>"; }
+                    if ($deleteButton) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$deleteButton</div>"; }
+                echo "
+                    </div>
+                </div>
+                ";
             }
 
             $uri = BASE_URI."/terms/view?term_id=$term_id";
             $memberList->members = $term->getMembers();
             echo "
-                <tr>
-                    <th>
-                        {$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
-                        <div class=\"fn1-dropdown\">
-                            <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
-                                {$this->_('more')}
-                            </button>
-                            <div    class=\"fn1-dropdown-links\">
-								<div class=\"fn1-dropdown-subgroup\">
-									$editButton
-								</div>
-                            </div>
-                        </div>
-                    </th>
-                    <td>{$memberList->render('html', $this->template)} $addButton</td>
-                </tr>
-
+            <tr><th>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
+                    $moreLinks
+                </th>
+                <td>{$memberList->render('html', $this->template)} $addButton</td>
+            </tr>
             ";
         }
         echo '</tbody></table>';
