@@ -29,6 +29,9 @@ msgstr "Shows how often (as a percentage) that other members vote the same way a
 msgid "appointToSeat"
 msgstr "Add an appointee to %s"
 
+msgid "reappointToSeat"
+msgstr "Reappoint %s to %s?"
+
 msgid "endServiceHelpText"
 msgstr "%s is still assigned to this seat. Before you report a new appointee, <strong>please report the end service date</strong> for %s."
 
