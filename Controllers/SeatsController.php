@@ -105,12 +105,12 @@ class SeatsController extends Controller
             }
             $committee = $seat->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$committee]);
+            $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
             $this->template->blocks[] = new block('seats/list.inc', [
                 'seats'     => $committee->getSeats(),
                 'committee' => $committee,
                 'disableButtons' => true
             ]);
-            $this->template->blocks[] = new Block('seats/updateForm.inc', ['seat'=>$seat]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);

@@ -51,7 +51,7 @@ class MembersController extends Controller
             $this->template->setFilename('two-column');
             $committee = $member->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-
+            $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
             $seat = $member->getSeat();
             if ($seat) {
                 $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
@@ -60,7 +60,6 @@ class MembersController extends Controller
                     'disableButtons' => true
                 ]);
             }
-            $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);
