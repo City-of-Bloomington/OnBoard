@@ -40,13 +40,19 @@ $title = $this->title
     </tbody>
 </table>
 <?php
-    if ($this->committee && Person::isAllowed('members', 'appoint')) {
-        $helper = $this->template->getHelper('buttonLink');
-        echo $helper->buttonLink(
-            BASE_URI.'/members/appoint?committee_id='.$this->committee->getid(),
-            $this->_('member_add'),
-            'add'
-        );
+    if ($this->committee) {
+
+        if (Person::isAllowed('members', 'update')) {
+            $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
+        }
+        elseif (Person::isAllowed('members', 'appoint')) {
+            $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
+        }
+        
+        if (isset($uri)) {
+            $helper = $this->template->getHelper('buttonLink');
+            echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
+        }
     }
 ?>
     </div>

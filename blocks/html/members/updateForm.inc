@@ -56,7 +56,9 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
 		<?php
 			$helper = $this->template->getHelper('saveAndCancelButtons');
 
-			$uri = BASE_URI.'/seats/view?seat_id='.$seat_id;
+			$uri = $seat_id
+                ? BASE_URI.'/seats/view?seat_id='.$seat_id
+                : BASE_URI.'/committees/members?committee_id='.$committee_id;
 			echo $helper->saveAndCancelButtons($uri);
 		?>
         </div>
