@@ -6,16 +6,10 @@
  */
 if (isset($_SESSION['USER'])) {
     $name = self::escape($_SESSION['USER']->getFullname());
-    echo "
-    <nav        class=\"fn1-dropdown fn1-siteMenu\">
-        <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
-            $name
-        </button>
-        <div    class=\"fn1-dropdown-links\">
-            <a href=\"".BASE_URI."/login/logout\" class=\"fn1-dropdown-link\">{$this->_('logout')}</a>
-        </div>
-    </nav>
-    ";
+    $links = [['url'=> BASE_URI.'/login/logout', 'label'=>$this->_('logout')]];
+
+    $helper = $this->getHelper('dropdown');
+    echo $helper->dropdown($links, $name, 'fn1-siteMenu');
 }
 else {
     $return_url = self::escape($_SERVER['REQUEST_URI']);

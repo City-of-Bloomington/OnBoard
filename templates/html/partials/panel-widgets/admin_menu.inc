@@ -5,7 +5,7 @@
  */
 use Application\Models\Person;
 
-$links = '';
+$links = [];
 
 $routes = [
     'departments'=> 'department',
@@ -20,19 +20,11 @@ if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
 foreach ($routes as $plural=>$singular) {
     $requiredAction = 'index';
     if (Person::isAllowed($plural, $requiredAction)) {
-        $links.= "<a href=\"".BASE_URI."/$plural\" class=\"fn1-dropdown-link\">{$this->_([$singular, $plural, 2])}</a>";
+        $links[] = ['url'=>BASE_URI."/$plural", 'label'=>$this->_([$singular, $plural, 2])];
     }
 }
 
 if ($links) {
-    echo "
-    <nav class=\"fn1-dropdown fn1-siteMenu\">
-        <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
-            {$this->_('admin')}
-        </button>
-        <div class=\"fn1-dropdown-links\">
-            $links
-        </div>
-    </nav>
-    ";
+    $helper = $this->getHelper('dropdown');
+    echo $helper->dropdown($links, $this->_('admin'), 'fn1-siteMenu');
 }

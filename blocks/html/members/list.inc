@@ -11,79 +11,42 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
+use Blossom\Classes\Block;
 ?>
 <section class="membersList">
     <table class="fn1-table">
-        <tbody>
-        <?php
-            $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+    <?php
+        $actions = new Block('members/partials/actions.inc');
 
-            foreach ($this->members as $member) {
-                $member_id = $member->getId();
+        foreach ($this->members as $member) {
+            $member_id = $member->getId();
 
-                $editButton   = '';
-                $deleteButton = '';
-                if (!$this->disableButtons) {
-                    if (Person::isAllowed('members', 'edit')) {
-                        $uri = BASE_URI."/members/update?member_id=$member_id";
-                        $editButton = sprintf($actionLink, $uri, $this->_('member_edit'));
-                    }
-                    if (Person::isAllowed('members', 'delete')) {
-                        $uri = BASE_URI."/members/delete?member_id=$member_id";
-                        $deleteButton = sprintf($actionLink, $uri, $this->_('member_delete'));
-                    }
-                }
+            $name = self::escape($member->getPerson()->getFullname());
 
-                $addOfficeButton  = '';
-                if (!$this->disableButtons && Person::isAllowed('offices', 'edit')) {
-                    $uri = BASE_URI."/offices/update?committee_id={$member->getCommittee_id()};person_id={$member->getPerson_id()}";
-                    $addOfficeButton = sprintf($actionLink, $uri, $this->_('office_add'));
-                }
-
-                $offices = [];
-                $editOfficeLinks = '';
-                foreach ($member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d')) as $office) {
-                    $title = self::escape($office->getTitle());
-
-                    if (!$this->disableButtons && Person::isAllowed('offices','edit')) {
-                        $uri = BASE_URI."/offices/update?office_id={$office->getId()}";
-                        $editOfficeLinks.= sprintf($actionLink, $uri, sprintf($this->_('office_edit', 'messages'), $title));
-                    }
-                    $offices[] = $title;
-                }
-                $offices = implode(', ',$offices);
-                if (count($offices > 0)) {
-                    $offices = " <span class=\"onboard-offices\">$offices</span>";
-                }
-
-                $name = self::escape($member->getPerson()->getFullname());
-
-                $moreLinks = '';
-                if ($addOfficeButton || $editOfficeLinks || $editButton || $deleteButton) {
-                    $moreLinks = "
-                    <div         class=\"fn1-dropdown fn1-table-actions\">
-                        <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
-                        <div     class=\"fn1-dropdown-links\">
-                    ";
-                    if ($addOfficeButton || $editOfficeLinks) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$addOfficeButton $editOfficeLinks</div>"; }
-                    if ($editButton)                          { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$editButton</div>"; }
-                    if ($deleteButton)                        { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$deleteButton</div>"; }
-                    $moreLinks.= "
-                        </div>
-                    </div>
-                    ";
-
-                }
-
-                echo "
-                <tr><td>$name{$offices}</td>
-                    <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
-                    <td>$moreLinks</td>
-                </tr>
-                ";
+            $officeTitles = [];
+            $offices = $member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d'));
+            foreach ($offices as $office) {
+                $officeTitles[] = self::escape($office->getTitle());
             }
-        ?>
-        </tbody>
+            $officeTitles = implode(', ',$officeTitles);
+            if (count($officeTitles > 0)) {
+                $officeTitles = " <span class=\"onboard-offices\">$officeTitles</span>";
+            }
+
+            $moreLinks = '';
+            if (!$this->disableButtons) {
+                $actions->member  = $member;
+                $actions->offices = $offices;
+                $moreLinks = $actions->render('html', $this->template);
+            }
+            echo "
+            <tr><td>$name{$officeTitles}</td>
+                <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
+                <td>$moreLinks</td>
+            </tr>
+            ";
+        }
+    ?>
     </table>
     <?php
         if ($this->seat && $this->seat->getType() === 'open' && !$this->disableButtons) {

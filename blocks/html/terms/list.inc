@@ -38,44 +38,23 @@ $helper = $this->template->getHelper('buttonLink');
 
         echo '<table class="onboard-termsTable"><tbody>';
 
-        $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+        $actions = new Block('terms/partials/actions.inc');
 
         foreach ($terms as $term) {
             $term_id = $term->getId();
 
-            $addButton    = '';
-            $editButton   = '';
-            $deleteButton = '';
+            $addButton = '';
+            $moreLinks = '';
             if (!$this->disableButtons) {
                 if (Person::isAllowed('members', 'edit')) {
                     $addButton = $helper->buttonLink(
                         BASE_URI."/members/update?term_id=$term_id",
                         $this->_('member_add'),
                         'add'
-                    );                }
-                if (Person::isAllowed('terms', 'edit')) {
-                    $uri = BASE_URI."/terms/update?term_id=$term_id";
-                    $editButton = sprintf($actionLink, $uri, $this->_('term_edit'));
+                    );
                 }
-                if (Person::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
-                    $uri = BASE_URI."/terms/delete?term_id=$term_id";
-                    $deleteButton = sprintf($actionLink, $uri, $this->_('term_delete'));
-                }
-            }
-
-            $moreLinks = '';
-            if ($editButton || $deleteButton) {
-                $moreLinks = "
-                <div         class=\"fn1-dropdown\">
-                    <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">{$this->_('more')}</button>
-                    <div     class=\"fn1-dropdown-links\">
-                ";
-                    if ($editButton  ) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$editButton</div>"; }
-                    if ($deleteButton) { $moreLinks.= "<div class=\"fn1-dropdown-subgroup\">$deleteButton</div>"; }
-                echo "
-                    </div>
-                </div>
-                ";
+                $actions->term = $term;
+                $moreLinks = $actions->render('html', $this->template);
             }
 
             $uri = BASE_URI."/terms/view?term_id=$term_id";
