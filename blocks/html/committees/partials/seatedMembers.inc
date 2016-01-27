@@ -87,8 +87,7 @@ $title = $this->title
                     : "{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}";
 
                 $termEndWarningDays = $seat->getCommittee()->getTermEndWarningDays();
-                if ($term && $termEndWarningDays
-                    && (strtotime("+$termEndWarningDays days") > (int)$term->getEndDate('U'))) {
+                if ($term && $term->isInEndWarningPeriod(time())) {
                     $classes[] = 'termEndsSoon';
                 }
 

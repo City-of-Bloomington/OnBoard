@@ -289,4 +289,21 @@ class Term extends ActiveRecord
         $term->setSeat($seat);
         return $term;
 	}
+
+	/**
+	 * @param int $timestamp
+	 * @return boolean
+	 */
+	public function isInEndWarningPeriod($timestamp=null)
+	{
+        if (!$timestamp) { $timestamp = time(); }
+
+        $days = $this->getCommittee()->getTermEndWarningDays();
+        if ($days) {
+            $periodEnd = strtotime("+$days days", $timestamp);
+            $termEnd = (int)$this->getEndDate('U');
+
+            return $periodEnd > $termEnd && $timestamp < $termEnd;
+        }
+	}
 }
