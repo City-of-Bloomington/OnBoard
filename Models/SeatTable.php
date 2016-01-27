@@ -15,7 +15,7 @@ class SeatTable extends TableGateway
 {
 	public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
 
-	public function find($fields=null, $order='s.startDate desc', $paginated=false, $limit=null)
+	public function find($fields=null, $order='s.name', $paginated=false, $limit=null)
 	{
 		$select = new Select(['s'=>'seats']);
 		if (count($fields)) {
