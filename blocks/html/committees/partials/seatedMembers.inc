@@ -28,9 +28,10 @@ $title = $this->title
 
 <table class="fn1-table">
     <thead>
-        <tr><th><?= $this->_('name'); ?></th>
+        <tr>
             <th><?= $this->_('seat'); ?></th>
             <th><?= $this->_('appointed_by'); ?></th>
+            <th><?= $this->_('name'); ?></th>
             <th><?= $this->_(['term','term', 1]); ?></th>
             <th><?= $this->_('actions'); ?></th>
         </tr>
@@ -137,9 +138,9 @@ $title = $this->title
             if (!$memberName) { $memberName = $this->_('vacant'); }
             echo "
             <tr $classes>
-                <td>{$memberName}{$officeTitles}</td>
                 <td><a href=\"$seat_uri\">$seatName</a></td>
                 <td>$appointer</td>
+                <td>{$memberName}{$officeTitles}</td>
                 <td>$termDates</td>
                 <td>$actions</td>
             </tr>
