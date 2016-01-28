@@ -121,10 +121,12 @@ $title = $this->title
                 if ($seatIsVacant) { $classes[] = 'carryOver'; }
             }
 
+            $moreLinks = '';
             if ($actions) {
                 $h = $this->template->getHelper('dropdown');
-                $actions = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
+                $moreLinks = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
             }
+
 
             $editSeatButton = '';
             if (Person::isAllowed('seats', 'edit')) {
@@ -146,7 +148,7 @@ $title = $this->title
                 <td>$appointer</td>
                 <td>{$memberName}{$officeTitles}</td>
                 <td>$termDates</td>
-                <td>$actions</td>
+                <td>$moreLinks</td>
             </tr>
             ";
         }
