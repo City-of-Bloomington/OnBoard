@@ -162,10 +162,6 @@ class MembersController extends Controller
                     }
 
                     $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $newMember->getCommittee()]);
-                    $this->template->blocks[] = new Block('members/appointInfo.inc', [
-                        'currentMember' => $member,
-                        'newMember'     => $newMember
-                    ]);
                     $this->template->blocks[] = new Block('members/reappointForm.inc', [
                         'member'    => $member,
                         'newMember' => $newMember

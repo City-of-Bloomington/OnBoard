@@ -8,6 +8,7 @@
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
 use Blossom\Classes\Block;
+use Michelf\MarkdownExtra;
 ?>
 <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
     <?php if ($this->currentMember): ?>
@@ -25,13 +26,32 @@ use Blossom\Classes\Block;
     <?php endif ?>
 
     <section    class="fn1-uiBlock">
-        <?= $this->_include('html/members/partials/appointNewMemberHeader.inc'); ?>
+        <header class="fn1-uiBlock-header">
+            <h1 class="fn1-uiBlock-title"><?= sprintf($this->_('appointToSeat', 'messages'), $this->newMember->getCommittee()->getName()); ?></h1>
+        </header>
+        <?php
+            $seat = $this->newMember->getSeat();
+            if ($seat) {
+                $requirements = $seat->getRequirements();
+                if ($requirements) {
+                    $markdown     = new MarkdownExtra();
+                    $requirements = $markdown->transform($requirements);
+                    echo "
+                    <aside class=\"onboard-contextInfo\">
+                        <dl class=\"fn1-output-field\">
+                            <dt>{$this->_(['requirement', 'requirements', 2])}</dt>
+                            <dd>$requirements</dd>
+                        </dl>
+                    </aside>
+                    ";
+                }
+            }
+        ?>
         <div class="fn1-uiBlock-content">
             <input name="newMember[committee_id]" type="hidden" value="<?= $this->newMember->getCommittee_id(); ?>" />
             <input name="newMember[seat_id]"      type="hidden" value="<?= $this->newMember->getSeat_id(); ?>" />
 
             <?php
-                $seat = $this->newMember->getSeat();
                 if ($seat) {
                     if ($seat->getType() === 'termed') {
                         $block = new Block('terms/recentHolders.inc', ['seat'=>$seat]);
