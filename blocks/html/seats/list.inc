@@ -17,6 +17,7 @@ $helper = $this->template->getHelper('buttonLink');
     <table class="fn1-table">
         <thead>
             <tr><th></th>
+                <th><?= $this->_('code'); ?></th>
                 <th><?= $this->_('name'); ?></th>
                 <th><?= $this->_(['appointer', 'appointers', 1]); ?></th>
                 <th><?= $this->_('startDate'); ?></th>
@@ -38,6 +39,7 @@ $helper = $this->template->getHelper('buttonLink');
                     ButtonLink::SIZE_ICON
                     );
                 }
+                $code      = self::escape($seat->getCode());
                 $name      = self::escape($seat->getName());
                 $appointer = self::escape($seat->getAppointer());
                 $uri  = BASE_URI."/seats/view?seat_id=$seat_id";
@@ -45,6 +47,7 @@ $helper = $this->template->getHelper('buttonLink');
 
                 echo "
                 <tr><td>$editButton</td>
+                    <td>$code</td>
                     <td><a href=\"$uri\">$name</a></td>
                     <td>$appointer</td>
                     <td>{$seat->getStartDate(DATE_FORMAT)}</td>

@@ -15,7 +15,7 @@ class SeatTable extends TableGateway
 {
 	public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
 
-	public function find($fields=null, $order='s.name', $paginated=false, $limit=null)
+	public function find($fields=null, $order=['s.code', 's.name'], $paginated=false, $limit=null)
 	{
 		$select = new Select(['s'=>'seats']);
 		if (count($fields)) {
@@ -27,8 +27,11 @@ class SeatTable extends TableGateway
 						$select->where("(s.endDate   is null or s.endDate>='$date')");
 
 						// If they want to order by committee, we have to join the committees table
-						if (  (is_array($order) && in_array('c.name', $order))
-                            || false !== strpos($order, 'c.name')) {
+
+
+
+						if (   (is_array($order)  && in_array('c.name', $order))
+                            || (is_string($order) && false !== strpos($order, 'c.name')) ) {
                             $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
                         }
                     break;

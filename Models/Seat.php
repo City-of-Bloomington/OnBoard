@@ -111,6 +111,7 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	public function getId()           { return parent::get('id');   }
 	public function getType()         { return parent::get('type'); }
+	public function getCode()         { return parent::get('code'); }
 	public function getName()         { return parent::get('name'); }
 	public function getRequirements() { return parent::get('requirements'); }
 	public function getCommittee_id() { return parent::get('committee_id'); }
@@ -122,6 +123,7 @@ class Seat extends ActiveRecord
 	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
 
 	public function setType        ($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
+	public function setCode        ($s) { parent::set('code', $s); }
 	public function setName        ($s) { parent::set('name', $s); }
 	public function setRequirements($s) { parent::set('requirements', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
@@ -139,7 +141,7 @@ class Seat extends ActiveRecord
 
 	public function handleUpdate($post)
 	{
-		$fields = ['name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type', 'termLength'];
+		$fields = ['code', 'name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type', 'termLength'];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);

@@ -8,7 +8,7 @@
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
 
-$fields = ['id', 'type', 'committee_id', 'appointer_id', 'name', 'requirements', 'termLength'];
+$fields = ['id', 'type', 'code', 'committee_id', 'appointer_id', 'name', 'requirements', 'termLength'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = $this->seat->$get();
@@ -40,6 +40,10 @@ $picker = $this->template->getHelper('datePicker');
                     ?>
                     </select>
                 </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label for="code"><?= $this->_('code'); ?></label></dt>
+                <dd><input name="code" id="code" value="<?= $code; ?>" /></dd>
             </dl>
             <dl class="fn1-input-field">
                 <dt><label  for="name" class="required"><?= $this->_('name'); ?></label></dt>

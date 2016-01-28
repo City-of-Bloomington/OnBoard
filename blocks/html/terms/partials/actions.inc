@@ -18,7 +18,8 @@ if (Person::isAllowed('terms', 'delete') && $this->term->isSafeToDelete()) {
     $deleteButton['subgroup'][] = ['url'=>$uri, 'label'=>$this->_('term_delete')];
 }
 
-if (count($editButton['subgroup'])) { $links[] = $editButton; }
+$links = [];
+if (count($editButton  ['subgroup'])) { $links[] = $editButton; }
 if (count($deleteButton['subgroup'])) { $links[] = $deleteButton; }
 if (count($links)) {
     $helper = $this->template->getHelper('dropdown');

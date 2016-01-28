@@ -75,6 +75,9 @@ msgstr "Help"
 msgid "about"
 msgstr "About"
 
+msgid "code"
+msgstr "Code"
+
 msgid "name"
 msgstr "Name"
 

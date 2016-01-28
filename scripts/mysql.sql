@@ -76,6 +76,7 @@ insert appointers values(1,'Elected');
 create table seats (
     id int unsigned not null primary key auto_increment,
     type enum('termed', 'open'),
+    code varchar(16),
     name varchar(128) not null,
 	committee_id int unsigned not null,
 	appointer_id int unsigned,

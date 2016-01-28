@@ -7,6 +7,7 @@
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Url;
 
 $title = $this->title
@@ -28,7 +29,8 @@ $title = $this->title
 
 <table class="fn1-table">
     <thead>
-        <tr>
+        <tr><th></th>
+            <th></th>
             <th><?= $this->_('seat'); ?></th>
             <th><?= $this->_('appointed_by'); ?></th>
             <th><?= $this->_('name'); ?></th>
@@ -43,6 +45,7 @@ $title = $this->title
             $seat_id    = $seat->getId();
             $memberName = '';
             $seatName   = self::escape($seat->getName());
+            $seatCode   = self::escape($seat->getCode());
             $appointer  = $seat->getAppointer_id() ? self::escape($seat->getAppointer()->getName()) : '';
             $termDates  = '';
             $offices    = '';
@@ -133,11 +136,22 @@ $title = $this->title
                 ";
             }
 
+            $editSeatButton = '';
+            if (Person::isAllowed('seats', 'edit')) {
+                $editSeatButton = $helper->buttonLink(
+                    BASE_URI."/seats/update?seat_id=$seat_id",
+                    $this->_('seats_edit'),
+                    'edit',
+                    ButtonLink::SIZE_ICON
+                );
+            }
             $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
             $seat_uri = BASE_URI."/seats/view?seat_id=$seat_id";
             if (!$memberName) { $memberName = $this->_('vacant'); }
             echo "
             <tr $classes>
+                <td>$editSeatButton</td>
+                <td>$seatCode</td>
                 <td><a href=\"$seat_uri\">$seatName</a></td>
                 <td>$appointer</td>
                 <td>{$memberName}{$officeTitles}</td>

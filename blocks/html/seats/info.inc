@@ -9,6 +9,7 @@ use Application\Models\Seat;
 use Michelf\MarkdownExtra;
 
 $name          = self::escape($this->seat->getName());
+$code          = self::escape($this->seat->getCode());
 $appointer     = self::escape($this->seat->getAppointer());
 $committee     = self::escape($this->seat->getCommittee()->getName());
 $committee_url = BASE_URI.'/committees/info?committee_id='.$this->seat->getCommittee_id();
@@ -44,6 +45,10 @@ echo "
         <dl class=\"fn1-output-field\">
 			<dt>{$this->_('type')}</dt>
             <dd>{$this->_($this->seat->getType())}</dd>
+        </dl>
+        <dl class=\"fn1-output-field\">
+            <dt>{$this->_('code')}</dt>
+            <dd>$code</dd>
         </dl>
 		<dl class=\"fn1-output-field\">
 			<dt>{$this->_('appointed_by')}</dt>
