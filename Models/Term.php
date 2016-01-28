@@ -75,14 +75,6 @@ class Term extends ActiveRecord
             $this->setEndDate($s->format(DATE_FORMAT));
         }
 
-		// Make sure the endDate is valid
-		$s = new \DateTime($this->getStartDate());
-		$s->add($termLength);
-		$s->sub($oneDay);
-		if ($s->format(DATE_FORMAT) != $this->getEndDate(DATE_FORMAT)) {
-            throw new \Exception('invalidEndDate');
-		}
-
 		// Make sure this term is not overlapping terms for the seat
 		$zend_db = Database::getConnection();
 		$sql = "select id from terms
