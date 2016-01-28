@@ -50,8 +50,7 @@ $title = $this->title
             $termDates  = '';
             $offices    = '';
             $officeTitles = '';
-            $actions    = '';
-            $actionLink = '<a href="%s" class="fn1-dropdown-link">%s</a>';
+            $actions    = [];
             $classes    = [];
 
             $seatIsVacant = $seat->hasVacancy();
@@ -64,7 +63,6 @@ $title = $this->title
                     if ($term) {
                         $termDates  = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
                         $appointURI = BASE_URI."/members/appoint?term_id={$term->getid()}";
-
                     }
                 }
                 else {
@@ -72,7 +70,7 @@ $title = $this->title
                 }
 
                 if (isset($appointURI) && Person::isAllowed('members', 'appoint')) {
-                    $actions.= sprintf($actionLink, $appointURI, $this->_('member_add'));
+                    $actions[] = ['url'=>$appointURI, 'label'=>$this->_('member_add')];
                 }
             }
 
@@ -97,23 +95,23 @@ $title = $this->title
 
                 if (Person::isAllowed('members', 'reappoint')) {
                     $uri = BASE_URI."/members/reappoint?member_id=$member_id";
-                    $actions.= sprintf($actionLink, $uri, $this->_('member_continue'));
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                 }
 
                 if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
                     $uri = BASE_URI."/members/resign?member_id=$member_id";
-                    $actions.= sprintf($actionLink, $uri, $this->_('member_end'));
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
                 }
 
                 $offices = $member->getPerson()->getOffices($seat->getCommittee(), date('Y-m-d'));
                 if (Person::isAllowed('offices', 'add')) {
                     $uri = BASE_URI."/offices/update?committee_id={$seat->getCommittee_id()};person_id=$person_id";
-                    $actions.= sprintf($actionLink, $uri, $this->_('office_add'));
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('office_add')];
                 }
                 if (Person::isAllowed('offices', 'edit')) {
                     foreach ($offices as $o) {
                         $uri = BASE_URI."/offices/update?office_id={$o->getId()}";
-                        $actions.= sprintf($actionLink, $uri, "{$this->_('edit')} {$o->getTitle()}");
+                        $actions[] = ['url'=>$uri, 'label'=>"{$this->_('edit')} {$o->getTitle()}"];
                     }
                 }
                 $officeTitles = count($offices)
@@ -123,17 +121,9 @@ $title = $this->title
                 if ($seatIsVacant) { $classes[] = 'carryOver'; }
             }
 
-            if ($actions != '') {
-                $actions = "
-                    <div        class=\"fn1-dropdown fn1-table-actions\">
-                        <button class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">
-                            {$this->_('more')}
-                        </button>
-                        <div    class=\"fn1-dropdown-links\">
-                            $actions
-                        </div>
-                    </div>
-                ";
+            if ($actions) {
+                $h = $this->template->getHelper('dropdown');
+                $actions = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
             }
 
             $editSeatButton = '';
