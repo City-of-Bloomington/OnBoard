@@ -13,5 +13,5 @@ if (isset($_SESSION['USER'])) {
 }
 else {
     $return_url = self::escape($_SERVER['REQUEST_URI']);
-    echo "<a href=\"".BASE_URI."/login?return_url=$return_url\">{$this->_('login')}</a>";
+    echo "<nav><a href=\"".BASE_URI."/login?return_url=$return_url\">{$this->_('login')}</a></nav>";
 }
