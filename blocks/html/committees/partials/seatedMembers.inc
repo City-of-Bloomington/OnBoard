@@ -31,6 +31,11 @@ $title = $this->title
     <thead>
         <tr><th></th>
             <th></th>
+            <?php
+                if (!$this->committee) {
+                    echo "<th>{$this->_('committee')}</th>";
+                }
+            ?>
             <th><?= $this->_('seat'); ?></th>
             <th><?= $this->_('appointed_by'); ?></th>
             <th><?= $this->_('name'); ?></th>
@@ -122,11 +127,10 @@ $title = $this->title
             }
 
             $moreLinks = '';
-            if ($actions) {
+            if (count($actions)) {
                 $h = $this->template->getHelper('dropdown');
                 $moreLinks = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
             }
-
 
             $editSeatButton = '';
             if (Person::isAllowed('seats', 'edit')) {
@@ -140,10 +144,14 @@ $title = $this->title
             $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
             $seat_uri = BASE_URI."/seats/view?seat_id=$seat_id";
             if (!$memberName) { $memberName = $this->_('vacant'); }
+
+            $committeeName = !$this->committee ? '<td>'.$seat->getCommittee()->getName().'</td>' : '';
+
             echo "
             <tr $classes>
                 <td>$editSeatButton</td>
                 <td>$seatCode</td>
+                $committeeName
                 <td><a href=\"$seat_uri\">$seatName</a></td>
                 <td>$appointer</td>
                 <td>{$memberName}{$officeTitles}</td>
