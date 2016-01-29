@@ -243,12 +243,16 @@ class Term extends ActiveRecord
 	{
         $seat = $this->getSeat();
         $termLength = new \DateInterval($seat->getTermLength());
+        $oneDay     = new \DateInterval('P1D');
 
         $s = new \DateTime($this->getStartDate());
         $e = new \DateTime($this->getEndDate());
 
-        $start = $s->add($termLength)->format(DATE_FORMAT);
-        $end   = $e->add($termLength)->format(DATE_FORMAT);
+        $start = $e->add($oneDay    )->format(DATE_FORMAT);
+
+        $e->add($termLength);
+        $e->sub($oneDay);
+        $end = $e->format(DATE_FORMAT);
 
         $term = new Term();
         $term->setStartDate($start);
@@ -268,12 +272,16 @@ class Term extends ActiveRecord
 	{
         $seat = $this->getSeat();
         $termLength = new \DateInterval($seat->getTermLength());
+        $oneDay     = new \DateInterval('P1D');
 
         $s = new \DateTime($this->getStartDate());
         $e = new \DateTime($this->getEndDate());
 
-        $start = $s->sub($termLength)->format(DATE_FORMAT);
-        $end   = $e->sub($termLength)->format(DATE_FORMAT);
+        $end = $s->sub($oneDay)->format(DATE_FORMAT);
+
+        $s->sub($termLength);
+        $s->add($oneDay);
+        $start = $s->format(DATE_FORMAT);
 
         $term = new Term();
         $term->setStartDate($start);
