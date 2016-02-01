@@ -25,3 +25,4 @@ create table committee_departments (
 alter table committees add termEndWarningDays tinyint unsigned not null default 0;
 
 alter table seats add code varchar(16) after type;
+alter table seats modify type enum('termed', 'open') not null default 'termed';
