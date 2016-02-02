@@ -417,20 +417,26 @@ class Committee extends ActiveRecord
 	/**
 	 * @param array $ids An array of (int) department_ids
 	 */
-	public function setDepartments(array $ids)
+	public function setDepartments(array $ids=null)
 	{
-        $current = array_keys($this->getDepartments());
+        if ($ids) {
+            $current = array_keys($this->getDepartments());
 
-        if (array_diff($current, $ids) || array_diff($ids, $current)) {
-            $this->departments = [];
-            $this->departmentsHaveChanged = true;
+            if (array_diff($current, $ids) || array_diff($ids, $current)) {
+                $this->departments = [];
+                $this->departmentsHaveChanged = true;
 
-            foreach ($ids as $id) {
-                try { $this->departments[$id] = new Department($id); }
-                catch (\Exception $e) {
-                    // Just ignore invalid departments for now
+                foreach ($ids as $id) {
+                    try { $this->departments[$id] = new Department($id); }
+                    catch (\Exception $e) {
+                        // Just ignore invalid departments for now
+                    }
                 }
             }
+        }
+        else {
+            $this->departments = [];
+            $this->departmentsHaveChanged = true;
         }
 	}
 }

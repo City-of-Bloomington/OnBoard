@@ -119,7 +119,9 @@ class Term extends ActiveRecord
         $fields = ['seat_id', 'startDate', 'endDate'];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
-            $this->$set($post[$f]);
+            if (isset($post[$f])) {
+                $this->$set($post[$f]);
+            }
         }
 	}
 
