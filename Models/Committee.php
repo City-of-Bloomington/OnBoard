@@ -119,6 +119,8 @@ class Committee extends ActiveRecord
 	 */
 	public function handleUpdate($post)
 	{
+        if (!isset($post['departments'])) { $post['departments'] = null; }
+        
 		$fields = [
             'type', 'departments',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
