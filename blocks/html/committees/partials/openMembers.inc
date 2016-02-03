@@ -24,15 +24,28 @@ $title = $this->title
     </thead>
     <tbody>
     <?php
+        $userCanEdit   = Person::isAllowed('members', 'edit');
+        $userCanDelete = Person::isAllowed('members', 'delete');
+        $helper = $this->template->getHelper('dropdown');
+
+
         // Display current committee members
         // These members will not be associated with a seat
         foreach ($this->members as $m) {
             $name = self::escape($m->getPerson()->getFullname());
 
+            $actions  = [];
+            $moreLink = '';
+            if ($userCanEdit)   { $actions[] = ['url'=>BASE_URI.'/members/update?member_id='.$m->getId(), 'label'=>$this->_('member_edit')]; }
+            if ($userCanDelete) { $actions[] = ['url'=>BASE_URI.'/members/delete?member_id='.$m->getId(), 'label'=>$this->_('member_delete')]; }
+            if (count($actions)) {
+                $moreLink = $helper->dropdown($actions, $this->_('more'), 'fn1-table-actions');
+            }
+
             echo "
             <tr><td>$name</td>
                 <td>{$m->getStartDate(DATE_FORMAT)} - {$m->getEndDate(DATE_FORMAT)}</td>
-                <td></td>
+                <td>$moreLink</td>
             </tr>
             ";
         }
@@ -48,7 +61,7 @@ $title = $this->title
         elseif (Person::isAllowed('members', 'appoint')) {
             $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
         }
-        
+
         if (isset($uri)) {
             $helper = $this->template->getHelper('buttonLink');
             echo $helper->buttonLink($uri, $this->_('member_add'), 'add');

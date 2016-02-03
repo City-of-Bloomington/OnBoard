@@ -219,10 +219,13 @@ class MembersController extends Controller
         try {
             if (!empty($_REQUEST['member_id'])) {
                 $member = new Member($_REQUEST['member_id']);
-                $seat = $member->getSeat();
+
+                $return_url = $member->getSeat_id()
+                    ? BASE_URL."/seats/view?seat_id={$member->getSeat_id()}"
+                    : BASE_URL."/committees/members?committee_id={$member->getCommittee_id()}";
 
                 $member->delete();
-                header('Location: '.BASE_URL.'/seats/view?seat_id='.$seat->getId());
+                header("Location: $return_url");
                 exit();
             }
         }
