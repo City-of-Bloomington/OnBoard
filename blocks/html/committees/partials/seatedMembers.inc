@@ -61,7 +61,8 @@ $title = $this->title
             $seatIsVacant = $seat->hasVacancy();
 
             if ($seatIsVacant) {
-                $classes[] = 'vacant';
+                $classes[]  = 'vacant';
+                $appointURI = '';
 
                 if ($seat->getType() === 'termed') {
                     $term = $seat->getTerm(time());
@@ -74,7 +75,7 @@ $title = $this->title
                     $appointURI = BASE_URI."/members/appoint?seat_id=$seat_id";
                 }
 
-                if (isset($appointURI) && Person::isAllowed('members', 'appoint')) {
+                if ($appointURI && Person::isAllowed('members', 'appoint')) {
                     $actions[] = ['url'=>$appointURI, 'label'=>$this->_('member_add')];
                 }
             }
