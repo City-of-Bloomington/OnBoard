@@ -140,7 +140,6 @@ function _onboard_get($url)
     if (substr($url, 0, 5) == 'https') {
         curl_setopt($session, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($session, CURLOPT_SSLVERSION, 3);
     }
     return curl_exec($session);
 }
