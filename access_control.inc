@@ -9,8 +9,8 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
-		 ->addRole(new Role('Public'), 'Anonymous')
-		 ->addRole(new Role('Staff'), 'Public')
+		 ->addRole(new Role('Public'),        'Anonymous')
+		 ->addRole(new Role('Staff'),         'Public')
 		 ->addRole(new Role('Administrator'), 'Staff');
 
 /**
@@ -36,6 +36,7 @@ $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
 $ZEND_ACL->addResource(new Resource('members'));
 $ZEND_ACL->addResource(new Resource('liasons'));
+$ZEND_ACL->addResource(new Resource('applications'));
 
 $ZEND_ACL->addResource(new Resource('topics'));
 $ZEND_ACL->addResource(new Resource('topicTypes'));
@@ -52,11 +53,14 @@ $ZEND_ACL->allow(null, 'index', 'index');
 $ZEND_ACL->allow(null, ['people', 'topics', 'liasons'], ['index','view']);
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
+$ZEND_ACL->allow(null, 'applications', 'apply');
 
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Staff', ['people', 'liasons']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'reappoint', 'resign']);
+$ZEND_ACL->allow('Staff', 'applications');
+
 
 
 // Administrator is allowed access to everything

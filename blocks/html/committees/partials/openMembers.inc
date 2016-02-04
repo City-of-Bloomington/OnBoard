@@ -54,6 +54,7 @@ $title = $this->title
 </table>
 <?php
     if ($this->committee) {
+        $helper = $this->template->getHelper('buttonLink');
 
         if (Person::isAllowed('members', 'update')) {
             $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
@@ -63,8 +64,11 @@ $title = $this->title
         }
 
         if (isset($uri)) {
-            $helper = $this->template->getHelper('buttonLink');
             echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
+        }
+
+        if ($this->committee->hasVacancy(time()) && Person::isAllowed('applications', 'apply') {
+            echo $helper->buttonLink(BASE_URI.'/applications/apply', $this->_('apply'), 'add');
         }
     }
 ?>
