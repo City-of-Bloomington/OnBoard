@@ -531,3 +531,20 @@ msgstr "New Department"
 
 msgid "department_edit"
 msgstr "Edit Department"
+
+msgid "application"
+msgid_plural "applications"
+msgstr[0] "Application"
+msgstr[1] "Applications"
+
+msgid "apply"
+msgstr "Apply"
+
+msgid "application_add"
+msgstr "New Application"
+
+msgid "application_edit"
+msgstr "Edit Application"
+
+msgid "thanks"
+msgstr "Thank You"

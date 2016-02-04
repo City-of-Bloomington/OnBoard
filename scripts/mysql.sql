@@ -117,6 +117,24 @@ create table committee_liasons (
     foreign key (committee_id) references committees(id),
     foreign key (person_id)    references people(id)
 );
+
+create table applications (
+    id int unsigned not null primary key auto_increment,
+	firstname varchar(128) not null,
+	lastname  varchar(128) not null,
+	email     varchar(128) unique,
+	phone     varchar(32),
+	created  timestamp not null default CURRENT_TIMESTAMP,
+	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+);
+
+create table committee_applications {
+    id int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    application_id int unsigned not null,
+    archived timestamp
+}
+
 --
 -- End 2.0 changes
 --

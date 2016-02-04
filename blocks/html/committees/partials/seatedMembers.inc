@@ -165,13 +165,20 @@ $title = $this->title
     </tbody>
 </table>
 <?php
-    if ($this->committee && Person::isAllowed('seats', 'add')) {
+    if ($this->committee) {
         $helper = $this->template->getHelper('buttonLink');
-        echo $helper->buttonLink(
-            BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
-            $this->translate('seat_add'),
-            'add'
-        );
+
+        if (Person::isAllowed('seats', 'add')) {
+            echo $helper->buttonLink(
+                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                $this->translate('seat_add'),
+                'add'
+            );
+        }
+
+        if (Person::isAllowed('applications', 'apply')) {
+            echo $helper->buttonLink(BASE_URI.'/applications/apply', $this->_('apply'), 'add');
+        }
     }
 ?>
     </div>
