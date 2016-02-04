@@ -194,11 +194,13 @@ class Member extends ActiveRecord
         if ($term) {
             $members = $term->getMembers();
             if (!count($members)) {
+                // Prepopulate past term appointments with term dates
                 if ($term->getEndDate('U') < time()) {
                     $this->setStartDate($term->getStartDate());
                     $this->setEndDate  ($term->getEndDate());
                 }
-                else { $this->setStartDate(date(DATE_FORMAT)); }
+                // Leave appointment dates for the current term empty
+                else {  }
             }
         }
     }
