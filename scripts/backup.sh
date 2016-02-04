@@ -1,14 +1,19 @@
 #!/bin/bash
 # Creates a tarball containing a full snapshot of the data in the site
 #
-# @copyright Copyright 2011-2013 City of Bloomington, Indiana
+# @copyright Copyright 2011-2016 City of Bloomington, Indiana
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
-# @author Cliff Ingham <inghamn@bloomington.in.gov>
-MYSQLDUMP=/usr/local/mysql/bin/mysqldump
-BACKUP_DIR=/var/www/backups/application_name
-APPLICATION_HOME=/var/www/sites/application_name
 
-MYSQL_DBNAME=application_name
+# The path to the mysqldump executable
+MYSQLDUMP=/usr/bin/mysqldump
+# Where to store the nightly backup tarballs
+BACKUP_DIR=/srv/backups/onboard
+# Your APPLICATION_HOME: path to configuration.inc
+APPLICATION_HOME=/srv/sites/onboard
+# Your SITE_HOME: path to site_config.inc
+SITE_HOME=$APPLICATION_HOME/data
+
+MYSQL_DBNAME=onboard
 
 # How many days worth of tarballs to keep around
 num_days_to_keep=5
@@ -23,11 +28,11 @@ cd $BACKUP_DIR
 mkdir $today
 
 # Dump the database
-$MYSQLDUMP --defaults-extra-file=$APPLICATION_HOME/scripts/backup.cnf $MYSQL_DBNAME > $today/$MYSQL_DBNAME.sql
+$MYSQLDUMP --defaults-extra-file=$SITE_HOME/backup.cnf $MYSQL_DBNAME > $today/$MYSQL_DBNAME.sql
 
 # Copy any data directories into this directory, so they're backed up, too.
 # For example, if we had a media directory....
-#cp -R $APPLICATION_HOME/data/media $today/media
+#cp -R $SITE_HOME/media $today/media
 
 # Tarball the Data
 tar czf $today.tar.gz $today

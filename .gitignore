@@ -1,5 +1,6 @@
 configuration.inc
 site_config.inc
+backup.cnf
 data/sessions/*
 *.mo
 screen.css
