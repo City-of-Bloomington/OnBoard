@@ -57,6 +57,7 @@ $config = [
 	'Zend\Loader\StandardAutoloader' => [
 		'namespaces' => [
 			'Application' => APPLICATION_HOME,
+			'Site'        => SITE_HOME,
             'Blossom'     => BLOSSOM.'/src',
             'Michelf'              => APPLICATION_HOME.'/vendor/michelf/php-markdown/Michelf',
             #'Aura\Router'          => APPLICATION_HOME.'/vendor/aura/router/src',

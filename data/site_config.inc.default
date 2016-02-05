@@ -8,7 +8,7 @@ define('APPLICATION_NAME','application');
 define('BASE_URL','http://localhost/application');
 define('BASE_URI','/application');
 define('FN1_URL', BASE_URI.'/fn1');
-#define('THEME', 'kirkwood');
+#define('THEME', 'Kirkwood');
 
 define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
 
@@ -41,29 +41,32 @@ define('DB_PASS','password');
  *
  * See: ExternalIdentity
  */
-// Example for ADS style authentication
 $DIRECTORY_CONFIG = [
-//	'Ldap' => [
-//		'DIRECTORY_SERVER'=>'ldaps://example.org:636',
-//		'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
-//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
-//		'DIRECTORY_USER_BINDING'=>'{username}@example.org',
-//		'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
-//		'DIRECTORY_ADMIN_PASS'=>'password'
-//	]
+// Example for ADS style authentication
+//  'Ldap' => [
+//      'classname' => 'Site\Classes\Ldap',
+//      'DIRECTORY_SERVER'=>'ldaps://example.org:636',
+//      'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
+//      'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
+//      'DIRECTORY_USER_BINDING'=>'{username}@example.org',
+//      'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
+//      'DIRECTORY_ADMIN_PASS'=>'password'
+//  ]
 //
 // Example for LDAP style authentication
-//	'Ldap' => [
-//		'DIRECTORY_SERVER'=>'ldaps://example.org:636');
-//		'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
-//		'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
-//		'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
-//		'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
-//		'DIRECTORY_ADMIN_PASS'=>'password');
-//	]
+//  'Ldap' => [
+//      'classname' => 'Site\Classes\Ldap',
+//      'DIRECTORY_SERVER'=>'ldaps://example.org:636');
+//      'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
+//      'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
+//      'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
+//      'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
+//      'DIRECTORY_ADMIN_PASS'=>'password');
+//  ]
 // Example for Directory webservice
 //  'Employee' => [
-//      'DIRECTORY_SERVER' => 'http://apps.bloomington.in.gov/directory'
+//      'classname' => 'Site\Classes\Employee',
+//      'DIRECTORY_SERVER' => 'http://localhost/directory',
 //  ]
 ];
 

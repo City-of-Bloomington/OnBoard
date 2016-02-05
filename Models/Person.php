@@ -159,6 +159,8 @@ class Person extends ActiveRecord
 	 */
 	public function handleUpdateUserAccount($post)
 	{
+        global $DIRECTORY_CONFIG;
+
 		$fields = ['firstname','lastname','email', 'username','authenticationMethod','role'];
 		foreach ($fields as $f) {
 			if (isset($post[$f])) {
@@ -172,7 +174,7 @@ class Person extends ActiveRecord
 
 		$method = $this->getAuthenticationMethod();
 		if ($this->getUsername() && $method && $method != 'local') {
-			$class = "Blossom\\Classes\\$method";
+            $class = $DIRECTORY_CONFIG[$method]['classname'];
 			$identity = new $class($this->getUsername());
 			$this->populateFromExternalIdentity($identity);
 		}
@@ -208,6 +210,8 @@ class Person extends ActiveRecord
 	 */
 	public function authenticate($password)
 	{
+        global $DIRECTORY_CONFIG;
+
 		if ($this->getUsername()) {
 			switch($this->getAuthenticationMethod()) {
 				case "local":
@@ -216,7 +220,7 @@ class Person extends ActiveRecord
 
 				default:
 					$method = $this->getAuthenticationMethod();
-					$class = "Blossom\\Classes\\$method";
+					$class = $DIRECTORY_CONFIG[$method]['classname'];
 					return $class::authenticate($this->getUsername(),$password);
 			}
 		}
@@ -237,7 +241,7 @@ class Person extends ActiveRecord
 		global $ZEND_ACL;
 
 		$role = 'Anonymous';
-		if (isset($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
+		if (isset(  $_SESSION['USER']) && $_SESSION['USER']->getRole()) {
 			$role = $_SESSION['USER']->getRole();
 		}
 		return $ZEND_ACL->isAllowed($role, $resource, $action);
