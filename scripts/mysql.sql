@@ -118,7 +118,7 @@ create table committee_liasons (
     foreign key (person_id)    references people(id)
 );
 
-create table applications (
+create table applicants (
     id int unsigned not null primary key auto_increment,
 	firstname varchar(128) not null,
 	lastname  varchar(128) not null,
@@ -128,12 +128,15 @@ create table applications (
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
 
-create table committee_applications {
+create table applications (
     id int unsigned not null primary key auto_increment,
     committee_id int unsigned not null,
-    application_id int unsigned not null,
-    archived timestamp
-}
+    applicant_id int unsigned not null,
+    created  timestamp not null default CURRENT_TIMESTAMP,
+    archived datetime,
+    foreign key (committee_id) references committees(id),
+    foreign key (applicant_id) references applicants(id)
+);
 
 --
 -- End 2.0 changes
