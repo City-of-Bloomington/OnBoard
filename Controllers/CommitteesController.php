@@ -116,4 +116,13 @@ class CommitteesController extends Controller
             'committee' => $committee
         ]);
     }
+
+    public function applications()
+    {
+        $committee = $this->loadCommittee($_GET['committee_id']);
+        
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        $this->template->blocks[] = new Block('applications/list.inc', ['applications'=>$committee->getApplications()]);
+    }
 }

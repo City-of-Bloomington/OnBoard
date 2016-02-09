@@ -11,6 +11,11 @@ use Application\Models\Person;
         <a href="<?= BASE_URI; ?>/people"><?= $this->_(['person', 'people', 2]); ?></a>
         <a href="<?= BASE_URI; ?>/seats"><?= $this->_(['seat', 'seats', 2]); ?></a>
         <?php
+            if (Person::isAllowed('applicants', 'index')) {
+                $uri = BASE_URI.'/applicants';
+                echo "<a href=\"$uri\">{$this->_(['aplicant', 'applicants', 2])}</a>";
+            }
+
             if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
                 $routes = [
                     'voteType'  => 'voteTypes',

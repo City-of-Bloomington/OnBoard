@@ -120,7 +120,7 @@ class Committee extends ActiveRecord
 	public function handleUpdate($post)
 	{
         if (!isset($post['departments'])) { $post['departments'] = null; }
-        
+
 		$fields = [
             'type', 'departments',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
@@ -440,5 +440,18 @@ class Committee extends ActiveRecord
             $this->departments = [];
             $this->departmentsHaveChanged = true;
         }
+	}
+
+	/**
+	 * @param int $timestamp
+	 * @return Zend\Db\Result
+	 */
+	public function getApplications($timestamp=null)
+	{
+		$search = ['committee_id' => $this->getId()];
+		if ($timestamp) { $search['current'] = (int)$timestamp; }
+
+		$table = new ApplicationTable();
+		return $table->find($search);
 	}
 }

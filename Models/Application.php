@@ -11,7 +11,7 @@ use Blossom\Classes\Database;
 class Application extends ActiveRecord
 {
     protected $tablename = 'applications';
-	protected $committees = [];
+    protected $applicant;
 
 	/**
 	 * Populates the object with data
@@ -52,70 +52,37 @@ class Application extends ActiveRecord
 
 	public function validate()
 	{
-        if (!$this->getFirstname() || !$this->getLastname() || !$this->getEmail()) {
+        if (!$this->getCommittee_id() || !$this->getApplicant_id()) {
             throw new \Exception('missingRequiredFields');
         }
 	}
 
 	public function save()
 	{
-        // Let MySQL handle the timestamp
+        // Let MySQL handle setting the timestamp
         if (isset($this->data['created' ])) { unset($this->data['created' ]); }
+
         parent::save();
-	}
+    }
+
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()        { return parent::get('id');        }
-	public function getFirstname() { return parent::get('firstname'); }
-	public function getLastname()  { return parent::get('lastname');  }
-	public function getEmail()     { return parent::get('email');     }
-	public function getPhone()     { return parent::get('phone');     }
+	public function getId()           { return parent::get('id');   }
+	public function getCommittee_id() { return parent::get('committee_id'); }
+	public function getApplicant_id() { return parent::get('applicant_id'); }
+	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+	public function getApplicant()    { return parent::getForeignKeyObject(__namespace__.'\Applicant', 'applicant_id'); }
 	public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
+	public function getArchived($f=null) { return parent::getDateData('archived', $f); }
 
-	public function setFirstname($s) { parent::set('firstname', $s); }
-	public function setLastname ($s) { parent::set('lastname',  $s); }
-	public function setEmail    ($s) { parent::set('email',     $s); }
-	public function setPhone    ($s) { parent::set('phone',     $s); }
-
-	public function handleUpdate(array $post)
-	{
-        $fields = ['firstname', 'lastname', 'email', 'phone'];
-
-		foreach ($fields as $field) {
-			if (isset($post[$field])) {
-				$set = 'set'.ucfirst($field);
-				$this->$set($post[$field]);
-			}
-		}
-
-		if (isset($post['committees'])) {
-            $this->setCommittees(array_keys($post['committees']));
-		}
-	}
+	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
+	public function setApplicant_id($i) { parent::setForeignKeyField (__namespace__.'\Applicant', 'applicant_id', $i); }
+	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
+	public function setApplicant($o)    { parent::setForeignKeyObject(__namespace__.'\Applicant', 'applicant_id', $o); }
+    public function setArchived ($d)    { parent::setDateData('archived', $d); }
 
 	//----------------------------------------------------------------
-	// Custom Functions
+	// Custom functions
 	//----------------------------------------------------------------
-	/**
-	 * Sets all the committees for this application
-	 *
-	 * You should only set the full list of committees once, during
-	 * the inital application form submission.
-	 * After that, we'll need to use a different api for adjusting the
-	 * committees associated with this application.
-	 *
-	 * @param array $ids An array of committee ID
-	 */
-	public function setCommittees(array $ids)
-	{
-        if (!$this->getId() && $ids) {
-            foreach ($ids as $id) {
-                try { $this->committees[$id] = new Committee($id); }
-                catch (\Exception $e) {
-                    // Just ignore invalid committees for now
-                }
-            }
-        }
- 	}
 }
