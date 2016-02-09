@@ -19,32 +19,6 @@ define('BLOSSOM', APPLICATION_HOME.'/vendor/City-of-Bloomington/blossom-lib');
 define('SITE_HOME', !empty($_SERVER['SITE_HOME']) ? $_SERVER['SITE_HOME'] : __DIR__.'/data');
 include SITE_HOME.'/site_config.inc';
 
-/**
- * Set how we want to handle errors
- * PHP_DEFAULT - do whatever's configured in php.ini
- *
- * If you do not define error handling to PHP_DEFAULT
- * the custom error handlers kick in.  All of the custom error display
- * frunctions are in BLOSSOM/Classes/Error.php.  The custom error
- * function decide what to do based on $ERROR_REPORING array values
- *
- * PRETTY_PRINT - Display a message in the browser
- * EMAIL_ADMIN - email the Administrator
- * EMAIL_USER - email the logged in user
- * SKIDDER - post errors to a Skidder server (see config below)
-*/
-define('ERROR_REPORTING','PHP_DEFAULT');
-//define('ERROR_REPORTING','CUSTOM');
-//$ERROR_REPORTING = array('PRETTY_PRINT','SKIDDER');
-
-/**
- * Skidder is a web service for error notifications.  Error reporting supports
- * posting errors to a Skidder server.  You must register for an application_id
- * on the skidder server you want to post errors to.
- */
-//define('SKIDDER_URL','http://localhost/skidder/home.php');
-//define('SKIDDER_APPLICATION_ID',);
-
 //-------------------------------------------------------------------
 // Bootstrap code
 // No editing is usually needed after this point
@@ -66,6 +40,7 @@ $config = [
             'Zend\Stdlib'          => APPLICATION_HOME.'/vendor/zendframework/zend-stdlib/src',
             'Zend\Permissions\Acl' => APPLICATION_HOME.'/vendor/zendframework/zend-permissions-acl/src',
             'Zend\Paginator'       => APPLICATION_HOME.'/vendor/zendframework/zend-paginator/src',
+            'Zend\Log'             => APPLICATION_HOME.'/vendor/zendframework/zend-log/src',
             'Zend\Loader'          => APPLICATION_HOME.'/vendor/zendframework/zend-loader/src',
             'Zend\Hydrator'        => APPLICATION_HOME.'/vendor/zendframework/zend-hydrator/src',
             'Zend\Db'              => APPLICATION_HOME.'/vendor/zendframework/zend-db/src',
@@ -88,11 +63,16 @@ if (!defined('STDIN')) {
 	session_start();
 }
 
-if (ERROR_REPORTING != 'PHP_DEFAULT') {
-    set_error_handler         ('Blossom\Classes\Error::customErrorHandler');
-    set_exception_handler     ('Blossom\Classes\Error::customExceptionHandler');
-    register_shutdown_function('Blossom\Classes\Error::shutdownHandler');
-}
+/**
+ * Skidder is a web service for error loggin.  This application supports
+ * logging errors to a Skidder server.  You must register for an application_id
+ * on the skidder server you want to post errors to.
+ */
+#$writer = new Blossom\Classes\Log\SkidderWriter('https://apps.bloomington.in.gov/skidder/index', 3 );
+#$logger = new Zend\Log\Logger();
+#$logger->addWriter($writer);
+#Zend\Log\Logger::registerErrorHandler($logger);
+#Zend\Log\Logger::registerExceptionHandler($logger);
 
 /**
  * Grab a timestamp for calculating process time
