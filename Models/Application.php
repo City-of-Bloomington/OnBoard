@@ -12,6 +12,7 @@ class Application extends ActiveRecord
 {
     protected $tablename = 'applications';
     protected $applicant;
+    protected $committee;
 
 	/**
 	 * Populates the object with data
@@ -63,6 +64,15 @@ class Application extends ActiveRecord
         if (isset($this->data['created' ])) { unset($this->data['created' ]); }
 
         parent::save();
+    }
+
+    public function archive()
+    {
+        if ($this->getId()) {
+            $sql = 'update applications set archived=now() where id=?';
+            $zend_db = Database::getConnection();
+            $zend_db->query($sql, [$this->getId()]);
+        }
     }
 
 	//----------------------------------------------------------------

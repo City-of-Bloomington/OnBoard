@@ -21,6 +21,11 @@ use Application\Models\Person;
 
             $name = "$firstname $lastname";
 
+            if (Person::isAllowed('applicants', 'view')) {
+                $uri = BASE_URI.'/applicants/view?applicant_id='.$app->getId();
+                $name = "<a href=\"$uri\">$name</a>";
+            }
+
             echo "
             <tr><td>$name</td>
                 <td>$email</td>

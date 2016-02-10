@@ -20,7 +20,7 @@ $membersLink = $helper->buttonLink(
 
 $applicationsLink = '';
 if (Person::isAllowed('committees', 'applications')) {
-    $applications = $this->committee->getApplications();
+    $applications = $this->committee->getApplications(time());
     $c = count($applications);
     if ($c) {
         $applicationsLink = $helper->buttonLink(
