@@ -20,6 +20,52 @@ class ApplicantsController extends Controller
         $this->template->blocks[] = new Block('applicants/list.inc', ['applicants'=>$list]);
     }
 
+    public function view()
+    {
+        if (!empty($_REQUEST['applicant_id'])) {
+            try { $applicant = new Applicant($_REQUEST['applicant_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($applicant)) {
+            $this->template->blocks[] = new Block('applicants/info.inc', ['applicant'=>$applicant]);
+            $this->template->blocks[] = new Block('applications/list.inc', [
+                'applicant'    => $applicant,
+                'applications' => $applicant->getApplications()
+            ]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
+
+    public function update()
+    {
+        if (!empty($_REQUEST['applicant_id'])) {
+            try { $applicant = new Applicant($_REQUEST['applicant_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($applicant)) {
+            if (isset($_POST['applicant_id'])) {
+                try {
+                    $applicant->handleUpdate($_POST);
+                    $applicant->save();
+                    header('Location: '.BASE_URI.'/applicants/view?applicant_id='.$applicant->getId());
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+
+            $this->template->blocks[] = new Block('applicants/updateForm.inc', ['applicant'=>$applicant]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
+
     public function apply()
     {
         $applicant = new Applicant();
@@ -36,6 +82,7 @@ class ApplicantsController extends Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        $this->template->blocks[] = new Block('applicants/updateForm.inc', ['applicant'=>$applicant]);
+        $this->template->blocks[] = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
     }
+
 }

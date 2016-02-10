@@ -5,6 +5,7 @@
  */
 namespace Application\Models;
 
+use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -21,10 +22,10 @@ class ApplicationTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':
-						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
 						$select->where("(a.archived is null or a.archived>='$date')");
 						break;
-						
+
 					default:
 						$select->where([$key=>$value]);
                 }
