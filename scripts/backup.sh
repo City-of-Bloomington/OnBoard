@@ -31,8 +31,7 @@ mkdir $today
 $MYSQLDUMP --defaults-extra-file=$SITE_HOME/backup.cnf $MYSQL_DBNAME > $today/$MYSQL_DBNAME.sql
 
 # Copy any data directories into this directory, so they're backed up, too.
-# For example, if we had a media directory....
-#cp -R $SITE_HOME/media $today/media
+cp -R $SITE_HOME/media $today/media
 
 # Tarball the Data
 tar czf $today.tar.gz $today

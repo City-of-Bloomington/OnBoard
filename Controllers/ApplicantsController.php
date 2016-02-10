@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
+use Application\Models\Media;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
@@ -81,6 +82,13 @@ class ApplicantsController extends Controller
                 $applicant->handleUpdate($_POST);
                 $applicant->save();
                 $applicant->saveCommittees($_POST['committees']);
+
+                if (isset($_FILES['mediafile'])) {
+                    $media = new Media();
+                    $media->setApplicant_id($applicant->getId());
+                    $media->setFile($_FILES['mediafile']);
+                    $media->save();
+                }
 
                 $this->template->blocks[] = new Block('applicants/success.inc', ['applicant'=>$applicant]);
 

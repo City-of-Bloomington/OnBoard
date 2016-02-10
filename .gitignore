@@ -2,6 +2,7 @@ configuration.inc
 site_config.inc
 backup.cnf
 data/sessions/*
+data/media
 *.mo
 screen.css
 screen.css.map
