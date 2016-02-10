@@ -443,15 +443,17 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @param int $timestamp
+	 * Application objects for this committee
+	 *
+	 * @param array $params Additional query parameters
 	 * @return Zend\Db\Result
 	 */
-	public function getApplications($timestamp=null)
+	public function getApplications(array $params=null)
 	{
-		$search = ['committee_id' => $this->getId()];
-		if ($timestamp) { $search['current'] = (int)$timestamp; }
+        if (!$params) { $params = []; }
+        $params['committee_id'] = $this->getId();
 
 		$table = new ApplicationTable();
-		return $table->find($search);
+		return $table->find($params);
 	}
 }

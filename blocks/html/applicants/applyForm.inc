@@ -18,8 +18,6 @@ foreach ($fields as $f) {
     <h1><?= $this->_('apply'); ?></h1>
 
     <form method="post" action="<?= BASE_URI; ?>/applicants/apply">
-        <input name="applicant_id" type="hidden" value="<?= $id; ?>" />
-
         <fieldset>
             <?php
                 include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';

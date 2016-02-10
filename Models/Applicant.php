@@ -11,7 +11,6 @@ use Blossom\Classes\Database;
 class Applicant extends ActiveRecord
 {
     protected $tablename = 'applicants';
-	protected $applications = [];
 
 	/**
 	 * Populates the object with data
@@ -61,6 +60,7 @@ class Applicant extends ActiveRecord
 	{
         // Let MySQL handle the timestamp
         if (isset($this->data['created' ])) { unset($this->data['created' ]); }
+
         parent::save();
 	}
 	//----------------------------------------------------------------
@@ -93,25 +93,30 @@ class Applicant extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
-	public function getApplications()
+	/**
+	 * Applications for this applicant
+	 *
+	 * @param array $params Additional query parameters
+	 * @return Zend\Db\Result
+	 */
+	public function getApplications(array $params=null)
 	{
-        if ($this->getId() && !count($this->applications)) {
-            $sql = 'select * from applications where applicant_id=?';
+        if ($this->getId()) {
+            if (!$params) { $params = []; }
+            $params['applicant_id'] = $this->getId();
 
-            $zend_db = Database::getConnection();
-            $result = $zend_db->query($sql, [$this->getId()]);
-            foreach ($result->toArray() as $row) {
-                $a = new Application($row);
-                $this->applications[$a->getCommittee_id()] = $a;
-            }
+            $table = new ApplicationTable();
+            return $table->find($params);
         }
-        return $this->applications;
 	}
 
 	public function saveCommittees(array $ids)
 	{
-        $applications = $this->getApplications();
-        $currentCommittees = array_keys($applications);
+        $currentApplications = $this->getApplications();
+        $currentCommittees = [];
+        foreach ($currentApplications as $a) {
+            $currentCommittees[] = $a->getCommittee_id();
+        }
 
         $zend_db = Database::getConnection();
 
