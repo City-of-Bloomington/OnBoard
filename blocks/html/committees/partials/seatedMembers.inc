@@ -175,10 +175,6 @@ $title = $this->title
                 'add'
             );
         }
-
-        if (Person::isAllowed('applicants', 'apply')) {
-            echo $helper->buttonLink(BASE_URI.'/applicants/apply', $this->_('apply'), 'add');
-        }
     }
 ?>
     </div>

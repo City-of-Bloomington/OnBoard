@@ -11,10 +11,14 @@ use Zend\Db\Sql\Select;
 
 class ApplicationTable extends TableGateway
 {
+    public static $defaultOrder = ['a.archived', 'p.lastname', 'p.firstname'];
+
 	public function __construct() { parent::__construct('applications', __namespace__.'\Application'); }
 
-	public function find($fields=null, $order=['p.lastname', 'p.firstname'], $paginated=false, $limit=null)
+	public function find($fields=null, $order=null, $paginated=false, $limit=null)
 	{
+        if (!$order) { $order = self::$defaultOrder; }
+
 		$select = new Select(['a'=>'applications']);
 		$select->join(['p'=>'applicants'], 'a.applicant_id=p.id', []);
 
@@ -24,6 +28,11 @@ class ApplicationTable extends TableGateway
 					case 'current':
 						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
 						$select->where("(a.archived is null or a.archived>='$date')");
+						break;
+
+                    case 'archived':
+						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
+						$select->where("(a.archived is not null and a.archived<='$date')");
 						break;
 
 					default:

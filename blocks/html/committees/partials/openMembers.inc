@@ -66,10 +66,6 @@ $title = $this->title
         if (isset($uri)) {
             echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
         }
-
-        if ($this->committee->hasVacancy(time()) && Person::isAllowed('applicants', 'apply') {
-            echo $helper->buttonLink(BASE_URI.'/applicants/apply', $this->_('apply'), 'add');
-        }
     }
 ?>
     </div>

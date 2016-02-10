@@ -3,13 +3,17 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->applications
+ * @param string $this->title (optional)
  * @param Committee $this->committee (optional)
  * @param Applicant $this->applicant (optional)
  */
 use Application\Models\Person;
+
+$title = $this->title ? self::escape($this->title) : $this->_(['application', 'applications', count($this->applications)]);
 ?>
 <section>
-    <h1><?= $this->_(['application', 'applications', count($this->applications)]); ?></h1>
+    <h1><?= $title; ?></h1>
+
     <table class="fn1-table">
         <thead>
             <tr><?php
@@ -21,63 +25,63 @@ use Application\Models\Person;
                 ?>
         </thead>
         <tbody>
-    <?php
-        $userCanViewApplications = Person::isAllowed('committees', 'applications');
-        $userCanViewApplicant    = Person::isAllowed('applicants', 'view');
-        $userCanArchive          = Person::isAllowed('applications', 'archive');
-        $userCanEdit = (!$this->applicant && Person::isAllowed('applicants', 'edit'));
+        <?php
+            $userCanViewApplications = Person::isAllowed('committees', 'applications');
+            $userCanViewApplicant    = Person::isAllowed('applicants', 'view');
+            $userCanArchive          = Person::isAllowed('applications', 'archive');
+            $userCanEdit = (!$this->applicant && Person::isAllowed('applicants', 'edit'));
 
-        $helper = $this->template->getHelper('buttonLink');
+            $helper = $this->template->getHelper('buttonLink');
 
-        foreach ($this->applications as $a) {
-            echo "<tr>";
+            foreach ($this->applications as $a) {
+                echo "<tr>";
 
-            $created = $a->getCreated(DATE_FORMAT);
-            echo "<td>$created</td>";
+                $created = $a->getCreated(DATE_FORMAT);
+                echo "<td>$created</td>";
 
-            if (!$this->applicant) {
-                $p = $a->getApplicant();
-                $name = self::escape("{$p->getFirstname()} {$p->getLastname()}");
-                if ($userCanViewApplicant) {
-                    $uri = BASE_URI.'/applicants/view?applicant_id='.$a->getApplicant_id();
-                    $name = "<a href=\"$uri\">$name</a>";
+                if (!$this->applicant) {
+                    $p = $a->getApplicant();
+                    $name = self::escape("{$p->getFirstname()} {$p->getLastname()}");
+                    if ($userCanViewApplicant) {
+                        $uri = BASE_URI.'/applicants/view?applicant_id='.$a->getApplicant_id();
+                        $name = "<a href=\"$uri\">$name</a>";
+                    }
+                    echo "<td>$name</td>";
                 }
-                echo "<td>$name</td>";
-            }
 
-            if (!$this->committee) {
-                $name = self::escape($a->getCommittee()->getName());
-                if ($userCanViewApplications) {
-                    $uri = BASE_URI.'/committees/applications?committee_id='.$a->getCommittee_id();
-                    $name = "<a href=\"$uri\">$name</a>";
+                if (!$this->committee) {
+                    $name = self::escape($a->getCommittee()->getName());
+                    if ($userCanViewApplications) {
+                        $uri = BASE_URI.'/committees/applications?committee_id='.$a->getCommittee_id();
+                        $name = "<a href=\"$uri\">$name</a>";
+                    }
+                    echo "<td>$name</td>";
+
                 }
-                echo "<td>$name</td>";
 
+                $archived = $a->getArchived(DATE_FORMAT);
+                echo "<td>$archived</td>";
+
+                $archiveButton = '';
+                $editButton    = '';
+                if ($userCanArchive && !$archived) {
+                    $archiveButton = $helper->buttonLink(
+                        BASE_URI.'/applications/archive?application_id='.$a->getId(),
+                        $this->_('application_archive')
+                    );
+                }
+                if ($userCanEdit) {
+                    $editButton = $helper->buttonLink(
+                        BASE_URI.'/applicants/update?applicant_id='.$a->getApplicant_id(),
+                        $this->_('applicant_edit'),
+                        'edit'
+                    );
+                }
+                echo "<td>$editButton $archiveButton</td>";
+
+                echo "</tr>";
             }
-
-            $archived = $a->getArchived(DATE_FORMAT);
-            echo "<td>$archived</td>";
-
-            $archiveButton = '';
-            $editButton    = '';
-            if ($userCanArchive && !$archived) {
-                $archiveButton = $helper->buttonLink(
-                    BASE_URI.'/applications/archive?application_id='.$a->getId(),
-                    $this->_('application_archive')
-                );
-            }
-            if ($userCanEdit) {
-                $editButton = $helper->buttonLink(
-                    BASE_URI.'/applicants/update?applicant_id='.$a->getApplicant_id(),
-                    $this->_('applicant_edit'),
-                    'edit'
-                );
-            }
-            echo "<td>$archiveButton $editButton</td>";
-
-            echo "</tr>";
-        }
-    ?>
+        ?>
         </tbody>
     </table>
 </section>

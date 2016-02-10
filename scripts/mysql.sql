@@ -122,7 +122,7 @@ create table applicants (
     id int unsigned not null primary key auto_increment,
 	firstname varchar(128) not null,
 	lastname  varchar(128) not null,
-	email     varchar(128) unique,
+	email     varchar(128),
 	phone     varchar(32),
 	created  timestamp not null default CURRENT_TIMESTAMP,
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP

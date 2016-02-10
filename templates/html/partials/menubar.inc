@@ -13,7 +13,11 @@ use Application\Models\Person;
         <?php
             if (Person::isAllowed('applicants', 'index')) {
                 $uri = BASE_URI.'/applicants';
-                echo "<a href=\"$uri\">{$this->_(['aplicant', 'applicants', 2])}</a>";
+                echo "<a href=\"$uri\">{$this->_(['applicant', 'applicants', 2])}</a>";
+            }
+            if (Person::isAllowed('applicants', 'apply')) {
+                $uri = BASE_URI.'/applicants/apply';
+                echo "<a href=\"$uri\">{$this->_('apply')}</a>";
             }
 
             if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
