@@ -38,6 +38,7 @@ $ZEND_ACL->addResource(new Resource('members'));
 $ZEND_ACL->addResource(new Resource('liasons'));
 $ZEND_ACL->addResource(new Resource('applicants'));
 $ZEND_ACL->addResource(new Resource('applications'));
+$ZEND_ACL->addResource(new Resource('media'));
 
 $ZEND_ACL->addResource(new Resource('topics'));
 $ZEND_ACL->addResource(new Resource('topicTypes'));
@@ -61,7 +62,7 @@ $ZEND_ACL->allow(null, 'applicants', 'apply');
 $ZEND_ACL->allow('Staff', ['people', 'liasons']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 $ZEND_ACL->allow('Staff', 'committees', 'applications');
-$ZEND_ACL->allow('Staff', ['applicants', 'applicants']);
+$ZEND_ACL->allow('Staff', ['applicants', 'applicants', 'media']);
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

@@ -17,12 +17,13 @@ foreach ($fields as $f) {
 <section>
     <h1><?= $this->_('apply'); ?></h1>
 
-    <form method="post" action="<?= BASE_URI; ?>/applicants/apply">
+    <form method="post" action="<?= BASE_URI; ?>/applicants/apply" enctype="multipart/form-data">
         <fieldset>
             <?php
                 include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
             ?>
-            <dl><dt><label for="committees">
+            <dl class="fn1-input-field">
+                <dt><label for="committees">
                         <?= $this->_(['committee', 'committees', count($committees)]); ?>
                     </label>
                 </dt>
@@ -36,6 +37,10 @@ foreach ($fields as $f) {
                     ?>
                     </select>
                 </dd>
+            </dl>
+            <dl class="fn1-input-field">
+                <dt><label for="media"><?= $this->_('media'); ?></label>
+                <dd><input type="file" name="mediafile" /></dd>
             </dl>
 
         <?php

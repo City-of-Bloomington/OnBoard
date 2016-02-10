@@ -133,4 +133,15 @@ class Applicant extends ActiveRecord
         }
 	}
 
+	/**
+	 * @return Zend\Db\Result
+	 */
+	public function getMedia()
+	{
+        if ($this->getId()) {
+            $table = new MediaTable();
+            return $table->find(['applicant_id'=>$this->getId()]);
+        }
+	}
+
 }
