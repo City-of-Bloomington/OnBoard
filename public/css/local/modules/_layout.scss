@@ -1,0 +1,19 @@
+.full-width {
+
+}
+
+.contextInfo {
+    main { overflow:auto; }
+
+    #onboard-contextInfo {
+        float: right;
+        margin: 3rem 0 0 0;
+        width: 33%;
+    }
+    #onboard-content {
+        float: left;
+        width: 64%;
+    }
+}
+
+footer { clear:both; }

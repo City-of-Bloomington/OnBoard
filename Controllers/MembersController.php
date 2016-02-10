@@ -48,7 +48,7 @@ class MembersController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            $this->template->setFilename('two-column');
+            $this->template->setFilename('contextInfo');
             $committee = $member->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
@@ -178,7 +178,7 @@ class MembersController extends Controller
 
     public function resign()
     {
-        $this->template->setFilename('two-column');
+        $this->template->setFilename('contextInfo');
         try {
             if (              !empty($_REQUEST['member_id'])) {
                 $member = new Member($_REQUEST['member_id']);
