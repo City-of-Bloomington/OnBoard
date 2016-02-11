@@ -124,6 +124,9 @@ create table applicants (
 	lastname  varchar(128) not null,
 	email     varchar(128),
 	phone     varchar(32),
+	address   varchar(128),
+	city      varchar(128),
+	zip       varchar(5),
 	created  timestamp not null default CURRENT_TIMESTAMP,
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
