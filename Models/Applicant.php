@@ -12,6 +12,11 @@ class Applicant extends ActiveRecord
 {
     protected $tablename = 'applicants';
 
+    public static $referralOptions = [
+        'Herald-Times', 'Radio', 'City Council Meeting', 'City Staff', 'City Website',
+        'Community Organization', 'Facebook', 'Press Release', 'Other'
+    ];
+
 	/**
 	 * Populates the object with data
 	 *
@@ -75,6 +80,12 @@ class Applicant extends ActiveRecord
 	public function getCity()      { return parent::get('city');      }
 	public function getZip()       { return parent::get('zip');       }
 	public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
+    public function getCitylimits    () { return parent::get('citylimits'    ); }
+    public function getOccupation    () { return parent::get('occupation'    ); }
+    public function getReferredFrom  () { return parent::get('referredFrom'  ); }
+    public function getReferredOther () { return parent::get('referredOther' ); }
+    public function getInterest      () { return parent::get('interest'      ); }
+    public function getQualifications() { return parent::get('qualifications'); }
 
 	public function setFirstname($s) { parent::set('firstname', $s); }
 	public function setLastname ($s) { parent::set('lastname',  $s); }
@@ -83,12 +94,20 @@ class Applicant extends ActiveRecord
 	public function setAddress  ($s) { parent::set('address',   $s); }
 	public function setCity     ($s) { parent::set('city',      $s); }
 	public function setZip      ($s) { parent::set('zip',       $s); }
+	public function setCitylimits    ($s) { parent::set('citylimits', $s ? 1 : 0);}
+	public function setOccupation    ($s) { parent::set('occupation',     $s); }
+	public function setReferredFrom  ($s) { parent::set('referredFrom',   $s); }
+	public function setReferredOther ($s) { parent::set('referredOther',  $s); }
+	public function setInterest      ($s) { parent::set('interest',       $s); }
+	public function setQualifications($s) { parent::set('qualifications', $s); }
 
 	public function handleUpdate(array $post)
 	{
         $fields = [
             'firstname', 'lastname', 'email', 'phone',
-            'address', 'city', 'zip'
+            'address', 'city', 'zip',
+            'citylimits', 'occupation', 'interest', 'qualifications',
+            'referredFrom', 'referredOther'
         ];
 
 		foreach ($fields as $field) {
