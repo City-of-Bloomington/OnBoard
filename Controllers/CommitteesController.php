@@ -121,13 +121,9 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
 
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-        $this->template->blocks[] = new Block('applications/list.inc', [
-            'committee'    => $committee,
-            'applications' => $committee->getApplications(['current'=>time()]),
-            'title' => $this->template->_('applications_current')
-        ]);
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        $this->template->blocks[] = new Block('applications/reportForm.inc', ['committee' => $committee]);
         $this->template->blocks[] = new Block('applications/list.inc', [
             'committee'    => $committee,
             'applications' => $committee->getApplications(['archived'=>time()]),
