@@ -28,10 +28,21 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
 
     <table>
     <?php
-        $fields = ['email', 'phone', 'address', 'city', 'zip'];
+        $fields = [
+            'email', 'phone', 'address', 'city', 'zip',
+            'citylimits', 'occupation', 'referredFrom', 'referredOther',
+            'interest', 'qualifications'
+        ];
         foreach ($fields as $f) {
             $get = 'get'.ucfirst($f);
-            $$f = self::escape($this->applicant->$get());
+            switch ($f) {
+                case 'citylimits':
+                    $$f = $this->applicant->getCitylimits() ? $this->_('yes') : $this->_('no');
+                    break;
+                default:
+                    $$f = self::escape($this->applicant->$get());
+            }
+
             echo "
             <tr><td>{$this->_($f)}</td><td>{$$f}</td></tr>
             ";

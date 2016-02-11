@@ -127,6 +127,12 @@ create table applicants (
 	address   varchar(128),
 	city      varchar(128),
 	zip       varchar(5),
+	citylimits     boolean,
+	occupation     varchar(128),
+	referredFrom   varchar(128),
+	referredOther  varchar(128),
+	interest       text,
+	qualifications text,
 	created  timestamp not null default CURRENT_TIMESTAMP,
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
