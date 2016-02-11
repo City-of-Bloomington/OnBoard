@@ -28,12 +28,14 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
 
     <table>
     <?php
-        $email = self::escape($this->applicant->getEmail());
-        $phone = self::escape($this->applicant->getPhone());
-        echo "
-        <tr><td>{$this->_('email')}</td><td>$email</td></tr>
-        <tr><td>{$this->_('phone')}</td><td>$phone</td></tr>
-        ";
+        $fields = ['email', 'phone', 'address', 'city', 'zip'];
+        foreach ($fields as $f) {
+            $get = 'get'.ucfirst($f);
+            $$f = self::escape($this->applicant->$get());
+            echo "
+            <tr><td>{$this->_($f)}</td><td>{$$f}</td></tr>
+            ";
+        }
     ?>
     </table>
 </section>

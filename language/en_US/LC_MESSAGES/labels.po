@@ -99,7 +99,7 @@ msgstr "City"
 msgid "state"
 msgstr "State"
 
-msgid "zipcode"
+msgid "zip"
 msgstr "Zip"
 
 msgid "gender"

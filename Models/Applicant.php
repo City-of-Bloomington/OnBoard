@@ -71,16 +71,25 @@ class Applicant extends ActiveRecord
 	public function getLastname()  { return parent::get('lastname');  }
 	public function getEmail()     { return parent::get('email');     }
 	public function getPhone()     { return parent::get('phone');     }
+	public function getAddress()   { return parent::get('address');   }
+	public function getCity()      { return parent::get('city');      }
+	public function getZip()       { return parent::get('zip');       }
 	public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
 
 	public function setFirstname($s) { parent::set('firstname', $s); }
 	public function setLastname ($s) { parent::set('lastname',  $s); }
 	public function setEmail    ($s) { parent::set('email',     $s); }
 	public function setPhone    ($s) { parent::set('phone',     $s); }
+	public function setAddress  ($s) { parent::set('address',   $s); }
+	public function setCity     ($s) { parent::set('city',      $s); }
+	public function setZip      ($s) { parent::set('zip',       $s); }
 
 	public function handleUpdate(array $post)
 	{
-        $fields = ['firstname', 'lastname', 'email', 'phone'];
+        $fields = [
+            'firstname', 'lastname', 'email', 'phone',
+            'address', 'city', 'zip'
+        ];
 
 		foreach ($fields as $field) {
 			if (isset($post[$field])) {
