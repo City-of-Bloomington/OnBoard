@@ -589,3 +589,6 @@ msgstr "Please explain your interest"
 
 msgid "qualifications"
 msgstr "Please describe your qualifications"
+
+msgid "report_view"
+msgstr "View Report"
