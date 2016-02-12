@@ -10,9 +10,11 @@ $this->applications = $this->committee->getApplications(['current'=>time()]);
 $seats = $this->committee->getSeats(time());
 
 $count = count($this->applications);
+
+$title = sprintf($this->_('applications_reportForm_title', 'messages'), self::escape($this->committee->getName()));
 ?>
 <section>
-    <h1><?= $this->_(['application', 'applications', $count]); ?></h1>
+    <h1><?= $title; ?></h1>
 
     <form method="get" action="<?= BASE_URI; ?>/applications/report" id="reportForm">
         <fieldset id="seats">
@@ -40,7 +42,7 @@ $count = count($this->applications);
         </fieldset>
         <fieldset>
             <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
-            <button type="submit"><?= $this->_('report'); ?></button>
+            <button type="submit"><?= $this->_('report_view'); ?></button>
         </fieldset>
     </form>
 </section>

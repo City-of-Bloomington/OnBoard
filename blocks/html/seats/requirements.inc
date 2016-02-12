@@ -7,7 +7,7 @@
 use Michelf\MarkdownExtra;
 ?>
 <section>
-    <h1><?= $this->_('requirements'); ?></h1>
+    <h1><?= $this->_(['requirement', 'requirements', 2]); ?></h1>
     <table>
     <?php
         foreach ($this->seats as $seat) {
