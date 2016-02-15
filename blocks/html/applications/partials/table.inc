@@ -25,7 +25,6 @@ use Application\Models\Person;
         $userCanViewApplications = Person::isAllowed('committees', 'applications');
         $userCanViewApplicant    = Person::isAllowed('applicants', 'view');
         $userCanArchive          = Person::isAllowed('applications', 'archive');
-        $userCanEdit = (!$this->applicant && Person::isAllowed('applicants', 'edit'));
 
         $helper = $this->template->getHelper('buttonLink');
 
@@ -63,21 +62,13 @@ use Application\Models\Person;
             echo "<td>$archived</td>";
 
             $archiveButton = '';
-            $editButton    = '';
             if ($userCanArchive && !$archived) {
                 $archiveButton = $helper->buttonLink(
                     BASE_URI.'/applications/archive?application_id='.$a->getId(),
                     $this->_('application_archive')
                 );
             }
-            if ($userCanEdit) {
-                $editButton = $helper->buttonLink(
-                    BASE_URI.'/applicants/update?applicant_id='.$a->getApplicant_id(),
-                    $this->_('applicant_edit'),
-                    'edit'
-                );
-            }
-            echo "<td>$editButton $archiveButton</td>";
+            echo "<td>$archiveButton</td>";
 
             echo "</tr>";
         }
