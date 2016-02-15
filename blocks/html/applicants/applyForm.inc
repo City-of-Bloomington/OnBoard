@@ -28,7 +28,7 @@ $title = $this->committee
 <section>
     <h1><?= $title ?></h1>
 
-    <form method="post" action="<?= BASE_URI; ?>/applicants/apply">
+    <form method="post" action="<?= BASE_URI; ?>/applicants/apply" id="applyForm">
         <fieldset>
         <?php
             include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
@@ -52,15 +52,28 @@ $title = $this->committee
         <?php
             if (!$this->committee) {
                 echo "
-                <fieldset><legend>{$this->_(['committee', 'committees', count($committees)])}</legend>
-                    <select name=\"committees[]\" id=\"committees\" multiple=\"true\">
+                <fieldset id=\"committees\">
+                    <dl class=\"fn1-input-field--checkbox\">
+                        <dt>{$this->_(['committee', 'committees', count($committees)])}</dt>
                 ";
-                        foreach ($committees as $c) {
-                            $name = self::escape($c->getName());
-                            echo "<option value=\"{$c->getId()}\">$name</option>";
-                        }
+                    $chosen = [];
+                    if (isset($_REQUEST['committees'])) { $chosen = $_REQUEST['committees']; }
+
+                    foreach ($committees as $c) {
+                        $checked = in_array($c->getId(), $chosen)
+                            ? 'checked="true"'
+                            : '';
+                        $name = self::escape($c->getName());
+                        echo "
+                        <dd><label>
+                                <input name=\"committees[]\" type=\"checkbox\" value=\"{$c->getId()}\" $checked />
+                                <span>$name</span>
+                            </label>
+                        </dd>
+                        ";
+                    }
                 echo "
-                    </select>
+                    </dl>
                 </fieldset>
                 ";
             }
