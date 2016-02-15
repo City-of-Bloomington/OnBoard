@@ -563,6 +563,9 @@ msgstr "Current Applications"
 msgid "applications_archived"
 msgstr "Archived Applications"
 
+msgid "applications_back"
+msgstr "Back to applications"
+
 msgid "created"
 msgstr "Created"
 

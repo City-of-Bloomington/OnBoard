@@ -7,21 +7,26 @@
 use Michelf\MarkdownExtra;
 ?>
 <section>
-    <h1><?= $this->_(['requirement', 'requirements', 2]); ?></h1>
-    <table>
+    <header>
+        <h1><?= $this->_(['requirement', 'requirements', 2]); ?></h1>
+    </header>
+
     <?php
         foreach ($this->seats as $seat) {
             $code = self::escape($seat->getCode());
+            $requirements = $seat->getRequirements();
 
             $markdown = new MarkdownExtra();
-            $requirements = $markdown->transform($seat->getRequirements());
+            $requirements = $requirements
+                ? $markdown->transform($requirements)
+                : $this->_('none');
 
             echo "
-            <tr><th>$code</th>
-                <td>$requirements</td>
-            </tr>
+            <dl class=\"fn1-output-field\">
+                <dt>$code</dt>
+                <dd>$requirements</td>
+            </dl>
             ";
         }
     ?>
-    </table>
 </section>
