@@ -63,16 +63,11 @@ class ApplicationsController extends Controller
                     catch (\Exception $e) { }
                 }
             }
-
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-            $this->template->blocks[] = new Block('seats/requirements.inc', ['seats' => $seats]);
-            foreach ($applications as $a) {
-                $this->template->blocks[] = new Block('applicants/info.inc', [
-                    'applicant'      => $a->getApplicant(),
-                    'disableButtons' => true
-                ]);
-            }
+            $this->template->blocks[] = new Block('applications/report.inc', [
+                'applications' => $applications,
+                'committee'    => $committee,
+                'seats'        => $seats
+            ]);
         }
 
     }

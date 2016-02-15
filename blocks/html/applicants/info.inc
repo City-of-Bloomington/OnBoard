@@ -26,7 +26,6 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
         </div>
     </header>
 
-    <table>
     <?php
         $fields = [
             'email', 'phone', 'address', 'city', 'zip',
@@ -44,9 +43,11 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
             }
 
             echo "
-            <tr><td>{$this->_($f)}</td><td>{$$f}</td></tr>
+            <dl class=\"fn1-output-field\">
+                <dt>{$this->_($f)}</dt>
+                <dd>{$$f}</dd>
+            </dl>
             ";
         }
     ?>
-    </table>
 </section>
