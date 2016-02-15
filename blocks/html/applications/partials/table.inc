@@ -16,8 +16,9 @@ use Application\Models\Person;
                 echo "<th>{$this->_('created')}</th>";
                 if (!$this->applicant) { echo "<th>{$this->_('name')}</th>"; }
                 if (!$this->committee) { echo "<th>{$this->_('committee')}</th>"; }
-                echo "<th>{$this->_('archived')}</th>";
-                echo "<th></th>";
+                echo $this->type === 'current'
+                    ? "<th>{$this->_('expires')}</th><th></th>"
+                    : "<th>{$this->_('archived')}</th>";
             ?>
     </thead>
     <tbody>
@@ -58,17 +59,25 @@ use Application\Models\Person;
 
             }
 
-            $archived = $a->getArchived(DATE_FORMAT);
-            echo "<td>$archived</td>";
 
-            $archiveButton = '';
-            if ($userCanArchive && !$archived) {
-                $archiveButton = $helper->buttonLink(
-                    BASE_URI.'/applications/archive?application_id='.$a->getId(),
-                    $this->_('application_archive')
-                );
+            if ($this->type === 'archived') {
+                $archived = $a->getArchived(DATE_FORMAT);
+                echo "<td>$archived</td>";
             }
-            echo "<td>$archiveButton</td>";
+            else {
+                $expires = $a->getExpires(DATE_FORMAT);
+                echo "<td>$expires</td>";
+
+                $archiveButton = '';
+                if ($userCanArchive) {
+                    $archiveButton = $helper->buttonLink(
+                        BASE_URI.'/applications/archive?application_id='.$a->getId(),
+                        $this->_('application_archive')
+                    );
+                }
+                echo "<td>$archiveButton</td>";
+            }
+
 
             echo "</tr>";
         }

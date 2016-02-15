@@ -500,6 +500,9 @@ msgstr "Meeting Schedule"
 msgid "termEndWarningDays"
 msgstr "End of Term Warning"
 
+msgid "applicationLifetime"
+msgstr "Application Lifetime"
+
 msgid "statutoryName"
 msgstr "Statutory Name"
 
@@ -571,6 +574,9 @@ msgstr "Created"
 
 msgid "archived"
 msgstr "Archived"
+
+msgid "expires"
+msgstr "Expires"
 
 msgid "thanks"
 msgstr "Thank You"

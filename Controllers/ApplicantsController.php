@@ -33,12 +33,14 @@ class ApplicantsController extends Controller
             $this->template->blocks[] = new Block('applications/list.inc', [
                 'applicant'    => $applicant,
                 'applications' => $applicant->getApplications(['current'=>time()]),
-                'title' => $this->template->_('applications_current')
+                'title'        => $this->template->_('applications_current'),
+                'type'         => 'current'
             ]);
             $this->template->blocks[] = new Block('applications/list.inc', [
                 'applicant'    => $applicant,
                 'applications' => $applicant->getApplications(['archived'=>time()]),
-                'title' => $this->template->_('applications_archived')
+                'title'        => $this->template->_('applications_archived'),
+                'type'         => 'archived'
             ]);
         }
         else {
