@@ -3,6 +3,7 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
+ * @param Committee $this->committee (optional)
  */
 use Application\Models\Applicant;
 use Application\Models\CommitteeTable;
@@ -19,37 +20,51 @@ foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = self::escape($this->applicant->$get());
 }
+
+$title = $this->committee
+    ? sprintf($this->_('applyToCommittee', 'messages'), self::escape($this->committee->getName()))
+    : $this->_('apply');
 ?>
 <section>
-    <h1><?= $this->_('apply'); ?></h1>
+    <h1><?= $title ?></h1>
 
     <form method="post" action="<?= BASE_URI; ?>/applicants/apply">
         <fieldset>
-            <?php
-                include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
+        <?php
+            include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
 
-                foreach (['address', 'city', 'zip'] as $f) {
-                    echo "
-                    <dl class=\"fn1-input-field\">
-                        <dt><label for=\"$f\">{$this->_($f)}</label></dt>
-                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
-                    </dl>
-                    ";
-                }
-            ?>
+            foreach (['address', 'city', 'zip'] as $f) {
+                echo "
+                <dl class=\"fn1-input-field\">
+                    <dt><label for=\"$f\">{$this->_($f)}</label></dt>
+                    <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
+                </dl>
+                ";
+            }
+            if ($this->committee) {
+                echo "
+                <input name=\"committee_id\" type=\"hidden\" value=\"{$this->committee->getId()}\" />
+                <input name=\"committees[]\" type=\"hidden\" value=\"{$this->committee->getId()}\" />
+                ";
+            }
+        ?>
         </fieldset>
-
-        <fieldset><legend><?= $this->_(['committee', 'committees', count($committees)]); ?></legend>
-            <select name="committees[]" id="committees" multiple="true">
-            <?php
-                foreach ($committees as $c) {
-                    $name = self::escape($c->getName());
-
-                    echo "<option value=\"{$c->getId()}\">$name</option>";
-                }
-            ?>
-            </select>
-        </fieldset>
+        <?php
+            if (!$this->committee) {
+                echo "
+                <fieldset><legend>{$this->_(['committee', 'committees', count($committees)])}</legend>
+                    <select name=\"committees[]\" id=\"committees\" multiple=\"true\">
+                ";
+                        foreach ($committees as $c) {
+                            $name = self::escape($c->getName());
+                            echo "<option value=\"{$c->getId()}\">$name</option>";
+                        }
+                echo "
+                    </select>
+                </fieldset>
+                ";
+            }
+        ?>
 
         <fieldset>
             <dl class="fn1-input-field">
