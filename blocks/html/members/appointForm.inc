@@ -98,5 +98,6 @@ use Michelf\MarkdownExtra;
                 );
             ?>
             </div>
-        </section>
+        </div>
+    </section>
 </form>
