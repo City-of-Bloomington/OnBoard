@@ -94,7 +94,8 @@ class Committee extends ActiveRecord
 	public function getYearFormed()        { return parent::get('yearFormed');       }
 	public function getContactInfo()       { return parent::get('contactInfo');      }
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
-	public function getTermEndWarningDays() { return parent::get('termEndWarningDays'); }
+	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
+	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
@@ -112,7 +113,8 @@ class Committee extends ActiveRecord
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
 	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
 	public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
-	public function setTermEndWarningDays($s) { parent::set('termEndWarningDays', (int)$s); }
+	public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
+	public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
 
 	/**
 	 * @param array $post The POST request
@@ -125,7 +127,8 @@ class Committee extends ActiveRecord
             'type', 'departments',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
-			'description', 'contactInfo', 'meetingSchedule', 'termEndWarningDays'
+			'description', 'contactInfo', 'meetingSchedule',
+			'termEndWarningDays', 'applicationLifetime'
 		];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);

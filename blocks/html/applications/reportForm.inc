@@ -37,6 +37,7 @@ $title = sprintf($this->_('applications_reportForm_title', 'messages'), self::es
             <legend><?= $this->_(['applicant', 'applicants', $count]); ?></legend>
             <?php
                 $this->selectable = true;
+                $this->type = 'current';
                 $this->_include('html/applications/partials/table.inc');
             ?>
         </fieldset>

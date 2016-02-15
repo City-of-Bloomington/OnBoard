@@ -127,7 +127,8 @@ class CommitteesController extends Controller
         $this->template->blocks[] = new Block('applications/list.inc', [
             'committee'    => $committee,
             'applications' => $committee->getApplications(['archived'=>time()]),
-            'title' => $this->template->_('applications_archived')
+            'title'        => $this->template->_('applications_archived'),
+            'type'         => 'archived'
         ]);
 
     }

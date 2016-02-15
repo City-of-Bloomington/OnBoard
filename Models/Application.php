@@ -95,4 +95,18 @@ class Application extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom functions
 	//----------------------------------------------------------------
+	/**
+	 * @param string $format Date format
+	 * @return string
+	 */
+	public function getExpires($format=null)
+	{
+        if (!$format) { $format = DATE_FORMAT; }
+
+        $d = $this->getCommittee()->getApplicationLifetime();
+
+        $expires = new \DateTime($this->getCreated());
+        $expires->add(new \DateInterval("P{$d}D"));
+        return $expires->format($format);
+	}
 }
