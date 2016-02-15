@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
+use Application\Models\Committee;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
@@ -88,7 +89,14 @@ class ApplicantsController extends Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        $this->template->blocks[] = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
-    }
 
+
+        if (isset($_REQUEST['committee_id'])) {
+            try { $committee = new Committee($_REQUEST['committee_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        $block = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
+        if (isset($committee)) { $block->committee = $committee; }
+        $this->template->blocks[] = $block;
+    }
 }

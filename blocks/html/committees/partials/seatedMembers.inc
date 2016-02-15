@@ -175,6 +175,13 @@ $title = $this->title
                 'add'
             );
         }
+        if ($this->committee->hasVacancy()) {
+            echo $helper->buttonLink(
+                BASE_URI.'/applicants/apply?committee_id='.$this->committee->getId(),
+                $this->_('apply'),
+                'apply'
+            );
+        }
     }
 ?>
     </div>
