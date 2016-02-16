@@ -23,10 +23,17 @@ class Media extends ActiveRecord
 	 * Whitelist of accepted file types
 	 */
 	public static $extensions = [
-		'jpg' =>['mime_type'=>'image/jpeg'],
-		'gif' =>['mime_type'=>'image/gif' ],
-		'png' =>['mime_type'=>'image/png' ],
-		'tiff'=>['mime_type'=>'image/tiff']
+        'doc'  => ['mime_type' => 'application/msword'],
+        'docx' => ['mime_type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        'odf'  => ['mime_type' => 'application/vnd.oasis.opendocument'],
+        'odt'  => ['mime_type' => 'application/vnd.oasis.opendocument.text'],
+        'pdf'  => ['mime_type' => 'application/pdf'],
+        'rtf'  => ['mime_type' => 'application/rtf']
+
+		#'jpg' =>['mime_type'=>'image/jpeg'],
+		#'gif' =>['mime_type'=>'image/gif' ],
+		#'png' =>['mime_type'=>'image/png' ],
+		#'tiff'=>['mime_type'=>'image/tiff']
 		#'pdf' =>array('mime_type'=>'application/pdf','media_type'=>'attachment'),
 		#'rtf' =>array('mime_type'=>'application/rtf','media_type'=>'attachment'),
 		#'doc' =>array('mime_type'=>'application/msword','media_type'=>'attachment'),
@@ -186,6 +193,36 @@ class Media extends ActiveRecord
 		if (!is_file($newFile)) {
 			throw new \Exception('media/badServerPermissions');
 		}
+
+		if ($this->getMime_type() !== Media::$extensions['pdf']['mime_type']) {
+            self::convertToPDF($newFile);
+            $this->data['mime_type'] = Media::$extensions['pdf']['mime_type'];
+            $this->data['filename' ] = basename($filename, $extension).'.pdf';
+		}
+	}
+
+	/**
+	 * In-place conversion of given file to PDF
+	 *
+	 * You must have set the SOFFICE path in configuration.inc
+	 * Apache must have permission to write to the SITE_HOME directory.
+	 * LibreOffice will create .config and .cache directories in SITE_HOME
+	 *
+	 * @param string $file Full path to the file to convert
+	 */
+	public static function convertToPDF($file)
+	{
+        $info = pathinfo($file);
+        $dir = $info['dirname'];
+
+        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
+        $out = shell_exec($cmd);
+        if (is_file("$file.pdf")) {
+             rename("$file.pdf", $file);
+        }
+        else {
+            throw new \Exception('media/pdfConversionFailed');
+        }
 	}
 
 	/**

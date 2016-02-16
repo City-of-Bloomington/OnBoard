@@ -5,6 +5,9 @@
 define('APPLICATION_HOME', __DIR__);
 define('BLOSSOM', APPLICATION_HOME.'/vendor/City-of-Bloomington/blossom-lib');
 
+// Path to LibreOffice for converting files to PDF
+define('SOFFICE', '/usr/bin/soffice');
+
 /**
  * Multi-Site support
  *
