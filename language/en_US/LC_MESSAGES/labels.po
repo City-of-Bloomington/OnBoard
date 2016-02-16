@@ -166,7 +166,10 @@ msgid "edit_person"
 msgstr "Edit Person"
 
 msgid "find_person"
-msgstr "Find a Person"
+msgstr "Find someone"
+
+msgid "person_choose"
+msgstr "Choose Person"
 
 msgid "create_account"
 msgstr "Create Account"
