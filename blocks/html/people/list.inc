@@ -8,32 +8,14 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Url;
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header"><h1><?= $this->translate(['person','people',2]); ?></h1>
-        <div class="fn1-uiBlock-headerTools">
-        <?php
-            $helper = $this->template->getHelper('buttonLink');
-
-            if (Person::isAllowed('people', 'add')) {
-                // Preserve any extra parameters passed in
-                $url = new Url(BASE_URL.'/people/update');
-                $fields = array('firstname','lastname','email');
-                foreach ($_REQUEST as $key=>$value) {
-                    if (!in_array($key, $fields)) { $url->$key = $value; }
-                }
-
-                echo $helper->buttonLink(
-                    $url,
-                    $this->translate('add_person'),
-                    'add'
-                );
-            }
-        ?>
-        </div>
+<section>
+    <header>
+        <h1><?= $this->translate(['person','people',2]); ?></h1>
     </header>
 	<table class="fn1-table">
 		<tbody>
 		<?php
+            $helper = $this->template->getHelper('buttonLink');
 			foreach ($this->people as $person) {
 				$button = '';
 				if (Person::isAllowed('people', 'edit')) {
@@ -71,4 +53,20 @@ use Blossom\Classes\Url;
 		?>
 		</tbody>
 	</table>
+	<?php
+        if (Person::isAllowed('people', 'add')) {
+            // Preserve any extra parameters passed in
+            $url = new Url(BASE_URL.'/people/update');
+            $fields = array('firstname','lastname','email');
+            foreach ($_REQUEST as $key=>$value) {
+                if (!in_array($key, $fields)) { $url->$key = $value; }
+            }
+
+            echo $helper->buttonLink(
+                $url,
+                $this->translate('add_person'),
+                'add'
+            );
+        }
+    ?>
 </section>
