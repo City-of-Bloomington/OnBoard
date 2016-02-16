@@ -43,3 +43,9 @@ msgstr "Review Public Applications for %s"
 
 msgid "applyToCommittee"
 msgstr "Apply to %s"
+
+msgid "noSeatsSelected"
+msgstr "No Seats Selected"
+
+msgid "noApplicationsSelected"
+msgstr "No Applications Selected"
