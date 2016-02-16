@@ -23,14 +23,24 @@ use Blossom\Classes\Block;
         </nav>
     </header>
     <?php
-        $this->_include('html/seats/requirements.inc');
+        if (count($this->seats)) {
+            $this->_include('html/seats/requirements.inc');
+        }
+        else {
+            echo "<p>{$this->_('noSeatsSelected', 'messages')}</p>";
+        }
 
-        foreach ($this->applications as $a) {
-            $block = new Block('applicants/info.inc', [
-                'applicant'      => $a->getApplicant(),
-                'disableButtons' => true
-            ]);
-            echo $block->render('html', $this->template);
+        if (count($this->applications)) {
+            foreach ($this->applications as $a) {
+                $block = new Block('applicants/info.inc', [
+                    'applicant'      => $a->getApplicant(),
+                    'disableButtons' => true
+                ]);
+                echo $block->render('html', $this->template);
+            }
+        }
+        else {
+            echo "<p>{$this->_('noApplicationsSelected', 'messages')}</p>";
         }
     ?>
 </section>
