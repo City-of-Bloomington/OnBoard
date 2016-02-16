@@ -1,6 +1,5 @@
 -- @copyright 2006-2016 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
--- @author Cliff Ingham <inghamn@bloomington.in.gov>
 create table races (
 	id int unsigned not null primary key auto_increment,
 	name varchar(50) not null unique
@@ -53,7 +52,8 @@ create table committees (
     description     text,
 	contactInfo     text,
 	meetingSchedule text,
-	termEndWarningDays tinyint unsigned not null default 0
+	termEndWarningDays  tinyint unsigned not null default 0,
+	applicationLifetime tinyint unsigned not null default 90
 );
 
 create table committee_departments (
@@ -124,6 +124,15 @@ create table applicants (
 	lastname  varchar(128) not null,
 	email     varchar(128),
 	phone     varchar(32),
+	address   varchar(128),
+	city      varchar(128),
+	zip       varchar(5),
+	citylimits     boolean,
+	occupation     varchar(128),
+	referredFrom   varchar(128),
+	referredOther  varchar(128),
+	interest       text,
+	qualifications text,
 	created  timestamp not null default CURRENT_TIMESTAMP,
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );

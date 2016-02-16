@@ -30,16 +30,17 @@ if (Person::isAllowed('committees', 'applications')) {
     }
 }
 
-$c = $this->committee->getVacancyCount();
-$vacancies = $c ? "($c {$this->_(['vacancy', 'vacancies', $c])})" : '';
-$name = self::escape($this->committee->getName());
 echo "
 <section>
-    <h1>$name $vacancies</h1>
-    <nav class=\"fn1-btn-container\">
-        $infoLink
-        $membersLink
-        $applicationsLink
-    </nav>
+    <header>
+";
+        $this->_include('html/committees/partials/committeeVacancyHeading.inc');
+echo"
+        <nav class=\"tools\">
+            $infoLink
+            $membersLink
+            $applicationsLink
+        </nav>
+    </header>
 </section>
 ";

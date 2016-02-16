@@ -37,3 +37,15 @@ msgstr "%s is still assigned to this seat. Before you report a new appointee, <s
 
 msgid "office_edit"
 msgstr "Edit %s Office"
+
+msgid "applications_reportForm_title"
+msgstr "Review Public Applications for %s"
+
+msgid "applyToCommittee"
+msgstr "Apply to %s"
+
+msgid "noSeatsSelected"
+msgstr "No Seats Selected"
+
+msgid "noApplicationsSelected"
+msgstr "No Applications Selected"

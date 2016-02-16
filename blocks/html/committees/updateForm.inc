@@ -14,7 +14,8 @@ $fields = [
     'type', 'yearFormed',
     'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website',
     'email', 'phone', 'address', 'city', 'state', 'zip',
-    'description', 'contactInfo', 'meetingSchedule', 'termEndWarningDays'
+    'description', 'contactInfo', 'meetingSchedule',
+    'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -49,7 +50,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 $fields = [
                     'name', 'yearFormed',
                     'statutoryName', 'statuteReference', 'statuteUrl',
-                    'website', 'termEndWarningDays'
+                    'website', 'termEndWarningDays', 'applicationLifetime'
                 ];
                 foreach ($fields as $f) {
                     echo "
@@ -93,7 +94,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 <dd><input name="state" id="state" value="<?= $state; ?>" /></dd>
             </dl>
             <dl class="fn1-input-field">
-                <dt><label><?= $this->_('zipcode'); ?></label></dt>
+                <dt><label><?= $this->_('zip'); ?></label></dt>
                 <dd><input name="zip" value="<?= $zip; ?>" /></dd>
             </dl>
             <dl class="fn1-input-field">

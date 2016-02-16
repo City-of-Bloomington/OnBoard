@@ -94,7 +94,8 @@ class Committee extends ActiveRecord
 	public function getYearFormed()        { return parent::get('yearFormed');       }
 	public function getContactInfo()       { return parent::get('contactInfo');      }
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
-	public function getTermEndWarningDays() { return parent::get('termEndWarningDays'); }
+	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
+	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
@@ -112,7 +113,8 @@ class Committee extends ActiveRecord
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
 	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
 	public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
-	public function setTermEndWarningDays($s) { parent::set('termEndWarningDays', (int)$s); }
+	public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
+	public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
 
 	/**
 	 * @param array $post The POST request
@@ -125,7 +127,8 @@ class Committee extends ActiveRecord
             'type', 'departments',
 			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
-			'description', 'contactInfo', 'meetingSchedule', 'termEndWarningDays'
+			'description', 'contactInfo', 'meetingSchedule',
+			'termEndWarningDays', 'applicationLifetime'
 		];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
@@ -455,5 +458,34 @@ class Committee extends ActiveRecord
 
 		$table = new ApplicationTable();
 		return $table->find($params);
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function data()
+	{
+        $sql = "select  c.id, c.name, count(s.id) as seats,
+                        sum(
+                            case when (s.type='termed' and t.id is not null and tm.id is null) then 1
+                                 when (s.type='open'   and m.id is null)                       then 1
+                                else 0
+                            end
+                        ) as vacancies,
+                        (
+                            select count(*)
+                            from applications a
+                            where a.committee_id=c.id and (a.archived is null or now() <= a.archived)
+                        ) as applications
+                from committees c
+                left join seats s    on c.id= s.committee_id
+                left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
+                left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
+                left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
+                group by c.id
+                order by c.name";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute();
+        return $result;
 	}
 }

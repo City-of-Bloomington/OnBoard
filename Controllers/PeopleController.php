@@ -25,8 +25,10 @@ class PeopleController extends Controller
 		$people->setCurrentPageNumber($page);
 		$people->setItemCountPerPage(20);
 
-		$this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
-		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
+		if (isset($_GET['firstname'])) {
+            $this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
+            $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
+        }
 	}
 
 	public function view()
@@ -34,7 +36,7 @@ class PeopleController extends Controller
 		try {
 			$person = new Person($_REQUEST['person_id']);
 			$this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
-			
+
 			if ($this->template->outputFormat == 'html') {
 				$this->template->blocks[] = new Block('people/tabs.inc', ['person'=>$person]);
 			}

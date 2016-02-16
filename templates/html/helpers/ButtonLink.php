@@ -22,7 +22,9 @@ class ButtonLink
 		'edit'     => 'fa fa-pencil',
 		'delete'   => 'fa fa-times',
 		'cancel'   => 'fa fa-times',
-		'download' => 'fa fa-download'
+		'download' => 'fa fa-download',
+		'back'     => 'fa fa-arrow-circle-left',
+		'choosePerson' => 'fa fa-user-plus'
 	];
 
 	public function __construct(Template $template)

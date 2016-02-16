@@ -78,6 +78,10 @@ class Member extends ActiveRecord
             throw new \Exception('missingSeat');
         }
 
+        if (!$this->getStartDate()) {
+            throw new \Exception('missingRequiredFields');
+        }
+
 		// Make sure the end date falls after the start date
 		$start = (int)$this->getStartDate('U');
 		$end   = (int)$this->getEndDate  ('U');
