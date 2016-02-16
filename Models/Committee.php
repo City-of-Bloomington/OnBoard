@@ -459,4 +459,33 @@ class Committee extends ActiveRecord
 		$table = new ApplicationTable();
 		return $table->find($params);
 	}
+
+	/**
+	 * @return array
+	 */
+	public static function data()
+	{
+        $sql = "select  c.id, c.name, count(s.id) as seats,
+                        sum(
+                            case when (s.type='termed' and t.id is not null and tm.id is null) then 1
+                                 when (s.type='open'   and m.id is null)                       then 1
+                                else 0
+                            end
+                        ) as vacancies,
+                        (
+                            select count(*)
+                            from applications a
+                            where a.committee_id=c.id and (a.archived is null or now() <= a.archived)
+                        ) as applications
+                from committees c
+                left join seats s    on c.id= s.committee_id
+                left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
+                left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
+                left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
+                group by c.id
+                order by c.name";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute();
+        return $result;
+	}
 }

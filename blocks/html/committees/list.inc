@@ -3,7 +3,7 @@
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param Zend\Db\ResultSet $this->committees
+ * @param Zend\Db\ResultSet $this->data
  */
 namespace Application\Models;
 
@@ -11,10 +11,10 @@ use Application\Templates\Helpers\ButtonLink;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header">
-        <h1><?= $this->_(['committee', 'committees', count($this->committees)]); ?></h1>
-        <div class="fn1-uiBlock-headerTools">
+<section>
+    <header>
+        <h1><?= $this->_(['committee', 'committees', count($this->data)]); ?></h1>
+        <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
@@ -32,24 +32,37 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
             <tr><th></th>
                 <th><?= $this->_(['seat', 'seats', 2]); ?></th>
                 <th><?= $this->_(['vacancy', 'vacancies', 2]); ?></th>
+                <?php
+                    $userCanViewApplications = Person::isAllowed('committees', 'applications');
+                    if ($userCanViewApplications) {
+                        echo "<th>{$this->_(['application', 'applications', 2])}</th>";
+                    }
+                ?>
             </tr>
         </thead>
         <tbody>
         <?php
-            foreach ($this->committees as $c) {
-                $name = self::escape($c->getName());
-                $url = BASE_URI.'/committees/members?committee_id='.$c->getId();
+            foreach ($this->data as $c) {
+                $name = self::escape($c['name']);
+                $url = BASE_URI.'/committees/members?committee_id='.$c['id'];
 
-                $seatCount = count($c->getSeats());
+                $seatCount = (int)$c['seats'];
                 if ($seatCount === 0) { $seatCount = ''; }
 
-                $vacancies = $c->getVacancyCount();
+                $vacancies = (int)$c['vacancies'];
                 if ($vacancies === 0) { $vacancies = ''; }
+
+                $apps = (int)$c['applications'];
+                if ($apps === 0) { $apps = ''; }
+                $applications = $userCanViewApplications
+                    ? "<td><a href=\"".BASE_URI."/committees/applications?committee_id=$c[id]\">$apps</a></td>"
+                    : '';
 
                 echo "
                 <tr><td><a href=\"$url\">$name</a></td>
                     <td>$seatCount</td>
                     <td>$vacancies</td>
+                    $applications
                 </tr>
                 ";
             }
