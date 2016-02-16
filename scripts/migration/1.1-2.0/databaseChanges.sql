@@ -28,3 +28,13 @@ update committees set applicationLifetime=90;
 
 alter table seats add code varchar(16) after type;
 alter table seats modify type enum('termed', 'open') not null default 'termed';
+
+create table media (
+	id int unsigned not null primary key auto_increment,
+	internalFilename varchar(50)  not null,
+	filename         varchar(128) not null,
+	mime_type        varchar(128) not null,
+	uploaded         datetime     not null,
+	applicant_id     int unsigned not null,
+	foreign key (applicant_id) references applicants(id)
+);

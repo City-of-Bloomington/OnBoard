@@ -1,6 +1,7 @@
 configuration.inc
 site_config.inc
 backup.cnf
+data/.*
 data/sessions/*
 data/media
 *.mo
