@@ -30,12 +30,11 @@ class CommitteesController extends Controller
 
     public function index()
     {
-        $table = new CommitteeTable();
-        $committees = $table->find();
+        $data = Committee::data();
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
-        $this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
+        $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$data]);
     }
 
     public function info()
