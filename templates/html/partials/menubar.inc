@@ -11,10 +11,6 @@ use Application\Models\Person;
         <a href="<?= BASE_URI; ?>/people"><?= $this->_(['person', 'people', 2]); ?></a>
         <a href="<?= BASE_URI; ?>/seats"><?= $this->_(['seat', 'seats', 2]); ?></a>
         <?php
-            if (Person::isAllowed('applicants', 'index')) {
-                $uri = BASE_URI.'/applicants';
-                echo "<a href=\"$uri\">{$this->_(['applicant', 'applicants', 2])}</a>";
-            }
             if (Person::isAllowed('applicants', 'apply')) {
                 $uri = BASE_URI.'/applicants/apply';
                 echo "<a href=\"$uri\">{$this->_('apply')}</a>";
