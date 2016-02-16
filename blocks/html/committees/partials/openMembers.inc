@@ -66,6 +66,14 @@ $title = $this->title
         if (isset($uri)) {
             echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
         }
+        
+        if ($this->committee->hasVacancy()) {
+            echo $helper->buttonLink(
+                BASE_URI.'/applicants/apply?committee_id='.$this->committee->getId(),
+                $this->_('apply'),
+                'apply'
+            );
+        }
     }
 ?>
     </div>

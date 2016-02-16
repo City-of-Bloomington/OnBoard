@@ -30,12 +30,11 @@ class CommitteesController extends Controller
 
     public function index()
     {
-        $table = new CommitteeTable();
-        $committees = $table->find();
+        $data = Committee::data();
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
-        $this->template->blocks[] = new Block('committees/list.inc', ['committees'=>$committees]);
+        $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$data]);
     }
 
     public function info()
@@ -121,17 +120,14 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
 
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-        $this->template->blocks[] = new Block('applications/list.inc', [
-            'committee'    => $committee,
-            'applications' => $committee->getApplications(['current'=>time()]),
-            'title' => $this->template->_('applications_current')
-        ]);
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        $this->template->blocks[] = new Block('applications/reportForm.inc', ['committee' => $committee]);
         $this->template->blocks[] = new Block('applications/list.inc', [
             'committee'    => $committee,
             'applications' => $committee->getApplications(['archived'=>time()]),
-            'title' => $this->template->_('applications_archived')
+            'title'        => $this->template->_('applications_archived'),
+            'type'         => 'archived'
         ]);
 
     }

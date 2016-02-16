@@ -8,6 +8,7 @@ namespace Application\Controllers;
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
 use Application\Models\Media;
+use Application\Models\Committee;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
@@ -33,12 +34,14 @@ class ApplicantsController extends Controller
             $this->template->blocks[] = new Block('applications/list.inc', [
                 'applicant'    => $applicant,
                 'applications' => $applicant->getApplications(['current'=>time()]),
-                'title' => $this->template->_('applications_current')
+                'title'        => $this->template->_('applications_current'),
+                'type'         => 'current'
             ]);
             $this->template->blocks[] = new Block('applications/list.inc', [
                 'applicant'    => $applicant,
                 'applications' => $applicant->getApplications(['archived'=>time()]),
-                'title' => $this->template->_('applications_archived')
+                'title'        => $this->template->_('applications_archived'),
+                'type'         => 'archived'
             ]);
         }
         else {
@@ -96,7 +99,14 @@ class ApplicantsController extends Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        $this->template->blocks[] = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
-    }
 
+
+        if (isset($_REQUEST['committee_id'])) {
+            try { $committee = new Committee($_REQUEST['committee_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        $block = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
+        if (isset($committee)) { $block->committee = $committee; }
+        $this->template->blocks[] = $block;
+    }
 }

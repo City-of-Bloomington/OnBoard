@@ -99,7 +99,7 @@ msgstr "City"
 msgid "state"
 msgstr "State"
 
-msgid "zipcode"
+msgid "zip"
 msgstr "Zip"
 
 msgid "gender"
@@ -500,6 +500,9 @@ msgstr "Meeting Schedule"
 msgid "termEndWarningDays"
 msgstr "End of Term Warning"
 
+msgid "applicationLifetime"
+msgstr "Application Lifetime"
+
 msgid "statutoryName"
 msgstr "Statutory Name"
 
@@ -563,11 +566,38 @@ msgstr "Current Applications"
 msgid "applications_archived"
 msgstr "Archived Applications"
 
+msgid "applications_back"
+msgstr "Back to applications"
+
 msgid "created"
 msgstr "Created"
 
 msgid "archived"
 msgstr "Archived"
 
+msgid "expires"
+msgstr "Expires"
+
 msgid "thanks"
 msgstr "Thank You"
+
+msgid "citylimits"
+msgstr "Do you live in the city limits?"
+
+msgid "occupation"
+msgstr "Occupation"
+
+msgid "referredFrom"
+msgstr "How did you hear of this opening?"
+
+msgid "referredOther"
+msgstr "Of other, please describe:"
+
+msgid "interest"
+msgstr "Please explain your interest"
+
+msgid "qualifications"
+msgstr "Please describe your qualifications"
+
+msgid "report_view"
+msgstr "View Report"

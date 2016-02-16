@@ -12,7 +12,7 @@ use Michelf\MarkdownExtra;
 $fields = [
     'type',
     'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
-    'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays'
+    'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -52,7 +52,8 @@ if (Person::isAllowed('committees', 'edit')) {
         $fields  = [
             'type', 'yearFormed',
             'statutoryName', 'statuteReference', 'website',
-            'email', 'phone', 'termEndWarningDays', 'address'
+            'email', 'phone', 'address',
+            'termEndWarningDays', 'applicationLifetime'
         ];
         $address = $address ? "<address>$address\n$city $state $zip</address>" : null;
 

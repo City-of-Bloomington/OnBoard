@@ -1,3 +1,5 @@
+@import 'modules/_layout';
+
 /**
  * Basic HTML element styles
  */
@@ -13,31 +15,34 @@
 .fa-print      { color:blue;  }
 .fa-user-plus  { color:green; }
 
-*:focus { border:2px solid black; }
-
-/**
- * Side Panel
- */
-#panel-one nav {
-  border:2px solid #000; margin-bottom:0.5em;
-  border-radius:10px;
-  overflow:hidden;
-}
-#panel-one h2 {
-  background-color:#36c; color:#fff;
-  border-bottom:2px solid #000;
-  margin:0; padding:.25em;
-}
-#panel-one ul { margin:.25em; padding:0; }
-#panel-one a { font-weight:bold; color:#000; }
-
-#content-panel { padding:4px; }
+*:focus { border:1px solid black; }
 
 /**
  * Main Content
  */
 #errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
 #errorMessages h2 { }
+
+#reportForm { overflow:auto; }
+#reportForm #seats {
+    float: right;
+    width: 33%;
+}
+#reportForm #applicants { margin-right:34%; }
+#applyForm #committees { max-height:14em; overflow:scroll; }
+
+#onboard-contextInfo {
+    .fn1-output-field {
+        border-top: none;
+        > dt {
+            color: #777;
+            float: none;
+        }
+        > dd {
+            margin-left: 0;
+        }
+    }
+}
 
 .onboard {
     &-breadcrumbs > ul {
@@ -52,25 +57,6 @@
                 font-size: .75em;
                 margin-right: 8px;
             }
-        }
-    }
-    &-contextInfo {
-        float: right;
-        margin: 3rem 0 0 0;
-        width: 33%;
-        .fn1-output-field {
-            border-top: none;
-            > dt {
-                color: #777;
-                float: none;
-            }
-            > dd {
-                margin-left: 0;
-            }
-        }
-        &+ .onboard-content, &+.fn1-uiBlock-content {
-            float: left;
-            width: 64%;
         }
     }
     &-offices {
