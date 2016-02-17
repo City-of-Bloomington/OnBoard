@@ -105,8 +105,8 @@ class Media extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->data['filename'])   { throw new \Exception('media/missingFilename');  }
-		if (!$this->data['mime_type'])  { throw new \Exception('media/missingMimeType');  }
+		if (!$this->getFilename())      { throw new \Exception('media/missingFilename');  }
+		if (!$this->getMime_type())     { throw new \Exception('media/missingMimeType');  }
 		if (!$this->getApplicant_id())  { throw new \Exception('media/missingApplicant'); }
 	}
 
@@ -197,7 +197,7 @@ class Media extends ActiveRecord
 		if ($this->getMime_type() !== Media::$extensions['pdf']['mime_type']) {
             self::convertToPDF($newFile);
             $this->data['mime_type'] = Media::$extensions['pdf']['mime_type'];
-            $this->data['filename' ] = basename($filename, $extension).'.pdf';
+            $this->data['filename' ] = basename($filename, $extension).'pdf';
 		}
 	}
 
@@ -221,6 +221,7 @@ class Media extends ActiveRecord
              rename("$file.pdf", $file);
         }
         else {
+            unlink($file);
             throw new \Exception('media/pdfConversionFailed');
         }
 	}

@@ -49,3 +49,9 @@ msgstr "No Seats Selected"
 
 msgid "noApplicationsSelected"
 msgstr "No Applications Selected"
+
+msgid "file_max_size"
+msgstr "Max Filesize: %s"
+
+msgid "file_type_accept"
+msgstr "Accepted Filetypes: %s"
