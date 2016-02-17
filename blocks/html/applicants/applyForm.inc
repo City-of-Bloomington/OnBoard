@@ -7,6 +7,7 @@
  */
 use Application\Models\Applicant;
 use Application\Models\CommitteeTable;
+use Application\Models\Media;
 
 $table = new CommitteeTable();
 $committees = $table->find();
@@ -24,22 +25,23 @@ foreach ($fields as $f) {
 $title = $this->committee
     ? sprintf($this->_('applyToCommittee', 'messages'), self::escape($this->committee->getName()))
     : $this->_('apply');
+
+$field = $this->template->getHelper('field');
 ?>
 <section>
     <h1><?= $title ?></h1>
 
-    <form method="post" action="<?= BASE_URI; ?>/applicants/apply" id="applyForm">
-        <fieldset>
+    <form method="post" action="<?= BASE_URI; ?>/applicants/apply" id="applyForm" enctype="multipart/form-data">
+        <fieldset><legend><?= $this->_('info_person'); ?></legend>
         <?php
-            include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
+            foreach (['firstname', 'lastname', 'email'] as $f) {
+                echo $field->input(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f, 'required'=>true]);
+            }
+
+            echo $field->input(['name'=>'phone', 'id'=>'phone', 'label'=>$this->_('phone'), 'value'=>$phone, 'type'=>'tel']);
 
             foreach (['address', 'city', 'zip'] as $f) {
-                echo "
-                <dl class=\"fn1-input-field\">
-                    <dt><label for=\"$f\">{$this->_($f)}</label></dt>
-                    <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
-                </dl>
-                ";
+                echo $field->input(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f]);
             }
             if ($this->committee) {
                 echo "
@@ -92,11 +94,9 @@ $title = $this->committee
                     </label>
                 </dd>
             </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label for="occupation"><?= $this->_('occupation'); ?></label></dt>
-                <dd><input name="occupation" id="occupation" value="<?= $occupation; ?> " /></dd>
-            </dl>
+            <?php
+                echo $field->input(['name'=>'occupation', 'id'=>'occupation', 'label'=>$this->_('occupation'), 'value'=>$occupation]);
+            ?>
 
             <dl class="fn1-input-field">
                 <dt><label for="referredFrom"><?= $this->_('referredFrom'); ?></label></dt>
@@ -113,15 +113,9 @@ $title = $this->committee
                     </select>
                 </dd>
             </dl>
-            <dl class="fn1-input-field">
-                <dt><label for="media"><?= $this->_('media'); ?></label>
-                <dd><input type="file" name="mediafile" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label for="referredOther"><?= $this->_('referredOther'); ?></label></dt>
-                <dd><input name="referredOther" id="referredOther" value="<?= $referredOther; ?>" /></dd>
-            </dl>
+            <?php
+                echo $field->input(['name'=>'referredOther', 'id'=>'referredOther', 'label'=>$this->_('referredOther'), 'value'=>$referredOther]);
+            ?>
 
         </fieldset>
 
@@ -131,6 +125,49 @@ $title = $this->committee
 
         <fieldset><legend><?= $this->_('qualifications'); ?></legend>
             <textarea name="qualifications"><?= $qualifications; ?></textarea>
+        </fieldset>
+
+        <fieldset><legend><?= $this->_('media'); ?></legend>
+            <?php
+                function return_bytes($size)
+                {
+                    switch (substr($size, -1)) {
+                        case 'M': return (int)$size * 1048576;
+                        case 'K': return (int)$size * 1024;
+                        case 'G': return (int)$size * 1073741824;
+                        default:  return (int)$size;
+                    }
+                }
+                $upload_max_size  = ini_get('upload_max_filesize');
+                    $post_max_size  = ini_get('post_max_size');
+                $upload_max_bytes = return_bytes($upload_max_size);
+                    $post_max_bytes = return_bytes(  $post_max_size);
+
+                if ($upload_max_bytes < $post_max_bytes) {
+                    $maxSize  = $upload_max_size;
+                    $maxBytes = $upload_max_bytes;
+                }
+                else {
+                    $maxSize  = $post_max_size;
+                    $maxBytes = $post_max_bytes;
+                }
+
+                $accept = [];
+                $extensions = array_keys(Media::$extensions);
+                foreach ($extensions as $ext) {
+                    $accept[] = ".$ext";
+                }
+                $accept = implode(',', $accept);
+
+                $maxSize = sprintf($this->_('file_max_size',    'messages'), $maxSize);
+                $accept  = sprintf($this->_('file_type_accept', 'messages'), $accept);
+                echo "
+                <input name=\"MAX_FILE_SIZE\" type=\"hidden\" value=\"$maxBytes\" />
+                <input type=\"file\" name=\"mediafile\" id=\"mediafile\" accept=\"$accept\" />
+                <div><i class=\"fa fa-info-circle\"></i> $maxSize</div>
+                <div><i class=\"fa fa-info-circle\"></i> $accept</div>
+                ";
+            ?>
         </fieldset>
 
         <fieldset>

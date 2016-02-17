@@ -11,6 +11,7 @@ use Application\Models\Media;
 use Application\Models\Committee;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
+use Blossom\Classes\Database;
 
 class ApplicantsController extends Controller
 {
@@ -81,7 +82,10 @@ class ApplicantsController extends Controller
         $applicant = new Applicant();
 
         if (isset($_POST['firstname'])) {
+            $zend_db = Database::getConnection();
+            $zend_db->getDriver()->getConnection()->beginTransaction();
             try {
+
                 $applicant->handleUpdate($_POST);
                 $applicant->save();
                 $applicant->saveCommittees($_POST['committees']);
@@ -92,12 +96,16 @@ class ApplicantsController extends Controller
                     $media->setFile($_FILES['mediafile']);
                     $media->save();
                 }
+                $zend_db->getDriver()->getConnection()->commit();
 
                 $this->template->blocks[] = new Block('applicants/success.inc', ['applicant'=>$applicant]);
 
                 return;
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) {
+                $zend_db->getDriver()->getConnection()->rollback();
+                $_SESSION['errorMessages'][] = $e;
+            }
         }
 
 
