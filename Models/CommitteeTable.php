@@ -19,9 +19,14 @@ class CommitteeTable extends TableGateway
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
-					case 'person_id':
+					case 'member_id':
 						$select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
 						$select->where(['m.person_id' => $value]);
+					break;
+
+					case 'liason_id':
+                        $select->join(['l'=>'committee_liasons'], 'committees.id=l.committee_id', []);
+                        $select->where(['l.person_id' => $value]);
 					break;
 
 					default:

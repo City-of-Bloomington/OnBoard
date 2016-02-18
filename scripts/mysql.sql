@@ -13,9 +13,7 @@ insert races set name='Other';
 
 create table departments (
     id int unsigned not null primary key auto_increment,
-    name  varchar(128) not null unique,
-    email varchar(128),
-    phone varchar(32)
+    name  varchar(128) not null unique
 );
 
 create table people (

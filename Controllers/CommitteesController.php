@@ -49,7 +49,7 @@ class CommitteesController extends Controller
             'departments'    => $committee->getDepartments(),
             'disableButtons' => true
         ]);
-        $this->template->blocks[] = new Block('liasons/list.inc',    ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/liasons.inc', ['committee' => $committee]);
     }
 
     public function members()

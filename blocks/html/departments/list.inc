@@ -30,8 +30,6 @@ $helper = $this->template->getHelper('buttonLink');
         $editButton = '';
         foreach ($this->departments as $d) {
             $name  = self::escape($d->getName());
-            $email = self::escape($d->getEmail());
-            $phone = self::escape($d->getPhone());
 
             if (!$this->disableButtons && Person::isAllowed('departments', 'edit')) {
                 $editButton = $helper->buttonLink(
@@ -45,8 +43,6 @@ $helper = $this->template->getHelper('buttonLink');
             echo "
             <tr><td>$editButton</td>
                 <td>$name</td>
-                <td>$email</td>
-                <td>$phone</td>
             </tr>
             ";
         }

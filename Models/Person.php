@@ -281,7 +281,7 @@ class Person extends ActiveRecord
 	public function getMemberCommittees()
 	{
 		$table = new CommitteeTable();
-		return $table->find(['person_id'=>$this->getId()]);
+		return $table->find(['member_id'=>$this->getId()]);
 	}
 
 	/**
