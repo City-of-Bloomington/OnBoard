@@ -194,11 +194,9 @@ class Media extends ActiveRecord
 			throw new \Exception('media/badServerPermissions');
 		}
 
-		if ($this->getMime_type() !== Media::$extensions['pdf']['mime_type']) {
-            self::convertToPDF($newFile);
-            $this->data['mime_type'] = Media::$extensions['pdf']['mime_type'];
-            $this->data['filename' ] = basename($filename, $extension).'pdf';
-		}
+        self::convertToPDF($newFile);
+        $this->data['mime_type'] = Media::$extensions['pdf']['mime_type'];
+        $this->data['filename' ] = basename($filename, $extension).'pdf';
 	}
 
 	/**
