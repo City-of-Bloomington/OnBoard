@@ -47,6 +47,9 @@ msgstr "That username is not in LDAP.  You cannot set LDAP authentication if the
 msgid "media/unknownFileType"
 msgstr "The file you uploaded is not a valid filetype.  We only accept %s"
 
+msgid "media/missingExtension"
+msgstr "The file you uploaded is not a known filetype. Filenames must include an extension."
+
 msgid "terms/overlappingTerms"
 msgstr "You have entered an overlapping term.  A person cannot serve two terms, for the same committee, at the same time."
 
