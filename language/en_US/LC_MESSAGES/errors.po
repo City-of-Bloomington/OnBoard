@@ -1,0 +1,54 @@
+# Translation
+# Copyright (C) 2016 City of Bloomington
+# This file is distributed under the same license as the OnBoard package.
+#
+domain "errors"
+
+msgid ""
+msgstr ""
+"Project-Id-Version: OnBoard\n"
+"Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
+"PO-Revision-Date: 2016-02-18 09:24-0500\n"
+"Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: en_US\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"POT-Creation-Date: \n"
+
+msgid "invalidDate"
+msgstr "You provided an invalid date."
+
+msgid "invalidEndDate"
+msgstr "The end date must come after the start date"
+
+msgid "invalidLogin"
+msgstr "The username and password combination you entered is not correct."
+
+msgid "missingRequiredFields"
+msgstr "You did not include all the required fields."
+
+msgid "noAccessAllowed"
+msgstr "Sorry, you're not allowed to go there."
+
+msgid "notLoggedIn"
+msgstr "You are not logged into this site anymore."
+
+msgid "passwordCorrupted"
+msgstr "Your password is corrupted.  Please contact a system administrator for help."
+
+msgid "ldap/unknownUser"
+msgstr "That username is not in LDAP.  You cannot set LDAP authentication if the user is not in LDAP."
+
+msgid "media/unknownFileType"
+msgstr "The file you uploaded is not a valid filetype.  We only accept %s"
+
+msgid "terms/overlappingTerms"
+msgstr "You have entered an overlapping term.  A person cannot serve two terms, for the same committee, at the same time."
+
+msgid "votes/notEnabled"
+msgstr "Vote tracking is not enabled"

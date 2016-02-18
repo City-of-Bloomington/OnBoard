@@ -88,7 +88,9 @@ class ApplicantsController extends Controller
 
                 $applicant->handleUpdate($_POST);
                 $applicant->save();
-                $applicant->saveCommittees($_POST['committees']);
+                if (isset($_POST['committees'])) {
+                    $applicant->saveCommittees($_POST['committees']);
+                }
 
                 if (isset($_FILES['mediafile'])) {
                     $media = new Media();

@@ -38,7 +38,7 @@ $title = sprintf($this->_('applications_reportForm_title', 'messages'), self::es
             <?php
                 $this->selectable = true;
                 $this->type = 'current';
-                $this->_include('html/applications/partials/table.inc');
+                $this->_include('applications/partials/table.inc');
             ?>
         </fieldset>
         <fieldset>

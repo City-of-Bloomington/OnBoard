@@ -13,6 +13,6 @@ $title = $this->title ? self::escape($this->title) : $this->_(['application', 'a
 <section>
     <h1><?= $title; ?></h1>
     <?php
-        $this->_include('html/applications/partials/table.inc');
+        $this->_include('applications/partials/table.inc');
     ?>
 </section>

@@ -34,7 +34,7 @@ echo "
 <section>
     <header>
 ";
-        $this->_include('html/committees/partials/committeeVacancyHeading.inc');
+        $this->_include('committees/partials/committeeVacancyHeading.inc');
 echo"
         <nav class=\"tools\">
             $infoLink

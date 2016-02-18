@@ -604,3 +604,6 @@ msgstr "View Report"
 
 msgid "media"
 msgstr "Media"
+
+msgid "error"
+msgstr "Sorry"
