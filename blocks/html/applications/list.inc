@@ -10,7 +10,7 @@
  */
 $title = $this->title ? self::escape($this->title) : $this->_(['application', 'applications', count($this->applications)]);
 ?>
-<section>
+<section class="applications_list">
     <h1><?= $title; ?></h1>
     <?php
         $this->_include('applications/partials/table.inc');

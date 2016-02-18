@@ -11,12 +11,12 @@ $seats = $this->committee->getSeats(time());
 
 $count = count($this->applications);
 
-$title = sprintf($this->_('applications_reportForm_title', 'messages'), self::escape($this->committee->getName()));
+$title = $this->_('applications_reportForm_title', 'messages');
 ?>
-<section>
+<section id="reportForm">
     <h1><?= $title; ?></h1>
 
-    <form method="get" action="<?= BASE_URI; ?>/applications/report" id="reportForm">
+    <form method="get" action="<?= BASE_URI; ?>/applications/report">
         <fieldset id="seats">
             <legend><?= $this->_(['seat', 'seats', count($seats)]); ?></legend>
             <?php

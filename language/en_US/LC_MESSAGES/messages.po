@@ -39,7 +39,7 @@ msgid "office_edit"
 msgstr "Edit %s Office"
 
 msgid "applications_reportForm_title"
-msgstr "Review Public Applications for %s"
+msgstr "Review Applications"
 
 msgid "applyToCommittee"
 msgstr "Apply to %s"
