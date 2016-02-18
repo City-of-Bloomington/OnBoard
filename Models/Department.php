@@ -70,22 +70,12 @@ class Department extends ActiveRecord
 	//----------------------------------------------------------------
 	public function getId()    { return parent::get('id'   ); }
 	public function getName()  { return parent::get('name' ); }
-	public function getEmail() { return parent::get('email'); }
-	public function getPhone() { return parent::get('phone'); }
 
 	public function setName ($s) { parent::set('name',  $s); }
-	public function setEmail($s) { parent::set('email', $s); }
-	public function setPhone($s) { parent::set('phone', $s); }
 
 	public function handleUpdate($post)
 	{
-        $fields = ['name', 'email', 'phone'];
-        foreach ($fields as $f) {
-            $set = 'set'.ucfirst($f);
-            if (isset($post[$f])) {
-                $this->$set($post[$f]);
-            }
-        }
+        $this->setName($post['name']);
 	}
 
 	//----------------------------------------------------------------

@@ -31,6 +31,12 @@ class PeopleTable extends TableGateway
 						}
 					break;
 
+					case 'liason':
+                        if ($value) {
+                            $select->join(['l'=>'committee_liasons'], 'people.id=l.person_id', []);
+                        }
+					break;
+
 					case 'committee_id':
 						$select->join(['t'=>'terms'], 'people.id=t.person_id', []);
 						$select->join(['s'=>'seats'], 't.seat_id=s.id',        []);

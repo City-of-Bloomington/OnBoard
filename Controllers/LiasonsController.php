@@ -12,7 +12,10 @@ use Blossom\Classes\Url;
 
 class LiasonsController extends Controller
 {
-    public function index() { }
+    public function index()
+    {
+        $this->template->blocks[] = new Block('liasons/list.inc');
+    }
 
     public function add()
     {
