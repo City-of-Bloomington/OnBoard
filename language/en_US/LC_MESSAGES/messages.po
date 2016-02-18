@@ -6,7 +6,7 @@ domain "messages"
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Blossom\n"
+"Project-Id-Version: OnBoard\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
 "PO-Revision-Date: 2016-01-05 12:25-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"

@@ -13,14 +13,14 @@ use Michelf\MarkdownExtra;
 <form  class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/members/appoint">
     <?php if ($this->currentMember): ?>
         <section    class="fn1-uiBlock">
-            <?= $this->_include('html/members/partials/appointCurrentMemberHeader.inc'); ?>
+            <?= $this->_include('members/partials/appointCurrentMemberHeader.inc'); ?>
             <div class="fn1-uiBlock-content">
                 <p><?php
                         $name = $this->currentMember->getPerson()->getFullname();
                         echo sprintf($this->_('endServiceHelpText', 'messages'), $name, $name);
                     ?>
                 </p>
-                <?= $this->_include('html/members/partials/memberEndFields.inc'); ?>
+                <?= $this->_include('members/partials/memberEndFields.inc'); ?>
             </div>
         </section>
     <?php endif ?>

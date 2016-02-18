@@ -72,7 +72,7 @@ class Office extends ActiveRecord
 		$start = $this->getStartDate('U');
 		$end   = $this->getEndDate  ('U');
 		if ($end && $end < $start) {
-			throw new Exception('terms/invalidEndDate');
+			throw new Exception('invalidEndDate');
 		}
 	}
 

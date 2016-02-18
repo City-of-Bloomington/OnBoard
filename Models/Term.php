@@ -87,7 +87,7 @@ class Term extends ActiveRecord
 			$this->getStartDate(), $this->getEndDate()
 		]);
 		if (count($result) > 0) {
-			throw new \Exception('overlappingTerms');
+			throw new \Exception('terms/overlappingTerms');
 		}
 	}
 

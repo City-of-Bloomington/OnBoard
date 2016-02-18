@@ -10,7 +10,7 @@ use Blossom\Classes\Block;
 ?>
 <section>
     <header>
-        <?php $this->_include('html/committees/partials/committeeVacancyHeading.inc'); ?>
+        <?php $this->_include('committees/partials/committeeVacancyHeading.inc'); ?>
         <nav class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
@@ -24,7 +24,7 @@ use Blossom\Classes\Block;
     </header>
     <?php
         if (count($this->seats)) {
-            $this->_include('html/seats/requirements.inc');
+            $this->_include('seats/requirements.inc');
         }
         else {
             echo "<p>{$this->_('noSeatsSelected', 'messages')}</p>";
