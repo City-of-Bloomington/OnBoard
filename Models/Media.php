@@ -279,7 +279,6 @@ class Media extends ActiveRecord
 			return strtolower($matches[0]);
 		}
 		else {
-			echo "$filename has no extension\n";
 			throw new \Exception('media/missingExtension');
 		}
 	}
