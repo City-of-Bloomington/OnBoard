@@ -25,7 +25,7 @@ if (Person::isAllowed('committees', 'applications')) {
     if ($c) {
         $applicationsLink = $helper->buttonLink(
             BASE_URI."/committees/applications?committee_id=$committee_id",
-            $this->_(['application', 'applications', $c])
+            $this->_(['application', 'applications', 2])
         );
     }
 }

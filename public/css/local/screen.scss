@@ -23,13 +23,15 @@
 #errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
 #errorMessages h2 { }
 
-#reportForm { overflow:auto; }
-#reportForm #seats {
-    float: right;
-    width: 33%;
+#reportForm {
+    overflow:auto;
+    > h1 { font-size:1.75em; }
+
+    #seats      { float:right; width:33%; }
+    #applicants { margin-right:34%; }
+    #committees { max-height:14em; overflow:scroll; }
 }
-#reportForm #applicants { margin-right:34%; }
-#applyForm #committees { max-height:14em; overflow:scroll; }
+.applications_list > h1 { font-size:1.75em; }
 
 #onboard-contextInfo {
     .fn1-output-field {
