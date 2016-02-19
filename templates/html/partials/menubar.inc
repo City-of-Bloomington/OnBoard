@@ -7,10 +7,21 @@ use Application\Models\Person;
 ?>
 <div     class="fn1-nav1">
     <nav class="fn1-nav1-container">
-        <a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee', 'committees', 2]); ?></a>
-        <a href="<?= BASE_URI; ?>/people"><?= $this->_(['person', 'people', 2]); ?></a>
-        <a href="<?= BASE_URI; ?>/seats"><?= $this->_(['seat', 'seats', 2]); ?></a>
         <?php
+            $routes = [
+                'committee' => 'committees',
+                'person'    => 'people',
+                'seat'      => 'seats',
+                'liaison'   => 'liaisons'
+            ];
+            foreach ($routes as $singular => $plural) {
+                if (Person::isAllowed($plural, 'index')) {
+                    $uri = BASE_URI."/$plural";
+                    echo "<a href=\"$uri\">{$this->_([$singular, $plural, 2])}</a>";
+                }
+            }
+
+
             if (Person::isAllowed('applicants', 'apply')) {
                 $uri = BASE_URI.'/applicants/apply';
                 echo "<a href=\"$uri\">{$this->_('apply')}</a>";
@@ -25,7 +36,7 @@ use Application\Models\Person;
                 foreach ($routes as $singular => $plural) {
                     if (Person::isAllowed($plural, 'index')) {
                         $uri = BASE_URI."/$plural";
-                        echo "<a href=\"$uri\">{$this->_(['$singular', '$plural', 2])}</a>";
+                        echo "<a href=\"$uri\">{$this->_([$singular, $plural, 2])}</a>";
                     }
                 }
             }
