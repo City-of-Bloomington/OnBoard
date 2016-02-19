@@ -99,28 +99,23 @@
     }
 }
 
-.carryOver    td:first-child:before,
-.vacant       td:first-child:before,
-.termEndsSoon td:first-child:before {
+div.carryOver,    tr.carryOver    td { background-color: #ed9a9c; }
+div.vacant,       tr.vacant       td { background-color: #ed9a9c; }
+div.termEndsSoon, tr.termEndsSoon td { background-color: #edea9a; }
+
+tr.carryOver    td:first-child:before,
+tr.vacant       td:first-child:before,
+tr.termEndsSoon td:first-child:before {
     content: '';
     display: inline-block;
     height: 1em;
     margin: 0 .5em 0 0;
     width: 1em;
 }
+tr.carryOver    td:first-child:before { background-image: url('images/danger-opt.svg'); }
+tr.vacant       td:first-child:before { background-image: url('images/danger-opt.svg'); }
+tr.termEndsSoon td:first-child:before { background-image: url('images/warning-opt.svg'); }
 
-table tbody tr.carryOver td {
-    background-color: #ed9a9c;
-    &:first-child:before { background-image: url('images/danger-opt.svg'); }
-}
-table tbody tr.vacant td {
-    background-color: #ed9a9c;
-    &:first-child:before { background-image: url('images/danger-opt.svg'); }
-}
-table tbody tr.termEndsSoon td {
-    background-color: #edea9a;
-    &:first-child:before { background-image: url('images/warning-opt.svg'); }
-}
 
 p {
     max-width: 40em;
