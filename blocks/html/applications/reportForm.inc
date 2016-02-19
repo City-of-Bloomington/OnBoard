@@ -21,9 +21,13 @@ $title = $this->_('applications_reportForm_title', 'messages');
             <legend><?= $this->_(['seat', 'seats', count($seats)]); ?></legend>
             <?php
                 foreach ($seats as $s) {
+                    $classes = [];
+                    if ($s->hasVacancy()) { $classes[] = 'vacant'; }
+                    $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+
                     $code = self::escape($s->getCode());
                     echo "
-                    <div>
+                    <div $classes>
                         <label>
                             <input name=\"seats[]\" type=\"checkbox\" value=\"{$s->getId()}\" />
                             $code
