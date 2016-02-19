@@ -6,8 +6,8 @@
  */
 ?>
 <section>
-    <h1><?= $this->_('liason_add'); ?></h1>
-    <form method="post" action="<?= BASE_URI; ?>/liasons/add">
+    <h1><?= $this->_('liaison_add'); ?></h1>
+    <form method="post" action="<?= BASE_URI; ?>/liaisons/add">
         <fieldset>
             <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
             <dl class="fn1-input-field--select">

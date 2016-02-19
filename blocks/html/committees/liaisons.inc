@@ -6,28 +6,28 @@
  */
 use Application\Models\Person;
 
-$liasons = $this->committee->getLiasonPeople();
+$liaisons = $this->committee->getLiaisonPeople();
 
 $addButton = '';
-if (Person::isAllowed('liasons', 'add')) {
+if (Person::isAllowed('liaisons', 'add')) {
     $helper    = $this->template->getHelper('buttonLink');
     $addButton = $helper->buttonLink(
-        BASE_URI.'/liasons/add?committee_id='.$this->committee->getId(),
-        $this->_('liason_add'),
+        BASE_URI.'/liaisons/add?committee_id='.$this->committee->getId(),
+        $this->_('liaison_add'),
         'add'
     );
 }
 ?>
 <section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['liason', 'liasons', count($liasons)]); ?></h1>
+    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['liaison', 'liaisons', count($liaisons)]); ?></h1>
         <div class="fn1-uiBlock-headerTools"><?= $addButton; ?></div>
     </header>
     <table class="fn1-table">
     <?php
-        $userCanRemove = Person::isAllowed('liasons', 'remove');
+        $userCanRemove = Person::isAllowed('liaisons', 'remove');
         $removeButton = '';
 
-        foreach ($liasons as $person) {
+        foreach ($liaisons as $person) {
             $name  = self::escape($person->getFullname());
             $email = self::escape($person->getEmail());
             $phone = self::escape($person->getPhone());
@@ -36,8 +36,8 @@ if (Person::isAllowed('liasons', 'add')) {
 
             if ($userCanRemove) {
                 $removeButton = $helper->buttonLink(
-                    BASE_URI."/liasons/remove?committee_id={$this->committee->getId()};person_id={$person->getId()}",
-                    $this->_('liason_remove'),
+                    BASE_URI."/liaisons/remove?committee_id={$this->committee->getId()};person_id={$person->getId()}",
+                    $this->_('liaison_remove'),
                     'delete'
                 );
             }

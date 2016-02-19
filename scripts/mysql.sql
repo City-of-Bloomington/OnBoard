@@ -108,7 +108,7 @@ create table members (
 	foreign key (person_id)    references people    (id)
 );
 
-create table committee_liasons (
+create table committee_liaisons (
     committee_id int unsigned not null,
     person_id    int unsigned not null,
     primary key (committee_id, person_id),

@@ -11,7 +11,7 @@ $routes = [
     'applicants' => 'applicant',
     'departments'=> 'department',
     'appointers' => 'appointer',
-    'liasons'    => 'liason',
+    'liaisons'    => 'liaison',
     'races'      => 'race',
     'users'      => 'user'
 ];

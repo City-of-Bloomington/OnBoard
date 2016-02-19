@@ -10,11 +10,11 @@ use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 use Blossom\Classes\Url;
 
-class LiasonsController extends Controller
+class LiaisonsController extends Controller
 {
     public function index()
     {
-        $this->template->blocks[] = new Block('liasons/list.inc');
+        $this->template->blocks[] = new Block('liaisons/list.inc');
     }
 
     public function add()
@@ -27,7 +27,7 @@ class LiasonsController extends Controller
         if (isset($committee)) {
             if (isset($_POST['person_id'])) {
                 try {
-                    $committee->saveLiason($_POST);
+                    $committee->saveLiaison($_POST);
                     header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee->getId());
                     exit();
                 }
@@ -35,7 +35,7 @@ class LiasonsController extends Controller
             }
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-            $this->template->blocks[] = new Block('liasons/addForm.inc',        ['committee' => $committee]);
+            $this->template->blocks[] = new Block('liaisons/addForm.inc',        ['committee' => $committee]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);
@@ -53,7 +53,7 @@ class LiasonsController extends Controller
         if (isset($committee)) {
             if (!empty($_REQUEST['person_id'])) {
                 try {
-                    $committee->removeLiason($_REQUEST['person_id']);
+                    $committee->removeLiaison($_REQUEST['person_id']);
                     header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee->getId());
                     exit();
                 }

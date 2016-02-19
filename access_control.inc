@@ -35,7 +35,7 @@ $ZEND_ACL->addResource(new Resource('seats'));
 $ZEND_ACL->addResource(new Resource('tags'));
 $ZEND_ACL->addResource(new Resource('terms'));
 $ZEND_ACL->addResource(new Resource('members'));
-$ZEND_ACL->addResource(new Resource('liasons'));
+$ZEND_ACL->addResource(new Resource('liaisons'));
 $ZEND_ACL->addResource(new Resource('applicants'));
 $ZEND_ACL->addResource(new Resource('applications'));
 $ZEND_ACL->addResource(new Resource('media'));
@@ -52,14 +52,14 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
-$ZEND_ACL->allow(null, ['people', 'topics', 'liasons'], ['index','view']);
+$ZEND_ACL->allow(null, ['people', 'topics', 'liaisons'], ['index','view']);
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Staff', ['people', 'liasons']);
+$ZEND_ACL->allow('Staff', ['people', 'liaisons']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 $ZEND_ACL->allow('Staff', 'committees', 'applications');
 $ZEND_ACL->allow('Staff', ['applicants', 'applicants', 'media']);
