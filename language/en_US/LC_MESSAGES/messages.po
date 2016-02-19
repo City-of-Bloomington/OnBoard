@@ -44,6 +44,9 @@ msgstr "Review Applications"
 msgid "applyToCommittee"
 msgstr "Apply to %s"
 
+msgid "application_received"
+msgstr "Your application has been received and will remain active for 90 days"
+
 msgid "noSeatsSelected"
 msgstr "No Seats Selected"
 

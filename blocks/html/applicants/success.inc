@@ -7,4 +7,5 @@
 ?>
 <section>
     <h1><?= $this->_('thanks'); ?></h1>
+    <p><?= $this->_('application_received', 'messages'); ?></p>
 </section>
