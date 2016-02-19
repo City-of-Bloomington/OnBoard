@@ -34,6 +34,7 @@ class CommitteesController extends Controller
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
+        $this->template->title = $this->template->_(['committee', 'committees', count($data)]);
         $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$data]);
     }
 
@@ -41,6 +42,7 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
         if ($this->template->outputFormat === 'html') {
+            $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
@@ -56,6 +58,7 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
         if ($this->template->outputFormat === 'html') {
+            $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
@@ -107,6 +110,7 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
         if ($this->template->outputFormat === 'html') {
+            $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
@@ -120,6 +124,7 @@ class CommitteesController extends Controller
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
 
+        $this->template->title = $committee->getName();
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
         $this->template->blocks[] = new Block('applications/reportForm.inc', ['committee' => $committee]);
