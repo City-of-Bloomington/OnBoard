@@ -40,9 +40,9 @@ $members = $this->person->getMembers();
 </section>
 
 <?php
-$committees = $this->person->getLiasonCommittees();
+$committees = $this->person->getLiaisonCommittees();
 if (count($committees)) {
-    $l = $this->_(['liason', 'liasons', count($committees)]);
+    $l = $this->_(['liaison', 'liaisons', count($committees)]);
     echo "<section><h1>$l</h1><table>";
     foreach ($committees as $c) {
         $name = self::escape($c->getName());

@@ -306,20 +306,20 @@ class Committee extends ActiveRecord
 	/**
 	 * @return array An array of Person objects
 	 */
-	public function getLiasonPeople()
+	public function getLiaisonPeople()
 	{
         $sql = 'select p.*
-                from committee_liasons l
+                from committee_liaisons l
                 join people p on l.person_id=p.id
                 where committee_id=?';
         $zend_db = Database::getConnection();
         $result = $zend_db->query($sql, [$this->getId()]);
 
-        $liasons = [];
+        $liaisons = [];
         foreach ($result->toArray() as $row) {
-            $liasons[] = new Person($row);
+            $liaisons[] = new Person($row);
         }
-        return $liasons;
+        return $liaisons;
 	}
 
 	/**
@@ -360,35 +360,35 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * Inserts a row to the committee_liasons table
+	 * Inserts a row to the committee_liaisons table
 	 *
 	 * NOTE: This function immediately writes to the database
 	 *
 	 * @param array $post The POST array
 	 */
-	public function saveLiason($post)
+	public function saveLiaison($post)
 	{
         if (!empty($post['person_id'])) {
-            $sql = "select * from committee_liasons where committee_id=? and person_id=?";
+            $sql = "select * from committee_liaisons where committee_id=? and person_id=?";
             $zend_db = Database::getConnection();
             $result = $zend_db->query($sql, [$this->getId(), $post['person_id']]);
             if (!count($result)) {
-                $sql = 'insert committee_liasons set committee_id=?, person_id=?';
+                $sql = 'insert committee_liaisons set committee_id=?, person_id=?';
                 $zend_db->query($sql, [$this->getId(), $post['person_id']]);
             }
         }
 	}
 
 	/**
-	 * Removes a row from the committee_liasons table
+	 * Removes a row from the committee_liaisons table
 	 *
 	 * NOTE: This function immediately writes to the database
 	 *
 	 * @param array $post
 	 */
-	public function removeLiason($person_id)
+	public function removeLiaison($person_id)
 	{
-        $sql = 'delete from committee_liasons where committee_id=? and person_id=?';
+        $sql = 'delete from committee_liaisons where committee_id=? and person_id=?';
         $zend_db = Database::getConnection();
         $zend_db->query($sql)->execute([$this->getId(), $person_id]);
 	}

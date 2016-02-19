@@ -24,8 +24,8 @@ class CommitteeTable extends TableGateway
 						$select->where(['m.person_id' => $value]);
 					break;
 
-					case 'liason_id':
-                        $select->join(['l'=>'committee_liasons'], 'committees.id=l.committee_id', []);
+					case 'liaison_id':
+                        $select->join(['l'=>'committee_liaisons'], 'committees.id=l.committee_id', []);
                         $select->where(['l.person_id' => $value]);
 					break;
 

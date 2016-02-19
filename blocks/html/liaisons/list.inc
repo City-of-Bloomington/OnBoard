@@ -8,7 +8,7 @@ use Blossom\Classes\Url;
 
 $table = new CommitteeTable();
 $list  = $table->find();
-$title = $this->_(['liason', 'liasons', count($list)]);
+$title = $this->_(['liaison', 'liaisons', count($list)]);
 
 $helper = $this->template->getHelper('buttonLink');
 $uri = new Url(Url::current_url());
@@ -34,7 +34,7 @@ echo "
             $departments = "<ul>$departments</ul>";
         }
 
-        foreach ($committee->getLiasonPeople() as $person) {
+        foreach ($committee->getLiaisonPeople() as $person) {
             $name  = self::escape($person->getFullname());
             $email = self::escape($person->getEmail());
             $phone = self::escape($person->getPhone());

@@ -9,9 +9,9 @@ use Blossom\Classes\Url;
 $table = new CommitteeTable();
 $list  = $table->find();
 
-$filename = APPLICATION_NAME.'-liasons-'.date('Ymd');
+$filename = APPLICATION_NAME.'-liaisons-'.date('Ymd');
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
-echo "Committee ID,Committee,Departments,Liason ID,Name,Email,Phone\n";
+echo "Committee ID,Committee,Departments,Liaison ID,Name,Email,Phone\n";
 
 $out = fopen('php://output', 'w');
 foreach ($list as $committee) {
@@ -22,7 +22,7 @@ foreach ($list as $committee) {
     }
     $departments = implode('|', $departments);
 
-    foreach ($committee->getLiasonPeople() as $person) {
+    foreach ($committee->getLiaisonPeople() as $person) {
         $row = [
             $committee->getId(),
             $committee->getName(),
