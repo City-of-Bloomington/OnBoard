@@ -10,7 +10,8 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
-		 ->addRole(new Role('Staff'),         'Public')
+		 ->addRole(new Role('Reviewer'),      'Public')
+		 ->addRole(new Role('Staff'),         'Reviewer')
 		 ->addRole(new Role('Administrator'), 'Staff');
 
 /**
@@ -57,12 +58,11 @@ $ZEND_ACL->allow(null, 'committees', ['index','info', 'members']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
-
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Staff', ['people', 'liaisons']);
+$ZEND_ACL->allow('Reviewer', ['people', 'liaisons', 'applications', 'applicants', 'media']);
+$ZEND_ACL->allow('Reviewer', 'committees', 'applications');
+
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
-$ZEND_ACL->allow('Staff', 'committees', 'applications');
-$ZEND_ACL->allow('Staff', ['applicants', 'applicants', 'media']);
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
