@@ -465,7 +465,10 @@ class Committee extends ActiveRecord
 	 */
 	public static function data()
 	{
-        $sql = "select  c.id, c.name, count(s.id) as seats,
+        $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
+                        c.address, c.city, c.state, c.zip,
+                        c.statutoryName, c.statuteReference, c.statuteUrl, c.yearFormed,
+                        count(s.id) as seats,
                         sum(
                             case when (s.type='termed' and t.id is not null and tm.id is null) then 1
                                  when (s.type='open'   and m.id is null)                       then 1

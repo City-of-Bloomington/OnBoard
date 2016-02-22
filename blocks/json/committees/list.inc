@@ -3,26 +3,20 @@
  * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param Zend\Db\ResultSet $this->committees
+ * @param Zend\Db\ResultSet $this->data
  */
+$fields = [
+    'id','type','name','website',
+    'email','phone','address','city','state','zip',
+    'statutoryName','statuteReference','statuteUrl','yearFormed',
+    'seats', 'vacancies'
+];
 $data = [];
-foreach ($this->committees as $c) {
-    $data[] = [
-        'id'               => $c->getId(),
-        'type'             => $c->getType(),
-        'name'             => $c->getName(),
-        'website'          => $c->getWebsite(),
-        'email'            => $c->getEmail(),
-        'phone'            => $c->getPhone(),
-        'address'          => $c->getAddress(),
-        'city'             => $c->getCity(),
-        'state'            => $c->getState(),
-        'zip'              => $c->getZip(),
-        'statutoryName'    => $c->getStatutoryName(),
-        'statuteReference' => $c->getStatuteReference(),
-        'statuteUrl'       => $c->getStatuteUrl(),
-        'yearFormed'       => $c->getYearFormed(),
-        'vacancy'          => $c->hasVacancy()
-    ];
+foreach ($this->data as $c) {
+    $row = [];
+    foreach ($fields as $f) {
+        $row[$f] = $c[$f];
+    }
+    $data[] = $row;
 }
 echo json_encode($data);
