@@ -21,7 +21,7 @@ create table applicants (
 	referredOther  varchar(128),
 	interest       text,
 	qualifications text,
-	created  timestamp not null default CURRENT_TIMESTAMP,
+	created  datetime,
 	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
 
