@@ -12,6 +12,7 @@ $contactInfo     = $markdown->transform($this->committee->getContactInfo());
 $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $c = [
+    'id'               => $this->committee->getId(),
     'type'             => $this->committee->getType(),
 	'name'             => $this->committee->getName(),
 	'statutoryName'    => $this->committee->getStatutoryName(),
