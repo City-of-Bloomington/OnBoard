@@ -63,8 +63,14 @@ class Applicant extends ActiveRecord
 
 	public function save()
 	{
-        // Let MySQL handle the timestamp
-        if (isset($this->data['created' ])) { unset($this->data['created' ]); }
+        // Generate a timestamp for created
+        if (!$this->getCreated()) {
+            $this->data['created'] = date(ActiveRecord::MYSQL_DATETIME_FORMAT);
+        }
+        else {
+            // This timestamp should not be updated after the initial insert
+            unset($this->data['created']);
+        }
 
         parent::save();
 	}
