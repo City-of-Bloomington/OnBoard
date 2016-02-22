@@ -49,5 +49,21 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
             </dl>
             ";
         }
+        if (Person::isAllowed('media', 'download')) {
+            echo "
+            <dl class=\"fn1-output-field\">
+                <dt>{$this->_('media')}</dt><dd>
+            ";
+                $media = $this->applicant->getMedia();
+                foreach ($media as $m) {
+                    $uri = BASE_URI.'/media/download?media_id='.$m->getId();
+                    $filename = self::escape($m->getFilename());
+                    echo "<a href=\"$uri\" class=\"{$m->getMime_type()}\">$filename</a>";
+                }
+            echo "
+                </dd>
+            </dl>
+            ";
+        }
     ?>
 </section>
