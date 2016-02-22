@@ -607,3 +607,12 @@ msgstr "Media"
 
 msgid "error"
 msgstr "Sorry"
+
+msgid "siteContent"
+msgstr "Site Content"
+
+msgid "content_edit"
+msgstr "Edit Content"
+
+msgid "applyForm_help"
+msgstr "Apply Form Help"

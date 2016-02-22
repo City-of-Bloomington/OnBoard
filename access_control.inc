@@ -27,6 +27,7 @@ $ZEND_ACL->addResource(new Resource('login'));
 $ZEND_ACL->addResource(new Resource('departments'));
 $ZEND_ACL->addResource(new Resource('people'));
 $ZEND_ACL->addResource(new Resource('users'));
+$ZEND_ACL->addResource(new Resource('site'));
 
 $ZEND_ACL->addResource(new Resource('appointers'));
 $ZEND_ACL->addResource(new Resource('committees'));

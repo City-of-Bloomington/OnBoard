@@ -224,3 +224,8 @@ create table topic_tags (
 	foreign key (topic_id) references topics(id),
 	foreign key (tag_id) references tags(id)
 );
+
+create table siteContent (
+    label varchar(128) not null primary key,
+    content text
+);

@@ -8,6 +8,8 @@
 use Application\Models\Applicant;
 use Application\Models\CommitteeTable;
 use Application\Models\Media;
+use Application\Models\Site;
+use Michelf\MarkdownExtra;
 
 $table = new CommitteeTable();
 $committees = $table->find();
@@ -30,6 +32,12 @@ $field = $this->template->getHelper('field');
 ?>
 <section>
     <h1><?= $title ?></h1>
+    <div>
+    <?php
+        $markdown = new MarkdownExtra();
+        echo $markdown->transform(Site::getContent('applyForm_help'));
+    ?>
+    </div>
 
     <form method="post" action="<?= BASE_URI; ?>/applicants/apply" id="applyForm" enctype="multipart/form-data">
         <fieldset><legend><?= $this->_('info_person'); ?></legend>

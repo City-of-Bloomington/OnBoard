@@ -24,6 +24,7 @@ foreach ($routes as $plural=>$singular) {
         $links[] = ['url'=>BASE_URI."/$plural", 'label'=>$this->_([$singular, $plural, 2])];
     }
 }
+$links[] = ['url'=>BASE_URI.'/site', 'label'=>$this->_('siteContent')];
 
 if ($links) {
     $helper = $this->getHelper('dropdown');
