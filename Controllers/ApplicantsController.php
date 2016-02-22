@@ -92,7 +92,8 @@ class ApplicantsController extends Controller
                     $applicant->saveCommittees($_POST['committees']);
                 }
 
-                if (isset($_FILES['mediafile'])) {
+                if (isset($_FILES['mediafile'])
+                    &&    $_FILES['mediafile']['error'] === UPLOAD_ERR_OK) {
                     $media = new Media();
                     $media->setApplicant_id($applicant->getId());
                     $media->setFile($_FILES['mediafile']);

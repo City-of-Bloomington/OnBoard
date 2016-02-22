@@ -213,12 +213,14 @@ class Media extends ActiveRecord
         $info = pathinfo($file);
         $dir = $info['dirname'];
 
-        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
-        $out = shell_exec($cmd);
+        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --invisible --outdir $dir $file";
+        $out = "$cmd\n";
+        $out.= shell_exec($cmd);
         if (is_file("$file.pdf")) {
              rename("$file.pdf", $file);
         }
         else {
+            file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
             unlink($file);
             throw new \Exception('media/pdfConversionFailed');
         }
