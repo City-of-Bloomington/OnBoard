@@ -6,7 +6,9 @@
 .git*
 configuration.inc
 site_config.inc
+/data/media/*
 /data/sessions/*
+/data/.*
 /scripts/backup.cnf
 /public/css/Font-Awesome/less/
 /public/css/Font-Awesome/scss/
