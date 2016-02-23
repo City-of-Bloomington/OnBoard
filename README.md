@@ -19,3 +19,5 @@ This application also uses LibreOffice to convert files to PDF.  You will need t
 ```bash
 apt-get install libreoffice-common libreoffice-writer
 ```
+
+Make sure Apache has permission to write into the SITE_HOME directory.  With some older versions of LibreOffice, I also had to give Apache ownership of that directory.
