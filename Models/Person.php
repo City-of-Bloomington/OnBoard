@@ -161,16 +161,17 @@ class Person extends ActiveRecord
 	{
         global $DIRECTORY_CONFIG;
 
-		$fields = ['firstname','lastname','email', 'username','authenticationMethod','role'];
+		$fields = ['username', 'email', 'authenticationMethod', 'role'];
 		foreach ($fields as $f) {
 			if (isset($post[$f])) {
 				$set = 'set'.ucfirst($f);
 				$this->$set($post[$f]);
 			}
-			if (!empty($post['password'])) {
-				$this->setPassword($post['password']);
-			}
 		}
+
+        if (!empty($post['password'])) {
+            $this->setPassword($post['password']);
+        }
 
 		$method = $this->getAuthenticationMethod();
 		if ($this->getUsername() && $method && $method != 'local') {

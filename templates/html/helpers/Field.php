@@ -28,13 +28,14 @@ class Field extends Helper
 
         $type = !empty($params['type']) ? "type=\"$params[type]\"" : '';
 
-
         $class = implode(' ', $class);
+
+        $value = !empty($params['value']) ? $params['value'] : '';
 
         return "
         <dl class=\"$class\">
             <dt><label for=\"$params[id]\">$params[label]</label></dt>
-            <dd><input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$params[value]\" $required  $attr /></dd>
+            <dd><input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$value\" $required  $attr /></dd>
         </dl>
         ";
     }
