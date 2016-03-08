@@ -99,9 +99,11 @@
     }
 }
 
-div.carryOver,    tr.carryOver    td { background-color: #ed9a9c; }
-div.vacant,       tr.vacant       td { background-color: #ed9a9c; }
-div.termEndsSoon, tr.termEndsSoon td { background-color: #edea9a; }
+// The following rules are state-based rules that override default rules
+// with more specific selectors.
+div.carryOver,    tr.carryOver    td { background-color: #ed9a9c !important; }
+div.vacant,       tr.vacant       td { background-color: #ed9a9c !important; }
+div.termEndsSoon, tr.termEndsSoon td { background-color: #edea9a !important; }
 
 tr.carryOver    td:first-child:before,
 tr.vacant       td:first-child:before,
