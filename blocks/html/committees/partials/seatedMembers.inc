@@ -30,7 +30,6 @@ $title = $this->title
 <table class="fn1-table">
     <thead>
         <tr><th></th>
-            <th></th>
             <?php
                 if (!$this->committee) {
                     echo "<th>{$this->_('committee')}</th>";
@@ -151,9 +150,8 @@ $title = $this->title
             echo "
             <tr $classes>
                 <td>$editSeatButton</td>
-                <td>$seatCode</td>
                 $committeeName
-                <td><a href=\"$seat_uri\">$seatName</a></td>
+                <td><a href=\"$seat_uri\">$seatCode <small>($seatName)</small</a></td>
                 <td>$appointer</td>
                 <td>{$memberName}{$officeTitles}</td>
                 <td>$termDates</td>
