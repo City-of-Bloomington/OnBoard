@@ -2,20 +2,23 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
- * @param Committee $this->committee
+ * @param array $this->seats
+ * @param string $this->title (optional)
+ * @param Committee $this->committee (optional)
  */
+if ($this->committee) {
+    echo '{"info":';
+        include APPLICATION_HOME.'/blocks/json/committees/info.inc';
+    echo ',';
+}
+
+
 $DATE_FORMAT = 'Y-m-d';
-
-echo '{"info":';
-include APPLICATION_HOME.'/blocks/json/committees/info.inc';
-echo ',';
-
 $seats = [];
 
 $now = time();
 
-foreach ($this->committee->getSeats($now) as $seat) {
+foreach ($this->seats as $seat) {
     $appointer = $seat->getAppointer_id()
         ? $seat->getAppointer()->getName()
         : '';
@@ -30,6 +33,7 @@ foreach ($this->committee->getSeats($now) as $seat) {
         'currentTerm'   => null,
         'currentMember' => null
     ];
+    if (!$this->committee) { $row['committee'] = $seat->getCommittee()->getName(); }
 
     if ($seat->getType() === 'termed') {
         $term = $seat->getTerm($now);
@@ -69,4 +73,7 @@ foreach ($this->committee->getSeats($now) as $seat) {
 }
 
 echo '"seats":'.json_encode($seats, JSON_NUMERIC_CHECK|JSON_PRETTY_PRINT);
-echo '}';
+
+if ($this->committee) {
+    echo '}';
+}
