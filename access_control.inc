@@ -60,8 +60,9 @@ $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Reviewer', ['people', 'liaisons', 'applications', 'applicants', 'media']);
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
+$ZEND_ACL->allow('Reviewer', ['applicants', 'applications', 'media']);
+
 
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 
