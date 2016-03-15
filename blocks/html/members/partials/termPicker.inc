@@ -8,6 +8,8 @@ $termLength = new \DateInterval($this->seat->getTermLength());
 
 $currentTerm = $this->seat->getTerm(time());
 if ($currentTerm) {
+    $defaultTermId = $currentTerm->getId();
+
     $d = new \DateTime();
     $d->add($termLength);
     $nextTerm = $this->seat->getTerm($d->format('U'));
@@ -25,7 +27,10 @@ if ($currentTerm) {
     foreach ($list as $term) {
         if ($term->isVacant()) {
             $dates   = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-            $options.= "<option value=\"{$term->getId()}\">$dates</option>";
+            $selected = $term->getId() === $currentTerm->getId()
+                ? 'selected="true"'
+                : '';
+            $options.= "<option value=\"{$term->getId()}\" $selected>$dates</option>";
         }
     }
 
