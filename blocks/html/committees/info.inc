@@ -32,7 +32,8 @@ $contactInfo     = $markdown->transform($this->committee->getContactInfo());
 $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $editButton = '';
-if (Person::isAllowed('committees', 'edit')) {
+$userCanEdit = Person::isAllowed('committees', 'edit');
+if ($userCanEdit) {
     $helper = $this->template->getHelper('buttonLink');
     $editButton = $helper->buttonLink(
         BASE_URI.'/committees/update?committee_id='.$this->committee->getId(),
@@ -52,9 +53,12 @@ if (Person::isAllowed('committees', 'edit')) {
         $fields  = [
             'type', 'yearFormed',
             'statutoryName', 'statuteReference', 'website',
-            'email', 'phone', 'address',
-            'termEndWarningDays', 'applicationLifetime'
+            'email', 'phone', 'address'
         ];
+        if ($userCanEdit) {
+            $fields[] = 'termEndWarningDays';
+            $fields[] = 'applicationLifetime';
+        }
         $address = $address ? "<address>$address\n$city $state $zip</address>" : null;
 
         foreach ($fields as $f) {
