@@ -105,7 +105,7 @@ $title = $this->title
 
                 if (!$member->getEndDate() && Person::isAllowed('members', 'resign')) {
                     $uri = BASE_URI."/members/resign?member_id=$member_id";
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                 }
 
                 $offices = $member->getPerson()->getOffices($seat->getCommittee(), date('Y-m-d'));
