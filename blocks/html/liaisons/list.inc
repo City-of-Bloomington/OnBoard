@@ -34,18 +34,32 @@ echo "
             $departments = "<ul>$departments</ul>";
         }
 
-        foreach ($committee->getLiaisonPeople() as $person) {
-            $name  = self::escape($person->getFullname());
-            $email = self::escape($person->getEmail());
-            $phone = self::escape($person->getPhone());
+        $liasons = $committee->getLiaisonPeople();
 
-            $uri = BASE_URI.'/people/view?person_id='.$person->getId();
+        if (count($liasons)) {
+            foreach ($committee->getLiaisonPeople() as $person) {
+                $name  = self::escape($person->getFullname());
+                $email = self::escape($person->getEmail());
+                $phone = self::escape($person->getPhone());
+
+                $uri = BASE_URI.'/people/view?person_id='.$person->getId();
+                echo "
+                <tr><td><a href=\"$committeeUri\">$committeeName</a></td>
+                    <td>$departments</td>
+                    <td><a href=\"$uri\">$name</a></td>
+                    <td>$email</td>
+                    <td>$phone</td>
+                </tr>
+                ";
+            }
+        }
+        else {
             echo "
-            <tr><td><a href=\"$committeeUri\">$committeeName</a></td>
+            <tr><td><a href=\"$committeeUri\">$committeeName<a></td>
                 <td>$departments</td>
-                <td><a href=\"$uri\">$name</a></td>
-                <td>$email</td>
-                <td>$phone</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
             ";
         }
