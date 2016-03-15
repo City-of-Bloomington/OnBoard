@@ -46,8 +46,11 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
                 $name = self::escape($c['name']);
                 $url = BASE_URI.'/committees/members?committee_id='.$c['id'];
 
-                $seatCount = (int)$c['seats'];
-                if ($seatCount === 0) { $seatCount = ''; }
+                if ($c['type'] === 'seated') {
+                    $seatCount = (int)$c['seats'];
+                    if ($seatCount === 0) { $seatCount = ''; }
+                }
+                else { $seatCount = $this->_('open'); }
 
                 $vacancies = (int)$c['vacancies'];
                 if ($vacancies === 0) { $vacancies = ''; }
