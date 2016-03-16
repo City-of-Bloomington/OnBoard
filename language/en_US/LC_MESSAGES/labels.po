@@ -603,7 +603,7 @@ msgid "report_view"
 msgstr "View Report"
 
 msgid "media"
-msgstr "Media"
+msgstr "Include a resume (optional)"
 
 msgid "error"
 msgstr "Sorry"
