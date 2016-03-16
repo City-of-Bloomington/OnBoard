@@ -14,6 +14,7 @@ use Michelf\MarkdownExtra;
     <?php
         foreach ($this->seats as $seat) {
             $code = self::escape($seat->getCode());
+            $name = self::escape($seat->getName());
             $requirements = $seat->getRequirements();
 
             $markdown = new MarkdownExtra();
@@ -23,7 +24,7 @@ use Michelf\MarkdownExtra;
 
             echo "
             <dl class=\"fn1-output-field\">
-                <dt>$code</dt>
+                <dt>$code: $name</dt>
                 <dd>$requirements</td>
             </dl>
             ";
