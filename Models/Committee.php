@@ -309,7 +309,7 @@ class Committee extends ActiveRecord
 	public function getLiaisonPeople()
 	{
         $sql = 'select p.*
-                from committee_liaisons l
+                from liaisons l
                 join people p on l.person_id=p.id
                 where committee_id=?';
         $zend_db = Database::getConnection();
@@ -357,40 +357,6 @@ class Committee extends ActiveRecord
 			$votes[] = new Vote($row['id']);
 		}
 		return $votes;
-	}
-
-	/**
-	 * Inserts a row to the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post The POST array
-	 */
-	public function saveLiaison($post)
-	{
-        if (!empty($post['person_id'])) {
-            $sql = "select * from committee_liaisons where committee_id=? and person_id=?";
-            $zend_db = Database::getConnection();
-            $result = $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            if (!count($result)) {
-                $sql = 'insert committee_liaisons set committee_id=?, person_id=?';
-                $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            }
-        }
-	}
-
-	/**
-	 * Removes a row from the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post
-	 */
-	public function removeLiaison($person_id)
-	{
-        $sql = 'delete from committee_liaisons where committee_id=? and person_id=?';
-        $zend_db = Database::getConnection();
-        $zend_db->query($sql)->execute([$this->getId(), $person_id]);
 	}
 
 	/**

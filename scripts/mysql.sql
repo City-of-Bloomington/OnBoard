@@ -68,9 +68,6 @@ create table appointers (
 );
 insert appointers values(1,'Elected');
 
---
--- Begin 2.0 changes
---
 create table seats (
     id int unsigned not null primary key auto_increment,
     type enum('termed', 'open') not null default 'termed',
@@ -108,10 +105,11 @@ create table members (
 	foreign key (person_id)    references people    (id)
 );
 
-create table committee_liaisons (
+create table liaisons (
+    id int unsigned not null primary key auto_increment,
+    type enum('legal', 'departmental') not null default 'departmental',
     committee_id int unsigned not null,
     person_id    int unsigned not null,
-    primary key (committee_id, person_id),
     foreign key (committee_id) references committees(id),
     foreign key (person_id)    references people(id)
 );
@@ -154,10 +152,6 @@ create table media (
 	applicant_id     int unsigned not null,
 	foreign key (applicant_id) references applicants(id)
 );
-
---
--- End 2.0 changes
---
 
 create table offices (
 	id int unsigned not null primary key auto_increment,

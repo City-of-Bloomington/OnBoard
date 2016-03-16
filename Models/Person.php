@@ -295,7 +295,7 @@ class Person extends ActiveRecord
 	public function getLiaisonCommittees()
 	{
         $sql = 'select distinct c.*
-                from committee_liaisons l
+                from liaisons l
                 join committees c on l.committee_id=c.id
                 where l.person_id=?';
         $zend_db = Database::getConnection();
