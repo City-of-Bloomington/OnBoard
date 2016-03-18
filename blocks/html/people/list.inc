@@ -38,13 +38,16 @@ use Blossom\Classes\Url;
 					$url = "javascript:self.opener.$callback('{$person->getId()}');";
 					$button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
 				}
+				else {
+                    $url = BASE_URI.'/people/view?person_id='.$person->getId();
+				}
 
 				$name  = self::escape($person->getFullname());
 				$email = self::escape($person->getEmail());
 				$phone = self::escape($person->getPhone());
 				echo "
 				<tr><td>$button</td>
-					<td><a href=\"{$person->getUrl()}\">$name</a></td>
+					<td><a href=\"$url\">$name</a></td>
 					<td>$email</td>
 					<td>$phone</td>
 				</tr>
