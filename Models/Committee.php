@@ -304,25 +304,6 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @return array An array of Person objects
-	 */
-	public function getLiaisonPeople()
-	{
-        $sql = 'select p.*
-                from liaisons l
-                join people p on l.person_id=p.id
-                where committee_id=?';
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql, [$this->getId()]);
-
-        $liaisons = [];
-        foreach ($result->toArray() as $row) {
-            $liaisons[] = new Person($row);
-        }
-        return $liaisons;
-	}
-
-	/**
 	 * @return Zend\Db\ResultSet
 	 */
 	public function getVotes()
@@ -456,5 +437,42 @@ class Committee extends ActiveRecord
         $zend_db = Database::getConnection();
         $result = $zend_db->query($sql)->execute();
         return $result;
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function liaisonData()
+	{
+        $fields = [
+            'committee_id' => 'c.id',
+            'committee'    => 'c.name',
+            'department'  => "group_concat(d.name separator '|')",
+            'type'         => 'l.type',
+            'person_id'    => 'p.id',
+            'firstname'    => 'p.firstname',
+            'lastname'     => 'p.lastname',
+            'email'        => 'p.email',
+            'phone'        => 'p.phone'
+        ];
+        $f = [];
+        foreach ($fields as $k=>$v) {
+            $f[] = "$v as $k";
+        }
+        $f = implode(', ', $f);
+        $sql = "select $f
+                from committees c
+                left join liaisons l on c.id=l.committee_id
+                left join people p on l.person_id=p.id
+                left join committee_departments x on c.id=x.committee_id
+                left join departments d on x.department_id=d.id
+                group by c.id, p.id
+                order by c.name";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute();
+        return [
+            'fields'  => array_keys($fields),
+            'results' => $result
+        ];
 	}
 }

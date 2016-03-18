@@ -14,14 +14,8 @@ class LiaisonsController extends Controller
 {
     public function index()
     {
-        $type = (!empty($_GET['type']) && in_array($_GET['type'], Liaison::$types))
-            ? $_GET['type']
-            : 'departmental';
-
-        #$table = new LiaisonsTable();
-        #$list = $table->find(['type'=>$type]);
-
-        $this->template->blocks[] = new Block('liaisons/list.inc');
+        $data = Committee::liaisonData();
+        $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
     }
 
     public function add()
