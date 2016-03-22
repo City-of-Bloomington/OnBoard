@@ -63,7 +63,7 @@ $ZEND_ACL->allow(null, 'applicants', 'apply');
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicants', 'applications', 'media']);
 
-
+$ZEND_ACL->allow('Staff', ['people', 'liaisons']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 
 // Administrator is allowed access to everything
