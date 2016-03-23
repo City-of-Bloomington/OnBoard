@@ -440,6 +440,12 @@ msgstr "Add Liaison"
 msgid "liaison_remove"
 msgstr "Remove Liaison"
 
+msgid "departmental"
+msgstr "Departmental"
+
+msgid "legal"
+msgstr "Legal"
+
 msgid "office"
 msgid_plural "offices"
 msgstr[0] "Office"

@@ -11,7 +11,6 @@ use Application\Models\SeatTable;
 use Application\Models\TermTable;
 use Application\Models\TopicTable;
 use Application\Models\VoteTable;
-
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
@@ -304,25 +303,6 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @return array An array of Person objects
-	 */
-	public function getLiaisonPeople()
-	{
-        $sql = 'select p.*
-                from committee_liaisons l
-                join people p on l.person_id=p.id
-                where committee_id=?';
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql, [$this->getId()]);
-
-        $liaisons = [];
-        foreach ($result->toArray() as $row) {
-            $liaisons[] = new Person($row);
-        }
-        return $liaisons;
-	}
-
-	/**
 	 * @return Zend\Db\ResultSet
 	 */
 	public function getVotes()
@@ -357,40 +337,6 @@ class Committee extends ActiveRecord
 			$votes[] = new Vote($row['id']);
 		}
 		return $votes;
-	}
-
-	/**
-	 * Inserts a row to the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post The POST array
-	 */
-	public function saveLiaison($post)
-	{
-        if (!empty($post['person_id'])) {
-            $sql = "select * from committee_liaisons where committee_id=? and person_id=?";
-            $zend_db = Database::getConnection();
-            $result = $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            if (!count($result)) {
-                $sql = 'insert committee_liaisons set committee_id=?, person_id=?';
-                $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            }
-        }
-	}
-
-	/**
-	 * Removes a row from the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post
-	 */
-	public function removeLiaison($person_id)
-	{
-        $sql = 'delete from committee_liaisons where committee_id=? and person_id=?';
-        $zend_db = Database::getConnection();
-        $zend_db->query($sql)->execute([$this->getId(), $person_id]);
 	}
 
 	/**
@@ -490,5 +436,61 @@ class Committee extends ActiveRecord
         $zend_db = Database::getConnection();
         $result = $zend_db->query($sql)->execute();
         return $result;
+	}
+
+	/**
+	 * @param array $fields
+	 * @return array
+	 */
+	public static function liaisonData($fields=null)
+	{
+        $selectedFields = [
+            'committee_id' => 'c.id',
+            'committee'    => 'c.name',
+            'department'  => "group_concat(d.name separator '|')",
+            'type'         => 'l.type',
+            'person_id'    => 'p.id',
+            'firstname'    => 'p.firstname',
+            'lastname'     => 'p.lastname',
+            'email'        => 'p.email',
+            'phone'        => 'p.phone'
+        ];
+        $columns = [];
+        foreach ($selectedFields as $k=>$v) {
+            $columns[] = "$v as $k";
+        }
+        $columns = implode(', ', $columns);
+
+        $where  = [];
+        $params = [];
+        if (count($fields)) {
+            foreach ($fields as $k=>$v) {
+                if (array_key_exists($k, $selectedFields)) {
+                    $where[]  = "{$selectedFields[$k]}=?";
+                    $params[] = $v;
+                }
+            }
+            $where = 'where '.implode(' and ', $where);
+        }
+        else {
+            $where  = '';
+            $params = null;
+        }
+
+        $sql = "select $columns
+                from committees c
+                left join liaisons l on c.id=l.committee_id
+                left join people p on l.person_id=p.id
+                left join committee_departments x on c.id=x.committee_id
+                left join departments d on x.department_id=d.id
+                $where
+                group by c.id, p.id
+                order by c.name";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute($params);
+        return [
+            'fields'  => array_keys($selectedFields),
+            'results' => $result
+        ];
 	}
 }
