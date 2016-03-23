@@ -7,3 +7,5 @@ alter table liaisons add id int unsigned not null primary key auto_increment fir
 alter table liaisons add type enum('legal', 'departmental') not null default 'departmental' after id;
 alter table liaisons add foreign key (committee_id) references committees(id);
 alter table liaisons add foreign key (person_id)    references people(id);
+
+alter table seats add voting boolean not null default 1;

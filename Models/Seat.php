@@ -61,6 +61,7 @@ class Seat extends ActiveRecord
 			// Set any default values for properties that need it here
 			$this->setAppointer_id   (1);
 			$this->setStartDate(date(DATE_FORMAT));
+			$this->setVoting(true);
 		}
 	}
 
@@ -117,6 +118,7 @@ class Seat extends ActiveRecord
 	public function getCommittee_id() { return parent::get('committee_id'); }
 	public function getAppointer_id() { return parent::get('appointer_id'); }
 	public function getTermLength()   { return parent::get('termLength'); }
+	public function getVoting()       { return parent::get('voting'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
@@ -138,14 +140,19 @@ class Seat extends ActiveRecord
         }
         else { parent::set('termLength', null); }
     }
+    public function setVoting($b) { parent::set('voting', $b ? 1 : 0); }
 
 	public function handleUpdate($post)
 	{
-		$fields = ['code', 'name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type', 'termLength'];
+		$fields = [
+            'code', 'name', 'appointer_id', 'startDate', 'endDate',
+            'requirements', 'type', 'termLength', 'voting'
+        ];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
+
 	}
 
 	//----------------------------------------------------------------
@@ -376,4 +383,9 @@ class Seat extends ActiveRecord
 
         return false;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isVoting() { return $this->getVoting() ? true : false; }
 }
