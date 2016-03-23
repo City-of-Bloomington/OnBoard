@@ -15,7 +15,7 @@ class Liaison extends ActiveRecord
 	protected $committee;
 	protected $person;
 
-	public static $types = ['departmental', 'leagal'];
+	public static $types = ['departmental', 'legal'];
 
 	/**
 	 * @param int|array $id

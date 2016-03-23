@@ -11,7 +11,6 @@ use Application\Models\SeatTable;
 use Application\Models\TermTable;
 use Application\Models\TopicTable;
 use Application\Models\VoteTable;
-
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
@@ -440,11 +439,12 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param array $fields
 	 * @return array
 	 */
-	public static function liaisonData()
+	public static function liaisonData($fields=null)
 	{
-        $fields = [
+        $selectedFields = [
             'committee_id' => 'c.id',
             'committee'    => 'c.name',
             'department'  => "group_concat(d.name separator '|')",
@@ -455,23 +455,41 @@ class Committee extends ActiveRecord
             'email'        => 'p.email',
             'phone'        => 'p.phone'
         ];
-        $f = [];
-        foreach ($fields as $k=>$v) {
-            $f[] = "$v as $k";
+        $columns = [];
+        foreach ($selectedFields as $k=>$v) {
+            $columns[] = "$v as $k";
         }
-        $f = implode(', ', $f);
-        $sql = "select $f
+        $columns = implode(', ', $columns);
+
+        $where  = [];
+        $params = [];
+        if (count($fields)) {
+            foreach ($fields as $k=>$v) {
+                if (array_key_exists($k, $selectedFields)) {
+                    $where[]  = "{$selectedFields[$k]}=?";
+                    $params[] = $v;
+                }
+            }
+            $where = 'where '.implode(' and ', $where);
+        }
+        else {
+            $where  = '';
+            $params = null;
+        }
+
+        $sql = "select $columns
                 from committees c
                 left join liaisons l on c.id=l.committee_id
                 left join people p on l.person_id=p.id
                 left join committee_departments x on c.id=x.committee_id
                 left join departments d on x.department_id=d.id
+                $where
                 group by c.id, p.id
                 order by c.name";
         $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute();
+        $result = $zend_db->query($sql)->execute($params);
         return [
-            'fields'  => array_keys($fields),
+            'fields'  => array_keys($selectedFields),
             'results' => $result
         ];
 	}
