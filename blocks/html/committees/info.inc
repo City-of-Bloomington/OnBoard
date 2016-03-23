@@ -11,7 +11,7 @@ use Michelf\MarkdownExtra;
 
 $fields = [
     'type',
-    'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'yearFormed', 'website',
+    'name', 'statutoryName', 'yearFormed', 'website',
     'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
@@ -19,9 +19,6 @@ foreach ($fields as $f) {
     $$f = View::escape($this->committee->$get());
 }
 
-if ($statuteUrl) {
-    $statuteReference = "<a href=\"$statuteUrl\">$statuteReference</a>";
-}
 if ($website) {
     $website = "<a href=\"$website\">$website</a>";
 }
@@ -52,7 +49,7 @@ if ($userCanEdit) {
     <?php
         $fields  = [
             'type', 'yearFormed',
-            'statutoryName', 'statuteReference', 'website',
+            'statutoryName', 'website',
             'email', 'phone', 'address'
         ];
         if ($userCanEdit) {

@@ -37,8 +37,6 @@ create table committees (
 	type enum('seated', 'open') not null default 'seated',
 	name varchar(128) not null,
 	statutoryName varchar(128),
-	statuteReference varchar(128),
-	statuteUrl varchar(128),
 	yearFormed year(4),
 	website varchar(128),
 	email   varchar(128),
@@ -52,6 +50,14 @@ create table committees (
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
 	applicationLifetime tinyint unsigned not null default 90
+);
+
+create table committeeStatutes(
+    id           int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    citation varchar(128) not null,
+    url      varchar(128) not null,
+    foreign key (committee_id) references committees(id)
 );
 
 create table committee_departments (

@@ -80,8 +80,6 @@ class Committee extends ActiveRecord
 	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
-	public function getStatuteReference()  { return parent::get('statuteReference'); }
-	public function getStatuteUrl()        { return parent::get('statuteUrl');       }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getEmail()             { return parent::get('email');            }
 	public function getPhone()             { return parent::get('phone');            }
@@ -99,8 +97,6 @@ class Committee extends ActiveRecord
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
-	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
-	public function setStatuteUrl      ($s) { parent::set('statuteUrl',       $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
     public function setEmail           ($s) { parent::set('email',            $s); }
     public function setPhone           ($s) { parent::set('phone',            $s); }
@@ -124,7 +120,7 @@ class Committee extends ActiveRecord
 
 		$fields = [
             'type', 'departments',
-			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
+			'name', 'statutoryName', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule',
 			'termEndWarningDays', 'applicationLifetime'
@@ -407,13 +403,22 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @return Zend\Db\Result
+	 */
+	public function getStatutes()
+	{
+        $table = new CommitteeStatuteTable();
+        return $table->find(['committee_id'=>$this->getId()]);
+	}
+
+	/**
 	 * @return array
 	 */
 	public static function data()
 	{
         $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,
-                        c.statutoryName, c.statuteReference, c.statuteUrl, c.yearFormed,
+                        c.statutoryName, c.yearFormed,
                         count(s.id) as seats,
                         sum(
                             case when (s.type='termed' and t.id is not null and tm.id is null) then 1

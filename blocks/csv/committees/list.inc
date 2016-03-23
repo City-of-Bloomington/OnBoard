@@ -13,7 +13,7 @@ header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 $fields = [
     'id','type','name','website',
     'email','phone','address','city','state','zip',
-    'statutoryName','statuteReference','statuteUrl','yearFormed',
+    'statutoryName','yearFormed',
     'seats', 'vacancies'
 ];
 

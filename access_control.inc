@@ -41,6 +41,7 @@ $ZEND_ACL->addResource(new Resource('liaisons'));
 $ZEND_ACL->addResource(new Resource('applicants'));
 $ZEND_ACL->addResource(new Resource('applications'));
 $ZEND_ACL->addResource(new Resource('media'));
+$ZEND_ACL->addResource(new Resource('committeeStatutes'));
 
 $ZEND_ACL->addResource(new Resource('topics'));
 $ZEND_ACL->addResource(new Resource('topicTypes'));

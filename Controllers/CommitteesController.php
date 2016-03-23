@@ -46,6 +46,10 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/info.inc',        ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committeeStatutes/list.inc', [
+                'statutes'  => $committee->getStatutes(),
+                'committee' => $committee
+            ]);
             $this->template->blocks[] = new Block('departments/list.inc', [
                 'departments'    => $committee->getDepartments(),
                 'disableButtons' => true
@@ -137,6 +141,5 @@ class CommitteesController extends Controller
             'title'        => $this->template->_('applications_archived'),
             'type'         => 'archived'
         ]);
-
     }
 }

@@ -515,11 +515,22 @@ msgstr "Application Lifetime"
 msgid "statutoryName"
 msgstr "Statutory Name"
 
-msgid "statuteReference"
-msgstr "Statute Reference"
+msgid "committeeStatute"
+msgid_plural "committeeStatutes"
+msgstr[0] "Statute Citation"
+msgstr[1] "Statute Citations"
 
-msgid "statuteUrl"
-msgstr "Statute Url"
+msgid "committeeStatute_add"
+msgstr "New Statute Citation"
+
+msgid "committeeStatute_edit"
+msgstr "Edit Statute Citation"
+
+msgid "citation"
+msgstr "Citation"
+
+msgid "url"
+msgstr "Url"
 
 msgid "website"
 msgstr "Website"
