@@ -92,6 +92,13 @@ echo "
         </dl>
         ";
     }
+    $voting = $this->seat->IsVoting() ? $this->_('yes') : $this->_('no');
+    echo "
+        <dl class=\"fn1-output-field\">
+            <dt>{$this->_('voting')}</dt>
+            <dd>$voting</dd>
+        </dl>
+    ";
 echo "
 </section>
 ";

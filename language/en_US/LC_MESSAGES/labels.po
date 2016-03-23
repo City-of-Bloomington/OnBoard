@@ -262,6 +262,9 @@ msgstr "Open"
 msgid "termLength"
 msgstr "Term Length"
 
+msgid "voting"
+msgstr "Voting"
+
 msgid "add_appointer"
 msgstr "Add Appointer"
 
