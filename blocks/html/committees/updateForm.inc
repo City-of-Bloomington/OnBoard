@@ -2,7 +2,6 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee
  */
 use Application\Models\Committee;
@@ -47,19 +46,24 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 </dd>
             </dl>
             <?php
+                $field = $this->template->getHelper('field');
+
                 $fields = [
                     'name', 'yearFormed', 'statutoryName',
-                    'website', 'termEndWarningDays', 'applicationLifetime'
+                    'website', 'termEndWarningDays', 'applicationLifetime',
                 ];
                 foreach ($fields as $f) {
-                    echo "
-                    <dl class=\"fn1-input-field\">
-                        <dt><label  for=\"$f\">{$this->_($f)}</label></td>
-                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
-                    </dl>
-                    ";
+                    $p = [
+                        'label' => $this->_($f),
+                        'name'  => $f,
+                        'id'    => $f,
+                        'value' => $$f
+                    ];
+                    if ($f === 'endDate') { $p['type'] = 'date'; }
+                    echo $field->field($p);
                 }
             ?>
+
         </fieldset>
 
         <fieldset><legend><?= $this->_(['department', 'departments', 2]); ?></legend>
@@ -84,26 +88,18 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 <dt><label     for="address"><?= $this->_('address'); ?></label></dt>
                 <dd><textarea name="address" id="address"><?= $address; ?></textarea></dd>
             </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="city"><?= $this->_('city'); ?></label></dt>
-                <dd><input name="city" id="city" value="<?= $city; ?>" /></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="state"><?= $this->_('state'); ?></label></dt>
-                <dd><input name="state" id="state" value="<?= $state; ?>" /></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label><?= $this->_('zip'); ?></label></dt>
-                <dd><input name="zip" value="<?= $zip; ?>" /></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="email"><?= $this->_(['email', 'emails', 1]); ?></label></dt>
-                <dd><input name="email" id="email" value="<?= $email; ?>" /></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="phone"><?= $this->_('phone'); ?></label></dt>
-                <dd><input name="phone" id="phone" value="<?= $phone; ?>" /></dd>
-            </dl>
+            <?php
+                $fields = ['city', 'state', 'zip', 'email', 'phone'];
+                foreach ($fields as $f) {
+                    echo $field->field([
+                        'label' => $this->_($f),
+                        'name'  => $f,
+                        'id'    => $f,
+                        'value' => $$f
+                    ]);
+                }
+
+            ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('description'); ?></legend>

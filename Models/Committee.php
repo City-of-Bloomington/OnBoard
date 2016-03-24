@@ -2,7 +2,6 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -56,6 +55,10 @@ class Committee extends ActiveRecord
 
 	public function save()
 	{
+        // endDate should never be altered during a normal save
+        if (isset($this->data['endDate'])) {
+            unset($this->data['endDate']);
+        }
         parent::save();
 
         if ($this->departmentsHaveChanged) {
@@ -93,6 +96,7 @@ class Committee extends ActiveRecord
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
 	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
+	public function getEndDate($f=null)    { return parent::getDateData('endDate', $f); }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
@@ -129,6 +133,46 @@ class Committee extends ActiveRecord
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
+	}
+
+	/**
+	 * @param string $date
+	 */
+	public function saveEndDate($date)
+	{
+        if ($this->getId()) {
+            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
+
+            if ($d) {
+                $zend_db = Database::getConnection();
+
+                $params = [
+                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
+                    $this->getId()
+                ];
+
+                $updates = [
+                    "update terms t join seats s on t.seat_id=s.id
+                                         set t.endDate=? where s.committee_id=? and t.endDate is null",
+                    'update applications set archived=?  where committee_id=?   and archived  is null',
+                    'update offices      set endDate=?   where committee_id=?   and endDate   is null',
+                    'update seats        set endDate=?   where committee_id=?   and endDate   is null',
+                    'update members      set endDate=?   where committee_id=?   and endDate   is null',
+                    'update committees   set endDate=?   where id=?'
+                ];
+                $zend_db->getDriver()->getConnection()->beginTransaction();
+                try {
+                    foreach ($updates as $sql) {
+                        $zend_db->query($sql)->execute($params);
+                    }
+                    $zend_db->getDriver()->getConnection()->commit();
+                }
+                catch (\Exception $e) {
+                    $zend_db->getDriver()->getConnection()->rollback();
+                    throw $e;
+                }
+            }
+        }
 	}
 
 	//----------------------------------------------------------------
@@ -412,30 +456,36 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @param array $fields
 	 * @return array
 	 */
-	public static function data()
+	public static function data(array $fields=null)
 	{
+        $timestamp = isset($fields['current']) ? $fields['current'] : time();
+        $now       = date(parent::MYSQL_DATE_FORMAT, $timestamp);
+        $where     = isset($fields['current']) ? "where (c.endDate is null or '$now' <= c.endDate)" : '';
+
         $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,
-                        c.statutoryName, c.yearFormed,
+                        c.statutoryName, c.yearFormed, c.endDate,
                         count(s.id) as seats,
                         sum(
-                            case when (s.type='termed' and t.id is not null and tm.id is null) then 1
-                                 when (s.type='open'   and m.id is null)                       then 1
+                            case when ((s.endDate is null or '$now' <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
+                                 when ((s.endDate is null or '$now' <= s.endDate) and s.type='open'   and m.id is null)                       then 1
                                 else 0
                             end
                         ) as vacancies,
                         (
                             select count(*)
                             from applications a
-                            where a.committee_id=c.id and (a.archived is null or now() <= a.archived)
+                            where a.committee_id=c.id and (a.archived is null or '$now' <= a.archived)
                         ) as applications
                 from committees c
                 left join seats s    on c.id= s.committee_id
-                left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
-                left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
-                left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
+                left join members m  on s.id= m.seat_id and  m.startDate <= '$now' and ( m.endDate is null or '$now' <= m.endDate)
+                left join terms   t  on s.id= t.seat_id and  t.startDate <= '$now' and ( t.endDate is null or '$now' <= t.endDate)
+                left join members tm on t.id=tm.term_id and tm.startDate <= '$now' and (tm.endDate is null or '$now' <=tm.endDate)
+                $where
                 group by c.id
                 order by c.name";
         $zend_db = Database::getConnection();

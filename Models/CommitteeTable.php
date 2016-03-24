@@ -6,6 +6,7 @@
  */
 namespace Application\Models;
 
+use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -19,6 +20,11 @@ class CommitteeTable extends TableGateway
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
+                    case 'current':
+						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+						$select->where("(committees.endDate is null or committees.endDate>='$date')");
+                    break;
+
 					case 'member_id':
 						$select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
 						$select->where(['m.person_id' => $value]);

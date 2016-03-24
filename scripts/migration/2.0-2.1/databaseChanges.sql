@@ -24,3 +24,5 @@ select id, statuteReference, statuteUrl from committees where statuteUrl is not 
 
 alter table committees drop statuteReference;
 alter table committees drop statuteUrl;
+
+alter table committees add endDate date after yearFormed;

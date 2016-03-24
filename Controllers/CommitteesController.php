@@ -30,12 +30,12 @@ class CommitteesController extends Controller
 
     public function index()
     {
-        $data = Committee::data();
+        $currentCommittees = Committee::data(['current' => time()]);
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
-        $this->template->title = $this->template->_(['committee', 'committees', count($data)]);
-        $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$data]);
+        $this->template->title = $this->template->_(['committee', 'committees', count($currentCommittees)]);
+        $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$currentCommittees]);
     }
 
     public function info()
@@ -106,12 +106,32 @@ class CommitteesController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        if ($this->template->outputFormat === 'html') {
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-        }
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee' => $committee]);
     }
+
+    public function end()
+    {
+        $committee =        !empty($_REQUEST['committee_id'])
+            ? $this->loadCommittee($_REQUEST['committee_id'])
+            : new Committee();
+
+        if (isset($_POST['endDate'])) {
+            try {
+                $committee->saveEndDate($_POST['endDate']);
+
+                $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
+                header("Location: $url");
+                exit();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/endDateForm.inc', ['committee' => $committee]);
+    }
+
 
     public function seats()
     {

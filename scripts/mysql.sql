@@ -38,6 +38,7 @@ create table committees (
 	name varchar(128) not null,
 	statutoryName varchar(128),
 	yearFormed year(4),
+	endDate    date,
 	website varchar(128),
 	email   varchar(128),
 	phone   varchar(128),

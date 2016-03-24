@@ -19,8 +19,8 @@ $title = $this->department->getId() ? $this->_('department_edit') : $this->_('de
 			<input name="department_id" type="hidden" value="<?= $this->department->getId(); ?>" />
 			<?php
                 $field = $this->template->getHelper('field');
-                echo $field->input(['name'=>'name', 'id'=>'name', 'label'=>$this->_('name'), 'value'=>$name, 'required'=>true]);
-                
+                echo $field->field(['name'=>'name', 'id'=>'name', 'label'=>$this->_('name'), 'value'=>$name, 'required'=>true]);
+
 				$helper = $this->template->getHelper('saveAndCancelButtons');
 				echo $helper->saveAndCancelButtons(BASE_URI.'/departments');
 			?>

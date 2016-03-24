@@ -12,7 +12,7 @@ use Application\Models\Site;
 use Michelf\MarkdownExtra;
 
 $table = new CommitteeTable();
-$committees = $table->find();
+$committees = $table->find(['current'=>time()]);
 
 $fields = [
     'id', 'firstname', 'lastname', 'email', 'phone',
@@ -43,13 +43,13 @@ $field = $this->template->getHelper('field');
         <fieldset><legend><?= $this->_('info_person'); ?></legend>
         <?php
             foreach (['firstname', 'lastname', 'email'] as $f) {
-                echo $field->input(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f, 'required'=>true]);
+                echo $field->field(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f, 'required'=>true]);
             }
 
-            echo $field->input(['name'=>'phone', 'id'=>'phone', 'label'=>$this->_('phone'), 'value'=>$phone, 'type'=>'tel']);
+            echo $field->field(['name'=>'phone', 'id'=>'phone', 'label'=>$this->_('phone'), 'value'=>$phone, 'type'=>'tel']);
 
             foreach (['address', 'city', 'zip'] as $f) {
-                echo $field->input(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f]);
+                echo $field->field(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f]);
             }
             if ($this->committee) {
                 echo "
@@ -103,7 +103,7 @@ $field = $this->template->getHelper('field');
                 </dd>
             </dl>
             <?php
-                echo $field->input(['name'=>'occupation', 'id'=>'occupation', 'label'=>$this->_('occupation'), 'value'=>$occupation]);
+                echo $field->field(['name'=>'occupation', 'id'=>'occupation', 'label'=>$this->_('occupation'), 'value'=>$occupation]);
             ?>
 
             <dl class="fn1-input-field">
@@ -122,7 +122,7 @@ $field = $this->template->getHelper('field');
                 </dd>
             </dl>
             <?php
-                echo $field->input(['name'=>'referredOther', 'id'=>'referredOther', 'label'=>$this->_('referredOther'), 'value'=>$referredOther]);
+                echo $field->field(['name'=>'referredOther', 'id'=>'referredOther', 'label'=>$this->_('referredOther'), 'value'=>$referredOther]);
             ?>
 
         </fieldset>
