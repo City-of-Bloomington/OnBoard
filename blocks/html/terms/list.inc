@@ -2,7 +2,6 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->terms
  * @param Seat $this->seat (optional)
  * @param boolean $this->disableButtons
@@ -11,36 +10,38 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Block;
 
-$title = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 2]);
+$title  = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 2]);
 $helper = $this->template->getHelper('buttonLink');
 ?>
 <section class="termsList">
-	<h1><?= $title; ?></h1>
-	<?php
-        $terms = $this->terms;
+    <header>
+        <h1><?= $title; ?></h1>
+        <?php
+            $t = current($this->terms);
+            if ($t && !$this->disableButtons
+                && Person::isAllowed('terms', 'generate')) {
 
-        $t = current($terms);
-        if ($t && !$this->disableButtons
-            && Person::isAllowed('terms', 'generate')) {
-
-            echo $helper->buttonLink(
-                BASE_URI.'/terms/generate?direction=next;term_id='.$t->getId(),
-                $this->_('term_add_next'),
-                'add'
-            );
-        }
-
+                echo '<div class="tools">';
+                echo $helper->buttonLink(
+                    BASE_URI.'/terms/generate?direction=next;term_id='.$t->getId(),
+                    $this->_('term_add_next'),
+                    'add'
+                );
+                echo '</div>';
+            }
+        ?>
+    </header>
+    <table class="onboard-termsTable">
+    <?php
         $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
         if ($this->seat) {
             $memberList->seat      = $this->seat;
             $memberList->committee = $this->seat->getCommittee();
         }
 
-        echo '<table class="onboard-termsTable"><tbody>';
-
         $actions = new Block('terms/partials/actions.inc');
 
-        foreach ($terms as $term) {
+        foreach ($this->terms as $term) {
             $term_id = $term->getId();
 
             $addButton = '';
@@ -67,7 +68,10 @@ $helper = $this->template->getHelper('buttonLink');
             </tr>
             ";
         }
-        echo '</tbody></table>';
+
+	?>
+	</table>
+	<?php
         if (!$this->disableButtons) {
             if (isset($term) && Person::isAllowed('terms', 'generate')) {
                 echo $helper->buttonLink(
@@ -76,7 +80,7 @@ $helper = $this->template->getHelper('buttonLink');
                     'add'
                 );
             }
-            if (isset($this->seat)  && !count($terms) && Person::isAllowed('terms', 'add')) {
+            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'add')) {
                 echo $helper->buttonLink(
                     BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
                     $this->_('term_add'),
@@ -84,6 +88,5 @@ $helper = $this->template->getHelper('buttonLink');
                 );
             }
         }
-
 	?>
 </section>

@@ -134,4 +134,30 @@ class SeatsController extends Controller
         header('Location: '.BASE_URL.'/committees');
         exit();
     }
+
+    public function end()
+    {
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($seat)) {
+            if (isset($_POST['endDate'])) {
+                try {
+                    $seat->saveEndDate($_POST['endDate']);
+                    header('Location: '.BASE_URL.'/seats/view?seat_id='.$seat->getId());
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+            $this->template->blocks[] = new Block('seats/endDateForm.inc', ['seat'=>$seat]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }

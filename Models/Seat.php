@@ -88,17 +88,17 @@ class Seat extends ActiveRecord
 		if (!$this->getName())         { throw new \Exception('missingName'); }
 		if (!$this->getCommittee_id()) { throw new \Exception('seats/missingCommittee'); }
 
-		// Make sure the end date falls after the start date
-		$start = (int)$this->getStartDate('U');
-		$end   = (int)$this->getEndDate  ('U');
-		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
 
 		if ($this->getType() === 'termed') {
             if (!$this->getTermLength()) { throw new \Exception('missingTermLength'); }
 		}
 	}
 
-	public function save() { parent::save(); }
+	public function save()
+	{
+        if (isset($this->data['endDate'])) { unset($this->data['endDate']); }
+        parent::save();
+    }
 
 	public function delete()
 	{
@@ -133,7 +133,6 @@ class Seat extends ActiveRecord
 	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setAppointer($o)    { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d) { parent::setDateData('startDate', $d); }
-	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
 	public function setTermLength($s) {
         if ($s) {
             if (array_key_exists($s, self::$termIntervals)) { parent::set('termLength', $s); }
@@ -145,7 +144,7 @@ class Seat extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
-            'code', 'name', 'appointer_id', 'startDate', 'endDate',
+            'code', 'name', 'appointer_id', 'startDate',
             'requirements', 'type', 'termLength', 'voting'
         ];
 		foreach ($fields as $f) {
@@ -153,6 +152,43 @@ class Seat extends ActiveRecord
 			$this->$set($post[$f]);
 		}
 
+	}
+
+	/**
+	 * @param string $date
+	 */
+	public function saveEndDate($date)
+	{
+        if ($this->getId()) {
+            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
+            if ($d) {
+                // Make sure the end date falls after the start date
+                $start = (int)$this->getStartDate('U');
+                $end   = (int)$d->format('U');
+                if ($end < $start) { throw new \Exception('invalidEndDate'); }
+
+                $updates = [
+                    'update terms   set endDate=? where seat_id=? and endDate is null',
+                    'update members set endDate=? where seat_id=? and endDate is null',
+                    'update seats   set endDate=? where id=?',
+                ];
+                $params = [
+                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
+                    $this->getId()
+                ];
+
+                $zend_db = Database::getConnection();
+                $zend_db->getDriver()->getConnection()->beginTransaction();
+                try {
+                    foreach ($updates as $sql) { $zend_db->query($sql)->execute($params); }
+                    $zend_db->getDriver()->getConnection()->commit();
+                }
+                catch (\Exception $e) {
+                    $zend_db->getDriver()->getConnection()->rollback();
+                    throw $e;
+                }
+            }
+        }
 	}
 
 	//----------------------------------------------------------------
