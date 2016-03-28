@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
-use Application\Models\Committee;
+use Application\Models\LiaisonTable;
 use Application\Models\Person;
 
 $addButton = '';
@@ -22,7 +22,7 @@ if (Person::isAllowed('liaisons', 'add')) {
         <div class="fn1-uiBlock-headerTools"><?= $addButton; ?></div>
     </header>
     <?php
-        $this->data = Committee::liaisonData(['committee_id'=>$this->committee->getId()]);
+        $this->data = LiaisonTable::committeeLiaisonData(['committee_id'=>$this->committee->getId()]);
         $this->_include('liaisons/partials/dataTable.inc');
     ?>
 </section>

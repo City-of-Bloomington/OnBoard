@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
-use Application\Models\Committee;
+use Application\Models\LiaisonTable;
 
 $members = $this->person->getMembers();
 ?>
@@ -42,7 +42,7 @@ $members = $this->person->getMembers();
 </section>
 
 <?php
-$this->data = Committee::liaisonData(['person_id'=>$this->person->getId()]);
+$this->data = LiaisonTable::personLiaisonData(['person_id'=>$this->person->getId()]);
 if (count($this->data)) {
     $l = $this->_(['liaison', 'liaisons', count($this->data)]);
     echo "<section><h1>$l</h1>";
