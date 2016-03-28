@@ -30,12 +30,19 @@ class CommitteesController extends Controller
 
     public function index()
     {
-        $currentCommittees = Committee::data(['current' => time()]);
+        $currentCommittees = Committee::data(['current' => true]);
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
         $this->template->title = $this->template->_(['committee', 'committees', count($currentCommittees)]);
-        $this->template->blocks[] = new Block('committees/list.inc', ['data'=>$currentCommittees]);
+
+        $table = new CommitteeTable();
+        $this->template->blocks[] = new Block('committees/current.inc', ['data'=>$currentCommittees]);
+
+        $pastCommittees = $table->find(['current'=>false]);
+        if (count($pastCommittees)) {
+            $this->template->blocks[] = new Block('committees/past.inc',    ['committees'=>$pastCommittees]);
+        }
     }
 
     public function info()
@@ -70,7 +77,7 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
         if ($committee->getType() === 'seated') {
-            $seats = $committee->getSeats(time());
+            $seats = $committee->getSeats(['current'=>true]);
             $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
                 'committee' => $committee,
                 'seats'     => $seats,
@@ -86,6 +93,11 @@ class CommitteesController extends Controller
             ]);
         }
 
+    }
+
+    public function pastMembers()
+    {
+        $committee = $this->loadCommittee($_GET['committee_id']);
     }
 
     public function update()

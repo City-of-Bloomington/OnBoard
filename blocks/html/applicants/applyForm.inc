@@ -12,7 +12,7 @@ use Application\Models\Site;
 use Michelf\MarkdownExtra;
 
 $table = new CommitteeTable();
-$committees = $table->find(['current'=>time()]);
+$committees = $table->find(['current'=>true]);
 
 $fields = [
     'id', 'firstname', 'lastname', 'email', 'phone',

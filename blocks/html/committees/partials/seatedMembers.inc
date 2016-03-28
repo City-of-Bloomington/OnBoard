@@ -79,7 +79,7 @@ $title = $this->title
                 }
             }
 
-            $member = $seat->getMember(time());
+            $member = $seat->getCurrentMember();
             if ($member) {
                 $member_id = $member->getId();
                 $person_id = $member->getPerson_id();

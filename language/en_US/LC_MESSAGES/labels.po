@@ -205,6 +205,12 @@ msgstr "Edit Committee"
 msgid "committee_info"
 msgstr "Committee Info"
 
+msgid "committees_current"
+msgstr "Current Committees"
+
+msgid "committees_past"
+msgstr "Past Committees"
+
 msgid "type"
 msgstr "Type"
 

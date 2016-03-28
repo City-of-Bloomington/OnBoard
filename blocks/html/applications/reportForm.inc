@@ -7,7 +7,7 @@
 use Blossom\Classes\Block;
 
 $this->applications = $this->committee->getApplications(['current'=>time()]);
-$seats = $this->committee->getSeats(time());
+$seats = $this->committee->getSeats(['current'=>true]);
 
 $count = count($this->applications);
 

@@ -24,7 +24,7 @@ foreach ($this->seats as $seat) {
     $memberEnd   = '';
 
     $term = null;
-    $member = $seat->getMember($now);
+    $member = $seat->getCurrentMember();
     if ($member) {
         $person      = $member->getPerson();
         $firstname   = $person->getFirstname();

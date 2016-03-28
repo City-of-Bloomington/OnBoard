@@ -29,7 +29,7 @@ foreach ($this->seats as $seat) {
         'startDate'     => $seat->getStartDate($DATE_FORMAT),
         'endDate'       => $seat->getEndDate  ($DATE_FORMAT),
         'type'          => $seat->getType(),
-        'vacant'        => $seat->hasVacancy($now),
+        'vacant'        => $seat->hasVacancy(),
         'currentTerm'   => null,
         'currentMember' => null
     ];
@@ -45,7 +45,7 @@ foreach ($this->seats as $seat) {
         }
     }
 
-    $m = $seat->getMember();
+    $m = $seat->getCurrentMember();
     if ($m) {
         $offices = [];
         foreach ($m->getPerson()->getOffices($seat->getCommittee(), date('Y-m-d')) as $office) {

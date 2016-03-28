@@ -21,8 +21,10 @@ class CommitteeTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'current':
-						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-						$select->where("(committees.endDate is null or committees.endDate>='$date')");
+                        // current == true|false (false is the past)
+                        $value
+                            ? $select->where("(committees.endDate is null     or  committees.endDate >= now())")
+                            : $select->where("(committees.endDate is not null and committees.endDate <= now())");
                     break;
 
 					case 'member_id':

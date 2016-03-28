@@ -212,18 +212,22 @@ class Seat extends ActiveRecord
         }
 	}
 
+	/**
+	 * @return Zend\Db\Result
+	 */
 	public function getMembers()
 	{
 		$table = new MemberTable();
 		return $table->find(['seat_id'=>$this->getId()]);
 	}
 
-	public function getMember($timestamp=null)
+	/**
+	 * @return Member
+	 */
+	public function getCurrentMember()
 	{
-        if (!$timestamp) { $timestamp = time(); }
-
         $table = new MemberTable();
-        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
+        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>true]);
         if (count($list)) {
             return $list->current();
         }

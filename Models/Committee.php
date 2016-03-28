@@ -194,19 +194,15 @@ class Committee extends ActiveRecord
 	/**
 	 * Returns members for the committee
 	 *
-	 * If timestamp is provided, will provide members current
-	 * as of the provided timestamp
-	 *
-	 * @param int $timestamp
+	 * @param array $fields
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getMembers($timestamp=null)
+	public function getMembers(array $fields=null)
 	{
-		$search = ['committee_id'=>$this->getId()];
-		if ($timestamp) { $search['current'] = (int)$timestamp; }
+        $fields['committee_id'] = $this->getId();
 
 		$table = new MemberTable();
-		return $table->find($search);
+		return $table->find($fields);
 	}
 
 	/**
@@ -225,23 +221,15 @@ class Committee extends ActiveRecord
 	/**
 	 * Returns a ResultSet containing Seats.
 	 *
-	 * If a timestamp is provided, will return seats current to that timestamp
-	 *
-	 * @param int $timestamp
+	 * @param array $fields
 	 * @return Zend\Db\ResultSet A ResultSet containing the Seat objects
 	 */
-	public function getSeats($timestamp=null)
+	public function getSeats(array $fields=null)
 	{
-		$search = ['committee_id'=>$this->getId()];
-		if ($timestamp) { $search['current'] = (int)$timestamp; }
+        $fields['committee_id'] = $this->getId();
 
 		$table = new SeatTable();
-		return $table->find($search);
-	}
-
-	public function getCurrentSeats()
-	{
-		return $this->getSeats(time());
+		return $table->find($fields);
 	}
 
 	/**
@@ -286,35 +274,29 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @param int $timestamp
 	 * @return boolean
 	 */
-	public function hasVacancy($timestamp=null)
+	public function hasVacancy()
 	{
-        $timestamp = $timestamp ? (int)$timestamp : time();
-
         if ($this->getType() === 'seated') {
-            $seats = $this->getSeats($timestamp);
+            $seats = $this->getSeats(['current'=>true]);
             foreach ($seats as $s) {
-                if ($s->hasVacancy($timestamp)) { return true; }
+                if ($s->hasVacancy()) { return true; }
             }
         }
         return false;
 	}
 
 	/**
-	 * @param int $timestamp
 	 * @return int
 	 */
-	public function getVacancyCount($timestamp=null)
+	public function getVacancyCount()
 	{
-        $timestamp = $timestamp ? (int)$timestamp : time();
-
         $c = 0;
         if ($this->getType() === 'seated') {
-            $seats = $this->getSeats($timestamp);
+            $seats = $this->getSeats(['current'=>true]);
             foreach ($seats as $s) {
-                if ($s->hasVacancy($timestamp)) { $c++; }
+                if ($s->hasVacancy()) { $c++; }
             }
         }
         return $c;
@@ -461,30 +443,30 @@ class Committee extends ActiveRecord
 	 */
 	public static function data(array $fields=null)
 	{
-        $timestamp = isset($fields['current']) ? $fields['current'] : time();
-        $now       = date(parent::MYSQL_DATE_FORMAT, $timestamp);
-        $where     = isset($fields['current']) ? "where (c.endDate is null or '$now' <= c.endDate)" : '';
+        $where = (isset($fields['current']) && $fields['current'])
+            ? "where (c.endDate is null or now() <= c.endDate)"
+            : '';
 
         $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,
                         c.statutoryName, c.yearFormed, c.endDate,
                         count(s.id) as seats,
                         sum(
-                            case when ((s.endDate is null or '$now' <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
-                                 when ((s.endDate is null or '$now' <= s.endDate) and s.type='open'   and m.id is null)                       then 1
+                            case when ((s.endDate is null or now() <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
+                                 when ((s.endDate is null or now() <= s.endDate) and s.type='open'   and m.id is null)                       then 1
                                 else 0
                             end
                         ) as vacancies,
                         (
                             select count(*)
                             from applications a
-                            where a.committee_id=c.id and (a.archived is null or '$now' <= a.archived)
+                            where a.committee_id=c.id and (a.archived is null or now() <= a.archived)
                         ) as applications
                 from committees c
                 left join seats s    on c.id= s.committee_id
-                left join members m  on s.id= m.seat_id and  m.startDate <= '$now' and ( m.endDate is null or '$now' <= m.endDate)
-                left join terms   t  on s.id= t.seat_id and  t.startDate <= '$now' and ( t.endDate is null or '$now' <= t.endDate)
-                left join members tm on t.id=tm.term_id and tm.startDate <= '$now' and (tm.endDate is null or '$now' <=tm.endDate)
+                left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
+                left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
+                left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
                 $where
                 group by c.id
                 order by c.name";

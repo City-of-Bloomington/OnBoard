@@ -314,21 +314,10 @@ class Person extends ActiveRecord
 	 */
 	public function getMembers($fields=null)
 	{
-		$search = ['person_id'=>$this->getId()];
-		if (is_array($fields)) {
-			$search = array_merge($search, $fields);
-		}
-		$table = new MemberTable();
-		return $table->find($search);
-	}
+        $fields['person_id'] = $this->getId();
 
-	/**
-	 * @param Committee
-	 * @return boolean
-	 */
-	public function isCurrentlyServing(Committee $committee)
-	{
-		return count($this->getMembers(['committee_id'=>$committee->getId()])) ? true : false;
+		$table = new MemberTable();
+		return $table->find($fields);
 	}
 
 	/**
