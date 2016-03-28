@@ -59,6 +59,9 @@ class LiaisonTable extends TableGateway
                     $where[]  = "$f=?";
                     $params[] = $v;
                 }
+                elseif ($k === 'current' && $v) {
+                    $where[] = '(c.endDate is null or now() < c.endDate)';
+                }
             }
             $where = 'where '.implode(' and ', $where);
         }
@@ -96,6 +99,7 @@ class LiaisonTable extends TableGateway
 	public static function data($fields=null)
 	{
         $columns = self::getDataColumns();
+
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns

@@ -22,18 +22,13 @@ class SeatTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':
+                        // Both the committee and the seat must be current
+                        $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
+
 						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+						$select->where("(c.endDate   is null or c.endDate>=$date)");
 						$select->where("(s.startDate is null or s.startDate<='$date')");
 						$select->where("(s.endDate   is null or s.endDate>='$date')");
-
-						// If they want to order by committee, we have to join the committees table
-
-
-
-						if (   (is_array($order)  && in_array('c.name', $order))
-                            || (is_string($order) && false !== strpos($order, 'c.name')) ) {
-                            $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
-                        }
                     break;
 
                     case 'vacant':

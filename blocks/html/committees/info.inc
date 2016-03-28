@@ -18,7 +18,6 @@ foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = View::escape($this->committee->$get());
 }
-$endDate = $this->committee->getEndDate(DATE_FORMAT);
 
 if ($website) {
     $website = "<a href=\"$website\">$website</a>";
@@ -70,6 +69,8 @@ if ((!$endDate || $endDate > time())
             $fields[] = 'applicationLifetime';
         }
         $address = $address ? "<address>$address\n$city $state $zip</address>" : null;
+        
+        $endDate = $this->committee->getEndDate(DATE_FORMAT);
 
         foreach ($fields as $f) {
             if ($$f) {
