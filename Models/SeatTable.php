@@ -22,18 +22,13 @@ class SeatTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':
-                        // Both the committee and the seat must be current
-                        $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
-
                         if ($value) {
                             // current == true
-                            $select->where("(c.endDate   is null or c.endDate>=now())");
                             $select->where("(s.startDate is null or s.startDate<=now())");
                             $select->where("(s.endDate   is null or s.endDate>=now())");
                         }
                         else {
                             // current == false (the past)
-                            $select->where("(c.endDate   is not null and c.endDate<=now())");
                             $select->where("(s.endDate   is not null and s.endDate<=now())");
                         }
 

@@ -11,6 +11,7 @@ use Application\Models\TermTable;
 use Application\Models\TopicTable;
 use Application\Models\VoteTable;
 use Blossom\Classes\ActiveRecord;
+use Blossom\Classes\View;
 use Blossom\Classes\Database;
 
 class Committee extends ActiveRecord
@@ -230,6 +231,20 @@ class Committee extends ActiveRecord
 
 		$table = new SeatTable();
 		return $table->find($fields);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function hasPastSeats()
+	{
+        $sql = "select count(*) as count from seats
+                where committee_id=?
+                  and endDate is not null and endDate < now()";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute([$this->getId()]);
+        $row = $result->current();
+        return $row['count'] ? true : false;
 	}
 
 	/**

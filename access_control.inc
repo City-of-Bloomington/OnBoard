@@ -56,7 +56,7 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
 $ZEND_ACL->allow(null, ['people', 'topics', 'liaisons'], ['index','view']);
-$ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'pastMembers']);
+$ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 

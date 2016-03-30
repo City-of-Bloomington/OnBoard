@@ -254,6 +254,12 @@ msgstr "Edit Seat"
 msgid "seat_delete"
 msgstr "Delete Seat"
 
+msgid "seats_current"
+msgstr "Current Seats"
+
+msgid "seats_past"
+msgstr "Past Seats"
+
 msgid "appointer"
 msgid_plural "appointers"
 msgstr[0] "Appointer"

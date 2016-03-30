@@ -140,7 +140,6 @@ class CommitteesController extends Controller
         $this->template->blocks[] = new Block('committees/endDateForm.inc', ['committee' => $committee]);
     }
 
-
     public function seats()
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
@@ -149,10 +148,15 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
-        $this->template->blocks[] = new block('seats/list.inc', [
-            'seats'     => $committee->getSeats(),
+
+        $block = new block('seats/list.inc', [
+            'seats'     => $committee->getSeats($_GET),
             'committee' => $committee
         ]);
+        if (isset($_GET['current'])) {
+            $block->title = $_GET['current'] ? $this->template->_('seats_current') : $this->template->_('seats_past');
+        }
+        $this->template->blocks[] = $block;
     }
 
     public function applications()

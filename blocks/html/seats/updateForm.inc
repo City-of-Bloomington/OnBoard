@@ -105,7 +105,7 @@ $picker = $this->template->getHelper('datePicker');
             $helper = $this->template->getHelper('saveAndCancelButtons');
             $uri = $id
                 ? BASE_URI."/seats/view?seat_id=$id"
-                : BASE_URI."/committees/seats?committee_id=$committee_id";
+                : BASE_URI."/committees/members?committee_id=$committee_id";
             echo $helper->saveAndCancelButtons($uri);
         ?>
         </fieldset>
