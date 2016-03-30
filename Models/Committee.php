@@ -192,6 +192,7 @@ class Committee extends ActiveRecord
 
         throw new \Exception('committees/invalidMember');
 	}
+
 	/**
 	 * Returns members for the committee
 	 *
@@ -233,12 +234,15 @@ class Committee extends ActiveRecord
 		return $table->find($fields);
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function hasPastSeats()
+    /**
+     * Internal function to check for past records
+     *
+     * @param string $table
+     * @return boolean
+     */
+    private function hasPast($table)
 	{
-        $sql = "select count(*) as count from seats
+        $sql = "select count(*) as count from $table
                 where committee_id=?
                   and endDate is not null and endDate < now()";
         $zend_db = Database::getConnection();
@@ -246,6 +250,8 @@ class Committee extends ActiveRecord
         $row = $result->current();
         return $row['count'] ? true : false;
 	}
+	public function hasPastSeats  () { return $this->hasPast('seats'  ); }
+	public function hasPastMembers() { return $this->hasPast('members'); }
 
 	/**
 	 * @param array $fields Extra fields to search on
