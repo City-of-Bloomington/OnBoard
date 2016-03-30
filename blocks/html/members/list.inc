@@ -42,8 +42,9 @@ use Blossom\Classes\Block;
                 $actions->offices = $offices;
                 $moreLinks = $actions->render('html', $this->template);
             }
+            $uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
             echo "
-            <tr><td>$name{$officeTitles}</td>
+            <tr><td><a href=\"$uri\">$name</a>{$officeTitles}</td>
                 <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
                 <td>$moreLinks</td>
             </tr>

@@ -138,7 +138,7 @@ $title = $this->title
                     $committeeName
                     <td><a href=\"$seat_uri\">$code <small>($seat)</small</a></td>
                     <td>$appointer</td>
-                    <td>$firstname $lastname $offices</td>
+                    <td>$member $offices</td>
                     <td>$termDates</td>
                     $moreLinks
                 </tr>

@@ -409,6 +409,11 @@ msgid_plural "members"
 msgstr[0] "Member"
 msgstr[1] "Members"
 
+msgid "membership"
+msgid_plural "memberships"
+msgstr[0] "Appointment"
+msgstr[1] "Appointments"
+
 msgid "member_add"
 msgstr "Add Appointee"
 
@@ -448,6 +453,11 @@ msgid "liaison"
 msgid_plural "liaisons"
 msgstr[0] "Liaison"
 msgstr[1] "Liaisons"
+
+msgid "liaisonship"
+msgid_plural "liaisonships"
+msgstr[0] "Liaisonship"
+msgstr[1] "Liaisonships"
 
 msgid "liaison_add"
 msgstr "Add Liaison"

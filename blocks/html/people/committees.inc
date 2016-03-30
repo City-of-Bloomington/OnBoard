@@ -10,7 +10,7 @@ use Application\Models\LiaisonTable;
 $members = $this->person->getMembers();
 ?>
 <section>
-    <h1><?= $this->_(['member', 'members', count($members)]); ?></h1>
+    <h1><?= $this->_(['membership', 'memberships', count($members)]); ?></h1>
     <table>
     <?php
     $committees = [];
@@ -44,7 +44,7 @@ $members = $this->person->getMembers();
 <?php
 $this->data = LiaisonTable::personLiaisonData(['person_id'=>$this->person->getId()]);
 if (count($this->data)) {
-    $l = $this->_(['liaison', 'liaisons', count($this->data)]);
+    $l = $this->_(['liaisonship', 'liaisonships', count($this->data)]);
     echo "<section><h1>$l</h1>";
     $this->_include('liaisons/partials/dataTable.inc');
     echo '</section>';
