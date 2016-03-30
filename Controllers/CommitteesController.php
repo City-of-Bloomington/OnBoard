@@ -2,7 +2,6 @@
 /**
  * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
@@ -86,14 +85,22 @@ class CommitteesController extends Controller
             ]);
         }
         else {
-            $members = $committee->getMembers();
-            $this->template->blocks[] = new Block('committees/partials/openMembers.inc', [
+            $search =  ['current' => true];
+            if (isset($_GET['current']) && !$_GET['current']) {
+                $search['current'] = false;
+            }
+
+            $members = $committee->getMembers($search);
+            $block = new Block('members/list.inc', [
                 'committee' => $committee,
                 'members'   => $members,
-                'title'     => $this->template->_(['current_member', 'current_members', count($members)])
             ]);
-        }
 
+            $block->title = ($search['current'])
+                ? $this->template->_(['current_member', 'current_members', count($members)])
+                : $this->template->_(['past_member',    'past_members',    count($members)]);
+            $this->template->blocks[] = $block;
+        }
     }
 
     public function update()

@@ -34,37 +34,24 @@ $helper = $this->template->getHelper('buttonLink');
     <table class="onboard-termsTable">
     <?php
         $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
-        if ($this->seat) {
-            $memberList->seat      = $this->seat;
-            $memberList->committee = $this->seat->getCommittee();
-        }
-
-        $actions = new Block('terms/partials/actions.inc');
+        $actions    = new Block('terms/partials/actions.inc');
 
         foreach ($this->terms as $term) {
             $term_id = $term->getId();
 
-            $addButton = '';
             $moreLinks = '';
             if (!$this->disableButtons) {
-                if (Person::isAllowed('members', 'edit')) {
-                    $addButton = $helper->buttonLink(
-                        BASE_URI."/members/update?term_id=$term_id",
-                        $this->_('member_add'),
-                        'add'
-                    );
-                }
                 $actions->term = $term;
                 $moreLinks = $actions->render('html', $this->template);
             }
 
-            $uri = BASE_URI."/terms/view?term_id=$term_id";
+            $memberList->term    = $term;
             $memberList->members = $term->getMembers();
             echo "
             <tr><th>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
                     $moreLinks
                 </th>
-                <td>{$memberList->render('html', $this->template)} $addButton</td>
+                <td>{$memberList->render('html', $this->template)}</td>
             </tr>
             ";
         }
