@@ -40,7 +40,12 @@ class CommitteesController extends Controller
         }
         $data = Committee::data($search);
 
-        $block = $search['current'] ? 'current' : 'past';
+        if ($this->template->outputFormat === 'html') {
+            $block = $search['current'] ? 'current' : 'past';
+        }
+        else {
+            $block = 'list';
+        }
         $this->template->title = $this->template->_("committees_$block");
         $this->template->blocks[] = new Block("committees/$block.inc", ['data'=>$data]);
     }
@@ -76,6 +81,7 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
+        
         if ($committee->getType() === 'seated') {
             $data = SeatTable::currentData(['committee_id'=>$committee->getId()]);
             $this->template->blocks[] = new Block('seats/data.inc', [
