@@ -30,7 +30,7 @@ $pastMembersLink = '';
 if ($this->committee->getType() === 'open' &&  $this->committee->hasPastMembers()) {
     $pastMembersLink = $helper->buttonLink(
         BASE_URI."/committees/members?committee_id=$committee_id;current=0",
-        $this->_('past_members')
+        $this->_(['past_member', 'past_members', 2])
     );
 }
 
