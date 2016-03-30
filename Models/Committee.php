@@ -464,9 +464,12 @@ class Committee extends ActiveRecord
 	 */
 	public static function data(array $fields=null)
 	{
-        $where = (isset($fields['current']) && $fields['current'])
-            ? "where (c.endDate is null or now() <= c.endDate)"
-            : '';
+        $where = '';
+        if (isset(   $fields['current'])) {
+            $where = $fields['current']
+                ? 'where (c.endDate is null     or  now() <= c.endDate)'
+                : 'where (c.endDate is not null and now() >= c.endDate)';
+        }
 
         $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,

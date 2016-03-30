@@ -30,19 +30,19 @@ class CommitteesController extends Controller
 
     public function index()
     {
-        $currentCommittees = Committee::data(['current' => true]);
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
         }
-        $this->template->title = $this->template->_(['committee', 'committees', count($currentCommittees)]);
 
-        $table = new CommitteeTable();
-        $this->template->blocks[] = new Block('committees/current.inc', ['data'=>$currentCommittees]);
-
-        $pastCommittees = $table->find(['current'=>false]);
-        if (count($pastCommittees)) {
-            $this->template->blocks[] = new Block('committees/past.inc',    ['committees'=>$pastCommittees]);
+        $search =  ['current' => true];
+        if (isset($_GET['current']) && !$_GET['current']) {
+            $search['current'] = false;
         }
+        $data = Committee::data($search);
+
+        $block = $search['current'] ? 'current' : 'past';
+        $this->template->title = $this->template->_("committees_$block");
+        $this->template->blocks[] = new Block("committees/$block.inc", ['data'=>$data]);
     }
 
     public function info()
