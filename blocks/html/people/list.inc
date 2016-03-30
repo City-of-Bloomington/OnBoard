@@ -17,16 +17,6 @@ use Blossom\Classes\Url;
 		<?php
             $helper = $this->template->getHelper('buttonLink');
 			foreach ($this->people as $person) {
-				$button = '';
-				if (Person::isAllowed('people', 'edit')) {
-					$button = $helper->buttonLink(
-						BASE_URI.'/people/update?person_id='.$person->getId(),
-						$this->translate('edit'),
-						'edit',
-						ButtonLink::SIZE_ICON
-					);
-				}
-
 				if (isset($_REQUEST['return_url'])) {
 					$url = "$_REQUEST[return_url];person_id={$person->getId()}";
 					$button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
@@ -46,7 +36,7 @@ use Blossom\Classes\Url;
 				$email = self::escape($person->getEmail());
 				$phone = self::escape($person->getPhone());
 				echo "
-				<tr><td>$button</td>
+				<tr>
 					<td><a href=\"$url\">$name</a></td>
 					<td>$email</td>
 					<td>$phone</td>
