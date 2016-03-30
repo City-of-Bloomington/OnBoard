@@ -9,6 +9,7 @@ namespace Application\Controllers;
 use Application\Models\Committee;
 use Application\Models\CommitteeTable;
 use Application\Models\Seat;
+use Application\Models\SeatTable;
 use Application\Models\VoteTable;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
@@ -77,11 +78,11 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
         if ($committee->getType() === 'seated') {
-            $seats = $committee->getSeats(['current'=>true]);
-            $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
+            $data = SeatTable::currentData(['committee_id'=>$committee->getId()]);
+            $this->template->blocks[] = new Block('seats/data.inc', [
+                'data'      => $data,
                 'committee' => $committee,
-                'seats'     => $seats,
-                'title'     => $this->template->_(['current_member', 'current_members', count($seats)])
+                'title'     => $this->template->_(['current_member', 'current_members', count($data['results'])])
             ]);
         }
         else {
@@ -93,11 +94,6 @@ class CommitteesController extends Controller
             ]);
         }
 
-    }
-
-    public function pastMembers()
-    {
-        $committee = $this->loadCommittee($_GET['committee_id']);
     }
 
     public function update()

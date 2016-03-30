@@ -417,7 +417,7 @@ class Seat extends ActiveRecord
                 return true;
             }
             else {
-                return $this->getMember($timestamp) ? false : true;
+                return $this->getCurrentMember() ? false : true;
             }
         }
 

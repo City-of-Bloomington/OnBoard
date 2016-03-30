@@ -423,8 +423,8 @@ msgid_plural "current_members"
 msgstr[0] "Current Member"
 msgstr[1] "Current Members"
 
-msgid "previous_member"
-msgid_plural "previous_members"
+msgid "past_member"
+msgid_plural "past_members"
 msgstr[0] "Previous Member"
 msgstr[1] "Previous Members"
 

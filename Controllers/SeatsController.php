@@ -17,30 +17,26 @@ class SeatsController extends Controller
 {
     public function index()
     {
-        $table = new SeatTable();
-        $list = $table->find(['current' => true], ['c.name', 's.name']);
+        $data = SeatTable::currentData();
 
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
-        $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
-            'seats' => $list
-        ]);
+        $this->template->blocks[] = new Block('seats/data.inc', ['data'=>$data]);
     }
 
     public function vacancies()
     {
-        $table = new SeatTable();
-        $list = $table->find(['vacant' => true], ['c.name', 's.name']);
+        $data = SeatTable::currentData(['vacant'=>true]);
 
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
-        $this->template->blocks[] = new Block('committees/partials/seatedMembers.inc', [
-            'seats' => $list,
-            'title' => $this->template->_(['vacancy', 'vacancies', count($list)])
+        $this->template->blocks[] = new Block('seats/data.inc', [
+            'data'  => $data,
+            'title' => $this->template->_(['vacancy', 'vacancies', count($data['results'])])
         ]);
     }
 
