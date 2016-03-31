@@ -22,6 +22,7 @@ if ($requirements) {
 
 $helper = $this->template->getHelper('buttonLink');
 $editButton   = '';
+$endButton    = '';
 $deleteButton = '';
 if (Person::isAllowed('seats', 'edit')) {
 	$editButton = $helper->buttonLink(
@@ -37,11 +38,22 @@ if (Person::isAllowed('seats', 'delete') && $this->seat->isSafeToDelete()) {
         'delete'
     );
 }
+$endDate = $this->seat->getEndDate('U');
+if ((!$endDate || $endDate > time()) && Person::isAllowed('seats', 'end')) {
+    $endButton = $helper->buttonLink(
+        BASE_URI.'/seats/end?seat_id='.$this->seat->getId(),
+        $this->_('seat_end'),
+        'delete'
+    );
+}
 
 $uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
 echo "
 <section>
-	<h1>$editButton<a href=\"$uri\">$name</a>$deleteButton</h1>
+    <header>
+        <h1><a href=\"$uri\">$name</a></h1>
+        <div class=\"tools\">$editButton $endButton $deleteButton</div>
+    </header>
         <dl class=\"fn1-output-field\">
 			<dt>{$this->_('type')}</dt>
             <dd>{$this->_($this->seat->getType())}</dd>
@@ -55,7 +67,7 @@ echo "
 			<dd>$appointer</dd>
 		</dl>
 		<dl class=\"fn1-output-field\">
-			<dt>{$this->_(['committee', 'committees', 1])}</dt>
+			<dt>{$this->_('committee')}</dt>
 			<dd><a href=\"$committee_url\">$committee</a></dd>
 		</dl>
 ";
@@ -92,6 +104,13 @@ echo "
         </dl>
         ";
     }
+    $voting = $this->seat->IsVoting() ? $this->_('yes') : $this->_('no');
+    echo "
+        <dl class=\"fn1-output-field\">
+            <dt>{$this->_('voting')}</dt>
+            <dd>$voting</dd>
+        </dl>
+    ";
 echo "
 </section>
 ";

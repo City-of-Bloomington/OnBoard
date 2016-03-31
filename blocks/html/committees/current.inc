@@ -2,12 +2,12 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->data
  */
 namespace Application\Models;
 
 use Application\Templates\Helpers\ButtonLink;
+use Blossom\Classes\Url;
 
 $userCanEdit = Person::isAllowed('committees', 'edit');
 ?>
@@ -72,4 +72,9 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
         ?>
         </tbody>
     </table>
+    <?php
+        $url = new Url(Url::current_url());
+        $url->current = '0';
+        echo $helper->buttonLink($url, $this->_('committees_past'));
+    ?>
 </section>

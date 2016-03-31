@@ -205,6 +205,12 @@ msgstr "Edit Committee"
 msgid "committee_info"
 msgstr "Committee Info"
 
+msgid "committees_current"
+msgstr "Current Committees"
+
+msgid "committees_past"
+msgstr "Past Committees"
+
 msgid "type"
 msgstr "Type"
 
@@ -248,6 +254,12 @@ msgstr "Edit Seat"
 msgid "seat_delete"
 msgstr "Delete Seat"
 
+msgid "seats_current"
+msgstr "Current Seats"
+
+msgid "seats_past"
+msgstr "Past Seats"
+
 msgid "appointer"
 msgid_plural "appointers"
 msgstr[0] "Appointer"
@@ -261,6 +273,9 @@ msgstr "Open"
 
 msgid "termLength"
 msgstr "Term Length"
+
+msgid "voting"
+msgstr "Voting"
 
 msgid "add_appointer"
 msgstr "Add Appointer"
@@ -394,6 +409,11 @@ msgid_plural "members"
 msgstr[0] "Member"
 msgstr[1] "Members"
 
+msgid "membership"
+msgid_plural "memberships"
+msgstr[0] "Appointment"
+msgstr[1] "Appointments"
+
 msgid "member_add"
 msgstr "Add Appointee"
 
@@ -414,8 +434,8 @@ msgid_plural "current_members"
 msgstr[0] "Current Member"
 msgstr[1] "Current Members"
 
-msgid "previous_member"
-msgid_plural "previous_members"
+msgid "past_member"
+msgid_plural "past_members"
 msgstr[0] "Previous Member"
 msgstr[1] "Previous Members"
 
@@ -434,11 +454,22 @@ msgid_plural "liaisons"
 msgstr[0] "Liaison"
 msgstr[1] "Liaisons"
 
+msgid "liaisonship"
+msgid_plural "liaisonships"
+msgstr[0] "Liaisonship"
+msgstr[1] "Liaisonships"
+
 msgid "liaison_add"
 msgstr "Add Liaison"
 
 msgid "liaison_remove"
 msgstr "Remove Liaison"
+
+msgid "departmental"
+msgstr "Departmental"
+
+msgid "legal"
+msgstr "Legal"
 
 msgid "office"
 msgid_plural "offices"
@@ -506,11 +537,22 @@ msgstr "Application Lifetime"
 msgid "statutoryName"
 msgstr "Statutory Name"
 
-msgid "statuteReference"
-msgstr "Statute Reference"
+msgid "committeeStatute"
+msgid_plural "committeeStatutes"
+msgstr[0] "Statute Citation"
+msgstr[1] "Statute Citations"
 
-msgid "statuteUrl"
-msgstr "Statute Url"
+msgid "committeeStatute_add"
+msgstr "New Statute Citation"
+
+msgid "committeeStatute_edit"
+msgstr "Edit Statute Citation"
+
+msgid "citation"
+msgstr "Citation"
+
+msgid "url"
+msgstr "Url"
 
 msgid "website"
 msgstr "Website"

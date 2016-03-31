@@ -6,37 +6,74 @@
 namespace Application\Templates\Helpers;
 
 use Blossom\Classes\Helper;
+use Blossom\Classes\View;
 
 class Field extends Helper
 {
-    public function input(array $params)
+    /**
+     * Parameters:
+     *
+     * label
+     * name
+     * id
+     * value
+     * type         HTML5 input tag type (text, email, date, etc.)
+     * required     Boolean
+     * attr         Additional attributes to include inside the input tag
+     *
+     * @param array $params
+     */
+    public function field(array $params)
     {
         $class = ['fn1-input-field'];
+        $class = implode(' ', $class);
 
+        return "
+        <dl class=\"$class\">
+            <dt><label for=\"$params[id]\">$params[label]</label></dt>
+            <dd>{$this->input($params)}</dd>
+        </dl>
+        ";
+    }
+
+    /**
+     * Parameters:
+     *
+     * label
+     * name
+     * id
+     * value
+     * type         HTML5 input tag type (text, email, date, etc.)
+     * required     Boolean
+     * attr         Additional attributes to include inside the input tag
+     *
+     * @param array $params
+     */
+    public function input(array $params)
+    {
         $required = '';
         if (!empty($params['required']) && $params['required']) {
             $required = 'required="true"';
             $class[]  = 'required';
         }
 
-        $attr = '';
-        if (!empty(  $params['attr'])) {
-            foreach ($params['attr'] as $key=>$value) {
-                $attr.= "$key=\"$value\"";
+        $value = !empty($params['value']) ? $params['value'] : '';
+
+        $type = '';
+        if (!empty($params['type'])) {
+            $type = "type=\"$params[type]\"";
+
+            if ($params['type'] === 'date') {
+                if ($value) { $value = date(DATE_FORMAT, $value); }
+                $params['attr']['placeholder'] = View::translateDateString(DATE_FORMAT);
             }
         }
 
-        $type = !empty($params['type']) ? "type=\"$params[type]\"" : '';
+        $attr = '';
+        if (!empty(  $params['attr'])) {
+            foreach ($params['attr'] as $k=>$v) { $attr.= "$k=\"$v\""; }
+        }
 
-        $class = implode(' ', $class);
-
-        $value = !empty($params['value']) ? $params['value'] : '';
-
-        return "
-        <dl class=\"$class\">
-            <dt><label for=\"$params[id]\">$params[label]</label></dt>
-            <dd><input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$value\" $required  $attr /></dd>
-        </dl>
-        ";
+        return "<input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$value\" $required  $attr />";
     }
 }

@@ -2,69 +2,35 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param Zend\Db\Result $this->data
+ * @param boolean $this->disableButtons
  */
-use Application\Models\CommitteeTable;
+use Application\Models\Committee;
+use Application\Models\Liaison;
 use Blossom\Classes\Url;
 
-$table = new CommitteeTable();
-$list  = $table->find();
-$title = $this->_(['liaison', 'liaisons', count($list)]);
+$title = $this->_(['liaison', 'liaisons', count($this->data)]);
 
 $helper = $this->template->getHelper('buttonLink');
+
+$tools = '';
+foreach (Liaison::$types as $type) {
+    $tools.= $helper->buttonLink(
+        BASE_URI.'/liaisons?type='.$type,
+        $this->_($type)
+    );
+}
 $uri = new Url(Url::current_url());
 $uri->format = 'csv';
-$csvButton = $helper->buttonLink($uri, 'csv', 'download');
-echo "
+$tools.= $helper->buttonLink($uri, 'csv', 'download');
+?>
 <section>
     <header>
-        <h1>$title</h1>
-        <div class=\"tools\">$csvButton</div>
+        <h1><?= $title; ?></h1>
+        <nav class="tools"><?= $tools; ?></nav>
     </header>
-    <table class=\"fn1-table\">
-";
-    foreach ($list as $committee) {
-        $committeeUri  = BASE_URI.'/committees/info?committee_id='.$committee->getId();
-        $committeeName = self::escape($committee->getName());
-
-        $departments = '';
-        foreach ($committee->getDepartments() as $department) {
-            $departments.= '<li>'.self::escape($department->getName()).'</li>';
-        }
-        if ($departments) {
-            $departments = "<ul>$departments</ul>";
-        }
-
-        $liasons = $committee->getLiaisonPeople();
-
-        if (count($liasons)) {
-            foreach ($committee->getLiaisonPeople() as $person) {
-                $name  = self::escape($person->getFullname());
-                $email = self::escape($person->getEmail());
-                $phone = self::escape($person->getPhone());
-
-                $uri = BASE_URI.'/people/view?person_id='.$person->getId();
-                echo "
-                <tr><td><a href=\"$committeeUri\">$committeeName</a></td>
-                    <td>$departments</td>
-                    <td><a href=\"$uri\">$name</a></td>
-                    <td>$email</td>
-                    <td>$phone</td>
-                </tr>
-                ";
-            }
-        }
-        else {
-            echo "
-            <tr><td><a href=\"$committeeUri\">$committeeName<a></td>
-                <td>$departments</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            ";
-        }
-    }
-echo "
-    </table>
+    <?php
+        $this->disableButtons = true;
+        $this->_include('liaisons/partials/dataTable.inc');
+    ?>
 </section>
-";

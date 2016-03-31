@@ -4,16 +4,19 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
- * @param Committee $this->committee
- * @param Seat $this->seat
- * @param string $this->title
- * @param boolean $this->disableButtons
+ * @param Committee $this->committee      (optional)
+ * @param Seat      $this->seat           (optional)
+ * @param string    $this->title          (optional)
+ * @param boolean   $this->disableButtons (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Block;
 ?>
 <section class="membersList">
+<?php
+    if ($this->title) { echo "<header><h1>{$this->title}</h1></header>"; }
+?>
     <table class="fn1-table">
     <?php
         $actions = new Block('members/partials/actions.inc');
@@ -39,8 +42,9 @@ use Blossom\Classes\Block;
                 $actions->offices = $offices;
                 $moreLinks = $actions->render('html', $this->template);
             }
+            $uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
             echo "
-            <tr><td>$name{$officeTitles}</td>
+            <tr><td><a href=\"$uri\">$name</a>{$officeTitles}</td>
                 <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
                 <td>$moreLinks</td>
             </tr>
@@ -49,18 +53,49 @@ use Blossom\Classes\Block;
     ?>
     </table>
     <?php
-        if ($this->seat && $this->seat->getType() === 'open' && !$this->disableButtons) {
+        $helper = $this->template->getHelper('buttonLink');
 
-            if (Person::isAllowed('members', 'update')) {
-                $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
+        if (!$this->disableButtons) {
+            if ($this->term) {
+                if (Person::isAllowed('members', 'edit')) {
+                    echo $helper->buttonLink(
+                        BASE_URI.'/members/update?term_id='.$this->term->getId(),
+                        $this->_('member_add'),
+                        'add'
+                    );
+                }
             }
-            elseif (Person::isAllowed('members', 'appoint')) {
-                $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
-            }
+            elseif ($this->seat && $this->seat->getType() === 'open') {
+                if (Person::isAllowed('members', 'update')) {
+                    $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
+                }
+                elseif (Person::isAllowed('members', 'appoint')) {
+                    $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
+                }
 
-            if (isset($uri)) {
-                $helper = $this->template->getHelper('buttonLink');
-                echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
+                if (isset($uri)) {
+                    echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
+                }
+            }
+            elseif ($this->committee) {
+                if (Person::isAllowed('members', 'update')) {
+                    $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
+                }
+                elseif (Person::isAllowed('members', 'appoint')) {
+                    $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
+                }
+
+                if (isset($uri)) {
+                    echo $helper->buttonLink($uri, $this->_('member_add'), 'add');
+                }
+
+                if ($this->committee->hasVacancy()) {
+                    echo $helper->buttonLink(
+                        BASE_URI.'/applicants/apply?committee_id='.$this->committee->getId(),
+                        $this->_('apply'),
+                        'apply'
+                    );
+                }
             }
         }
     ?>

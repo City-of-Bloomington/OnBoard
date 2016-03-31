@@ -5,10 +5,12 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
+use Application\Models\LiaisonTable;
+
 $members = $this->person->getMembers();
 ?>
 <section>
-    <h1><?= $this->_(['member', 'members', count($members)]); ?></h1>
+    <h1><?= $this->_(['membership', 'memberships', count($members)]); ?></h1>
     <table>
     <?php
     $committees = [];
@@ -40,15 +42,11 @@ $members = $this->person->getMembers();
 </section>
 
 <?php
-$committees = $this->person->getLiaisonCommittees();
-if (count($committees)) {
-    $l = $this->_(['liaison', 'liaisons', count($committees)]);
-    echo "<section><h1>$l</h1><table>";
-    foreach ($committees as $c) {
-        $name = self::escape($c->getName());
-        $uri  = BASE_URI.'/committees/info?committee_id='.$c->getId();
-        echo "<tr><td><a href=\"$uri\">$name</a></td></tr>";
-    }
-    echo '</table></section>';
+$this->data = LiaisonTable::personLiaisonData(['person_id'=>$this->person->getId()]);
+if (count($this->data)) {
+    $l = $this->_(['liaisonship', 'liaisonships', count($this->data)]);
+    echo "<section><h1>$l</h1>";
+    $this->_include('liaisons/partials/dataTable.inc');
+    echo '</section>';
 }
 ?>

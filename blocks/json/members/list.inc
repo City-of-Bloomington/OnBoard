@@ -2,16 +2,20 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param array $this->members
- * @param string $this->title (optional)
- * @param Committee $this->committee (optional)
+ * @param Zend\Db\Result $this->members
+ *
+ * @param Committee $this->committee      (optional)
+ * @param Seat      $this->seat           (optional)
+ * @param string    $this->title          (optional)
+ * @param boolean   $this->disableButtons (optional)
  */
 $DATE_FORMAT = 'Y-m-d';
 
-echo '{"info":';
-include APPLICATION_HOME.'/blocks/json/committees/info.inc';
-echo ',';
-
+if ($this->committee) {
+    echo '{"info":';
+        include APPLICATION_HOME.'/blocks/json/committees/info.inc';
+    echo ',';
+}
 // Display current committee members
 // These members will not be associated with a seat
 $seats = [];
@@ -43,4 +47,7 @@ foreach ($this->members as $m) {
     ];
 }
 echo '"seats":'.json_encode($seats, JSON_NUMERIC_CHECK|JSON_PRETTY_PRINT);
-echo '}';
+
+if ($this->committee) {
+    echo '}';
+}

@@ -2,13 +2,15 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
 
-$fields = ['id', 'type', 'code', 'committee_id', 'appointer_id', 'name', 'requirements', 'termLength'];
+$fields = [
+    'id', 'type', 'code', 'committee_id', 'appointer_id',
+    'name', 'requirements', 'termLength', 'voting'
+];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = $this->seat->$get();
@@ -41,14 +43,11 @@ $picker = $this->template->getHelper('datePicker');
                     </select>
                 </dd>
             </dl>
-            <dl class="fn1-input-field">
-                <dt><label for="code"><?= $this->_('code'); ?></label></dt>
-                <dd><input name="code" id="code" value="<?= $code; ?>" /></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="name" class="required"><?= $this->_('name'); ?></label></dt>
-                <dd><input name="name" id="name" value="<?= $name; ?>" /></dd>
-            </dl>
+            <?php
+                $field = $this->template->getHelper('field');
+                echo $field->field(['label'=>$this->_('code'), 'name'=>'code', 'id'=>'code', 'value'=>$code ]);
+                echo $field->field(['label'=>$this->_('name'), 'name'=>'name', 'id'=>'name', 'value'=>$name, 'required'=>true]);
+            ?>
             <dl class="fn1-input-field">
                 <dt><label   for="appointer_id" class="required"><?= $this->_(['appointer', 'appointers', 1]); ?></label></dt>
                 <dd><select name="appointer_id" id="appointer_id"><option value=""></option>
@@ -66,14 +65,9 @@ $picker = $this->template->getHelper('datePicker');
                     </select>
                 </dd>
             </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="startDate" class="required"><?= $this->_('startDate'); ?></label></dt>
-                <dd><?= $picker->datePicker('startDate', 'startDate', $this->seat->getStartDate('U')); ?></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label  for="endDate"><?= $this->_('endDate'); ?></label></dt>
-                <dd><?= $picker->datePicker('endDate', 'endDate', $this->seat->getEndDate('U')); ?></dd>
-            </dl>
+            <?php
+                echo $field->field(['label'=>$this->_('startDate'), 'name'=>'startDate', 'id'=>'startDate', 'type'=>'date', 'value'=>$this->seat->getStartDate('U'), 'required'=>true]);
+            ?>
             <dl class="fn1-input-field--select">
                 <dt><label   for="termLength"><?= $this->_('termLength'); ?></label></dt>
                 <dd><select name="termLength" id="termLength">
@@ -88,6 +82,18 @@ $picker = $this->template->getHelper('datePicker');
                     </select>
                 </dd>
             </dl>
+            <dl class="fn1-input-field">
+                <dt><label><?= $this->_('voting'); ?></label></dt>
+                <dd><label>
+                        <input name="voting" type="radio" value="1" <?= $voting ? 'checked="true"' : ''; ?> />
+                        <?= $this->_('yes'); ?>
+                    </label>
+                    <label>
+                        <input name="voting" type="radio" value="0" <?= $voting ? '' : 'checked="true"'; ?> />
+                        <?= $this->_('no'); ?>
+                    </label>
+                </dd>
+            </dl>
         </fieldset>
 
         <fieldset><legend><?= $this->_(['requirement', 'requirements', 2]); ?></legend>
@@ -99,7 +105,7 @@ $picker = $this->template->getHelper('datePicker');
             $helper = $this->template->getHelper('saveAndCancelButtons');
             $uri = $id
                 ? BASE_URI."/seats/view?seat_id=$id"
-                : BASE_URI."/committees/seats?committee_id=$committee_id";
+                : BASE_URI."/committees/members?committee_id=$committee_id";
             echo $helper->saveAndCancelButtons($uri);
         ?>
         </fieldset>

@@ -15,8 +15,24 @@ $infoLink = $helper->buttonLink(
 );
 $membersLink = $helper->buttonLink(
     BASE_URI."/committees/members?committee_id=$committee_id",
-    $this->_(['member', 'members', 2])
+    $this->_(['current_member', 'current_members', 2])
 );
+
+$pastSeatsLink = '';
+if ($this->committee->hasPastSeats()) {
+    $pastSeatsLink = $helper->buttonLink(
+        BASE_URI."/committees/seats?committee_id=$committee_id;current=0",
+        $this->_('seats_past')
+    );
+}
+
+$pastMembersLink = '';
+if ($this->committee->getType() === 'open' &&  $this->committee->hasPastMembers()) {
+    $pastMembersLink = $helper->buttonLink(
+        BASE_URI."/committees/members?committee_id=$committee_id;current=0",
+        $this->_(['past_member', 'past_members', 2])
+    );
+}
 
 $applicationsLink = '';
 if (Person::isAllowed('committees', 'applications')) {
@@ -39,6 +55,8 @@ echo"
         <nav class=\"tools\">
             $infoLink
             $membersLink
+            $pastSeatsLink
+            $pastMembersLink
             $applicationsLink
         </nav>
     </header>

@@ -2,7 +2,6 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -11,8 +10,8 @@ use Application\Models\SeatTable;
 use Application\Models\TermTable;
 use Application\Models\TopicTable;
 use Application\Models\VoteTable;
-
 use Blossom\Classes\ActiveRecord;
+use Blossom\Classes\View;
 use Blossom\Classes\Database;
 
 class Committee extends ActiveRecord
@@ -57,6 +56,10 @@ class Committee extends ActiveRecord
 
 	public function save()
 	{
+        // endDate should never be altered during a normal save
+        if (isset($this->data['endDate'])) {
+            unset($this->data['endDate']);
+        }
         parent::save();
 
         if ($this->departmentsHaveChanged) {
@@ -81,8 +84,6 @@ class Committee extends ActiveRecord
 	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
-	public function getStatuteReference()  { return parent::get('statuteReference'); }
-	public function getStatuteUrl()        { return parent::get('statuteUrl');       }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getEmail()             { return parent::get('email');            }
 	public function getPhone()             { return parent::get('phone');            }
@@ -96,12 +97,11 @@ class Committee extends ActiveRecord
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
 	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
+	public function getEndDate($f=null)    { return parent::getDateData('endDate', $f); }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
-	public function setStatuteReference($s) { parent::set('statuteReference', $s); }
-	public function setStatuteUrl      ($s) { parent::set('statuteUrl',       $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
     public function setEmail           ($s) { parent::set('email',            $s); }
     public function setPhone           ($s) { parent::set('phone',            $s); }
@@ -125,7 +125,7 @@ class Committee extends ActiveRecord
 
 		$fields = [
             'type', 'departments',
-			'name', 'statutoryName', 'statuteReference', 'statuteUrl', 'website', 'yearFormed',
+			'name', 'statutoryName', 'website', 'yearFormed',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule',
 			'termEndWarningDays', 'applicationLifetime'
@@ -134,6 +134,46 @@ class Committee extends ActiveRecord
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
+	}
+
+	/**
+	 * @param string $date
+	 */
+	public function saveEndDate($date)
+	{
+        if ($this->getId()) {
+            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
+
+            if ($d) {
+                $zend_db = Database::getConnection();
+
+                $params = [
+                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
+                    $this->getId()
+                ];
+
+                $updates = [
+                    "update terms t join seats s on t.seat_id=s.id
+                                         set t.endDate=? where s.committee_id=? and t.endDate is null",
+                    'update applications set archived=?  where committee_id=?   and archived  is null',
+                    'update offices      set endDate=?   where committee_id=?   and endDate   is null',
+                    'update seats        set endDate=?   where committee_id=?   and endDate   is null',
+                    'update members      set endDate=?   where committee_id=?   and endDate   is null',
+                    'update committees   set endDate=?   where id=?'
+                ];
+                $zend_db->getDriver()->getConnection()->beginTransaction();
+                try {
+                    foreach ($updates as $sql) {
+                        $zend_db->query($sql)->execute($params);
+                    }
+                    $zend_db->getDriver()->getConnection()->commit();
+                }
+                catch (\Exception $e) {
+                    $zend_db->getDriver()->getConnection()->rollback();
+                    throw $e;
+                }
+            }
+        }
 	}
 
 	//----------------------------------------------------------------
@@ -152,22 +192,19 @@ class Committee extends ActiveRecord
 
         throw new \Exception('committees/invalidMember');
 	}
+
 	/**
 	 * Returns members for the committee
 	 *
-	 * If timestamp is provided, will provide members current
-	 * as of the provided timestamp
-	 *
-	 * @param int $timestamp
+	 * @param array $fields
 	 * @return Zend\Db\ResultSet
 	 */
-	public function getMembers($timestamp=null)
+	public function getMembers(array $fields=null)
 	{
-		$search = ['committee_id'=>$this->getId()];
-		if ($timestamp) { $search['current'] = (int)$timestamp; }
+        $fields['committee_id'] = $this->getId();
 
 		$table = new MemberTable();
-		return $table->find($search);
+		return $table->find($fields);
 	}
 
 	/**
@@ -186,24 +223,35 @@ class Committee extends ActiveRecord
 	/**
 	 * Returns a ResultSet containing Seats.
 	 *
-	 * If a timestamp is provided, will return seats current to that timestamp
-	 *
-	 * @param int $timestamp
+	 * @param array $fields
 	 * @return Zend\Db\ResultSet A ResultSet containing the Seat objects
 	 */
-	public function getSeats($timestamp=null)
+	public function getSeats(array $fields=null)
 	{
-		$search = ['committee_id'=>$this->getId()];
-		if ($timestamp) { $search['current'] = (int)$timestamp; }
+        $fields['committee_id'] = $this->getId();
 
 		$table = new SeatTable();
-		return $table->find($search);
+		return $table->find($fields);
 	}
 
-	public function getCurrentSeats()
+    /**
+     * Internal function to check for past records
+     *
+     * @param string $table
+     * @return boolean
+     */
+    private function hasPast($table)
 	{
-		return $this->getSeats(time());
+        $sql = "select count(*) as count from $table
+                where committee_id=?
+                  and endDate is not null and endDate < now()";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute([$this->getId()]);
+        $row = $result->current();
+        return $row['count'] ? true : false;
 	}
+	public function hasPastSeats  () { return $this->hasPast('seats'  ); }
+	public function hasPastMembers() { return $this->hasPast('members'); }
 
 	/**
 	 * @param array $fields Extra fields to search on
@@ -247,35 +295,29 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @param int $timestamp
 	 * @return boolean
 	 */
-	public function hasVacancy($timestamp=null)
+	public function hasVacancy()
 	{
-        $timestamp = $timestamp ? (int)$timestamp : time();
-
         if ($this->getType() === 'seated') {
-            $seats = $this->getSeats($timestamp);
+            $seats = $this->getSeats(['current'=>true]);
             foreach ($seats as $s) {
-                if ($s->hasVacancy($timestamp)) { return true; }
+                if ($s->hasVacancy()) { return true; }
             }
         }
         return false;
 	}
 
 	/**
-	 * @param int $timestamp
 	 * @return int
 	 */
-	public function getVacancyCount($timestamp=null)
+	public function getVacancyCount()
 	{
-        $timestamp = $timestamp ? (int)$timestamp : time();
-
         $c = 0;
         if ($this->getType() === 'seated') {
-            $seats = $this->getSeats($timestamp);
+            $seats = $this->getSeats(['current'=>true]);
             foreach ($seats as $s) {
-                if ($s->hasVacancy($timestamp)) { $c++; }
+                if ($s->hasVacancy()) { $c++; }
             }
         }
         return $c;
@@ -301,25 +343,6 @@ class Committee extends ActiveRecord
 	{
 		$people = new PeopleTable();
 		return $people->find(['committee_id'=>$this->getId()]);
-	}
-
-	/**
-	 * @return array An array of Person objects
-	 */
-	public function getLiaisonPeople()
-	{
-        $sql = 'select p.*
-                from committee_liaisons l
-                join people p on l.person_id=p.id
-                where committee_id=?';
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql, [$this->getId()]);
-
-        $liaisons = [];
-        foreach ($result->toArray() as $row) {
-            $liaisons[] = new Person($row);
-        }
-        return $liaisons;
 	}
 
 	/**
@@ -357,40 +380,6 @@ class Committee extends ActiveRecord
 			$votes[] = new Vote($row['id']);
 		}
 		return $votes;
-	}
-
-	/**
-	 * Inserts a row to the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post The POST array
-	 */
-	public function saveLiaison($post)
-	{
-        if (!empty($post['person_id'])) {
-            $sql = "select * from committee_liaisons where committee_id=? and person_id=?";
-            $zend_db = Database::getConnection();
-            $result = $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            if (!count($result)) {
-                $sql = 'insert committee_liaisons set committee_id=?, person_id=?';
-                $zend_db->query($sql, [$this->getId(), $post['person_id']]);
-            }
-        }
-	}
-
-	/**
-	 * Removes a row from the committee_liaisons table
-	 *
-	 * NOTE: This function immediately writes to the database
-	 *
-	 * @param array $post
-	 */
-	public function removeLiaison($person_id)
-	{
-        $sql = 'delete from committee_liaisons where committee_id=? and person_id=?';
-        $zend_db = Database::getConnection();
-        $zend_db->query($sql)->execute([$this->getId(), $person_id]);
 	}
 
 	/**
@@ -461,17 +450,34 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * @return Zend\Db\Result
+	 */
+	public function getStatutes()
+	{
+        $table = new CommitteeStatuteTable();
+        return $table->find(['committee_id'=>$this->getId()]);
+	}
+
+	/**
+	 * @param array $fields
 	 * @return array
 	 */
-	public static function data()
+	public static function data(array $fields=null)
 	{
+        $where = '';
+        if (isset(   $fields['current'])) {
+            $where = $fields['current']
+                ? 'where (c.endDate is null     or  now() <= c.endDate)'
+                : 'where (c.endDate is not null and now() >= c.endDate)';
+        }
+
         $sql = "select  c.id, c.name, c.type, c.website, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,
-                        c.statutoryName, c.statuteReference, c.statuteUrl, c.yearFormed,
+                        c.statutoryName, c.yearFormed, c.endDate,
                         count(s.id) as seats,
                         sum(
-                            case when (s.type='termed' and t.id is not null and tm.id is null) then 1
-                                 when (s.type='open'   and m.id is null)                       then 1
+                            case when ((s.endDate is null or now() <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
+                                 when ((s.endDate is null or now() <= s.endDate) and s.type='open'   and m.id is null)                       then 1
                                 else 0
                             end
                         ) as vacancies,
@@ -485,6 +491,7 @@ class Committee extends ActiveRecord
                 left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
                 left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
                 left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
+                $where
                 group by c.id
                 order by c.name";
         $zend_db = Database::getConnection();

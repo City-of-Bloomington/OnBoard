@@ -6,6 +6,9 @@
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\Liaison;
+use Application\Models\LiaisonTable;
+
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 use Blossom\Classes\Url;
@@ -14,7 +17,12 @@ class LiaisonsController extends Controller
 {
     public function index()
     {
-        $this->template->blocks[] = new Block('liaisons/list.inc');
+        $type = (!empty($_GET['type']) && in_array($_GET['type'], Liaison::$types))
+            ? $_GET['type']
+            : Liaison::$types[0];
+
+        $data = LiaisonTable::data(['type'=>$type, 'current'=>true]);
+        $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
     }
 
     public function add()

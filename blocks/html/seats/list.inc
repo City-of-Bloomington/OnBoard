@@ -2,18 +2,21 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->seats
  * @param Committee $this->committee (optional)
  * @param boolean $this->disableButtons (optional)
+ * @param string $this->title (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 
 $helper = $this->template->getHelper('buttonLink');
+$title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats', count($this->seats)]);
 ?>
 <section>
-    <h1><?= $this->_(['seat', 'seats', 2]); ?></h1>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
     <table class="fn1-table">
         <thead>
             <tr><th></th>
@@ -33,10 +36,10 @@ $helper = $this->template->getHelper('buttonLink');
 
                 if (!$this->disableButtons && Person::isAllowed('seats', 'edit')) {
                     $editButton = $helper->buttonLink(
-                    BASE_URI."/seats/update?seat_id=$seat_id",
-                    $this->translate('seat_edit'),
-                    'edit',
-                    ButtonLink::SIZE_ICON
+                        BASE_URI."/seats/update?seat_id=$seat_id",
+                        $this->translate('seat_edit'),
+                        'edit',
+                        ButtonLink::SIZE_ICON
                     );
                 }
                 $code      = self::escape($seat->getCode());

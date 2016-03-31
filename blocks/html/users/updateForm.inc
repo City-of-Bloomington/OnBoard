@@ -32,9 +32,9 @@ foreach ($fields as $f) {
             </dl>
             <?php
                 $field = $this->template->getHelper('field');
-                echo $field->input(['name'=>'username', 'id'=>'username', 'label'=>$this->_('username'), 'value'=>$username, 'required'=>true]);
-                echo $field->input(['name'=>'password', 'id'=>'password', 'label'=>$this->_('password'), 'type'=>'password']);
-				echo $field->input(['name'=>'email',    'id'=>'email',    'label'=>$this->_('email'   ), 'value'=>$email]);
+                echo $field->field(['name'=>'username', 'id'=>'username', 'label'=>$this->_('username'), 'value'=>$username, 'required'=>true]);
+                echo $field->field(['name'=>'password', 'id'=>'password', 'label'=>$this->_('password'), 'type'=>'password']);
+				echo $field->field(['name'=>'email',    'id'=>'email',    'label'=>$this->_('email'   ), 'value'=>$email]);
             ?>
             <dl class="fn1-input-field">
                 <dt><label   for="role"><?= $this->_('role'); ?></label></dt>

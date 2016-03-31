@@ -37,9 +37,8 @@ create table committees (
 	type enum('seated', 'open') not null default 'seated',
 	name varchar(128) not null,
 	statutoryName varchar(128),
-	statuteReference varchar(128),
-	statuteUrl varchar(128),
 	yearFormed year(4),
+	endDate    date,
 	website varchar(128),
 	email   varchar(128),
 	phone   varchar(128),
@@ -52,6 +51,14 @@ create table committees (
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
 	applicationLifetime tinyint unsigned not null default 90
+);
+
+create table committeeStatutes(
+    id           int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    citation varchar(128) not null,
+    url      varchar(128) not null,
+    foreign key (committee_id) references committees(id)
 );
 
 create table committee_departments (
@@ -68,9 +75,6 @@ create table appointers (
 );
 insert appointers values(1,'Elected');
 
---
--- Begin 2.0 changes
---
 create table seats (
     id int unsigned not null primary key auto_increment,
     type enum('termed', 'open') not null default 'termed',
@@ -82,6 +86,7 @@ create table seats (
     endDate   date,
     requirements text,
     termLength varchar(32),
+    voting boolean not null default 1,
 	foreign key (committee_id) references committees(id),
 	foreign key (appointer_id) references appointers(id)
 );
@@ -108,10 +113,11 @@ create table members (
 	foreign key (person_id)    references people    (id)
 );
 
-create table committee_liaisons (
+create table liaisons (
+    id int unsigned not null primary key auto_increment,
+    type enum('legal', 'departmental') not null default 'departmental',
     committee_id int unsigned not null,
     person_id    int unsigned not null,
-    primary key (committee_id, person_id),
     foreign key (committee_id) references committees(id),
     foreign key (person_id)    references people(id)
 );
@@ -154,10 +160,6 @@ create table media (
 	applicant_id     int unsigned not null,
 	foreign key (applicant_id) references applicants(id)
 );
-
---
--- End 2.0 changes
---
 
 create table offices (
 	id int unsigned not null primary key auto_increment,

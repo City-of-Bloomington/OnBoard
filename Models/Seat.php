@@ -61,6 +61,7 @@ class Seat extends ActiveRecord
 			// Set any default values for properties that need it here
 			$this->setAppointer_id   (1);
 			$this->setStartDate(date(DATE_FORMAT));
+			$this->setVoting(true);
 		}
 	}
 
@@ -87,17 +88,17 @@ class Seat extends ActiveRecord
 		if (!$this->getName())         { throw new \Exception('missingName'); }
 		if (!$this->getCommittee_id()) { throw new \Exception('seats/missingCommittee'); }
 
-		// Make sure the end date falls after the start date
-		$start = (int)$this->getStartDate('U');
-		$end   = (int)$this->getEndDate  ('U');
-		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
 
 		if ($this->getType() === 'termed') {
             if (!$this->getTermLength()) { throw new \Exception('missingTermLength'); }
 		}
 	}
 
-	public function save() { parent::save(); }
+	public function save()
+	{
+        if (isset($this->data['endDate'])) { unset($this->data['endDate']); }
+        parent::save();
+    }
 
 	public function delete()
 	{
@@ -117,6 +118,7 @@ class Seat extends ActiveRecord
 	public function getCommittee_id() { return parent::get('committee_id'); }
 	public function getAppointer_id() { return parent::get('appointer_id'); }
 	public function getTermLength()   { return parent::get('termLength'); }
+	public function getVoting()       { return parent::get('voting'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
@@ -131,21 +133,62 @@ class Seat extends ActiveRecord
 	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setAppointer($o)    { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
 	public function setStartDate($d) { parent::setDateData('startDate', $d); }
-	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
 	public function setTermLength($s) {
         if ($s) {
             if (array_key_exists($s, self::$termIntervals)) { parent::set('termLength', $s); }
         }
         else { parent::set('termLength', null); }
     }
+    public function setVoting($b) { parent::set('voting', $b ? 1 : 0); }
 
 	public function handleUpdate($post)
 	{
-		$fields = ['code', 'name', 'appointer_id', 'startDate', 'endDate', 'requirements', 'type', 'termLength'];
+		$fields = [
+            'code', 'name', 'appointer_id', 'startDate',
+            'requirements', 'type', 'termLength', 'voting'
+        ];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
+
+	}
+
+	/**
+	 * @param string $date
+	 */
+	public function saveEndDate($date)
+	{
+        if ($this->getId()) {
+            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
+            if ($d) {
+                // Make sure the end date falls after the start date
+                $start = (int)$this->getStartDate('U');
+                $end   = (int)$d->format('U');
+                if ($end < $start) { throw new \Exception('invalidEndDate'); }
+
+                $updates = [
+                    'update terms   set endDate=? where seat_id=? and endDate is null',
+                    'update members set endDate=? where seat_id=? and endDate is null',
+                    'update seats   set endDate=? where id=?',
+                ];
+                $params = [
+                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
+                    $this->getId()
+                ];
+
+                $zend_db = Database::getConnection();
+                $zend_db->getDriver()->getConnection()->beginTransaction();
+                try {
+                    foreach ($updates as $sql) { $zend_db->query($sql)->execute($params); }
+                    $zend_db->getDriver()->getConnection()->commit();
+                }
+                catch (\Exception $e) {
+                    $zend_db->getDriver()->getConnection()->rollback();
+                    throw $e;
+                }
+            }
+        }
 	}
 
 	//----------------------------------------------------------------
@@ -169,18 +212,22 @@ class Seat extends ActiveRecord
         }
 	}
 
+	/**
+	 * @return Zend\Db\Result
+	 */
 	public function getMembers()
 	{
 		$table = new MemberTable();
 		return $table->find(['seat_id'=>$this->getId()]);
 	}
 
-	public function getMember($timestamp=null)
+	/**
+	 * @return Member
+	 */
+	public function getCurrentMember()
 	{
-        if (!$timestamp) { $timestamp = time(); }
-
         $table = new MemberTable();
-        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
+        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>true]);
         if (count($list)) {
             return $list->current();
         }
@@ -370,10 +417,15 @@ class Seat extends ActiveRecord
                 return true;
             }
             else {
-                return $this->getMember($timestamp) ? false : true;
+                return $this->getCurrentMember() ? false : true;
             }
         }
 
         return false;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isVoting() { return $this->getVoting() ? true : false; }
 }
