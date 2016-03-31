@@ -24,11 +24,11 @@ use Blossom\Classes\Url;
         foreach ($this->data as $c) {
             $uri     = BASE_URI.'/committees/info?committee_id='.$c['id'];
             $name    = self::escape($c['name']);
-            $endDate = $c['endDate'];
+            $endDate = new \DateTime($c['endDate']);
 
             echo "
             <tr><td><a href=\"$uri\">$name</a></td>
-                <td>$endDate</td>
+                <td>{$endDate->format(DATE_FORMAT)}</td>
             </tr>
             ";
         }

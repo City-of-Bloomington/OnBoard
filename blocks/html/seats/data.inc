@@ -52,7 +52,30 @@ $title = $this->title
             $userCanEdit = Person::isAllowed('seats', 'edit');
 
             foreach ($this->data['results'] as $row) {
-                foreach ($row as $f=>$v) { $$f = self::escape($v); }
+                foreach ($row as $f=>$v)
+                {
+                    switch ($f) {
+                        case 'seatStart':
+                        case 'seatEnd':
+                        case 'memberStart':
+                        case 'memberEnd':
+                        case 'memberTermStart':
+                        case 'memberTermEnd':
+                        case 'termStart':
+                        case 'termEnd':
+                            if ($v) {
+                                $d = new \DateTime($v);
+                                $$f = $d->format(DATE_FORMAT);
+                            }
+                            else {
+                                $$f = null;
+                            }
+                        break;
+
+                        default:
+                            $$f = self::escape($v);
+                    }
+                }
 
                 $actions    = [];
                 $classes    = [];
