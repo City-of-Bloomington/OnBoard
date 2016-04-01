@@ -2,9 +2,9 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\ResultSet $this->terms
- * @param Seat $this->seat (optional)
- * @param boolean $this->disableButtons
+ * @param array   $this->terms
+ * @param Seat    $this->seat           (optional)
+ * @param boolean $this->disableButtons (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -17,13 +17,12 @@ $helper = $this->template->getHelper('buttonLink');
     <header>
         <h1><?= $title; ?></h1>
         <?php
-            $t = current($this->terms);
-            if ($t && !$this->disableButtons
+            if (isset($this->terms[0]) && !$this->disableButtons
                 && Person::isAllowed('terms', 'generate')) {
 
                 echo '<div class="tools">';
                 echo $helper->buttonLink(
-                    BASE_URI.'/terms/generate?direction=next;term_id='.$t->getId(),
+                    BASE_URI.'/terms/generate?direction=next;term_id='.$this->terms[0]->getId(),
                     $this->_('term_add_next'),
                     'add'
                 );
