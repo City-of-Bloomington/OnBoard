@@ -28,5 +28,12 @@ $c = [
 	'vacancy'          => $this->committee->hasVacancy(),
     'description'      => $description,
 ];
+$statutes = $this->committee->getStatutes();
+if (count($statutes)) {
+    $c['statutes'] = [];
+    foreach ($statutes as $s) {
+        $c['statutes'][] = ['citation'=>$s->getCitation(), 'url'=>$s->getUrl()];
+    }
+}
 
 echo json_encode($c, JSON_PRETTY_PRINT);
