@@ -21,7 +21,10 @@ class LiaisonsController extends Controller
             ? $_GET['type']
             : Liaison::$types[0];
 
-        $data = LiaisonTable::data(['type'=>$type, 'current'=>true]);
+        $data  = LiaisonTable::data(['type'=>$type, 'current'=>true]);
+        $title = $this->template->_(['liaison', 'liaisons', count($data['results'])]);
+
+        $this->template->title = $title.' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
     }
 

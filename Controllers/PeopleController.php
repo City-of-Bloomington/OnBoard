@@ -29,12 +29,14 @@ class PeopleController extends Controller
             $this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
             $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
         }
+        $this->template->title = $this->template->_(['person', 'people', 2]).' - '.APPLICATION_NAME;
 	}
 
 	public function view()
 	{
 		try {
 			$person = new Person($_REQUEST['person_id']);
+			$this->template->title = $person->getFullname().' - '.APPLICATION_NAME;
 			$this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
 
 			if ($this->template->outputFormat == 'html') {

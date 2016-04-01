@@ -18,6 +18,8 @@ class DepartmentsController extends Controller
         $table = new DepartmentTable();
         $list = $table->find();
 
+        $title = $this->template->_(['department', 'departments', count($list)]);
+        $this->template->title = $title.' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block('departments/list.inc', ['departments'=>$list]);
 	}
 

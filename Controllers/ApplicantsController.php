@@ -20,6 +20,8 @@ class ApplicantsController extends Controller
         $table = new ApplicantTable();
         $list = $table->find();
 
+        $title = $this->template->_(['applicant', 'applicants', count($list)]);
+        $this->template->title = $title.' - '.APPLICATION_HOME;
         $this->template->blocks[] = new Block('applicants/list.inc', ['applicants'=>$list]);
     }
 
@@ -112,10 +114,15 @@ class ApplicantsController extends Controller
         }
 
 
+        $title = $this->template->_('apply');
         if (isset($_REQUEST['committee_id'])) {
-            try { $committee = new Committee($_REQUEST['committee_id']); }
+            try {
+                $committee = new Committee($_REQUEST['committee_id']);
+                $title.= ' - '.$committee->getName();
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
+        $this->template->title = $title.' - '.APPLICATION_NAME;
         $block = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
         if (isset($committee)) { $block->committee = $committee; }
         $this->template->blocks[] = $block;

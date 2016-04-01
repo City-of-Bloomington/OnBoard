@@ -20,6 +20,7 @@ class SeatsController extends Controller
         $data = SeatTable::currentData();
 
         if ($this->template->outputFormat === 'html') {
+            $this->template->title = $this->template->_('seats_current').' - '.APPLICATION_NAME;
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
@@ -28,16 +29,15 @@ class SeatsController extends Controller
 
     public function vacancies()
     {
-        $data = SeatTable::currentData(['vacant'=>true]);
+        $data  = SeatTable::currentData(['vacant'=>true]);
+        $title = $this->template->_(['vacancy', 'vacancies', count($data['results'])]);
 
         if ($this->template->outputFormat === 'html') {
+            $this->template->title = $title.' - '.APPLICATION_NAME;
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
-        $this->template->blocks[] = new Block('seats/data.inc', [
-            'data'  => $data,
-            'title' => $this->template->_(['vacancy', 'vacancies', count($data['results'])])
-        ]);
+        $this->template->blocks[] = new Block('seats/data.inc', ['data'  => $data, 'title' => $title]);
     }
 
     public function view()

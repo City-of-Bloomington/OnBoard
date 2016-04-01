@@ -18,6 +18,8 @@ class AppointersController extends Controller
 		$table = new AppointerTable();
 		$appointers = $table->find();
 
+		$title = $this->template->_(['appointer', 'appointers', count($appointers)]);
+		$this->template->title = $title.' - '.APPLICATION_NAME;
 		$this->template->blocks[] = new Block('appointers/list.inc', ['appointers'=>$appointers]);
 	}
 

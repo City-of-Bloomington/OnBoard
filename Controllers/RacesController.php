@@ -18,6 +18,8 @@ class RacesController extends Controller
 		$table = new RaceTable();
 		$races = $table->find();
 
+		$title = $this->template->_(['race', 'races', count($races)]);
+		$this->template->title = $title.' - '.APPLICATION_NAME;
 		$this->template->blocks[] = new Block('races/list.inc', ['races'=>$races]);
 	}
 

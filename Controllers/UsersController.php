@@ -22,7 +22,9 @@ class UsersController extends Controller
 		$users->setCurrentPageNumber($page);
 		$users->setItemCountPerPage(20);
 
-		$this->template->blocks[] = new Block('users/list.inc',array('users'=>$users));
+		$title = $this->template->_(['user', 'users', 2]);
+		$this->template->title = $title.' - '.APPLICATION_NAME;
+		$this->template->blocks[] = new Block('users/list.inc',     ['users'    =>$users]);
 		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$users]);
 	}
 

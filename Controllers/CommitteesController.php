@@ -46,7 +46,7 @@ class CommitteesController extends Controller
         else {
             $block = 'list';
         }
-        $this->template->title = $this->template->_("committees_$block");
+        $this->template->title = $this->template->_("committees_$block").' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block("committees/$block.inc", ['data'=>$data]);
     }
 
@@ -81,7 +81,7 @@ class CommitteesController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         }
-        
+
         if ($committee->getType() === 'seated') {
             $data = SeatTable::currentData(['committee_id'=>$committee->getId()]);
             $this->template->blocks[] = new Block('seats/data.inc', [
