@@ -21,7 +21,7 @@ $members = $this->person->getMembers();
 
         $offices = $this->person->getOffices($committee);
         if (count($offices)) {
-            $o = $offices->current();
+            $o = $offices[0];
             $office = self::escape($o->getTitle());
             $office = "($office)";
         }
