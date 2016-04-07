@@ -404,6 +404,9 @@ msgstr "Current Terms"
 msgid "past_terms"
 msgstr "Past Terms"
 
+msgid "seat_term"
+msgstr "Seat Term"
+
 msgid "member"
 msgid_plural "members"
 msgstr[0] "Member"

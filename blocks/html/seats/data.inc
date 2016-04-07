@@ -36,9 +36,9 @@ $title = $this->title
                     }
                 ?>
                 <th><?= $this->_('seat'); ?></th>
+                <th><?= $this->_('seat_term'); ?></th>
                 <th><?= $this->_('appointed_by'); ?></th>
                 <th><?= $this->_('name'); ?></th>
-                <th><?= $this->_('term'); ?></th>
                 <?php
                     if (isset($_SESSION['USER'])) {
                         echo "<th>{$this->_('actions')}</th>";
@@ -160,9 +160,9 @@ $title = $this->title
                     <td>$editSeatButton</td>
                     $committeeName
                     <td><a href=\"$seat_uri\">$code <small>($seat)</small</a></td>
+                    <td>$termDates</td>
                     <td>$appointer</td>
                     <td>$member $offices</td>
-                    <td>$termDates</td>
                     $moreLinks
                 </tr>
                 ";
