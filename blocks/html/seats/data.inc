@@ -107,12 +107,15 @@ $title = $this->title
 
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
                     }
+
                     if (Person::isAllowed('members', 'reappoint')) {
                         $uri = BASE_URI."/members/reappoint?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                     }
 
-                    if (!$memberEnd && Person::isAllowed('members', 'resign')) {
+                    if ((!$memberEnd || strtotime($memberEnd) > time())
+                        && Person::isAllowed('members', 'resign')) {
+                        
                         $uri = BASE_URI."/members/resign?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
