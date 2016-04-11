@@ -3,7 +3,8 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
- * @param boolean $this->disableButtons
+ * @param boolean        $this->disableButtons
+ * @param Committee      $this->committee (optional)
  */
 use Application\Models\Person;
 
@@ -20,11 +21,12 @@ foreach ($this->data['results'] as $row) {
     // See: Committee::liasonData()
     foreach ($row as $f=>$v) { $$f = self::escape($v); }
 
-    if (!isset($this->committee)) {
+    if (!$this->committee) {
         $committeeUri  = BASE_URI."/committees/info?committee_id=$committee_id";
         $committeeTD   = "<td><a href=\"$committeeUri\">$committee</a></td>";
     }
-    if (!isset($this->person)) {
+
+    if (!$this->person) {
         $personUri     = BASE_URI."/people/view?person_id=$person_id";
         $personTD = "
         <td><a href=\"$personUri\">$firstname $lastname</a></td>
@@ -42,7 +44,6 @@ foreach ($this->data['results'] as $row) {
 
     echo "
     <tr>$committeeTD
-        <td>$department</td>
         <td>{$this->_($type)}</td>
         $personTD
         $moreLinks
