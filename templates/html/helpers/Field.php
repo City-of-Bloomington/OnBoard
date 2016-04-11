@@ -92,6 +92,4 @@ class Field extends Helper
 
         return "<input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$value\" $required  $attr />";
     }
-
-    public function text(
 }
