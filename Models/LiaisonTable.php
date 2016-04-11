@@ -17,9 +17,10 @@ class LiaisonTable extends TableGateway
      * These are the fields that will be returned for all *Data functions
      */
     public static $dataFields = [
+        'liaison_id'   => 'l.id',
         'committee_id' => 'c.id',
         'committee'    => 'c.name',
-        'department'  => "group_concat(d.name separator '|')",
+        'department'   => "group_concat(d.name separator '|')",
         'type'         => 'l.type',
         'person_id'    => 'p.id',
         'firstname'    => 'p.firstname',

@@ -7,9 +7,9 @@
  */
 use Application\Models\Person;
 
-$userCanRemove = !$this->disableButtons && Person::isAllowed('liaisons', 'remove');
-$removeButton  = '';
-$helper        = $this->template->getHelper('buttonLink');
+$actions       = [];
+$userCanEdit   = !$this->disableButtons && Person::isAllowed('liaisons', 'edit');
+$userCanDelete = !$this->disableButtons && Person::isAllowed('liaisons', 'delete');
 
 $committeeTD = '';
 $personTD    = '';
@@ -33,13 +33,11 @@ foreach ($this->data['results'] as $row) {
         ";
     }
 
-    if ($userCanRemove) {
-        $removeButton = $helper->buttonLink(
-            BASE_URI."/liaisons/remove?committee_id=$committee_id;person_id=$person_id",
-            $this->_('liaison_remove'),
-            'delete'
-        );
-        $removeButton = "<td>$removeButton</td>";
+    if ($userCanEdit)   { $actions[] = ['url'=>BASE_URI."/liaisons/update?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
+    if ($userCanDelete) { $actions[] = ['url'=>BASE_URI."/liaisons/delete?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
+    if (count($actions)) {
+        $h = $this->template->getHelper('dropdown');
+        $moreLinks = '<td>'.$h->dropdown($actions, $this->_('more'), 'fn1-table-actions').'</td>';
     }
 
     echo "
@@ -47,7 +45,7 @@ foreach ($this->data['results'] as $row) {
         <td>$department</td>
         <td>{$this->_($type)}</td>
         $personTD
-        $removeButton
+        $moreLinks
     </tr>
     ";
 }

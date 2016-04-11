@@ -39,10 +39,12 @@ use Application\Templates\Helpers\ButtonLink;
                     'edit',
                     ButtonLink::SIZE_ICON
                 );
+                $editButton = "<td>$editButton</td>";
             }
             echo "
-            <tr><th>$editButton <a href=\"$url\">$citation</a></th>
+            <tr><th><a href=\"$url\">$citation</a></th>
                 <td><a href=\"$url\">$url</a></td>
+                $editButton
             </tr>
             ";
         }

@@ -73,4 +73,11 @@ class Liaison extends ActiveRecord
 	public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
+
+	public function handleUpdate(array $post)
+	{
+        $this->setType($post['type']);
+        $this->setCommittee_id($post['committee_id']);
+        $this->setPerson_id($post['person_id']);
+	}
 }

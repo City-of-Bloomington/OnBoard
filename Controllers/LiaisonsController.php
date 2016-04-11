@@ -6,6 +6,7 @@
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\Person;
 use Application\Models\Liaison;
 use Application\Models\LiaisonTable;
 
@@ -28,25 +29,46 @@ class LiaisonsController extends Controller
         $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
     }
 
-    public function add()
+    public function update()
     {
-        if (!empty($_REQUEST['committee_id'])) {
-            try { $committee = new Committee($_REQUEST['committee_id']); }
+        if (!empty($_REQUEST['liaison_id'])) {
+            try {
+                $liaison = new Liaison($_REQUEST['liaison_id']);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        elseif (!empty($_REQUEST['committee_id'])) {
+            try {
+                $committee = new Committee($_REQUEST['committee_id']);
+                $liaison   = new Liaison();
+                $liaison->setCommittee($committee);
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        if (isset($committee)) {
+        if (isset($liaison)) {
+            if (!empty($_REQUEST['person_id'])) {
+                try {
+                    $person = new Person($_REQUEST['person_id']);
+                    $liaison->setPerson($person);
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+
             if (isset($_POST['person_id'])) {
                 try {
-                    $committee->saveLiaison($_POST);
-                    header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee->getId());
+                    $liaison->handleUpdate($_POST);
+                    $liaison->save();
+
+                    header('Location: '.BASE_URL.'/committees/info?committee_id='.$liaison->getCommittee_id());
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-            $this->template->blocks[] = new Block('liaisons/addForm.inc',        ['committee' => $committee]);
+
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $liaison->getCommittee()]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $liaison->getCommittee()]);
+            $this->template->blocks[] = new Block('liaisons/updateForm.inc',    ['liaison'   => $liaison]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);
@@ -54,22 +76,21 @@ class LiaisonsController extends Controller
         }
     }
 
-    public function remove()
+    public function delete()
     {
-        if (!empty($_REQUEST['committee_id'])) {
-            try { $committee = new Committee($_REQUEST['committee_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
+        if (!empty($_REQUEST['liaison_id'])) {
+            try {
+                $liaison = new Liaison($_REQUEST['liaison_id']);
+                $committee_id = $liaison->getCommittee_id();
 
-        if (isset($committee)) {
-            if (!empty($_REQUEST['person_id'])) {
-                try {
-                    $committee->removeLiaison($_REQUEST['person_id']);
-                    header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee->getId());
-                    exit();
-                }
+                try { $liaison->delete(); }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+                header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee_id);
+                exit();
             }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);

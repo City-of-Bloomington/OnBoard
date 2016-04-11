@@ -202,6 +202,9 @@ msgstr "Add Committee"
 msgid "committee_edit"
 msgstr "Edit Committee"
 
+msgid "committee_end"
+msgstr "Close Committee"
+
 msgid "committee_info"
 msgstr "Committee Info"
 
@@ -465,7 +468,10 @@ msgstr[1] "Liaisonships"
 msgid "liaison_add"
 msgstr "Add Liaison"
 
-msgid "liaison_remove"
+msgid "liaison_edit"
+msgstr "Edit Liaison"
+
+msgid "liaison_delete"
 msgstr "Remove Liaison"
 
 msgid "departmental"

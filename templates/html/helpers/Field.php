@@ -26,6 +26,13 @@ class Field extends Helper
     public function field(array $params)
     {
         $class = ['fn1-input-field'];
+        if (isset($params['type'])) {
+            switch ($params['type']) {
+                case 'person':
+                    $class[0].= '--select';
+                break;
+            }
+        }
         $class = implode(' ', $class);
 
         return "
@@ -51,6 +58,15 @@ class Field extends Helper
      */
     public function input(array $params)
     {
+        if (isset(  $params['type'])) {
+            switch ($params['type']) {
+                case 'person':
+                    $h = $this->template->getHelper('personChooser');
+                    return $h->personChooser($params['name'], $params['id'], $params['value']);
+                break;
+            }
+        }
+
         $required = '';
         if (!empty($params['required']) && $params['required']) {
             $required = 'required="true"';
@@ -76,4 +92,6 @@ class Field extends Helper
 
         return "<input name=\"$params[name]\" id=\"$params[id]\" $type value=\"$value\" $required  $attr />";
     }
+
+    public function text(
 }

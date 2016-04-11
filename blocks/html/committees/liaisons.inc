@@ -11,15 +11,16 @@ $addButton = '';
 if (Person::isAllowed('liaisons', 'add')) {
     $helper    = $this->template->getHelper('buttonLink');
     $addButton = $helper->buttonLink(
-        BASE_URI.'/liaisons/add?committee_id='.$this->committee->getId(),
+        BASE_URI.'/liaisons/update?committee_id='.$this->committee->getId(),
         $this->_('liaison_add'),
         'add'
     );
 }
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['liaison', 'liaisons', 2]); ?></h1>
-        <div class="fn1-uiBlock-headerTools"><?= $addButton; ?></div>
+<section>
+    <header>
+        <h1><?= $this->_(['liaison', 'liaisons', 2]); ?></h1>
+        <div class="tools"><?= $addButton; ?></div>
     </header>
     <?php
         $this->data = LiaisonTable::committeeLiaisonData(['committee_id'=>$this->committee->getId()]);
