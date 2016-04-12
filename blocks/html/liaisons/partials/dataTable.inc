@@ -35,6 +35,7 @@ foreach ($this->data['results'] as $row) {
         ";
     }
 
+    $moreLinks = '';
     if ($userCanEdit)   { $actions[] = ['url'=>BASE_URI."/liaisons/update?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
     if ($userCanDelete) { $actions[] = ['url'=>BASE_URI."/liaisons/delete?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
     if (count($actions)) {
