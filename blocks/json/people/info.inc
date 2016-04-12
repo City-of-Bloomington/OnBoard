@@ -14,7 +14,6 @@ $person = [
 
 $fields = [
 	'about',
-	'email',
 	'username',
 	'gender',
 	'race'

@@ -32,14 +32,13 @@ use Blossom\Classes\Url;
             }
 
             $name  = self::escape($person->getFullname());
-            $email = self::escape($person->getEmail());
-            $phone = self::escape($person->getPhone());
-            echo "
-            <tr><td><a href=\"$url\">$name</a></td>
-                <td>$email</td>
-                <td>$phone</td>
-            </tr>
-            ";
+            echo "<tr><td><a href=\"$url\">$name</a></td>";
+            if (Person::isAllowed('people', 'viewContactInfo')) {
+                $email = self::escape($person->getEmail());
+                $phone = self::escape($person->getPhone());
+                echo "<td>$email</td><td>$phone</td>";
+            }
+            echo "</tr>";
         }
     ?>
 	</table>

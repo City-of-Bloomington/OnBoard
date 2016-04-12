@@ -28,11 +28,10 @@ foreach ($this->data['results'] as $row) {
 
     if (!$this->person) {
         $personUri     = BASE_URI."/people/view?person_id=$person_id";
-        $personTD = "
-        <td><a href=\"$personUri\">$firstname $lastname</a></td>
-        <td>$email</td>
-        <td>$phone</td>
-        ";
+        $personTD = "<td><a href=\"$personUri\">$firstname $lastname</a></td>";
+        if (Person::isAllowed('people', 'viewContactInfo')) {
+            echo "<td>$email</td><td>$phone</td>";
+        }
     }
 
     $moreLinks = '';

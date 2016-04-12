@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2013 City of Bloomington, Indiana
+ * @copyright 2013-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -41,7 +40,14 @@ class PeopleTable extends TableGateway
 						$select->join(['t'=>'terms'], 'people.id=t.person_id', []);
 						$select->join(['s'=>'seats'], 't.seat_id=s.id',        []);
 						$select->where(['s.committee_id'=>$value]);
-						break;
+                    break;
+
+                    case 'email':
+                    case 'phone':
+                        if (Person::isAllowed('people', 'viewContactInfo')) {
+                            $select->where([$key=>$value]);
+                        }
+                    break;
 
 					default:
 						$select->where([$key=>$value]);

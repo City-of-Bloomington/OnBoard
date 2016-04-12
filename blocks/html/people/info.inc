@@ -35,12 +35,14 @@ echo "
         <p>$about</p>
 ";
         $fields = [
-            'email'   => $this->_('email'),
-            'phone'   => $this->_('phone'),
             'username'=> $this->_('username'),
             'gender'  => $this->_('gender'),
             'race'    => $this->_('race'),
         ];
+        if (Person::isAllowed('people', 'viewContactInfo')) {
+            $fields['email'] = $this->_('email');
+            $fields['phone'] = $this->_('phone');
+        }
         foreach ($fields as $key=>$label) {
             $get = 'get'.ucfirst($key);
             $value = self::escape($this->person->$get());

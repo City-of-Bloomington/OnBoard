@@ -3,7 +3,12 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-$fields = ['firstname', 'lastname', 'email'];
+use Application\Models\Person;
+
+$fields = ['firstname', 'lastname'];
+if (Person::isAllowed('people', 'viewContactInfo')) {
+    $fields[] = 'email';
+}
 foreach ($fields as $f) {
 	$$f = isset($_GET[$f]) ? self::escape($_GET[$f]) : '';
 }
@@ -14,22 +19,16 @@ foreach ($fields as $f) {
     </header>
     <form method="get" action="<?= BASE_URI; ?>/people" class="fn1-uiBlock-content">
         <fieldset>
-            <dl class="fn1-input-field">
-                <dt><label  for="firstname"><?= $this->_('firstname'); ?></label></dt>
-                <dd><input name="firstname" id="firstname" value="<?= $firstname; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="lastname"><?= $this->_('lastname'); ?></label></dt>
-                <dd><input name="lastname" id="lastname" value="<?= $lastname; ?>" /></dd>
-            </dl>
-
-            <dl class="fn1-input-field">
-                <dt><label  for="email"><?= $this->_(['email','emails',1]); ?></label></dt>
-                <dd><input name="email" id="email" value="<?= $email; ?>" /></dd>
-            </dl>
-
             <?php
+                $h = $this->template->getHelper('field');
+                foreach ($fields as $f) {
+                    echo $h->field([
+                        'label' => $this->_($f),
+                        'name'  => $f,
+                        'id'    => $f,
+                        'value' => $$f
+                    ]);
+                }
                 // Preserve any extra parameters passed in
                 foreach ($_REQUEST as $key=>$value) {
                     if (!in_array($key, $fields)) {

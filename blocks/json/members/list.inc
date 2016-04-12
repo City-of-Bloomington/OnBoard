@@ -37,7 +37,6 @@ foreach ($this->members as $m) {
         'currentTerm'   => null,
         'currentMember' => [
             'name'          => $m->getPerson()->getFullname(),
-            'email'         => $m->getPerson()->getEmail(),
             'startDate'     => $m->getStartDate($DATE_FORMAT),
             'endDate'       => $m->getEndDate  ($DATE_FORMAT),
             'termStartDate' => null,
