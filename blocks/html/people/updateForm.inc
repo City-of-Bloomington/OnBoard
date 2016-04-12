@@ -2,12 +2,15 @@
 /**
  * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
+use Application\Models\Person;
 use Application\Models\RaceTable;
 
-$fields = ['firstname','lastname','email', 'phone', 'about', 'gender', 'race_id'];
+$fields = [
+    'firstname','lastname', 'about', 'gender', 'race_id',
+    'email', 'phone', 'address', 'city', 'state', 'zip'
+];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
 	$$f  = self::escape($this->person->$get());
@@ -40,8 +43,8 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
 
             <dl class="fn1-input-field">
                 <dt><label><?= $this->_('gender'); ?></label></dt>
-                <dd><label><input name="gender" type="radio" value="male"   <?php if ($gender=='male'  ) echo 'checked="checked"'; ?> /> M</label>
-                    <label><input name="gender" type="radio" value="female" <?php if ($gender=='female') echo 'checked="checked"'; ?> /> F</label>
+                <dd><label><input name="gender" type="radio" value="male"   <?php if ($gender==='male'  ) echo 'checked="checked"'; ?> /> M</label>
+                    <label><input name="gender" type="radio" value="female" <?php if ($gender==='female') echo 'checked="checked"'; ?> /> F</label>
                 </dd>
             </dl>
 
@@ -53,7 +56,7 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
                             $table = new RaceTable();
                             $list = $table->find();
                             foreach ($list as $race) {
-                                $selected = $race_id==$race->getId() ? ' selected="selected"' : '';
+                                $selected = $race_id===$race->getId() ? ' selected="selected"' : '';
                                 echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
                             }
                         ?>
@@ -62,8 +65,27 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
             </dl>
         </fieldset>
 
+        <fieldset><legend><?= $this->_('address'); ?></legend>
+            <textarea name="address" id="address"></textarea>
+            <?= $field->field(['name'=>'city', 'id'=>'city', 'label'=>$this->_('city'), 'value'=>$city]); ?>
+            <dl class="fn1-input-field--select">
+                <dt><label   for="state"><?= $this->_('state'); ?></label></dt>
+                <dd><select name="state" id="state"><option value=""></option>
+                    <?php
+                        foreach (Person::$STATES as $s) {
+                            $selected = $state === $s ? 'selected="true"' : '';
+                            echo "<option $selected>$s</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
+
+            <?= $field->field(['name'=>'zip',  'id'=>'zip',  'label'=>$this->_('zip'),  'value'=>$zip ]); ?>
+        </fieldset>
+
         <fieldset><legend><?= $this->_('about'); ?></legend>
-            <textarea name="about" id="about" rows="3" cols="60"><?= $about; ?></textarea>
+            <textarea name="about" id="about"><?= $about; ?></textarea>
         </fieldset>
 
         <fieldset>

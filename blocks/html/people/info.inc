@@ -40,8 +40,12 @@ echo "
             'race'    => $this->_('race'),
         ];
         if (Person::isAllowed('people', 'viewContactInfo')) {
-            $fields['email'] = $this->_('email');
-            $fields['phone'] = $this->_('phone');
+            $fields['email'  ] = $this->_('email'  );
+            $fields['phone'  ] = $this->_('phone'  );
+            $fields['address'] = $this->_('address');
+            $fields['city'   ] = $this->_('city'   );
+            $fields['state'  ] = $this->_('state'  );
+            $fields['zip'    ] = $this->_('zip'    );
         }
         foreach ($fields as $key=>$label) {
             $get = 'get'.ucfirst($key);

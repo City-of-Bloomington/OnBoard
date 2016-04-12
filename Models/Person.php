@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2009-2013 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -14,6 +13,8 @@ class Person extends ActiveRecord
 {
 	protected $tablename = 'people';
 	protected $race;
+
+	public static $STATES = ['IN'];
 
 	/**
 	 * Populates the object with data
@@ -104,6 +105,10 @@ class Person extends ActiveRecord
 	public function getAbout()     { return parent::get('about');     }
 	public function getEmail()     { return parent::get('email');     }
 	public function getPhone()     { return parent::get('phone');     }
+	public function getAddress()   { return parent::get('address');   }
+	public function getCity()      { return parent::get('city');      }
+	public function getState()     { return parent::get('state');     }
+	public function getZip()       { return parent::get('zip');       }
 	public function getGender()    { return parent::get('gender');    }
 	public function getRace_id()   { return parent::get('race_id');   }
 	public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
@@ -113,6 +118,10 @@ class Person extends ActiveRecord
 	public function setAbout    ($s) { parent::set('about',     $s); }
 	public function setEmail    ($s) { parent::set('email',     $s); }
 	public function setPhone    ($s) { parent::set('phone',     $s); }
+	public function setAddress  ($s) { parent::set('address',   $s); }
+	public function setCity     ($s) { parent::set('city',      $s); }
+	public function setState    ($s) { parent::set('state',     $s); }
+	public function setZip      ($s) { parent::set('zip',       $s); }
 	public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
 	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
 	public function setGender   ($s)
@@ -144,7 +153,8 @@ class Person extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
-            'firstname', 'middlename', 'lastname', 'email', 'phone', 'about', 'gender', 'race_id'
+            'firstname', 'middlename', 'lastname', 'about', 'gender', 'race_id',
+            'email', 'phone', 'address', 'city', 'state', 'zip'
         ];
 		foreach ($fields as $field) {
 			if (isset($post[$field])) {
