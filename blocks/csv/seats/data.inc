@@ -23,6 +23,7 @@ foreach ($this->data['results'] as $r) {
         $r['appointer'],
         $r['firstname'],
         $r['lastname'],
+        $r['email'],
         $r['memberTermStart'],
         $r['memberTermEnd'],
         $r['memberStart'],

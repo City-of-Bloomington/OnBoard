@@ -44,6 +44,7 @@ foreach ($this->data['results'] as $r) {
 
         $row['currentMember'] = [
             'name'          => "$r[firstname] $r[lastname]",
+            'email'         => "$r[email]",
             'startDate'     => $r['memberStart'],
             'endDate'       => $r['memberEnd'],
             'termStartDate' => $r['memberTermStart'],
