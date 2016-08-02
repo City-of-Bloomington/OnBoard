@@ -29,6 +29,15 @@ if (Person::isAllowed('site', 'siteContent')) {
 }
 
 if ($links) {
+    // TEMPORARY PLACEHOLDER
+    // This is a temporary place to put a link to a hastily prepared report
+    // for the mayor's office.  We need to rework the navigation to round up
+    // all the other reports and give them a real home.
+    //
+    // https://github.com/City-of-Bloomington/OnBoard/issues/3
+    //
+    $links[] = ['url'=>BASE_URI.'/committees/report', 'label'=>'Master Report'];
+
     $helper = $this->getHelper('dropdown');
     echo $helper->dropdown($links, $this->_('admin'), 'fn1-siteMenu');
 }

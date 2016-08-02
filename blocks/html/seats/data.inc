@@ -3,8 +3,9 @@
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
- * @param Committee $this->committee (optional)
- * @param string $this->title (optional)
+ * @param Committee      $this->committee      (optional)
+ * @param string         $this->title          (optional)
+ * @param bool           $this->disableButtons (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -20,9 +21,11 @@ $title = $this->title
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
-            $url = new Url(Url::current_url());
-            $url->format = 'csv';
-            echo $helper->buttonLink($url, $this->_('csv'), 'download');
+            if (!$this->disableButtons) {
+                $url = new Url(Url::current_url());
+                $url->format = 'csv';
+                echo $helper->buttonLink($url, $this->_('csv'), 'download');
+            }
         ?>
         </div>
     </header>
@@ -49,7 +52,7 @@ $title = $this->title
         <tbody>
         <?php
             $editSeatButton = '';
-            $userCanEdit = Person::isAllowed('seats', 'edit');
+            $userCanEdit = !$this->disableButtons && Person::isAllowed('seats', 'edit');
 
             foreach ($this->data['results'] as $row) {
                 foreach ($row as $f=>$v)
@@ -101,21 +104,24 @@ $title = $this->title
                     if ($carryOver) {
                         $classes[] = 'carryOver vacant';
                         // Appoint
-                        $uri = $seatType === 'termed'
-                            ? BASE_URI."/members/appoint?term_id=$term_id"
-                            : BASE_URI."/members/appoint?seat_id=$seat_id";
+                        if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
+                            $uri = $seatType === 'termed'
+                                ? BASE_URI."/members/appoint?term_id=$term_id"
+                                : BASE_URI."/members/appoint?seat_id=$seat_id";
 
-                        $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                            $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                        }
                     }
 
-                    if (Person::isAllowed('members', 'reappoint')) {
+                    if (!$this->disableButtons && Person::isAllowed('members', 'reappoint')) {
                         $uri = BASE_URI."/members/reappoint?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                     }
 
                     if ((!$memberEnd || strtotime($memberEnd) > time())
+                        && !$this->disableButtons
                         && Person::isAllowed('members', 'resign')) {
-                        
+
                         $uri = BASE_URI."/members/resign?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
@@ -125,7 +131,7 @@ $title = $this->title
                     $member    = $this->_('vacant');
                     $termDates = "$termStart - $termEnd";
 
-                    if (Person::isAllowed('members', 'appoint')) {
+                    if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
                         $uri = $seatType === 'termed'
                             ? BASE_URI."/members/appoint?term_id=$term_id"
                             : BASE_URI."/members/appoint?seat_id=$seat_id";
@@ -134,11 +140,11 @@ $title = $this->title
                     }
                 }
 
-                if (Person::isAllowed('offices', 'add')) {
+                if (!$this->disableButtons && Person::isAllowed('offices', 'add')) {
                     $uri = BASE_URI."/offices/update?committee_id=$committee_id;person_id=$person_id";
                     $actions[] = ['url'=>$uri, 'label'=>$this->_('office_add')];
                 }
-                $userCanEditOffices = Person::isAllowed('offices', 'edit');
+                $userCanEditOffices = !$this->disableButtons && Person::isAllowed('offices', 'edit');
                 if ($offices) {
                     $ts = [];
                     foreach (explode(',',$offices) as $o) {
@@ -174,7 +180,7 @@ $title = $this->title
         </tbody>
     </table>
     <?php
-    if ($this->committee) {
+    if ($this->committee && !$this->disableButtons) {
         $helper = $this->template->getHelper('buttonLink');
 
         if (Person::isAllowed('seats', 'add')) {

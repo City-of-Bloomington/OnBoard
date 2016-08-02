@@ -50,6 +50,19 @@ class CommitteesController extends Controller
         $this->template->blocks[] = new Block("committees/$block.inc", ['data'=>$data]);
     }
 
+    public function report()
+    {
+        $table = new CommitteeTable();
+        $list = $table->find(['current'=>true]);
+
+        $block = new Block('committees/report.inc');
+        foreach ($list as $committee) {
+            $block->committee = $committee;
+            echo $block->render('html', $this->template);
+        }
+
+    }
+
     public function info()
     {
         $committee = $this->loadCommittee($_GET['committee_id']);
