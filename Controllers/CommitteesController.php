@@ -57,8 +57,7 @@ class CommitteesController extends Controller
 
         $block = new Block('committees/report.inc');
         foreach ($list as $committee) {
-            $block->committee = $committee;
-            echo $block->render('html', $this->template);
+            $this->template->blocks[] = new Block('committees/report.inc', ['committee'=>$committee]);
         }
 
     }
