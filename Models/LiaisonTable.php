@@ -20,7 +20,6 @@ class LiaisonTable extends TableGateway
         'liaison_id'   => 'l.id',
         'committee_id' => 'c.id',
         'committee'    => 'c.name',
-        'department'   => "group_concat(d.name separator '|')",
         'type'         => 'l.type',
         'person_id'    => 'p.id',
         'firstname'    => 'p.firstname',
@@ -104,13 +103,10 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees c
+                from committees    c
                 left join liaisons l on c.id=l.committee_id
-                left join people p on l.person_id=p.id
-                left join committee_departments x on c.id=x.committee_id
-                left join departments d on x.department_id=d.id
+                left join people   p on l.person_id=p.id
                 $where
-                group by c.id, p.id
                 order by c.name";
         return self::performDataSelect($sql, $params);
 	}
@@ -130,13 +126,10 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees                 c
-                join liaisons                   l on c.id=l.committee_id
-                left join people                p on l.person_id=p.id
-                left join committee_departments x on c.id=x.committee_id
-                left join departments           d on x.department_id=d.id
+                from committees  c
+                join liaisons    l on c.id=l.committee_id
+                left join people p on l.person_id=p.id
                 $where
-                group by c.id, p.id
                 order by c.name";
         return self::performDataSelect($sql, $params);
  	}
@@ -155,13 +148,10 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees                 c
-                join liaisons                   l on c.id=l.committee_id
-                join people                     p on l.person_id=p.id
-                left join committee_departments x on c.id=x.committee_id
-                left join departments           d on x.department_id=d.id
+                from committees c
+                join liaisons   l on c.id=l.committee_id
+                join people     p on l.person_id=p.id
                 $where
-                group by c.id, p.id
                 order by c.name";
         return self::performDataSelect($sql, $params);
  	}
