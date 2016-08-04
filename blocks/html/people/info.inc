@@ -9,16 +9,28 @@ use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Michelf\MarkdownExtra;
 
-$helper = $this->template->getHelper('buttonLink');
+$person_id = $this->person->getId();
+$helper    = $this->template->getHelper('buttonLink');
 
-$editButton = '';
-if (!$this->disableButtons && Person::isAllowed('people', 'edit')) {
-	$editButton = $helper->buttonLink(
-		BASE_URI.'/people/update?person_id='.$this->person->getId(),
-		$this->translate('edit_person'),
-		'edit',
-		ButtonLink::SIZE_ICON
-	);
+$editButton   = '';
+$deleteButton = '';
+if (!$this->disableButtons) {
+    if (Person::isAllowed('people', 'edit')) {
+        $editButton = $helper->buttonLink(
+            BASE_URI.'/people/update?person_id='.$person_id,
+            $this->_('edit_person'),
+            'edit',
+            ButtonLink::SIZE_ICON
+        );
+    }
+    if ($this->person->isSafeToDelete() && Person::isAllowed('people', 'delete')) {
+        $deleteButton = $helper->buttonLink(
+            BASE_URI.'/people/delete?person_id='.$person_id,
+            $this->_('person_delete'),
+            'delete',
+            ButtonLink::SIZE_ICON
+        );
+    }
 }
 
 $fullname = self::escape($this->person->getFullname());
@@ -28,7 +40,7 @@ echo "
 <section>
     <header>
         <h1>$fullname</h1>
-        <div class=\"tools\">$editButton</div>
+        <div class=\"tools\">$editButton $deleteButton</div>
     </header>
 
     <div>

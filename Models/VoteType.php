@@ -36,7 +36,7 @@ class VoteType extends ActiveRecord
 				$sql = 'select * from voteTypes where id=?';
 
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {

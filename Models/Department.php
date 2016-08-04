@@ -39,7 +39,7 @@ class Department extends ActiveRecord
 					$sql = 'select * from departments where name=?';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {

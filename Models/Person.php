@@ -46,11 +46,11 @@ class Person extends ActiveRecord
 					$sql = 'select * from people where username=?';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {
-					throw new Exception('people/unknownPerson');
+					throw new \Exception('people/unknownPerson');
 				}
 			}
 		}
@@ -77,10 +77,8 @@ class Person extends ActiveRecord
 		}
 	}
 
-	public function save()
-	{
-		parent::save();
-	}
+	public function save() { parent::save(); }
+	public function delete() { if ($this->isSafeToDelete()) { parent::delete(); } }
 
 	/**
 	 * Removes all the user account related fields from this Person
@@ -482,5 +480,20 @@ class Person extends ActiveRecord
 		}
 		$table = new AppointerTable();
 		return $table->find($search);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isSafeToDelete()
+	{
+        $id = (int)$this->getId();
+
+        $sql = "select id from members  where person_id=$id
+          union select id from liaisons where person_id=$id
+          union select id from offices  where person_id=$id";
+        $zend_db = Database::getConnection();
+        $result  = $zend_db->query($sql)->execute();
+        return count($result) ? false : true;
 	}
 }

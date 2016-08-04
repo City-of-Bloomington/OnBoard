@@ -40,7 +40,7 @@ class Appointer extends ActiveRecord
 					$sql = 'select * from appointers where name=?';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {

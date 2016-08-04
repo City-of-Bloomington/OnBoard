@@ -94,4 +94,17 @@ class PeopleController extends Controller
 
 		$this->template->blocks[] = new Block('people/updateForm.inc',array('person'=>$person));
 	}
+
+	public function delete()
+	{
+        if (!empty($_REQUEST['person_id'])) {
+            try {
+                $person = new Person($_REQUEST['person_id']);
+                $person->delete();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+        header('Location: '.BASE_URL.'/people');
+        exit();
+	}
 }

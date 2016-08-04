@@ -13,7 +13,7 @@ foreach ($fields as $f) {
 	$$f  = self::escape($this->person->$get());
 }
 
-$title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstname()) : $this->_('add_person');
+$title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add');
 ?>
 <section class="updatePersonForm">
 	<h1><?= $title; ?></h1>

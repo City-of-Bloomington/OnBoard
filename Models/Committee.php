@@ -32,11 +32,11 @@ class Committee extends ActiveRecord
 				$zend_db = Database::getConnection();
 				$sql = 'select * from committees where id=?';
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {
-					throw new Exception('committees/unknownCommittee');
+					throw new \Exception('committees/unknownCommittee');
 				}
 			}
 		}

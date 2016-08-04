@@ -133,6 +133,15 @@ msgid_plural "people"
 msgstr[0] "Person"
 msgstr[1] "People"
 
+msgid "person_add"
+msgstr "Add Person"
+
+msgid "person_edit"
+msgstr "Edit Person"
+
+msgid "person_delete"
+msgstr "Delete Person"
+
 msgid "user"
 msgid_plural "users"
 msgstr[0] "User Account"
@@ -158,12 +167,6 @@ msgstr "About this seat"
 
 msgid "info_office"
 msgstr "Office Info"
-
-msgid "add_person"
-msgstr "Add a Person"
-
-msgid "edit_person"
-msgstr "Edit Person"
 
 msgid "find_person"
 msgstr "Find someone"

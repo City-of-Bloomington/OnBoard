@@ -39,7 +39,7 @@ class Office extends ActiveRecord
 				$sql = 'select * from offices where id=?';
 
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {

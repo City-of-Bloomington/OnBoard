@@ -40,7 +40,7 @@ class TopicType extends ActiveRecord
 					$sql = 'select * from topicTypes where name=?';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
-				if ($result) {
+				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
 				else {

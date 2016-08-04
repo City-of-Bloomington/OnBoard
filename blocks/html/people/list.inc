@@ -50,7 +50,7 @@ use Blossom\Classes\Url;
             foreach ($_REQUEST as $key=>$value) {
                 if (!in_array($key, $fields)) { $url->$key = $value; }
             }
-            echo $helper->buttonLink($url, $this->translate('add_person'), 'add');
+            echo $helper->buttonLink($url, $this->_('person_add'), 'add');
         }
     ?>
 </section>
