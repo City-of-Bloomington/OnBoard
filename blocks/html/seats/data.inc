@@ -42,11 +42,7 @@ $title = $this->title
                 <th><?= $this->_('seat_term'); ?></th>
                 <th><?= $this->_('appointed_by'); ?></th>
                 <th><?= $this->_('name'); ?></th>
-                <?php
-                    if (!$this->disableButtons && isset($_SESSION['USER'])) {
-                        echo "<th>{$this->_('actions')}</th>";
-                    }
-                ?>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -162,7 +158,7 @@ $title = $this->title
                 $moreLinks = '';
                 if (isset($_SESSION['USER']) && count($actions)) {
                     $h = $this->template->getHelper('dropdown');
-                    $moreLinks = '<td>'.$h->dropdown($actions, $this->_('more'), 'fn1-table-actions').'</td>';
+                    $moreLinks = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
                 }
                 echo "
                 <tr $classes>
@@ -172,7 +168,7 @@ $title = $this->title
                     <td>$termDates</td>
                     <td>$appointer</td>
                     <td>$member $offices</td>
-                    $moreLinks
+                    <td>$moreLinks</td>
                 </tr>
                 ";
             }

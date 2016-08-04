@@ -10,6 +10,7 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
+		 ->addRole(new Role('Clerk'),         'Public')
 		 ->addRole(new Role('Reviewer'),      'Public')
 		 ->addRole(new Role('Staff'),         'Reviewer')
 		 ->addRole(new Role('Administrator'), 'Staff');
@@ -51,7 +52,6 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 /**
  * Assign permissions to the resources
  */
-
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
@@ -61,12 +61,16 @@ $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
+$ZEND_ACL->allow('Clerk', 'people');
+$ZEND_ACL->deny ('Clerk', 'people', 'delete');
+
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicants', 'applications', 'media']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
 
 $ZEND_ACL->allow('Staff', 'liaisons');
-$ZEND_ACL->allow('Staff', 'people',  ['index', 'view', 'update']);
+$ZEND_ACL->allow('Staff', 'people');
+$ZEND_ACL->deny ('Staff', 'people', 'delete');
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 
 // Administrator is allowed access to everything
