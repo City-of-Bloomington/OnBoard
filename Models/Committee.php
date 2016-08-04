@@ -45,6 +45,7 @@ class Committee extends ActiveRecord
 			// Set any default values for properties that need it here
 			$this->setType('seated');
 			$this->setTermEndWarningDays(TERM_END_WARNING_DEFAULT);
+			$this->setApplicationLifetime(APPLICATION_LIFETIME_DEFAULT);
 		}
 	}
 
