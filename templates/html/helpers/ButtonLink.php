@@ -24,6 +24,7 @@ class ButtonLink
 		'cancel'   => 'fa fa-times',
 		'download' => 'fa fa-download',
 		'back'     => 'fa fa-arrow-circle-left',
+		'mail'     => 'fa fa-envelope',
 		'choosePerson' => 'fa fa-user-plus'
 	];
 

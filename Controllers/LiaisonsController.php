@@ -25,6 +25,10 @@ class LiaisonsController extends Controller
         $data  = LiaisonTable::data(['type'=>$type, 'current'=>true]);
         $title = $this->template->_(['liaison', 'liaisons', count($data['results'])]);
 
+        if (!empty($_GET['format']) && $_GET['format'] === 'email') {
+            $this->template->setOutputFormat('txt');
+        }
+
         $this->template->title = $title.' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
     }

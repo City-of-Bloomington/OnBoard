@@ -23,6 +23,9 @@ foreach (Liaison::$types as $type) {
 $uri = new Url(Url::current_url());
 $uri->format = 'csv';
 $tools.= $helper->buttonLink($uri, 'csv', 'download');
+
+$uri->format = 'email';
+$tools.= $helper->buttonLink($uri, 'email', 'mail');
 ?>
 <section>
     <header>
