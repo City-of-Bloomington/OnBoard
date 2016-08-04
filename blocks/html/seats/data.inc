@@ -43,7 +43,7 @@ $title = $this->title
                 <th><?= $this->_('appointed_by'); ?></th>
                 <th><?= $this->_('name'); ?></th>
                 <?php
-                    if (isset($_SESSION['USER'])) {
+                    if (!$this->disableButtons && isset($_SESSION['USER'])) {
                         echo "<th>{$this->_('actions')}</th>";
                     }
                 ?>

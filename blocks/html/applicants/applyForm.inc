@@ -161,8 +161,7 @@ $field = $this->template->getHelper('field');
                 }
 
                 $accept = [];
-                $extensions = array_keys(Media::$extensions);
-                foreach ($extensions as $ext) {
+                foreach (Media::$mime_types as $mime=>$ext) {
                     $accept[] = ".$ext";
                 }
                 $accept = implode(',', $accept);

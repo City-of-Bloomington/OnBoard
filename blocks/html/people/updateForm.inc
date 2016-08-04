@@ -7,10 +7,7 @@
 use Application\Models\Person;
 use Application\Models\RaceTable;
 
-$fields = [
-    'firstname','lastname', 'about', 'gender', 'race_id',
-    'email', 'phone', 'address', 'city', 'state', 'zip'
-];
+$fields = ['about', 'gender', 'race_id', 'address', 'city', 'state', 'zip'];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
 	$$f  = self::escape($this->person->$get());
@@ -33,14 +30,10 @@ $title = $this->person->getId() ? self::escape('Edit '.$this->person->getFirstna
 					}
 				}
 
-				$field = $this->template->getHelper('field');
-				echo $field->field(['name'=>'firstname', 'id'=>'firstname', 'label'=>$this->_('firstname'), 'value'=>$firstname, 'required'=>true]);
-				echo $field->field(['name'=>'lastname',  'id'=>'lastname',  'label'=>$this->_('lastname'),  'value'=>$lastname,  'required'=>true]);
-				echo $field->field(['name'=>'email',     'id'=>'email',     'label'=>$this->_('email'),     'value'=>$email]);
-				echo $field->field(['name'=>'phone',     'id'=>'phone',     'label'=>$this->_('phone'),     'value'=>$phone,     'type'=>'tel']);
+				$this->_include('people/partials/personalInfoFields.inc');
 
+                $field = $this->template->getHelper('field');
 			?>
-
             <dl class="fn1-input-field">
                 <dt><label><?= $this->_('gender'); ?></label></dt>
                 <dd><label><input name="gender" type="radio" value="male"   <?php if ($gender==='male'  ) echo 'checked="checked"'; ?> /> M</label>

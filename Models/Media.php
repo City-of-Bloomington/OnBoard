@@ -22,13 +22,13 @@ class Media extends ActiveRecord
 	/**
 	 * Whitelist of accepted file types
 	 */
-	public static $extensions = [
-        'doc'  => ['mime_type' => 'application/msword'],
-        'docx' => ['mime_type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-        'odf'  => ['mime_type' => 'application/vnd.oasis.opendocument'],
-        'odt'  => ['mime_type' => 'application/vnd.oasis.opendocument.text'],
-        'pdf'  => ['mime_type' => 'application/pdf'],
-        'rtf'  => ['mime_type' => 'application/rtf']
+    public static $mime_types = [
+        'application/msword'                                                      => 'doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'application/vnd.oasis.opendocument'                                      => 'odf',
+        'application/vnd.oasis.opendocument.text'                                 => 'odt',
+        'application/pdf'                                                         => 'pdf',
+        'application/rtf'                                                         => 'rtf'
 
 		#'jpg' =>['mime_type'=>'image/jpeg'],
 		#'gif' =>['mime_type'=>'image/gif' ],
@@ -52,7 +52,7 @@ class Media extends ActiveRecord
 		#'kml' =>array('mime_type'=>'application/vnd.google-earth.kml+xml','media_type'=>'attachment'),
 		#'swf' =>array('mime_type'=>'application/x-shockwave-flash','media_type'=>'attachment'),
 		#'eps' =>array('mime_type'=>'application/postscript','media_type'=>'attachment')
-	];
+    ];
 
 	/**
 	 * Populates the object with data
@@ -167,18 +167,17 @@ class Media extends ActiveRecord
 			throw new \Exception('media/uploadFailed');
 		}
 
-		// Clean all bad characters from the filename
-		$filename = $this->createValidFilename($filename);
-		$this->data['filename'] = $filename;
-		$extension = self::getExtension($filename);
-
-		// Find out the mime type for this file
-		if (array_key_exists(strtolower($extension), Media::$extensions)) {
-			$this->data['mime_type']  = Media::$extensions[$extension]['mime_type'];
+		$this->data['mime_type'] = mime_content_type($tempFile);
+		if (array_key_exists($this->data['mime_type'], self::$mime_types)) {
+            $extension = self::$mime_types[$this->data['mime_type']];
 		}
 		else {
 			throw new \Exception('media/unknownFileType');
 		}
+
+		// Clean all bad characters from the filename
+		$filename = $this->createValidFilename($filename, $extension);
+		$this->data['filename'] = $filename;
 
 		// Move the file where it's supposed to go
 		$newFile   = $this->getFullPath();
@@ -196,7 +195,7 @@ class Media extends ActiveRecord
 
         if ($extension != 'pdf') {
             self::convertToPDF($newFile);
-            $this->data['mime_type'] = Media::$extensions['pdf']['mime_type'];
+            $this->data['mime_type'] = 'application/pdf';
             $this->data['filename' ] = basename($filename, $extension).'pdf';
         }
 	}
@@ -273,19 +272,6 @@ class Media extends ActiveRecord
 	}
 
 	/**
-	 * @return string
-	 */
-	public static function getExtension($filename)
-	{
-		if (preg_match("/[^.]+$/", $filename, $matches)) {
-			return strtolower($matches[0]);
-		}
-		else {
-			throw new \Exception('media/missingExtension');
-		}
-	}
-
-	/**
 	 * @return int
 	 */
 	public function getFilesize()
@@ -296,30 +282,28 @@ class Media extends ActiveRecord
 	/**
 	 * Cleans a filename of any characters that might cause problems on filesystems
 	 *
+	 * If an new extension is provided, the filename's extension will be replaced
+	 * with the provided extension.
+	 *
+	 * @param string $filename
+	 * @param string $extension  Optional, new extension to use for the filename
 	 * @return string
 	 */
-	public static function createValidFilename($string)
+	public static function createValidFilename($filename, $extension=null)
 	{
 		// No bad characters
-		$string = preg_replace('/[^A-Za-z0-9_\.\s]/','',$string);
+		$filename = preg_replace('/[^A-Za-z0-9_\.\s]/','',$filename);
 
 		// Convert spaces to underscores
-		$string = preg_replace('/\s+/','_',$string);
+		$filename = preg_replace('/\s+/','_',$filename);
 
 		// Lower case any file extension
-		if (preg_match(self::REGEX_FILENAME_EXT,$string,$matches)) {
-			$string = $matches[1].'.'.strtolower($matches[2]);
+		if (preg_match(self::REGEX_FILENAME_EXT,$filename,$matches)) {
+            $filename = $extension
+                ? $matches[1].'.'.$extension
+                : $matches[1].'.'.strtolower($matches[2]);
 		}
 
-		return $string;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public static function isValidFiletype($filename)
-	{
-		$ext = self::getExtension($filename);
-		return array_key_exists(strtolower($ext),self::$extensions);
+		return $filename;
 	}
 }

@@ -5,4 +5,4 @@
  */
 use Application\Models\Media;
 ?>
-<p><?= sprintf($this->_('media/unknownFileType', 'errors'), implode(', ', array_keys(Media::$extensions))); ?></p>
+<p><?= sprintf($this->_('media/unknownFileType', 'errors'), implode(', ', Media::$mime_types)); ?></p>

@@ -20,7 +20,8 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
             <input name="applicant_id" type="hidden" value="<?= $id; ?>" />
 
             <?php
-                include APPLICATION_HOME.'/blocks/html/people/partials/personalInfoFields.inc';
+                $this->person = $this->applicant;
+                $this->_include('people/partials/personalInfoFields.inc');
             ?>
 
         <?php
