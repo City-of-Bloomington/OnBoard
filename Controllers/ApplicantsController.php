@@ -65,6 +65,23 @@ class ApplicantsController extends Controller
                 try {
                     $applicant->handleUpdate($_POST);
                     $applicant->save();
+
+                    if (isset(   $_FILES['mediafile'])) {
+                        foreach ($_FILES['mediafile']['name'] as $id=>$name) {
+                            if ( $_FILES['mediafile']['error'][$id] === UPLOAD_ERR_OK) {
+                                $file = [
+                                    'name'     => $_FILES['mediafile']['name'    ][$id],
+                                    'type'     => $_FILES['mediafile']['type'    ][$id],
+                                    'tmp_name' => $_FILES['mediafile']['tmp_name'][$id],
+                                    'error'    => $_FILES['mediafile']['error'   ][$id],
+                                    'size'     => $_FILES['mediafile']['size'    ][$id]
+                                ];
+                                $media = new Media($id);
+                                $media->setFile($file);
+                                $media->save();
+                            }
+                        }
+                    }
                     header('Location: '.BASE_URI.'/applicants/view?applicant_id='.$applicant->getId());
                     exit();
                 }

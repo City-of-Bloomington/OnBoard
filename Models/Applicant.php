@@ -168,14 +168,17 @@ class Applicant extends ActiveRecord
 	}
 
 	/**
-	 * @return Zend\Db\Result
+	 * @return array An array of Media objects
 	 */
 	public function getMedia()
 	{
+        $media = [];
         if ($this->getId()) {
             $table = new MediaTable();
-            return $table->find(['applicant_id'=>$this->getId()]);
+            $list  = $table->find(['applicant_id'=>$this->getId()]);
+            foreach ($list as $m) { $media[] = $m; }
         }
+        return $media;
 	}
 
 }

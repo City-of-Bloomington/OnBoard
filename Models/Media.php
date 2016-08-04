@@ -196,7 +196,7 @@ class Media extends ActiveRecord
         if ($extension != 'pdf') {
             self::convertToPDF($newFile);
             $this->data['mime_type'] = 'application/pdf';
-            $this->data['filename' ] = basename($filename, $extension).'pdf';
+            $this->data['filename' ] = basename($filename, $extension).'.pdf';
         }
 	}
 
@@ -214,7 +214,7 @@ class Media extends ActiveRecord
         $info = pathinfo($file);
         $dir = $info['dirname'];
 
-        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --invisible --outdir $dir $file";
+        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
         $out = "$cmd\n";
         $out.= shell_exec($cmd);
         if (is_file("$file.pdf")) {
