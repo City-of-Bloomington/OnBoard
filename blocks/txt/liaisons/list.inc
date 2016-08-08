@@ -4,6 +4,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
  */
+$people = [];
 foreach ($this->data['results'] as $row) {
-    echo "$row[firstname] $row[lastname] <$row[email]>,\n";
+    $people[$row['person_id']] = "$row[firstname] $row[lastname] <$row[email]>";
 }
+echo implode(",\n", $people);
