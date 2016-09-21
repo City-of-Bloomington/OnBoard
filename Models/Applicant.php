@@ -74,6 +74,21 @@ class Applicant extends ActiveRecord
 
         parent::save();
 	}
+
+	public function delete()
+	{
+        if ($this->getId()) {
+            $zend_db = Database::getConnection();
+            $sql = 'delete from applications where applicant_id=?';
+            $zend_db->query($sql)->execute([$this->getId()]);
+
+            foreach ($this->getMedia() as $media) {
+                $media->delete();
+            }
+
+            parent::delete();
+        }
+	}
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------

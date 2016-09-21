@@ -61,7 +61,8 @@ $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
-$ZEND_ACL->allow('Reviewer', ['applicants', 'media']);
+$ZEND_ACL->allow('Reviewer', 'media');
+$ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
 

@@ -597,6 +597,9 @@ msgstr[1] "Applicants"
 msgid "applicant_edit"
 msgstr "Edit Applicant"
 
+msgid "applicant_delete"
+msgstr "Delete Applicant"
+
 msgid "application"
 msgid_plural "applications"
 msgstr[0] "Application"

@@ -144,4 +144,22 @@ class ApplicantsController extends Controller
         if (isset($committee)) { $block->committee = $committee; }
         $this->template->blocks[] = $block;
     }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['applicant_id'])) {
+            try { $applicant = new Applicant($_REQUEST['applicant_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($applicant)) {
+            $applicant->delete();
+            header('Location: '.BASE_URL.'/applicants');
+            exit();
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }
