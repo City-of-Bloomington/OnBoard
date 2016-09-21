@@ -611,6 +611,9 @@ msgstr "New Application"
 msgid "application_edit"
 msgstr "Edit Application"
 
+msgid "application_delete"
+msgstr "Delete Application"
+
 msgid "application_archive"
 msgstr "Archive Application"
 

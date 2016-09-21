@@ -66,6 +66,8 @@ class Application extends ActiveRecord
         parent::save();
     }
 
+    public function delete() { parent::delete(); }
+
     public function archive()
     {
         if ($this->getId()) {

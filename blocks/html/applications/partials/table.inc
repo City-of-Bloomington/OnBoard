@@ -23,9 +23,10 @@ use Application\Models\Person;
     </thead>
     <tbody>
     <?php
-        $userCanViewApplications = Person::isAllowed('committees', 'applications');
-        $userCanViewApplicant    = Person::isAllowed('applicants', 'view');
+        $userCanViewApplications = Person::isAllowed('committees',   'applications');
+        $userCanViewApplicant    = Person::isAllowed('applicants',   'view');
         $userCanArchive          = Person::isAllowed('applications', 'archive');
+        $userCanDelete           = Person::isAllowed('applications', 'delete');
 
         $helper = $this->template->getHelper('buttonLink');
 
@@ -56,7 +57,6 @@ use Application\Models\Person;
                     $name = "<a href=\"$uri\">$name</a>";
                 }
                 echo "<td>$name</td>";
-
             }
 
 
@@ -69,13 +69,21 @@ use Application\Models\Person;
                 echo "<td>$expires</td>";
 
                 $archiveButton = '';
+                $deleteButton  = '';
                 if ($userCanArchive) {
                     $archiveButton = $helper->buttonLink(
                         BASE_URI.'/applications/archive?application_id='.$a->getId(),
                         $this->_('application_archive')
                     );
                 }
-                echo "<td>$archiveButton</td>";
+                if ($userCanDelete) {
+                    $deleteButton = $helper->buttonLink(
+                        BASE_URI.'/applications/delete?application_id='.$a->getId(),
+                        $this->_('application_delete'),
+                        'delete'
+                    );
+                }
+                echo "<td>$archiveButton $deleteButton</td>";
             }
 
 

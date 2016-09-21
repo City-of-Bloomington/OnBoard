@@ -71,4 +71,24 @@ class ApplicationsController extends Controller
         }
 
     }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['application_id'])) {
+            try { $application = new Application($_REQUEST['application_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($application)) {
+            $committee_id = $application->getCommittee_id();
+            $application->delete();
+
+            header('Location: '.BASE_URL.'/committees/applications?committee_id='.$committee_id);
+            exit();
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }

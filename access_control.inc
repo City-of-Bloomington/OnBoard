@@ -11,8 +11,8 @@ $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
 		 ->addRole(new Role('Reviewer'),      'Public')
-		 ->addRole(new Role('Staff'),         'Public')
-		 ->addRole(new Role('Administrator'), 'Staff');
+		 ->addRole(new Role('Staff'),         'Reviewer')
+		 ->addRole(new Role('Administrator'));
 
 /**
  * Declare all the controllers as resources
@@ -61,11 +61,10 @@ $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
-$ZEND_ACL->allow('Reviewer', ['applicants', 'applications', 'media']);
+$ZEND_ACL->allow('Reviewer', ['applicants', 'media']);
+$ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
 
-$ZEND_ACL->allow('Staff', 'committees', 'applications');
-$ZEND_ACL->allow('Staff', ['applicants', 'applications', 'media']);
 $ZEND_ACL->allow('Staff', 'members', ['index', 'appoint', 'reappoint', 'resign']);
 
 // Administrator is allowed access to everything
