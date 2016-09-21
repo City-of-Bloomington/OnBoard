@@ -11,9 +11,7 @@ $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
 		 ->addRole(new Role('Reviewer'),      'Public')
-		 ->addRole(new Role('Clerk'),         'Public')
-		 ->addRole(new Role('Legal'),         'Clerk')
-		 ->addRole(new Role('Staff'),         'Legal')
+		 ->addRole(new Role('Staff'),         'Public')
 		 ->addRole(new Role('Administrator'), 'Staff');
 
 /**
@@ -62,11 +60,6 @@ $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Clerk', 'people');
-$ZEND_ACL->deny ('Clerk', 'people', 'delete');
-
-$ZEND_ACL->allow('Legal', ['liaisons', 'committeeStatutes']);
-
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicants', 'applications', 'media']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');

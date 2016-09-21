@@ -7,9 +7,11 @@ namespace Application\Controllers;
 
 use Application\Models\Committee;
 use Application\Models\CommitteeTable;
+use Application\Models\Person;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 use Application\Models\VoteTable;
+
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 use Blossom\Classes\Url;
@@ -191,7 +193,17 @@ class CommitteesController extends Controller
         $this->template->title = $committee->getName();
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
-        $this->template->blocks[] = new Block('applications/reportForm.inc', ['committee' => $committee]);
+        if (Person::isAllowed('applications', 'report')) {
+            $this->template->blocks[] = new Block('applications/reportForm.inc', ['committee' => $committee]);
+        }
+        else {
+            $this->template->blocks[] = new Block('applications/list.inc', [
+                'committee'    => $committee,
+                'applications' => $committee->getApplications(),
+                'type'         => 'current'
+            ]);
+        }
+
         $this->template->blocks[] = new Block('applications/list.inc', [
             'committee'    => $committee,
             'applications' => $committee->getApplications(['archived'=>time()]),
