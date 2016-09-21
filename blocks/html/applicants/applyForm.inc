@@ -6,6 +6,7 @@
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Applicant;
+use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
 use Application\Models\Media;
 use Application\Models\Site;
@@ -148,6 +149,8 @@ $field = $this->template->getHelper('field');
 
         <fieldset>
         <?php
+            Captcha::render();
+
             $helper = $this->template->getHelper('saveAndCancelButtons');
             echo $helper->saveAndCancelButtons(BASE_URI);
         ?>

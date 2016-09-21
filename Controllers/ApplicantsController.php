@@ -100,7 +100,7 @@ class ApplicantsController extends Controller
     {
         $applicant = new Applicant();
 
-        if (isset($_POST['firstname'])) {
+        if (isset($_POST['firstname']) && Captcha::verify()) {
             $zend_db = Database::getConnection();
             $zend_db->getDriver()->getConnection()->beginTransaction();
             try {
