@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
+use Application\Models\Captcha;
 use Application\Models\Media;
 use Application\Models\Committee;
 use Blossom\Classes\Controller;
