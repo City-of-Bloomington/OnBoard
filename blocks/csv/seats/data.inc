@@ -2,13 +2,18 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param array          $this->params    Parameters used to generate data
  * @param Zend\Db\Result $this->data
  * @param Committee      $this->committee (optional)
  * @param string         $this->title     (optional)
  */
+$date = isset($this->params['current'])
+    ? $this->params['current']->format('Ymd')
+    : date('Ymd');
+
 $filename = APPLICATION_NAME.'-';
 $filename.= $this->title ? $this->title : $this->_(['seat', 'seats', count($this->data['results'])]);
-$filename.= '-'.date('Ymd');
+$filename.= "-$date";
 
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 echo "Committee,Seat,Appointer,Firstname,Lastname,Term Start,Term End,Appointment Start, Appointment End\n";
