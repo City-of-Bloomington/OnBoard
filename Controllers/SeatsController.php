@@ -15,21 +15,55 @@ use Blossom\Classes\Controller;
 
 class SeatsController extends Controller
 {
+    /**
+     * Creates a valid date from the request parameters
+     *
+     * In the future, we can expand this to accomodate safe parsing for
+     * more parameters.
+     *
+     * @return array
+     */
+    private function parseQueryParameters()
+    {
+        if (!empty($_GET['current'])) {
+            try {
+                $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
+                return ['current'=>$c];
+            }
+            catch (\Exception $e) { }
+        }
+        return [];
+    }
+
+    /**
+     * Lists all the seats at a given point in time
+     *
+     * @param string $_GET['current'] Effective date for the query
+     */
     public function index()
     {
-        $data = SeatTable::currentData();
+        $params = $this->parseQueryParameters();
+        $data   = SeatTable::currentData($params);
 
         if ($this->template->outputFormat === 'html') {
             $this->template->title = $this->template->_('seats_current').' - '.APPLICATION_NAME;
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
-        $this->template->blocks[] = new Block('seats/data.inc', ['data'=>$data]);
+        $this->template->blocks[] = new Block('seats/data.inc', ['data'=>$data, 'params'=>$params]);
     }
 
+    /**
+     * Lists all the vacancies at a point in time
+     *
+     * @param string $_GET['current'] Effective date for the query
+     */
     public function vacancies()
     {
-        $data  = SeatTable::currentData(['vacant'=>true]);
+        $params = $this->parseQueryParameters();
+        $params['vacant'] = true;
+        $data = SeatTable::currentData($params);
+
         $title = $this->template->_(['vacancy', 'vacancies', count($data['results'])]);
 
         if ($this->template->outputFormat === 'html') {
@@ -37,7 +71,7 @@ class SeatsController extends Controller
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
             $this->template->blocks[] = new Block('seats/header.inc');
         }
-        $this->template->blocks[] = new Block('seats/data.inc', ['data'  => $data, 'title' => $title]);
+        $this->template->blocks[] = new Block('seats/data.inc', ['params'=>$params, 'data'=>$data, 'title'=>$title]);
     }
 
     public function view()

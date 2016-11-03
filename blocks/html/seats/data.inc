@@ -2,6 +2,7 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param array          $this->params         Query parameters that produced the data
  * @param Zend\Db\Result $this->data
  * @param Committee      $this->committee      (optional)
  * @param string         $this->title          (optional)
@@ -14,6 +15,10 @@ use Blossom\Classes\Url;
 $title = $this->title
     ? self::escape($this->title)
     : $this->_(['seat', 'seats', count($this->data['results'])]);
+
+if (isset($this->params['current'])) {
+    $title.= ' ('.$this->params['current']->format(DATE_FORMAT).')';
+}
 ?>
 <section>
     <header>
@@ -29,6 +34,22 @@ $title = $this->title
         ?>
         </div>
     </header>
+    <form method="get">
+        <fieldset>
+        <?php
+            $f = $this->template->getHelper('field');
+            echo $f->field([
+                'name'=>'current',
+                'id' => 'current',
+                'label'=>$this->_('date'),
+                'value'=>isset($this->params['current']) ? $this->params['current']->format('U') : '',
+                'type'=>'date'
+            ]);
+        ?>
+            <button type="submit" class="submit"><?= $this->_('refresh'); ?></button>
+        </fieldset>
+    </form>
+
 
     <table class="fn1-table">
         <thead>

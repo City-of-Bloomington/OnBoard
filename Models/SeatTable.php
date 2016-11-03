@@ -118,7 +118,8 @@ class SeatTable extends TableGateway
         if (count($fields)) {
             foreach ($fields as $k=>$v) {
                 if ($k === 'current' && $v) {
-                    $where[] = '(s.endDate is null or s.endDate >= now())';
+                    $date    = $v->format(ActiveRecord::MYSQL_DATE_FORMAT);
+                    $where[] = "(s.startDate <= '$date' and (s.endDate is null or '$date' <= s.endDate))";
                 }
                 if ($k === 'vacant' && $v) {
                     $where[] = '(m.person_id is null or mt.id != t.id)';
@@ -158,7 +159,9 @@ class SeatTable extends TableGateway
      */
     public static function currentData(array $fields=null)
     {
-        $fields['current'] = true;
+        if (empty($fields['current'])) { $fields['current'] = new \DateTime(); }
+        $date   = $fields['current']->format(ActiveRecord::MYSQL_DATE_FORMAT);
+
         list($where, $params) = self::bindFields($fields);
 
         $columns = self::getDataColumns();
@@ -166,9 +169,9 @@ class SeatTable extends TableGateway
                 from seats           s
                 join committees      c  on s.committee_id=c.id
                 left join appointers a  on s.appointer_id=a.id
-                left join members    m  on s.id=m.seat_id and (m.startDate <= now() and (m.endDate is null or m.endDate >= now()))
+                left join members    m  on s.id=m.seat_id and (m.startDate <= '$date' and (m.endDate is null or m.endDate >= '$date'))
                 left join terms      mt on m.term_id=mt.id
-                left join terms      t  on s.id=t.seat_id and (t.startDate <= now() and (t.endDate is null or t.endDate >= now()))
+                left join terms      t  on s.id=t.seat_id and (t.startDate <= '$date' and (t.endDate is null or t.endDate >= '$date'))
                 left join people     p on m.person_id=p.id
                 $where
                 order by c.name, s.code";
