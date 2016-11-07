@@ -25,20 +25,20 @@ class SeatTable extends TableGateway
                         if ($value) {
                             // current == true
                             $select->where("(s.startDate is null or s.startDate<=now())");
-                            $select->where("(s.endDate   is null or s.endDate>=now())");
+                            $select->where("(s.endDate   is null or s.endDate  >=now())");
                         }
                         else {
                             // current == false (the past)
-                            $select->where("(s.endDate   is not null and s.endDate<=now())");
+                            $select->where("(s.endDate is not null and s.endDate<=now())");
                         }
 
                     break;
 
                     case 'vacant':
-                        $membersJoin = new Literal("s.id=m.seat_id and m.startDate <= now() and (m.endDate is null or now() <= m.endDate)");
+                        $membersJoin = new Literal("s.id=m.seat_id and (m.startDate is null or m.startDate <= now()) and (m.endDate is null or now() <= m.endDate)");
 
                         $termJoin = new Literal("case when m.id is not null then m.term_id=t.id
-                                                      when m.id is null     then s.id=t.seat_id and t.startDate <= now() and (t.endDate is null or now() <= t.endDate)
+                                                      when m.id is null     then s.id=t.seat_id and (t.startDate or t.startDate <= now()) and (t.endDate is null or now() <= t.endDate)
                                                 end");
 
                         $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
@@ -88,7 +88,7 @@ class SeatTable extends TableGateway
                                 from offices o
                                 where o.committee_id=s.committee_id
                                 and o.person_id=m.person_id
-                                and (o.startDate <= now() and (o.endDate is null or o.endDate >= now())))"
+                                and ((o.startDate is null or o.startDate <= now()) and (o.endDate is null or o.endDate >= now())))"
     ];
 
     /**
@@ -119,7 +119,7 @@ class SeatTable extends TableGateway
             foreach ($fields as $k=>$v) {
                 if ($k === 'current' && $v) {
                     $date    = $v->format(ActiveRecord::MYSQL_DATE_FORMAT);
-                    $where[] = "(s.startDate <= '$date' and (s.endDate is null or '$date' <= s.endDate))";
+                    $where[] = "((s.startDate is null or s.startDate <= '$date') and (s.endDate is null or '$date' <= s.endDate))";
                 }
                 if ($k === 'vacant' && $v) {
                     $where[] = '(m.person_id is null or mt.id != t.id)';
@@ -169,9 +169,9 @@ class SeatTable extends TableGateway
                 from seats           s
                 join committees      c  on s.committee_id=c.id
                 left join appointers a  on s.appointer_id=a.id
-                left join members    m  on s.id=m.seat_id and (m.startDate <= '$date' and (m.endDate is null or m.endDate >= '$date'))
+                left join members    m  on s.id=m.seat_id and ((m.startDate is null or m.startDate <= '$date') and (m.endDate is null or m.endDate >= '$date'))
                 left join terms      mt on m.term_id=mt.id
-                left join terms      t  on s.id=t.seat_id and (t.startDate <= '$date' and (t.endDate is null or t.endDate >= '$date'))
+                left join terms      t  on s.id=t.seat_id and ((t.startDate is null or t.startDate <= '$date') and (t.endDate is null or t.endDate >= '$date'))
                 left join people     p on m.person_id=p.id
                 $where
                 order by c.name, s.code";

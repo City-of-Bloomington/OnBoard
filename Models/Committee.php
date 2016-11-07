@@ -489,9 +489,9 @@ class Committee extends ActiveRecord
                         ) as applications
                 from committees c
                 left join seats s    on c.id= s.committee_id
-                left join members m  on s.id= m.seat_id and  m.startDate <= now() and ( m.endDate is null or now() <= m.endDate)
-                left join terms   t  on s.id= t.seat_id and  t.startDate <= now() and ( t.endDate is null or now() <= t.endDate)
-                left join members tm on t.id=tm.term_id and tm.startDate <= now() and (tm.endDate is null or now() <=tm.endDate)
+                left join members m  on s.id= m.seat_id and  (m.startDate is null or  m.startDate <= now()) and ( m.endDate is null or now() <= m.endDate)
+                left join terms   t  on s.id= t.seat_id and  (t.startDate is null or  t.startDate <= now()) and ( t.endDate is null or now() <= t.endDate)
+                left join members tm on t.id=tm.term_id and (tm.startDate is null or tm.startDate <= now()) and (tm.endDate is null or now() <=tm.endDate)
                 $where
                 group by c.id
                 order by c.name";
