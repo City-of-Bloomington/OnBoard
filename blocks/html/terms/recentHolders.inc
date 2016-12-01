@@ -2,7 +2,6 @@
 /**
  * @copyright 2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @author Dan Hiester <hiesterd@bloomington.in.gov>
  * @param Seat $this->seat
  */
 use Application\Models\Person;
@@ -13,9 +12,7 @@ $termLength = new \DateInterval($this->seat->getTermLength());
 
 $currentTerm = $this->seat->getTerm(time());
 if ($currentTerm) {
-    $d = new \DateTime();
-    $d->add($termLength);
-    $nextTerm = $this->seat->getTerm($d->format('U'));
+    $nextTerm = $currentTerm->getNextTerm();
 
     $list = [$nextTerm, $currentTerm];
 

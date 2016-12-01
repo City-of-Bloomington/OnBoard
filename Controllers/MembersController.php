@@ -155,9 +155,6 @@ class MembersController extends Controller
                         }
                         catch (\Exception $e) {
                             $_SESSION['errorMessages'][] = $e;
-                            print_r($member);
-                            print_r($newMember);
-                            exit();
                         }
                     }
 

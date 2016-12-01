@@ -9,6 +9,7 @@
  * @param bool           $this->disableButtons (optional)
  */
 use Application\Models\Person;
+use Application\Models\Term;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Url;
 
@@ -34,9 +35,11 @@ if (isset($this->params['current'])) {
         ?>
         </div>
     </header>
-    <form method="get">
-        <fieldset>
+
         <?php
+        /* DISABLED THE EFFECTIVE DATE SELECTION FOR THE TIME BEING
+            echo '<form method="get"><fieldset>';
+
             $f = $this->template->getHelper('field');
             echo $f->field([
                 'name'=>'current',
@@ -45,11 +48,10 @@ if (isset($this->params['current'])) {
                 'value'=>isset($this->params['current']) ? $this->params['current']->format('U') : '',
                 'type'=>'date'
             ]);
+            echo '<button type="submit" class="submit">{$this->_('refresh')}</button>';
+            echo '</fieldset></form>';
+        */
         ?>
-            <button type="submit" class="submit"><?= $this->_('refresh'); ?></button>
-        </fieldset>
-    </form>
-
 
     <table class="fn1-table">
         <thead>
@@ -72,8 +74,12 @@ if (isset($this->params['current'])) {
             $userCanEdit = !$this->disableButtons && Person::isAllowed('seats', 'edit');
 
             foreach ($this->data['results'] as $row) {
-                foreach ($row as $f=>$v)
-                {
+                /**
+                 * Create local variables for each of the result columns
+                 *
+                 * @see SeatTable::$dataFields
+                 */
+                foreach ($row as $f=>$v) {
                     switch ($f) {
                         case 'seatStart':
                         case 'seatEnd':
@@ -130,9 +136,16 @@ if (isset($this->params['current'])) {
                         }
                     }
 
-                    if (!$this->disableButtons && Person::isAllowed('members', 'reappoint')) {
-                        $uri = BASE_URI."/members/reappoint?member_id=$member_id";
-                        $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                    if (!$this->disableButtons
+                        && Person::isAllowed('members', 'reappoint')
+                        && $seatType === 'termed') {
+
+                        $t = new Term($term_id);
+                        $n = $t->getNextTerm();
+                        if ($n->isVacant()) {
+                            $uri = BASE_URI."/members/reappoint?member_id=$member_id";
+                            $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                        }
                     }
 
                     if ((!$memberEnd || strtotime($memberEnd) > time())

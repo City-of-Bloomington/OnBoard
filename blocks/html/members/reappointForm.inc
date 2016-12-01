@@ -5,6 +5,10 @@
  * @param Member $this->member
  * @param Member $this->newMember
  */
+use Blossom\Classes\Block;
+
+$seat = $this->newMember->getSeat();
+$term = $this->newMember->getTerm();
 ?>
 <section    class="fn1-uiBlock">
     <header class="fn1-uiBlock-header">
@@ -13,32 +17,29 @@
         </h1>
     </header>
     <div    class="fn1-uiBlock-content">
+        <?php
+            if ($seat) {
+                if ($seat->getType() === 'termed') {
+                    $block = new Block('terms/recentHolders.inc', ['seat'=>$seat]);
+                    echo $block->render('html', $this->template);
+                }
+            }
+        ?>
         <section class="fn1-uiBlock">
             <div class="fn1-uiBlock-content">
                 <dl class="fn1-output-field">
                     <dt><?= $this->_('seat'); ?></dt>
-                    <dd><?php
-                            $seat = $this->newMember->getSeat();
-                            echo self::escape($seat->getName());
-                        ?>
-                    </dd>
+                    <dd><?= self::escape($seat->getName()); ?></dd>
                 </dl>
 
                 <dl class="fn1-output-field">
                     <dt><?= $this->_('appointed_by'); ?></dt>
-                    <dd><?php
-                            echo self::escape($seat->getAppointer());
-                        ?>
-                    </dd>
+                    <dd><?= self::escape($seat->getAppointer()); ?></dd>
                 </dl>
 
                 <dl class="fn1-output-field">
                     <dt><?= $this->_('term'); ?></dt>
-                    <dd><?php
-                            $term = $this->newMember->getTerm();
-                            echo "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-                        ?>
-                    </dd>
+                    <dd><?= "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}"; ?></dd>
                 </dl>
             </div>
         </section>
