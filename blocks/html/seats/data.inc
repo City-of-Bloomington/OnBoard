@@ -146,6 +146,18 @@ if (isset($this->params['current'])) {
                             $uri = BASE_URI."/members/reappoint?member_id=$member_id";
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                         }
+                        else {
+                            // Since the next term is not vacant, we should not set the CSS status
+                            // for 'termEndsSoon'.
+                            // Otherwise, users will see the status, but cannot appoint someone for
+                            // the next term, since there's already someone scheduled to serve.
+                            if ($termEndsSoon) {
+                                $key = array_search('termEndsSoon', $classes);
+                                if ($key !== false) {
+                                    unset($classes[$key]);
+                                }
+                            }
+                        }
                     }
 
                     if ((!$memberEnd || strtotime($memberEnd) > time())
