@@ -10,6 +10,7 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
+		 ->addRole(new Role('Council'),       'Public')
 		 ->addRole(new Role('Reviewer'),      'Public')
 		 ->addRole(new Role('Staff'),         'Reviewer')
 		 ->addRole(new Role('Administrator'));
@@ -60,6 +61,12 @@ $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 
 // Allow Staff to do stuff
+$ZEND_ACL->allow('Council', 'committees',   'applications');
+$ZEND_ACL->allow('Council', 'media',        'download');
+$ZEND_ACL->allow('Council', 'applicants',   ['index', 'view']);
+$ZEND_ACL->allow('Council', 'applications', ['index', 'report']);
+$ZEND_ACL->allow('Council', 'people',       'viewContactInfo');
+
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', 'media');
 $ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
