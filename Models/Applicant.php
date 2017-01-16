@@ -189,7 +189,7 @@ class Applicant extends ActiveRecord
 	{
         $media = [];
         if ($this->getId()) {
-            $table = new MediaTable();
+            $table = new ApplicantMediaTable();
             $list  = $table->find(['applicant_id'=>$this->getId()]);
             foreach ($list as $m) { $media[] = $m; }
         }

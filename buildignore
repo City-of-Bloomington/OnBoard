@@ -6,7 +6,7 @@
 .git*
 configuration.inc
 site_config.inc
-/data/media/*
+/data/applicantMedia/*
 /data/sessions/*
 /data/.*
 /scripts/backup.cnf

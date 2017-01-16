@@ -8,7 +8,7 @@ namespace Application\Controllers;
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
 use Application\Models\Captcha;
-use Application\Models\Media;
+use Application\Models\ApplicantMedia;
 use Application\Models\Committee;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
@@ -77,7 +77,7 @@ class ApplicantsController extends Controller
                                     'error'    => $_FILES['mediafile']['error'   ][$id],
                                     'size'     => $_FILES['mediafile']['size'    ][$id]
                                 ];
-                                $media = new Media($id);
+                                $media = new ApplicantMedia($id);
                                 $media->setFile($file);
                                 $media->save();
                             }
@@ -114,7 +114,7 @@ class ApplicantsController extends Controller
 
                 if (isset($_FILES['mediafile'])
                     &&    $_FILES['mediafile']['error'] === UPLOAD_ERR_OK) {
-                    $media = new Media();
+                    $media = new ApplicantMedia();
                     $media->setApplicant_id($applicant->getId());
                     $media->setFile($_FILES['mediafile']);
                     $media->save();

@@ -3,7 +3,7 @@ site_config.inc
 backup.cnf
 data/.*
 data/sessions/*
-data/media
+data/applicantMedia
 *.mo
 screen.css
 screen.css.map

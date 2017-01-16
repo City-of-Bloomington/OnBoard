@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  */
-use Application\Models\Media;
+use Application\Models\ApplicantMedia;
 
 $fields = ['id', 'firstname', 'lastname', 'email', 'phone'];
 foreach ($fields as $f) {
@@ -30,7 +30,7 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
         <fieldset><legend><?= $this->_('media'); ?></legend>
         <?php
             $accept = [];
-            foreach (Media::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+            foreach (ApplicantMedia::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
             $accept = implode(',', $accept);
 
             foreach ($this->applicant->getMedia() as $m) {

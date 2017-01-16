@@ -1,9 +1,9 @@
 <?php
 /**
- * Files will be stored as /data/media/YYYY/MM/DD/$media_id.ext
+ * Files will be stored as /data/{tablename}/YYYY/MM/DD/$media_id.ext
  * User provided filenames will be stored in the database
  *
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -11,14 +11,8 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class Media extends ActiveRecord
+trait Media
 {
-	const REGEX_FILENAME_EXT = '/(^.*)\.([^\.]+)$/';
-
-	protected $tablename = 'media';
-
-	protected $applicant;
-
 	/**
 	 * Whitelist of accepted file types
 	 */
@@ -75,11 +69,11 @@ class Media extends ActiveRecord
 			else {
 				$zend_db = Database::getConnection();
 				if (ActiveRecord::isId($id)) {
-					$sql = 'select * from media where id=?';
+					$sql = "select * from {$this->tablename} where id=?";
 				}
 				// Internal filename without extension
 				elseif (ctype_xdigit($id)) {
-					$sql = 'select * from media where internalFilename like ?';
+					$sql = "select * from {$this->tablename} where internalFilename like ?";
 					$id.= '%';
 				}
 				$result = $zend_db->createStatement($sql)->execute([$id]);
@@ -98,18 +92,6 @@ class Media extends ActiveRecord
 		}
 	}
 
-	/**
-	 * Throws an exception if anything's wrong
-	 * @throws Exception $e
-	 */
-	public function validate()
-	{
-		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->getFilename())      { throw new \Exception('media/missingFilename');  }
-		if (!$this->getMime_type())     { throw new \Exception('media/missingMimeType');  }
-		if (!$this->getApplicant_id())  { throw new \Exception('media/missingApplicant'); }
-	}
-
 	public function save() { parent::save(); }
 
 	/**
@@ -120,7 +102,7 @@ class Media extends ActiveRecord
 		if ($this->getId()) {
 			$zend_db = Database::getConnection();
 
-			unlink(SITE_HOME."/media/{$this->getDirectory()}/{$this->getInternalFilename()}");
+			unlink($this->getFullPath());
 			parent::delete();
 		}
 	}
@@ -131,21 +113,9 @@ class Media extends ActiveRecord
 	public function getId()           { return parent::get('id');          }
 	public function getFilename()     { return parent::get('filename');    }
 	public function getMime_type()    { return parent::get('mime_type');   }
-	public function getApplicant_id() { return parent::get('applicant_id');   }
-	public function getApplicant()    { return parent::getForeignKeyObject(__namespace__.'\Applicant', 'applicant_id'); }
 	public function getUploaded($f=null, DateTimeZone $tz=null) { return parent::getDateData('uploaded', $f, $tz); }
 
-	public function setApplicant_id($i) { parent::setForeignKeyField (__namespace__.'\Applicant', 'applicant_id', $i); }
-	public function setApplicant   ($o) { parent::setForeignKeyObject(__namespace__.'\Applicant', 'applicant_id', $o);  }
 	public function setUploaded    ($d) { parent::setDateData('uploaded', $d); }
-
-	/**
-	 * @param array $post
-	 */
-	public function handleUpdate($post)
-	{
-        $this->setApplicant_id($post['applicant_id']);
-	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
@@ -172,7 +142,7 @@ class Media extends ActiveRecord
             $extension = self::$mime_types[$this->data['mime_type']];
 		}
 		else {
-			throw new \Exception('media/unknownFileType');
+			throw new \Exception("{$this->tablename}/unknownFileType");
 		}
 
 		// Clean all bad characters from the filename
@@ -223,7 +193,7 @@ class Media extends ActiveRecord
         else {
             file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
             unlink($file);
-            throw new \Exception('media/pdfConversionFailed');
+            throw new \Exception("{$this->tablename}/pdfConversionFailed");
         }
 	}
 
@@ -268,7 +238,7 @@ class Media extends ActiveRecord
 	 */
 	public function getFullPath()
 	{
-        return SITE_HOME."/media/{$this->getDirectory()}/{$this->getInternalFilename()}";
+        return SITE_HOME."/{$this->tablename}/{$this->getDirectory()}/{$this->getInternalFilename()}";
 	}
 
 	/**
@@ -276,7 +246,7 @@ class Media extends ActiveRecord
 	 */
 	public function getFilesize()
 	{
-		return filesize(SITE_HOME."/media/{$this->getDirectory()}/{$this->getInternalFilename()}");
+		return filesize($this->getFullPath());
 	}
 
 	/**
@@ -298,7 +268,7 @@ class Media extends ActiveRecord
 		$filename = preg_replace('/\s+/','_',$filename);
 
 		// Lower case any file extension
-		if (preg_match(self::REGEX_FILENAME_EXT,$filename,$matches)) {
+		if (preg_match('/(^.*)\.([^\.]+)$/',$filename,$matches)) {
             $filename = $extension
                 ? $matches[1].'.'.$extension
                 : $matches[1].'.'.strtolower($matches[2]);

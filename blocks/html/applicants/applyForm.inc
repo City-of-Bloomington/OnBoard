@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  * @param Committee $this->committee (optional)
@@ -8,7 +8,7 @@
 use Application\Models\Applicant;
 use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
-use Application\Models\Media;
+use Application\Models\ApplicantMedia;
 use Application\Models\Site;
 use Michelf\MarkdownExtra;
 
@@ -136,10 +136,10 @@ $field = $this->template->getHelper('field');
             <textarea name="qualifications"><?= $qualifications; ?></textarea>
         </fieldset>
 
-        <fieldset><legend><?= $this->_('media'); ?></legend>
+        <fieldset><legend><?= $this->_('applicantMedia'); ?></legend>
             <?php
                 $accept = [];
-                foreach (Media::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+                foreach (ApplicantMedia::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
                 $accept = implode(',', $accept);
 
                 echo "<input type=\"file\" name=\"mediafile\" id=\"mediafile\" accept=\"$accept\" />";
