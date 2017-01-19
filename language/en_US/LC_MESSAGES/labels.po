@@ -196,8 +196,8 @@ msgstr "Add Ethnicity"
 
 msgid "committee"
 msgid_plural "committees"
-msgstr[0] "Committee"
-msgstr[1] "Committees"
+msgstr[0] "Board/Commission"
+msgstr[1] "Boards/Commissions"
 
 msgid "committee_add"
 msgstr "Add Committee"
@@ -209,7 +209,7 @@ msgid "committee_end"
 msgstr "Close Committee"
 
 msgid "committee_info"
-msgstr "Committee Info"
+msgstr "Information"
 
 msgid "committees_current"
 msgstr "Current Committees"
@@ -662,7 +662,7 @@ msgstr "Please describe your qualifications"
 msgid "report_view"
 msgstr "View Report"
 
-msgid "media"
+msgid "applicantMedia"
 msgstr "Include a resume (optional)"
 
 msgid "error"
