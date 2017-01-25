@@ -157,10 +157,11 @@ create table applications (
 
 create table applicantMedia (
 	id int unsigned not null primary key auto_increment,
-	internalFilename varchar(50)  not null,
+	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
 	mime_type        varchar(128) not null,
-	uploaded         datetime     not null,
+	created          datetime     not null default CURRENT_TIMESTAMP,
+	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 	applicant_id     int unsigned not null,
 	foreign key (applicant_id) references applicants(id)
 );

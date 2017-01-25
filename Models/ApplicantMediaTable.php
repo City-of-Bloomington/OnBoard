@@ -12,7 +12,7 @@ class ApplicantMediaTable extends TableGateway
 {
 	public function __construct() { parent::__construct('applicantMedia', __namespace__.'\ApplicantMedia'); }
 
-	public function find($fields=null, $order='uploaded desc', $paginated=false, $limit=null)
+	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
 	{
 		$select = new Select('applicantMedia');
 		if (count($fields)) {

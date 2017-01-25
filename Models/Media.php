@@ -86,13 +86,33 @@ trait Media
 			}
 		}
 		else {
-			// This is where the code goes to generate a new, empty instance.
-			// Set any default values for properties that need it here
-			$this->setUploaded('now');
+            // Default Values
+
+            // Set temporary timestamps
+            //
+            // These values are only used for initial creation of empty Media objects.
+            // Once the media is saved to the database, we let MySQL handle generating
+            // actual timestamps for these values.
+            //
+            // We need to have these values, because we usually use the date portion
+            // as the path to store the media files.  As long as we are only looking
+            // at the date portion, we should be okay.  The time portion of these fields
+            // will change when the record is saved to the database.  (It should really
+            // only ever differ by a matter of seconds)
+			$now = new \DateTime();
+			$this->data['created'] = $now->format(ActiveRecord::MYSQL_DATETIME_FORMAT);
+			$this->data['updated'] = $now->format(ActiveRecord::MYSQL_DATETIME_FORMAT);
 		}
 	}
 
-	public function save() { parent::save(); }
+	public function save()
+	{
+        // Let MySQL handle setting correct datetimes for created and updated
+        unset($this->data['created']);
+        unset($this->data['updated']);
+
+        parent::save();
+    }
 
 	/**
 	 * Deletes the file from the hard drive
@@ -113,9 +133,8 @@ trait Media
 	public function getId()           { return parent::get('id');          }
 	public function getFilename()     { return parent::get('filename');    }
 	public function getMime_type()    { return parent::get('mime_type');   }
-	public function getUploaded($f=null, DateTimeZone $tz=null) { return parent::getDateData('uploaded', $f, $tz); }
-
-	public function setUploaded    ($d) { parent::setDateData('uploaded', $d); }
+	public function getCreated($f=null, \DateTimeZone $tz=null) { return parent::getDateData('created', $f, $tz); }
+	public function getUpdated($f=null, \DateTimeZone $tz=null) { return parent::getDateData('updated', $f, $tz); }
 
 	//----------------------------------------------------------------
 	// Custom Functions
@@ -166,14 +185,14 @@ trait Media
         if ($extension != 'pdf') {
             self::convertToPDF($newFile);
             $this->data['mime_type'] = 'application/pdf';
-            $this->data['filename' ] = basename($filename, $extension).'.pdf';
+            $this->data['filename' ] = basename($filename, $extension).'pdf';
         }
 	}
 
 	/**
 	 * In-place conversion of given file to PDF
 	 *
-	 * You must have set the SOFFICE path in configuration.inc
+	 * You must have set the SOFFICE path in bootstrap.inc
 	 * Apache must have permission to write to the SITE_HOME directory.
 	 * LibreOffice will create .config and .cache directories in SITE_HOME
 	 *
@@ -200,19 +219,20 @@ trait Media
 	/**
 	 * Returns the partial path of the file, relative to /data/media
 	 *
-	 * Media is stored in the data directory, outside of the web directory
-	 * This variable only contains the partial path.
-	 * This partial path can be concat with APPLICATION_HOME or BASE_URL
+	 * Implementations of this class will usually override this function
+	 * with their own custom scheme for the directory structure.
+	 * This implementation should be a good enough default that most
+	 * of the time, we won't need to override it.
 	 *
 	 * @return string
 	 */
 	public function getDirectory()
 	{
-		return $this->getUploaded('Y/n/j');
+		return $this->getCreated('Y/m/d');
 	}
 
 	/**
-	 * Returns the file name used on the server
+	 * Returns path to the file, relative to /data/media
 	 *
 	 * We do not use the filename the user chose when saving the files.
 	 * We generate a unique filename the first time the filename is needed.
@@ -225,20 +245,10 @@ trait Media
 	{
 		$filename = parent::get('internalFilename');
 		if (!$filename) {
-			$filename = uniqid();
+			$filename = $this->getDirectory().'/'.uniqid();
 			parent::set('internalFilename', $filename);
 		}
 		return $filename;
-	}
-
-	/**
-	 * Returns the full path to the file or derivative
-	 *
-	 * @return string
-	 */
-	public function getFullPath()
-	{
-        return SITE_HOME."/{$this->tablename}/{$this->getDirectory()}/{$this->getInternalFilename()}";
 	}
 
 	/**
@@ -275,5 +285,15 @@ trait Media
 		}
 
 		return $filename;
+	}
+
+	/**
+	 * Returns the full path to the file or derivative
+	 *
+	 * @return string
+	 */
+	public function getFullPath()
+	{
+        return SITE_HOME."/{$this->tablename}/{$this->getInternalFilename()}";
 	}
 }
