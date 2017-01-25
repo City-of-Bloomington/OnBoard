@@ -12,6 +12,8 @@ define('FN1_URL', BASE_URI.'/fn1');
 
 define('RECAPTCHA_SITE_KEY',   '');
 define('RECAPTCHA_SERVER_KEY', '');
+define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
+define('GOOGLE_USER_EMAIL', 'user@localhost');
 
 define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
 

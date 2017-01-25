@@ -1,5 +1,5 @@
-configuration.inc
 site_config.inc
+credentials.json
 backup.cnf
 data/.*
 data/sessions/*

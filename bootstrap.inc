@@ -29,28 +29,8 @@ include SITE_HOME.'/site_config.inc';
 /**
  * Enable autoloading for the PHP libraries
  */
-require_once APPLICATION_HOME.'/vendor/zendframework/zend-loader/src/AutoloaderFactory.php';
-$config = [
-	'Zend\Loader\StandardAutoloader' => [
-		'namespaces' => [
-			'Application' => APPLICATION_HOME,
-			'Site'        => SITE_HOME,
-            'Blossom'     => BLOSSOM.'/src',
-            'Michelf'              => APPLICATION_HOME.'/vendor/michelf/php-markdown/Michelf',
-            #'Aura\Router'          => APPLICATION_HOME.'/vendor/aura/router/src',
-            'Interop\Container'    => APPLICATION_HOME.'/vendor/container-interop/container-interop/src/Interop/Container',
-            'Zend\ServiceManager'  => APPLICATION_HOME.'/vendor/zendframework/zend-servicemanager/src',
-            'Zend\Stdlib'          => APPLICATION_HOME.'/vendor/zendframework/zend-stdlib/src',
-            'Zend\Permissions\Acl' => APPLICATION_HOME.'/vendor/zendframework/zend-permissions-acl/src',
-            'Zend\Paginator'       => APPLICATION_HOME.'/vendor/zendframework/zend-paginator/src',
-            'Zend\Log'             => APPLICATION_HOME.'/vendor/zendframework/zend-log/src',
-            'Zend\Loader'          => APPLICATION_HOME.'/vendor/zendframework/zend-loader/src',
-            'Zend\Hydrator'        => APPLICATION_HOME.'/vendor/zendframework/zend-hydrator/src',
-            'Zend\Db'              => APPLICATION_HOME.'/vendor/zendframework/zend-db/src',
-		]
-	]
-];
-Zend\Loader\AutoloaderFactory::factory($config);
+$loader = require APPLICATION_HOME.'/vendor/autoload.php';
+$loader->addPsr4('Site\\', SITE_HOME);
 
 #include APPLICATION_HOME.'/routes.inc';
 include APPLICATION_HOME.'/access_control.inc';

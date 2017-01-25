@@ -5,7 +5,7 @@
  */
 use Application\Models\Media;
 
-include '../../configuration.inc';
+include '../../bootstrap.inc';
 
 copy(__DIR__.'/testfile', SITE_HOME.'/testfile');
 

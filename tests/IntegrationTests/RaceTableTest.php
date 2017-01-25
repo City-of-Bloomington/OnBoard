@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-require_once '../../configuration.inc';
+require_once '../../bootstrap.inc';
 
 class RaceTableTest extends PHPUnit_Framework_TestCase
 {

@@ -6,7 +6,7 @@
 use Application\Models\Seat;
 use Application\Models\Term;
 
-require_once '../../configuration.inc';
+require_once '../../bootstrap.inc';
 
 class SeatTest extends PHPUnit_Framework_TestCase
 {

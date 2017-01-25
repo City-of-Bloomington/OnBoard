@@ -6,7 +6,7 @@
  */
 use Application\Models\Person;
 
-include '../configuration.inc';
+include '../bootstrap.inc';
 $person = new Person();
 $person->setFirstname('Administrator');
 $person->setLastname('Person');

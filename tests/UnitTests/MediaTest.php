@@ -5,7 +5,7 @@
  */
 use Application\Models\Media;
 
-include '../../configuration.inc';
+include '../../bootstrap.inc';
 
 class MediaTest extends PHPUnit_Framework_TestCase
 {
