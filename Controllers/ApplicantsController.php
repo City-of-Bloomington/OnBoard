@@ -8,7 +8,7 @@ namespace Application\Controllers;
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
 use Application\Models\Captcha;
-use Application\Models\ApplicantMedia;
+use Application\Models\ApplicantFile;
 use Application\Models\Committee;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
@@ -67,19 +67,19 @@ class ApplicantsController extends Controller
                     $applicant->handleUpdate($_POST);
                     $applicant->save();
 
-                    if (isset(   $_FILES['mediafile'])) {
-                        foreach ($_FILES['mediafile']['name'] as $id=>$name) {
-                            if ( $_FILES['mediafile']['error'][$id] === UPLOAD_ERR_OK) {
-                                $file = [
-                                    'name'     => $_FILES['mediafile']['name'    ][$id],
-                                    'type'     => $_FILES['mediafile']['type'    ][$id],
-                                    'tmp_name' => $_FILES['mediafile']['tmp_name'][$id],
-                                    'error'    => $_FILES['mediafile']['error'   ][$id],
-                                    'size'     => $_FILES['mediafile']['size'    ][$id]
+                    if (isset(   $_FILES['applicantFile'])) {
+                        foreach ($_FILES['applicantFile']['name'] as $id=>$name) {
+                            if ( $_FILES['applicantFile']['error'][$id] === UPLOAD_ERR_OK) {
+                                $fileinfo = [
+                                    'name'     => $_FILES['applicantFile']['name'    ][$id],
+                                    'type'     => $_FILES['applicantFile']['type'    ][$id],
+                                    'tmp_name' => $_FILES['applicantFile']['tmp_name'][$id],
+                                    'error'    => $_FILES['applicantFile']['error'   ][$id],
+                                    'size'     => $_FILES['applicantFile']['size'    ][$id]
                                 ];
-                                $media = new ApplicantMedia($id);
-                                $media->setFile($file);
-                                $media->save();
+                                $file = new ApplicantFile($id);
+                                $file->setFile($fileinfo);
+                                $file->save();
                             }
                         }
                     }
@@ -112,12 +112,12 @@ class ApplicantsController extends Controller
                     $applicant->saveCommittees($_POST['committees']);
                 }
 
-                if (isset($_FILES['mediafile'])
-                    &&    $_FILES['mediafile']['error'] === UPLOAD_ERR_OK) {
-                    $media = new ApplicantMedia();
-                    $media->setApplicant_id($applicant->getId());
-                    $media->setFile($_FILES['mediafile']);
-                    $media->save();
+                if (isset($_FILES['applicantFile'])
+                    &&    $_FILES['applicantFile']['error'] === UPLOAD_ERR_OK) {
+                    $file = new ApplicantFile();
+                    $file->setApplicant_id($applicant->getId());
+                    $file->setFile($_FILES['applicantFile']);
+                    $file->save();
                 }
                 $zend_db->getDriver()->getConnection()->commit();
 

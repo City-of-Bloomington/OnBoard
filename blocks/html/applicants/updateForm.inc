@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  */
-use Application\Models\ApplicantMedia;
+use Application\Models\ApplicantFile;
 
 $fields = ['id', 'firstname', 'lastname', 'email', 'phone'];
 foreach ($fields as $f) {
@@ -27,25 +27,25 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
             ?>
         </fieldset>
 
-        <fieldset><legend><?= $this->_('media'); ?></legend>
+        <fieldset><legend><?= $this->_('applicantFile'); ?></legend>
         <?php
             $accept = [];
-            foreach (ApplicantMedia::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+            foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
             $accept = implode(',', $accept);
 
-            foreach ($this->applicant->getMedia() as $m) {
-                $media_id = $m->getId();
-                $uri      = BASE_URI.'/media/download?media_id='.$media_id;
+            foreach ($this->applicant->getFiles() as $f) {
+                $file_id  = $f->getId();
+                $uri      = BASE_URI.'/files/download?file_id='.$file_id;
                 $filename = self::escape($m->getFilename());
                 $filename = "<a href=\"$uri\" class=\"{$m->getMime_type()}\">$filename</a>";
                 echo "
-                <dl><dt><label for=\"mediafile_$media_id\">$filename</label></dt>
-                    <dd><input type=\"file\" name=\"mediafile[$media_id]\" id=\"mediafile_$media_id\" accept=\"$accept\" /></dd>
+                <dl><dt><label for=\"applicantFile_$file_id\">$filename</label></dt>
+                    <dd><input type=\"file\" name=\"applicantFile[$file_id]\" id=\"applicantFile_$file_id\" accept=\"$accept\" /></dd>
                 </dl>
                 ";
 
             }
-            $this->_include('media/partials/uploadHelp.inc');
+            $this->_include('files/partials/uploadHelp.inc');
         ?>
         </fieldset>
 

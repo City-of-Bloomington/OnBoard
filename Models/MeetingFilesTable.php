@@ -8,12 +8,12 @@ namespace Application\Models;
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
 
-class MeetingMediaTable extends TableGateway
+class MeetingFilesTable extends TableGateway
 {
-    const TABLE = 'meetingMedia';
+    const TABLE = 'meetingFiles';
     public static $types = ['Agenda', 'Minutes', 'Packet'];
 
-	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingMedia'); }
+	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 
 	private function processFields(array $fields=null, Select &$select)
 	{

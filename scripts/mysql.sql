@@ -156,7 +156,7 @@ create table applications (
     foreign key (applicant_id) references applicants(id)
 );
 
-create table applicantMedia (
+create table applicantFiles (
 	id int unsigned not null primary key auto_increment,
 	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
@@ -238,7 +238,7 @@ create table siteContent (
     content text
 );
 
-create table meetingMedia(
+create table meetingFiles(
 	id               int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,
     meetingDate      date         not null,

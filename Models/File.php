@@ -1,6 +1,6 @@
 <?php
 /**
- * Files will be stored as /data/{tablename}/YYYY/MM/DD/$media_id.ext
+ * Files will be stored as /data/{tablename}/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
  * @copyright 2016-2017 City of Bloomington, Indiana
@@ -11,7 +11,7 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-trait Media
+trait File
 {
     protected $tempFile;
     protected $newFile;
@@ -31,24 +31,24 @@ trait Media
 		#'gif' =>['mime_type'=>'image/gif' ],
 		#'png' =>['mime_type'=>'image/png' ],
 		#'tiff'=>['mime_type'=>'image/tiff']
-		#'pdf' =>array('mime_type'=>'application/pdf','media_type'=>'attachment'),
-		#'rtf' =>array('mime_type'=>'application/rtf','media_type'=>'attachment'),
-		#'doc' =>array('mime_type'=>'application/msword','media_type'=>'attachment'),
-		#'xls' =>array('mime_type'=>'application/msexcel','media_type'=>'attachment'),
-		#'gz'  =>array('mime_type'=>'application/x-gzip','media_type'=>'attachment'),
-		#'zip' =>array('mime_type'=>'application/zip','media_type'=>'attachment'),
-		#'txt' =>array('mime_type'=>'text/plain','media_type'=>'attachment'),
-		#'wmv' =>array('mime_type'=>'video/x-ms-wmv','media_type'=>'video'),
-		#'mov' =>array('mime_type'=>'video/quicktime','media_type'=>'video'),
-		#'rm'  =>array('mime_type'=>'application/vnd.rn-realmedia','media_type'=>'video'),
-		#'ram' =>array('mime_type'=>'audio/vnd.rn-realaudio','media_type'=>'audio'),
-		#'mp3' =>array('mime_type'=>'audio/mpeg','media_type'=>'audio'),
-		#'mp4' =>array('mime_type'=>'video/mp4','media_type'=>'video'),
-		#'flv' =>array('mime_type'=>'video/x-flv','media_type'=>'video'),
-		#'wma' =>array('mime_type'=>'audio/x-ms-wma','media_type'=>'audio'),
-		#'kml' =>array('mime_type'=>'application/vnd.google-earth.kml+xml','media_type'=>'attachment'),
-		#'swf' =>array('mime_type'=>'application/x-shockwave-flash','media_type'=>'attachment'),
-		#'eps' =>array('mime_type'=>'application/postscript','media_type'=>'attachment')
+		#'pdf' =>['mime_type'=>'application/pdf'],
+		#'rtf' =>['mime_type'=>'application/rtf'],
+		#'doc' =>['mime_type'=>'application/msword'],
+		#'xls' =>['mime_type'=>'application/msexcel'],
+		#'gz'  =>['mime_type'=>'application/x-gzip'],
+		#'zip' =>['mime_type'=>'application/zip'],
+		#'txt' =>['mime_type'=>'text/plain'],
+		#'wmv' =>['mime_type'=>'video/x-ms-wmv'],
+		#'mov' =>['mime_type'=>'video/quicktime'],
+		#'rm'  =>['mime_type'=>'application/vnd.rn-realmedia'],
+		#'ram' =>['mime_type'=>'audio/vnd.rn-realaudio'],
+		#'mp3' =>['mime_type'=>'audio/mpeg'],
+		#'mp4' =>['mime_type'=>'video/mp4'],
+		#'flv' =>['mime_type'=>'video/x-flv'],
+		#'wma' =>['mime_type'=>'audio/x-ms-wma'],
+		#'kml' =>['mime_type'=>'application/vnd.google-earth.kml+xml'],
+		#'swf' =>['mime_type'=>'application/x-shockwave-flash'],
+		#'eps' =>['mime_type'=>'application/postscript'],
     ];
 
 	/**
@@ -84,7 +84,7 @@ trait Media
 					$this->exchangeArray($result->current());
 				}
 				else {
-					throw new \Exception('media/unknownMedia');
+					throw new \Exception('files/unknownFile');
 				}
 			}
 		}
@@ -93,12 +93,12 @@ trait Media
 
             // Set temporary timestamps
             //
-            // These values are only used for initial creation of empty Media objects.
-            // Once the media is saved to the database, we let MySQL handle generating
+            // These values are only used for initial creation of empty File objects.
+            // Once the file is saved to the database, we let MySQL handle generating
             // actual timestamps for these values.
             //
             // We need to have these values, because we usually use the date portion
-            // as the path to store the media files.  As long as we are only looking
+            // as the path to store the files.  As long as we are only looking
             // at the date portion, we should be okay.  The time portion of these fields
             // will change when the record is saved to the database.  (It should really
             // only ever differ by a matter of seconds)
@@ -141,7 +141,7 @@ trait Media
 
         // Check and make sure the file was saved
         if (!is_file($newFile)) {
-            throw new \Exception('media/badServerPermissions');
+            throw new \Exception('files/badServerPermissions');
         }
     }
 
@@ -184,7 +184,7 @@ trait Media
 		$this->tempFile = is_array($file) ? $file['tmp_name']       : $file;
 		$filename       = is_array($file) ? basename($file['name']) : basename($file);
 		if (!$this->tempFile) {
-			throw new \Exception('media/uploadFailed');
+			throw new \Exception('files/uploadFailed');
 		}
 
 		$this->data['mime_type'] = mime_content_type($this->tempFile);
@@ -237,7 +237,7 @@ trait Media
 	}
 
 	/**
-	 * Returns the partial path of the file, relative to /data/media
+	 * Returns the partial path of the file, relative to /data/files
 	 *
 	 * Implementations of this class will usually override this function
 	 * with their own custom scheme for the directory structure.
@@ -252,11 +252,11 @@ trait Media
 	}
 
 	/**
-	 * Returns path to the file, relative to /data/media
+	 * Returns path to the file, relative to /data/files
 	 *
 	 * We do not use the filename the user chose when saving the files.
 	 * We generate a unique filename the first time the filename is needed.
-	 * This filename will be saved in the database whenever this media is
+	 * This filename will be saved in the database whenever this file is
 	 * finally saved.
 	 *
 	 * @return string

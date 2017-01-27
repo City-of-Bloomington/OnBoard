@@ -1,5 +1,5 @@
 # Translation
-# Copyright (C) 2016 City of Bloomington
+# Copyright (C) 2016-2017 City of Bloomington
 # This file is distributed under the same license as the OnBoard package.
 #
 domain "errors"
@@ -44,10 +44,10 @@ msgstr "Your password is corrupted.  Please contact a system administrator for h
 msgid "ldap/unknownUser"
 msgstr "That username is not in LDAP.  You cannot set LDAP authentication if the user is not in LDAP."
 
-msgid "media/unknownFileType"
+msgid "files/unknownFileType"
 msgstr "The file you uploaded is not a valid filetype.  We only accept %s"
 
-msgid "media/missingExtension"
+msgid "files/missingExtension"
 msgstr "The file you uploaded is not a known filetype. Filenames must include an extension."
 
 msgid "terms/overlappingTerms"

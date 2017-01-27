@@ -662,7 +662,7 @@ msgstr "Please describe your qualifications"
 msgid "report_view"
 msgstr "View Report"
 
-msgid "applicantMedia"
+msgid "applicantFile"
 msgstr "Include a resume (optional)"
 
 msgid "error"

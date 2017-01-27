@@ -8,11 +8,11 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class MeetingMedia extends ActiveRecord
+class MeetingFile extends ActiveRecord
 {
-    use Media;
+    use File;
 
-	protected $tablename = 'meetingMedia';
+	protected $tablename = 'meetingFiles';
 	protected $committee;
 
 	public static $types = ['Agenda', 'Minutes', 'Packet'];
@@ -36,11 +36,11 @@ class MeetingMedia extends ActiveRecord
         }
 
         if (!in_array($this->getType(), self::$types)) {
-            throw new \Exception('meetingMedia/invalidType');
+            throw new \Exception('meetingFiles/invalidType');
         }
 
-		if (!$this->getFilename())      { throw new \Exception('media/missingFilename');  }
-		if (!$this->getMime_type())     { throw new \Exception('media/missingMimeType');  }
+		if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
+		if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
 	}
 
 	//----------------------------------------------------------------

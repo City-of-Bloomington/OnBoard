@@ -6,13 +6,13 @@
 namespace Application\Controllers;
 
 use Application\Models\Committee;
-use Application\Models\MeetingMedia;
-use Application\Models\MeetingMediaTable;
+use Application\Models\MeetingFile;
+use Application\Models\MeetingFilesTable;
 
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
-class MeetingMediaController extends Controller
+class MeetingFileController extends Controller
 {
     public function index()
     {
@@ -31,50 +31,50 @@ class MeetingMediaController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        $table = new MeetingMediaTable();
+        $table = new MeetingFilesTable();
         $list  = $table->find($search);
 
-        $this->template->blocks[] = new Block('meetingMedia/list.inc', [
-            'media'     => $list,
+        $this->template->blocks[] = new Block('meetingFiles/list.inc', [
+            'files'     => $list,
             'committee' => isset($committee) ? $committee : null
         ]);
     }
 
     public function update()
     {
-        if (!empty($_REQUEST['meetingMedia_id'])) {
-            try { $media = new MeetingMedia($_REQUEST['meetingMedia_id']); }
+        if (!empty($_REQUEST['meetingFile_id'])) {
+            try { $file = new MeetingFile($_REQUEST['meetingFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else {
-            // New Media files must have a committee_id passed in.
+            // New files must have a committee_id passed in.
             if (!empty($_REQUEST['committee_id'])) {
                 try {
                     $committee = new Committee($_REQUEST['committee_id']);
-                    $media = new MeetingMedia();
-                    $media->setCommittee($committee);
+                    $file = new MeetingFile();
+                    $file->setCommittee($committee);
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
         }
 
-        if (isset($media)) {
+        if (isset($file)) {
             if (isset($_POST['committee_id'])) {
                 try {
-                    $media->handleUpdate($_POST);
-                    if (isset($_FILES['mediafile'])) {
-                        $media->setFile($_FILES['mediafile']);
+                    $file->handleUpdate($_POST);
+                    if (isset($_FILES['meetingFile'])) {
+                        $file->setFile($_FILES['meetingFile']);
                     }
-                    $media->save();
+                    $file->save();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            $committe = $media->getCommittee();
+            $committe = $file->getCommittee();
             $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
-            $this->template->blocks[] = new Block('meetingMedia/updateForm.inc', ['media'=>$media]);
+            $this->template->blocks[] = new Block('meetingFiles/updateForm.inc', ['file'=>$file]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);
@@ -84,11 +84,11 @@ class MeetingMediaController extends Controller
 
     public function download()
     {
-        if (!empty($_GET['meetingMedia_id'])) {
+        if (!empty($_GET['meetingFile_id'])) {
             try {
-                $media = new MeetingMedia($_GET['meetingMedia_id']);
-                $this->template->setFilename('media');
-                $this->template->blocks[] = new Block('media/download.inc', ['media'=>$media]);
+                $file = new MeetingFile($_GET['meetingFile_id']);
+                $this->template->setFilename('file');
+                $this->template->blocks[] = new Block('files/download.inc', ['downloadFile'=>$file]);
             }
             catch (\Exception $e) {
                 header('HTTP/1.1 404 Not Found', true, 404);
@@ -103,12 +103,12 @@ class MeetingMediaController extends Controller
 
     public function delete()
     {
-        if (!empty($_GET['meetingMedia_id'])) {
+        if (!empty($_GET['meetingFile_id'])) {
             try {
-                $media = new MeetingMedia($_GET['meetingMedia_id']);
-                $committe = $media->getCommittee();
-                $media->delete();
-                header('Location: '.BASE_URI.'/meetingMedia?committe_id='.$committe->getId());
+                $file = new MeetingFile($_GET['meetingFile_id']);
+                $committe = $file->getCommittee();
+                $file->delete();
+                header('Location: '.BASE_URI.'/meetingFiles?committe_id='.$committe->getId());
                 exit();
             }
             catch (\Exception $e) {

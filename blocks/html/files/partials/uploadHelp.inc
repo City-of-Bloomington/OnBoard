@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-use Application\Models\Media;
+use Application\Models\File;
 
 function return_bytes($size)
 {
@@ -29,7 +29,7 @@ else {
 }
 
 $accept = [];
-foreach (Media::$mime_types as $mime=>$ext) {
+foreach (File::$mime_types as $mime=>$ext) {
     $accept[] = ".$ext";
 }
 $accept = implode(',', $accept);

@@ -2,21 +2,21 @@
 /**
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param MeetingMedia $this->media
+ * @param MeetingFile $this->file
  */
 use Application\Models\CommitteeTable;
-use Application\Models\MeetingMedia;
+use Application\Models\MeetingFile;
 
-$title = $this->media->getId() ? $this->_('meetingMedia_edit') : $this->_('meetingMedia_add');
+$title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
 ?>
 <section>
     <header>
         <h1><?= $title; ?></h1>
     </header>
 
-    <form method="post" action="<?= BASE_URI; ?>/meetingMedia/update" enctype="multipart/form-data">
+    <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
         <fieldset>
-            <input name="meetingMedia_id" type="hidden" value="<?= $this->media->getId(); ?>" />
+            <input name="meetingFile_id" type="hidden" value="<?= $this->file->getId(); ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
 
@@ -31,19 +31,19 @@ $title = $this->media->getId() ? $this->_('meetingMedia_edit') : $this->_('meeti
                     'name'     => 'committee_id',
                     'label'    => $this->_('committee'),
                     'required' => true,
-                    'value'    => $this->media->getCommittee_id(),
+                    'value'    => $this->file->getCommittee_id(),
                     'type'     => 'select',
                     'options'  => $options
                 ]);
 
                 $options = [];
-                foreach (MeetingMedia::$types as $t) { $options[] = ['value'=>$t]; }
+                foreach (MeetingFile::$types as $t) { $options[] = ['value'=>$t]; }
                 echo $helper->field([
                     'id'       => 'type',
                     'name'     => 'type',
                     'label'    => $this->_('type'),
                     'required' => true,
-                    'value'    => $this->media->getType(),
+                    'value'    => $this->file->getType(),
                     'type'     => 'select',
                     'options'  => $options
                 ]);
@@ -52,27 +52,27 @@ $title = $this->media->getId() ? $this->_('meetingMedia_edit') : $this->_('meeti
                     'id'    => 'eventId',
                     'name'  => 'eventId',
                     'label' => $this->_('eventId'),
-                    'value' => $this->media->getEventId()
+                    'value' => $this->file->getEventId()
                 ]);
 
                 echo $helper->field([
                     'id'       => 'meetingDate',
                     'name'     => 'meetingDate',
                     'label'    => $this->_('date'),
-                    'value'    => $this->media->getMeetingDate('U'),
+                    'value'    => $this->file->getMeetingDate('U'),
                     'type'     => 'date',
                     'required' => true
                 ]);
 
                 echo $helper->field([
-                    'id'    => 'mediafile',
-                    'name'  => 'mediafile',
-                    'label' => $this->_('media'),
+                    'id'    => 'meetingFile',
+                    'name'  => 'meetingFile',
+                    'label' => $this->_('meetingFile'),
                     'type'  => 'file'
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
-                echo $helper->saveAndCancelButtons(BASE_URI.'/meetingMedia');
+                echo $helper->saveAndCancelButtons(BASE_URI.'/meetingFiles');
             ?>
         </fieldset>
     </form>

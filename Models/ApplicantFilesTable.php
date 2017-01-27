@@ -8,13 +8,15 @@ namespace Application\Models;
 use Blossom\Classes\TableGateway;
 use Zend\Db\Sql\Select;
 
-class ApplicantMediaTable extends TableGateway
+class ApplicantFilesTable extends TableGateway
 {
-	public function __construct() { parent::__construct('applicantMedia', __namespace__.'\ApplicantMedia'); }
+    const TABLE = 'applicantFiles';
+
+	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\ApplicantFile'); }
 
 	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
 	{
-		$select = new Select('applicantMedia');
+		$select = new Select(self::TABLE);
 		if (count($fields)) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {

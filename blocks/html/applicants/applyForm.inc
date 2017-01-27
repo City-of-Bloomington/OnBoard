@@ -8,7 +8,7 @@
 use Application\Models\Applicant;
 use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
-use Application\Models\ApplicantMedia;
+use Application\Models\ApplicantFile;
 use Application\Models\Site;
 use Michelf\MarkdownExtra;
 
@@ -136,14 +136,14 @@ $field = $this->template->getHelper('field');
             <textarea name="qualifications"><?= $qualifications; ?></textarea>
         </fieldset>
 
-        <fieldset><legend><?= $this->_('applicantMedia'); ?></legend>
+        <fieldset><legend><?= $this->_('applicantFile'); ?></legend>
             <?php
                 $accept = [];
-                foreach (ApplicantMedia::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+                foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
                 $accept = implode(',', $accept);
 
-                echo "<input type=\"file\" name=\"mediafile\" id=\"mediafile\" accept=\"$accept\" />";
-                $this->_include('media/partials/uploadHelp.inc');
+                echo "<input type=\"file\" name=\"applicantFile\" id=\"applicantFile\" accept=\"$accept\" />";
+                $this->_include('files/partials/uploadHelp.inc');
             ?>
         </fieldset>
 

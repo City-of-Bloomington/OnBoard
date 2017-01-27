@@ -49,16 +49,16 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
             </dl>
             ";
         }
-        if (Person::isAllowed('applicantMedia', 'download')) {
+        if (Person::isAllowed('applicantFiles', 'download')) {
             echo "
             <dl class=\"fn1-output-field\">
-                <dt>{$this->_('applicantMedia')}</dt><dd>
+                <dt>{$this->_('applicantFile')}</dt><dd>
             ";
-                $media = $this->applicant->getMedia();
-                foreach ($media as $m) {
-                    $uri = BASE_URI.'/applicantMedia/download?applicantMedia_id='.$m->getId();
-                    $filename = self::escape($m->getFilename());
-                    echo "<a href=\"$uri\" class=\"{$m->getMime_type()}\">$filename</a>";
+                $files = $this->applicant->getFiles();
+                foreach ($files as $f) {
+                    $uri = BASE_URI.'/applicantFiles/download?applicantFile_id='.$f->getId();
+                    $filename = self::escape($f->getFilename());
+                    echo "<a href=\"$uri\" class=\"{$f->getMime_type()}\">$filename</a>";
                 }
             echo "
                 </dd>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Files will be stored as /data/applicantMedia/YYYY/MM/DD/$media_id.ext
+ * Files will be stored as /data/applicantFiles/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
  * @copyright 2016-2017 City of Bloomington, Indiana
@@ -11,11 +11,11 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class ApplicantMedia extends ActiveRecord
+class ApplicantFile extends ActiveRecord
 {
-    use Media;
+    use File;
 
-	protected $tablename = 'applicantMedia';
+	protected $tablename = 'applicantFiles';
 	protected $applicant;
 
 	/**
@@ -37,9 +37,9 @@ class ApplicantMedia extends ActiveRecord
 	public function validate()
 	{
 		// Check for required fields here.  Throw an exception if anything is missing.
-		if (!$this->getFilename())      { throw new \Exception('media/missingFilename');  }
-		if (!$this->getMime_type())     { throw new \Exception('media/missingMimeType');  }
-		if (!$this->getApplicant_id())  { throw new \Exception('media/missingApplicant'); }
+		if (!$this->getFilename())      { throw new \Exception('files/missingFilename');  }
+		if (!$this->getMime_type())     { throw new \Exception('files/missingMimeType');  }
+		if (!$this->getApplicant_id())  { throw new \Exception('files/missingApplicant'); }
 	}
 
 	//----------------------------------------------------------------

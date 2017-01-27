@@ -6,7 +6,7 @@
  * @param array     $this->meetings
  * @param int       $this->year
  */
-use Application\Models\MeetingMedia;
+use Application\Models\MeetingFile;
 use Blossom\Classes\Url;
 ?>
 <section>
@@ -34,13 +34,13 @@ use Blossom\Classes\Url;
             </dt>
             ";
 
-            $action = BASE_URI.'/meetingMedia/update';
+            $action = BASE_URI.'/meetingFiles/update';
             $helper = $this->template->getHelper('field');
             $committee_id = $this->committee->getId();
-            foreach (MeetingMedia::$types as $type) {
+            foreach (MeetingFile::$types as $type) {
                 $fileinput = $helper->field([
-                    'name'  => 'mediafile',
-                    'label' => $this->_('media'),
+                    'name'  => 'meetingFile',
+                    'label' => $this->_('meetingFile'),
                     'type'  => 'file'
                 ]);
                 echo "

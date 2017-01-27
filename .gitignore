@@ -3,7 +3,8 @@ credentials.json
 backup.cnf
 data/.*
 data/sessions/*
-data/applicantMedia
+data/applicantFiles
+data/meetingFiles
 *.mo
 screen.css
 screen.css.map

@@ -41,8 +41,8 @@ $ZEND_ACL->addResource(new Resource('members'));
 $ZEND_ACL->addResource(new Resource('liaisons'));
 $ZEND_ACL->addResource(new Resource('applicants'));
 $ZEND_ACL->addResource(new Resource('applications'));
-$ZEND_ACL->addResource(new Resource('applicantMedia'));
-$ZEND_ACL->addResource(new Resource('meetingMedia'));
+$ZEND_ACL->addResource(new Resource('applicantFiles'));
+$ZEND_ACL->addResource(new Resource('meetingFiles'));
 $ZEND_ACL->addResource(new Resource('committeeStatutes'));
 
 $ZEND_ACL->addResource(new Resource('topics'));
@@ -60,18 +60,18 @@ $ZEND_ACL->allow(null, ['people', 'topics', 'liaisons'], ['index','view']);
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
-$ZEND_ACL->allow(null, 'meetingMedia', ['index', 'download']);
+$ZEND_ACL->allow(null, 'meetingFiles', ['index', 'download']);
 
 
 // Allow Staff to do stuff
 $ZEND_ACL->allow('Council', 'committees',   'applications');
-$ZEND_ACL->allow('Council', 'applicantMedia', 'download');
+$ZEND_ACL->allow('Council', 'applicantFiles', 'download');
 $ZEND_ACL->allow('Council', 'applicants',   ['index', 'view']);
 $ZEND_ACL->allow('Council', 'applications', ['index', 'report']);
 $ZEND_ACL->allow('Council', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
-$ZEND_ACL->allow('Reviewer', 'applicantMedia');
+$ZEND_ACL->allow('Reviewer', 'applicantFiles');
 $ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');

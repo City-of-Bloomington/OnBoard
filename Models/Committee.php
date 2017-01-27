@@ -527,28 +527,11 @@ class Committee extends ActiveRecord
             }
         }
 
-        $table = new MeetingMediaTable();
+        $table = new MeetingFilesTable();
         $list  = $table->find(['start'=>$start, 'end'=>$end, 'committee_id'=>$this->getId()]);
-        foreach ($list as $m) {
-            $meetings[$m->getMeetingDate('Y-m-d')]['media'][$m->getType()][] = $m;
+        foreach ($list as $f) {
+            $meetings[$f->getMeetingDate('Y-m-d')]['files'][$f->getType()][] = $f;
         }
         return $meetings;
-
-        /*
-        $sql = "select distinct meetingDate from meetingMedia
-                where committee_id=? and meetingDate > ? and meetingDate < ?";
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute([
-            $this->getId(),
-            $start->format(ActiveRecord::MYSQL_DATE_FORMAT),
-            $end  ->format(ActiveRecord::MYSQL_DATE_FORMAT)
-        ]);
-        foreach ($result as $row) {
-            if (!array_key_exists($row['meetingDate'])) {
-                $meetings[$row['meetingDate']] = '';
-            }
-        }
-        return $meetings;
-        */
 	}
 }
