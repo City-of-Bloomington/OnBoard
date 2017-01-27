@@ -17,6 +17,14 @@ $membersLink = $helper->buttonLink(
     BASE_URI."/committees/members?committee_id=$committee_id",
     $this->_(['current_member', 'current_members', 2])
 );
+$meetingsLink = $helper->buttonLink(
+    BASE_URI."/committees/meetings?committee_id=$committee_id",
+    $this->_(['meeting', 'meetings', 10])
+);
+$mediaLink = $helper->buttonLink(
+    BASE_URI."/meetingMedia?committee_id=$committee_id",
+    $this->_(['meetingMedia', 'meetingMedias', 10])
+);
 
 $pastSeatsLink = '';
 if ($this->committee->hasPastSeats()) {
@@ -58,6 +66,8 @@ echo"
             $pastSeatsLink
             $pastMembersLink
             $applicationsLink
+            $meetingsLink
+            $mediaLink
         </nav>
     </header>
 </section>

@@ -37,24 +37,25 @@ create table people (
 );
 
 create table committees (
-	id int unsigned not null primary key auto_increment,
+	id            int unsigned  not null primary key auto_increment,
 	type enum('seated', 'open') not null default 'seated',
-	name varchar(128) not null,
+	name          varchar(128)  not null,
 	statutoryName varchar(128),
-	yearFormed year(4),
-	endDate    date,
-	website varchar(128),
-	email   varchar(128),
-	phone   varchar(128),
-	address varchar(128),
-	city    varchar(128),
-	state   varchar(32),
-	zip     varchar(32),
+	yearFormed    year(4),
+	endDate       date,
+	calendarId    varchar(128),
+	website       varchar(128),
+	email         varchar(128),
+	phone         varchar(128),
+	address       varchar(128),
+	city          varchar(128),
+	state         varchar(32),
+	zip           varchar(32),
     description     text,
 	contactInfo     text,
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
-	applicationLifetime tinyint unsigned not null default 90
+	applicationLifetime tinyint unsigned not null default 90,
 );
 
 create table committeeStatutes(
@@ -235,4 +236,18 @@ create table topic_tags (
 create table siteContent (
     label varchar(128) not null primary key,
     content text
+);
+
+create table meetingMedia(
+	id               int unsigned not null primary key auto_increment,
+    committee_id     int unsigned not null,
+    meetingDate      date         not null,
+    eventId          varchar(128),
+    type             varchar(16)  not null,
+	internalFilename varchar(128) not null,
+	filename         varchar(128) not null,
+	mime_type        varchar(128) not null,
+	created          datetime     not null default CURRENT_TIMESTAMP,
+	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	foreign key (committee_id) references committees(id)
 );

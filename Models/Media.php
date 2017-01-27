@@ -13,6 +13,9 @@ use Blossom\Classes\Database;
 
 trait Media
 {
+    protected $tempFile;
+    protected $newFile;
+
 	/**
 	 * Whitelist of accepted file types
 	 */
@@ -111,7 +114,35 @@ trait Media
         unset($this->data['created']);
         unset($this->data['updated']);
 
+        // Move the new file into place
+        if ($this->tempFile && $this->newFile) {
+            $this->saveFile($this->tempFile, $this->newFile);
+
+            if ($this->data['mime_type'] != 'application/pdf') {
+                self::convertToPDF($this->newFile);
+
+                $extension = self::$mime_types[$this->data['mime_type']];
+                $this->data['filename' ] = basename($this->data['filename'], $extension).'pdf';
+                $this->data['mime_type'] = 'application/pdf';
+            }
+        }
+
         parent::save();
+    }
+
+    protected function saveFile($tempFile, $newFile)
+    {
+        $directory = dirname($newFile);
+        if (!is_dir($directory)) {
+            mkdir  ($directory, 0777, true);
+        }
+        rename($tempFile, $newFile);
+        chmod($newFile, 0666);
+
+        // Check and make sure the file was saved
+        if (!is_file($newFile)) {
+            throw new \Exception('media/badServerPermissions');
+        }
     }
 
 	/**
@@ -150,13 +181,13 @@ trait Media
 	public function setFile($file)
 	{
 		// Handle passing in either a $_FILES array or just a path to a file
-		$tempFile = is_array($file) ? $file['tmp_name'] : $file;
-		$filename = is_array($file) ? basename($file['name']) : basename($file);
-		if (!$tempFile) {
+		$this->tempFile = is_array($file) ? $file['tmp_name']       : $file;
+		$filename       = is_array($file) ? basename($file['name']) : basename($file);
+		if (!$this->tempFile) {
 			throw new \Exception('media/uploadFailed');
 		}
 
-		$this->data['mime_type'] = mime_content_type($tempFile);
+		$this->data['mime_type'] = mime_content_type($this->tempFile);
 		if (array_key_exists($this->data['mime_type'], self::$mime_types)) {
             $extension = self::$mime_types[$this->data['mime_type']];
 		}
@@ -168,25 +199,9 @@ trait Media
 		$filename = $this->createValidFilename($filename, $extension);
 		$this->data['filename'] = $filename;
 
-		// Move the file where it's supposed to go
-		$newFile   = $this->getFullPath();
-		$directory = dirname($newFile);
-		if (!is_dir($directory)) {
-			mkdir  ($directory, 0777, true);
-		}
-		rename($tempFile, $newFile);
-		chmod($newFile, 0666);
-
-		// Check and make sure the file was saved
-		if (!is_file($newFile)) {
-			throw new \Exception('media/badServerPermissions');
-		}
-
-        if ($extension != 'pdf') {
-            self::convertToPDF($newFile);
-            $this->data['mime_type'] = 'application/pdf';
-            $this->data['filename' ] = basename($filename, $extension).'pdf';
-        }
+		// Flag where it's supposed to go
+		// Actually moving the file is deferred until save()
+		$this->newFile = $this->getFullPath();
 	}
 
 	/**
@@ -200,18 +215,23 @@ trait Media
 	 */
 	public static function convertToPDF($file)
 	{
-        $info = pathinfo($file);
-        $dir = $info['dirname'];
+        if ($file && is_file($file) && is_writable($file)) {
+            $info = pathinfo($file);
+            $dir  = $info['dirname'];
 
-        $cmd = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
-        $out = "$cmd\n";
-        $out.= shell_exec($cmd);
-        if (is_file("$file.pdf")) {
-             rename("$file.pdf", $file);
+            $cmd  = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
+            $out  = "$cmd\n";
+            $out .= shell_exec($cmd);
+            if (is_file("$file.pdf")) {
+                 rename("$file.pdf", $file);
+            }
+            else {
+                file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
+                unlink($file);
+                throw new \Exception("{$this->tablename}/pdfConversionFailed");
+            }
         }
         else {
-            file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
-            unlink($file);
             throw new \Exception("{$this->tablename}/pdfConversionFailed");
         }
 	}

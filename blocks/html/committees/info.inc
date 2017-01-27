@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -11,7 +11,7 @@ use Michelf\MarkdownExtra;
 
 $fields = [
     'id', 'type',
-    'name', 'statutoryName', 'yearFormed', 'website',
+    'name', 'statutoryName', 'yearFormed', 'website', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
@@ -62,14 +62,14 @@ if ((!$endDate || $endDate > time())
         $fields  = [
             'type', 'yearFormed', 'endDate',
             'statutoryName', 'website',
-            'email', 'phone', 'address'
+            'email', 'phone', 'address', 'calendarId'
         ];
         if ($userCanEdit) {
             $fields[] = 'termEndWarningDays';
             $fields[] = 'applicationLifetime';
         }
         $address = $address ? "<address>$address\n$city $state $zip</address>" : null;
-        
+
         $endDate = $this->committee->getEndDate(DATE_FORMAT);
 
         foreach ($fields as $f) {

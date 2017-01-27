@@ -1,15 +1,10 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
 
-use Application\Models\PeopleTable;
-use Application\Models\SeatTable;
-use Application\Models\TermTable;
-use Application\Models\TopicTable;
-use Application\Models\VoteTable;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\View;
 use Blossom\Classes\Database;
@@ -85,6 +80,7 @@ class Committee extends ActiveRecord
 	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
+	public function getCalendarId()        { return parent::get('calendarId');       }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getEmail()             { return parent::get('email');            }
 	public function getPhone()             { return parent::get('phone');            }
@@ -104,6 +100,7 @@ class Committee extends ActiveRecord
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
+	public function setCalendarId      ($s) { parent::set('calendarId',       $s); }
     public function setEmail           ($s) { parent::set('email',            $s); }
     public function setPhone           ($s) { parent::set('phone',            $s); }
     public function setAddress         ($s) { parent::set('address',          $s); }
@@ -126,7 +123,7 @@ class Committee extends ActiveRecord
 
 		$fields = [
             'type', 'departments',
-			'name', 'statutoryName', 'website', 'yearFormed',
+			'name', 'statutoryName', 'website', 'yearFormed', 'calendarId',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'contactInfo', 'meetingSchedule',
 			'termEndWarningDays', 'applicationLifetime'
@@ -498,5 +495,60 @@ class Committee extends ActiveRecord
         $zend_db = Database::getConnection();
         $result = $zend_db->query($sql)->execute();
         return $result;
+	}
+
+	/**
+	 * @return array  An array of meeting dates
+	 */
+	public function getMeetings(\DateTime $start, \DateTime $end)
+	{
+        $meetings = [];
+
+        if ($this->getCalendarId()) {
+            $events = GoogleGateway::events($this->getCalendarId(), $start, $end);
+            foreach ($events as $e) {
+                if ($e->start->dateTime) {
+                    $allDay = false;
+                    $start = new \DateTime($e->start->dateTime);
+                    $end   = new \DateTime($e->end  ->dateTime);
+                }
+                else {
+                    $allDay = true;
+                    $start = new \DateTime($e->start->date);
+                    $end   = new \DateTime($e->end  ->date);
+                }
+                $year  = $start->format('Y');
+                $month = $start->format('m');
+                $day   = $start->format('d');
+
+                $meetings[$start->format('Y-m-d')] = [
+                    'eventId' => $e->id
+                ];
+            }
+        }
+
+        $table = new MeetingMediaTable();
+        $list  = $table->find(['start'=>$start, 'end'=>$end, 'committee_id'=>$this->getId()]);
+        foreach ($list as $m) {
+            $meetings[$m->getMeetingDate('Y-m-d')]['media'][$m->getType()][] = $m;
+        }
+        return $meetings;
+
+        /*
+        $sql = "select distinct meetingDate from meetingMedia
+                where committee_id=? and meetingDate > ? and meetingDate < ?";
+        $zend_db = Database::getConnection();
+        $result = $zend_db->query($sql)->execute([
+            $this->getId(),
+            $start->format(ActiveRecord::MYSQL_DATE_FORMAT),
+            $end  ->format(ActiveRecord::MYSQL_DATE_FORMAT)
+        ]);
+        foreach ($result as $row) {
+            if (!array_key_exists($row['meetingDate'])) {
+                $meetings[$row['meetingDate']] = '';
+            }
+        }
+        return $meetings;
+        */
 	}
 }

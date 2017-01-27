@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -11,7 +11,7 @@ use Blossom\Classes\View;
 
 $fields = [
     'type', 'yearFormed',
-    'name', 'statutoryName', 'website',
+    'name', 'statutoryName', 'website', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
     'description', 'contactInfo', 'meetingSchedule',
     'termEndWarningDays', 'applicationLifetime'
@@ -49,7 +49,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 $field = $this->template->getHelper('field');
 
                 $fields = [
-                    'name', 'yearFormed', 'statutoryName',
+                    'name', 'yearFormed', 'statutoryName', 'calendarId',
                     'website', 'termEndWarningDays', 'applicationLifetime',
                 ];
                 foreach ($fields as $f) {
