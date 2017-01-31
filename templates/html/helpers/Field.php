@@ -35,6 +35,10 @@ class Field extends Helper
         if (isset(  $params['type'])) {
             switch ($params['type']) {
                 case 'date':
+                    // Until all browsers implement a date picker,
+                    // we must continute to use plain text inputs for dates.
+                    unset($params['type']);
+
                     $params['value'] = !empty($params['value']) ? date(DATE_FORMAT, $params['value']) : '';
                     $params['attr']['placeholder'] = View::translateDateString(DATE_FORMAT);
                     $renderInput = 'input';
