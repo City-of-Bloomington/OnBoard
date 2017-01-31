@@ -260,6 +260,9 @@ msgstr "Add Seat"
 msgid "seat_edit"
 msgstr "Edit Seat"
 
+msgid "seat_end"
+msgstr "End Seat"
+
 msgid "seat_delete"
 msgstr "Delete Seat"
 

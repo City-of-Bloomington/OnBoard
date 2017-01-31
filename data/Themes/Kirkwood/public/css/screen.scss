@@ -1,0 +1,132 @@
+#errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
+#errorMessages h2 { }
+
+#reportForm {
+    overflow:auto;
+    > h1 { font-size:1.75em; }
+
+    #seats      { float:right; width:33%; }
+    #applicants { margin-right:34%; }
+    #committees { max-height:14em; overflow:scroll; }
+}
+.applications_list > h1 { font-size:1.75em; }
+
+textarea#address { height:3em; }
+
+#onboard-contextInfo {
+    .fn1-output-field {
+        border-top: none;
+        > dt {
+            color: #777;
+            float: none;
+        }
+        > dd {
+            margin-left: 0;
+        }
+    }
+}
+
+.breadcrumbs ul {
+    list-style-type:none;
+    margin: 0;
+    li {
+        display:inline;
+        &:not(:last-of-type):after {
+            content: '>';
+        }
+    }
+    a { font-size: .75em; margin-right: 8px; }
+}
+
+.onboard {
+    &-offices {
+        font-size: .85em;
+        opacity: .75;
+    }
+    &-termDates {
+        color: #777;
+        font-size: .9em;
+    }
+    &-termsTable {
+        border-collapse: collapse;
+        width: 100%;
+
+        th, td {
+        }
+        > tbody {
+            > tr {
+                > th {
+                    background-color: #909090;
+                    border: 1px solid #666;
+                    color: #fff;
+                    padding: .5em;
+                    vertical-align: top;
+                    > .fn1-dropdown {
+                        .fn1-dropdown-launcher {
+                            background-color: #707070;
+                        }
+                    }
+                }
+                > td {
+                    background-color: #e0e0e0;
+                    border: 1px solid #666;
+                    padding: .5em;
+                }
+            }
+        }
+    }
+}
+
+// The following rules are state-based rules that override default rules
+// with more specific selectors.
+div.carryOver,    tr.carryOver    td { background-color: #ed9a9c !important; }
+div.vacant,       tr.vacant       td { background-color: #ed9a9c !important; }
+div.termEndsSoon, tr.termEndsSoon td { background-color: #edea9a !important; }
+
+tr.carryOver    td:first-child:before,
+tr.vacant       td:first-child:before,
+tr.termEndsSoon td:first-child:before {
+    content: '';
+    display: inline-block;
+    height: 1em;
+    margin: 0 .5em 0 0;
+    width: 1em;
+}
+tr.carryOver    td:first-child:before { background-image: url('images/danger-opt.svg'); }
+tr.vacant       td:first-child:before { background-image: url('images/danger-opt.svg'); }
+tr.termEndsSoon td:first-child:before { background-image: url('images/warning-opt.svg'); }
+
+
+p {
+    max-width: 40em;
+}
+
+
+.pageNavigation ul { list-style-type:none; }
+.pageNavigation li { display:inline; margin-right:1em; }
+.pageNavigation .current { border:2px solid green; }
+
+.tabBar { list-style-type:none; margin:8px; border-bottom:4px solid #036; }
+.tabBar li { display:inline; margin:.5em; padding:4px 8px 0 8px; border-radius:4px; }
+.tabBar li.current { background-color:#036; }
+.tabBar li.current a { color:white; }
+
+/* Tag Styles */
+.tags   { font-size:20px; }
+.tags a { font-size:20px; }
+.tags .p90 a { font-size:110%; color:black; font-weight:bold; }
+.tags .p70 a { font-size:100%; color:black;   }
+.tags .p50 a { font-size:90%;  color:#150517; }
+.tags .p30 a { font-size:75%;  color:#2b1b17; }
+.tags .p10 a { font-size:60%;  color:#302226; }
+.tags .p0  a { font-size:50%;  color:#3b3131; }
+.tags a.current { color:#ee7d22; }
+
+a.current { font-weight:bold; }
+
+tr.carryover { background-color:#fc6; }
+
+.votingRecord .yes     { padding-left:28px; background:url('images/check.gif') top left no-repeat; }
+.votingRecord .no      { padding-left:28px; background:url('images/x.gif')     top left no-repeat; }
+.votingRecord .absent  { padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
+.votingRecord .abstain { padding-left:28px; background:url('images/dash.gif')  top left no-repeat; }

@@ -1,17 +1,9 @@
-table {
-    overflow: hidden;
+thead {
+    th {
+        background: #ccc;
+        color: #fff;
+        text-align:center;
 
-    thead {
-        th {
-            background: #ccc;
-            color: #fff;
-            text-align:center;
-
-            a { color: #fff; }
-        }
     }
-    tbody {
-        th, td {
-        }
-    }
+    a { color: #fff; }
 }
