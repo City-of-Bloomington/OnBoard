@@ -5,21 +5,16 @@
  */
 namespace Application\Templates\Helpers;
 
-use Blossom\Classes\Template;
+use Blossom\Classes\Helper;
 
-class Dropdown
+class Dropdown extends Helper
 {
-	public function __construct(Template $template)
-	{
-		$this->template = $template;
-	}
-
-	public function dropdown(array $links, $title, $class=null)
+	public function dropdown(array $links, $title, $id, $class=null)
 	{
         $html = "
-        <nav         class=\"fn1-dropdown $class\">
-            <button  class=\"fn1-dropdown-launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">$title</button>
-            <div     class=\"fn1-dropdown-links\">
+        <nav class=\"dropdown $class\">
+            <button id=\"$id\" class=\"launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">$title</button>
+            <div class=\"links\" aria-labeledby=\"$id\">
                 {$this->renderLinks($links)}
             </div>
         </nav>
@@ -31,9 +26,18 @@ class Dropdown
 	{
         $html = '';
         foreach ($links as $l) {
+
+            $attrs = '';
+            if (!empty($l['attrs'])) {
+                $attrs = ' ';
+                foreach ($l['attrs'] as $key=>$value) {
+                    $attrs.= "$key=\"$value\"";
+                }
+            }
+
             $html.= empty($l['subgroup'])
-                ? "<a href=\"$l[url]\" class=\"fn1-dropdown-link\">$l[label]</a>"
-                : "<div class=\"fn1-dropdown-subgroup\">{$this->renderLinks($l['subgroup'])}</div>";
+                ? "<a href=\"$l[url]\"$attrs>$l[label]</a>"
+                : "<div class=\"subgroup\">{$this->renderLinks($l['subgroup'])}</div>";
         }
         return $html;
 	}

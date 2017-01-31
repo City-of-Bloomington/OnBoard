@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
 use Application\Models\LiaisonTable;
@@ -10,7 +9,9 @@ use Application\Models\LiaisonTable;
 $members = $this->person->getMembers();
 ?>
 <section>
-    <h1><?= $this->_(['membership', 'memberships', count($members)]); ?></h1>
+    <header>
+        <h1><?= $this->_(['membership', 'memberships', count($members)]); ?></h1>
+    </header>
     <table>
     <?php
     $committees = [];
@@ -45,7 +46,7 @@ $members = $this->person->getMembers();
 $this->data = LiaisonTable::personLiaisonData(['person_id'=>$this->person->getId()]);
 if (count($this->data)) {
     $l = $this->_(['liaisonship', 'liaisonships', count($this->data)]);
-    echo "<section><h1>$l</h1>";
+    echo "<section><header><h1>$l</h1></header>";
     $this->_include('liaisons/partials/dataTable.inc');
     echo '</section>';
 }

@@ -52,12 +52,12 @@ if ((!$endDate || $endDate > time())
     );
 }
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header">
-        <h1  class="fn1-uiBlock-title"><?= $this->_('committee_info') ?></h1>
-        <div class="fn1-uiBlock-headerTools"><?php echo "$editButton $endButton"; ?></div>
+<section>
+    <header>
+        <h1><?= $this->_('committee_info') ?></h1>
+        <div class="tools"><?= "$editButton $endButton"; ?></div>
     </header>
-    <div class="fn1-uiBlock-content">
+    <div>
     <?php
         $fields  = [
             'type', 'yearFormed', 'endDate',
@@ -78,7 +78,7 @@ if ((!$endDate || $endDate > time())
                     $$f = $$f.' '.$this->_(['day', 'days', $$f]);
                 }
                 echo "
-                <dl class=\"fn1-output-field\">
+                <dl>
                     <dt>{$this->_($f)}</dt>
                     <dd>{$$f}</dd>
                 </dl>

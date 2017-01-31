@@ -56,8 +56,3 @@ if (!defined('STDIN')) {
 #$logger->addWriter($writer);
 #Zend\Log\Logger::registerErrorHandler($logger);
 #Zend\Log\Logger::registerExceptionHandler($logger);
-
-/**
- * Grab a timestamp for calculating process time
- */
-$startTime = microtime(1);

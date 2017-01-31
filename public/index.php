@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
+ * @copyright 2012-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-include '../bootstrap.inc';
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
+
+$startTime = microtime(1);
+
+include '../bootstrap.inc';
 
 // Check for routes
 if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
@@ -38,3 +40,10 @@ else {
 }
 
 echo $template->render();
+
+if ($template->outputFormat === 'html') {
+    # Calculate the process time
+    $endTime = microtime(1);
+    $processTime = $endTime - $startTime;
+    echo "<!-- Process Time: $processTime -->";
+}

@@ -1,0 +1,42 @@
+@import 'modules/normalize';
+@import 'modules/layout';
+@import 'modules/header';
+@import 'modules/menu';
+@import 'modules/content-section';
+@import 'modules/field';
+@import 'modules/buttons';
+@import 'modules/tables';
+
+#errorMessages { background-color:#fcc; }
+.breadcrumbs ul { }
+
+// The following rules are state-based rules that override default rules
+// with more specific selectors.
+div.carryOver,    tr.carryOver    td {  }
+div.vacant,       tr.vacant       td {  }
+div.termEndsSoon, tr.termEndsSoon td {  }
+
+.pageNavigation ul { list-style-type:none; }
+.pageNavigation li { display:inline; margin-right:1em; }
+.pageNavigation .current { border:2px solid green; }
+
+.tabBar { list-style-type:none; }
+.tabBar li { display:inline; }
+.tabBar li.current {  }
+.tabBar li.current a {  }
+
+/* Tag Styles */
+.tags   { font-size:20px; }
+.tags a { font-size:20px; }
+.tags .p90 a { font-size:110%; color:black; font-weight:bold; }
+.tags .p70 a { font-size:100%; color:black;   }
+.tags .p50 a { font-size:90%;  color:#150517; }
+.tags .p30 a { font-size:75%;  color:#2b1b17; }
+.tags .p10 a { font-size:60%;  color:#302226; }
+.tags .p0  a { font-size:50%;  color:#3b3131; }
+.tags a.current { color:#ee7d22; }
+
+.votingRecord .yes     { padding-left:28px; background:url('images/check.gif') top left no-repeat; }
+.votingRecord .no      { padding-left:28px; background:url('images/x.gif')     top left no-repeat; }
+.votingRecord .absent  { padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
+.votingRecord .abstain { padding-left:28px; background:url('images/dash.gif')  top left no-repeat; }

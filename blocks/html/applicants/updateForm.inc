@@ -15,7 +15,9 @@ foreach ($fields as $f) {
 $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
 ?>
 <section>
-    <h1><?= $title; ?></h1>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
 
     <form method="post" action="<?= BASE_URI; ?>/applicants/update" enctype="multipart/form-data">
         <fieldset><legend><?= $this->_('info_person'); ?></legend>

@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Office $this->office
  */
 
 $title = $this->office->getId() ? $this->_('office_edit') : $this->_('office_add');
-$picker = $this->template->getHelper('datePicker');
+$helper = $this->template->getHelper('field');
 ?>
 <section>
     <header>
@@ -18,22 +18,31 @@ $picker = $this->template->getHelper('datePicker');
             <input name="office_id"    type="hidden" value="<?= $this->office->getId(); ?>" />
             <input name="committee_id" type="hidden" value="<?= $this->office->getCommittee_id(); ?>" />
             <input name="person_id"    type="hidden" value="<?= $this->office->getPerson_id(); ?>" />
-
-            <dl class="fn1-input-field">
-                <dt><label  for="title"><?= $this->_('title'); ?></label></dt>
-                <dd><input name="title" id="title"
-                            value="<?= self::escape($this->office->getTitle()); ?>" />
-                </dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label for="startDate"><?= $this->_('startDate'); ?></label></dt>
-                <dd><?= $picker->datePicker('startDate', 'startDate', $this->office->getStartDate('U')); ?></dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label for="endDate"><?= $this->_('endDate'); ?></label></dt>
-                <dd><?= $picker->datePicker('endDate', 'endDate', $this->office->getEndDate('U')); ?></dd>
-            </dl>
             <?php
+                echo $helper->field([
+                    'name'     => 'title',
+                    'id'       => 'title',
+                    'label'    => $this->_('title'),
+                    'value'    => parent::escape($this->office->getTitle()),
+                    'required' => true
+                ]);
+
+                echo $helper->field([
+                    'name'     => 'startDate',
+                    'id'       => 'startDate',
+                    'label'    => $this->_('startDate'),
+                    'value'    => $this->office->getStartDate('U'),
+                    'type'     => 'date',
+                    'required' => true
+                ]);
+                echo $helper->field([
+                    'name'     => 'endDate',
+                    'id'       => 'endDate',
+                    'label'    => $this->_('endDate'),
+                    'value'    => $this->office->getEndDate('U'),
+                    'type'     => 'date'
+                ]);
+
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 echo $helper->saveAndCancelButtons(
                     BASE_URI.'/committees/members?committee_id='.$this->office->getCommittee_id()

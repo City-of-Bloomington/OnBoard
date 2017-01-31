@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
@@ -14,10 +14,10 @@ use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Block;
 ?>
 <section class="membersList">
-<?php
-    if ($this->title) { echo "<header><h1>{$this->title}</h1></header>"; }
-?>
-    <table class="fn1-table">
+    <?php
+        if ($this->title) { echo "<header><h1>{$this->title}</h1></header>"; }
+    ?>
+    <table>
     <?php
         $actions = new Block('members/partials/actions.inc');
 
@@ -33,7 +33,7 @@ use Blossom\Classes\Block;
             }
             $officeTitles = implode(', ',$officeTitles);
             if (count($officeTitles > 0)) {
-                $officeTitles = " <span class=\"onboard-offices\">$officeTitles</span>";
+                $officeTitles = " <span class=\"offices\">$officeTitles</span>";
             }
 
             $moreLinks = '';

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Member $this->member
  * @param Member $this->newMember
@@ -10,13 +10,13 @@ use Blossom\Classes\Block;
 $seat = $this->newMember->getSeat();
 $term = $this->newMember->getTerm();
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header">
-        <h1 class="fn1-uiBlock-title">
+<section>
+    <header>
+        <h1>
             <?= sprintf($this->_('reappointToSeat', 'messages'), $this->newMember->getPerson()->getFullName() , $this->newMember->getCommittee()->getName()); ?>
         </h1>
     </header>
-    <div    class="fn1-uiBlock-content">
+    <div>
         <?php
             if ($seat) {
                 if ($seat->getType() === 'termed') {
@@ -25,19 +25,19 @@ $term = $this->newMember->getTerm();
                 }
             }
         ?>
-        <section class="fn1-uiBlock">
-            <div class="fn1-uiBlock-content">
-                <dl class="fn1-output-field">
+        <section>
+            <div>
+                <dl>
                     <dt><?= $this->_('seat'); ?></dt>
                     <dd><?= self::escape($seat->getName()); ?></dd>
                 </dl>
 
-                <dl class="fn1-output-field">
+                <dl>
                     <dt><?= $this->_('appointed_by'); ?></dt>
                     <dd><?= self::escape($seat->getAppointer()); ?></dd>
                 </dl>
 
-                <dl class="fn1-output-field">
+                <dl>
                     <dt><?= $this->_('term'); ?></dt>
                     <dd><?= "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}"; ?></dd>
                 </dl>
@@ -47,7 +47,7 @@ $term = $this->newMember->getTerm();
         <form method="post" action="<?= BASE_URI; ?>/members/reappoint">
             <input name="member_id" type="hidden" value="<?= $this->member->getId(); ?>" />
             <input name="confirm"   type="hidden" value="yes" />
-            <div class="fn1-btn-container">
+            <div>
                 <?php
                     $helper = $this->template->getHelper('saveAndCancelButtons');
                     echo $helper->saveAndCancelButtons(

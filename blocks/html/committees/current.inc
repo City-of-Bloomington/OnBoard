@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->data
  */
@@ -27,7 +27,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
         ?>
         </div>
     </header>
-    <table class="fn1-table">
+    <table>
         <thead>
             <tr><th></th>
                 <th><?= $this->_(['seat', 'seats', 2]); ?></th>

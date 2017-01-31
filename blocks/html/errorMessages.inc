@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright 2007-2016 City of Bloomington, Indiana
+ * @copyright 2007-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->errorMessages
  */
 ?>
 <section id="errorMessages">
-	<h1><?= $this->_('error'); ?></h1>
+    <header>
+        <h1><?= $this->_('error'); ?></h1>
+    </header>
 	<?php
         $errorDir = "/blocks/html/errorMessages";
 

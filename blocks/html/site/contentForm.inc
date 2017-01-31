@@ -1,13 +1,15 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param string $this->label
  * @param string $this->content
  */
 ?>
 <section>
-    <h1><?= $this->_('content_edit'); ?></h1>
+    <header>
+        <h1><?= $this->_('content_edit'); ?></h1>
+    </header>
 
     <form method="post" action="<?= BASE_URI; ?>/site/updateContent">
         <fieldset>

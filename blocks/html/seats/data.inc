@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array          $this->params         Query parameters that produced the data
  * @param Zend\Db\Result $this->data
@@ -109,7 +109,7 @@ if (isset($this->params['current'])) {
                 if ($userCanEdit) {
                     $editSeatButton = $helper->buttonLink(
                         BASE_URI."/seats/update?seat_id=$seat_id",
-                        $this->_('seats_edit'),
+                        $this->_('seat_edit'),
                         'edit',
                         ButtonLink::SIZE_ICON
                     );
@@ -197,14 +197,14 @@ if (isset($this->params['current'])) {
                             $actions[] = ['url'=>$uri, 'label'=>"{$this->_('edit')} $office_title"];
                         }
                     }
-                    $offices = '<span class="onboard-offices">'.implode(',', $ts).'</span>';
+                    $offices = '<span class="offices">'.implode(',', $ts).'</span>';
                 }
 
                 $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
                 $moreLinks = '';
                 if (isset($_SESSION['USER']) && count($actions)) {
                     $h = $this->template->getHelper('dropdown');
-                    $moreLinks = $h->dropdown($actions, $this->_('more'), 'fn1-table-actions');
+                    $moreLinks = $h->dropdown($actions, $this->_('more'), "seatActions_$seat_id");
                 }
                 echo "
                 <tr $classes>

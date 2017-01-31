@@ -224,7 +224,7 @@ class Field extends Helper
      * label string
      * name  string
      * id    string
-     * value string
+     * value Person   Value must be a Person object
      * type  string   HTML5 input tag type (text, email, date, etc.)
      *
      * @param array  $params
@@ -234,6 +234,6 @@ class Field extends Helper
     public function person(array $params, $required=null, $attr=null)
     {
         $h = $this->template->getHelper('personChooser');
-        return $h->personChooser($params['name'], $params['value']);
+        return $h->personChooser($params['name'], $params['id'], $params['value']);
     }
 }

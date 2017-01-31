@@ -1,0 +1,14 @@
+/**
+ * Base styles for buttons and button links
+ */
+button, .button {
+    background-color:#ccc;
+    border:1px solid #000;
+    border-radius:.5em;
+    display:inline-block;
+    padding: .25em 1em;
+    vertical-align: middle;
+    &:hover {
+        cursor:pointer;
+    }
+}

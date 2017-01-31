@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Person;
@@ -39,5 +39,5 @@ if ($links) {
     $links[] = ['url'=>BASE_URI.'/committees/report', 'label'=>'Master Report'];
 
     $helper = $this->getHelper('dropdown');
-    echo $helper->dropdown($links, $this->_('admin'), 'fn1-siteMenu');
+    echo $helper->dropdown($links, $this->_('admin'), 'admin_menu');
 }

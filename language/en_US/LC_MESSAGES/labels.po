@@ -142,6 +142,9 @@ msgstr "Edit Person"
 msgid "person_delete"
 msgstr "Delete Person"
 
+msgid "person_change"
+msgstr "Change Person"
+
 msgid "user"
 msgid_plural "users"
 msgstr[0] "User Account"
@@ -188,10 +191,10 @@ msgid_plural "races"
 msgstr[0] "Ethnicity"
 msgstr[1] "Ethnicities"
 
-msgid "edit_race"
+msgid "race_edit"
 msgstr "Edit Ethnicity"
 
-msgid "add_race"
+msgid "race_add"
 msgstr "Add Ethnicity"
 
 msgid "committee"

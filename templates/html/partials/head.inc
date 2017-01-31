@@ -1,19 +1,12 @@
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php $this->_include('partials/stylesheets.inc'); ?>
     <title><?= isset($this->title) ? self::escape($this->title) : APPLICATION_NAME; ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="<?= FN1_URL; ?>/css/default.css" />
-    <link rel="stylesheet" type="text/css" href="<?= BASE_URL; ?>/css/local/screen.css" />
-    <link rel="stylesheet" type="text/css" href="<?= BASE_URI; ?>/css/Font-Awesome/css/font-awesome.css" />
-    <?php
-        if (defined('THEME')) {
-            echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"".BASE_URI.'/'.THEME."/css/screen.css\" />";
-        }
-    ?>
+    <script type="text/javascript" src="<?= BASE_URI; ?>/js/onboard.js">
+    </script>
     <script type="text/javascript">
-        var APPLICATION = {
-            BASE_URL: '<?= BASE_URL; ?>'
-        };
+        ONBOARD.BASE_URL = '<?= BASE_URL; ?>';
+        ONBOARD.BASE_URI = '<?= BASE_URI; ?>';
     </script>
 </head>

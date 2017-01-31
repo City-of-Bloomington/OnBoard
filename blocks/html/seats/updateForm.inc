@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -19,85 +19,81 @@ foreach ($fields as $f) {
 $title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 $picker = $this->template->getHelper('datePicker');
 ?>
-<section  class="fn1-uiBlock">
-  <header class="fn1-uiBlock-header">
-    <h1   class="fn1-uiBlock-title"><?= $title; ?></h1>
-  </header>
-  <div    class="fn1-uiBlock-content">
-    <form method="post" action="<?php echo BASE_URI; ?>/seats/update">
-      <fieldset><legend><?php echo $this->_('info_seat'); ?></legend>
+<section>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
+    <form method="post" action="<?= BASE_URI; ?>/seats/update">
+        <fieldset><legend><?= $this->_('info_seat'); ?></legend>
             <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
+            <?php
+                $helper = $this->template->getHelper('field');
 
-            <dl class="fn1-input-field--select">
-                <dt><label  for="type" class="required"><?= $this->_('type'); ?></label></dt>
-                <dd><select name="type">
-                    <?php
-                        foreach (Seat::$types as $t) {
-                            $selected = $t === $type
-                                ? 'selected="true"'
-                                : '';
-                            echo "<option value=\"$t\" $selected>{$this->_($t)}</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
-            <?php
-                $field = $this->template->getHelper('field');
-                echo $field->field(['label'=>$this->_('code'), 'name'=>'code', 'id'=>'code', 'value'=>$code ]);
-                echo $field->field(['label'=>$this->_('name'), 'name'=>'name', 'id'=>'name', 'value'=>$name, 'required'=>true]);
+                $options = [];
+                foreach (Seat::$types as $t) { $options[] = ['value'=>$t, 'label'=>$this->_($t)]; }
+                echo $helper->field([
+                    'name'     => 'type',
+                    'id'       => 'type',
+                    'label'    => $this->_('type'),
+                    'value'    => $type,
+                    'type'     => 'select',
+                    'options'  => $options,
+                    'required' => true
+                ]);
+
+                echo $helper->field(['label'=>$this->_('code'), 'name'=>'code', 'id'=>'code', 'value'=>$code ]);
+                echo $helper->field(['label'=>$this->_('name'), 'name'=>'name', 'id'=>'name', 'value'=>$name, 'required'=>true]);
+
+                $options = [];
+                $table   = new AppointerTable();
+                $list    = $table->find();
+                foreach ($list as $a) { $options[] = ['value'=>$a->getId(), 'label'=>parent::escape($a->getName())]; }
+                echo $helper->field([
+                    'name'     => 'appointer_id',
+                    'id'       => 'appointer_id',
+                    'label'    => $this->_('appointer'),
+                    'value'    => $appointer_id,
+                    'type'     => 'select',
+                    'options'  => $options,
+                    'required' => true
+                ]);
+
+                echo $helper->field([
+                    'label'    => $this->_('startDate'),
+                    'name'     => 'startDate',
+                    'id'       => 'startDate',
+                    'type'     => 'date',
+                    'value'    => $this->seat->getStartDate('U'),
+                    'required' => true
+                ]);
+
+                $options = [];
+                foreach (Seat::$termIntervals as $interval => $label) { $options[] = ['value'=>$interval, 'label'=>$label]; }
+                echo $helper->field([
+                    'name'    => 'termLength',
+                    'id'      => 'termLength',
+                    'label'   => $this->_('termLength'),
+                    'value'   => $termLength,
+                    'type'    => 'select',
+                    'options' => $options
+                ]);
+
+                echo $helper->field([
+                    'name'=>'voting',
+                    'label'=>$this->_('voting'),
+                    'value'=>$voting,
+                    'type'=>'radio',
+                    'options'=>[
+                        ['value'=>1, 'label'=>$this->_('yes')],
+                        ['value'=>0, 'label'=>$this->_('no' )]
+                    ]
+                ]);
             ?>
-            <dl class="fn1-input-field">
-                <dt><label   for="appointer_id" class="required"><?= $this->_(['appointer', 'appointers', 1]); ?></label></dt>
-                <dd><select name="appointer_id" id="appointer_id"><option value=""></option>
-                    <?php
-                        $table = new AppointerTable();
-                        $list = $table->find();
-                        foreach ($list as $a) {
-                            $name = self::escape($a->getName());
-                            $selected = ($appointer_id === $a->getId())
-                                        ? 'selected="true"'
-                                        : '';
-                            echo "<option value=\"{$a->getId()}\" $selected>$name</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
-            <?php
-                echo $field->field(['label'=>$this->_('startDate'), 'name'=>'startDate', 'id'=>'startDate', 'type'=>'date', 'value'=>$this->seat->getStartDate('U'), 'required'=>true]);
-            ?>
-            <dl class="fn1-input-field--select">
-                <dt><label   for="termLength"><?= $this->_('termLength'); ?></label></dt>
-                <dd><select name="termLength" id="termLength">
-                    <?php
-                        foreach (Seat::$termIntervals as $interval => $label) {
-                            $selected = $termLength === $interval
-                                ? 'selected="true"'
-                                : '';
-                            echo "<option value=\"$interval\" $selected>$label</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
-            <dl class="fn1-input-field">
-                <dt><label><?= $this->_('voting'); ?></label></dt>
-                <dd><label>
-                        <input name="voting" type="radio" value="1" <?= $voting ? 'checked="true"' : ''; ?> />
-                        <?= $this->_('yes'); ?>
-                    </label>
-                    <label>
-                        <input name="voting" type="radio" value="0" <?= $voting ? '' : 'checked="true"'; ?> />
-                        <?= $this->_('no'); ?>
-                    </label>
-                </dd>
-            </dl>
         </fieldset>
 
         <fieldset><legend><?= $this->_(['requirement', 'requirements', 2]); ?></legend>
-            <textarea name="requirements" class="markdown"><?= $requirements; ?></textarea>
+            <textarea name="requirements"><?= $requirements; ?></textarea>
         </fieldset>
 
         <fieldset>
@@ -110,5 +106,4 @@ $picker = $this->template->getHelper('datePicker');
         ?>
         </fieldset>
     </form>
-  </div>
 </section>

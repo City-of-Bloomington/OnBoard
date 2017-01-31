@@ -11,8 +11,7 @@ use Blossom\Classes\Url;
 ?>
 <section>
     <header>
-        <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->events)]); ?>
-        </h1>
+        <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->events)]); ?></h1>
         <div class="tools">
         <?php
             $url = new Url(Url::current_url());

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -54,26 +54,26 @@ echo "
         <h1><a href=\"$uri\">$name</a></h1>
         <div class=\"tools\">$editButton $endButton $deleteButton</div>
     </header>
-        <dl class=\"fn1-output-field\">
+        <dl>
 			<dt>{$this->_('type')}</dt>
             <dd>{$this->_($this->seat->getType())}</dd>
         </dl>
-        <dl class=\"fn1-output-field\">
+        <dl>
             <dt>{$this->_('code')}</dt>
             <dd>$code</dd>
         </dl>
-		<dl class=\"fn1-output-field\">
+		<dl>
 			<dt>{$this->_('appointed_by')}</dt>
 			<dd>$appointer</dd>
 		</dl>
-		<dl class=\"fn1-output-field\">
+		<dl>
 			<dt>{$this->_('committee')}</dt>
 			<dd><a href=\"$committee_url\">$committee</a></dd>
 		</dl>
 ";
     if ($this->seat->getStartDate()) {
         echo "
-        <dl class=\"fn1-output-field\">
+        <dl>
 			<dt>{$this->_('startDate')}</dt>
 			<dd>{$this->seat->getStartDate(DATE_FORMAT)}</dd>
 		</dl>
@@ -81,7 +81,7 @@ echo "
     }
     if ($this->seat->getEndDate()) {
         echo "
-		<dl class=\"fn1-output-field\">
+		<dl>
 			<dt>{$this->_('endDate')}</dt>
 			<dd>{$this->seat->getEndDate(DATE_FORMAT)}</dd>
 		</dl>
@@ -89,7 +89,7 @@ echo "
     }
     if ($requirements) {
         echo "
-		<dl class=\"fn1-output-field\">
+		<dl>
 			<dt>{$this->_(['requirement', 'requirements', 2])}</dt>
 			<dd>$requirements</dd>
 		</dl>
@@ -98,7 +98,7 @@ echo "
     if ($this->seat->getType() === 'termed') {
         $termLength = Seat::$termIntervals[$this->seat->getTermLength()];
         echo "
-		<dl class=\"fn1-output-field\">
+		<dl>
 			<dt>{$this->_('termLength')}</dt>
             <dd>{$termLength}</dd>
         </dl>
@@ -106,7 +106,7 @@ echo "
     }
     $voting = $this->seat->IsVoting() ? $this->_('yes') : $this->_('no');
     echo "
-        <dl class=\"fn1-output-field\">
+        <dl>
             <dt>{$this->_('voting')}</dt>
             <dd>$voting</dd>
         </dl>

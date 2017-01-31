@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Committee $this->committee (optional)
  */
 use Application\Models\Person;
 ?>
-<div class="onboard-breadcrumbs">
+<nav class="breadcrumbs">
     <ul><li><a href="<?= BASE_URI; ?>"><?= $this->_('home'); ?></a></li>
         <li><a href="<?= BASE_URI; ?>/committees"><?= $this->_(['committee','committees',2]); ?></a></li>
         <?php
@@ -19,4 +18,4 @@ use Application\Models\Person;
             }
         ?>
     </ul>
-</div>
+</nav>

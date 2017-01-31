@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Person;
 ?>
-<div     class="fn1-nav1">
-    <nav class="fn1-nav1-container">
+<nav id="nav1">
+    <div class="container">
         <?php
             $routes = [
                 'committee' => 'committees',
@@ -41,5 +41,5 @@ use Application\Models\Person;
                 }
             }
         ?>
-    </nav>
-</div>
+    </div>
+</nav>

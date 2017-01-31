@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 $helper = $this->template->getHelper('buttonLink');
@@ -14,7 +14,9 @@ $vacanciesLink = $helper->buttonLink(
 );
 ?>
 <section>
-    <nav class="fn1-btn-container">
-    <?php echo "$seatsLink $vacanciesLink"; ?>
-    </nav>
+    <header>
+        <nav class="tools">
+        <?= "$seatsLink $vacanciesLink"; ?>
+        </nav>
+    </header>
 </section>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param array   $this->terms
  * @param Seat    $this->seat           (optional)
@@ -30,7 +30,7 @@ $helper = $this->template->getHelper('buttonLink');
             }
         ?>
     </header>
-    <table class="onboard-termsTable">
+    <table class="termsTable">
     <?php
         $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
         $actions    = new Block('terms/partials/actions.inc');

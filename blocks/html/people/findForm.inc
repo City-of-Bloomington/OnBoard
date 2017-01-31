@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Person;
@@ -13,11 +13,11 @@ foreach ($fields as $f) {
 	$$f = isset($_GET[$f]) ? self::escape($_GET[$f]) : '';
 }
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header">
+<section>
+    <header>
         <h1><?= $this->_('find_person'); ?></h1>
     </header>
-    <form method="get" action="<?= BASE_URI; ?>/people" class="fn1-uiBlock-content">
+    <form method="get" action="<?= BASE_URI; ?>/people">
         <fieldset>
             <?php
                 $h = $this->template->getHelper('field');
@@ -38,7 +38,7 @@ foreach ($fields as $f) {
                     }
                 }
             ?>
-            <button type="submit"><i class="fa fa-search"></i> <?= $this->_('search'); ?></button>
+            <button type="submit" class="search"><?= $this->_('search'); ?></button>
         </fieldset>
     </form>
 </section>
