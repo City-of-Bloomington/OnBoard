@@ -7,9 +7,11 @@
  * @param int       $this->year
  */
 use Application\Models\MeetingFile;
+
+use Blossom\Classes\Block;
 use Blossom\Classes\Url;
 ?>
-<section>
+<section id="meetings">
     <header>
         <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->events)]); ?></h1>
         <div class="tools">
@@ -23,44 +25,27 @@ use Blossom\Classes\Url;
         ?>
         </div>
     </header>
-    <dl>
     <?php
+        $block = new Block('meetingFiles/meetingTypeFiles.inc', ['committee'=>$this->committee]);
         foreach ($this->meetings as $date=>$meeting) {
             $d = new \DateTime($date);
             echo "
-            <dt><span class=\"month\">{$d->format('F')}</span>
-                <span class=\"day\">{$d->format('j')}</span>
-            </dt>
+            <div class=\"meeting\">
+                <h2><span class=\"month\">{$d->format('F')}</span>
+                    <span class=\"day\">{$d->format('j')}</span>
+                </h2>
             ";
 
-            $action = BASE_URI.'/meetingFiles/update';
-            $helper = $this->template->getHelper('field');
-            $committee_id = $this->committee->getId();
+            $block->date = $d;
+            $block->eventId = !empty($meeting['eventId']) ? $meeting['eventId'] : '';
             foreach (MeetingFile::$types as $type) {
-                $fileinput = $helper->field([
-                    'name'  => 'meetingFile',
-                    'label' => $this->_('meetingFile'),
-                    'type'  => 'file'
-                ]);
-                echo "
-                <dd><dl><dt>$type</dt>
-                        <dd><form method=\"post\" action=\"$action\" enctype=\"multipart/form-data\">
-                            <fieldset>
-                                <input name=\"committee_id\" type=\"hidden\" value=\"$committee_id\" />
-                                <input name=\"eventId\"      type=\"hidden\" value=\"$meeting[eventId]}\" />
-                                <input name=\"meetingDate\"  type=\"hidden\" value=\"{$d->format(DATE_FORMAT)}\" />
-                                <input name=\"type\"         type=\"hidden\" value=\"$type\" />
-                                $fileinput
-                                <button type=\"submit\" class=\"upload\">{$this->_('upload')}</button>
-                            </fieldset>
-                            </form>
-                        </dd>
-
-                    </dl>
-                </dd>
-                ";
+                $block->type = $type;
+                $block->files = !empty($meeting['files'][$type]) ? $meeting['files'][$type] : [];
+                echo $block->render('html', $this->template);
             }
+            echo "
+            </div>
+            ";
         }
     ?>
-    </dl>
 </section>

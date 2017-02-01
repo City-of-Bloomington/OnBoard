@@ -509,19 +509,19 @@ class Committee extends ActiveRecord
             foreach ($events as $e) {
                 if ($e->start->dateTime) {
                     $allDay = false;
-                    $start = new \DateTime($e->start->dateTime);
-                    $end   = new \DateTime($e->end  ->dateTime);
+                    $eventStart = new \DateTime($e->start->dateTime);
+                    $eventEnd   = new \DateTime($e->end  ->dateTime);
                 }
                 else {
                     $allDay = true;
-                    $start = new \DateTime($e->start->date);
-                    $end   = new \DateTime($e->end  ->date);
+                    $eventStart = new \DateTime($e->start->date);
+                    $eventEnd   = new \DateTime($e->end  ->date);
                 }
-                $year  = $start->format('Y');
-                $month = $start->format('m');
-                $day   = $start->format('d');
+                $year  = $eventStart->format('Y');
+                $month = $eventStart->format('m');
+                $day   = $eventStart->format('d');
 
-                $meetings[$start->format('Y-m-d')] = [
+                $meetings[$eventStart->format('Y-m-d')] = [
                     'eventId' => $e->id
                 ];
             }

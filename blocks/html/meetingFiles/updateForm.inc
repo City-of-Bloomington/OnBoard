@@ -2,12 +2,12 @@
 /**
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param MeetingFile $this->file
+ * @param MeetingFile $this->meetingFile
  */
 use Application\Models\CommitteeTable;
 use Application\Models\MeetingFile;
 
-$title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
+$title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
 ?>
 <section>
     <header>
@@ -16,7 +16,7 @@ $title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meeting
 
     <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
         <fieldset>
-            <input name="meetingFile_id" type="hidden" value="<?= $this->file->getId(); ?>" />
+            <input name="meetingFile_id" type="hidden" value="<?= $this->meetingFile->getId(); ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
 
@@ -31,7 +31,7 @@ $title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meeting
                     'name'     => 'committee_id',
                     'label'    => $this->_('committee'),
                     'required' => true,
-                    'value'    => $this->file->getCommittee_id(),
+                    'value'    => $this->meetingFile->getCommittee_id(),
                     'type'     => 'select',
                     'options'  => $options
                 ]);
@@ -43,7 +43,7 @@ $title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meeting
                     'name'     => 'type',
                     'label'    => $this->_('type'),
                     'required' => true,
-                    'value'    => $this->file->getType(),
+                    'value'    => $this->meetingFile->getType(),
                     'type'     => 'select',
                     'options'  => $options
                 ]);
@@ -52,14 +52,14 @@ $title = $this->file->getId() ? $this->_('meetingFile_edit') : $this->_('meeting
                     'id'    => 'eventId',
                     'name'  => 'eventId',
                     'label' => $this->_('eventId'),
-                    'value' => $this->file->getEventId()
+                    'value' => $this->meetingFile->getEventId()
                 ]);
 
                 echo $helper->field([
                     'id'       => 'meetingDate',
                     'name'     => 'meetingDate',
                     'label'    => $this->_('date'),
-                    'value'    => $this->file->getMeetingDate('U'),
+                    'value'    => $this->meetingFile->getMeetingDate('U'),
                     'type'     => 'date',
                     'required' => true
                 ]);

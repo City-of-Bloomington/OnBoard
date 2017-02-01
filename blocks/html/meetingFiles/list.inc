@@ -32,7 +32,7 @@ use Application\Models\Person;
         $editButton   = '';
         $deleteButton = '';
         foreach ($this->files as $f) {
-            $committee = parent::escape($f->getCommittee()->getName());
+            $filename = parent::escape($f->getFilename());
 
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
@@ -50,7 +50,7 @@ use Application\Models\Person;
             }
             echo "
             <tr><td>$editButton</td>
-                <td>$committee</td>
+                <td>$filename</td>
                 <td>{$f->getMeetingDate(DATE_FORMAT)}</td>
                 <td>{$f->getType()}</td>
                 <td>$deleteButton</td>

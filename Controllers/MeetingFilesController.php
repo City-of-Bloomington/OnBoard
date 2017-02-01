@@ -12,7 +12,7 @@ use Application\Models\MeetingFilesTable;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
-class MeetingFileController extends Controller
+class MeetingFilesController extends Controller
 {
     public function index()
     {
@@ -66,6 +66,10 @@ class MeetingFileController extends Controller
                         $file->setFile($_FILES['meetingFile']);
                     }
                     $file->save();
+
+                    $return_url = BASE_URL."/committees/meetings?committee_id={$file->getCommittee_id()};year={$file->getMeetingDate('Y')}";
+                    header("Location: $return_url");
+                    exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
@@ -74,7 +78,7 @@ class MeetingFileController extends Controller
             $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
-            $this->template->blocks[] = new Block('meetingFiles/updateForm.inc', ['file'=>$file]);
+            $this->template->blocks[] = new Block('meetingFiles/updateForm.inc', ['meetingFile' => $file]);
         }
         else {
             header('HTTP/1.1 404 Not Found', true, 404);

@@ -31,7 +31,7 @@ class MeetingFile extends ActiveRecord
 
 	public function validate()
 	{
-        if ($this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
+        if (!$this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
             throw new \Exception('missingRequiredFields');
         }
 

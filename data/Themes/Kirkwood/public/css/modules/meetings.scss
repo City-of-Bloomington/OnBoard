@@ -1,0 +1,14 @@
+#meetings {
+    fieldset { border:none; }
+
+    @media all and (min-width: $viewport-medium) {
+        .meeting {
+            > h2 {
+                float: left; width:20%; clear:left;
+            }
+            > div {
+                float:left; width:25%
+            }
+        }
+    }
+}
