@@ -30,7 +30,7 @@ $helper = $this->template->getHelper('buttonLink');
             }
         ?>
     </header>
-    <table class="termsTable">
+    <table class="terms">
     <?php
         $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
         $actions    = new Block('terms/partials/actions.inc');

@@ -13,17 +13,18 @@
 
 textarea#address { height:3em; }
 
-#onboard-contextInfo {
-    .fn1-output-field {
-        border-top: none;
-        > dt {
+#contextInfo {
+    dl {
+        border-top:none;
+        dt {
             color: #777;
             float: none;
         }
-        > dd {
+        dd {
             margin-left: 0;
         }
     }
+
 }
 
 .breadcrumbs ul {
@@ -38,44 +39,42 @@ textarea#address { height:3em; }
     a { font-size: .75em; margin-right: 8px; }
 }
 
-.onboard {
-    &-offices {
-        font-size: .85em;
-        opacity: .75;
-    }
-    &-termDates {
-        color: #777;
-        font-size: .9em;
-    }
-    &-termsTable {
-        border-collapse: collapse;
-        width: 100%;
 
-        th, td {
-        }
-        > tbody {
-            > tr {
-                > th {
-                    background-color: #909090;
-                    border: 1px solid #666;
+
+.offices {
+    font-size: .85em;
+    opacity: .75;
+}
+.termDates {
+    color: #777;
+    font-size: .9em;
+}
+table.terms {
+    border-collapse: collapse;
+    width: 100%;
+
+    tbody {
+        > tr {
+            > th {
+                background-color: #909090;
+                border: 1px solid #666;
+                color: #fff;
+                padding: .5em;
+                vertical-align: top;
+                .launcher {
+                    background-color: #707070;
                     color: #fff;
-                    padding: .5em;
-                    vertical-align: top;
-                    > .fn1-dropdown {
-                        .fn1-dropdown-launcher {
-                            background-color: #707070;
-                        }
-                    }
                 }
-                > td {
-                    background-color: #e0e0e0;
-                    border: 1px solid #666;
-                    padding: .5em;
-                }
+            }
+            > td {
+                background-color: #e0e0e0;
+                border: 1px solid #666;
+                padding: .5em;
             }
         }
     }
 }
+
 
 // The following rules are state-based rules that override default rules
 // with more specific selectors.
