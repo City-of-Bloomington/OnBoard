@@ -23,7 +23,7 @@ $meetingsLink = $helper->buttonLink(
 );
 $filesLink = $helper->buttonLink(
     BASE_URI."/meetingFiles?committee_id=$committee_id",
-    $this->_(['meetingFiles', 'meetingFiles', 10])
+    $this->_(['meetingFile', 'meetingFiles', 10])
 );
 
 $pastSeatsLink = '';

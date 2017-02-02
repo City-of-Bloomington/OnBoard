@@ -7,15 +7,12 @@ define('APPLICATION_NAME','application');
  */
 define('BASE_URL','http://localhost/application');
 define('BASE_URI','/application');
-define('FN1_URL', BASE_URI.'/fn1');
-#define('THEME', 'Kirkwood');
+define('THEME', 'Kirkwood');
 
 define('RECAPTCHA_SITE_KEY',   '');
 define('RECAPTCHA_SERVER_KEY', '');
 define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
 define('GOOGLE_USER_EMAIL', 'user@localhost');
-
-define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
 
 /**
  * Database Setup
@@ -85,6 +82,9 @@ define('DATETIME_FORMAT', 'n/j/Y H:i:s');
 
 define('LOCALE', 'en_US');
 
-define('VOTE_TRACKING', true);
 define('TERM_END_WARNING_DEFAULT', 60);
 define('APPLICATION_LIFETIME_DEFAULT', 90);
+
+// Legislation and Vote tracking have been abandoned for the time being
+// You most likely want to keep this disabled
+define('VOTE_TRACKING', false);
