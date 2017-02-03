@@ -44,7 +44,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
         <?php
             foreach ($this->data as $c) {
                 $name = self::escape($c['name']);
-                $url = BASE_URI.'/committees/members?committee_id='.$c['id'];
+                $url = BASE_URI.'/committees/info?committee_id='.$c['id'];
 
                 if ($c['type'] === 'seated') {
                     $seatCount = (int)$c['seats'];
