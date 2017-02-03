@@ -1,9 +1,10 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param Committee $this->committee
  */
-$c = $this->committee->getVacancyCount();
-$vacancies = $c ? "($c {$this->_(['vacancy', 'vacancies', $c])})" : '';
-$name = self::escape($this->committee->getName());
-echo "<h1>$name $vacancies</h1>";
+$count     = $this->committee->getVacancyCount();
+$vacancies = $count ? "($count {$this->_(['vacancy', 'vacancies', $count])})" : '';
+$name      = parent::escape($this->committee->getName());
+echo "<h2>$name $vacancies</h2>";

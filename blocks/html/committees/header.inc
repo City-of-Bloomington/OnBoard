@@ -5,70 +5,91 @@
  * @param Committee $this->committee
  */
 use Application\Models\Person;
+use Blossom\Classes\Url;
+
 $committee_id = $this->committee->getId();
 
 $helper = $this->template->getHelper('buttonLink');
+$a = '<a href="%s"%s>%s</a>';
+$current_url = new Url(Url::current_url());
 
-$infoLink = $helper->buttonLink(
+$current = $current_url->path == BASE_URI.'/committees/info';
+$infoLink = sprintf($a,
     BASE_URI."/committees/info?committee_id=$committee_id",
+    $current ? ' class="current"' : '',
     $this->_('committee_info')
 );
-$membersLink = $helper->buttonLink(
+
+
+
+$current = $current_url->path == BASE_URI.'/committees/members'
+        && $current_url->current != '0';
+$membersLink = sprintf($a,
     BASE_URI."/committees/members?committee_id=$committee_id",
+    $current ? ' class="current"' : '',
     $this->_(['current_member', 'current_members', 2])
 );
-$meetingsLink = $helper->buttonLink(
+
+
+$current = $current_url->path === BASE_URI.'/committees/meetings';
+$meetingsLink = sprintf($a,
     BASE_URI."/committees/meetings?committee_id=$committee_id",
+    $current ? ' class="current"' : '',
     $this->_(['meeting', 'meetings', 10])
 );
-$filesLink = $helper->buttonLink(
+
+$current = $current_url->path == BASE_URI.'/meetingFiles';
+$filesLink = sprintf($a,
     BASE_URI."/meetingFiles?committee_id=$committee_id",
+    $current ? ' class="current"' : '',
     $this->_(['meetingFile', 'meetingFiles', 10])
 );
 
 $pastSeatsLink = '';
 if ($this->committee->hasPastSeats()) {
-    $pastSeatsLink = $helper->buttonLink(
+    $current = $current_url->path == BASE_URI.'/committees/seats'
+            && $current_url->current != '0';
+    $pastSeatsLink = sprintf($a,
         BASE_URI."/committees/seats?committee_id=$committee_id;current=0",
+        $current ? ' class="current"' : '',
         $this->_('seats_past')
     );
 }
 
 $pastMembersLink = '';
 if ($this->committee->getType() === 'open' &&  $this->committee->hasPastMembers()) {
-    $pastMembersLink = $helper->buttonLink(
+    $current = $current_url->path == BASE_URI.'/committees/members'
+            && $current_url->current != '0';
+    $pastMembersLink = sprintf($a,
         BASE_URI."/committees/members?committee_id=$committee_id;current=0",
+        $current ? ' class="current"' : '',
         $this->_(['past_member', 'past_members', 2])
     );
 }
 
 $applicationsLink = '';
 if (Person::isAllowed('committees', 'applications')) {
-    $applications = $this->committee->getApplications(['current'=>time()]);
-    $c = count($applications);
-    if ($c) {
-        $applicationsLink = $helper->buttonLink(
-            BASE_URI."/committees/applications?committee_id=$committee_id",
-            $this->_(['application', 'applications', 2])
-        );
-    }
+    $current = $current_url->path == BASE_URI.'/committees/applications';
+    $applicationsLink = sprintf($a,
+        BASE_URI."/committees/applications?committee_id=$committee_id",
+        $current ? ' class="current"' : '',
+        $this->_(['application', 'applications', 2])
+    );
 }
 
 echo "
-<section>
-    <header>
+<header id=\"committeeHeader\">
 ";
-        $this->_include('committees/partials/committeeVacancyHeading.inc');
-echo"
-        <nav class=\"tools\">
-            $infoLink
-            $membersLink
-            $pastSeatsLink
-            $pastMembersLink
-            $applicationsLink
-            $meetingsLink
-            $filesLink
-        </nav>
-    </header>
-</section>
+    $this->_include('committees/partials/committeeVacancyHeading.inc');
+echo "
+    <nav>
+        $infoLink
+        $membersLink
+        $pastSeatsLink
+        $pastMembersLink
+        $applicationsLink
+        $meetingsLink
+        $filesLink
+    </nav>
+</header>
 ";

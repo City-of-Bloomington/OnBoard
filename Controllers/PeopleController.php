@@ -37,11 +37,12 @@ class PeopleController extends Controller
 		try {
 			$person = new Person($_REQUEST['person_id']);
 			$this->template->title = $person->getFullname().' - '.APPLICATION_NAME;
-			$this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
-
 			if ($this->template->outputFormat == 'html') {
-				$this->template->blocks[] = new Block('people/tabs.inc', ['person'=>$person]);
+                $this->template->blocks[] = new Block('people/personView.inc', ['person'=>$person]);
 			}
+			else {
+                $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
+            }
 		}
 		catch (\Exception $e) {
 			$_SESSION['errorMessages'][] = $e;

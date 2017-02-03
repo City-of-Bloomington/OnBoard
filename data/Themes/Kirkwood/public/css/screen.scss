@@ -3,18 +3,16 @@
 
 @import 'modules/meetings';
 
-#errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
+#errorMessages { background-color:$color-error; padding:4px; border-radius:10px; }
 #errorMessages h2 { }
 
 #reportForm {
     overflow:auto;
-    > h1 { font-size:1.75em; }
 
     #seats      { float:right; width:33%; }
     #applicants { margin-right:34%; }
     #committees { max-height:14em; overflow:scroll; }
 }
-.applications_list > h1 { font-size:1.75em; }
 
 textarea#address { height:3em; }
 
@@ -22,7 +20,6 @@ textarea#address { height:3em; }
     dl {
         border-top:none;
         dt {
-            color: #777;
             float: none;
         }
         dd {
@@ -44,6 +41,19 @@ textarea#address { height:3em; }
     a { font-size: .75em; margin-right: 8px; }
 }
 
+// Tab navigation
+#committeeHeader {
+    nav {
+        border-bottom: $size-gutter solid $color-accent;
+        a {
+            background-color: $color-accent;
+            color: $color-content-background;
+            padding: $size-gutter;
+            border-radius: $size-gutter $size-gutter 0 0;
+        }
+    }
+}
+
 
 
 .offices {
@@ -51,7 +61,6 @@ textarea#address { height:3em; }
     opacity: .75;
 }
 .termDates {
-    color: #777;
     font-size: .9em;
 }
 table.terms {
@@ -61,20 +70,16 @@ table.terms {
     tbody {
         > tr {
             > th {
-                background-color: #909090;
-                border: 1px solid #666;
-                color: #fff;
-                padding: .5em;
+                background-color: $color-border-table;
+                border: 1px solid $color-border-input;
+                color: $color-content-background;
                 vertical-align: top;
                 .launcher {
-                    background-color: #707070;
-                    color: #fff;
                 }
             }
             > td {
-                background-color: #e0e0e0;
-                border: 1px solid #666;
-                padding: .5em;
+                background-color: $color-background-field;
+                border: 1px solid $color-border-input;
             }
         }
     }
@@ -83,9 +88,9 @@ table.terms {
 
 // The following rules are state-based rules that override default rules
 // with more specific selectors.
-div.carryOver,    tr.carryOver    td { background-color: #ed9a9c !important; }
-div.vacant,       tr.vacant       td { background-color: #ed9a9c !important; }
-div.termEndsSoon, tr.termEndsSoon td { background-color: #edea9a !important; }
+div.carryOver,    tr.carryOver    td { background-color: $color-alert !important; }
+div.vacant,       tr.vacant       td { background-color: $color-alert !important; }
+div.termEndsSoon, tr.termEndsSoon td { background-color: $color-alert !important; }
 
 tr.carryOver    td:first-child:before,
 tr.vacant       td:first-child:before,
@@ -93,7 +98,7 @@ tr.termEndsSoon td:first-child:before {
     content: '';
     display: inline-block;
     height: 1em;
-    margin: 0 .5em 0 0;
+    margin: 0 $size-gutter 0 0;
     width: 1em;
 }
 tr.carryOver    td:first-child:before { background-image: url('images/danger-opt.svg'); }
@@ -108,12 +113,7 @@ p {
 
 .pageNavigation ul { list-style-type:none; }
 .pageNavigation li { display:inline; margin-right:1em; }
-.pageNavigation .current { border:2px solid green; }
-
-.tabBar { list-style-type:none; margin:8px; border-bottom:4px solid #036; }
-.tabBar li { display:inline; margin:.5em; padding:4px 8px 0 8px; border-radius:4px; }
-.tabBar li.current { background-color:#036; }
-.tabBar li.current a { color:white; }
+.pageNavigation .current { border:2px solid $color-action; }
 
 /* Tag Styles */
 .tags   { font-size:20px; }
