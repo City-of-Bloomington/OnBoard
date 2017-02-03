@@ -16,15 +16,17 @@ use Application\Models\Person;
             ];
             foreach ($routes as $singular => $plural) {
                 if (Person::isAllowed($plural, 'index')) {
-                    $uri = BASE_URI."/$plural";
-                    echo "<a href=\"$uri\">{$this->_([$singular, $plural, 2])}</a>";
+                    $uri   = BASE_URI."/$plural";
+                    $class = (strpos($_SERVER['REQUEST_URI'], $uri) !== false) ? ' class="current"' : '';
+                    echo "<a href=\"$uri\"$class>{$this->_([$singular, $plural, 2])}</a>";
                 }
             }
 
 
             if (Person::isAllowed('applicants', 'apply')) {
                 $uri = BASE_URI.'/applicants/apply';
-                echo "<a href=\"$uri\">{$this->_('apply')}</a>";
+                $class = (strpos($_SERVER['REQUEST_URI'], $uri) !== false) ? ' class="current"' : '';
+                echo "<a href=\"$uri\"$class>{$this->_('apply')}</a>";
             }
 
             if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
