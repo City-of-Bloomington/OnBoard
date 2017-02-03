@@ -58,18 +58,25 @@ class MeetingFile extends ActiveRecord
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setMeetingDate ($d) { parent::setDateData('meetingDate', $d); }
 
-	public function handleUpdate(array $post)
+	public function handleAdd(array $post, array $file)
 	{
         $this->setType        ($post['type'        ]);
         $this->setEventId     ($post['eventId'     ]);
         $this->setCommittee_id($post['committee_id']);
         $this->setMeetingDate ($post['meetingDate' ]);
+
+        $this->setFile($file);
 	}
+
+	public function handleUpdate(array $post, array $file=null)
+	{
+        $this->setType($post['type']);
+        if ($file) {
+            $this->setFile($file);
+        }
+	}
+
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
-	public function getDirectory()
-	{
-        return "{$this->getCommittee_id()}/{$this->getCreated('Y/m/d')}/{$this->getType()}";
-	}
 }

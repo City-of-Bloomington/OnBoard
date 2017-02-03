@@ -4,7 +4,6 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param MeetingFile $this->meetingFile
  */
-use Application\Models\CommitteeTable;
 use Application\Models\MeetingFile;
 
 $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
@@ -21,22 +20,6 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                 $helper = $this->template->getHelper('field');
 
                 $options = [];
-                $table   = new CommitteeTable();
-                $list    = $table->find();
-                foreach ($list as $c) {
-                    $options[] = ['value'=>$c->getId(), 'label'=>parent::escape($c->getName())];
-                }
-                echo $helper->field([
-                    'id'       => 'committee_id',
-                    'name'     => 'committee_id',
-                    'label'    => $this->_('committee'),
-                    'required' => true,
-                    'value'    => $this->meetingFile->getCommittee_id(),
-                    'type'     => 'select',
-                    'options'  => $options
-                ]);
-
-                $options = [];
                 foreach (MeetingFile::$types as $t) { $options[] = ['value'=>$t]; }
                 echo $helper->field([
                     'id'       => 'type',
@@ -46,22 +29,6 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     'value'    => $this->meetingFile->getType(),
                     'type'     => 'select',
                     'options'  => $options
-                ]);
-
-                echo $helper->field([
-                    'id'    => 'eventId',
-                    'name'  => 'eventId',
-                    'label' => $this->_('eventId'),
-                    'value' => $this->meetingFile->getEventId()
-                ]);
-
-                echo $helper->field([
-                    'id'       => 'meetingDate',
-                    'name'     => 'meetingDate',
-                    'label'    => $this->_('date'),
-                    'value'    => $this->meetingFile->getMeetingDate('U'),
-                    'type'     => 'date',
-                    'required' => true
                 ]);
 
                 echo $helper->field([

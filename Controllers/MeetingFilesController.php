@@ -40,41 +40,54 @@ class MeetingFilesController extends Controller
         ]);
     }
 
+    public function add()
+    {
+        if (!empty($_REQUEST['committee_id'])) {
+            $committee = new Committee($_REQUEST['committee_id']);
+        }
+
+        if (isset($committee)) {
+            $file = new MeetingFile();
+            try {
+                $file->handleAdd($_POST, $_FILES['meetingFile']);
+                $file->save();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+            $return_url = BASE_URL."/committees/meetings?committee_id={$file->getCommittee_id()};year={$file->getMeetingDate('Y')}";
+            header("Location: $return_url");
+            exit();
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
+
     public function update()
     {
         if (!empty($_REQUEST['meetingFile_id'])) {
             try { $file = new MeetingFile($_REQUEST['meetingFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        else {
-            // New files must have a committee_id passed in.
-            if (!empty($_REQUEST['committee_id'])) {
-                try {
-                    $committee = new Committee($_REQUEST['committee_id']);
-                    $file = new MeetingFile();
-                    $file->setCommittee($committee);
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-            }
-        }
 
         if (isset($file)) {
-            if (isset($_POST['committee_id'])) {
+            if (isset($_POST['type'])) {
                 try {
-                    $file->handleUpdate($_POST);
-                    if (isset($_FILES['meetingFile'])) {
-                        $file->setFile($_FILES['meetingFile']);
-                    }
+                    $file->handleUpdate(
+                        $_POST,
+                        isset($_FILES['meetingFile']) ? $_FILES['meetingFile'] : null
+                    );
                     $file->save();
 
-                    $return_url = BASE_URL."/committees/meetings?committee_id={$file->getCommittee_id()};year={$file->getMeetingDate('Y')}";
+                    $return_url = BASE_URL."/committees/meetingFiles?committee_id={$file->getCommittee_id()}";
                     header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            $committe = $file->getCommittee();
+            $committee = $file->getCommittee();
             $this->template->title = $committee->getName();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
             $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
@@ -112,7 +125,7 @@ class MeetingFilesController extends Controller
                 $file = new MeetingFile($_GET['meetingFile_id']);
                 $committe = $file->getCommittee();
                 $file->delete();
-                header('Location: '.BASE_URI.'/meetingFiles?committe_id='.$committe->getId());
+                header('Location: '.BASE_URI.'/meetingFiles?committee_id='.$committe->getId());
                 exit();
             }
             catch (\Exception $e) {

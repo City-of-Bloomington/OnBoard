@@ -8,7 +8,7 @@
  * @param DateTime  $this->date
  * @param array     $this->files      An array of MeetingFile objects
  */
-use Blossom\Classes\Url;
+use Application\Models\Person;
 ?>
 <div>
     <h3><?= $this->type; ?></h3>
@@ -21,16 +21,9 @@ use Blossom\Classes\Url;
             }
             echo '</ul>';
         }
+
+        if (Person::isAllowed('meetingFiles', 'add')) {
+            $this->_include('meetingFiles/addForm.inc');
+        }
     ?>
-    <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
-    <fieldset>
-        <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
-        <input name="eventId"      type="hidden" value="<?= $this->eventId; ?>" />
-        <input name="meetingDate"  type="hidden" value="<?= $this->date->format(DATE_FORMAT); ?>" />
-        <input name="type"         type="hidden" value="<?= $this->type; ?>" />
-        <input name="return_url"   type="hidden" value="<?= Url::current_url(); ?>" />
-        <input name="meetingFile"  type="file" />
-        <button type="submit" class="upload"><?= $this->_('upload'); ?></button>
-    </fieldset>
-    </form>
 </div>

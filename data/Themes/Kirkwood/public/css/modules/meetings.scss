@@ -3,11 +3,17 @@
 
     @media all and (min-width: $viewport-medium) {
         .meeting {
+            overflow: auto;
             > h2 {
                 float: left; width:20%; clear:left;
             }
             > div {
                 float:left; width:25%
+            }
+
+            input[type=file] {
+                width:95%;
+                overflow:hidden;
             }
         }
     }

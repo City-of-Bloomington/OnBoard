@@ -10,25 +10,13 @@ use Application\Models\Person;
 <section>
     <header>
         <h1><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h1>
-        <div class="tools">
-        <?php
-            $helper = $this->template->getHelper('buttonLink');
-
-            if (Person::isAllowed('meetingFiles', 'add')) {
-                $uri = BASE_URI.'/meetingFiles/update';
-                if ($this->committee) { $uri.='?committee_id='.$this->committee->getId(); }
-
-                echo $helper->buttonLink($uri, $this->_('meetingFile_add'), 'add');
-            }
-
-        ?>
-        </div>
     </header>
     <table>
     <?php
         $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
         $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 
+        $helper       = $this->template->getHelper('buttonLink');
         $editButton   = '';
         $deleteButton = '';
         foreach ($this->files as $f) {
