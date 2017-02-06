@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\Member;
 use Application\Models\Seat;
 use Application\Models\Term;
@@ -32,9 +33,20 @@ class MembersController extends Controller
 
         if (isset($member)) {
             if (isset($_POST['committee_id'])) {
+                $action = $member->getId() ? 'edit' : 'add';
+
                 try {
+                    $original = $member->getData();
                     $member->handleUpdate($_POST);
                     $member->save();
+                    $updated  = $member->getData();
+
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id'=> $member->getCommittee_id(),
+                        'tablename'   => 'members',
+                        'action'      => $action,
+                        'changes'     => [['original'=>$original, 'updated'=>$updated]]
+                    ]);
 
                     if ($member->getSeat_id()) {
                         $url = BASE_URL.'/seats/view?seat_id='.$member->getSeat_id();
@@ -94,14 +106,29 @@ class MembersController extends Controller
         }
 
         if (isset($_POST['newMember'])) {
+            $changes = [];
             try {
                 if (isset($currentMember)) {
+                    $original = $currentMember->getData();
                     $currentMember->handleUpdate($_POST['currentMember']);
                     $currentMember->save();
+                    $updated = $currentMember->getData();
+
+                    $changes[] = ['original'=>$original, 'updated'=>$updated];
                 }
 
+                $original = $newMember->getData();
                 $newMember->handleUpdate($_POST['newMember']);
                 $newMember->save();
+                $updated  = $newMember->getData();
+                $changes[] = ['original'=>$original, 'updated'=>$updated];
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $newMember->getCommittee_id(),
+                    'tablename'   => 'members',
+                    'action'      => 'appoint',
+                    'changes'     => $changes
+                ]);
 
                 header('Location: '.BASE_URL."/committees/members?committee_id={$newMember->getCommittee_id()}");
                 exit();
@@ -131,10 +158,14 @@ class MembersController extends Controller
             $seat = $member->getSeat();
             if ($seat) {
                 if ($seat->getType() === 'termed') {
+                    $changes = [];
                     try {
                         $term = $member->getTerm();
                         if (!$member->getEndDate()) {
+                            $original = $member->getData();
                             $member->setEndDate($term->getEndDate());
+                            $updated  = $member->getData();
+                            $changes[] = ['original'=>$original, 'updated'=>$updated];
                         }
 
                         $next      = $term->getNextTerm();
@@ -149,6 +180,14 @@ class MembersController extends Controller
                         try {
                             $member->save();
                             $newMember->save();
+                            $changes[] = ['updated'=>$newMember->getData()];
+
+                            CommitteeHistory::saveNewEntry([
+                                'committee_id' => $newMember->getCommittee_id(),
+                                'tablename'    => 'members',
+                                'action'       => 'reappoint',
+                                'changes'      => $changes
+                            ]);
 
                             header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
                             exit();
@@ -189,8 +228,17 @@ class MembersController extends Controller
         if (isset($member)) {
             if (!empty($_POST['currentMember'])) {
                 try {
+                    $original = $member->getData();
                     $member->setEndDate($_POST['currentMember']['endDate']);
                     $member->save();
+                    $updated  = $member->getData();
+
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id' => $member->getCommittee_id(),
+                        'tablename'    => 'members',
+                        'action'       => 'resign',
+                        'changes'      => [['original'=>$original, 'updated'=>$updated]]
+                    ]);
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
@@ -215,13 +263,22 @@ class MembersController extends Controller
     {
         try {
             if (!empty($_REQUEST['member_id'])) {
-                $member = new Member($_REQUEST['member_id']);
+                $member  = new Member($_REQUEST['member_id']);
+                $changes = [['original'=>$member->getData()]];
 
                 $return_url = $member->getSeat_id()
                     ? BASE_URL."/seats/view?seat_id={$member->getSeat_id()}"
                     : BASE_URL."/committees/members?committee_id={$member->getCommittee_id()}";
 
                 $member->delete();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id' => $member->getCommittee_id(),
+                    'tablename'    => 'members',
+                    'action'       => 'delete',
+                    'changes'      => $changes
+                ]);
+
                 header("Location: $return_url");
                 exit();
             }

@@ -77,6 +77,16 @@ if (Person::isAllowed('committees', 'applications')) {
     );
 }
 
+$historyLink = '';
+if (Person::isAllowed('committees', 'history')) {
+    $current = $current_url->path == BASE_URI.'/committees/history';
+    $historyLink = sprintf($a,
+        BASE_URI."/committees/history?committee_id=$committee_id",
+        $current ? ' class="current"' : '',
+        $this->_('committeeHistory')
+    );
+}
+
 echo "
 <header id=\"committeeHeader\">
 ";
@@ -90,6 +100,7 @@ echo "
         $applicationsLink
         $meetingsLink
         $filesLink
+        $historyLink
     </nav>
 </header>
 ";

@@ -6,6 +6,7 @@
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\CommitteeTable;
 use Application\Models\GoogleGateway;
 use Application\Models\Person;
@@ -131,9 +132,20 @@ class CommitteesController extends Controller
             : new Committee();
 
         if (isset($_POST['name'])) {
+            $action = $committee->getId() ? 'edit' : 'add';
+
             try {
+                $original = $committee->getData();
                 $committee->handleUpdate($_POST);
                 $committee->save();
+                $updated  = $committee->getData();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $committee->getId(),
+                    'tablename'   => 'committees',
+                    'action'      => $action,
+                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
+                ]);
 
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
@@ -155,7 +167,16 @@ class CommitteesController extends Controller
 
         if (isset($_POST['endDate'])) {
             try {
+                $original = $committee->getData();
                 $committee->saveEndDate($_POST['endDate']);
+                $updated  = $committee->getData();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $committee->getId(),
+                    'tablename'   => 'committees',
+                    'action'      => 'end',
+                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
+                ]);
 
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
@@ -234,5 +255,14 @@ class CommitteesController extends Controller
             'meetings'  => $meetings,
             'year'      => $year
         ]);
+    }
+
+    public function history()
+    {
+        $committee = $this->loadCommittee($_GET['committee_id']);
+        $this->template->title = $committee->getName();
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/history.inc', ['history' => $committee->getHistory()]);
     }
 }

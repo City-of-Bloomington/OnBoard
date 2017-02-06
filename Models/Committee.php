@@ -177,6 +177,8 @@ class Committee extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getData() { return $this->data; }
+
 	/**
 	 * @return Member
 	 */
@@ -533,5 +535,21 @@ class Committee extends ActiveRecord
             $meetings[$f->getMeetingDate('Y-m-d')]['files'][$f->getType()][] = $f;
         }
         return $meetings;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getHistory()
+	{
+		$history = [];
+
+		$zend_db = Database::getConnection();
+		$sql = 'select * from committeeHistory where committee_id=? order by date desc';
+		$result = $zend_db->query($sql)->execute([$this->getId()]);
+		foreach ($result as $row) {
+			$history[] = new CommitteeHistory($row);
+		}
+		return $history;
 	}
 }

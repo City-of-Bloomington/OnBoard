@@ -20,3 +20,15 @@ create table meetingFiles(
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 	foreign key (committee_id) references committees(id)
 );
+
+create table committeeHistory(
+    id           int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    person_id    int unsigned not null,
+    date         timestamp    not null default CURRENT_TIMESTAMP,
+    tablename    varchar(32)  not null,
+    action       varchar(32)  not null,
+    changes      text,
+    foreign key (committee_id) references committees(id),
+    foreign key (person_id)    references people    (id)
+);

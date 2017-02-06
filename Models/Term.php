@@ -128,6 +128,8 @@ class Term extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getData() { return $this->data; }
+
 	/**
 	 * @return boolean
 	 */

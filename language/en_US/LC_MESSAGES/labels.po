@@ -218,6 +218,9 @@ msgstr "Current Committees"
 msgid "committees_past"
 msgstr "Past Committees"
 
+msgid "committeeHistory"
+msgstr "History"
+
 msgid "type"
 msgstr "Type"
 
