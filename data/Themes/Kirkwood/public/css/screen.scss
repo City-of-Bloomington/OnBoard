@@ -44,6 +44,7 @@ textarea#address { height:3em; }
 // Tab navigation
 #committeeHeader {
     nav {
+        margin-top:1em;
         border-bottom: $size-gutter solid $color-accent;
         a {
             background-color: $color-accent;
@@ -89,7 +90,7 @@ table.terms {
 // The following rules are state-based rules that override default rules
 // with more specific selectors.
 div.carryOver,    tr.carryOver    td { background-color: $color-alert !important; }
-div.vacant,       tr.vacant       td { background-color: $color-alert !important; }
+div.vacant,       tr.vacant       td { background-color: $color-error !important; }
 div.termEndsSoon, tr.termEndsSoon td { background-color: $color-alert !important; }
 
 tr.carryOver    td:first-child:before,
