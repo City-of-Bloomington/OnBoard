@@ -55,7 +55,7 @@ create table committees (
 	contactInfo     text,
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
-	applicationLifetime tinyint unsigned not null default 90,
+	applicationLifetime tinyint unsigned not null default 90
 );
 
 create table committeeStatutes(

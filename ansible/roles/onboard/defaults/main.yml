@@ -24,7 +24,7 @@ onboard_recaptcha:
 
 onboard_google:
   credentials: "{{ vault_onboard_google.credentials }}"
-  user_email: "{{ onboard_google.user_email }}"
+  user_email: "user@localhost"
 
 onboard_directory_server: ''
 onboard_cas_server: ''

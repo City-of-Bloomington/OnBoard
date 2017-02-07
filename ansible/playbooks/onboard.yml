@@ -1,4 +1,4 @@
-- hosts: linux-onboard
+- hosts: onboard
   become: yes
   roles:
     # Dependencies are publish in Ansible Galaxy
