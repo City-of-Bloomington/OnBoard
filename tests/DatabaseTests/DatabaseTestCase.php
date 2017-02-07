@@ -5,7 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 require_once "PHPUnit/Extensions/Database/TestCase.php";
-require_once __DIR__.'/configuration.inc';
+require_once __DIR__.'/bootstrap.inc';
 class CustomTruncate extends PHPUnit_Extensions_Database_Operation_Truncate
 {
 	public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)

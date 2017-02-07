@@ -148,6 +148,8 @@ class Member extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getData() { return $this->data; }
+
 	/**
 	 * Make sure this member is not overlapping any existing members
 	 *

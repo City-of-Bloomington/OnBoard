@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Person;
@@ -8,7 +8,9 @@ use Application\Models\Site;
 use Michelf\MarkdownExtra;
 ?>
 <section>
-    <h1><?= $this->_('siteContent'); ?></h1>
+    <header>
+        <h1><?= $this->_('siteContent'); ?></h1>
+    </header>
 
     <?php
         $userCanEdit = Person::isAllowed('site', 'updateContent');
@@ -28,8 +30,10 @@ use Michelf\MarkdownExtra;
 
             echo "
             <article>
-                <h1>{$this->_($label)}</h1>
-                <div class=\"tools\">$editButton</div>
+                <header>
+                    <h1>{$this->_($label)}</h1>
+                    <div class=\"tools\">$editButton</div>
+                </header>
                 <div>
                     $content
                 </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  * @param boolean $this->disableButtons
@@ -43,22 +43,22 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
             }
 
             echo "
-            <dl class=\"fn1-output-field\">
+            <dl>
                 <dt>{$this->_($f)}</dt>
                 <dd>{$$f}</dd>
             </dl>
             ";
         }
-        if (Person::isAllowed('media', 'download')) {
+        if (Person::isAllowed('applicantFiles', 'download')) {
             echo "
-            <dl class=\"fn1-output-field\">
-                <dt>{$this->_('media')}</dt><dd>
+            <dl>
+                <dt>{$this->_('applicantFile')}</dt><dd>
             ";
-                $media = $this->applicant->getMedia();
-                foreach ($media as $m) {
-                    $uri = BASE_URI.'/media/download?media_id='.$m->getId();
-                    $filename = self::escape($m->getFilename());
-                    echo "<a href=\"$uri\" class=\"{$m->getMime_type()}\">$filename</a>";
+                $files = $this->applicant->getFiles();
+                foreach ($files as $f) {
+                    $uri = BASE_URI.'/applicantFiles/download?applicantFile_id='.$f->getId();
+                    $filename = self::escape($f->getFilename());
+                    echo "<a href=\"$uri\" class=\"{$f->getMime_type()}\">$filename</a>";
                 }
             echo "
                 </dd>

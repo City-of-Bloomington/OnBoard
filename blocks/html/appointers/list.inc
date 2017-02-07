@@ -1,18 +1,17 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\ResultSet $this->appointers
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header">
-        <h1  class="fn1-uiBlock-title"><?=$this->translate(['appointer','appointers',2]); ?></h1>
-        <div class="fn1-uiBlock-headerTools">
+<section>
+    <header>
+        <h1><?=$this->translate(['appointer','appointers',2]); ?></h1>
+        <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
             if (Person::isAllowed('appointers')) {
@@ -25,7 +24,7 @@ use Blossom\Classes\View;
         ?>
         </div>
     </header>
-    <table class="fn1-uiBlock-content">
+    <table>
     <?php
         foreach ($this->appointers as $appointer) {
             $editButton = '';

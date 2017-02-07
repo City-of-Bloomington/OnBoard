@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Department $this->department
  */
@@ -13,7 +13,9 @@ $name = self::escape($this->department->getName());
 $title = $this->department->getId() ? $this->_('department_edit') : $this->_('department_add');
 ?>
 <section>
-	<h1><?= $title; ?></h1>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
 	<form method="post" action="<?= BASE_URI; ?>/departments/update">
 		<fieldset><legend><?= $name; ?></legend>
 			<input name="department_id" type="hidden" value="<?= $this->department->getId(); ?>" />

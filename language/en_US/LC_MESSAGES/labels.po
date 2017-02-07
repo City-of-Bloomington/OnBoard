@@ -1,24 +1,22 @@
 # Translation
-# Copyright (C) 2013-2016 City of Bloomington
+# Copyright (C) 2013-2017 City of Bloomington
 # This file is distributed under the same license as the civic-Legislation package.
 #
 domain "labels"
 
 msgid ""
 msgstr ""
-"Project-Id-Version: uReport 1.9\n"
+"Project-Id-Version: OnBoard 2.2\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
 "POT-Creation-Date: 2013-09-20 16:33-0400\n"
-"PO-Revision-Date: 2016-01-05 12:25-0500\n"
+"PO-Revision-Date: \n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 "Language: en_US\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "home"
 msgstr "Home"
@@ -142,6 +140,9 @@ msgstr "Edit Person"
 msgid "person_delete"
 msgstr "Delete Person"
 
+msgid "person_change"
+msgstr "Change Person"
+
 msgid "user"
 msgid_plural "users"
 msgstr[0] "User Account"
@@ -188,10 +189,10 @@ msgid_plural "races"
 msgstr[0] "Ethnicity"
 msgstr[1] "Ethnicities"
 
-msgid "edit_race"
+msgid "race_edit"
 msgstr "Edit Ethnicity"
 
-msgid "add_race"
+msgid "race_add"
 msgstr "Add Ethnicity"
 
 msgid "committee"
@@ -216,6 +217,9 @@ msgstr "Current Committees"
 
 msgid "committees_past"
 msgstr "Past Committees"
+
+msgid "committeeHistory"
+msgstr "History"
 
 msgid "type"
 msgstr "Type"
@@ -256,6 +260,9 @@ msgstr "Add Seat"
 
 msgid "seat_edit"
 msgstr "Edit Seat"
+
+msgid "seat_end"
+msgstr "End Seat"
 
 msgid "seat_delete"
 msgstr "Delete Seat"
@@ -662,7 +669,7 @@ msgstr "Please describe your qualifications"
 msgid "report_view"
 msgstr "View Report"
 
-msgid "applicantMedia"
+msgid "applicantFile"
 msgstr "Include a resume (optional)"
 
 msgid "error"
@@ -676,3 +683,22 @@ msgstr "Edit Content"
 
 msgid "applyForm_help"
 msgstr "Apply Form Help"
+
+msgid "meeting"
+msgid_plural "meetings"
+msgstr[0] "Meeting"
+msgstr[1] "Meetings"
+
+msgid "meetingFile"
+msgid_plural "meetingFiles"
+msgstr[0] "Meeting File"
+msgstr[1] "Meeting Files"
+
+msgid "meetingFile_add"
+msgstr "Add Meeting File"
+
+msgid "meetingFile_edit"
+msgstr "Edit Meeting File"
+
+msgid "meetingFile_delete"
+msgstr "Delete Meeting File"

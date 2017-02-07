@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Person $this->person
+ * @param Person  $this->person
  * @param boolean $this->disableButtons
  */
 use Application\Models\Person;
@@ -18,7 +18,7 @@ if (!$this->disableButtons) {
     if (Person::isAllowed('people', 'edit')) {
         $editButton = $helper->buttonLink(
             BASE_URI.'/people/update?person_id='.$person_id,
-            $this->_('edit_person'),
+            $this->_('person_edit'),
             'edit',
             ButtonLink::SIZE_ICON
         );
@@ -73,7 +73,7 @@ echo "
 
             if ($value) {
                 echo "
-                <dl class=\"fn1-output-field\">
+                <dl>
                     <dt>$fields[$key]</dt>
                     <dd>$value</dd>
                 </dl>";

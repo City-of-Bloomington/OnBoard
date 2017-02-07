@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -14,7 +14,9 @@ $count = count($this->applications);
 $title = $this->_('applications_reportForm_title', 'messages');
 ?>
 <section id="reportForm">
-    <h1><?= $title; ?></h1>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
 
     <form method="get" action="<?= BASE_URI; ?>/applications/report">
         <fieldset id="seats">

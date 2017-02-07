@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param CommitteeStatute $this->committeeStatute
  */
@@ -14,20 +14,21 @@ $committee = self::escape($this->committeeStatute->getCommittee()->getName());
 $title     = $id ? $this->_('committeeStatute_edit') : $this->_('committeeStatute_add');
 ?>
 <section>
-    <h1><?= $committee; ?></h1>
+    <header>
+        <h1><?= $committee; ?></h1>
+    </header>
 
     <form method="post" action="<?= BASE_URI; ?>/committeeStatutes/update">
         <fieldset><legend><?= $title; ?></legend>
             <input name="committeeStatute_id" type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"        type="hidden" value="<?= $committee_id; ?>" />
             <?php
+                $h = $this->template->getHelper('field');
+
                 foreach (['citation', 'url'] as $f) {
-                    echo "
-                    <dl class=\"fn1-input-field\">
-                        <dt><label  for=\"$f\">{$this->_($f)}</label></dt>
-                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
-                    </dl>
-                    ";
+                    echo $h->field([
+                        'name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f
+                    ]);
                 }
 
                 $h = $this->template->getHelper('saveAndCancelButtons');

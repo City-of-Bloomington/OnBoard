@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -36,7 +36,7 @@ if ($currentTerm) {
             echo "
                 <div>
                     $members
-                    <span class=\"onboard-termDates\">
+                    <span class=\"termDates\">
                         {$term->getStartDate(DATE_FORMAT)}-{$term->getEndDate(DATE_FORMAT)}
                     </span>
                 </div>

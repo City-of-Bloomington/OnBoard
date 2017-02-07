@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\Term;
 use Application\Models\TermTable;
@@ -42,9 +42,20 @@ class TermsController extends Controller
         // Handling the POST
         if (isset($term)) {
             if (isset($_POST['seat_id'])) {
+                $action = $term->getId() ? 'edit' : 'add';
                 try {
+                    $change = $action == 'edit' ? ['original'=>$term->getData()] : [];
                     $term->handleUpdate($_POST);
                     $term->save();
+                    $change['updated'] = $term->getData();
+
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id' => $term->getSeat()->getCommittee_id(),
+                        'tablename'    => 'terms',
+                        'action'       => $action,
+                        'changes'      => [$change]
+                    ]);
+
                     header('Location: '.BASE_URL.'/seats/view?seat_id='.$term->getSeat_id());
                     exit();
                 }
@@ -95,7 +106,16 @@ class TermsController extends Controller
                 $term = new Term($_REQUEST['term_id']);
                 $seat = $term->getSeat();
 
+                $change = ['original'=>$term];
                 $term->delete();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id' => $seat->getCommittee_id(),
+                    'tablename'    => 'terms',
+                    'action'       => 'delete',
+                    'changes'      => [$change]
+                ]);
+
                 header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
                 exit();
 
@@ -105,5 +125,4 @@ class TermsController extends Controller
         header('Location: '.BASE_URL.'/committees');
         exit();
 	}
-
 }

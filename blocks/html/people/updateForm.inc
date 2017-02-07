@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Person $this->person
  */
@@ -16,7 +16,9 @@ foreach ($fields as $f) {
 $title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add');
 ?>
 <section class="updatePersonForm">
-	<h1><?= $title; ?></h1>
+    <header>
+        <h1><?= $title; ?></h1>
+    </header>
 	<form method="post" action="<?= BASE_URI; ?>/people/update">
 		<fieldset><legend><?= $this->_('info_person'); ?></legend>
 			<input name="person_id" type="hidden" value="<?= $this->person->getId(); ?>" />
@@ -33,48 +35,58 @@ $title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add
 				$this->_include('people/partials/personalInfoFields.inc');
 
                 $field = $this->template->getHelper('field');
-			?>
-            <dl class="fn1-input-field">
-                <dt><label><?= $this->_('gender'); ?></label></dt>
-                <dd><label><input name="gender" type="radio" value="male"   <?php if ($gender==='male'  ) echo 'checked="checked"'; ?> /> M</label>
-                    <label><input name="gender" type="radio" value="female" <?php if ($gender==='female') echo 'checked="checked"'; ?> /> F</label>
-                </dd>
-            </dl>
+                echo $field->field([
+                    'name'    => 'gender',
+                    'id'      => 'gender',
+                    'label'   => $this->_('gender'),
+                    'value'   => $gender,
+                    'type'    => 'radio',
+                    'options' => [
+                        ['value'=>'male',   'label'=>'M'],
+                        ['value'=>'female', 'label'=>'F']
+                    ]
+                ]);
 
-            <dl class="fn1-input-field">
-                <dt><label   for="race_id"><?= $this->_('race'); ?></label></dt>
-                <dd><select name="race_id" id="race_id">
-                        <option></option>
-                        <?php
-                            $table = new RaceTable();
-                            $list = $table->find();
-                            foreach ($list as $race) {
-                                $selected = $race_id===$race->getId() ? ' selected="selected"' : '';
-                                echo "<option value=\"{$race->getId()}\"$selected>$race</option>";
-                            }
-                        ?>
-                    </select>
-                </dd>
-            </dl>
+                $options = [['value'=>'']];
+                $table = new RaceTable();
+                $list  = $table->find();
+                foreach ($list as $r) { $options[] = ['value'=>$r->getId(), 'label'=>parent::escape($r->getName())]; }
+                echo $field->field([
+                    'name'    => 'race_id',
+                    'id'      => 'race_id',
+                    'label'   => $this->_('race'),
+                    'value'   => $race_id,
+                    'type'    => 'select',
+                    'options' => $options
+                ]);
+			?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('address'); ?></legend>
-            <textarea name="address" id="address"></textarea>
-            <?= $field->field(['name'=>'city', 'id'=>'city', 'label'=>$this->_('city'), 'value'=>$city]); ?>
-            <dl class="fn1-input-field--select">
-                <dt><label   for="state"><?= $this->_('state'); ?></label></dt>
-                <dd><select name="state" id="state"><option value=""></option>
-                    <?php
-                        foreach (Person::$STATES as $s) {
-                            $selected = $state === $s ? 'selected="true"' : '';
-                            echo "<option $selected>$s</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
+        <?php
+            echo $field->field([
+                'name'  => 'address',
+                'id'    => 'address',
+                'label' => $this->_('address'),
+                'value' => $address,
+                'type'  => 'textarea'
+            ]);
 
-            <?= $field->field(['name'=>'zip',  'id'=>'zip',  'label'=>$this->_('zip'),  'value'=>$zip ]); ?>
+            $field->field(['name'=>'city', 'id'=>'city', 'label'=>$this->_('city'), 'value'=>$city]);
+
+            $options = [['value'=>'']];
+            foreach (Person::$STATES as $s) { $options[] = ['value'=>$s]; }
+            echo $field->field([
+                'name'    => 'state',
+                'id'      => 'state',
+                'label'   => $this->_('state'),
+                'value'   => $state,
+                'type'    => 'select',
+                'options' => $options
+            ]);
+
+            echo $field->field(['name'=>'zip',  'id'=>'zip',  'label'=>$this->_('zip'),  'value'=>$zip ]);
+        ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('about'); ?></legend>

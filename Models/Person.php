@@ -239,7 +239,7 @@ class Person extends ActiveRecord
 	 * Checks if the user is supposed to have acces to the resource
 	 *
 	 * This is implemented by checking against a Zend_Acl object
-	 * The Zend_Acl should be created in configuration.inc
+	 * The Zend_Acl should be created in bootstrap.inc
 	 *
 	 * @param string $resource
 	 * @param string $action

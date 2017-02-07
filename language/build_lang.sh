@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Building language files"
 DIR=`pwd`
 for LANG in */*
 do

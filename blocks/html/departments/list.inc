@@ -1,18 +1,18 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->departments
- * @param boolean $this->disableButtons
+ * @param boolean        $this->disableButtons
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 
 $helper = $this->template->getHelper('buttonLink');
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['department', 'departments', count($this->departments)]); ?></h1>
-        <div class="fn1-uiBlock-headerTools">
+<section>
+    <header><h1><?= $this->_(['department', 'departments', count($this->departments)]); ?></h1>
+        <div class="tools">
         <?php
             if (!$this->disableButtons && Person::isAllowed('departments', 'add')) {
                 echo $helper->buttonLink(
@@ -25,7 +25,7 @@ $helper = $this->template->getHelper('buttonLink');
         </div>
     </header>
 
-    <table class="fn1-table">
+    <table>
     <?php
         $editButton = '';
         foreach ($this->departments as $d) {

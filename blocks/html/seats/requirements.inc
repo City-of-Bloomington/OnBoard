@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->seats An array of Seat objects
  */
@@ -23,7 +23,7 @@ use Michelf\MarkdownExtra;
                 : $this->_('none');
 
             echo "
-            <dl class=\"fn1-output-field\">
+            <dl>
                 <dt>$code: $name</dt>
                 <dd>$requirements</td>
             </dl>

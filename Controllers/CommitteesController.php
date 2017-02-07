@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\CommitteeTable;
+use Application\Models\GoogleGateway;
 use Application\Models\Person;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
@@ -130,9 +132,20 @@ class CommitteesController extends Controller
             : new Committee();
 
         if (isset($_POST['name'])) {
+            $action = $committee->getId() ? 'edit' : 'add';
+
             try {
+                $original = $committee->getData();
                 $committee->handleUpdate($_POST);
                 $committee->save();
+                $updated  = $committee->getData();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $committee->getId(),
+                    'tablename'   => 'committees',
+                    'action'      => $action,
+                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
+                ]);
 
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
@@ -154,7 +167,16 @@ class CommitteesController extends Controller
 
         if (isset($_POST['endDate'])) {
             try {
+                $original = $committee->getData();
                 $committee->saveEndDate($_POST['endDate']);
+                $updated  = $committee->getData();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $committee->getId(),
+                    'tablename'   => 'committees',
+                    'action'      => 'end',
+                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
+                ]);
 
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
@@ -210,5 +232,37 @@ class CommitteesController extends Controller
             'title'        => $this->template->_('applications_archived'),
             'type'         => 'archived'
         ]);
+    }
+
+    public function meetings()
+    {
+        $committee = $this->loadCommittee($_GET['committee_id']);
+        $year = !empty($_GET['year'])
+              ?  (int) $_GET['year']
+              :  (int) date('Y');
+
+        $start = new \DateTime("$year-01-01");
+        $end   = new \DateTime("$year-01-01");
+        $end->add(new \DateInterval('P1Y'));
+
+        $meetings = $committee->getMeetings($start, $end);
+
+        $this->template->title = $committee->getName();
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/meetings.inc', [
+            'committee' => $committee,
+            'meetings'  => $meetings,
+            'year'      => $year
+        ]);
+    }
+
+    public function history()
+    {
+        $committee = $this->loadCommittee($_GET['committee_id']);
+        $this->template->title = $committee->getName();
+        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        $this->template->blocks[] = new Block('committees/history.inc', ['history' => $committee->getHistory()]);
     }
 }

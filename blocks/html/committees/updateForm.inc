@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -11,7 +11,7 @@ use Blossom\Classes\View;
 
 $fields = [
     'type', 'yearFormed',
-    'name', 'statutoryName', 'website',
+    'name', 'statutoryName', 'website', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
     'description', 'contactInfo', 'meetingSchedule',
     'termEndWarningDays', 'applicationLifetime'
@@ -23,33 +23,30 @@ foreach ($fields as $f) {
 
 $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('committee_add');
 ?>
-<section    class="fn1-uiBlock">
-    <header class="fn1-uiBlock-header">
-        <h1 class="fn1-uiBlock-title"><?= $this->_($title); ?></h1>
+<section>
+    <header>
+        <h1><?= $this->_($title); ?></h1>
     </header>
-    <form   class="fn1-uiBlock-content" method="post" action="<?= BASE_URI; ?>/committees/update">
+    <form method="post" action="<?= BASE_URI; ?>/committees/update">
         <fieldset><legend><?= $this->_('committee_info'); ?></legend>
             <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
 
-            <dl class="fn1-input-field">
-                <dt><label   for="type" class="required"><?= $this->_('type'); ?></label></dt>
-                <dd><select name="type">
-                    <?php
-                        foreach (Committee::$types as $t) {
-                            $selected = $type === $t
-                                ? 'selected="true"'
-                                : '';
-                            echo "<option value=\"$t\" $selected>$t</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
             <?php
-                $field = $this->template->getHelper('field');
+                $helper = $this->template->getHelper('field');
+
+                $options = [];
+                foreach (Committee::$types as $t) { $options[] = ['value'=>$t]; }
+                echo $helper->field([
+                    'name'    => 'type',
+                    'id'      => 'type',
+                    'label'   => $this->_('type'),
+                    'type'    => 'select',
+                    'value'   => $type,
+                    'options' => $options
+                ]);
 
                 $fields = [
-                    'name', 'yearFormed', 'statutoryName',
+                    'name', 'yearFormed', 'statutoryName', 'calendarId',
                     'website', 'termEndWarningDays', 'applicationLifetime',
                 ];
                 foreach ($fields as $f) {
@@ -60,7 +57,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                         'value' => $$f
                     ];
                     if ($f === 'endDate') { $p['type'] = 'date'; }
-                    echo $field->field($p);
+                    echo $helper->field($p);
                 }
             ?>
 
@@ -71,7 +68,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 <option value=""></option>
                 <?php
                     $table = new DepartmentTable();
-                    $list = $table->find();
+                    $list  = $table->find();
                     foreach ($list as $d) {
                         $name = self::escape($d->getName());
                         $selected = $this->committee->hasDepartment($d)
@@ -84,14 +81,19 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
         </fieldset>
 
         <fieldset><legend><?= $this->_('contactInfo'); ?></legend>
-            <dl class="fn1-input-field">
-                <dt><label     for="address"><?= $this->_('address'); ?></label></dt>
-                <dd><textarea name="address" id="address"><?= $address; ?></textarea></dd>
-            </dl>
             <?php
+                echo $helper->field([
+                    'name'  => 'address',
+                    'id'    => 'address',
+                    'label' => $this->_('address'),
+                    'value' => $address,
+                    'type'  => 'textarea'
+
+                ]);
+
                 $fields = ['city', 'state', 'zip', 'email', 'phone'];
                 foreach ($fields as $f) {
-                    echo $field->field([
+                    echo $helper->field([
                         'label' => $this->_($f),
                         'name'  => $f,
                         'id'    => $f,

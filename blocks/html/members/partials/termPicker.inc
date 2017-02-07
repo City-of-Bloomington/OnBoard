@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -23,23 +23,21 @@ if ($currentTerm) {
         $list[] = $previousTerm;
     }
 
-    $options = '';
+    $options = [];
     foreach ($list as $term) {
         if ($term->isVacant()) {
-            $dates   = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
-            $selected = $term->getId() === $currentTerm->getId()
-                ? 'selected="true"'
-                : '';
-            $options.= "<option value=\"{$term->getId()}\" $selected>$dates</option>";
+            $dates     = "{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}";
+            $options[] = ['value'=>$term->getId(), 'label'=>$dates];
         }
     }
-
-    echo "
-    <dl class=\"fn1-input-field--select\"><dt><label   for=\"newMember-term_id\" class=\"required\">{$this->_('term')}</label></dt>
-        <dd><select name=\"newMember[term_id]\" id=\"newMember-term_id\">
-                $options
-            </select>
-        </dd>
-    </dl>
-    ";
+    $helper = $this->template->getHelper('field');
+    echo $helper->field([
+        'name'     => 'newMember[term_id]',
+        'id'       => 'newMember-term_id',
+        'label'    => $this->_('term'),
+        'value'    => $currentTerm->getId(),
+        'type'     => 'select',
+        'options'  => $options,
+        'required' => true
+    ]);
 }

@@ -82,9 +82,7 @@ class Applicant extends ActiveRecord
             $sql = 'delete from applications where applicant_id=?';
             $zend_db->query($sql)->execute([$this->getId()]);
 
-            foreach ($this->getMedia() as $media) {
-                $media->delete();
-            }
+            foreach ($this->getFiles() as $f) { $f->delete(); }
 
             parent::delete();
         }
@@ -183,17 +181,17 @@ class Applicant extends ActiveRecord
 	}
 
 	/**
-	 * @return array An array of Media objects
+	 * @return array An array of File objects
 	 */
-	public function getMedia()
+	public function getFiles()
 	{
-        $media = [];
+        $files = [];
         if ($this->getId()) {
-            $table = new MediaTable();
+            $table = new ApplicantFilesTable();
             $list  = $table->find(['applicant_id'=>$this->getId()]);
-            foreach ($list as $m) { $media[] = $m; }
+            foreach ($list as $f) { $files[] = $f; }
         }
-        return $media;
+        return $files;
 	}
 
 }

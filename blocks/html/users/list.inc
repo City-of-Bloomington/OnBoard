@@ -1,17 +1,18 @@
 <?php
 /**
- * @copyright 2007-2016 City of Bloomington, Indiana
+ * @copyright 2007-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Sql\Select $users
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 ?>
-<section     class="fn1-uiBlock">
-    <header  class="fn1-uiBlock-header"><h1><?= $this->_(['user','users',2]); ?></h1>
-        <div class="fn1-uiBlock-headerTools">
+<section>
+    <header>
+        <h1><?= $this->_(['user','users', 10]); ?></h1>
+        <div>
         <?php
-            if (Person::isAllowed('users')) {
+            if (Person::isAllowed('users', 'add')) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
                     BASE_URI.'/users/update',
@@ -22,7 +23,7 @@ use Application\Templates\Helpers\ButtonLink;
         ?>
         </div>
     </header>
-	<table class="fn1-table">
+	<table>
 		<thead>
 			<tr><th></th>
 				<th><?= $this->_('username'); ?></th>
@@ -35,15 +36,17 @@ use Application\Templates\Helpers\ButtonLink;
 		<tbody>
 		<?php
 			foreach ($this->users as $user) {
-				$editButton = '';
+				$editButton   = '';
 				$deleteButton = '';
-				if (Person::isAllowed('users')) {
+				if (Person::isAllowed('users', 'edit')) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/users/update?user_id='.$user->getId(),
 						$this->translate('edit_account'),
 						'edit',
 						ButtonLink::SIZE_ICON
 					);
+                }
+                if (Person::isAllowed('users', 'delete')) {
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
 						$this->translate('delete_account'),

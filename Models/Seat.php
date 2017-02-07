@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -194,6 +193,8 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getData() { return $this->data; }
+
 	/**
 	 * @return boolean
 	 */

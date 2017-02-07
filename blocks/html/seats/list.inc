@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->seats
- * @param Committee $this->committee (optional)
- * @param boolean $this->disableButtons (optional)
- * @param string $this->title (optional)
+ * @param Committee         $this->committee      (optional)
+ * @param boolean           $this->disableButtons (optional)
+ * @param string            $this->title          (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -17,7 +17,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
     <header>
         <h1><?= $title; ?></h1>
     </header>
-    <table class="fn1-table">
+    <table>
         <thead>
             <tr><th></th>
                 <th><?= $this->_('code'); ?></th>

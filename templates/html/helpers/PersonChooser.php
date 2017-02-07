@@ -56,11 +56,10 @@ class PersonChooser
 		$html = "
 		<input type=\"hidden\" name=\"{$fieldname}\" id=\"{$fieldId}\" value=\"$id\" />
 		<span id=\"{$fieldId}-name\">$name</span>
-		<a class=\"btn\"
+		<a class=\"button person\"
 			href=\"$personChooser\"
-			onclick=\"PERSON_CHOOSER.open('$fieldId');return false;\">
-			<i class=\"fa fa-user\"></i>
-			Change Person
+			onclick=\"PERSON_CHOOSER.open(event, '$fieldId');\">
+			{$this->template->_('person_change')}
 		</a>
 		";
 		return $html;

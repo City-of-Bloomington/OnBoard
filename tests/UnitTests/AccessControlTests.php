@@ -5,7 +5,7 @@
  */
 use Application\Models\Person;
 
-require_once '../../configuration.inc';
+require_once '../../bootstrap.inc';
 
 class AccessControlTest extends PHPUnit_Framework_TestCase
 {

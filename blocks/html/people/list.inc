@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Paginator $this->people
  */
@@ -10,9 +10,9 @@ use Blossom\Classes\Url;
 ?>
 <section>
     <header>
-        <h1><?= $this->_(['person', 'people', 2]); ?></h1>
+        <h1><?= $this->_(['person', 'people', count($this->people)]); ?></h1>
     </header>
-	<table class="fn1-table">
+	<table>
     <?php
         $helper = $this->template->getHelper('buttonLink');
         foreach ($this->people as $person) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  * @param Committee $this->committee (optional)
@@ -8,12 +8,10 @@
 use Application\Models\Applicant;
 use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
-use Application\Models\Media;
+use Application\Models\ApplicantFile;
 use Application\Models\Site;
 use Michelf\MarkdownExtra;
 
-$table = new CommitteeTable();
-$committees = $table->find(['current'=>true]);
 
 $fields = [
     'id', 'firstname', 'lastname', 'email', 'phone',
@@ -32,7 +30,9 @@ $title = $this->committee
 $field = $this->template->getHelper('field');
 ?>
 <section>
-    <h1><?= $title ?></h1>
+    <header>
+        <h1><?= $title ?></h1>
+    </header>
     <div>
     <?php
         $markdown = new MarkdownExtra();
@@ -62,69 +62,52 @@ $field = $this->template->getHelper('field');
         </fieldset>
         <?php
             if (!$this->committee) {
-                echo "
-                <fieldset id=\"committees\">
-                    <dl class=\"fn1-input-field--checkbox\">
-                        <dt>{$this->_(['committee', 'committees', count($committees)])}</dt>
-                ";
-                    $chosen = [];
-                    if (isset($_REQUEST['committees'])) { $chosen = $_REQUEST['committees']; }
-
-                    foreach ($committees as $c) {
-                        $checked = in_array($c->getId(), $chosen)
-                            ? 'checked="true"'
-                            : '';
-                        $name = self::escape($c->getName());
-                        echo "
-                        <dd><label>
-                                <input name=\"committees[]\" type=\"checkbox\" value=\"{$c->getId()}\" $checked />
-                                <span>$name</span>
-                            </label>
-                        </dd>
-                        ";
-                    }
-                echo "
-                    </dl>
-                </fieldset>
-                ";
+                echo '<fieldset id="committees">';
+                $options = [];
+                $table   = new CommitteeTable();
+                $list    = $table->find(['current'=>true]);
+                foreach ($list as $c) {
+                    $options[] = ['value'=>$c->getId(), 'label'=>parent::escape($c->getName())];
+                }
+                echo $field->field([
+                    'name'    => 'committees',
+                    'label'   => $this->_(['committee', 'committees', count($list)]),
+                    'value'   => !empty($_REQUEST['committees']) ? $_REQUEST['committees'] : [],
+                    'type'    => 'checkbox',
+                    'options' => $options
+                ]);
+                echo '</fieldset>';
             }
         ?>
 
         <fieldset>
-            <dl class="fn1-input-field">
-                <dt><label><?= $this->_('citylimits'); ?></label></dt>
-                <dd><label>
-                        <input name="citylimits" type="radio" value="1" <?= $citylimits ? 'checked="true"' : ''; ?> />
-                        <?= $this->_('yes'); ?>
-                    </label>
-                    <label>
-                        <input name="citylimits" type="radio" value="0" <?= $citylimits ? '' : 'checked="true"'; ?> />
-                        <?= $this->_('no'); ?>
-                    </label>
-                </dd>
-            </dl>
-            <?php
-                echo $field->field(['name'=>'occupation', 'id'=>'occupation', 'label'=>$this->_('occupation'), 'value'=>$occupation]);
-            ?>
+        <?php
+            echo $field->field([
+                'name' => 'citylimits',
+                'label' => $this->_('citylimits'),
+                'value' => $citylimits,
+                'type' => 'radio',
+                'options' => [
+                    ['value' => 1, 'label' => $this->_('yes')],
+                    ['value' => 0, 'label' => $this->_('no' )]
+                ]
+            ]);
 
-            <dl class="fn1-input-field">
-                <dt><label for="referredFrom"><?= $this->_('referredFrom'); ?></label></dt>
-                <dd><select name="referredFrom" id="referredFrom"><option value=""></option>
-                    <?php
-                        $knownReferralOption = false;
-                        foreach (Applicant::$referralOptions as $o) {
-                            $selected = $referredFrom === $o
-                                ? 'selected="true"'
-                                : '';
-                            echo "<option $selected>$o</option>";
-                        }
-                    ?>
-                    </select>
-                </dd>
-            </dl>
-            <?php
-                echo $field->field(['name'=>'referredOther', 'id'=>'referredOther', 'label'=>$this->_('referredOther'), 'value'=>$referredOther]);
-            ?>
+            echo $field->field(['name'=>'occupation', 'id'=>'occupation', 'label'=>$this->_('occupation'), 'value'=>$occupation]);
+
+            $options = [['value'=>'']];
+            foreach (Applicant::$referralOptions as $o) { $options[] = ['value'=>$o]; }
+            echo $field->field([
+                'id'      => 'referredFrom',
+                'name'    => 'referredFrom',
+                'label'   => $this->_('referredFrom'),
+                'type'    => 'select',
+                'value'   => $referredFrom,
+                'options' => $options
+            ]);
+
+            echo $field->field(['name'=>'referredOther', 'id'=>'referredOther', 'label'=>$this->_('referredOther'), 'value'=>$referredOther]);
+        ?>
 
         </fieldset>
 
@@ -136,14 +119,14 @@ $field = $this->template->getHelper('field');
             <textarea name="qualifications"><?= $qualifications; ?></textarea>
         </fieldset>
 
-        <fieldset><legend><?= $this->_('media'); ?></legend>
+        <fieldset><legend><?= $this->_('applicantFile'); ?></legend>
             <?php
                 $accept = [];
-                foreach (Media::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+                foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
                 $accept = implode(',', $accept);
 
-                echo "<input type=\"file\" name=\"mediafile\" id=\"mediafile\" accept=\"$accept\" />";
-                $this->_include('media/partials/uploadHelp.inc');
+                echo "<input type=\"file\" name=\"applicantFile\" id=\"applicantFile\" accept=\"$accept\" />";
+                $this->_include('files/partials/uploadHelp.inc');
             ?>
         </fieldset>
 
