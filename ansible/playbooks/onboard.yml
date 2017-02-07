@@ -1,14 +1,8 @@
 - hosts: linux-onboard
   become: yes
   roles:
-    # These are all published in Ansible Galaxy
+    # Dependencies are publish in Ansible Galaxy
     # Pull these down using ansible-galaxy
     #
     # ansible-galaxy install -r roles.yml
-    - City-of-Bloomington.linux
-    - City-of-Bloomington.apache
-    - City-of-Bloomington.mysql
-    - City-of-Bloomington.php
-    - City-of-Bloomington.nodejs
-
     - onboard

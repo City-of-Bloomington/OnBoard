@@ -1,6 +1,7 @@
 site_config.inc
 credentials.json
 backup.cnf
+ansible/roles/City-of-Bloomington.*
 data/.*
 data/sessions/*
 data/applicantFiles

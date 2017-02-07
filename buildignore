@@ -4,15 +4,12 @@
 /dist
 .git/
 .git*
-configuration.inc
 site_config.inc
-/data/applicantMedia/*
+/data/applicantFiles/*
+/data/meetingFiles/*
 /data/sessions/*
 /data/.*
 /scripts/backup.cnf
-/public/css/Font-Awesome/less/
-/public/css/Font-Awesome/scss/
-/public/css/Font-Awesome/src/
 /gulpfile.js
 /node_modules/
 /.ftppass

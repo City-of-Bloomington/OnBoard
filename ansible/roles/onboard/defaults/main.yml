@@ -22,5 +22,9 @@ onboard_recaptcha:
   site_key: "{{ vault_onboard_recaptcha.site_key }}"
   server_key: "{{ vault_onboard_recaptcha.server_key }}"
 
+onboard_google:
+  credentials: "{{ vault_onboard_google.credentials }}"
+  user_email: "{{ onboard_google.user_email }}"
+
 onboard_directory_server: ''
 onboard_cas_server: ''

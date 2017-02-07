@@ -1,10 +1,12 @@
 ---
 - name: Update the apache config for OnBoard
   template: src=onboard.conf dest=/etc/apache2/sites-available/{{ onboard_name }}.conf
+  register: onboard_conf
   notify:
     - apache_restart
 
 - name: Acitvate site
   command: a2ensite onboard
+  when: onboard_conf.changed
   notify:
     - apache_restart
