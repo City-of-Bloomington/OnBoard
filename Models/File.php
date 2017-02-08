@@ -111,7 +111,9 @@ trait File
 	public function save()
 	{
         // Let MySQL handle setting correct datetimes for created and updated
-        unset($this->data['created']);
+        if ($this->getId()) {
+            unset($this->data['created']);
+        }
         unset($this->data['updated']);
 
         // Move the new file into place
