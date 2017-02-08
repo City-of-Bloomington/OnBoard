@@ -16,11 +16,10 @@ create table meetingFiles(
 	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
 	mime_type        varchar(128) not null,
-	created          datetime     not null,
+	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 	foreign key (committee_id) references committees(id)
 );
-/*!50700 alter table meetingFiles modify created datetime not null default CURRENT_TIMESTAMP */;
 
 
 create table committeeHistory(
