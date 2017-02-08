@@ -14,9 +14,6 @@ $routes = [
     'races'      => 'race',
     'users'      => 'user'
 ];
-if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
-    $routes['tags'] = 'tag';
-}
 
 foreach ($routes as $plural=>$singular) {
     $requiredAction = 'index';

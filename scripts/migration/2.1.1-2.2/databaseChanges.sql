@@ -33,3 +33,11 @@ create table committeeHistory(
     foreign key (committee_id) references committees(id),
     foreign key (person_id)    references people    (id)
 );
+
+drop table topic_tags;
+drop table votingRecords;
+drop table votes;
+drop table tags;
+drop table topics;
+drop table topicTypes;
+drop table voteTypes;

@@ -84,7 +84,3 @@ define('LOCALE', 'en_US');
 
 define('TERM_END_WARNING_DEFAULT', 60);
 define('APPLICATION_LIFETIME_DEFAULT', 90);
-
-// Legislation and Vote tracking have been abandoned for the time being
-// You most likely want to keep this disabled
-define('VOTE_TRACKING', false);

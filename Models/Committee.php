@@ -254,30 +254,6 @@ class Committee extends ActiveRecord
 	public function hasPastMembers() { return $this->hasPast('members'); }
 
 	/**
-	 * @param array $fields Extra fields to search on
-	 * @param string $sort Optional sorting
-	 * @return Zend\Db\ResultSet
-	 */
-	public function getTopics(array $fields=null, $sort=null)
-	{
-		$search = ['committee_id' => $this->getId()];
-		if ($fields) {
-			$search = array_merge($search, $fields);
-		}
-
-		$table = new TopicTable();
-		return $table->find($search, false, $sort);
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function hasTopics()
-	{
-		return count($this->getTopics()) ? true : false;
-	}
-
-	/**
 	 * Returns terms that were current for the given timestamp.
 	 * If no timestamp is given, the current time is used.
 	 *
@@ -343,43 +319,6 @@ class Committee extends ActiveRecord
 	{
 		$people = new PeopleTable();
 		return $people->find(['committee_id'=>$this->getId()]);
-	}
-
-	/**
-	 * @return Zend\Db\ResultSet
-	 */
-	public function getVotes()
-	{
-		$table = new VoteTable();
-		return $table->find(['committee_id'=>$this->getId()]);
-	}
-
-	/**
-	 * Votes are considered invalid when the number of votingRecords for
-	 * the vote does not match this committeee's maxCurrentTerms.
-	 * That means that either not all the votingRecords have been entered,
-	 * or too many votingRecords have been entered.
-	 *
-	 * @return array An array of Vote objects
-	 */
-	public function getInvalidVotes()
-	{
-		$zend_db = Database::getConnection();
-
-		$sql = "select v.id,count(vr.id) as count from votes v
-				left join topics t on v.topic_id=t.id
-				left join votingRecords vr on v.id=vr.vote_id
-				where t.committee_id=?
-				group by v.id having count!=?";
-
-		$query = $zend_db->createStatement($sql);
-		$result = $query->execute([$this->getId(), $this->getMaxCurrentTerms()]);
-
-		$votes = array();
-		foreach ($result as $row) {
-			$votes[] = new Vote($row['id']);
-		}
-		return $votes;
 	}
 
 	/**

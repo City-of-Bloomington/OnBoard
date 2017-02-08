@@ -178,61 +178,6 @@ create table offices (
 	foreign key (person_id) references people(id)
 );
 
-create table topicTypes (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null
-);
-
-create table topics (
-	id int unsigned not null primary key auto_increment,
-	topicType_id int unsigned not null,
-	date date not null,
-	number varchar(25) not null,
-	description text not null,
-	synopsis text not null,
-	committee_id int unsigned not null,
-	foreign key (topicType_id) references topicTypes(id),
-	foreign key (committee_id) references committees(id)
-);
-
-create table voteTypes (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null,
-	ordering tinyint unsigned not null,
-	unique (ordering)
-);
-
-create table votes (
-	id int unsigned not null primary key auto_increment,
-	date date not null,
-	voteType_id int unsigned not null,
-	topic_id int unsigned not null,
-	outcome enum('pass','fail'),
-	foreign key (voteType_id) references voteTypes(id),
-	foreign key (topic_id) references topics(id)
-);
-
-create table votingRecords (
-	id int unsigned not null primary key auto_increment,
-	term_id int unsigned not null,
-	vote_id int unsigned not null,
-	position enum('yes','no','abstain','absent') not null default 'absent',
-	foreign key (term_id) references terms(id),
-	foreign key (vote_id)  references votes(id)
-);
-
-create table tags (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null
-);
-
-create table topic_tags (
-	topic_id int unsigned not null,
-	tag_id int unsigned not null,
-	foreign key (topic_id) references topics(id),
-	foreign key (tag_id) references tags(id)
-);
-
 create table siteContent (
     label varchar(128) not null primary key,
     content text
