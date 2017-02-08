@@ -8,12 +8,11 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class MeetingFile extends ActiveRecord
+class MeetingFile extends File
 {
-    use File;
-
 	protected $tablename = 'meetingFiles';
 	protected $committee;
+	protected $event;
 
 	public static $types = ['Agenda', 'Minutes', 'Packet'];
 
@@ -29,8 +28,8 @@ class MeetingFile extends ActiveRecord
         'application/rtf'                                                         => 'rtf'
     ];
 
-	public function validate()
-	{
+    private function validateDatabaseInformation()
+    {
         if (!$this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
             throw new \Exception('missingRequiredFields');
         }
@@ -38,6 +37,36 @@ class MeetingFile extends ActiveRecord
         if (!in_array($this->getType(), self::$types)) {
             throw new \Exception('meetingFiles/invalidType');
         }
+
+        $committee = $this->getCommittee();
+        if ($committee->getCalendarId()) {
+            // Make sure this file is associated with a Calendar Event
+            if (!$this->getEventId()) {
+                throw new \Exception('meetingFiles/missingEventId');
+            }
+            $event = $this->getEvent();
+            if (!$event) {
+                throw new \Exception('meetingFiles/unknownEvent');
+            }
+
+            // Make sure the meetingDate matches the event date
+            $startDate = $event->start->dateTime
+                ? new \DateTime($event->start->dateTime)
+                : new \DateTime($event->start->date);
+            if ($this->getMeetingDate()) {
+                if ($this->getMeetingDate('Y-m-d') != $startDate->format('Y-m-d')) {
+                    throw new \Exception('meetingFiles/dateMismatch');
+                }
+            }
+            else {
+                $this->setMeetingDate($startDate->format('Y-m-d'));
+            }
+        }
+    }
+
+	public function validate()
+	{
+        $this->validateDatabaseInformation();
 
 		if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
 		if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
@@ -58,25 +87,48 @@ class MeetingFile extends ActiveRecord
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setMeetingDate ($d) { parent::setDateData('meetingDate', $d); }
 
-	public function handleAdd(array $post, array $file)
+	public function handleUpdate(array $post, array $file)
 	{
-        $this->setType        ($post['type'        ]);
-        $this->setEventId     ($post['eventId'     ]);
-        $this->setCommittee_id($post['committee_id']);
-        $this->setMeetingDate ($post['meetingDate' ]);
+        $fields = ['type', 'eventId', 'committee_id', 'meetingDate'];
+        foreach ($fields as $f) {
+            if (isset($post[$f])) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
+            }
+        }
+
+        // Before we save the file, make sure all the database information is correct
+        $this->validateDatabaseInformation();
 
         $this->setFile($file);
-	}
-
-	public function handleUpdate(array $post, array $file=null)
-	{
-        $this->setType($post['type']);
-        if ($file) {
-            $this->setFile($file);
-        }
 	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	/**
+	 * Returns the partial path of the file, relative to /data/files
+	 *
+	 * Implementations of this class will usually override this function
+	 * with their own custom scheme for the directory structure.
+	 * This implementation should be a good enough default that most
+	 * of the time, we won't need to override it.
+	 *
+	 * @return string
+	 */
+	public function getDirectory()
+	{
+		return $this->getMeetingDate('Y/m/d');
+	}
+
+	public function getEvent()
+	{
+        if (!$this->event) {
+            $this->event = GoogleGateway::getEvent(
+                $this->getCommittee()->getCalendarId(),
+                $this->getEventId()
+            );
+        }
+        return $this->event;
+	}
 }

@@ -5,18 +5,35 @@
  * @param Zend\Db\Result $this->files
  * @param Committee      $this->committee (optional)
  */
+use Application\Models\MeetingFile;
 use Application\Models\Person;
 ?>
 <section>
     <header>
         <h1><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h1>
+        <div class="tools">
+        <?php
+            if ($this->committee && Person::isAllowed('meetingFiles', 'add')) {
+                $actions      = [];
+                $committee_id = $this->committee->getId();
+                $helper       = $this->template->getHelper('dropdown');
+                foreach (MeetingFile::$types as $type) {
+                    $actions[] = [
+                        'label' => $type,
+                        'url'   => BASE_URI."/meetingFiles/update?type=$type;committee_id=$committee_id"
+                    ];
+                }
+                echo $helper->dropdown($actions, $this->_('add'), 'meetingFile_add');
+            }
+        ?>
+        </div>
     </header>
     <table>
     <?php
         $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
         $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
+        $helper        = $this->template->getHelper('buttonLink');
 
-        $helper       = $this->template->getHelper('buttonLink');
         $editButton   = '';
         $deleteButton = '';
         foreach ($this->files as $f) {

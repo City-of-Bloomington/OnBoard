@@ -9,7 +9,7 @@
  */
 use Blossom\Classes\Url;
 ?>
-<form method="post" action="<?= BASE_URI; ?>/meetingFiles/add" enctype="multipart/form-data">
+<form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
     <fieldset>
         <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
         <input name="eventId"      type="hidden" value="<?= $this->eventId; ?>" />

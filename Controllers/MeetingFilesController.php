@@ -40,38 +40,27 @@ class MeetingFilesController extends Controller
         ]);
     }
 
-    public function add()
-    {
-        if (!empty($_REQUEST['committee_id'])) {
-            $committee = new Committee($_REQUEST['committee_id']);
-        }
-
-        if (isset($committee)) {
-            $file = new MeetingFile();
-            try {
-                $file->handleAdd($_POST, $_FILES['meetingFile']);
-                $file->save();
-            }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-
-            $return_url = BASE_URL."/committees/meetings?committee_id={$file->getCommittee_id()};year={$file->getMeetingDate('Y')}";
-            header("Location: $return_url");
-            exit();
-        }
-        else {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            $this->template->blocks[] = new Block('404.inc');
-        }
-    }
-
     public function update()
     {
         if (!empty($_REQUEST['meetingFile_id'])) {
             try { $file = new MeetingFile($_REQUEST['meetingFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
+        else { $file = new MeetingFile(); }
 
-        if (isset($file)) {
+        if (!$file->getCommittee_id()) {
+            if (!empty($_REQUEST['committee_id'])) {
+                try {
+                    $c = new Committee($_REQUEST['committee_id']);
+                    $file->setCommittee($c);
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+        }
+
+        if (!empty($_REQUEST['type'])) { $file->setType($_REQUEST['type']); }
+
+        if (isset($file) && $file->getCommittee_id()) {
             if (isset($_POST['type'])) {
                 try {
                     $file->handleUpdate(
@@ -80,7 +69,9 @@ class MeetingFilesController extends Controller
                     );
                     $file->save();
 
-                    $return_url = BASE_URL."/committees/meetingFiles?committee_id={$file->getCommittee_id()}";
+                    $return_url = !empty($_POST['return_url'])
+                        ? $_POST['return_url']
+                        : BASE_URL."/meetingFiles?committee_id={$file->getCommittee_id()}";
                     header("Location: $return_url");
                     exit();
                 }

@@ -53,7 +53,7 @@ if (isset($this->params['current'])) {
         */
         ?>
 
-    <table class="fn1-table">
+    <table>
         <thead>
             <tr><th></th>
                 <?php

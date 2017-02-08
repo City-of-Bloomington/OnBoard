@@ -49,4 +49,15 @@ class GoogleGateway
         $events = $service->events->listEvents($calendarId, $opts);
         return $events;
     }
+
+    /**
+     * @param string $calendarId
+     * @param string $eventId
+     * @return Event
+     */
+    public static function getEvent($calendarId, $eventId)
+    {
+        $service = new \Google_Service_Calendar(self::getClient());
+        return $service->events->get($calendarId, $eventId);
+    }
 }
