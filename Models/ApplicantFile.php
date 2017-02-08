@@ -11,10 +11,8 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class ApplicantFile extends ActiveRecord
+class ApplicantFile extends File
 {
-    use File;
-
 	protected $tablename = 'applicantFiles';
 	protected $applicant;
 

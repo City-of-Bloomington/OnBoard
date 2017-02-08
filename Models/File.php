@@ -11,7 +11,7 @@ namespace Application\Models;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-trait File
+abstract class File extends ActiveRecord
 {
     protected $tempFile;
     protected $newFile;
