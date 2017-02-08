@@ -32,14 +32,12 @@ use Blossom\Classes\View;
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/tags/update?tag_id='.$tag->getId(),
 						$this->translate('edit'),
-						'edit',
-						ButtonLink::SIZE_ICON
+						'edit'
 					);
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/tags/delete?tag_id='.$tag->getId(),
 						$this->translate('delete'),
-						'delete',
-						ButtonLink::SIZE_ICON
+						'delete'
 					);
 				}
 

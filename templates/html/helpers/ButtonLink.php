@@ -11,17 +11,12 @@ use Blossom\Classes\Helper;
 
 class ButtonLink extends Helper
 {
-	const SIZE_BUTTON = 'button';
-	const SIZE_ICON   = 'icon';
-
-	public function buttonLink($url, $label, $type=null, $size=self::SIZE_BUTTON, array $additionalAttributes=[])
+	public function buttonLink($url, $label, $type=null, array $additionalAttributes=[])
 	{
-        if (!$size) { $size = self::SIZE_BUTTON; }
-
         $attrs = '';
         foreach ($additionalAttributes as $key=>$value) {
             $attrs.= " $key=\"$value\"";
         }
-        return "<a href=\"$url\" class=\"$size $type\" $attrs>$label</a>";
+        return "<a href=\"$url\" class=\"button $type\" $attrs>$label</a>";
 	}
 }

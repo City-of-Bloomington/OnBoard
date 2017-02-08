@@ -32,8 +32,7 @@ use Blossom\Classes\View;
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/appointers/update?appointer_id='.$appointer->getId(),
                     $this->translate('edit'),
-                    'edit',
-                    ButtonLink::SIZE_ICON
+                    'edit'
                 );
             }
 

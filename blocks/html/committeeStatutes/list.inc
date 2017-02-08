@@ -36,8 +36,7 @@ use Application\Templates\Helpers\ButtonLink;
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/committeeStatutes/update?committeeStatute_id='.$s->getId(),
                     $this->_('committeeStatute_edit'),
-                    'edit',
-                    ButtonLink::SIZE_ICON
+                    'edit'
                 );
                 $editButton = "<td>$editButton</td>";
             }

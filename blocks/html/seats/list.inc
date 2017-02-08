@@ -38,8 +38,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
                     $editButton = $helper->buttonLink(
                         BASE_URI."/seats/update?seat_id=$seat_id",
                         $this->translate('seat_edit'),
-                        'edit',
-                        ButtonLink::SIZE_ICON
+                        'edit'
                     );
                 }
                 $code      = self::escape($seat->getCode());

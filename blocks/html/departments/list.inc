@@ -35,8 +35,7 @@ $helper = $this->template->getHelper('buttonLink');
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/departments/update?department_id='.$d->getId(),
                     $this->_('department_edit'),
-                    'edit',
-                    ButtonLink::SIZE_ICON
+                    'edit'
                 );
             }
 

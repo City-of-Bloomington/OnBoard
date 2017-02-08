@@ -36,8 +36,7 @@ if ($userCanEdit) {
     $editButton = $helper->buttonLink(
         BASE_URI."/committees/update?committee_id=$id",
          $this->_('edit'),
-        'edit',
-        ButtonLink::SIZE_ICON
+        'edit'
     );
 }
 

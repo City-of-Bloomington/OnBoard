@@ -42,16 +42,14 @@ use Application\Templates\Helpers\ButtonLink;
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/users/update?user_id='.$user->getId(),
 						$this->translate('edit_account'),
-						'edit',
-						ButtonLink::SIZE_ICON
+						'edit'
 					);
                 }
                 if (Person::isAllowed('users', 'delete')) {
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
 						$this->translate('delete_account'),
-						'delete',
-						ButtonLink::SIZE_ICON
+						'delete'
 					);
 				}
 

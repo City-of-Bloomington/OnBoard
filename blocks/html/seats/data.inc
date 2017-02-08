@@ -110,8 +110,7 @@ if (isset($this->params['current'])) {
                     $editSeatButton = $helper->buttonLink(
                         BASE_URI."/seats/update?seat_id=$seat_id",
                         $this->_('seat_edit'),
-                        'edit',
-                        ButtonLink::SIZE_ICON
+                        'edit'
                     );
                 }
 

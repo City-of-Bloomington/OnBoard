@@ -19,16 +19,14 @@ if (!$this->disableButtons) {
         $editButton = $helper->buttonLink(
             BASE_URI.'/people/update?person_id='.$person_id,
             $this->_('person_edit'),
-            'edit',
-            ButtonLink::SIZE_ICON
+            'edit'
         );
     }
     if ($this->person->isSafeToDelete() && Person::isAllowed('people', 'delete')) {
         $deleteButton = $helper->buttonLink(
             BASE_URI.'/people/delete?person_id='.$person_id,
             $this->_('person_delete'),
-            'delete',
-            ButtonLink::SIZE_ICON
+            'delete'
         );
     }
 }
