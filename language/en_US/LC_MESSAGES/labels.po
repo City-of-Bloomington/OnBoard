@@ -691,14 +691,14 @@ msgstr[1] "Meetings"
 
 msgid "meetingFile"
 msgid_plural "meetingFiles"
-msgstr[0] "Meeting File"
-msgstr[1] "Meeting Files"
+msgstr[0] "Document"
+msgstr[1] "Documents"
 
 msgid "meetingFile_add"
-msgstr "Add Meeting File"
+msgstr "Add Document"
 
 msgid "meetingFile_edit"
-msgstr "Edit Meeting File"
+msgstr "Edit Document"
 
 msgid "meetingFile_delete"
-msgstr "Delete Meeting File"
+msgstr "Delete Document"

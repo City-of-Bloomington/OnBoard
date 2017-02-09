@@ -69,7 +69,7 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     ], true);
                     echo "
                     <dl class=\"required\">
-                        <dt><label for=\"eventId\">{$this->_('eventId')}</label></dt>
+                        <dt><label for=\"eventId\">{$this->_('meeting')}</label></dt>
                         <dd>$back $select $next</dd>
                     </dl>
                     ";
