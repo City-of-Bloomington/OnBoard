@@ -5,8 +5,11 @@
  */
 namespace Application\Models;
 
+use Blossom\Classes\Database;
 use Blossom\Classes\TableGateway;
+use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression;
 
 class MeetingFilesTable extends TableGateway
 {
@@ -43,14 +46,22 @@ class MeetingFilesTable extends TableGateway
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
 
-	public static function dates(array $fields=null)
+	public function years($fields=null)
 	{
-        $select = new Select(self::TABLE);
-        $select->quatifier(Select::QUANTIFIER_DISTINCT);
-        $select->columns(['meetingDate']);
+        $sql    = new Sql(Database::getConnection());
+        $select = $sql->select()
+                      ->from(self::TABLE)
+                      ->columns([new Expression('distinct(year(meetingDate)) as year')])
+                      ->order('year desc');
 
         $this->processFields($fields, $select);
 
-        return parent::performSelect($select);
+        $query  = $sql->prepareStatementForSqlObject($select);
+        $result = $query->execute();
+        $out    = [];
+        foreach ($result as $row) {
+            $out[] = (int)$row['year'];
+        }
+        return $out;
 	}
 }

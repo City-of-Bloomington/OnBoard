@@ -248,8 +248,10 @@ class CommitteesController extends Controller
         $meetings = $committee->getMeetings($start, $end);
 
         $this->template->title = $committee->getName();
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        if ($this->template->outputFormat == 'html') {
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+            $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+        }
         $this->template->blocks[] = new Block('committees/meetings.inc', [
             'committee' => $committee,
             'meetings'  => $meetings,

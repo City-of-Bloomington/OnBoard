@@ -106,6 +106,8 @@ class MeetingFile extends File
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getData() { return $this->data; }
+
 	/**
 	 * Returns the partial path of the file, relative to /data/files
 	 *

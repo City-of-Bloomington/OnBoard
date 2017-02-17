@@ -40,6 +40,33 @@ class MeetingFilesController extends Controller
         ]);
     }
 
+    public function years()
+    {
+        $search = [];
+
+        if (!empty($_GET['committee_id'])) {
+            try {
+                $committee = new Committee($_GET['committee_id']);
+
+                if ($this->template->outputFormat == 'html') {
+                    $this->template->title = $committee->getName();
+                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+                    $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+                }
+
+                $search['committee_id'] = $committee->getId();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        $table = new MeetingFilesTable();
+        $years = $table->years($search);
+        $this->template->blocks[] = new Block('meetingFiles/years.inc', [
+            'years'    => $years,
+            'committe' => isset($committee) ? $committee : null
+        ]);
+    }
+
     public function update()
     {
         if (!empty($_REQUEST['meetingFile_id'])) {
