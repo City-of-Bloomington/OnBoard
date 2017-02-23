@@ -19,14 +19,9 @@ textarea#address { height:3em; }
 #contextInfo {
     dl {
         border-top:none;
-        dt {
-            float: none;
-        }
-        dd {
-            margin-left: 0;
-        }
+        dt { float: none; }
+        dd { margin-left: 0; }
     }
-
 }
 
 .breadcrumbs ul {
@@ -34,24 +29,37 @@ textarea#address { height:3em; }
     margin: 0;
     li {
         display:inline;
-        &:not(:last-of-type):after {
-            content: '>';
-        }
+        &:not(:last-of-type):after { content: '>'; }
     }
-    a { font-size: .75em; margin-right: 8px; }
+    a {
+        font-family: $font-family-heading;
+        font-size: .75em; margin-right: 8px;
+    }
 }
 
 // Tab navigation
 #committeeHeader {
     nav {
-        margin-top:1em;
-        border-bottom: $size-gutter solid $color-accent;
+        margin:1em 0;
+
         a {
-            background-color: $color-accent;
+            font-family: $font-family-heading;
+            background-color: $color-nav1;
             color: $color-content-background;
             padding: $size-gutter;
-            border-radius: $size-gutter $size-gutter 0 0;
+            border-radius: $size-gutter;
         }
+        a.current { background-color: $color-accent; }
+
+        $imageSpace: $font-size-normal * 2;
+        #committee_info    { }
+        #current_members   { }
+        #meetings          { }
+        #meetingFiles      { }
+        #seats_past        { }
+        #past_members      { }
+        #applications      { }
+        #committee_history { }
     }
 }
 
@@ -111,27 +119,10 @@ p {
     max-width: 40em;
 }
 
-
 .pageNavigation ul { list-style-type:none; }
 .pageNavigation li { display:inline; margin-right:1em; }
 .pageNavigation .current { border:2px solid $color-action; }
 
-/* Tag Styles */
-.tags   { font-size:20px; }
-.tags a { font-size:20px; }
-.tags .p90 a { font-size:110%; color:black; font-weight:bold; }
-.tags .p70 a { font-size:100%; color:black;   }
-.tags .p50 a { font-size:90%;  color:#150517; }
-.tags .p30 a { font-size:75%;  color:#2b1b17; }
-.tags .p10 a { font-size:60%;  color:#302226; }
-.tags .p0  a { font-size:50%;  color:#3b3131; }
-.tags a.current { color:#ee7d22; }
-
 a.current { font-weight:bold; }
 
 tr.carryover { background-color:#fc6; }
-
-.votingRecord .yes     { padding-left:28px; background:url('images/check.gif') top left no-repeat; }
-.votingRecord .no      { padding-left:28px; background:url('images/x.gif')     top left no-repeat; }
-.votingRecord .absent  { padding-left:28px; background:url('images/blank.gif') top left no-repeat; }
-.votingRecord .abstain { padding-left:28px; background:url('images/dash.gif')  top left no-repeat; }
