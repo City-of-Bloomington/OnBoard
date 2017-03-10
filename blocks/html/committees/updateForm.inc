@@ -91,7 +91,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
 
                 ]);
 
-                $fields = ['city', 'state', 'zip', 'email', 'phone'];
+                $fields = ['city', 'state', 'zip'];
                 foreach ($fields as $f) {
                     echo $helper->field([
                         'label' => $this->_($f),
@@ -100,6 +100,20 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                         'value' => $$f
                     ]);
                 }
+                echo $helper->field([
+                    'label' =>$this->_('email'),
+                    'name'  =>'email',
+                    'id'    =>'email',
+                    'value' =>$email,
+                    'type'  =>'email'
+                ]);
+                echo $helper->field([
+                    'label' => $this->_('phone'),
+                    'name'  => 'phone',
+                    'id'    => 'phone',
+                    'value' => $phone,
+                    'type'  => 'tel'
+                ]);
 
             ?>
         </fieldset>
