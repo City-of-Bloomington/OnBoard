@@ -48,8 +48,10 @@ textarea#address { height:3em; }
             color: $color-content-background;
             padding: $size-gutter;
             border-radius: $size-gutter;
+
+            &:active, &:hover {    color: $color-background-field; }
+            &.current { background-color: $color-background-field; }
         }
-        a.current { background-color: $color-accent; }
 
         $imageSpace: $font-size-normal * 2;
         #committee_info    { }
