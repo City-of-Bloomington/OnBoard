@@ -64,20 +64,23 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
         </fieldset>
 
         <fieldset><legend><?= $this->_(['department', 'departments', 2]); ?></legend>
-            <select name="departments[]" id="departments" multiple="true" size="8">
-                <option value=""></option>
-                <?php
-                    $table = new DepartmentTable();
-                    $list  = $table->find();
-                    foreach ($list as $d) {
-                        $name = self::escape($d->getName());
-                        $selected = $this->committee->hasDepartment($d)
-                            ? 'selected="true"'
-                            : '';
-                        echo "<option value=\"{$d->getId()}\" $selected>$name</option>";
-                    }
-                ?>
-            </select>
+            <dl><dt><?= $this->_(['department', 'departments', 2]); ?></dt>
+                <dd><select name="departments[]" id="departments" multiple="true" size="8">
+                        <option value=""></option>
+                        <?php
+                            $table = new DepartmentTable();
+                            $list  = $table->find();
+                            foreach ($list as $d) {
+                                $name = self::escape($d->getName());
+                                $selected = $this->committee->hasDepartment($d)
+                                    ? 'selected="true"'
+                                    : '';
+                                echo "<option value=\"{$d->getId()}\" $selected>$name</option>";
+                            }
+                        ?>
+                    </select>
+                </dd>
+            </dl>
         </fieldset>
 
         <fieldset><legend><?= $this->_('contactInfo'); ?></legend>
@@ -119,15 +122,39 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
         </fieldset>
 
         <fieldset><legend><?= $this->_('description'); ?></legend>
-            <textarea name="description" id="description" class="markdown"><?= $description; ?></textarea>
+            <?php
+                echo $helper->field([
+                    'label' => $this->_('description'),
+                    'name'  => 'description',
+                    'id'    => 'description',
+                    'type'  => 'textarea',
+                    'value' => $description
+                ]);
+            ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('meetingSchedule'); ?></legend>
-            <textarea name="meetingSchedule" id="meetingSchedule"><?= $meetingSchedule; ?></textarea>
+            <?php
+                echo $helper->field([
+                    'label' => $this->_('meetingSchedule'),
+                    'name'  => 'meetingSchedule',
+                    'id'    => 'meetingSchedule',
+                    'type'  => 'textarea',
+                    'value' => $meetingSchedule
+                ]);
+            ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('contactInfo'); ?></legend>
-            <textarea name="contactInfo" id="contactInfo"><?= $contactInfo; ?></textarea>
+            <?php
+                echo $helper->field([
+                    'label' => $this->_('contactInfo'),
+                    'name'  => 'contactInfo',
+                    'id'    => 'contactInfo',
+                    'type'  => 'textarea',
+                    'value' => $contactInfo
+                ]);
+            ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('submit'); ?></legend>

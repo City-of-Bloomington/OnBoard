@@ -112,14 +112,31 @@ $field = $this->template->getHelper('field');
         </fieldset>
 
         <fieldset><legend><?= $this->_('interest'); ?></legend>
-            <textarea name="interest"><?= $interest; ?></textarea>
+        <?php
+            echo $field->field([
+                'id'    => 'interest',
+                'name'  => 'interest',
+                'label' => $this->_('interest'),
+                'type'  => 'textarea',
+                'value' => $interest
+            ]);
+        ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('qualifications'); ?></legend>
-            <textarea name="qualifications"><?= $qualifications; ?></textarea>
+        <?php
+            echo $field->field([
+                'id'    => 'qualifications',
+                'name'  => 'qualifications',
+                'label' => $this->_('qualifications'),
+                'type'  => 'textarea',
+                'value' => $qualifications
+            ]);
+        ?>
         </fieldset>
 
         <fieldset><legend><?= $this->_('applicantFile'); ?></legend>
+            <dl><dd>
             <?php
                 $accept = [];
                 foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
@@ -128,6 +145,7 @@ $field = $this->template->getHelper('field');
                 echo "<input type=\"file\" name=\"applicantFile\" id=\"applicantFile\" accept=\"$accept\" />";
                 $this->_include('files/partials/uploadHelp.inc');
             ?>
+            </dd></dl>
         </fieldset>
 
         <fieldset>

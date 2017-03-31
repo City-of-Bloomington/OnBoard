@@ -38,7 +38,7 @@ textarea#address { height:3em; }
 }
 
 // Tab navigation
-#committeeHeader {
+#committeeHeader, #seatsHeader {
     nav {
         margin:1em 0;
 
@@ -47,10 +47,10 @@ textarea#address { height:3em; }
             background-color: $color-nav1;
             color: $color-content-background;
             padding: $size-gutter;
-            border-radius: $size-gutter;
+            border-radius: 4px;
 
             &:active, &:hover {    color: $color-background-field; }
-            &.current { background-color: $color-background-field; }
+            &.current { background-color: $color-selected-background; }
         }
 
         $imageSpace: $font-size-normal * 2;
@@ -102,20 +102,6 @@ table.terms {
 div.carryOver,    tr.carryOver    td { background-color: $color-alert !important; }
 div.vacant,       tr.vacant       td { background-color: $color-error !important; }
 div.termEndsSoon, tr.termEndsSoon td { background-color: $color-alert !important; }
-
-tr.carryOver    td:first-child:before,
-tr.vacant       td:first-child:before,
-tr.termEndsSoon td:first-child:before {
-    content: '';
-    display: inline-block;
-    height: 1em;
-    margin: 0 $size-gutter 0 0;
-    width: 1em;
-}
-tr.carryOver    td:first-child:before { background-image: url('images/danger-opt.svg'); }
-tr.vacant       td:first-child:before { background-image: url('images/danger-opt.svg'); }
-tr.termEndsSoon td:first-child:before { background-image: url('images/warning-opt.svg'); }
-
 
 p {
     max-width: 40em;
