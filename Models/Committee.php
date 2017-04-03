@@ -90,7 +90,6 @@ class Committee extends ActiveRecord
     public function getZip()               { return parent::get('zip');              }
 	public function getDescription()       { return parent::get('description');      }
 	public function getYearFormed()        { return parent::get('yearFormed');       }
-	public function getContactInfo()       { return parent::get('contactInfo');      }
 	public function getMeetingSchedule()   { return parent::get('meetingSchedule');  }
 	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
 	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
@@ -109,7 +108,6 @@ class Committee extends ActiveRecord
     public function setZip             ($s) { parent::set('zip',              $s); }
 	public function setDescription     ($s) { parent::set('description',      $s); }
 	public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
-	public function setContactInfo     ($s) { parent::set('contactInfo',      $s); }
 	public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
 	public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
 	public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
@@ -125,7 +123,7 @@ class Committee extends ActiveRecord
             'type', 'departments',
 			'name', 'statutoryName', 'website', 'yearFormed', 'calendarId',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
-			'description', 'contactInfo', 'meetingSchedule',
+			'description', 'meetingSchedule',
 			'termEndWarningDays', 'applicationLifetime'
 		];
 		foreach ($fields as $f) {

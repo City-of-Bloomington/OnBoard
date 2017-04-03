@@ -9,7 +9,6 @@ use Michelf\MarkdownExtra;
 
 $markdown = new MarkdownExtra();
 $description     = $markdown->transform($this->committee->getDescription());
-$contactInfo     = $markdown->transform($this->committee->getContactInfo());
 $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $c = [
@@ -24,7 +23,6 @@ $c = [
     'city'             => $this->committee->getCity(),
     'state'            => $this->committee->getState(),
     'zip'              => $this->committee->getZip(),
-	'contactInfo'      => $contactInfo,
 	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),
     'description'      => $description,

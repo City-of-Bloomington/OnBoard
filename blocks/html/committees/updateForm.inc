@@ -13,7 +13,7 @@ $fields = [
     'type', 'yearFormed',
     'name', 'statutoryName', 'website', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
-    'description', 'contactInfo', 'meetingSchedule',
+    'description', 'meetingSchedule',
     'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
@@ -141,18 +141,6 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                     'id'    => 'meetingSchedule',
                     'type'  => 'textarea',
                     'value' => $meetingSchedule
-                ]);
-            ?>
-        </fieldset>
-
-        <fieldset><legend><?= $this->_('contactInfo'); ?></legend>
-            <?php
-                echo $helper->field([
-                    'label' => $this->_('contactInfo'),
-                    'name'  => 'contactInfo',
-                    'id'    => 'contactInfo',
-                    'type'  => 'textarea',
-                    'value' => $contactInfo
                 ]);
             ?>
         </fieldset>

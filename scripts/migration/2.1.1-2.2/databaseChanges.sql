@@ -41,3 +41,5 @@ drop table tags;
 drop table topics;
 drop table topicTypes;
 drop table voteTypes;
+
+alter table committees drop contactInfo;

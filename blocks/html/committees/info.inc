@@ -25,7 +25,6 @@ if ($website) {
 
 $markdown = new MarkdownExtra();
 $description     = $markdown->transform($this->committee->getDescription());
-$contactInfo     = $markdown->transform($this->committee->getContactInfo());
 $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 
 $helper = $this->template->getHelper('buttonLink');
@@ -89,9 +88,5 @@ if ((!$endDate || $endDate > time())
 
     <h2><?= $this->_('meetingSchedule'); ?></h2>
     <?= $meetingSchedule; ?>
-
-    <h2><?= $this->_('contactInfo'); ?></h2>
-    <?= $contactInfo; ?>
-
     </div>
 </section>
