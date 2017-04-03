@@ -79,19 +79,21 @@ table.terms {
     width: 100%;
 
     tbody {
-        > tr {
-            > th {
-                background-color: $color-border-table;
-                border: 1px solid $color-border-input;
-                color: $color-content-background;
-                vertical-align: top;
-                .launcher {
-                }
+        th {
+            background-color: $color-border-table;
+            border: 1px solid $color-border-input;
+            color: $color-content-background;
+            vertical-align: top;
+            .launcher {
             }
-            > td {
-                background-color: $color-background-field;
-                border: 1px solid $color-border-input;
-            }
+        }
+        td {
+            background-color: $color-background-field;
+            border: 1px solid $color-border-input;
+        }
+        section {
+            table { margin:0;    }
+            td    { border:none; }
         }
     }
 }
