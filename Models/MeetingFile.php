@@ -30,14 +30,6 @@ class MeetingFile extends File
 
     private function validateDatabaseInformation()
     {
-        if (!$this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
-            throw new \Exception('missingRequiredFields');
-        }
-
-        if (!in_array($this->getType(), self::$types)) {
-            throw new \Exception('meetingFiles/invalidType');
-        }
-
         $committee = $this->getCommittee();
         if ($committee->getCalendarId()) {
             // Make sure this file is associated with a Calendar Event
@@ -62,6 +54,15 @@ class MeetingFile extends File
                 $this->setMeetingDate($startDate->format('Y-m-d'));
             }
         }
+
+        if (!$this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
+            throw new \Exception('missingRequiredFields');
+        }
+
+        if (!in_array($this->getType(), self::$types)) {
+            throw new \Exception('meetingFiles/invalidType');
+        }
+
     }
 
 	public function validate()

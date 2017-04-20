@@ -32,7 +32,7 @@ textarea#address { height:3em; }
         &:not(:last-of-type):after { content: '>'; }
     }
     a {
-        font-family: $font-family-heading;
+        font-family: $font-family-nav;
         font-size: .75em; margin-right: 8px;
     }
 }
@@ -43,7 +43,7 @@ textarea#address { height:3em; }
         margin:1em 0;
 
         a {
-            font-family: $font-family-heading;
+            font-family: $font-family-nav;
             background-color: $color-nav1;
             color: $color-content-background;
             padding: $size-gutter;

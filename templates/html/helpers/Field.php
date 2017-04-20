@@ -49,6 +49,7 @@ class Field extends Helper
                 case 'radio':
                 case 'checkbox':
                 case 'person':
+                case 'file':
                     $class[]     = $params['type'];
                     $renderInput = $params['type'];
                 break;
@@ -71,7 +72,7 @@ class Field extends Helper
         $input = $this->$renderInput($params, $required, $attr);
         $for   = !empty($params['id'   ]) ? " for=\"$params[id]\""                       : '';
         $label = !empty($params['label']) ? "<dt><label$for>$params[label]</label></dt>" : '';
-        $help  = !empty($params['help' ]) ? "<p class=\"help\">$params[help]</p>"        : '';
+        $help  = !empty($params['help' ]) ? "<div class=\"help\">$params[help]</div>"    : '';
 
         return "
         <dl$classes>
@@ -220,6 +221,24 @@ class Field extends Helper
         $value = !empty($params['value']) ? $params['value'] : '';
 
         return "<textarea name=\"$params[name]\" id=\"$params[id]\" $required $attr>$value</textarea>";
+    }
+
+    /**
+     * Parameters:
+     *
+     * label string
+     * name  string
+     * id    string
+     * value string
+     * type  string   HTML5 input tag type (text, email, date, etc.)
+     *
+     * @param array  $params
+     * @param string $required  The string for the attribute 'required="true"'
+     * @param string $attr      The string for any and all additional attributes
+     */
+    public function file(array $params, $required=null, $attr=null)
+    {
+        return "<input type=\"file\" name=\"$params[name]\" id=\"$params[id]\" $required $attr />";
     }
 
     /**

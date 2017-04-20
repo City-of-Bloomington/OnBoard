@@ -5,6 +5,7 @@
  * @param MeetingFile $this->meetingFile
  */
 use Application\Models\MeetingFile;
+use Blossom\Classes\Block;
 use Blossom\Classes\Url;
 
 $committee = $this->meetingFile->getCommittee();
@@ -19,6 +20,7 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
     <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
         <fieldset>
             <input name="meetingFile_id" type="hidden" value="<?= $this->meetingFile->getId(); ?>" />
+            <input name="committee_id"   type="hidden" value="<?= $this->meetingFile->getCommittee_id(); ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
 
@@ -86,11 +88,16 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     ]);
                 }
 
+                $accept = [];
+                foreach (MeetingFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+                $help = new Block('files/partials/uploadHelp.inc');
                 echo $helper->field([
-                    'id'    => 'meetingFile',
-                    'name'  => 'meetingFile',
-                    'label' => $this->_('meetingFile'),
-                    'type'  => 'file'
+                    'id'   => 'meetingFile',
+                    'name' => 'meetingFile',
+                    'label'=> $this->_('meetingFile'),
+                    'type' => 'file',
+                    'attr' => ['accept' => implode(',', $accept)],
+                    'help' => $help->render('html', $this->template)
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');

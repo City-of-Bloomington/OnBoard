@@ -294,7 +294,7 @@ abstract class File extends ActiveRecord
 	public static function createValidFilename($filename, $extension=null)
 	{
 		// No bad characters
-		$filename = preg_replace('/[^A-Za-z0-9_\.\s]/','',$filename);
+		$filename = preg_replace('/[^A-Za-z0-9_\-\.\s]/','',$filename);
 
 		// Convert spaces to underscores
 		$filename = preg_replace('/\s+/','_',$filename);

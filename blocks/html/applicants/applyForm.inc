@@ -10,8 +10,8 @@ use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
 use Application\Models\ApplicantFile;
 use Application\Models\Site;
+use Blossom\Classes\Block;
 use Michelf\MarkdownExtra;
-
 
 $fields = [
     'id', 'firstname', 'lastname', 'email', 'phone',
@@ -136,16 +136,18 @@ $field = $this->template->getHelper('field');
         </fieldset>
 
         <fieldset><legend><?= $this->_('applicantFile'); ?></legend>
-            <dl><dd>
-            <?php
-                $accept = [];
-                foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
-                $accept = implode(',', $accept);
-
-                echo "<input type=\"file\" name=\"applicantFile\" id=\"applicantFile\" accept=\"$accept\" />";
-                $this->_include('files/partials/uploadHelp.inc');
-            ?>
-            </dd></dl>
+        <?php
+            $accept = [];
+            foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+            $help = new Block('files/partials/uploadHelp.inc');
+            echo $field->field([
+                'name' => 'applicantFile',
+                'id'   => 'applicantFile',
+                'type' => 'file',
+                'attr' => ['accept' => implode(',', $accept)],
+                'help' => $help->render('html', $this->template)
+            ]);
+        ?>
         </fieldset>
 
         <fieldset>

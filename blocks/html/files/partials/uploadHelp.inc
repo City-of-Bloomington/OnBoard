@@ -38,6 +38,6 @@ $maxSize = sprintf($this->_('file_max_size',    'messages'), $maxSize);
 $accept  = sprintf($this->_('file_type_accept', 'messages'), $accept);
 echo "
 <input name=\"MAX_FILE_SIZE\" type=\"hidden\" value=\"$maxBytes\" />
-<div><i class=\"fa fa-info-circle\"></i> $maxSize</div>
-<div><i class=\"fa fa-info-circle\"></i> $accept</div>
+<div>$maxSize</div>
+<div>$accept</div>
 ";
