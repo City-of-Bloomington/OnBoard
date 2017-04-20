@@ -38,9 +38,10 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
 
                 if ($committee->getCalendarId()) {
                     // They must choose from existing Events
-                    $year = !empty($_REQUEST['year'])
-                          ?  (int) $_REQUEST['year']
-                          :  (int) date('Y');
+                    $year = null;
+                    if (!empty($_REQUEST['year'])) { $year = (int)$_REQUEST['year']; }
+                    if (!$year) { $year = (int)$this->meetingFile->getMeetingDate('Y'); }
+                    if (!$year) { $year = (int)date('Y'); }
 
                     $start = new \DateTime("$year-01-01");
                     $end   = new \DateTime("$year-01-01");
