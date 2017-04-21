@@ -14,12 +14,20 @@
     #committees { max-height:14em; overflow:scroll; }
 }
 
+$iconSpacing: $font-size-normal * 1.5;
+
 textarea#address { height:3em; }
 thead {
     th {
         vertical-align:middle;
         form, fieldset { margin:0; border:0; }
-        select { color:$color-text-default; }
+        font-size:$font-size-small;
+        select {
+            color:$color-content-background;
+            background-color:$color-table-header-background;
+            border:none;
+            font-size:$font-size-small;
+        }
     }
 }
 
@@ -123,8 +131,7 @@ a.current { font-weight:bold; }
 
 tr.carryover { background-color:#fc6; }
 th a.sort {
-    $imageSpace: $font-size-normal * 2;
-    padding-right:$imageSpace;
+    padding-right:$iconSpacing;
     background-repeat:no-repeat;
     background-size:$font-size-normal;
     background-position:right center;

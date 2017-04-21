@@ -46,15 +46,25 @@ use Blossom\Classes\Url;
             ?>
             <th><form method="get">
                     <fieldset>
-                        <select name="type">
+                        <?php
+                            foreach ($_GET as $k=>$v) {
+                                if ($k != 'type') {
+                                    $k = parent::escape($k);
+                                    $v = parent::escape($v);
+                                    echo "<input name=\"$k\" type=\"hidden\" value=\"$v\" />";
+                                }
+                            }
+                        ?>
+                        <select name="type" onChange="this.form.submit();">
                             <option value=""><?= $this->_('type'); ?></option>
                             <?php
+                                $type = !empty($_GET['type']) ? $_GET['type'] : null;
                                 foreach (MeetingFilesTable::$types as $t) {
-                                    echo "<option>$t</option>";
+                                    $selected = !empty($_GET['type']) && $_GET['type']==$t ? 'selected="true"' : '';
+                                    echo "<option $selected>$t</option>";
                                 }
                             ?>
                         </select>
-                        <button type="submit"><?= $this->_('submit'); ?></button>
                     </fieldset>
                 </form>
             </th>
