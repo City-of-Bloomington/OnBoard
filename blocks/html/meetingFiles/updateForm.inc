@@ -73,7 +73,14 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     echo "
                     <dl class=\"required\">
                         <dt><label for=\"eventId\">{$this->_('meeting')}</label></dt>
-                        <dd>$back $select $next</dd>
+                        <dd>$back $select $next
+                            <div class=\"help\">
+                                {$this->_('eventId_help', 'messages')}
+                                <div>
+                                    <a href=\"".GOOGLE_CALENDAR_URL."\" class=\"button\">Google Calendar</a>
+                                </div>
+                            </div>
+                        </dd>
                     </dl>
                     ";
                 }

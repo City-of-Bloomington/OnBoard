@@ -31,13 +31,33 @@ class MeetingFilesController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
+		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+		$sort = new \stdClass();
+		$sort->field     = 'meetingDate';
+		$sort->direction = 'desc';
+		if (!empty($_GET['sort'])) {
+            list($f, $d) = explode(' ', $_GET['sort']);
+            if (in_array($f, MeetingFilesTable::$sortableFields)) {
+                $sort->field     = $f;
+                $sort->direction = $d == 'asc' ? 'asc' : 'desc';
+            }
+		}
+
+		if (!empty($_GET['type'])) {
+            if (in_array($_GET['type'], MeetingFilesTable::$types)) { $search['type'] = $_GET['type']; }
+		}
+
         $table = new MeetingFilesTable();
-        $list  = $table->find($search);
+        $list  = $table->find($search, "{$sort->field} {$sort->direction}", true);
+		$list->setCurrentPageNumber($page);
+		$list->setItemCountPerPage(20);
 
         $this->template->blocks[] = new Block('meetingFiles/list.inc', [
             'files'     => $list,
-            'committee' => isset($committee) ? $committee : null
+            'committee' => isset($committee) ? $committee : null,
+            'sort'      => $sort
         ]);
+        $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$list]);
     }
 
     public function years()

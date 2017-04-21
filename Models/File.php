@@ -223,6 +223,7 @@ abstract class File extends ActiveRecord
 
             $cmd  = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
             $out  = "$cmd\n";
+            echo $out;
             $out .= shell_exec($cmd);
             if (is_file("$file.pdf")) {
                  rename("$file.pdf", $file);

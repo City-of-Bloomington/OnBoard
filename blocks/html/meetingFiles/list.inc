@@ -4,9 +4,12 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->files
  * @param Committee      $this->committee (optional)
+ * @param stdClass       $this->sort
  */
 use Application\Models\MeetingFile;
+use Application\Models\MeetingFilesTable;
 use Application\Models\Person;
+use Blossom\Classes\Url;
 ?>
 <section>
     <header>
@@ -29,6 +32,36 @@ use Application\Models\Person;
         </div>
     </header>
     <table>
+    <thead>
+        <tr><th></th>
+            <?php
+                $url = new Url(Url::current_url());
+
+                $fields = ['filename', 'meetingDate'];
+                foreach ($fields as $f) {
+                    $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
+                    $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
+                    echo "<th><a href=\"$url\"$class>{$this->_($f)}</a></th>";
+                }
+            ?>
+            <th><form method="get">
+                    <fieldset>
+                        <select name="type">
+                            <option value=""><?= $this->_('type'); ?></option>
+                            <?php
+                                foreach (MeetingFilesTable::$types as $t) {
+                                    echo "<option>$t</option>";
+                                }
+                            ?>
+                        </select>
+                        <button type="submit"><?= $this->_('submit'); ?></button>
+                    </fieldset>
+                </form>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
     <?php
         $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
         $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
@@ -53,9 +86,10 @@ use Application\Models\Person;
                     'delete'
                 );
             }
+            $url = BASE_URI."/meetingFiles/download?meetingFile_id={$f->getId()}";
             echo "
             <tr><td>$editButton</td>
-                <td>$filename</td>
+                <td><a href=\"$url\">$filename</a></td>
                 <td>{$f->getMeetingDate(DATE_FORMAT)}</td>
                 <td>{$f->getType()}</td>
                 <td>$deleteButton</td>
@@ -63,5 +97,6 @@ use Application\Models\Person;
             ";
         }
     ?>
+    </tbody>
     </table>
 </section>

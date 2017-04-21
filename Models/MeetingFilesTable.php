@@ -14,7 +14,8 @@ use Zend\Db\Sql\Expression;
 class MeetingFilesTable extends TableGateway
 {
     const TABLE = 'meetingFiles';
-    public static $types = ['Agenda', 'Minutes', 'Packet'];
+    public static $types          = ['Agenda', 'Minutes', 'Packet'];
+    public static $sortableFields = ['filename', 'meetingDate', 'created'];
 
 	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 

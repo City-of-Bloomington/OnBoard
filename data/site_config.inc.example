@@ -13,6 +13,7 @@ define('RECAPTCHA_SITE_KEY',   '');
 define('RECAPTCHA_SERVER_KEY', '');
 define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
 define('GOOGLE_USER_EMAIL', 'user@localhost');
+define('GOOGLE_CALENDAR_URL', 'https://calendar.google.com');
 
 /**
  * Database Setup

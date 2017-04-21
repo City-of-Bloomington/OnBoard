@@ -15,6 +15,13 @@
 }
 
 textarea#address { height:3em; }
+thead {
+    th {
+        vertical-align:middle;
+        form, fieldset { margin:0; border:0; }
+        select { color:$color-text-default; }
+    }
+}
 
 #contextInfo {
     dl {
@@ -53,7 +60,6 @@ textarea#address { height:3em; }
             &.current { background-color: $color-selected-background; }
         }
 
-        $imageSpace: $font-size-normal * 2;
         #committee_info    { }
         #current_members   { }
         #meetings          { }
@@ -116,3 +122,12 @@ p {
 a.current { font-weight:bold; }
 
 tr.carryover { background-color:#fc6; }
+th a.sort {
+    $imageSpace: $font-size-normal * 2;
+    padding-right:$imageSpace;
+    background-repeat:no-repeat;
+    background-size:$font-size-normal;
+    background-position:right center;
+    &.asc  { background-image:url('images/fa-svg/white/chevron-up.svg'  ); }
+    &.desc { background-image:url('images/fa-svg/white/chevron-down.svg'); }
+}

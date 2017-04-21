@@ -10,6 +10,11 @@ use Blossom\Classes\Database;
 
 class MeetingFile extends File
 {
+    const VALIDATION_ALL  = 0b1111;
+    const VALIDATION_DB   = 0b0001;
+    const VALIDATION_FILE = 0b0010;
+    public $validation = self::VALIDATION_ALL;
+
 	protected $tablename = 'meetingFiles';
 	protected $committee;
 	protected $event;
@@ -32,26 +37,20 @@ class MeetingFile extends File
     {
         $committee = $this->getCommittee();
         if ($committee->getCalendarId()) {
-            // Make sure this file is associated with a Calendar Event
-            if (!$this->getEventId()) {
-                throw new \Exception('meetingFiles/missingEventId');
-            }
             $event = $this->getEvent();
-            if (!$event) {
-                throw new \Exception('meetingFiles/unknownEvent');
-            }
-
-            // Make sure the meetingDate matches the event date
-            $startDate = $event->start->dateTime
-                ? new \DateTime($event->start->dateTime)
-                : new \DateTime($event->start->date);
-            if ($this->getMeetingDate()) {
-                if ($this->getMeetingDate('Y-m-d') != $startDate->format('Y-m-d')) {
-                    throw new \Exception('meetingFiles/dateMismatch');
+            if ($event) {
+                // Make sure the meetingDate matches the event date
+                $startDate = $event->start->dateTime
+                    ? new \DateTime($event->start->dateTime)
+                    : new \DateTime($event->start->date);
+                if ($this->getMeetingDate()) {
+                    if ($this->getMeetingDate('Y-m-d') != $startDate->format('Y-m-d')) {
+                        throw new \Exception('meetingFiles/dateMismatch');
+                    }
                 }
-            }
-            else {
-                $this->setMeetingDate($startDate->format('Y-m-d'));
+                else {
+                    $this->setMeetingDate($startDate->format('Y-m-d'));
+                }
             }
         }
 
@@ -67,10 +66,14 @@ class MeetingFile extends File
 
 	public function validate()
 	{
-        $this->validateDatabaseInformation();
+        if ($this->validation & self::VALIDATION_DB) {
+            $this->validateDatabaseInformation();
+        }
 
-		if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
-		if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+		if ($this->validation & self::VALIDATION_FILE) {
+            if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
+            if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+        }
 	}
 
 	//----------------------------------------------------------------
@@ -126,7 +129,7 @@ class MeetingFile extends File
 
 	public function getEvent()
 	{
-        if (!$this->event) {
+        if (!$this->event && $this->getEventId()) {
             $this->event = GoogleGateway::getEvent(
                 $this->getCommittee()->getCalendarId(),
                 $this->getEventId()
@@ -134,4 +137,5 @@ class MeetingFile extends File
         }
         return $this->event;
 	}
+
 }

@@ -702,3 +702,12 @@ msgstr "Edit Document"
 
 msgid "meetingFile_delete"
 msgstr "Delete Document"
+
+msgid "filename"
+msgstr "Filename"
+
+msgid "updated"
+msgstr "Last Updated"
+
+msgid "meetingDate"
+msgstr "Meeting Date"
