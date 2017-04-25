@@ -110,7 +110,14 @@ class MeetingFile extends File
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
-	public function getData() { return $this->data; }
+	/**
+	 * @return array
+	 */
+	public function getData() {
+        $data = $this->data;
+        $data['url'] = $this->getDownloadUrl();
+        return $data;
+    }
 
 	/**
 	 * Returns the partial path of the file, relative to /data/files
@@ -137,5 +144,11 @@ class MeetingFile extends File
         }
         return $this->event;
 	}
+	
+	/**
+	 * @return string
+	 */
+	public function getDownloadUrl() { return BASE_URL.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
+	public function getDownloadUri() { return BASE_URI.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
 
 }

@@ -16,8 +16,7 @@ use Application\Models\Person;
         if ($this->files) {
             echo '<ul>';
             foreach ($this->files as $file) {
-                $uri = BASE_URI.'/meetingFiles/download?meetingFile_id='.$file->getId();
-                echo "<li><a href=\"$uri\">{$file->getFilename()}</a></li>";
+                echo "<li><a href=\"{$file->getDownloadUri()}\">{$file->getFilename()}</a></li>";
             }
             echo '</ul>';
         }
