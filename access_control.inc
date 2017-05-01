@@ -12,6 +12,7 @@ $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
 		 ->addRole(new Role('Council'),       'Public')
 		 ->addRole(new Role('Reviewer'),      'Public')
+		 ->addRole(new Role('Liaison'),       'Public')
 		 ->addRole(new Role('Staff'),         'Reviewer')
 		 ->addRole(new Role('Administrator'));
 
@@ -80,6 +81,9 @@ $ZEND_ACL->allow('Staff', 'committees', ['edit', 'update']);
 $ZEND_ACL->allow('Staff', 'people',     ['edit', 'update', 'add']);
 $ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign']);
 $ZEND_ACL->allow('Staff', 'liaisons');
+
+$ZEND_ACL->allow('Liaison', 'people', 'viewContactInfo');
+$ZEND_ACL->allow('Liaison', 'meetingFiles');
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
