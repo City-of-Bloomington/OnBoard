@@ -231,11 +231,11 @@ abstract class File extends ActiveRecord
             else {
                 file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
                 unlink($file);
-                throw new \Exception("{$this->tablename}/pdfConversionFailed");
+                throw new \Exception("file/pdfConversionFailed");
             }
         }
         else {
-            throw new \Exception("{$this->tablename}/pdfConversionFailed");
+            throw new \Exception("file/pdfConversionFailed");
         }
 	}
 
