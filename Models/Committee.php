@@ -471,6 +471,8 @@ class Committee extends ActiveRecord
         foreach ($list as $f) {
             $meetings[$f->getMeetingDate('Y-m-d')]['files'][$f->getType()][] = $f;
         }
+        ksort($meetings);
+
         return $meetings;
 	}
 
