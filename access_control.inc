@@ -9,11 +9,11 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
-		 ->addRole(new Role('Public'),        'Anonymous')
+		 ->addRole(new Role('Public'),               'Anonymous')
 		 ->addRole(new Role('Applicants-view-only'), 'Public')
-		 ->addRole(new Role('Reviewer'),      'Public')
-		 ->addRole(new Role('Liaison'),       'Public')
-		 ->addRole(new Role('Staff'),         'Reviewer')
+		 ->addRole(new Role('Reviewer'),             'Public')
+		 ->addRole(new Role('meetingFileUploader'),  'Public')
+		 ->addRole(new Role('Staff'),                'Reviewer')
 		 ->addRole(new Role('Administrator'));
 
 /**
@@ -82,8 +82,8 @@ $ZEND_ACL->allow('Staff', 'people',     ['edit', 'update', 'add']);
 $ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign']);
 $ZEND_ACL->allow('Staff', 'liaisons');
 
-$ZEND_ACL->allow('Liaison', 'people', 'viewContactInfo');
-$ZEND_ACL->allow('Liaison', 'meetingFiles');
+$ZEND_ACL->allow('meetingFileUploader', 'people', 'viewContactInfo');
+$ZEND_ACL->allow('meetingFileUploader', 'meetingFiles');
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
