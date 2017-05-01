@@ -10,7 +10,7 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),        'Anonymous')
-		 ->addRole(new Role('Council'),       'Public')
+		 ->addRole(new Role('Applicants-view-only'), 'Public')
 		 ->addRole(new Role('Reviewer'),      'Public')
 		 ->addRole(new Role('Liaison'),       'Public')
 		 ->addRole(new Role('Staff'),         'Reviewer')
@@ -65,11 +65,11 @@ $ZEND_ACL->allow(null, 'meetingFiles', ['index', 'download', 'years']);
 
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Council', 'committees',   'applications');
-$ZEND_ACL->allow('Council', 'applicantFiles', 'download');
-$ZEND_ACL->allow('Council', 'applicants',   ['index', 'view']);
-$ZEND_ACL->allow('Council', 'applications', ['index', 'report']);
-$ZEND_ACL->allow('Council', 'people',       'viewContactInfo');
+$ZEND_ACL->allow('Applicants-view-only', 'committees',   'applications');
+$ZEND_ACL->allow('Applicants-view-only', 'applicantFiles', 'download');
+$ZEND_ACL->allow('Applicants-view-only', 'applicants',   ['index', 'view']);
+$ZEND_ACL->allow('Applicants-view-only', 'applications', ['index', 'report']);
+$ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', 'applicantFiles');
