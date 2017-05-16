@@ -45,6 +45,7 @@ create table committees (
 	endDate       date,
 	calendarId    varchar(128),
 	website       varchar(128),
+	videoArchive  varchar(128),
 	email         varchar(128),
 	phone         varchar(128),
 	address       varchar(128),

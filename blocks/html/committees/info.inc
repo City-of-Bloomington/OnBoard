@@ -11,16 +11,15 @@ use Michelf\MarkdownExtra;
 
 $fields = [
     'id', 'type',
-    'name', 'statutoryName', 'yearFormed', 'website', 'calendarId',
+    'name', 'statutoryName', 'yearFormed', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = View::escape($this->committee->$get());
-}
-
-if ($website) {
-    $website = "<a href=\"$website\">$website</a>";
+    if ($f == 'website' || $f == 'videoArchive') {
+        $$f = "<a href=\"{$$f}\">{$$f}</a>";
+    }
 }
 
 $markdown = new MarkdownExtra();
@@ -59,7 +58,7 @@ if ((!$endDate || $endDate > time())
     <?php
         $fields  = [
             'type', 'yearFormed', 'endDate',
-            'statutoryName', 'website',
+            'statutoryName', 'website', 'videoArchive',
             'email', 'phone', 'address', 'calendarId'
         ];
         if ($userCanEdit) {

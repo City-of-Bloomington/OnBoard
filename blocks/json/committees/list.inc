@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->data
  */
 $fields = [
-    'id','type','name','website',
+    'id','type','name','website', 'videoArchive',
     'email','phone','address','city','state','zip',
     'statutoryName','yearFormed',
     'seats', 'vacancies'

@@ -17,6 +17,7 @@ $c = [
 	'name'             => $this->committee->getName(),
 	'statutoryName'    => $this->committee->getStatutoryName(),
 	'website'          => $this->committee->getWebsite(),
+	'videoArchive'     => $this->committee->getVideoArchive(),
 	'email'            => $this->committee->getEmail(),
 	'phone'            => $this->committee->getPhone(),
     'address'          => $this->committee->getAddress(),
