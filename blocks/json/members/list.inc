@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
@@ -20,10 +20,10 @@ if ($this->committee) {
 // These members will not be associated with a seat
 $seats = [];
 foreach ($this->members as $m) {
-    $name = self::escape($m->getPerson()->getFullname());
+    $person = $m->getPerson();
 
     $offices = [];
-    foreach ($m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
+    foreach ($person->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
         $offices[] = $office->getTitle();
     }
 
@@ -36,7 +36,8 @@ foreach ($this->members as $m) {
         'vacant'        => false,
         'currentTerm'   => null,
         'currentMember' => [
-            'name'          => $m->getPerson()->getFullname(),
+            'firstname'     => $person->getFirstname(),
+            'lastname'      => $person->getLastname(),
             'startDate'     => $m->getStartDate($DATE_FORMAT),
             'endDate'       => $m->getEndDate  ($DATE_FORMAT),
             'termStartDate' => null,

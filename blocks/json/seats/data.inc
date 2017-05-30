@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
- * @param Committee $this->committee (optional)
- * @param string $this->title (optional)
+ * @param Committee      $this->committee (optional)
+ * @param string         $this->title     (optional)
  */
 if ($this->committee) {
     echo '{"info":';
@@ -43,8 +43,9 @@ foreach ($this->data['results'] as $r) {
         }
 
         $row['currentMember'] = [
-            'name'          => "$r[firstname] $r[lastname]",
-            'email'         => "$r[email]",
+            'firstname'     => $r['firstname'],
+            'lastname'      => $r['lastname'],
+            'email'         => $r['email'],
             'startDate'     => $r['memberStart'],
             'endDate'       => $r['memberEnd'],
             'termStartDate' => $r['memberTermStart'],
