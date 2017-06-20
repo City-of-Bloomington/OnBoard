@@ -41,6 +41,7 @@ create table committees (
 	type enum('seated', 'open') not null default 'seated',
 	name          varchar(128)  not null,
 	statutoryName varchar(128),
+	code          varchar(8),
 	yearFormed    year(4),
 	endDate       date,
 	calendarId    varchar(128),

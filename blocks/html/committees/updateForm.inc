@@ -11,7 +11,7 @@ use Blossom\Classes\View;
 
 $fields = [
     'type', 'yearFormed',
-    'name', 'statutoryName', 'website', 'videoArchive', 'calendarId',
+    'name', 'statutoryName', 'code', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
     'description', 'meetingSchedule',
     'termEndWarningDays', 'applicationLifetime'
@@ -46,7 +46,7 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                 ]);
 
                 $fields = [
-                    'name', 'yearFormed', 'statutoryName', 'calendarId',
+                    'name', 'yearFormed', 'statutoryName', 'code', 'calendarId',
                     'website', 'videoArchive', 'termEndWarningDays', 'applicationLifetime',
                 ];
                 foreach ($fields as $f) {

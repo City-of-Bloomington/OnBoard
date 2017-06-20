@@ -80,6 +80,7 @@ class Committee extends ActiveRecord
 	public function getType()              { return parent::get('type');             }
 	public function getName()              { return parent::get('name');             }
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
+	public function getCode()              { return parent::get('code');             }
 	public function getCalendarId()        { return parent::get('calendarId');       }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getVideoArchive()      { return parent::get('videoArchive');     }
@@ -99,6 +100,7 @@ class Committee extends ActiveRecord
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
 	public function setStatutoryName   ($s) { parent::set('statutoryName',    $s); }
+	public function setCode            ($s) { parent::set('code',             $s); }
 	public function setWebsite         ($s) { parent::set('website',          $s); }
 	public function setVideoArchive    ($s) { parent::set('videoArchive',     $s); }
 	public function setCalendarId      ($s) { parent::set('calendarId',       $s); }
@@ -123,7 +125,7 @@ class Committee extends ActiveRecord
 
 		$fields = [
             'type', 'departments',
-			'name', 'statutoryName', 'website', 'videoArchive', 'yearFormed', 'calendarId',
+			'name', 'statutoryName', 'code', 'website', 'videoArchive', 'yearFormed', 'calendarId',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'meetingSchedule',
 			'termEndWarningDays', 'applicationLifetime'

@@ -11,7 +11,7 @@ use Michelf\MarkdownExtra;
 
 $fields = [
     'id', 'type',
-    'name', 'statutoryName', 'yearFormed', 'website', 'videoArchive', 'calendarId',
+    'name', 'statutoryName', 'code', 'yearFormed', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
 ];
 foreach ($fields as $f) {
@@ -58,7 +58,7 @@ if ((!$endDate || $endDate > time())
     <?php
         $fields  = [
             'type', 'yearFormed', 'endDate',
-            'statutoryName', 'website', 'videoArchive',
+            'statutoryName', 'code', 'website', 'videoArchive',
             'email', 'phone', 'address', 'calendarId'
         ];
         if ($userCanEdit) {
@@ -69,19 +69,21 @@ if ((!$endDate || $endDate > time())
 
         $endDate = $this->committee->getEndDate(DATE_FORMAT);
 
+        echo '<table>';
         foreach ($fields as $f) {
             if ($$f) {
                 if ($f === 'termEndWarningDays') {
                     $$f = $$f.' '.$this->_(['day', 'days', $$f]);
                 }
                 echo "
-                <dl>
-                    <dt>{$this->_($f)}</dt>
-                    <dd>{$$f}</dd>
+                <tr>
+                    <th>{$this->_($f)}</th>
+                    <td>{$$f}</td>
                 </dl>
                 ";
             }
         }
+        echo '</table>';
     ?>
     <?= $description; ?>
 
