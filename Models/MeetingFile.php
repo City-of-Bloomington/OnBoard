@@ -111,6 +111,20 @@ class MeetingFile extends File
 	// Custom Functions
 	//----------------------------------------------------------------
 	/**
+	 * @override
+	 * @return string
+	 */
+	public function getDisplayFilename()
+	{
+        $committee = $this->getCommittee();
+        $name = $committee->getCode()
+                ? $committee->getCode()
+                : $committee->getName();
+        $name = parent::createValidFilename($name);
+        return "$name-{$this->getMeetingDate('Ymd')}-{$this->getType()}.{$this->getExtension()}";
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getData() {
@@ -144,7 +158,7 @@ class MeetingFile extends File
         }
         return $this->event;
 	}
-	
+
 	/**
 	 * @return string
 	 */

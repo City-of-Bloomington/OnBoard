@@ -173,6 +173,11 @@ abstract class File extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	/**
+	 * @return string
+	 */
+	public function getDisplayFilename() { return $this->getFilename(); }
+
+	/**
 	 * Populates this object by reading information on a file
 	 *
 	 * This function does the bulk of the work for setting all the required information.
@@ -280,6 +285,16 @@ abstract class File extends ActiveRecord
 	public function getFilesize()
 	{
 		return filesize($this->getFullPath());
+	}
+
+	/**
+	 * Returns the file extension, not including the dot.
+	 *
+	 * @return string
+	 */
+	public function getExtension()
+	{
+        return self::$mime_types[$this->getMime_type()];
 	}
 
 	/**

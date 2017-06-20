@@ -7,7 +7,7 @@
  * @param Application\Models\File  $this->downloadFile
  */
 $mime             = $this->downloadFile->getMime_type();
-$filename         = $this->downloadFile->getFilename();
+$filename         = $this->downloadFile->getDisplayFilename();
 
 header("Content-type: $mime");
 header("Content-Disposition: attachment; filename=$filename");
