@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
+ * @copyright 2012-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
@@ -34,8 +33,12 @@ class PeopleController extends Controller
 
 	public function view()
 	{
-		try {
-			$person = new Person($_REQUEST['person_id']);
+        if (!empty($_REQUEST['person_id'])) {
+            try { $person = new Person($_REQUEST['person_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($person)) {
 			$this->template->title = $person->getFullname().' - '.APPLICATION_NAME;
 			if ($this->template->outputFormat == 'html') {
                 $this->template->blocks[] = new Block('people/personView.inc', ['person'=>$person]);
@@ -43,11 +46,11 @@ class PeopleController extends Controller
 			else {
                 $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
             }
-		}
-		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
-		}
-
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
 	}
 
 	public function update()
