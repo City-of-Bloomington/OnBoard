@@ -28,7 +28,7 @@ if (isset($this->params['current'])) {
         <?php
             $helper = $this->template->getHelper('buttonLink');
             if (!$this->disableButtons) {
-                $url = new Url(Url::current_url());
+                $url = new Url(Url::current_url(BASE_HOST));
                 $url->format = 'csv';
                 echo $helper->buttonLink($url, $this->_('csv'), 'download');
             }

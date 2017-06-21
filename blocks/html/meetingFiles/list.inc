@@ -35,7 +35,7 @@ use Blossom\Classes\Url;
     <thead>
         <tr><th></th>
             <?php
-                $url = new Url(Url::current_url());
+                $url = new Url(Url::current_url(BASE_HOST));
 
                 $fields = ['filename', 'meetingDate'];
                 foreach ($fields as $f) {

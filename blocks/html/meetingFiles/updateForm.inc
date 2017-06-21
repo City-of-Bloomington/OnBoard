@@ -47,7 +47,7 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     $end   = new \DateTime("$year-01-01");
                     $end->add(new \DateInterval('P1Y'));
 
-                    $url = new Url(Url::current_url());
+                    $url = new Url(Url::current_url(BASE_HOST));
                     $url->year = $year - 1;
                     $back = "<a href=\"$url\" class=\"button\">{$url->year}</a>";
 

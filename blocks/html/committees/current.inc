@@ -73,7 +73,7 @@ $userCanEdit = Person::isAllowed('committees', 'edit');
         </tbody>
     </table>
     <?php
-        $url = new Url(Url::current_url());
+        $url = new Url(Url::current_url(BASE_HOST));
         $url->current = '0';
         echo $helper->buttonLink($url, $this->_('committees_past'));
     ?>

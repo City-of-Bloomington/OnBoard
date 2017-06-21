@@ -16,7 +16,7 @@ use Blossom\Classes\Url;
         <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->events)]); ?></h1>
         <div class="tools">
         <?php
-            $url = new Url(Url::current_url());
+            $url = new Url(Url::current_url(BASE_HOST));
             $url->year = $this->year - 1;
             echo "<a href=\"$url\">Back</a>";
 
