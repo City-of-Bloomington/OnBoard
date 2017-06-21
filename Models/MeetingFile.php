@@ -80,20 +80,22 @@ class MeetingFile extends File
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
 	public function getType()         { return parent::get('type'        ); }
+	public function getTitle()        { return parent::get('title'       ); }
 	public function getEventId()      { return parent::get('eventId'     ); }
     public function getCommittee_id() { return parent::get('committee_id'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getMeetingDate($f=null) { return parent::getDateData('meetingDate', $f); }
 
 	public function setType        ($s) { parent::set('type',    $s); }
+	public function setTitle       ($s) { parent::set('title',   $s); }
 	public function setEventId     ($s) { parent::set('eventId', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setMeetingDate ($d) { parent::setDateData('meetingDate', $d); }
 
-	public function handleUpdate(array $post, array $file)
+	public function handleUpdate(array $post, array $file=null)
 	{
-        $fields = ['type', 'eventId', 'committee_id', 'meetingDate'];
+        $fields = ['type', 'title', 'eventId', 'committee_id', 'meetingDate'];
         foreach ($fields as $f) {
             if (isset($post[$f])) {
                 $set = 'set'.ucfirst($f);
@@ -104,7 +106,10 @@ class MeetingFile extends File
         // Before we save the file, make sure all the database information is correct
         $this->validateDatabaseInformation();
 
-        $this->setFile($file);
+        // If they are editing an existing document, they do not need to upload a new file
+        if ($file) {
+            $this->setFile($file);
+        }
 	}
 
 	//----------------------------------------------------------------
@@ -164,5 +169,4 @@ class MeetingFile extends File
 	 */
 	public function getDownloadUrl() { return BASE_URL.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
 	public function getDownloadUri() { return BASE_URI.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
-
 }

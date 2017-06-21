@@ -16,7 +16,10 @@ use Application\Models\Person;
         if ($this->files) {
             echo '<ul>';
             foreach ($this->files as $file) {
-                echo "<li><a href=\"{$file->getDownloadUri()}\">{$file->getFilename()}</a></li>";
+                $name = $file->getTitle()
+                      ? parent::escape($file->getTitle())
+                      : $file->getFilename();
+                echo "<li><a href=\"{$file->getDownloadUri()}\">$name</a></li>";
             }
             echo '</ul>';
         }

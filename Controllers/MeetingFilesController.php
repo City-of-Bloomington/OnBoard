@@ -112,7 +112,9 @@ class MeetingFilesController extends Controller
                 try {
                     $file->handleUpdate(
                         $_POST,
-                        isset($_FILES['meetingFile']) ? $_FILES['meetingFile'] : null
+                        (isset($_FILES['meetingFile']) && $_FILES['meetingFile']['error'] != UPLOAD_ERR_NO_FILE)
+                             ? $_FILES['meetingFile']
+                             : null
                     );
                     $file->save();
 

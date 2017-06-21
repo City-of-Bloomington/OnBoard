@@ -190,6 +190,7 @@ create table meetingFiles(
     meetingDate      date         not null,
     eventId          varchar(128),
     type             varchar(16)  not null,
+	title            varchar(32),
 	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
 	mime_type        varchar(128) not null,

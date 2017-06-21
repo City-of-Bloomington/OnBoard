@@ -33,11 +33,10 @@ use Blossom\Classes\Url;
     </header>
     <table>
     <thead>
-        <tr><th></th>
-            <?php
+        <tr><?php
                 $url = new Url(Url::current_url(BASE_HOST));
 
-                $fields = ['filename', 'meetingDate'];
+                $fields = ['title', 'filename', 'meetingDate'];
                 foreach ($fields as $f) {
                     $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
                     $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
@@ -75,34 +74,36 @@ use Blossom\Classes\Url;
     <?php
         $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
         $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
-        $helper        = $this->template->getHelper('buttonLink');
 
-        $editButton   = '';
-        $deleteButton = '';
         foreach ($this->files as $f) {
+            $id       = $f->getId();
+            $title    = parent::escape($f->getTitle());
             $filename = parent::escape($f->getFilename());
+            $actions  = [];
 
             if ($userCanEdit) {
-                $editButton = $helper->buttonLink(
-                    BASE_URI."/meetingFiles/update?meetingFile_id={$f->getId()}",
-                    $this->_('meetingFile_edit'),
-                    'edit'
-                );
+                $actions[] = [
+                    'url'   => BASE_URI."/meetingFiles/update?meetingFile_id=$id",
+                    'label' => $this->_('meetingFile_edit')
+                ];
             }
             if ($userCanDelete) {
-                $deleteButton = $helper->buttonLink(
-                    BASE_URI."/meetingFiles/delete?meetingFile_id={$f->getId()}",
-                    $this->_('meetingFile_delete'),
-                    'delete'
-                );
+                $actions[] = [
+                    'url'   => BASE_URI."/meetingFiles/delete?meetingFile_id=$id",
+                    'label' => $this->_('meetingFile_delete')
+                ];
             }
-            $url = BASE_URI."/meetingFiles/download?meetingFile_id={$f->getId()}";
+            $dropdown = $actions
+                      ? $helper->dropdown($actions, $this->_('more'), "meetingFile_$id")
+                      : '';
+
+            $url = $f->getDownloadUri();
             echo "
-            <tr><td>$editButton</td>
+            <tr><td>$title</td>
                 <td><a href=\"$url\">$filename</a></td>
                 <td>{$f->getMeetingDate(DATE_FORMAT)}</td>
                 <td>{$f->getType()}</td>
-                <td>$deleteButton</td>
+                <td>$dropdown</td>
             </tr>
             ";
         }

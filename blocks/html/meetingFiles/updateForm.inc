@@ -10,17 +10,23 @@ use Blossom\Classes\Url;
 
 $committee = $this->meetingFile->getCommittee();
 
-$title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
+$fields = ['id', 'type', 'title', 'filename', 'committee_id'];
+foreach ($fields as $f) {
+    $get = 'get'.ucfirst($f);
+    $$f = parent::escape($this->meetingFile->$get());
+}
+
+$heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
 ?>
 <section>
     <header>
-        <h1><?= $title; ?></h1>
+        <h1><?= $heading; ?></h1>
     </header>
 
     <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
         <fieldset>
-            <input name="meetingFile_id" type="hidden" value="<?= $this->meetingFile->getId(); ?>" />
-            <input name="committee_id"   type="hidden" value="<?= $this->meetingFile->getCommittee_id(); ?>" />
+            <input name="meetingFile_id" type="hidden" value="<?= $id; ?>" />
+            <input name="committee_id"   type="hidden" value="<?= $committee_id; ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
 
@@ -31,9 +37,16 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     'name'     => 'type',
                     'label'    => $this->_('type'),
                     'required' => true,
-                    'value'    => $this->meetingFile->getType(),
+                    'value'    => $type,
                     'type'     => 'select',
                     'options'  => $options
+                ]);
+
+                echo $helper->field([
+                    'id'    => 'title',
+                    'name'  => 'title',
+                    'label' => $this->_('title'),
+                    'value' => $title
                 ]);
 
                 if ($committee->getCalendarId()) {
@@ -96,16 +109,21 @@ $title = $this->meetingFile->getId() ? $this->_('meetingFile_edit') : $this->_('
                     ]);
                 }
 
+                $downloadUrl = BASE_URI."/meetingFiles/download?meetingFile_id=$id";
+                $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
+
                 $accept = [];
                 foreach (MeetingFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
+
                 $help = new Block('files/partials/uploadHelp.inc');
                 echo $helper->field([
-                    'id'   => 'meetingFile',
-                    'name' => 'meetingFile',
-                    'label'=> $this->_('meetingFile'),
-                    'type' => 'file',
-                    'attr' => ['accept' => implode(',', $accept)],
-                    'help' => $help->render('html', $this->template)
+                    'id'    => 'meetingFile',
+                    'name'  => 'meetingFile',
+                    'label' => $this->_('meetingFile'),
+                    'type'  => 'file',
+                    'value' => $currentFile,
+                    'attr'  => ['accept' => implode(',', $accept)],
+                    'help'  => $help->render('html', $this->template)
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
