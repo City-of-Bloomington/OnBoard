@@ -3,7 +3,7 @@
  * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array          $this->params         Query parameters that produced the data
- * @param Zend\Db\Result $this->data
+ * @param Zend\Db\Result $this->data           Data structure returned as SeatTable::$dataFields
  * @param Committee      $this->committee      (optional)
  * @param string         $this->title          (optional)
  * @param bool           $this->disableButtons (optional)
@@ -81,14 +81,14 @@ if (isset($this->params['current'])) {
                  */
                 foreach ($row as $f=>$v) {
                     switch ($f) {
-                        case 'seatStart':
-                        case 'seatEnd':
-                        case 'memberStart':
-                        case 'memberEnd':
-                        case 'memberTermStart':
-                        case 'memberTermEnd':
-                        case 'termStart':
-                        case 'termEnd':
+                        case 'seat_startDate':
+                        case 'seat_endDate':
+                        case 'member_startDate':
+                        case 'member_endDate':
+                        case 'member_termStart':
+                        case 'member_termEnd':
+                        case 'term_startDate':
+                        case 'term_endDate':
                             if ($v) {
                                 $d = new \DateTime($v);
                                 $$f = $d->format(DATE_FORMAT);
@@ -114,12 +114,12 @@ if (isset($this->params['current'])) {
                     );
                 }
 
-                $committeeName = !$this->committee ? "<td>$committee</td>" : '';
+                $committeeName = !$this->committee ? "<td>$committee_name</td>" : '';
                 $seat_uri      = BASE_URI."/seats/view?seat_id=$seat_id";
                 if ($person_id) {
                     $uri       = BASE_URI."/people/view?person_id=$person_id";
-                    $member    = "<a href=\"$uri\">$firstname $lastname</a>";
-                    $termDates = "$memberTermStart - $memberTermEnd";
+                    $member    = "<a href=\"$uri\">$person_firstname $person_lastname</a>";
+                    $termDates = "$member_termStart - $member_termEnd";
 
                     // Check if near the end of term
                     if ($termEndsSoon) { $classes[] = 'termEndsSoon'; }
@@ -127,7 +127,7 @@ if (isset($this->params['current'])) {
                         $classes[] = 'carryOver vacant';
                         // Appoint
                         if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
-                            $uri = $seatType === 'termed'
+                            $uri = $seat_type === 'termed'
                                 ? BASE_URI."/members/appoint?term_id=$term_id"
                                 : BASE_URI."/members/appoint?seat_id=$seat_id";
 
@@ -137,7 +137,7 @@ if (isset($this->params['current'])) {
 
                     if (!$this->disableButtons
                         && Person::isAllowed('members', 'reappoint')
-                        && $seatType === 'termed') {
+                        && $seat_type === 'termed') {
 
                         $t = new Term($term_id);
                         $n = $t->getNextTerm();
@@ -159,7 +159,7 @@ if (isset($this->params['current'])) {
                         }
                     }
 
-                    if ((!$memberEnd || strtotime($memberEnd) > time())
+                    if ((!$member_endDate || strtotime($member_endDate) > time())
                         && !$this->disableButtons
                         && Person::isAllowed('members', 'resign')) {
 
@@ -170,10 +170,10 @@ if (isset($this->params['current'])) {
                 else {
                     $classes[] = 'vacant';
                     $member    = $this->_('vacant');
-                    $termDates = "$termStart - $termEnd";
+                    $termDates = "$term_startDate - $term_endDate";
 
                     if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
-                        $uri = $seatType === 'termed'
+                        $uri = $seat_type === 'termed'
                             ? BASE_URI."/members/appoint?term_id=$term_id"
                             : BASE_URI."/members/appoint?seat_id=$seat_id";
 
@@ -209,9 +209,9 @@ if (isset($this->params['current'])) {
                 <tr $classes>
                     <td>$editSeatButton</td>
                     $committeeName
-                    <td><a href=\"$seat_uri\">$code <small>($seat)</small</a></td>
+                    <td><a href=\"$seat_uri\">$seat_code <small>($seat_name)</small</a></td>
                     <td>$termDates</td>
-                    <td>$appointer</td>
+                    <td>$appointer_name</td>
                     <td>$member $offices</td>
                     <td>$moreLinks</td>
                 </tr>

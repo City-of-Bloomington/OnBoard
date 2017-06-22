@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array          $this->params    Parameters used to generate data
- * @param Zend\Db\Result $this->data
+ * @param Zend\Db\Result $this->data      Data structure returned as SeatTable::$dataFields
  * @param Committee      $this->committee (optional)
  * @param string         $this->title     (optional)
  */
@@ -23,16 +23,16 @@ $now = time();
 
 foreach ($this->data['results'] as $r) {
     $row = [
-        $r['committee'],
-        $r['seat'],
-        $r['appointer'],
-        $r['firstname'],
-        $r['lastname'],
-        $r['email'],
-        $r['memberTermStart'],
-        $r['memberTermEnd'],
-        $r['memberStart'],
-        $r['memberEnd']
+        $r['committee_name'],
+        $r['seat_name'],
+        $r['appointer_name'],
+        $r['person_firstname'],
+        $r['person_lastname'],
+        $r['person_email'],
+        $r['member_termStart'],
+        $r['member_termEnd'],
+        $r['member_startDate'],
+        $r['member_endDate']
     ];
     fputcsv($out, $row);
 }

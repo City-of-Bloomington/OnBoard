@@ -1,4 +1,4 @@
--- @copyright 2006-2016 City of Bloomington, Indiana
+-- @copyright 2006-2017 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
 create table races (
 	id int unsigned not null primary key auto_increment,
@@ -26,6 +26,7 @@ create table people (
 	city      varchar(32),
 	state     varchar(8),
 	zip       varchar(8),
+	website   varchar(128),
 	about text,
 	gender enum('male','female'),
 	race_id int unsigned,

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -61,27 +61,29 @@ class SeatTable extends TableGateway
      * These are the fields that will be returned for all *Data functions
      */
     public static $dataFields = [
-        'committee_id'    => 's.committee_id',
-        'committee'       => 'c.name',
-        'seat_id'         => 's.id',
-        'code'            => 's.code',
-        'seat'            => 's.name',
-        'seatType'        => 's.type',
-        'appointer'       => 'a.name',
-        'member_id'       => 'm.id',
-        'person_id'       => 'm.person_id',
-        'firstname'       => 'p.firstname',
-        'lastname'        => 'p.lastname',
-        'email'           => 'p.email',
-        'seatStart'       => 's.startDate',
-        'seatEnd'         => 's.endDate',
-        'memberStart'     => 'm.startDate',
-        'memberEnd'       => 'm.endDate',
-        'memberTermStart' => "mt.startDate",
-        'memberTermEnd'   => "mt.endDate",
-        'term_id'         => 't.id',
-        'termStart'       => "t.startDate",
-        'termEnd'         => "t.endDate",
+        'committee_id'     => 's.committee_id',
+        'committee_name'   => 'c.name',
+        'seat_id'          => 's.id',
+        'seat_code'        => 's.code',
+        'seat_name'        => 's.name',
+        'seat_type'        => 's.type',
+        'appointer_name'   => 'a.name',
+        'member_id'        => 'm.id',
+        'person_id'        => 'm.person_id',
+        'person_firstname' => 'p.firstname',
+        'person_lastname'  => 'p.lastname',
+        'person_email'     => 'p.email',
+        'person_website'   => 'p.website',
+        'seat_startDate'   => 's.startDate',
+        'seat_endDate'     => 's.endDate',
+        'member_startDate' => 'm.startDate',
+        'member_endDate'   => 'm.endDate',
+        'member_termStart' => "mt.startDate",
+        'member_termEnd'   => "mt.endDate",
+        'term_id'          => 't.id',
+        'term_startDate'   => "t.startDate",
+        'term_endDate'     => "t.endDate",
+        // Calculated fields
         'termEndsSoon'    => '(date_add(now(), interval c.termEndWarningDays day) > mt.endDate and now() < mt.endDate)',
         'carryOver'       => '(m.person_id is not null and mt.id != t.id)',
         'offices'         => "( select group_concat(concat_ws('|',o.id,o.title))

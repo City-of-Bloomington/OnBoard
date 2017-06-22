@@ -48,6 +48,7 @@ echo "
             'username'=> $this->_('username'),
             'gender'  => $this->_('gender'),
             'race'    => $this->_('race'),
+            'website' => $this->_('website'),
         ];
         if (Person::isAllowed('people', 'viewContactInfo')) {
             $fields['email'  ] = $this->_('email'  );
@@ -67,6 +68,9 @@ echo "
                     $this->_('create_account'),
                     'add'
                 );
+            }
+            if ($key === 'website' && $value) {
+                $value = "<a href=\"$value\">$value</a>";
             }
 
             if ($value) {

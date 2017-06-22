@@ -38,6 +38,8 @@ foreach ($this->members as $m) {
         'currentMember' => [
             'firstname'     => $person->getFirstname(),
             'lastname'      => $person->getLastname(),
+            'email'         => $person->getEmail(),
+            'website'       => $person->getWebsite(),
             'startDate'     => $m->getStartDate($DATE_FORMAT),
             'endDate'       => $m->getEndDate  ($DATE_FORMAT),
             'termStartDate' => null,

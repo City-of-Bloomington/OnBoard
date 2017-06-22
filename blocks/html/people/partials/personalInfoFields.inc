@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Person $this->person
  */
-$fields = ['firstname', 'lastname', 'email', 'phone'];
+$fields = ['firstname', 'lastname', 'email', 'phone', 'website'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = self::escape($this->person->$get());
@@ -14,3 +14,4 @@ echo $field->field(['name'=>'firstname', 'id'=>'firstname', 'label'=>$this->_('f
 echo $field->field(['name'=>'lastname',  'id'=>'lastname',  'label'=>$this->_('lastname'),  'value'=>$lastname,  'required'=>true]);
 echo $field->field(['name'=>'email',     'id'=>'email',     'label'=>$this->_('email'),     'value'=>$email,     'type'=>'email']);
 echo $field->field(['name'=>'phone',     'id'=>'phone',     'label'=>$this->_('phone'),     'value'=>$phone,     'type'=>'tel'  ]);
+echo $field->field(['name'=>'website',   'id'=>'website',   'label'=>$this->_('website'),   'value'=>$website                   ]);

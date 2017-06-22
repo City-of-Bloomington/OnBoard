@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
+ * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -107,6 +107,7 @@ class Person extends ActiveRecord
 	public function getCity()      { return parent::get('city');      }
 	public function getState()     { return parent::get('state');     }
 	public function getZip()       { return parent::get('zip');       }
+	public function getWebsite()   { return parent::get('website');   }
 	public function getGender()    { return parent::get('gender');    }
 	public function getRace_id()   { return parent::get('race_id');   }
 	public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
@@ -120,6 +121,7 @@ class Person extends ActiveRecord
 	public function setCity     ($s) { parent::set('city',      $s); }
 	public function setState    ($s) { parent::set('state',     $s); }
 	public function setZip      ($s) { parent::set('zip',       $s); }
+	public function setWebsite  ($s) { parent::set('website',   $s); }
 	public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
 	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
 	public function setGender   ($s)
@@ -152,7 +154,7 @@ class Person extends ActiveRecord
 	{
 		$fields = [
             'firstname', 'middlename', 'lastname', 'about', 'gender', 'race_id',
-            'email', 'phone', 'address', 'city', 'state', 'zip'
+            'email', 'phone', 'address', 'city', 'state', 'zip', 'website'
         ];
 		foreach ($fields as $field) {
 			if (isset($post[$field])) {
