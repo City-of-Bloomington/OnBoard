@@ -1,19 +1,15 @@
 #!/bin/bash
 # Creates a tarball containing a full snapshot of the data in the site
 #
-# @copyright Copyright 2011-2016 City of Bloomington, Indiana
+# @copyright Copyright 2011-2017 City of Bloomington, Indiana
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
-
-# The path to the mysqldump executable
-MYSQLDUMP=/usr/bin/mysqldump
-# Where to store the nightly backup tarballs
-BACKUP_DIR=/srv/backups/onboard
-# Your APPLICATION_HOME: path to configuration.inc
-APPLICATION_HOME=/srv/sites/onboard
-# Your SITE_HOME: path to site_config.inc
-SITE_HOME=$APPLICATION_HOME/data
-
-MYSQL_DBNAME=onboard
+APPLICATION_NAME="onboard"
+MYSQLDUMP="/usr/bin/mysqldump"
+MYSQL_DBNAME="${APPLICATION_NAME}"
+MYSQL_CREDENTIALS="/etc/cron.daily/backup.d/${APPLICATION_NAME}.cnf"
+BACKUP_DIR="/srv/backups/${APPLICATION_NAME}"
+APPLICATION_HOME="/srv/sites/${APPLICATION_NAME}"
+SITE_HOME="${APPLICATION_HOME}/data"
 
 # How many days worth of tarballs to keep around
 num_days_to_keep=5
@@ -24,21 +20,14 @@ num_days_to_keep=5
 now=`date +%s`
 today=`date +%F`
 
-cd $BACKUP_DIR
-mkdir $today
-
 # Dump the database
-$MYSQLDUMP --defaults-extra-file=$SITE_HOME/backup.cnf $MYSQL_DBNAME > $today/$MYSQL_DBNAME.sql
-
-# Copy any data directories into this directory, so they're backed up, too.
-cp -R $SITE_HOME/applicantFiles $today/applicantFiles
-cp -R $SITE_HOME/meetingFiles $today/meetingFiles
-
-# Tarball the Data
-tar czf $today.tar.gz $today
-rm -Rf $today
+$MYSQLDUMP --defaults-extra-file=$MYSQL_CREDENTIALS $MYSQL_DBNAME > $SITE_HOME/$MYSQL_DBNAME.sql
+cd $SITE_HOME
+tar czf $today.tar.gz applicantFiles meetingFiles $MYSQL_DBNAME.sql
+mv $today.tar.gz $BACKUP_DIR
 
 # Purge any backup tarballs that are too old
+cd $BACKUP_DIR
 for file in `ls`
 do
 	atime=`stat -c %Y $file`
