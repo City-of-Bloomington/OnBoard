@@ -7,7 +7,7 @@
 use Application\Models\Person;
 use Application\Models\RaceTable;
 
-$fields = ['about', 'gender', 'race_id', 'address', 'city', 'state', 'zip'];
+$fields = ['gender', 'race_id', 'address', 'city', 'state', 'zip'];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
 	$$f  = self::escape($this->person->$get());
@@ -87,10 +87,6 @@ $title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add
 
             echo $field->field(['name'=>'zip',  'id'=>'zip',  'label'=>$this->_('zip'),  'value'=>$zip ]);
         ?>
-        </fieldset>
-
-        <fieldset><legend><?= $this->_('about'); ?></legend>
-            <textarea name="about" id="about"><?= $about; ?></textarea>
         </fieldset>
 
         <fieldset>

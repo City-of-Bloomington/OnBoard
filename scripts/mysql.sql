@@ -27,7 +27,6 @@ create table people (
 	state     varchar(8),
 	zip       varchar(8),
 	website   varchar(128),
-	about text,
 	gender enum('male','female'),
 	race_id int unsigned,
 	username varchar(40) unique,

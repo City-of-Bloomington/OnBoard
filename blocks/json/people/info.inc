@@ -12,7 +12,7 @@ $fields = [
     'id',
     'firstname',
     'lastname',
-	'about',
+	'website',
 	'username',
 	'gender',
 	'race'

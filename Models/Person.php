@@ -100,7 +100,6 @@ class Person extends ActiveRecord
 	public function getId()        { return parent::get('id');        }
 	public function getFirstname() { return parent::get('firstname'); }
 	public function getLastname()  { return parent::get('lastname');  }
-	public function getAbout()     { return parent::get('about');     }
 	public function getEmail()     { return parent::get('email');     }
 	public function getPhone()     { return parent::get('phone');     }
 	public function getAddress()   { return parent::get('address');   }
@@ -114,7 +113,6 @@ class Person extends ActiveRecord
 
 	public function setFirstname($s) { parent::set('firstname', $s); }
 	public function setLastname ($s) { parent::set('lastname',  $s); }
-	public function setAbout    ($s) { parent::set('about',     $s); }
 	public function setEmail    ($s) { parent::set('email',     $s); }
 	public function setPhone    ($s) { parent::set('phone',     $s); }
 	public function setAddress  ($s) { parent::set('address',   $s); }
@@ -153,7 +151,7 @@ class Person extends ActiveRecord
 	public function handleUpdate($post)
 	{
 		$fields = [
-            'firstname', 'middlename', 'lastname', 'about', 'gender', 'race_id',
+            'firstname', 'middlename', 'lastname', 'gender', 'race_id',
             'email', 'phone', 'address', 'city', 'state', 'zip', 'website'
         ];
 		foreach ($fields as $field) {

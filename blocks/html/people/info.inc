@@ -7,7 +7,6 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Michelf\MarkdownExtra;
 
 $person_id = $this->person->getId();
 $helper    = $this->template->getHelper('buttonLink');
@@ -32,8 +31,6 @@ if (!$this->disableButtons) {
 }
 
 $fullname = self::escape($this->person->getFullname());
-$markdown = new MarkdownExtra();
-$about = $markdown->transform($this->person->getAbout());
 echo "
 <section>
     <header>
@@ -42,7 +39,6 @@ echo "
     </header>
 
     <div>
-        <p>$about</p>
 ";
         $fields = [
             'username'=> $this->_('username'),
