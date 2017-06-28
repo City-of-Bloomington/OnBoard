@@ -281,14 +281,37 @@ class CommitteesController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        if (isset($committee)) {
+        if (!empty($_GET['start'])) {
+            try {
+                $start = new \DateTime($_GET['start']);
+                if (!empty($_GET['end'])) { $end = new \DateTime($_GET['end']); }
+
+                if (!isset($end)) {
+                    $end = clone $start;
+                    $end->add(new \DateInterval('P1Y'));
+                }
+                $year = (int)$start->format('Y');
+            }
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = new \Exception('invalidDate');
+            }
+        }
+        else {
             $year = !empty($_GET['year'])
-                ?  (int) $_GET['year']
-                :  (int) date('Y');
+                  ?  (int) $_GET['year']
+                  :  (int) date('Y');
 
             $start = new \DateTime("$year-01-01");
             $end   = new \DateTime("$year-01-01");
             $end->add(new \DateInterval('P1Y'));
+        }
+
+        if (!isset($year) || !isset($start) || !isset($end)) {
+            header('HTTP/1.1 400 Bad Request', true, 400);
+            return false;
+        }
+
+        if (isset($committee)) {
 
             $meetings = $committee->getMeetings($start, $end);
 
