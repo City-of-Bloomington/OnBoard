@@ -16,8 +16,11 @@ use Blossom\Classes\Url;
     <?php
         $helper = $this->template->getHelper('buttonLink');
         foreach ($this->people as $person) {
-            if (isset($_REQUEST['return_url'])) {
-                $url = "$_REQUEST[return_url];person_id={$person->getId()}";
+            if (isset( $_REQUEST['return_url'])) {
+                $callbackField = isset($_REQUEST['callback_field']) ? $_REQUEST['callback_field'] : 'person_id';
+                $url = new Url($_REQUEST['return_url']);
+                $url->$callbackField = $person->getId();
+
                 $button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
             }
             elseif (isset($_REQUEST['callback'])) {

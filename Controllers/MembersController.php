@@ -60,6 +60,11 @@ class MembersController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
+            if (isset($_REQUEST['person_id'])) {
+                try { $member->setPerson_id($_REQUEST['person_id']); }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            }
+
             $this->template->setFilename('contextInfo');
             $committee = $member->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
@@ -133,6 +138,11 @@ class MembersController extends Controller
                 header('Location: '.BASE_URL."/committees/members?committee_id={$newMember->getCommittee_id()}");
                 exit();
             }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($_REQUEST['newMember']['person_id'])) {
+            try { $newMember->setPerson_id($_REQUEST['newMember']['person_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 

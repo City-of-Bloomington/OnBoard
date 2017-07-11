@@ -44,9 +44,9 @@ var PERSON_CHOOSER = {
                     person = JSON.parse(request.responseText);
 
                 document.getElementById(id).value       = person.id;
-                document.getElementById(name).innerHTML = person.fullname;
+                document.getElementById(name).innerHTML = person.firstname + ' ' + person.lastname;
                 PERSON_CHOOSER.popup.close();
             }
         );
     }
-}
+};
