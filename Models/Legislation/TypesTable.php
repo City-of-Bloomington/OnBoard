@@ -8,7 +8,7 @@ namespace Application\Models\Legislation;
 
 use Blossom\Classes\TableGateway;
 
-class LegislationTypesTable extends TableGateway
+class TypesTable extends TableGateway
 {
-	public function __construct() { parent::__construct('legislationTypes', __namespace__.'\LegislationType'); }
+	public function __construct() { parent::__construct('legislationTypes', __namespace__.'\Type'); }
 }

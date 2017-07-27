@@ -46,10 +46,10 @@ $ZEND_ACL->addResource(new Resource('applicantFiles'));
 $ZEND_ACL->addResource(new Resource('meetingFiles'));
 $ZEND_ACL->addResource(new Resource('committeeStatutes'));
 
-$ZEND_ACL->addResource(new Resource('topics'));
-$ZEND_ACL->addResource(new Resource('topicTypes'));
+$ZEND_ACL->addResource(new Resource('legislation'));
+$ZEND_ACL->addResource(new Resource('legislationTypes'));
 $ZEND_ACL->addResource(new Resource('votes'));
-$ZEND_ACL->addResource(new Resource('voteTypes'));
+$ZEND_ACL->addResource(new Resource('legislationActionTypes'));
 
 /**
  * Assign permissions to the resources
@@ -57,7 +57,7 @@ $ZEND_ACL->addResource(new Resource('voteTypes'));
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
-$ZEND_ACL->allow(null, ['people', 'topics', 'liaisons'], ['index','view']);
+$ZEND_ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view']);
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');

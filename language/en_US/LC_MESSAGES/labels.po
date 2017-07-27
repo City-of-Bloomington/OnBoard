@@ -714,3 +714,39 @@ msgstr "Last Updated"
 
 msgid "meetingDate"
 msgstr "Meeting Date"
+
+msgid "legislationType"
+msgid_plural "legislationTypes"
+msgstr[0] "Legislation Type"
+msgstr[1] "Legislation Types"
+
+msgid "legislationType_add"
+msgstr "New Legislation Type"
+
+msgid "legislationType_edit"
+msgstr "Edit Legislation Type"
+
+msgid "legislationActionType"
+msgid_plural "legislationActionTypes"
+msgstr[0] "Legislation Action Type"
+msgstr[1] "Legislation Action Types"
+
+msgid "legislationActionType_add"
+msgstr "New Action Type"
+
+msgid "legislationActionType_edit"
+msgstr "Edit Action Type"
+
+msgid "legislation"
+msgstr "legislations"
+msgstr[0] "Legislation"
+msgstr[1] "Legislation"
+
+msgid "legislation_add"
+msgstr "Add Legislation"
+
+msgid "legislation_edit"
+msgstr "Edit Legislation"
+
+msgid "legislative"
+msgstr "Legislative"

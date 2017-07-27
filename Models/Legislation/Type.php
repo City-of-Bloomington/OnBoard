@@ -3,12 +3,13 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
+declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
-class LegislationType extends ActiveRecord
+class Type extends ActiveRecord
 {
 	protected $tablename = 'legislationTypes';
 
@@ -67,10 +68,15 @@ class LegislationType extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()   { return parent::get('id');   }
-	public function getName() { return parent::get('name'); }
+	public function getId()   { return (int)parent::get('id'  ); }
+	public function getName() { return      parent::get('name'); }
 
 	public function setName($s) { parent::set('name', $s); }
+
+	public function handleUpdate(array $post)
+	{
+        $this->setName($post['name']);
+	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
