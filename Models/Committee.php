@@ -96,6 +96,7 @@ class Committee extends ActiveRecord
 	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
 	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
 	public function getEndDate($f=null)    { return parent::getDateData('endDate', $f); }
+	public function getLegislative() { return parent::get('legislative') ? true : false; }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
@@ -115,6 +116,7 @@ class Committee extends ActiveRecord
 	public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
 	public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
 	public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
+	public function setLegislative($b) { $this->data['legislative'] = $b ? 1 : 0; }
 
 	/**
 	 * @param array $post The POST request
@@ -128,7 +130,7 @@ class Committee extends ActiveRecord
 			'name', 'statutoryName', 'code', 'website', 'videoArchive', 'yearFormed', 'calendarId',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'meetingSchedule',
-			'termEndWarningDays', 'applicationLifetime'
+			'termEndWarningDays', 'applicationLifetime', 'legislative'
 		];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
@@ -495,4 +497,9 @@ class Committee extends ActiveRecord
 		}
 		return $history;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isLegislative() { return $this->getLegislative() ? true : false; }
 }

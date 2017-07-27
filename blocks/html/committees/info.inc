@@ -12,7 +12,8 @@ use Michelf\MarkdownExtra;
 $fields = [
     'id', 'type',
     'name', 'statutoryName', 'code', 'yearFormed', 'website', 'videoArchive', 'calendarId',
-    'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
+    'email', 'phone', 'address', 'city', 'state', 'zip',
+    'termEndWarningDays', 'applicationLifetime', 'legislative'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -59,7 +60,7 @@ if ((!$endDate || $endDate > time())
         $fields  = [
             'type', 'yearFormed', 'endDate',
             'statutoryName', 'code', 'website', 'videoArchive',
-            'email', 'phone', 'address', 'calendarId'
+            'email', 'phone', 'address', 'calendarId', 'legislative'
         ];
         if ($userCanEdit) {
             $fields[] = 'termEndWarningDays';
@@ -72,8 +73,13 @@ if ((!$endDate || $endDate > time())
         echo '<table>';
         foreach ($fields as $f) {
             if ($$f) {
-                if ($f === 'termEndWarningDays') {
-                    $$f = $$f.' '.$this->_(['day', 'days', $$f]);
+                switch ($f) {
+                    case 'termEndWarningDays':
+                        $$f = $$f.' '.$this->_(['day', 'days', $$f]);
+                    break;
+                    case 'legislative':
+                        $$f = $$f ? $this->_('yes') : $this->_('no');
+                    break;
                 }
                 echo "
                 <tr>

@@ -37,6 +37,10 @@ class CommitteeTable extends TableGateway
                         $select->where(['l.person_id' => $value]);
 					break;
 
+					case 'legislative':
+                        $select->where(['legislative'=>$value ? 1 : 0]);
+					break;
+
 					default:
 						$select->where([$key=>$value]);
 				}

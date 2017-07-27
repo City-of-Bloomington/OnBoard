@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
 use Application\Models\LiaisonTable;
@@ -27,6 +27,7 @@ $c = [
 	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),
     'description'      => $description,
+    'legislative'      => $this->committee->isLegislative()
 ];
 $statutes = $this->committee->getStatutes();
 if (count($statutes)) {
