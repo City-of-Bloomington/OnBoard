@@ -1,5 +1,5 @@
 <?php
-define('APPLICATION_NAME','application');
+define('APPLICATION_NAME','onboard');
 
 /**
  * URL Generation settings
@@ -23,14 +23,25 @@ define('GOOGLE_USER_EMAIL', 'user@localhost');
 define('GOOGLE_CALENDAR_URL', 'https://calendar.google.com');
 
 /**
+ * Specify the theme directory
+ *
+  * Remember to create a symbolic link in public/css to the theme CSS
+  * that you declare here.
+ *
+ * A theme can consist of templates, blocks which will override core.
+ * The current theme's screen.css will be included in the HTML head.
+ */
+define('THEME', 'Kirkwood');
+
+/**
  * Database Setup
  * Refer to the PDO documentation for DSN sytnax for your database type
  * http://www.php.net/manual/en/pdo.drivers.php
  */
 define('DB_ADAPTER','Pdo_Mysql');
 define('DB_HOST','localhost');
-define('DB_NAME','application');
-define('DB_USER','application');
+define('DB_NAME','onboard');
+define('DB_USER','onboard');
 define('DB_PASS','password');
 
 /**
