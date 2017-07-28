@@ -31,7 +31,7 @@ create table legislationActions (
     legislation_id int unsigned not null,
     type_id        int unsigned not null,
     actionDate     date         not null,
-    outcome enum('pass', 'fail'),
+    outcome        varchar(16),
     foreign key (legislation_id) references legislation(id),
     foreign key (type_id       ) references legislationActionTypes(id)
 );

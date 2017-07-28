@@ -3,7 +3,6 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-declare (strict_types=1);
 namespace Application\Controllers;
 
 use Application\Models\Legislation\ActionType;
@@ -24,7 +23,7 @@ class LegislationActionTypesController extends Controller
     public function update()
     {
         if (!empty($_REQUEST['id'])) {
-            try { $type = new Type($_REQUEST['id']); }
+            try { $type = new ActionType($_REQUEST['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else { $type = new ActionType(); }

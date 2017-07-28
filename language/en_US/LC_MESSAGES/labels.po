@@ -738,7 +738,7 @@ msgid "legislationActionType_edit"
 msgstr "Edit Action Type"
 
 msgid "legislation"
-msgstr "legislations"
+msgid_plural "legislations"
 msgstr[0] "Legislation"
 msgstr[1] "Legislation"
 
@@ -750,3 +750,14 @@ msgstr "Edit Legislation"
 
 msgid "legislative"
 msgstr "Legislative"
+
+msgid "legislationAction"
+msgid_plural "legislationActions"
+msgstr[0] "Legislative Action"
+msgstr[1] "Legislative Actions"
+
+msgid "legislationAction_add"
+msgstr "New Action"
+
+msgid "legislationAction_edit"
+msgstr "Edit Action"

@@ -48,7 +48,7 @@ $ZEND_ACL->addResource(new Resource('committeeStatutes'));
 
 $ZEND_ACL->addResource(new Resource('legislation'));
 $ZEND_ACL->addResource(new Resource('legislationTypes'));
-$ZEND_ACL->addResource(new Resource('votes'));
+$ZEND_ACL->addResource(new Resource('legislationActions'));
 $ZEND_ACL->addResource(new Resource('legislationActionTypes'));
 
 /**

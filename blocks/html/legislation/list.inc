@@ -5,6 +5,7 @@
  * @param array $this->legislation An array of Legislation objects
  */
 use Application\Models\Person;
+use Application\Models\Legislation\ActionTypesTable;
 ?>
 <section>
     <header>
@@ -23,33 +24,35 @@ use Application\Models\Person;
         ?>
         </div>
     </header>
-    <table>
-        <thead>
-            <tr><th><?= $this->_('legislationType'); ?></th>
-                <th><?= $this->_('number'         ); ?></th>
-                <th><?= $this->_('title'          ); ?></th>
-                <th><?= $this->_('synopsis'       ); ?></th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-            foreach ($this->legislation as $l) {
-                $type      = parent::escape($l->getType()->getName());
-                $number    = parent::escape($l->getNumber  ());
-                $title     = parent::escape($l->getTitle   ());
-                $synopsis  = parent::escape($l->getSynopsis());
+    <div>
+    <?php
+        foreach ($this->legislation as $l) {
+            $type      = parent::escape($l->getType()->getName());
+            $number    = parent::escape($l->getNumber  ());
+            $title     = parent::escape($l->getTitle   ());
+            $synopsis  = parent::escape($l->getSynopsis());
 
-                $uri = BASE_URI.'/legislation/view?id='.$l->getId();
+            $uri = BASE_URI.'/legislation/view?id='.$l->getId();
 
-                echo "
-                <tr><td>$type</td>
-                    <td><a href=\"$uri\">$number</a></td>
-                    <td>$title</td>
-                    <td>$synopsis</td>
-                </tr>
-                ";
+            $actions = $l->getActions();
+            $action  = end($actions);
+            $status  = '';
+            if ($action) {
+                $type    = $action->getType()->getName();
+                $outcome = $action->getOutcome();
+                $date    = $action->getActionDate(DATE_FORMAT);
+                $status = parent::escape("($type $outcome $date)");
             }
-        ?>
-        </tbody>
-    </table>
+            echo "
+            <article>
+                <header>
+                    <h2><a href=\"$uri\">$type $number $status</a></h2>
+                    <h3>$title</h3>
+                </header>
+                <p>$synopsis</p>
+            </article>
+            ";
+        }
+    ?>
+    </div>
 </section>

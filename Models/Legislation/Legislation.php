@@ -13,6 +13,16 @@ use Blossom\Classes\Database;
 class Legislation extends ActiveRecord
 {
 	protected $tablename = 'legislation';
+	protected $committee;
+	protected $type;
+
+	private $actions = [];
+
+	public static function actionTypes()
+	{
+        $table = new ActionTypesTable();
+        return $table->find();
+	}
 
 	/**
 	 * @param int|array $id
@@ -61,7 +71,7 @@ class Legislation extends ActiveRecord
 	public function getCommittee_id() { return (int)parent::get('committee_id'); }
 	public function getType_id()      { return (int)parent::get('type_id'     ); }
 	public function getCommittee()    { return parent::getForeignKeyObject('\Application\Models\Committee', 'committee_id'); }
-	public function getType()         { return parent::getForeignKeyObject(__namespace__.'Type',            'type_id'     ); }
+	public function getType()         { return parent::getForeignKeyObject(__namespace__.'\Type',            'type_id'     ); }
 
 	public function setNumber  ($s) { parent::set('number',   $s); }
 	public function setTitle   ($s) { parent::set('title',    $s); }
@@ -78,5 +88,41 @@ class Legislation extends ActiveRecord
         $this->setSynopsis    (     $post['synopsis'    ]);
         $this->setCommittee_id((int)$post['committee_id']);
         $this->setType_id     ((int)$post['type_id'     ]);
+	}
+
+	//----------------------------------------------------------------
+	// Custom functions
+	//----------------------------------------------------------------
+	/**
+	 * Returns an array of Actions
+	 *
+	 * The array uses the ActionType as the key.
+	 * There should only be one action for each ActionType.
+	 *
+	 * @return array  An array of Action objects
+	 */
+	public function getActions()
+	{
+        if (!$this->actions) {
+            $table = new ActionsTable();
+            $list = $table->find(['legislation_id'=>$this->getId()]);
+            foreach ($list as $a) {
+                $type = $a->getType()->getName();
+                $this->actions[$type] = $a;
+            }
+        }
+        return $this->actions;
+	}
+
+
+	/**
+	 * @return Action
+	 */
+	public function getAction(ActionType $type)
+	{
+        $actions = $this->getActions();
+        if (isset ($actions[$type->getName()])) {
+            return $actions[$type->getName()];
+        }
 	}
 }

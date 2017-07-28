@@ -63,6 +63,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'id'       => 'title',
                 'label'    => $this->_('title'),
                 'value'    => $title,
+                'type'     => 'textarea',
                 'required' => true
             ]);
             echo $h->field([

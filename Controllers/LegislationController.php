@@ -16,9 +16,23 @@ class LegislationController extends Controller
     public function index()
     {
         $table = new LegislationTable();
-        $list  = $table->find();
+        $list  = $table->find($_GET);
 
         $this->template->blocks[] = new Block('legislation/list.inc', ['legislation'=>$list]);
+    }
+
+    public function view()
+    {
+        try { $legislation = new Legislation($_GET['id']); }
+        catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+
+        if (isset($legislation)) {
+            $this->template->blocks[] = new Block('legislation/info.inc', ['legislation'=>$legislation]);
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
     }
 
     public function update()

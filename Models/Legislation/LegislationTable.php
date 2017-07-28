@@ -10,6 +10,8 @@ use Blossom\Classes\TableGateway;
 
 class LegislationTable extends TableGateway
 {
+    public $columns = ['id', 'number', 'type_id', 'committee_id'];
+
 	public function __construct() { parent::__construct('legislation', __namespace__.'\Legislation'); }
 
 	public function find($fields=null, $order='number desc', $paginated=false, $limit=null)
