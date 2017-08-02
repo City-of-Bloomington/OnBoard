@@ -75,7 +75,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
             ]);
 
             $h = $this->template->getHelper('saveAndCancelButtons');
-            echo $h->saveAndCancelButtons(BASE_URI.'/legislation');
+            echo $h->saveAndCancelButtons($_SESSION['return_url']);
         ?>
         </fieldset>
     </form>

@@ -40,6 +40,13 @@ class LegislationController extends Controller
         catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
 
         if (isset($legislation)) {
+            $committee = $legislation->getCommittee();
+            if ($this->template->outputFormat === 'html') {
+                $this->template->title = $committee->getName();
+                $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+                $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+            }
+
             $this->template->blocks[] = new Block('legislation/info.inc', ['legislation'=>$legislation]);
         }
         else {
@@ -56,12 +63,22 @@ class LegislationController extends Controller
         }
         else { $legislation = new Legislation(); }
 
+        $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
+                                ? $_REQUEST['return_url']
+                                : $legislation->getId()
+                                    ? BASE_URL.'/legislation/view?id='.$legislation->getId()
+                                    : BASE_URL.'/legislation';
+
         if (isset($legislation)) {
             if (isset($_POST['number'])) {
                 try {
                     $legislation->handleUpdate($_POST);
                     $legislation->save();
-                    header('Location: '.BASE_URL.'/legislation');
+
+                    $return_url = $_SESSION['return_url'];
+                    unset($_SESSION['return_url']);
+
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }

@@ -41,7 +41,7 @@ $meetingsLink = sprintf($a,
     $this->_(['meeting', 'meetings', 10])
 );
 
-$current = $current_url->path === BASE_URI.'/legislation';
+$current = strpos($current_url->path, BASE_URI.'/legislation') !== false;
 $legislationLink = '';
 if ($this->committee->isLegislative()) {
     $legislationLink = sprintf($a,

@@ -6,6 +6,8 @@
  */
 use Application\Models\Person;
 use Application\Models\Legislation\ActionTypesTable;
+
+use Blossom\Classes\Url;
 ?>
 <section>
     <header>
@@ -16,7 +18,7 @@ use Application\Models\Legislation\ActionTypesTable;
             $h = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
                 echo $h->buttonLink(
-                    BASE_URI.'/legislation/update',
+                    BASE_URI.'/legislation/update?return_url='.Url::current_url(BASE_HOST),
                     $this->_('legislation_add'),
                     'add'
                 );
