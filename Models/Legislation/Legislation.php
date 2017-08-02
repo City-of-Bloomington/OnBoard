@@ -125,4 +125,13 @@ class Legislation extends ActiveRecord
             return $actions[$type->getName()];
         }
 	}
+
+	/**
+	 * @return array  An array of LegislationFile objects
+	 */
+	public function getFiles()
+	{
+        $table = new LegislationFilesTable();
+        return $table->find(['legislation_id'=>$this->getId()]);
+	}
 }

@@ -761,3 +761,15 @@ msgstr "New Action"
 
 msgid "legislationAction_edit"
 msgstr "Edit Action"
+
+
+msgid "legislationFile"
+msgid_plural "legislationFiles"
+msgstr[0] "File"
+msgstr[1] "Files"
+
+msgid "legislationFile_add"
+msgstr "Upload New File"
+
+msgid "legislationFile_edit"
+msgstr "Replace File"

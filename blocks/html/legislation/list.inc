@@ -40,15 +40,25 @@ use Blossom\Classes\Url;
             $action  = end($actions);
             $status  = '';
             if ($action) {
-                $type    = $action->getType()->getName();
+                $t       = $action->getType()->getName();
                 $outcome = $action->getOutcome();
                 $date    = $action->getActionDate(DATE_FORMAT);
-                $status = parent::escape("($type $outcome $date)");
+                $status  = parent::escape("($t $outcome $date)");
+            }
+
+            $downloadButton = '';
+            $files = $l->getFiles();
+            if (count($files)) {
+                foreach ($files as $f) {
+                    $uri = BASE_URI.'/legislationFiles/download?id='.$f->getId();
+                    $name = parent::escape($f->getFilename());
+                    $downloadButton.= $h->buttonLink($uri, $this->_('download'), 'download');
+                }
             }
             echo "
             <article>
                 <header>
-                    <h2><a href=\"$uri\">$type $number $status</a></h2>
+                    <h2><a href=\"$uri\">$type $number $status $downloadButton</a></h2>
                     <h3>$title</h3>
                 </header>
                 <p>$synopsis</p>

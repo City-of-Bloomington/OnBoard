@@ -6,6 +6,7 @@ data/.*
 data/sessions/*
 data/applicantFiles
 data/meetingFiles
+data/legislationFiles
 data/Themes/Kirkwood/public/fn1
 *.mo
 screen.css

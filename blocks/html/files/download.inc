@@ -10,6 +10,6 @@ $mime             = $this->downloadFile->getMime_type();
 $filename         = $this->downloadFile->getDisplayFilename();
 
 header("Content-type: $mime");
-header("Content-Disposition: attachment; filename=$filename");
+header("Content-Disposition: attachment; filename=\"$filename\"");
 
 readfile($this->downloadFile->getFullpath());
