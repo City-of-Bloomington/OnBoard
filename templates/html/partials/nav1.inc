@@ -12,8 +12,7 @@ use Application\Models\Person;
                 'committee'   => 'committees',
                 'person'      => 'people',
                 'seat'        => 'seats',
-                'liaison'     => 'liaisons',
-                'legislation' => 'legislation'
+                'liaison'     => 'liaisons'
             ];
             foreach ($routes as $singular => $plural) {
                 if (Person::isAllowed($plural, 'index')) {

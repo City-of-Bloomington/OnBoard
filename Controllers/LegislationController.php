@@ -3,9 +3,9 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-declare (strict_types=1);
 namespace Application\Controllers;
 
+use Application\Models\Committee;
 use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationTable;
 use Blossom\Classes\Controller;
@@ -17,6 +17,19 @@ class LegislationController extends Controller
     {
         $table = new LegislationTable();
         $list  = $table->find($_GET);
+
+        if (!empty($_GET['committee_id'])) {
+            try { $committee = new Committee($_GET['committee_id']); }
+            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+        }
+
+        if (isset($committee)) {
+            if ($this->template->outputFormat === 'html') {
+                $this->template->title = $committee->getName();
+                $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+                $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+            }
+        }
 
         $this->template->blocks[] = new Block('legislation/list.inc', ['legislation'=>$list]);
     }

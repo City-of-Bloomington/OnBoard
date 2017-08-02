@@ -41,6 +41,17 @@ $meetingsLink = sprintf($a,
     $this->_(['meeting', 'meetings', 10])
 );
 
+$current = $current_url->path === BASE_URI.'/legislation';
+$legislationLink = '';
+if ($this->committee->isLegislative()) {
+    $legislationLink = sprintf($a,
+        BASE_URI."/legislation?committee_id=$committee_id",
+        'legislation',
+        $current ? ' class="current"' : '',
+        $this->_(['legislation', 'legislations', 10])
+    );
+}
+
 $current = $current_url->path == BASE_URI.'/meetingFiles';
 $filesLink = sprintf($a,
     BASE_URI."/meetingFiles?committee_id=$committee_id",
@@ -107,6 +118,7 @@ echo "
         $pastMembersLink
         $applicationsLink
         $meetingsLink
+        $legislationLink
         $filesLink
         $historyLink
     </nav>
