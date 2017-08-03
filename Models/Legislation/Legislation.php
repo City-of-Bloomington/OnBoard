@@ -49,6 +49,7 @@ class Legislation extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
+			$this->setYear((int)date('Y'));
 		}
 	}
 
@@ -68,14 +69,16 @@ class Legislation extends ActiveRecord
 	public function getNumber()       { return      parent::get('number'      ); }
 	public function getTitle()        { return      parent::get('title'       ); }
 	public function getSynopsis()     { return      parent::get('synopsis'    ); }
+	public function getYear()         { return (int)parent::get('year'        ); }
 	public function getCommittee_id() { return (int)parent::get('committee_id'); }
 	public function getType_id()      { return (int)parent::get('type_id'     ); }
 	public function getCommittee()    { return parent::getForeignKeyObject('\Application\Models\Committee', 'committee_id'); }
 	public function getType()         { return parent::getForeignKeyObject(__namespace__.'\Type',            'type_id'     ); }
 
-	public function setNumber  ($s) { parent::set('number',   $s); }
-	public function setTitle   ($s) { parent::set('title',    $s); }
-	public function setSynopsis($s) { parent::set('synopsis', $s); }
+	public function setNumber   ($s) { parent::set('number',   $s); }
+	public function setTitle    ($s) { parent::set('title',    $s); }
+	public function setSynopsis ($s) { parent::set('synopsis', $s); }
+	public function setYear (int $s) { parent::set('year',     $s); }
 	public function setCommittee_id(int       $i) { parent::setForeignKeyField ('\Application\Models\Committee', 'committee_id', $i); }
 	public function setCommittee   (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
 	public function setType_id     (int       $i) { parent::setForeignKeyField (__namespace__.'\Type', 'type_id', $i); }
@@ -86,6 +89,7 @@ class Legislation extends ActiveRecord
         $this->setNumber      (     $post['number'      ]);
         $this->setTitle       (     $post['title'       ]);
         $this->setSynopsis    (     $post['synopsis'    ]);
+        $this->setYear        ((int)$post['year'        ]);
         $this->setCommittee_id((int)$post['committee_id']);
         $this->setType_id     ((int)$post['type_id'     ]);
 	}

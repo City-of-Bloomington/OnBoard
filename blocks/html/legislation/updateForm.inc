@@ -7,7 +7,7 @@
 use Application\Models\CommitteeTable;
 use Application\Models\Legislation\TypesTable;
 
-$fields = ['id', 'committee_id', 'type_id', 'number', 'title', 'synopsis'];
+$fields = ['id', 'committee_id', 'type_id', 'year', 'number', 'title', 'synopsis'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->legislation->$get());
@@ -24,6 +24,15 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
             <input name="id" type="hidden" value="<?= $id; ?>" />
         <?php
             $h = $this->template->getHelper('field');
+
+            echo $h->field([
+                'name'     => 'year',
+                'id'       => 'year',
+                'label'    => $this->_('year'),
+                'value'    => $year,
+                'type'     => 'number',
+                'required' => true
+            ]);
 
             $options = [];
             $table   = new TypesTable();

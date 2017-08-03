@@ -23,12 +23,13 @@ class LegislationController extends Controller
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
         }
 
-        if (isset($committee)) {
-            if ($this->template->outputFormat === 'html') {
+        if ($this->template->outputFormat == 'html') {
+            if (isset($committee)) {
                 $this->template->title = $committee->getName();
                 $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
                 $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
             }
+            $this->template->blocks[] = new Block('legislation/searchForm.inc');
         }
 
         $this->template->blocks[] = new Block('legislation/list.inc', ['legislation'=>$list]);

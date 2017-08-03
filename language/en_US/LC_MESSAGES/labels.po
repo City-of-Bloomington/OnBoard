@@ -512,6 +512,11 @@ msgstr[1] "Vacancies"
 msgid "order"
 msgstr "Order"
 
+msgid "year"
+msgid_plural "years"
+msgstr[0] "Year"
+msgstr[1] "Years"
+
 msgid "day"
 msgid_plural "days"
 msgstr[0] "day"

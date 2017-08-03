@@ -224,11 +224,12 @@ create table legislationActionTypes (
 );
 
 create table legislation (
-    id           int unsigned not null primary key auto_increment,
-    committee_id int unsigned not null,
-    type_id      int unsigned not null,
-    number       varchar(24)  not null,
-    title        text         not null,
+    id           int      unsigned not null primary key auto_increment,
+    committee_id int      unsigned not null,
+    type_id      int      unsigned not null,
+    year         smallint unsigned not null,
+    number       varchar(24)       not null,
+    title        text              not null,
     synopsis     text,
     foreign key (committee_id) references committees      (id),
     foreign key (type_id     ) references legislationTypes(id)
@@ -252,5 +253,5 @@ create table legislationFiles (
 	mime_type        varchar(128) not null,
 	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	foreign key (legislation_id) references legislation(id)
+	foreign key (legislation_id) references (legislation(id)
 );

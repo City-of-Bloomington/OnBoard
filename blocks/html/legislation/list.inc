@@ -50,9 +50,9 @@ use Blossom\Classes\Url;
             $files = $l->getFiles();
             if (count($files)) {
                 foreach ($files as $f) {
-                    $uri = BASE_URI.'/legislationFiles/download?id='.$f->getId();
+                    $u    = BASE_URI.'/legislationFiles/download?id='.$f->getId();
                     $name = parent::escape($f->getFilename());
-                    $downloadButton.= $h->buttonLink($uri, $this->_('download'), 'download');
+                    $downloadButton.= $h->buttonLink($u, $this->_('download'), 'download');
                 }
             }
             echo "

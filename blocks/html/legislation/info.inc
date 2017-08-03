@@ -7,24 +7,25 @@
 use Application\Models\Person;
 use Application\Models\Legislation\Legislation;
 
-$legislation_id = $this->legislation->getId();
-
 $committee = parent::escape($this->legislation->getCommittee()->getName());
 $type      = parent::escape($this->legislation->getType()     ->getName());
-$number    = parent::escape($this->legislation->getNumber());
-$title     = parent::escape($this->legislation->getTitle());
-$synopsis  = parent::escape($this->legislation->getSynopsis());
+
+$fields = ['id', 'number', 'title', 'synopsis', 'year'];
+foreach ($fields as $f) {
+    $get = 'get'.ucfirst($f);
+    $$f  = parent::escape($this->legislation->$get());
+}
 ?>
 <section>
     <header>
-        <h1><?= "$type $number"; ?></h1>
+        <h1><?= "$year $type $number"; ?></h1>
         <div class="tools">
         <?php
             $h = $this->template->getHelper('buttonLink');
 
             if (Person::isAllowed('legislation', 'update')) {
                 echo $h->buttonLink(
-                    BASE_URI.'/legislation/update?id='.$legislation_id,
+                    BASE_URI.'/legislation/update?id='.$id,
                     $this->_('legislation_edit'),
                     'edit'
                 );
@@ -60,7 +61,7 @@ $synopsis  = parent::escape($this->legislation->getSynopsis());
         else {
              if ($userCanUploadFiles) {
                 echo $h->buttonLink(
-                    BASE_URI.'/legislationFiles/update?legislation_id='.$legislation_id,
+                    BASE_URI.'/legislationFiles/update?legislation_id='.$id,
                     $this->_('legislationFile_add'),
                     'upload'
                 );
@@ -73,8 +74,9 @@ $synopsis  = parent::escape($this->legislation->getSynopsis());
         $userCanEditActions = Person::isAllowed('legislationActions', 'update');
 
         foreach (Legislation::actionTypes() as $t) {
-            $name = parent::escape($t->getName());
+            $name   = parent::escape($t->getName());
             $action = $this->legislation->getAction($t);
+            $button = '';
 
             if ($action) {
                 $outcome    = parent::escape($action->getOutcome());
@@ -93,7 +95,7 @@ $synopsis  = parent::escape($this->legislation->getSynopsis());
                 $actionDate = '';
                 if ($userCanEditActions) {
                     $params = http_build_query([
-                        'legislation_id' => $legislation_id,
+                        'legislation_id' => $id,
                         'type_id'        => $t->getId()
                     ]);
 
