@@ -382,10 +382,10 @@ msgid_plural "tags"
 msgstr[0] "Tag"
 msgstr[1] "Tags"
 
-msgid "add_tag"
+msgid "tag_add"
 msgstr "Add Tag"
 
-msgid "edit_tag"
+msgid "tag_edit"
 msgstr "Edit Tag"
 
 msgid "term"
@@ -778,3 +778,6 @@ msgstr "Upload New File"
 
 msgid "legislationFile_edit"
 msgstr "Replace File"
+
+msgid "legislationFile_delete"
+msgstr "Delete File"

@@ -5,6 +5,7 @@
  * @param Legislation $this->legislation
  */
 use Application\Models\CommitteeTable;
+use Application\Models\TagsTable;
 use Application\Models\Legislation\TypesTable;
 
 $fields = ['id', 'committee_id', 'type_id', 'year', 'number', 'title', 'synopsis'];
@@ -81,6 +82,18 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'label'    => $this->_('synopsis'),
                 'value'    => $synopsis,
                 'type'     => 'textarea'
+            ]);
+
+            $options = [];
+            $table = new TagsTable();
+            $list = $table->find();
+            foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
+            echo $h->field([
+                'name'    => 'tags',
+                'label'   => $this->_(['tag', 'tags', count($list)]),
+                'type'    => 'checkbox',
+                'value'   => array_keys($this->legislation->getTags()),
+                'options' => $options
             ]);
 
             $h = $this->template->getHelper('saveAndCancelButtons');

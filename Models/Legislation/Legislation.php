@@ -7,6 +7,8 @@ declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Application\Models\Committee;
+use Application\Models\TagsTable;
+
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 
@@ -17,6 +19,7 @@ class Legislation extends ActiveRecord
 	protected $type;
 
 	private $actions = [];
+	private $tags    = [];
 
 	public static function actionTypes()
 	{
@@ -84,6 +87,14 @@ class Legislation extends ActiveRecord
 	public function setType_id     (int       $i) { parent::setForeignKeyField (__namespace__.'\Type', 'type_id', $i); }
 	public function setType        (Type      $o) { parent::setForeignKeyObject(__namespace__.'\Type', 'type_id', $o); }
 
+	/**
+	 * Handler for Controller::update action
+	 *
+	 * This function calls save() automatically.  There is no
+	 * need to call save() after calling this function.
+	 *
+	 * @param array $post
+	 */
 	public function handleUpdate(array $post)
 	{
         $this->setNumber      (     $post['number'      ]);
@@ -92,6 +103,12 @@ class Legislation extends ActiveRecord
         $this->setYear        ((int)$post['year'        ]);
         $this->setCommittee_id((int)$post['committee_id']);
         $this->setType_id     ((int)$post['type_id'     ]);
+
+        $this->save();
+
+        isset($post['tags'])
+            ? $this->saveTags(array_keys($post['tags']))
+            : $this->saveTags([]);
 	}
 
 	//----------------------------------------------------------------
@@ -137,5 +154,40 @@ class Legislation extends ActiveRecord
 	{
         $table = new LegislationFilesTable();
         return $table->find(['legislation_id'=>$this->getId()]);
+	}
+
+	/**
+	 * @return array  An array of Tag objects, indexed by ID
+	 */
+	public function getTags()
+	{
+        if (!$this->tags) {
+            $table = new TagsTable();
+            $list  = $table->find(['legislation_id'=>$this->getId()]);
+            foreach ($list as $t) { $this->tags[$t->getId()] = $t; }
+        }
+        return $this->tags;
+	}
+
+	/**
+	 * Saves a set of tags directly to the database
+	 *
+	 * @param array $tag_ids  An array of ID numbers for the tags
+	 */
+	public function saveTags(array $tag_ids)
+	{
+        $id = $this->getId();
+        if ($id) {
+            $zend_db = Database::getConnection();
+
+            $sql = 'delete from legislation_tags where legislation_id=?';
+            $zend_db->query($sql)->execute([$id]);
+
+            $sql = 'insert into legislation_tags (legislation_id, tag_id) values(?, ?)';
+            $insert = $zend_db->createStatement($sql);
+            foreach ($tag_ids as $tid) {
+                $insert->execute([$id, $tid]);
+            }
+        }
 	}
 }

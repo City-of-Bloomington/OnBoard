@@ -5,7 +5,6 @@
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
-use Application\Models\Legislation\Legislation;
 
 $committee = parent::escape($this->legislation->getCommittee()->getName());
 $type      = parent::escape($this->legislation->getType()     ->getName());
@@ -36,83 +35,17 @@ foreach ($fields as $f) {
     </header>
     <p><?= $synopsis; ?></p>
     <?php
-        $userCanUploadFiles = Person::isAllowed('legislationFiles', 'update');
-        $files = $this->legislation->getFiles();
-        if (count($files)) {
-            $downloadButton = '';
-            $editButton     = '';
+        $tags = $this->legislation->getTags();
+        if (count($tags)) {
             echo '<ul>';
-            foreach ($files as $f) {
-                if ($userCanUploadFiles) {
-                    $editButton = $h->buttonLink(
-                        BASE_URI.'/legislationFiles/update?id='.$f->getId(),
-                        $this->_('legislationFile_edit'),
-                        'edit'
-                    );
-                }
-
-                $uri = BASE_URI.'/legislationFiles/download?id='.$f->getId();
-                $name = parent::escape($f->getFilename());
-                $downloadButton = $h->buttonLink($uri, $this->_('download'), 'download');
-                echo "<li>$downloadButton$editButton</li>";
+            foreach ($tags as $t) {
+                $name = parent::escape($t->getName());
+                echo "<li>$name</li>";
             }
             echo '</ul>';
         }
-        else {
-             if ($userCanUploadFiles) {
-                echo $h->buttonLink(
-                    BASE_URI.'/legislationFiles/update?legislation_id='.$id,
-                    $this->_('legislationFile_add'),
-                    'upload'
-                );
-            }
-        }
+
+        $this->_include('legislation/files.inc'  );
+        $this->_include('legislation/actions.inc');
     ?>
-
-    <table>
-    <?php
-        $userCanEditActions = Person::isAllowed('legislationActions', 'update');
-
-        foreach (Legislation::actionTypes() as $t) {
-            $name   = parent::escape($t->getName());
-            $action = $this->legislation->getAction($t);
-            $button = '';
-
-            if ($action) {
-                $outcome    = parent::escape($action->getOutcome());
-                $actionDate = $action->getActionDate(DATE_FORMAT);
-
-                if ($userCanEditActions) {
-                    $button = $h->buttonLink(
-                        BASE_URI.'/legislationActions/update?id='.$action->getId(),
-                        $this->_('legislationAction_edit'),
-                        'edit'
-                    );
-                }
-            }
-            else {
-                $outcome    = '';
-                $actionDate = '';
-                if ($userCanEditActions) {
-                    $params = http_build_query([
-                        'legislation_id' => $id,
-                        'type_id'        => $t->getId()
-                    ]);
-
-                    $button = $h->buttonLink(
-                        BASE_URI."/legislationActions/update?$params",
-                        $this->_('legislationAction_add'),
-                        'add'
-                    );
-                }
-            }
-
-            echo "
-            <tr><th>$name</th>
-                <td>$outcome $actionDate$button</td>
-            </tr>
-            ";
-        }
-    ?>
-    </table>
 </section>

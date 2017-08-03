@@ -74,7 +74,7 @@ class LegislationController extends Controller
             if (isset($_POST['number'])) {
                 try {
                     $legislation->handleUpdate($_POST);
-                    $legislation->save();
+                    # Legislation::handleUpdate calls save automatically
 
                     $return_url = $_SESSION['return_url'];
                     unset($_SESSION['return_url']);

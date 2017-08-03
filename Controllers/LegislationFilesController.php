@@ -82,4 +82,25 @@ class LegislationFilesController extends Controller
             $this->template->blocks[] = new Block('404.inc');
         }
     }
+
+    public function delete()
+    {
+        if (!empty($_GET['id'])) {
+            try {
+                $file = new LegislationFile($_GET['id']);
+                $legislation_id = $file->getLegislation_id();
+                $file->delete();
+                header('Location: '.BASE_URL.'/legislation/view?id='.$legislation_id);
+                exit();
+            }
+            catch (\Exception $e) {
+                header('HTTP/1.1 404 Not Found', true, 404);
+                $this->template->blocks[] = new Block('404.inc');
+            }
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
 }

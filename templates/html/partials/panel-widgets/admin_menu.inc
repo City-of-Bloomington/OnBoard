@@ -13,6 +13,7 @@ $routes = [
     'appointers' => 'appointer',
     'races'      => 'race',
     'users'      => 'user',
+    'tags'       => 'tag',
     'legislationTypes'       => 'legislationType',
     'legislationActionTypes' => 'legislationActionType'
 ];
