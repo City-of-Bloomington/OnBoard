@@ -157,9 +157,6 @@ msgstr "Vote Info"
 msgid "info_term"
 msgstr "Term Info"
 
-msgid "info_topic"
-msgstr "Legislation Info"
-
 msgid "info_seat"
 msgstr "Seat Info"
 
@@ -315,28 +312,6 @@ msgstr "Edit Requirement"
 
 msgid "current_requirements"
 msgstr "Current Requirements"
-
-msgid "topic"
-msgid_plural "topics"
-msgstr[0] "Legislation"
-msgstr[1] "Legislation"
-
-msgid "add_topic"
-msgstr "Add Legislation"
-
-msgid "edit_topic"
-msgstr "Edit Legislation"
-
-msgid "topicType"
-msgid_plural "topicTypes"
-msgstr[0] "Legislation Type"
-msgstr[1] "Legislation Types"
-
-msgid "add_topicType"
-msgstr "Add Legislation Type"
-
-msgid "edit_topicType"
-msgstr "Edit Topic Type"
 
 msgid "vote"
 msgid_plural "votes"
@@ -548,6 +523,9 @@ msgstr "Description"
 
 msgid "synopsis"
 msgstr "Synopsis"
+
+msgid "amendsCode"
+msgstr "Amends Code"
 
 msgid "contactInfo"
 msgstr "Contact Information"

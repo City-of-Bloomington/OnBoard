@@ -9,7 +9,7 @@ use Application\Models\Legislation\TypesTable;
 
 $fields = [
     'id', 'committee_id', 'type_id', 'parent_id',
-    'year', 'number', 'title', 'synopsis'
+    'year', 'number', 'title', 'synopsis', 'amendsCode'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -59,6 +59,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'value'    => $number,
                 'required' => true
             ]);
+
             echo $helper->field([
                 'name'     => 'title',
                 'id'       => 'title',
@@ -67,6 +68,18 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'type'     => 'textarea',
                 'required' => true
             ]);
+
+            echo $helper->field([
+                'name'    => 'amendsCode',
+                'label'   => $this->_('amendsCode'),
+                'value'   => $amendsCode,
+                'type'    => 'radio',
+                'options' => [
+                    ['value'=>1, 'label'=>$this->_('yes')],
+                    ['value'=>0, 'label'=>$this->_('no' )]
+                ]
+            ]);
+
             echo $helper->field([
                 'name'     => 'synopsis',
                 'id'       => 'synopsis',

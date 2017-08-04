@@ -233,6 +233,7 @@ create table legislation (
     number       varchar(24)       not null,
     title        text              not null,
     synopsis     text,
+    amendsCode   boolean           not null default 0,
     foreign key (committee_id) references committees      (id),
     foreign key (type_id     ) references legislationTypes(id),
     foreign key (parent_id   ) references legislation     (id)

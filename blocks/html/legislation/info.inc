@@ -7,8 +7,9 @@
 use Application\Models\Person;
 use Blossom\Classes\Block;
 
-$committee = parent::escape($this->legislation->getCommittee()->getName());
-$type      = parent::escape($this->legislation->getType()     ->getName());
+$committee  = parent::escape($this->legislation->getCommittee()->getName());
+$type       = parent::escape($this->legislation->getType()     ->getName());
+$amendsCode = $this->legislation->amendsCode() ? $this->_('yes') : $this->_('no');
 
 $fields = ['id', 'number', 'title', 'synopsis', 'year'];
 foreach ($fields as $f) {
@@ -18,7 +19,7 @@ foreach ($fields as $f) {
 ?>
 <section>
     <header>
-        <h1><?= "$year $type $number"; ?></h1>
+        <h1><?= "$year $type $number $amendsCode"; ?></h1>
         <div class="tools">
         <?php
             $h = $this->template->getHelper('buttonLink');

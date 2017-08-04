@@ -33,9 +33,10 @@ use Blossom\Classes\Url;
     <div>
     <?php
         foreach ($this->list as $l) {
-            $type      = parent::escape($l->getType()->getName());
-            $number    = parent::escape($l->getNumber  ());
-            $title     = parent::escape($l->getTitle   ());
+            $type       = parent::escape($l->getType()->getName());
+            $number     = parent::escape($l->getNumber  ());
+            $title      = parent::escape($l->getTitle   ());
+            $amendsCode = $l->amendsCode() ? $this->_('yes') : $this->_('no');
 
             $uri = BASE_URI.'/legislation/view?id='.$l->getId();
 
@@ -61,7 +62,7 @@ use Blossom\Classes\Url;
             echo "
             <article>
                 <header>
-                    <h2><a href=\"$uri\">$type $number $status $downloadButton</a></h2>
+                    <h2><a href=\"$uri\">$type $number $status $amendsCode $downloadButton</a></h2>
                     <h3>$title</h3>
                 </header>
             </article>

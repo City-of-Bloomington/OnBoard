@@ -91,6 +91,7 @@ class Legislation extends ActiveRecord
 	public function getCommittee()    { return parent::getForeignKeyObject('\Application\Models\Committee', 'committee_id'); }
 	public function getType()         { return parent::getForeignKeyObject(__namespace__.'\Type',           'type_id'     ); }
 	public function getParent()       { return parent::getForeignKeyObject(__namespace__.'\Legislation',    'parent_id'   ); }
+	public function getAmendsCode() { return parent::get('amendsCode') ? true : false; }
 
 	public function setNumber   ($s) { parent::set('number',   $s); }
 	public function setTitle    ($s) { parent::set('title',    $s); }
@@ -102,6 +103,7 @@ class Legislation extends ActiveRecord
 	public function setType      (Type      $o) { parent::setForeignKeyObject(__namespace__.'\Type', 'type_id', $o); }
 	public function setParent_id           ($i) { parent::setForeignKeyField (__namespace__.'\Legislation', 'parent_id', $i); }
 	public function setParent  (Legislation $o) { parent::setForeignKeyObject(__namespace__.'\Legislation', 'parent_id', $o); }
+	public function setAmendsCode($b) { parent::set('amendsCode', $b ? 1 : 0); }
 
 	/**
 	 * Handler for Controller::update action
@@ -113,7 +115,7 @@ class Legislation extends ActiveRecord
 	 */
 	public function handleUpdate(array $post)
 	{
-        $fields = ['number', 'title', 'synopsis', 'year', 'committee_id', 'type_id'];
+        $fields = ['number', 'title', 'synopsis', 'year', 'committee_id', 'type_id', 'amendsCode'];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
@@ -211,4 +213,6 @@ class Legislation extends ActiveRecord
         $table = new LegislationTable();
         return $table->find(['parent_id'=>$this->getId()]);
 	}
+
+	public function amendsCode() { return $this->getAmendsCode(); }
 }
