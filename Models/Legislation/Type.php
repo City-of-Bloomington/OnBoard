@@ -3,7 +3,6 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Blossom\Classes\ActiveRecord;
@@ -68,18 +67,23 @@ class Type extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()   { return (int)parent::get('id'  ); }
-	public function getName() { return      parent::get('name'); }
+	public function getId()      { return parent::get('id'  ); }
+	public function getName()    { return parent::get('name'); }
+	public function getSubtype() { return parent::get('subtype') ? true : false; }
 
-	public function setName($s) { parent::set('name', $s); }
+	public function setName   ($s) { parent::set('name',    $s); }
+	public function setSubtype($b) { parent::set('subtype', $b ? 1 : 0); }
 
 	public function handleUpdate(array $post)
 	{
-        $this->setName($post['name']);
+        $this->setName   ($post['name'   ]);
+        $this->setSubtype($post['subtype']);
 	}
 
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
 	public function __toString() { return parent::get('name'); }
+
+	public function isSubtype() { return $this->getSubtype() ? true : false; }
 }

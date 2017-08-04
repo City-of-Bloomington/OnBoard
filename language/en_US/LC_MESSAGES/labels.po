@@ -224,6 +224,9 @@ msgstr "History"
 msgid "type"
 msgstr "Type"
 
+msgid "subtype"
+msgstr "Subtype"
+
 msgid "council"
 msgid_plural "councils"
 msgstr[0] "Council"

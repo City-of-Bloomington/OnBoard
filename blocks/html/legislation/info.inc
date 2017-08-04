@@ -5,6 +5,7 @@
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
+use Blossom\Classes\Block;
 
 $committee = parent::escape($this->legislation->getCommittee()->getName());
 $type      = parent::escape($this->legislation->getType()     ->getName());
@@ -47,5 +48,14 @@ foreach ($fields as $f) {
 
         $this->_include('legislation/files.inc'  );
         $this->_include('legislation/actions.inc');
+
+        $children = $this->legislation->getChildren();
+        if ($children) {
+            $block = new Block('legislation/list.inc', [
+                'list'   => $children,
+                'parent' => $this->legislation
+            ]);
+            echo $block->render('html', $this->template);
+        }
     ?>
 </section>

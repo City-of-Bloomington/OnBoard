@@ -3,7 +3,6 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Blossom\Classes\ActiveRecord;
@@ -68,12 +67,12 @@ class ActionType extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()       { return (int)parent::get('id'      ); }
-	public function getName()     { return      parent::get('name'    ); }
-	public function getOrdering() { return (int)parent::get('ordering'); }
+	public function getId()       { return parent::get('id'      ); }
+	public function getName()     { return parent::get('name'    ); }
+	public function getOrdering() { return parent::get('ordering'); }
 
-	public function setName    ($s) { parent::set('name',          $s); }
-	public function setOrdering($s) { parent::set('ordering', (int)$s); }
+	public function setName    ($s) { parent::set('name',     $s); }
+	public function setOrdering($s) { parent::set('ordering', $s); }
 
 	public function handleUpdate(array $post)
 	{

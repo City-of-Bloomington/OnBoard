@@ -2,7 +2,8 @@
 /**
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param array $this->legislation An array of Legislation objects
+ * @param array       $this->list   An array of Legislation objects
+ * @param Legislation $this->parent The parent legislation for the list
  */
 use Application\Models\Person;
 use Application\Models\Legislation\ActionTypesTable;
@@ -11,14 +12,17 @@ use Blossom\Classes\Url;
 ?>
 <section>
     <header>
-        <h1><?= $this->_(['legislation', 'legislations', count($this->legislation)]); ?></h1>
         <div class="tools">
         <?php
             $userCanEdit = Person::isAllowed('legislation', 'update');
             $h = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
+
+                $params = $this->parent ? ['parent_id'=>$this->parent->getId()] : [];
+                $params['return_url'] = Url::current_url(BASE_HOST);
+
                 echo $h->buttonLink(
-                    BASE_URI.'/legislation/update?return_url='.Url::current_url(BASE_HOST),
+                    BASE_URI.'/legislation/update?'.http_build_query($params),
                     $this->_('legislation_add'),
                     'add'
                 );
@@ -28,11 +32,10 @@ use Blossom\Classes\Url;
     </header>
     <div>
     <?php
-        foreach ($this->legislation as $l) {
+        foreach ($this->list as $l) {
             $type      = parent::escape($l->getType()->getName());
             $number    = parent::escape($l->getNumber  ());
             $title     = parent::escape($l->getTitle   ());
-            $synopsis  = parent::escape($l->getSynopsis());
 
             $uri = BASE_URI.'/legislation/view?id='.$l->getId();
 
@@ -61,7 +64,6 @@ use Blossom\Classes\Url;
                     <h2><a href=\"$uri\">$type $number $status $downloadButton</a></h2>
                     <h3>$title</h3>
                 </header>
-                <p>$synopsis</p>
             </article>
             ";
         }

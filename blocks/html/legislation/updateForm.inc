@@ -8,7 +8,10 @@ use Application\Models\CommitteeTable;
 use Application\Models\TagsTable;
 use Application\Models\Legislation\TypesTable;
 
-$fields = ['id', 'committee_id', 'type_id', 'year', 'number', 'title', 'synopsis'];
+$fields = [
+    'id', 'committee_id', 'type_id', 'parent_id',
+    'year', 'number', 'title', 'synopsis'
+];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->legislation->$get());
@@ -22,11 +25,12 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
     </header>
     <form method="post" action="<?= BASE_URI; ?>/legislation/update">
         <fieldset>
-            <input name="id" type="hidden" value="<?= $id; ?>" />
+            <input name="id"        type="hidden" value="<?= $id;        ?>" />
+            <input name="parent_id" type="hidden" value="<?= $parent_id; ?>" />
         <?php
-            $h = $this->template->getHelper('field');
+            $helper = $this->template->getHelper('field');
 
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'year',
                 'id'       => 'year',
                 'label'    => $this->_('year'),
@@ -37,9 +41,9 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
 
             $options = [];
             $table   = new TypesTable();
-            $list    = $table->find();
+            $list    = $table->find(['subtype'=>$parent_id ? true : false]);
             foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'type_id',
                 'id'       => 'type_id',
                 'label'    => $this->_('type'),
@@ -52,7 +56,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
             $table   = new CommitteeTable();
             $list    = $table->find(['legislative'=>true]);
             foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'committee_id',
                 'id'       => 'committee_id',
                 'label'    => $this->_('committee'),
@@ -61,14 +65,14 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'required' => true
             ]);
 
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'number',
                 'id'       => 'number',
                 'label'    => $this->_('number'),
                 'value'    => $number,
                 'required' => true
             ]);
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'title',
                 'id'       => 'title',
                 'label'    => $this->_('title'),
@@ -76,7 +80,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'type'     => 'textarea',
                 'required' => true
             ]);
-            echo $h->field([
+            echo $helper->field([
                 'name'     => 'synopsis',
                 'id'       => 'synopsis',
                 'label'    => $this->_('synopsis'),
@@ -88,7 +92,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
             $table = new TagsTable();
             $list = $table->find();
             foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
-            echo $h->field([
+            echo $helper->field([
                 'name'    => 'tags',
                 'label'   => $this->_(['tag', 'tags', count($list)]),
                 'type'    => 'checkbox',
@@ -96,8 +100,8 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'options' => $options
             ]);
 
-            $h = $this->template->getHelper('saveAndCancelButtons');
-            echo $h->saveAndCancelButtons($_SESSION['return_url']);
+            $helper = $this->template->getHelper('saveAndCancelButtons');
+            echo $helper->saveAndCancelButtons($_SESSION['return_url']);
         ?>
         </fieldset>
     </form>

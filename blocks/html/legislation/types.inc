@@ -35,11 +35,13 @@ use Application\Models\Person;
                     'edit'
                 );
             }
-            $name = parent::escape($t->getName());
+            $name    = parent::escape($t->getName());
+            $subtype = $t->isSubtype() ? $this->_('subtype') : '';
 
             echo "
             <tr><td>$editButton</td>
                 <td>$name</td>
+                <td>$subtype</td>
             </tr>
             ";
         }

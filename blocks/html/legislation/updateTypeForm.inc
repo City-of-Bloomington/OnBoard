@@ -4,8 +4,9 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param LegislationType $this->type
  */
-$id   = $this->type->getId();
-$name = parent::escape($this->type->getName());
+$id      = $this->type->getId();
+$name    = parent::escape($this->type->getName());
+$subtype = $this->type->getSubtype();
 
 $title = $id ? $this->_('legislationType_edit') : $this->_('legislationType_add');
 ?>
@@ -24,6 +25,17 @@ $title = $id ? $this->_('legislationType_edit') : $this->_('legislationType_add'
                     'label'    => $this->_('name'),
                     'value'    => $name,
                     'required' => true
+                ]);
+
+                echo $h->field([
+                    'name'    => 'subtype',
+                    'label'   => $this->_('subtype'),
+                    'value'   => $subtype,
+                    'type'    => 'radio',
+                    'options' => [
+                        ['value'=>1, 'label'=>$this->_('yes')],
+                        ['value'=>0, 'label'=>$this->_('no' )]
+                    ]
                 ]);
 
                 $h = $this->template->getHelper('saveAndCancelButtons');

@@ -213,8 +213,9 @@ create table committeeHistory(
 );
 
 create table legislationTypes (
-    id   int unsigned not null primary key auto_increment,
-    name varchar(32)  not null
+    id      int unsigned not null primary key auto_increment,
+    name    varchar(32)  not null,
+    subtype boolean      not null default 0
 );
 
 create table legislationActionTypes (
@@ -227,12 +228,14 @@ create table legislation (
     id           int      unsigned not null primary key auto_increment,
     committee_id int      unsigned not null,
     type_id      int      unsigned not null,
+    parent_id    int      unsigned,
     year         smallint unsigned not null,
     number       varchar(24)       not null,
     title        text              not null,
     synopsis     text,
     foreign key (committee_id) references committees      (id),
-    foreign key (type_id     ) references legislationTypes(id)
+    foreign key (type_id     ) references legislationTypes(id),
+    foreign key (parent_id   ) references legislation     (id)
 );
 
 create table legislationActions (

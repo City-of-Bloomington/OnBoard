@@ -15,6 +15,8 @@ class LegislationController extends Controller
 {
     public function index()
     {
+        $_GET['subtype'] = false;
+
         $table = new LegislationTable();
         $list  = $table->find($_GET);
 
@@ -32,7 +34,7 @@ class LegislationController extends Controller
             $this->template->blocks[] = new Block('legislation/searchForm.inc');
         }
 
-        $this->template->blocks[] = new Block('legislation/list.inc', ['legislation'=>$list]);
+        $this->template->blocks[] = new Block('legislation/list.inc', ['list'=>$list]);
     }
 
     public function view()
@@ -66,11 +68,15 @@ class LegislationController extends Controller
 
         $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
                                 ? $_REQUEST['return_url']
-                                : $legislation->getId()
+                                : ($legislation->getId()
                                     ? BASE_URL.'/legislation/view?id='.$legislation->getId()
-                                    : BASE_URL.'/legislation';
+                                    : BASE_URL.'/legislation');
 
         if (isset($legislation)) {
+            if (isset($_REQUEST['parent_id'])) {
+                $legislation->setParent_id($_REQUEST['parent_id']);
+            }
+
             if (isset($_POST['number'])) {
                 try {
                     $legislation->handleUpdate($_POST);
