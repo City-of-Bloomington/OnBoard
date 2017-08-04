@@ -16,9 +16,9 @@ use Blossom\Classes\Url;
         <?php
             $userCanEdit = Person::isAllowed('legislation', 'update');
             $h = $this->template->getHelper('buttonLink');
-            if ($userCanEdit) {
-
-                $params = $this->parent ? ['parent_id'=>$this->parent->getId()] : [];
+            if ($userCanEdit && !$this->parent) {
+                $params = [];
+                if ($this->committee) { $params['committee_id'] = $this->committee->getId(); }
                 $params['return_url'] = Url::current_url(BASE_HOST);
 
                 echo $h->buttonLink(

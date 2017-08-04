@@ -4,7 +4,6 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Legislation $this->legislation
  */
-use Application\Models\CommitteeTable;
 use Application\Models\TagsTable;
 use Application\Models\Legislation\TypesTable;
 
@@ -25,8 +24,9 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
     </header>
     <form method="post" action="<?= BASE_URI; ?>/legislation/update">
         <fieldset>
-            <input name="id"        type="hidden" value="<?= $id;        ?>" />
-            <input name="parent_id" type="hidden" value="<?= $parent_id; ?>" />
+            <input name="id"           type="hidden" value="<?= $id;           ?>" />
+            <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
+            <input name="parent_id"    type="hidden" value="<?= $parent_id;    ?>" />
         <?php
             $helper = $this->template->getHelper('field');
 
@@ -47,19 +47,6 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'name'     => 'type_id',
                 'id'       => 'type_id',
                 'label'    => $this->_('type'),
-                'type'     => 'select',
-                'options'  => $options,
-                'required' => true
-            ]);
-
-            $options = [];
-            $table   = new CommitteeTable();
-            $list    = $table->find(['legislative'=>true]);
-            foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
-            echo $helper->field([
-                'name'     => 'committee_id',
-                'id'       => 'committee_id',
-                'label'    => $this->_('committee'),
                 'type'     => 'select',
                 'options'  => $options,
                 'required' => true

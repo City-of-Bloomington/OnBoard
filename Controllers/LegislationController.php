@@ -18,7 +18,7 @@ class LegislationController extends Controller
         $_GET['subtype'] = false;
 
         $table = new LegislationTable();
-        $list  = $table->find($_GET);
+        $vars  = ['list' => $table->find($_GET)];
 
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -30,11 +30,12 @@ class LegislationController extends Controller
                 $this->template->title = $committee->getName();
                 $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
                 $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
+                $vars['committee'] = $committee;
             }
             $this->template->blocks[] = new Block('legislation/searchForm.inc');
         }
 
-        $this->template->blocks[] = new Block('legislation/list.inc', ['list'=>$list]);
+        $this->template->blocks[] = new Block('legislation/list.inc', $vars);
     }
 
     public function view()
@@ -66,16 +67,27 @@ class LegislationController extends Controller
         }
         else { $legislation = new Legislation(); }
 
-        $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
-                                ? $_REQUEST['return_url']
-                                : ($legislation->getId()
-                                    ? BASE_URL.'/legislation/view?id='.$legislation->getId()
-                                    : BASE_URL.'/legislation');
 
         if (isset($legislation)) {
-            if (isset($_REQUEST['parent_id'])) {
-                $legislation->setParent_id($_REQUEST['parent_id']);
+            if (!$legislation->getCommittee_id()) {
+                if (!empty($_REQUEST['committee_id'])) {
+                    try { $legislation->setCommittee_id($_REQUEST['committee_id']); }
+                    catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+                }
             }
+
+            if (isset($_REQUEST['parent_id'])) {
+                try { $legislation->setParent_id($_REQUEST['parent_id']); }
+                catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+            }
+        }
+
+        if (isset($legislation) && $legislation->getCommittee_id()) {
+            $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
+                                    ? $_REQUEST['return_url']
+                                    : ($legislation->getId()
+                                        ? BASE_URL.'/legislation/view?id='.$legislation->getId()
+                                        : BASE_URL.'/legislation');
 
             if (isset($_POST['number'])) {
                 try {
@@ -90,6 +102,8 @@ class LegislationController extends Controller
                 }
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
             }
+            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $legislation->getCommittee()]);
+            $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $legislation->getCommittee()]);
             $this->template->blocks[] = new Block('legislation/updateForm.inc', ['legislation'=>$legislation]);
         }
         else {
