@@ -39,7 +39,7 @@ foreach ($fields as $f) {
 
         $options = [['value'=>'']];
         $table   = new TypesTable();
-        $list    = $table->find();
+        $list    = $table->find(['subtype'=>false]);
         foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
         echo $h->field([
             'name'     => 'type_id',

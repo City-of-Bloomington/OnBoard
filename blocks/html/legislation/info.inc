@@ -6,6 +6,7 @@
  */
 use Application\Models\Person;
 use Blossom\Classes\Block;
+use Michelf\MarkdownExtra;
 
 $committee  = parent::escape($this->legislation->getCommittee()->getName());
 $type       = parent::escape($this->legislation->getType()     ->getName());
@@ -16,24 +17,48 @@ foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->legislation->$get());
 }
+
+$markdown = new MarkdownExtra();
+$synopsis = $markdown->transform($this->legislation->getSynopsis());
 ?>
 <section>
     <header>
-        <h1><?= "$year $type $number $amendsCode"; ?></h1>
-        <div class="tools">
-        <?php
-            $h = $this->template->getHelper('buttonLink');
+    <?php
+        $h = $this->template->getHelper('buttonLink');
 
-            if (Person::isAllowed('legislation', 'update')) {
-                echo $h->buttonLink(
-                    BASE_URI.'/legislation/update?id='.$id,
-                    $this->_('legislation_edit'),
-                    'edit'
-                );
-            }
-        ?>
-        </div>
-        <h2><?= $title; ?></h2>
+        if (Person::isAllowed('legislation', 'update')) {
+            $tools = '<div class="tools">';
+            $tools.= $h->buttonLink(
+                BASE_URI.'/legislation/update?id='.$id,
+                $this->_('legislation_edit'),
+                'edit'
+            );
+            $tools.= '</div>';
+        }
+
+        $parent = $this->legislation->getParent();
+        if ($parent) {
+            $pt = parent::escape($parent->getType()->getName());
+            $py = parent::escape($parent->getYear());
+            $pn = parent::escape($parent->getNumber());
+            $ph = parent::escape($parent->getTitle());
+            echo "
+            <h1>$py $pt $pn</h1>
+            <h2>$ph</h2>
+            <h3>$year $type $number</h3>
+            $tools
+            <h4>$title</h4>
+            ";
+        }
+        else {
+            echo "
+            <h1>$year $type $number</h1>
+            $tools
+            <h2>$title</h2>
+            ";
+        }
+
+    ?>
     </header>
     <p><?= $synopsis; ?></p>
     <?php
@@ -46,6 +71,8 @@ foreach ($fields as $f) {
             }
             echo '</ul>';
         }
+
+        echo "<table><tr><th>{$this->_('amendsCode')}</th><td>$amendsCode</td></tr></table>";
 
         $this->_include('legislation/files.inc'  );
         $this->_include('legislation/actions.inc');

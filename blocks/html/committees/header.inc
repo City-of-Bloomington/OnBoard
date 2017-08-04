@@ -118,8 +118,8 @@ echo "
         $pastMembersLink
         $applicationsLink
         $meetingsLink
-        $legislationLink
         $filesLink
+        $legislationLink
         $historyLink
     </nav>
 </header>

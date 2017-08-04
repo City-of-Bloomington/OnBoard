@@ -16,8 +16,11 @@ use Blossom\Classes\Url;
         <?php
             $userCanEdit = Person::isAllowed('legislation', 'update');
             $h = $this->template->getHelper('buttonLink');
-            if ($userCanEdit && !$this->parent) {
+            if ($userCanEdit
+                && (!$this->parent || !$this->parent->getType()->isSubtype())) {
+
                 $params = [];
+                if ($this->parent   ) { $params['parent_id'   ] = $this->parent   ->getId(); }
                 if ($this->committee) { $params['committee_id'] = $this->committee->getId(); }
                 $params['return_url'] = Url::current_url(BASE_HOST);
 
@@ -36,7 +39,6 @@ use Blossom\Classes\Url;
             $type       = parent::escape($l->getType()->getName());
             $number     = parent::escape($l->getNumber  ());
             $title      = parent::escape($l->getTitle   ());
-            $amendsCode = $l->amendsCode() ? $this->_('yes') : $this->_('no');
 
             $uri = BASE_URI.'/legislation/view?id='.$l->getId();
 
@@ -62,7 +64,7 @@ use Blossom\Classes\Url;
             echo "
             <article>
                 <header>
-                    <h2><a href=\"$uri\">$type $number $status $amendsCode $downloadButton</a></h2>
+                    <h2><a href=\"$uri\">$type $number $status $downloadButton</a></h2>
                     <h3>$title</h3>
                 </header>
             </article>
