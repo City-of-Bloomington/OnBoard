@@ -15,7 +15,7 @@ class LegislationController extends Controller
 {
     public function index()
     {
-        $_GET['subtype'] = false;
+        $_GET['parent_id'] = null;
 
         $table = new LegislationTable();
         $vars  = ['list' => $table->find($_GET)];

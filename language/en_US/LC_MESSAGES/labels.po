@@ -732,7 +732,7 @@ msgid "legislation_add"
 msgstr "Add Legislation"
 
 msgid "legislation_edit"
-msgstr "Edit Legislation"
+msgstr "Edit"
 
 msgid "legislative"
 msgstr "Legislative"

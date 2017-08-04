@@ -103,7 +103,7 @@ class Legislation extends ActiveRecord
 	public function setType      (Type      $o) { parent::setForeignKeyObject(__namespace__.'\Type', 'type_id', $o); }
 	public function setParent_id           ($i) { parent::setForeignKeyField (__namespace__.'\Legislation', 'parent_id', $i); }
 	public function setParent  (Legislation $o) { parent::setForeignKeyObject(__namespace__.'\Legislation', 'parent_id', $o); }
-	public function setAmendsCode($b) { parent::set('amendsCode', $b ? 1 : 0); }
+	public function setAmendsCode($b) { $this->data['amendsCode'] = $b ? 1 : 0; }
 
 	/**
 	 * Handler for Controller::update action

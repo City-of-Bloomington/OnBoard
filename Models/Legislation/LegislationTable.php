@@ -6,6 +6,7 @@
 namespace Application\Models\Legislation;
 
 use Blossom\Classes\TableGateway;
+use Zend\Db\Sql\Select;
 
 class LegislationTable extends TableGateway
 {
