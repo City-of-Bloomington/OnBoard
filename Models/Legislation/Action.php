@@ -66,11 +66,12 @@ class Action extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()             { return parent::get('id'); }
+	public function getId()             { return parent::get('id'            ); }
 	public function getLegislation_id() { return parent::get('legislation_id'); }
-	public function getType_id()        { return parent::get('type_id'); }
+	public function getType_id()        { return parent::get('type_id'       ); }
+	public function getOutcome()        { return parent::get('outcome'       ); }
+	public function getVote()           { return parent::get('vote'          ); }
 	public function getActionDate($format=null) { return parent::getDateData('actionDate', $format); }
-	public function getOutcome()        { return parent::get('outcome'); }
 	public function getLegislation()    { return parent::getForeignKeyObject(__namespace__.'\Legislation', 'legislation_id'); }
 	public function getType()           { return parent::getForeignKeyObject(__namespace__.'\ActionType',  'type_id'       ); }
 
@@ -80,12 +81,14 @@ class Action extends ActiveRecord
 	public function setType        (ActionType $o) { parent::setForeignKeyObject(__namespace__.'\ActionType', 'type_id', $o); }
 	public function setActionDate($d) { parent::setDateData('actionDate', $d); }
 	public function setOutcome   ($s) { parent::set('outcome', $s); }
+	public function setVote      ($s) { parent::set('vote',    $s); }
 
 	public function handleUpdate(array $post)
 	{
-        $this->setLegislation_id($post['legislation_id']);
-        $this->setType_id       ($post['type_id'       ]);
-        $this->setActionDate    ($post['actionDate'    ]);
-        $this->setOutcome       ($post['outcome'       ]);
+        $fields = ['legislation_id', 'type_id', 'actionDate', 'outcome', 'vote'];
+        foreach ($fields as $f) {
+            $set = 'set'.ucfirst($f);
+            $this->$set($post[$f]);
+        }
 	}
 }

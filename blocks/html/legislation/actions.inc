@@ -17,6 +17,7 @@ foreach (Legislation::actionTypes() as $t) {
     $button = '';
 
     if ($action) {
+        $vote       = parent::escape($action->getVote());
         $outcome    = parent::escape($action->getOutcome());
         $actionDate = $action->getActionDate(DATE_FORMAT);
 
@@ -29,6 +30,7 @@ foreach (Legislation::actionTypes() as $t) {
         }
     }
     else {
+        $vote       = '';
         $outcome    = '';
         $actionDate = '';
         if ($userCanEditActions) {
@@ -47,7 +49,10 @@ foreach (Legislation::actionTypes() as $t) {
 
     echo "
     <tr><th>$name</th>
-        <td>$outcome $actionDate$button</td>
+        <td>$actionDate</td>
+        <td>$outcome</td>
+        <td>$vote</td>
+        <td>$button</td>
     </tr>
     ";
 }

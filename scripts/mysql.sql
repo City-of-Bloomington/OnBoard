@@ -244,6 +244,7 @@ create table legislationActions (
     type_id        int unsigned not null,
     actionDate     date         not null,
     outcome        varchar(16),
+    vote           varchar(32),
     foreign key (legislation_id) references legislation(id),
     foreign key (type_id       ) references legislationActionTypes(id)
 );

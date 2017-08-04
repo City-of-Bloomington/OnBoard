@@ -6,7 +6,7 @@
  */
 use Application\Models\Legislation\Action;
 
-$fields = ['id', 'legislation_id', 'type_id', 'outcome'];
+$fields = ['id', 'legislation_id', 'type_id', 'outcome', 'vote'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->action->$get());
@@ -35,6 +35,13 @@ $type        = parent::escape($this->action->getType()       ->getName());
                     'type'    => 'date',
                     'value'   => $this->action->getActionDate('U'),
                     'required'=> true
+                ]);
+
+                echo $h->field([
+                    'name'    => 'vote',
+                    'id'      => 'vote',
+                    'label'   => $this->_('vote'),
+                    'value'   => $vote
                 ]);
 
                 $options = [['value'=>'']];
