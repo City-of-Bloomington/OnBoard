@@ -4,6 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\CommitteeTable;
+use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\TypesTable;
 
 $fields = ['year', 'type_id', 'committee_id'];
@@ -29,12 +30,17 @@ foreach ($fields as $f) {
             'options'  => $options
         ]);
 
+        $table = new LegislationTable();
+        $years = $table->years();
+        $max   = current($years);
+        $min   =     end($years);
         echo $h->field([
             'name'     => 'year',
             'id'       => 'year',
             'label'    => $this->_('year'),
             'type'     => 'number',
-            'value'    => $year
+            'value'    => $year,
+            'help'     => "($max - $min)"
         ]);
 
         $options = [['value'=>'']];

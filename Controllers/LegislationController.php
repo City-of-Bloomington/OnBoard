@@ -16,6 +16,7 @@ class LegislationController extends Controller
     public function index()
     {
         $_GET['parent_id'] = null;
+        $_GET['year'     ] = !empty($_GET['year']) ? $_GET['year'] : date('Y');
 
         $table = new LegislationTable();
         $vars  = ['list' => $table->find($_GET)];
@@ -36,6 +37,33 @@ class LegislationController extends Controller
         }
 
         $this->template->blocks[] = new Block('legislation/list.inc', $vars);
+    }
+
+    public function years()
+    {
+        $search = [];
+
+        if (!empty($_GET['committee_id'])) {
+            try {
+                $committee = new Committee($_GET['committee_id']);
+
+                if ($this->template->outputFormat == 'html') {
+                    $this->template->title = $committee->getName();
+                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+                    $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+                }
+
+                $search['committee_id'] = $committee->getId();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        $table = new LegislationTable();
+        $years = $table->years($search);
+        $this->template->blocks[] = new Block('legislation/years.inc', [
+            'years'    => $years,
+            'committe' => isset($committee) ? $committee : null
+        ]);
     }
 
     public function view()
@@ -76,7 +104,7 @@ class LegislationController extends Controller
                 }
             }
 
-            if (isset($_REQUEST['parent_id'])) {
+            if (!empty($_REQUEST['parent_id'])) {
                 try {
                     $parent = new Legislation($_REQUEST['parent_id']);
                     $legislation->setParent_id   ($parent->getId());
@@ -85,7 +113,7 @@ class LegislationController extends Controller
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
             }
 
-            if (isset($_REQUEST['type_id'])) {
+            if (!empty($_REQUEST['type_id'])) {
                 try { $legislation->setType_id($_REQUEST['type_id']); }
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
             }
