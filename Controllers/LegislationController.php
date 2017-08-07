@@ -77,14 +77,23 @@ class LegislationController extends Controller
             }
 
             if (isset($_REQUEST['parent_id'])) {
-                try { $legislation->setParent_id($_REQUEST['parent_id']); }
+                try {
+                    $parent = new Legislation($_REQUEST['parent_id']);
+                    $legislation->setParent_id   ($parent->getId());
+                    $legislation->setCommittee_id($parent->getCommittee_id());
+                }
+                catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+            }
+
+            if (isset($_REQUEST['type_id'])) {
+                try { $legislation->setType_id($_REQUEST['type_id']); }
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
             }
         }
 
         if (isset($legislation) && $legislation->getCommittee_id()) {
-            $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
-                                    ? $_REQUEST['return_url']
+            $_SESSION['return_url'] =    !empty($_REQUEST['return_url'])
+                                    ? urldecode($_REQUEST['return_url'])
                                     : ($legislation->getId()
                                         ? BASE_URL.'/legislation/view?id='.$legislation->getId()
                                         : BASE_URL.'/legislation');

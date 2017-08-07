@@ -62,7 +62,7 @@ $ZEND_ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view']);
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
-$ZEND_ACL->allow(null, 'meetingFiles', ['index', 'download', 'years']);
+$ZEND_ACL->allow(null, ['meetingFiles', 'legislationFiles'], ['index', 'download', 'years']);
 
 
 // Allow Staff to do stuff
@@ -73,7 +73,8 @@ $ZEND_ACL->allow('Applicants-view-only', 'applications', ['index', 'report']);
 $ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
-$ZEND_ACL->allow('Reviewer', 'applicantFiles');
+$ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
+$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles']);
 $ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');

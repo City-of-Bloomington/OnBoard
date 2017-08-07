@@ -7,6 +7,8 @@
 use Application\Models\TagsTable;
 use Application\Models\Legislation\TypesTable;
 
+use Blossom\Classes\Block;
+
 $fields = [
     'id', 'committee_id', 'type_id', 'parent_id',
     'year', 'number', 'title', 'synopsis', 'amendsCode'
@@ -16,11 +18,30 @@ foreach ($fields as $f) {
     $$f  = parent::escape($this->legislation->$get());
 }
 
-$heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
 ?>
 <section>
     <header>
-        <h1><?= $heading; ?></h1>
+        <?php
+            $type = $this->legislation->getType();
+            $heading = $type
+                ? ($id
+                    ? sprintf($this->_('edit_something', 'messages'), $type->getName())
+                    : sprintf($this->_( 'add_something', 'messages'), $type->getName()))
+                : ($id
+                    ? $this->_('legislation_edit')
+                    : $this->_('legislation_add'));
+
+
+            $parent  = $this->legislation->getParent();
+            if ($parent) {
+                $block = new Block('legislation/partials/heading.inc', ['legislation'=>$parent]);
+                echo $block->render('html', $this->template);
+                echo "<h3>$heading</h3>";
+            }
+            else {
+                echo "<h1>$heading</h1>";
+            }
+        ?>
     </header>
     <form method="post" action="<?= BASE_URI; ?>/legislation/update">
         <fieldset>
@@ -47,6 +68,7 @@ $heading = $id ? $this->_('legislation_edit') : $this->_('legislation_add');
                 'name'     => 'type_id',
                 'id'       => 'type_id',
                 'label'    => $this->_('type'),
+                'value'    => $type_id,
                 'type'     => 'select',
                 'options'  => $options,
                 'required' => true

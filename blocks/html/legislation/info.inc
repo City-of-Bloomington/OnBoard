@@ -26,6 +26,7 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
     <?php
         $h = $this->template->getHelper('buttonLink');
 
+        $tools = '';
         if (Person::isAllowed('legislation', 'update')) {
             $tools = '<div class="tools">';
             $tools.= $h->buttonLink(
@@ -38,13 +39,10 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
 
         $parent = $this->legislation->getParent();
         if ($parent) {
-            $pt = parent::escape($parent->getType()->getName());
-            $py = parent::escape($parent->getYear());
-            $pn = parent::escape($parent->getNumber());
-            $ph = parent::escape($parent->getTitle());
+            $block = new Block('legislation/partials/heading.inc', ['legislation'=>$parent]);
+            echo $block->render('html', $this->template);
+
             echo "
-            <h1>$py $pt $pn</h1>
-            <h2>$ph</h2>
             <h3>$year $type $number</h3>
             $tools
             <h4>$title</h4>

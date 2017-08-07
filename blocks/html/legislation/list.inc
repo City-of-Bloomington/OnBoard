@@ -7,6 +7,7 @@
  */
 use Application\Models\Person;
 use Application\Models\Legislation\ActionTypesTable;
+use Application\Models\Legislation\TypesTable;
 
 use Blossom\Classes\Url;
 ?>
@@ -19,16 +20,31 @@ use Blossom\Classes\Url;
             if ($userCanEdit
                 && (!$this->parent || !$this->parent->getType()->isSubtype())) {
 
-                $params = [];
-                if ($this->parent   ) { $params['parent_id'   ] = $this->parent   ->getId(); }
+                $params = ['return_url' => urlencode(Url::current_url(BASE_HOST))];
                 if ($this->committee) { $params['committee_id'] = $this->committee->getId(); }
-                $params['return_url'] = Url::current_url(BASE_HOST);
 
-                echo $h->buttonLink(
-                    BASE_URI.'/legislation/update?'.http_build_query($params),
-                    $this->_('legislation_add'),
-                    'add'
-                );
+                if ($this->parent) {
+                    $params['parent_id'] = $this->parent->getId();
+
+                    $table = new TypesTable();
+                    $list = $table->find(['subtype'=>true]);
+                    foreach ($list as $t) {
+                        $params['type_id'   ] = $t->getId();
+
+                        echo $h->buttonLink(
+                            BASE_URI.'/legislation/update?'.http_build_query($params),
+                            sprintf($this->_('add_something', 'messages'), $t->getName()),
+                            'add'
+                        );
+                    }
+                }
+                else {
+                    echo $h->buttonLink(
+                        BASE_URI.'/legislation/update?'.http_build_query($params),
+                        $this->_('legislation_add'),
+                        'add'
+                    );
+                }
             }
         ?>
         </div>
