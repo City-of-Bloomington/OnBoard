@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2012-2016 City of Bloomington, Indiana
+ * @copyright 2012-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Controllers;
@@ -15,8 +15,10 @@ class UsersController extends Controller
 {
 	public function index()
 	{
+        $_GET['user_account'] = true;
+
 		$people = new PeopleTable();
-		$users = $people->find(['user_account'=>true], null, true);
+		$users = $people->search($_GET, null, true);
 
 		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 		$users->setCurrentPageNumber($page);
@@ -24,6 +26,7 @@ class UsersController extends Controller
 
 		$title = $this->template->_(['user', 'users', 2]);
 		$this->template->title = $title.' - '.APPLICATION_NAME;
+		$this->template->blocks[] = new Block('users/findForm.inc');
 		$this->template->blocks[] = new Block('users/list.inc',     ['users'    =>$users]);
 		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$users]);
 	}

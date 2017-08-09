@@ -11,6 +11,8 @@ use Zend\Db\Sql\Predicate\Like;
 
 class PeopleTable extends TableGateway
 {
+    public static $columns = ['firstname', 'lastname'];
+
 	public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
 	public function find($fields=null, $order='lastname', $paginated=false, $limit=null)
@@ -50,7 +52,9 @@ class PeopleTable extends TableGateway
                     break;
 
 					default:
-						$select->where([$key=>$value]);
+                        if (in_array($key, self::$columns)) {
+                            $select->where([$key=>$value]);
+                        }
 				}
 			}
 		}
@@ -60,15 +64,23 @@ class PeopleTable extends TableGateway
 	public function search($fields, $order='lastname', $paginated=false, $limit=null)
 	{
 		$select = new Select('people');
+		foreach ($fields as $k => $v) {
+            switch ($k) {
+                case 'user_account':
+                    if ($v) { $select->where('username is not null'); }
+                    else    { $select->where('username is null'    ); }
+                break;
 
-		$searchableFields = ['firstname', 'lastname', 'email'];
-		foreach ($searchableFields as $f) {
-			if (isset($fields[$f])) {
-				$value = trim($fields[$f]);
-				if ($value) {
-					$select->where->like($f, "$value%");
-				}
-			}
+                case 'role':
+                case 'authenticationMethod':
+                    if ($v) { $select->where([$k=>$v]); }
+                break;
+
+                default:
+                    if ($v && in_array($k, self::$columns)) {
+                        $select->where->like($k, "$v%");
+                    }
+            }
 		}
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
