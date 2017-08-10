@@ -24,6 +24,7 @@ $c = [
     'city'             => $this->committee->getCity(),
     'state'            => $this->committee->getState(),
     'zip'              => $this->committee->getZip(),
+    'calendarId'       => $this->committee->getCalendarId(),
 	'meetingSchedule'  => $meetingSchedule,
 	'vacancy'          => $this->committee->hasVacancy(),
     'description'      => $description,

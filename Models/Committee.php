@@ -467,7 +467,11 @@ class Committee extends ActiveRecord
                 $day   = $eventStart->format('d');
 
                 $meetings[$eventStart->format('Y-m-d')] = [
-                    'eventId' => $e->id
+                    'eventId'  => $e->id,
+                    'summary'  => $e->summary,
+                    'location' => $e->location,
+                    'start'    => $eventStart->format('c'),
+                    'end'      => $eventEnd  ->format('c')
                 ];
             }
         }
