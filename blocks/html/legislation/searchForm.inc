@@ -31,16 +31,18 @@ foreach ($fields as $f) {
         ]);
 
         $table = new LegislationTable();
-        $years = $table->years();
+        $data  = $table->years();
+        $years = array_keys($data);
         $max   = current($years);
         $min   =     end($years);
+        $uri   = BASE_URI."/legislation/years?committee_id=$committee_id";
         echo $h->field([
             'name'     => 'year',
             'id'       => 'year',
             'label'    => $this->_('year'),
             'type'     => 'number',
             'value'    => $year,
-            'help'     => "($max - $min)"
+            'help'     => "<a href=\"$uri\">($max - $min)</a>"
         ]);
 
         $options = [['value'=>'']];

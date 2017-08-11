@@ -55,7 +55,11 @@ class LegislationTable extends TableGateway
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
                       ->from(self::TABLE)
-                      ->columns([new Expression('distinct(year) as year')])
+                      ->columns([
+                            'year'  => 'year',
+                            'count' => new Expression('count(*)')
+                        ])
+                      ->group('year')
                       ->order('year desc');
 
         $this->processFields($fields, $select);
@@ -64,7 +68,7 @@ class LegislationTable extends TableGateway
         $result = $query->execute();
         $out    = [];
         foreach ($result as $row) {
-            $out[] = (int)$row['year'];
+            $out[$row['year']] = (int)$row['count'];
         }
         return $out;
 	}

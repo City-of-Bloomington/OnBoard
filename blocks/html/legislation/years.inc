@@ -5,8 +5,18 @@
  * @param array     $this->years
  * @param Committee $this->committee (optional)
  */
-echo '<ul>';
-foreach ($this->years as $year) {
-    echo "<li>$year</li>";
+echo '<table>';
+
+$params = $this->committee
+        ? ['committee_id'=>$this->committee->getId()]
+        : [];
+
+foreach ($this->years as $year=>$count) {
+    $params['year'] = $year;
+    $uri = BASE_URI.'/legislation?'.http_build_query($params);
+    echo "
+    <tr><th><a href=\"$uri\">$year</a></th>
+        <td>$count</td>
+    </tr>";
 }
-echo '</ul>';
+echo '</table>';

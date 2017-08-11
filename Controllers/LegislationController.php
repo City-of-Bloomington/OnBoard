@@ -61,8 +61,8 @@ class LegislationController extends Controller
         $table = new LegislationTable();
         $years = $table->years($search);
         $this->template->blocks[] = new Block('legislation/years.inc', [
-            'years'    => $years,
-            'committe' => isset($committee) ? $committee : null
+            'years'     => $years,
+            'committee' => isset($committee) ? $committee : null
         ]);
     }
 
