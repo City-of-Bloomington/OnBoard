@@ -52,7 +52,11 @@ class MeetingFilesTable extends TableGateway
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
                       ->from(self::TABLE)
-                      ->columns([new Expression('distinct(year(meetingDate)) as year')])
+                      ->columns([
+                            'year'  => new Expression('distinct(year(meetingDate))'),
+                            'count' => new Expression('count(*)')
+                        ])
+                      ->group('year')
                       ->order('year desc');
 
         $this->processFields($fields, $select);
@@ -61,7 +65,7 @@ class MeetingFilesTable extends TableGateway
         $result = $query->execute();
         $out    = [];
         foreach ($result as $row) {
-            $out[] = (int)$row['year'];
+            $out[$row['year']] = (int)$row['count'];
         }
         return $out;
 	}
