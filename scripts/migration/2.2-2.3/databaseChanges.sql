@@ -6,13 +6,13 @@ alter table people      drop about;
 
 create table legislationTypes (
     id      int unsigned not null primary key auto_increment,
-    name    varchar(32)  not null,
+    name    varchar(32)  not null unique,
     subtype boolean      not null default 0
 );
 
 create table legislationActionTypes (
     id       int unsigned     not null primary key auto_increment,
-    name     varchar(32)      not null,
+    name     varchar(32)      not null unique,
     ordering tinyint unsigned not null
 );
 

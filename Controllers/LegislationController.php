@@ -8,6 +8,7 @@ namespace Application\Controllers;
 use Application\Models\Committee;
 use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationTable;
+use Application\Models\Legislation\Type;
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
 
@@ -17,6 +18,14 @@ class LegislationController extends Controller
     {
         $_GET['parent_id'] = null;
         $_GET['year'     ] = !empty($_GET['year']) ? $_GET['year'] : date('Y');
+        if (!empty($_GET['type']) && empty($_GET['type_id'])) {
+            try {
+                $type            = new Type($_GET['type']);
+                $_GET['type_id'] = $type->getId();
+            }
+            catch (\Exception $e) { }
+            unset($_GET['type']);
+        }
 
         $table = new LegislationTable();
         $vars  = ['list' => $table->find($_GET)];

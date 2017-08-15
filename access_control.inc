@@ -63,6 +63,7 @@ $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'repor
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
 $ZEND_ACL->allow(null, ['meetingFiles', 'legislationFiles'], ['index', 'download', 'years']);
+$ZEND_ACL->allow(null, 'legislationTypes', 'index');
 
 
 // Allow Staff to do stuff
