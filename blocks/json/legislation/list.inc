@@ -14,33 +14,6 @@ use Blossom\Classes\Url;
 $output = [];
 
 foreach ($this->list as $l) {
-    $actions = [];
-    foreach ($l->getActions() as $a) {
-        $actions[] = [
-            'name'    => $a->getType()->getName(),
-            'date'    => $a->getActionDate(),
-            'outcode' => $a->getOutcome(),
-            'vote'    => $a->getVote()
-        ];
-    }
-
-    $files = [];
-    foreach ($l->getFiles() as $f) {
-        $files[] = [
-            'url' => BASE_URL.'/legislationFiles/download?id='.$f->getId()
-        ];
-    }
-
-    $output[] = [
-        'committee'  => $l->getCommittee()->getName(),
-        'type'       => $l->getType()->getName(),
-        'number'     => $l->getNumber(),
-        'year'       => $l->getYear(),
-        'amendsCode' => $l->amendsCode(),
-        'title'      => $l->getTitle(),
-        'synopsis'   => $l->getSynopsis(),
-        'actions'    => $actions,
-        'files'      => $files
-    ];
+    $output[] = $l->toArray();
 }
 echo json_encode($output, JSON_PRETTY_PRINT);

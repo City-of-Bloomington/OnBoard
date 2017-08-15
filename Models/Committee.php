@@ -416,7 +416,7 @@ class Committee extends ActiveRecord
 
         $sql = "select  c.id, c.name, c.type, c.website, c.videoArchive, c.email, c.phone,
                         c.address, c.city, c.state, c.zip,
-                        c.statutoryName, c.yearFormed, c.endDate,
+                        c.statutoryName, c.yearFormed, c.endDate, c.legislative,
                         count(s.id) as seats,
                         sum(
                             case when ((s.endDate is null or now() <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
@@ -506,4 +506,51 @@ class Committee extends ActiveRecord
 	 * @return boolean
 	 */
 	public function isLegislative() { return $this->getLegislative() ? true : false; }
+
+	/**
+	 * Returns an array suitable for serialization
+	 *
+	 * @return array
+	 */
+	public function toArray()
+	{
+        $c = [
+            'id'               => (int)$this->getId(),
+            'type'             => $this->getType(),
+            'name'             => $this->getName(),
+            'statutoryName'    => $this->getStatutoryName(),
+            'website'          => $this->getWebsite(),
+            'videoArchive'     => $this->getVideoArchive(),
+            'email'            => $this->getEmail(),
+            'phone'            => $this->getPhone(),
+            'address'          => $this->getAddress(),
+            'city'             => $this->getCity(),
+            'state'            => $this->getState(),
+            'zip'              => $this->getZip(),
+            'calendarId'       => $this->getCalendarId(),
+            'meetingSchedule'  => $this->getMeetingSchedule(),
+            'vacancy'          => $this->hasVacancy(),
+            'description'      => $this->getDescription(),
+            'legislative'      => $this->isLegislative()
+        ];
+        $statutes = $this->getStatutes();
+        if (count($statutes)) {
+            $c['statutes'] = [];
+            foreach ($statutes as $s) {
+                $c['statutes'][] = ['citation'=>$s->getCitation(), 'url'=>$s->getUrl()];
+            }
+        }
+
+        $c['liaisons'] = [];
+        $data = LiaisonTable::committeeLiaisonData(['committee_id'=>$this->getId()]);
+        foreach ($data['results'] as $row) {
+            $liaison = [];
+            foreach ($row as $f=>$v) {
+                $liaison[$f] = (substr($f, -3) == '_id') ? (int)$v : $v;
+            }
+
+            $c['liaisons'][] = $liaison;
+        }
+        return $c;
+	}
 }

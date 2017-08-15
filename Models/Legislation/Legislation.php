@@ -215,4 +215,41 @@ class Legislation extends ActiveRecord
 	}
 
 	public function amendsCode() { return $this->getAmendsCode(); }
+
+	/**
+	 * Returns a data structure ready for serialization
+	 *
+	 * @return array
+	 */
+    public function toArray()
+    {
+        $actions = [];
+        foreach ($this->getActions() as $a) {
+            $actions[] = [
+                'name'    => $a->getType()->getName(),
+                'date'    => $a->getActionDate(),
+                'outcome' => $a->getOutcome(),
+                'vote'    => $a->getVote()
+            ];
+        }
+
+        $files = [];
+        foreach ($this->getFiles() as $f) {
+            $files[] = [
+                'url' => BASE_URL.'/legislationFiles/download?id='.$f->getId()
+            ];
+        }
+
+        return [
+            'committee'  => $this->getCommittee()->getName(),
+            'type'       => $this->getType()->getName(),
+            'number'     => $this->getNumber(),
+            'year'       => $this->getYear(),
+            'amendsCode' => $this->amendsCode(),
+            'title'      => $this->getTitle(),
+            'synopsis'   => $this->getSynopsis(),
+            'actions'    => $actions,
+            'files'      => $files
+        ];
+    }
 }

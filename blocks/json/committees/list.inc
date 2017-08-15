@@ -7,15 +7,32 @@
 $fields = [
     'id','type','name','website', 'videoArchive',
     'email','phone','address','city','state','zip',
-    'statutoryName','yearFormed',
+    'statutoryName','yearFormed', 'legislative',
     'seats', 'vacancies'
 ];
 $data = [];
 foreach ($this->data as $c) {
     $row = [];
     foreach ($fields as $f) {
-        $row[$f] = $c[$f];
+        switch ($f) {
+            case 'yearFormed':
+                $row[$f] = $c[$f] ? (int)$c[$f] : null;
+            break;
+
+            case 'id':
+            case 'seats':
+            case 'vacancies':
+                $row[$f] = (int)$c[$f];
+            break;
+
+            case 'legislative':
+                $row[$f] = $c[$f] ? true : false;
+            break;
+
+            default:
+                $row[$f] = $c[$f];
+        }
     }
     $data[] = $row;
 }
-echo json_encode($data);
+echo json_encode($data, JSON_PRETTY_PRINT);
