@@ -7,7 +7,7 @@ use Application\Models\CommitteeTable;
 use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\TypesTable;
 
-$fields = ['year', 'type_id', 'committee_id'];
+$fields = ['year', 'type_id', 'committee_id', 'number'];
 foreach ($fields as $f) {
     $$f = !empty($_GET[$f]) ? parent::escape($_GET[$f]) : '';
 }
@@ -56,6 +56,13 @@ foreach ($fields as $f) {
             'type'     => 'select',
             'value'    => $type_id,
             'options'  => $options
+        ]);
+
+        echo $h->field([
+            'name'  => 'number',
+            'id'    => 'number',
+            'label' => $this->_('number'),
+            'value' => $number
         ]);
     ?>
         <button type="submit" class="search"><?= $this->_('search'); ?></button>
