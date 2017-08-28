@@ -30,6 +30,7 @@ create table legislation (
     number       varchar(24)       not null,
     title        text              not null,
     synopsis     text,
+    notes        text,
     foreign key (committee_id) references committees      (id),
     foreign key (type_id     ) references legislationTypes(id),
     foreign key (parent_id   ) references legislation     (id)

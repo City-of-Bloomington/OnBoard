@@ -12,7 +12,7 @@ use Blossom\Classes\Block;
 
 $fields = [
     'id', 'committee_id', 'type_id', 'parent_id', 'status_id',
-    'year', 'number', 'title', 'synopsis', 'amendsCode'
+    'year', 'number', 'title', 'synopsis', 'notes', 'amendsCode'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -134,6 +134,14 @@ foreach ($fields as $f) {
                 'type'    => 'checkbox',
                 'value'   => array_keys($this->legislation->getTags()),
                 'options' => $options
+            ]);
+
+            echo $helper->field([
+                'name'  => 'notes',
+                'id'    => 'notes',
+                'label' => $this->_('notes'),
+                'type'  =>'textarea',
+                'value' => $notes
             ]);
 
             $helper = $this->template->getHelper('saveAndCancelButtons');

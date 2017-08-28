@@ -15,7 +15,7 @@ $status     = $this->legislation->getStatus_id()
             ? '('.parent::escape($this->legislation->getStatus()->getName()).')'
             : '';
 
-$fields = ['id', 'number', 'title', 'synopsis', 'year'];
+$fields = ['id', 'number', 'title', 'synopsis', 'notes', 'year'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f  = parent::escape($this->legislation->$get());
@@ -87,4 +87,5 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
             echo $block->render('html', $this->template);
         }
     ?>
+    <p><?= $notes; ?></p>
 </section>

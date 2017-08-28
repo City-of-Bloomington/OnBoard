@@ -524,6 +524,9 @@ msgstr "Description"
 msgid "synopsis"
 msgstr "Synopsis"
 
+msgid "notes"
+msgstr "Notes"
+
 msgid "amendsCode"
 msgstr "Amends Code"
 

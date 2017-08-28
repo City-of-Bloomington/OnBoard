@@ -86,6 +86,7 @@ class Legislation extends ActiveRecord
 	public function getNumber()       { return      parent::get('number'      ); }
 	public function getTitle()        { return      parent::get('title'       ); }
 	public function getSynopsis()     { return      parent::get('synopsis'    ); }
+	public function getNotes()        { return      parent::get('notes'       ); }
 	public function getCommittee_id() { return (int)parent::get('committee_id'); }
 	public function getType_id()      { return (int)parent::get('type_id'     ); }
 	public function getParent_id()    { return (int)parent::get('parent_id'   ); }
@@ -104,6 +105,7 @@ class Legislation extends ActiveRecord
 	public function setNumber   ($s) { parent::set('number',   $s); }
 	public function setTitle    ($s) { parent::set('title',    $s); }
 	public function setSynopsis ($s) { parent::set('synopsis', $s); }
+	public function setNotes    ($s) { parent::set('notes',    $s); }
 	public function setYear     ($s) { parent::set('year',     $s ? (int)$s : null); }
 	public function setCommittee_id        ($i) { parent::setForeignKeyField ('\Application\Models\Committee', 'committee_id', $i); }
 	public function setCommittee (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
@@ -125,7 +127,10 @@ class Legislation extends ActiveRecord
 	 */
 	public function handleUpdate(array $post)
 	{
-        $fields = ['number', 'title', 'synopsis', 'year', 'committee_id', 'type_id', 'status_id', 'amendsCode'];
+        $fields = [
+            'number', 'title', 'synopsis', 'notes', 'year',
+            'committee_id', 'type_id', 'status_id', 'amendsCode'
+        ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
@@ -263,6 +268,7 @@ class Legislation extends ActiveRecord
             'amendsCode' => $this->amendsCode(),
             'title'      => $this->getTitle(),
             'synopsis'   => $this->getSynopsis(),
+            'notes'      => $this->getNotes(),
             'actions'    => $actions,
             'files'      => $files
         ];
