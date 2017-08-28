@@ -11,6 +11,9 @@ use Michelf\MarkdownExtra;
 $committee  = parent::escape($this->legislation->getCommittee()->getName());
 $type       = parent::escape($this->legislation->getType()     ->getName());
 $amendsCode = $this->legislation->amendsCode() ? $this->_('yes') : $this->_('no');
+$status     = $this->legislation->getStatus_id()
+            ? '('.parent::escape($this->legislation->getStatus()->getName()).')'
+            : '';
 
 $fields = ['id', 'number', 'title', 'synopsis', 'year'];
 foreach ($fields as $f) {
@@ -43,14 +46,14 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
             echo $block->render('html', $this->template);
 
             echo "
-            <h3>$year $type $number</h3>
+            <h3>$year $type $number $status</h3>
             $tools
             <h4>$title</h4>
             ";
         }
         else {
             echo "
-            <h1>$year $type $number</h1>
+            <h1>$year $type $number $status</h1>
             $tools
             <h2>$title</h2>
             ";

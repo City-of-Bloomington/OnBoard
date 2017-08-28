@@ -51,6 +51,7 @@ $ZEND_ACL->addResource(new Resource('legislationFiles'));
 $ZEND_ACL->addResource(new Resource('legislationTypes'));
 $ZEND_ACL->addResource(new Resource('legislationActions'));
 $ZEND_ACL->addResource(new Resource('legislationActionTypes'));
+$ZEND_ACL->addResource(new Resource('legislationStatuses'));
 
 /**
  * Assign permissions to the resources

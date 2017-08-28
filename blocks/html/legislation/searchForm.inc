@@ -5,9 +5,10 @@
  */
 use Application\Models\CommitteeTable;
 use Application\Models\Legislation\LegislationTable;
+use Application\Models\Legislation\StatusesTable;
 use Application\Models\Legislation\TypesTable;
 
-$fields = ['year', 'type_id', 'committee_id', 'number'];
+$fields = ['year', 'type_id', 'committee_id', 'status_id', 'number'];
 foreach ($fields as $f) {
     $$f = !empty($_GET[$f]) ? parent::escape($_GET[$f]) : '';
 }
@@ -43,6 +44,19 @@ foreach ($fields as $f) {
             'type'     => 'number',
             'value'    => $year,
             'help'     => "<a href=\"$uri\">($max - $min)</a>"
+        ]);
+
+        $options = [['value' => '']];
+        $table = new StatusesTable();
+        $list = $table->find();
+        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
+        echo $h->field([
+            'name'     => 'status_id',
+            'id'       => 'status_id',
+            'label'    => $this->_('legislationStatus'),
+            'type'     => 'select',
+            'value'    => $status_id,
+            'options'  => $options
         ]);
 
         $options = [['value'=>'']];

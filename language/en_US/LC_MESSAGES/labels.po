@@ -762,3 +762,14 @@ msgstr "Replace File"
 
 msgid "legislationFile_delete"
 msgstr "Delete File"
+
+msgid "legislationStatus"
+msgid_plural "legislationStatuses"
+msgstr[0] "Status"
+msgstr[1] "Statuses"
+
+msgid "legislationStatus_add"
+msgstr "New Status"
+
+msgid "legislationStatus_edit"
+msgstr "Edit Status"

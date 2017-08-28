@@ -15,7 +15,7 @@ class LegislationTable extends TableGateway
 {
     const TABLE = 'legislation';
 
-    public $columns = ['id', 'number', 'year', 'type_id', 'committee_id', 'parent_id'];
+    public $columns = ['id', 'number', 'year', 'type_id', 'committee_id', 'parent_id', 'status_id'];
 
 	public function __construct() { parent::__construct('legislation', __namespace__.'\Legislation'); }
 

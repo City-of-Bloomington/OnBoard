@@ -52,21 +52,14 @@ use Blossom\Classes\Url;
     <div>
     <?php
         foreach ($this->list as $l) {
-            $type       = parent::escape($l->getType()->getName());
-            $number     = parent::escape($l->getNumber  ());
-            $title      = parent::escape($l->getTitle   ());
+            $type   = parent::escape($l->getType  ()->getName());
+            $number = parent::escape($l->getNumber());
+            $title  = parent::escape($l->getTitle ());
+            $status = $l->getStatus_id()
+                    ? '('.parent::escape($l->getStatus()->getName()).')'
+                    : '';
 
             $uri = BASE_URI.'/legislation/view?id='.$l->getId();
-
-            $actions = $l->getActions();
-            $action  = end($actions);
-            $status  = '';
-            if ($action) {
-                $t       = $action->getType()->getName();
-                $outcome = $action->getOutcome();
-                $date    = $action->getActionDate(DATE_FORMAT);
-                $status  = parent::escape("($t $outcome $date)");
-            }
 
             $downloadButton = '';
             $files = $l->getFiles();

@@ -16,6 +16,11 @@ create table legislationActionTypes (
     ordering tinyint unsigned not null
 );
 
+create table legislationStatus (
+    id   int unsigned not null primary key auto_increment,
+    name varchar(32)  not null unique
+);
+
 create table legislation (
     id           int      unsigned not null primary key auto_increment,
     committee_id int      unsigned not null,
@@ -35,8 +40,8 @@ create table legislationActions (
     legislation_id int unsigned not null,
     type_id        int unsigned not null,
     actionDate     date         not null,
-    outcome        varchar(16),
-    vote           varchar(128),
+    outcome        varchar(64),
+    vote           varchar(255),
     foreign key (legislation_id) references legislation(id),
     foreign key (type_id       ) references legislationActionTypes(id)
 );

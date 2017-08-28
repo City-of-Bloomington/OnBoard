@@ -15,7 +15,8 @@ $routes = [
     'users'      => 'user',
     'tags'       => 'tag',
     'legislationTypes'       => 'legislationType',
-    'legislationActionTypes' => 'legislationActionType'
+    'legislationActionTypes' => 'legislationActionType',
+    'legislationStatuses'    => 'legislationStatus'
 ];
 
 foreach ($routes as $plural=>$singular) {

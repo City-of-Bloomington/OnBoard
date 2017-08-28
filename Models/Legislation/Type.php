@@ -72,7 +72,7 @@ class Type extends ActiveRecord
 	public function getSubtype() { return parent::get('subtype') ? true : false; }
 
 	public function setName   ($s) { parent::set('name',    $s); }
-	public function setSubtype($b) { parent::set('subtype', $b ? 1 : 0); }
+	public function setSubtype($b) { $this->data['subtype'] = $b ? 1 : 0; }
 
 	public function handleUpdate(array $post)
 	{

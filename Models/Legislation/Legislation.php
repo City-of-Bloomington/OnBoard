@@ -3,6 +3,7 @@
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
+declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Application\Models\Committee;
@@ -17,6 +18,7 @@ class Legislation extends ActiveRecord
 	protected $committee;
 	protected $type;
 	protected $parent;
+	protected $status;
 
 	private $actions = [];
 	private $tags    = [];
@@ -80,29 +82,37 @@ class Legislation extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()           { return parent::get('id'          ); }
-	public function getNumber()       { return parent::get('number'      ); }
-	public function getTitle()        { return parent::get('title'       ); }
-	public function getSynopsis()     { return parent::get('synopsis'    ); }
-	public function getYear()         { return parent::get('year'        ); }
-	public function getCommittee_id() { return parent::get('committee_id'); }
-	public function getType_id()      { return parent::get('type_id'     ); }
-	public function getParent_id()    { return parent::get('parent_id'   ); }
+	public function getId()           { return (int)parent::get('id'          ); }
+	public function getNumber()       { return      parent::get('number'      ); }
+	public function getTitle()        { return      parent::get('title'       ); }
+	public function getSynopsis()     { return      parent::get('synopsis'    ); }
+	public function getCommittee_id() { return (int)parent::get('committee_id'); }
+	public function getType_id()      { return (int)parent::get('type_id'     ); }
+	public function getParent_id()    { return (int)parent::get('parent_id'   ); }
 	public function getCommittee()    { return parent::getForeignKeyObject('\Application\Models\Committee', 'committee_id'); }
 	public function getType()         { return parent::getForeignKeyObject(__namespace__.'\Type',           'type_id'     ); }
 	public function getParent()       { return parent::getForeignKeyObject(__namespace__.'\Legislation',    'parent_id'   ); }
-	public function getAmendsCode() { return parent::get('amendsCode') ? true : false; }
+	public function getStatus()       { return parent::getForeignKeyObject(__namespace__.'\Status',         'status_id'   ); }
+	public function getAmendsCode()   { return parent::get('amendsCode') ? true : false; }
+	public function getYear() {
+        return !empty($this->data['year']) ? (int)$this->data['year'] : null;
+    }
+	public function getStatus_id()    {
+        return !empty($this->data['status_id']) ? (int)$this->data['status_id'] : null;
+    }
 
 	public function setNumber   ($s) { parent::set('number',   $s); }
 	public function setTitle    ($s) { parent::set('title',    $s); }
 	public function setSynopsis ($s) { parent::set('synopsis', $s); }
-	public function setYear (int $s) { parent::set('year',     $s); }
+	public function setYear     ($s) { parent::set('year',     $s ? (int)$s : null); }
 	public function setCommittee_id        ($i) { parent::setForeignKeyField ('\Application\Models\Committee', 'committee_id', $i); }
 	public function setCommittee (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
-	public function setType_id             ($i) { parent::setForeignKeyField (__namespace__.'\Type', 'type_id', $i); }
-	public function setType      (Type      $o) { parent::setForeignKeyObject(__namespace__.'\Type', 'type_id', $o); }
+	public function setType_id             ($i) { parent::setForeignKeyField (__namespace__.'\Type',        'type_id',   $i); }
+	public function setType      (Type      $o) { parent::setForeignKeyObject(__namespace__.'\Type',        'type_id',   $o); }
 	public function setParent_id           ($i) { parent::setForeignKeyField (__namespace__.'\Legislation', 'parent_id', $i); }
 	public function setParent  (Legislation $o) { parent::setForeignKeyObject(__namespace__.'\Legislation', 'parent_id', $o); }
+	public function setStatus_id           ($i) { parent::setForeignKeyField (__namespace__.'\Status',      'status_id', $i); }
+	public function setStatus       (Status $o) { parent::setForeignKeyObject(__namespace__.'\Status',      'status_id', $o); }
 	public function setAmendsCode($b) { $this->data['amendsCode'] = $b ? 1 : 0; }
 
 	/**
@@ -115,7 +125,7 @@ class Legislation extends ActiveRecord
 	 */
 	public function handleUpdate(array $post)
 	{
-        $fields = ['number', 'title', 'synopsis', 'year', 'committee_id', 'type_id', 'amendsCode'];
+        $fields = ['number', 'title', 'synopsis', 'year', 'committee_id', 'type_id', 'status_id', 'amendsCode'];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
@@ -144,6 +154,7 @@ class Legislation extends ActiveRecord
         if (!$this->actions) {
             $table = new ActionsTable();
             $list = $table->find(['legislation_id'=>$this->getId()]);
+
             foreach ($list as $a) {
                 $type = $a->getType()->getName();
                 $this->actions[$type] = $a;
@@ -240,11 +251,15 @@ class Legislation extends ActiveRecord
             ];
         }
 
+        $status = $this->getStatus_id() ? $this->getStatus()->getName() : '';
+
         return [
+            'id'         => $this->getId(),
             'committee'  => $this->getCommittee()->getName(),
             'type'       => $this->getType()->getName(),
             'number'     => $this->getNumber(),
             'year'       => $this->getYear(),
+            'status'     => $status,
             'amendsCode' => $this->amendsCode(),
             'title'      => $this->getTitle(),
             'synopsis'   => $this->getSynopsis(),

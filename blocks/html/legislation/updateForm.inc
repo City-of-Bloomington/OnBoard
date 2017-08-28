@@ -5,12 +5,13 @@
  * @param Legislation $this->legislation
  */
 use Application\Models\TagsTable;
+use Application\Models\Legislation\StatusesTable;
 use Application\Models\Legislation\TypesTable;
 
 use Blossom\Classes\Block;
 
 $fields = [
-    'id', 'committee_id', 'type_id', 'parent_id',
+    'id', 'committee_id', 'type_id', 'parent_id', 'status_id',
     'year', 'number', 'title', 'synopsis', 'amendsCode'
 ];
 foreach ($fields as $f) {
@@ -110,9 +111,22 @@ foreach ($fields as $f) {
                 'type'     => 'textarea'
             ]);
 
+            $options = [['value'=>'']];
+            $table   = new StatusesTable();
+            $list    = $table->find();
+            foreach ($list as $s) { $options[] = ['value'=>$s->getId(), 'label'=>parent::escape($s->getName())]; }
+            echo $helper->field([
+                'name'    => 'status_id',
+                'id'      => 'status_id',
+                'label'   => $this->_('legislationStatus'),
+                'value'   => $status_id,
+                'type'    => 'select',
+                'options' => $options
+            ]);
+
             $options = [];
-            $table = new TagsTable();
-            $list = $table->find();
+            $table   = new TagsTable();
+            $list    = $table->find();
             foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>parent::escape($t->getName())]; }
             echo $helper->field([
                 'name'    => 'tags',
