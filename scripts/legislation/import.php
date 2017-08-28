@@ -17,52 +17,71 @@ use Blossom\Classes\Database;
 
 include '../../bootstrap.inc';
 
-define('TYPE',           0);
-define('NUMBER',         1);
-define('TITLE',          2);
-define('TAGS',           3);
-define('AMENDS',         4);
-define('COMMITTEE_DATE', 5);
-define('COMMITTEE_VOTE', 6);
-define('FINAL_DATE',     7);
-define('FINAL_VOTE',     8);
-define('SYNOPSIS',       9);
+$CSV  = fopen('legislation.csv', 'r');
+
+define('YEAR',              0);
+define('TYPE',              1);
+define('NUMBER',            2);
+define('TITLE',             3);
+define('TAGS',              4);
+define('AMENDS',            5);
+define('NOTES',             6);
+define('COMMITTEE_DATE',    7);
+define('COMMITTEE_VOTE',    8);
+define('COMMITTEE_OUTCOME', 9);
+define('FINAL_DATE',       10);
+define('FINAL_VOTE',       11);
+define('FINAL_OUTCOME',    12);
+define('SYNOPSIS',         13);
+
+$types = [
+    'Ordinance'               => ['id' => 1, 'abbr'=>'Ord'         ],
+    'Resolution'              => ['id' => 2, 'abbr'=>'Res'         ],
+    'Appropriation Ordinance' => ['id' => 3, 'abbr'=>'App Ord'     ],
+    'Bond Ordinance'          => ['id' => 5, 'abbr'=>'Bond Ord'    ],
+    'Special Appropriation'   => ['id' => 6, 'abbr'=>'Spec App Ord']
+];
+
+$subtypes = [
+    'Amendment'            => ['id' => 4],
+    'Attachment'           => ['id' => 7],
+    'Divided Question'     => ['id' => 8],
+    'Reasonable Condition' => ['id' => 9]
+
+];
 
 
 $COMMITTEE = new Committee(1);
-$TYPE      = new Type('Ordinance');
-$AMENDMENT = new Type('Amendment');
 
 $COMMITTEE_ACTION = new ActionType('Committee');
 $FINAL_ACTION     = new ActionType('Final');
 
 $TABLE = new LegislationTable();
 
-$CSV  = fopen('2017.csv', 'r');
 while (($line = fgetcsv($CSV)) !== false) {
+    echo "Parsing ".$line[TYPE].' '.$line[YEAR].' '.$line[NUMBER]."\n";
+
     $amendsCode = ($line[AMENDS] == 'Yes') ? 1 : 0;
+
+    $type = new Type($line[TYPE]);
 
 
     $l = new Legislation();
     $l->setCommittee($COMMITTEE);
-    $l->setTitle     ($line[TITLE]);
-    $l->setAmendsCode($amendsCode);
+    $l->setTitle     ($line[TITLE   ]);
+    $l->setYear      ($line[YEAR    ]);
+    $l->setNumber    ($line[NUMBER  ]);
     $l->setSynopsis  ($line[SYNOPSIS]);
-    $l->setType_id   ($line[TYPE]);
+    $l->setNotes     ($line[NOTES   ]);
+    $l->setType      ($type);
+    $l->setAmendsCode($amendsCode);
 
-    if ($line[NUMBER]) {
-        $l->setNumber($line[NUMBER]);
-    }
-    else {
-        $amendments = $TABLE->find(['parent_id'=>$parent_id]);
-        $l->setNumber(count($amendments) + 1);
-        $l->setType($AMENDMENT);
+    if ($type->isSubtype()) {
         $l->setParent_id($parent_id);
     }
 
-    echo "Saving {$l->getNumber()}:\n";
     $l->save();
-    if ($l->getType()->getName() != 'Amendment') {
+    if (!$type->isSubtype()) {
         $parent_id = $l->getId();
     }
 
@@ -70,8 +89,9 @@ while (($line = fgetcsv($CSV)) !== false) {
         $action = new Action();
         $action->setLegislation($l);
         $action->setType($COMMITTEE_ACTION);
-        $action->setActionDate($line[COMMITTEE_DATE]);
-        $action->setVote      ($line[COMMITTEE_VOTE]);
+        $action->setActionDate($line[COMMITTEE_DATE   ]);
+        $action->setVote      ($line[COMMITTEE_VOTE   ]);
+        $action->setOutcome   ($line[COMMITTEE_OUTCOME]);
         $action->save();
     }
 
@@ -79,9 +99,9 @@ while (($line = fgetcsv($CSV)) !== false) {
         $action = new Action();
         $action->setLegislation($l);
         $action->setType($FINAL_ACTION);
-        $action->setActionDate($line[FINAL_DATE]);
-        $action->setVote      ($line[FINAL_VOTE]);
+        $action->setActionDate($line[FINAL_DATE   ]);
+        $action->setVote      ($line[FINAL_VOTE   ]);
+        $action->setOutcome   ($line[FINAL_OUTCOME]);
         $action->save();
     }
-
 }
