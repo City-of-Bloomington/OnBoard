@@ -76,7 +76,8 @@ $ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
-$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles']);
+$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles', 'legislationActions']);
+$ZEND_ACL->allow('Reviewer', 'legislationStatuses', 'index');
 $ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
 $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
@@ -88,6 +89,7 @@ $ZEND_ACL->allow('Staff', 'liaisons');
 
 $ZEND_ACL->allow('meetingFileUploader', 'people', 'viewContactInfo');
 $ZEND_ACL->allow('meetingFileUploader', 'meetingFiles');
+$ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions']);
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

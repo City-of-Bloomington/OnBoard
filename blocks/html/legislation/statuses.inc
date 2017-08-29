@@ -12,7 +12,8 @@ use Application\Models\Person;
         <h1><?= $this->_(['legislationStatus', 'legislationStatuses', count($this->statuses)]); ?></h1>
         <div class="tools">
         <?php
-            $userCanEdit = Person::isAllowed('legislationStatuses', 'update');
+            $userCanEdit   = Person::isAllowed('legislationStatuses', 'update');
+            $userCanDelete = Person::isAllowed('legislationStatuses', 'delete');
             if ($userCanEdit) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
@@ -24,10 +25,11 @@ use Application\Models\Person;
         ?>
         </div>
     </header>
-    <ul>
+    <table>
     <?php
         foreach ($this->statuses as $s) {
-            $editButton = '';
+            $editButton   = '';
+            $deleteButton = '';
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/legislationStatuses/update?id='.$s->getId(),
@@ -35,9 +37,21 @@ use Application\Models\Person;
                     'edit'
                 );
             }
+            if ($userCanDelete) {
+                $deleteButton = $helper->buttonLink(
+                    BASE_URI.'/legislationStatuses/delete?id='.$s->getId(),
+                    $this->_('legislationStatus_delete'),
+                    'delete'
+                );
+            }
             $name = parent::escape($s->getName());
-            echo "<li>$editButton $name</li>";
+            echo "
+            <tr><td>$editButton</td>
+                <td>$name</td>
+                <td>$deleteButton</td>
+            </tr>
+            ";
         }
     ?>
-    </ul>
+    </table>
 </section>

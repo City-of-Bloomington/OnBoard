@@ -776,3 +776,6 @@ msgstr "New Status"
 
 msgid "legislationStatus_edit"
 msgstr "Edit Status"
+
+msgid "legislationStatus_delete"
+msgstr "Delete Status"

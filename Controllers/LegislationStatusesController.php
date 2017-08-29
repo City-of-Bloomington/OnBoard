@@ -47,4 +47,19 @@ class LegislationStatusesController extends Controller
             $this->template->blocks[] = new Block('404.inc');
         }
     }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['id'])) {
+            try { $status = new Status($_REQUEST['id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($status)) {
+            $status->delete();
+        }
+
+        header('Location: '.BASE_URL.'/legislationStatuses');
+        exit();
+    }
 }

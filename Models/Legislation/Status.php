@@ -47,6 +47,14 @@ class Status extends ActiveRecord
 
 	public function save() { parent::save(); }
 
+	public function delete()
+	{
+        $zend_db = Database::getConnection();
+        $sql = 'update legislation set status_id=null where status_id=?';
+        $zend_db->createStatement($sql)->execute([$this->getId()]);
+        parent::delete();
+	}
+
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
