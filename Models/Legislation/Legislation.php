@@ -20,7 +20,6 @@ class Legislation extends ActiveRecord
 	protected $parent;
 	protected $status;
 
-	private $actions = [];
 	private $tags    = [];
 
 	public static function actionTypes()
@@ -149,35 +148,15 @@ class Legislation extends ActiveRecord
 	/**
 	 * Returns an array of Actions
 	 *
-	 * The array uses the ActionType as the key.
-	 * There should only be one action for each ActionType.
-	 *
 	 * @return array  An array of Action objects
 	 */
-	public function getActions()
+	public function getActions(array $fields=null)
 	{
-        if (!$this->actions) {
-            $table = new ActionsTable();
-            $list = $table->find(['legislation_id'=>$this->getId()]);
+        $search = $fields ? $fields : [];
+        $search['legislation_id'] = $this->getId();
 
-            foreach ($list as $a) {
-                $type = $a->getType()->getName();
-                $this->actions[$type] = $a;
-            }
-        }
-        return $this->actions;
-	}
-
-
-	/**
-	 * @return Action
-	 */
-	public function getAction(ActionType $type)
-	{
-        $actions = $this->getActions();
-        if (isset ($actions[$type->getName()])) {
-            return $actions[$type->getName()];
-        }
+        $table = new ActionsTable();
+        return $table->find($search);
 	}
 
 	/**

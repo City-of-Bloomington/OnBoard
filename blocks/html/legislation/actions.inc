@@ -10,13 +10,28 @@ use Application\Models\Legislation\Legislation;
 $userCanEditActions = Person::isAllowed('legislationActions', 'update');
 $helper = $this->template->getHelper('buttonLink');
 
+if ($userCanEditActions) {
+    foreach (Legislation::actionTypes() as $t) {
+        $params = http_build_query([
+            'legislation_id' => $this->legislation->getId(),
+            'type_id'        => $t->getId()
+        ]);
+
+        echo $helper->buttonLink(
+            BASE_URI."/legislationActions/update?$params",
+            sprintf($this->_('add_something', 'messages'), parent::escape($t->getName())),
+            'add'
+        );
+    }
+}
+
 echo '<table>';
 foreach (Legislation::actionTypes() as $t) {
-    $name   = parent::escape($t->getName());
-    $action = $this->legislation->getAction($t);
-    $button = '';
+    $name    = parent::escape($t->getName());
+    $actions = $this->legislation->getActions(['type_id'=>$t->getId()]);
+    $button  = '';
 
-    if ($action) {
+    foreach ($actions as $action) {
         $vote       = parent::escape($action->getVote());
         $outcome    = parent::escape($action->getOutcome());
         $actionDate = $action->getActionDate(DATE_FORMAT);
@@ -28,32 +43,15 @@ foreach (Legislation::actionTypes() as $t) {
                 'edit'
             );
         }
-    }
-    else {
-        $vote       = '';
-        $outcome    = '';
-        $actionDate = '';
-        if ($userCanEditActions) {
-            $params = http_build_query([
-                'legislation_id' => $this->legislation->getId(),
-                'type_id'        => $t->getId()
-            ]);
-
-            $button = $helper->buttonLink(
-                BASE_URI."/legislationActions/update?$params",
-                $this->_('legislationAction_add'),
-                'add'
-            );
-        }
+        echo "
+        <tr><th>$name</th>
+            <td>$actionDate</td>
+            <td>$outcome</td>
+            <td>$vote</td>
+            <td>$button</td>
+        </tr>
+        ";
     }
 
-    echo "
-    <tr><th>$name</th>
-        <td>$actionDate</td>
-        <td>$outcome</td>
-        <td>$vote</td>
-        <td>$button</td>
-    </tr>
-    ";
 }
 echo '</table>';
