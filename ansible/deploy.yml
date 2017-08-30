@@ -13,7 +13,6 @@
       with_items:
         - php-mysql
         - libreoffice-common
-        - xsltproc
 
     - name: Create mysql database
       mysql_db:
@@ -41,6 +40,16 @@
       command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
       when: release.changed
 
+    - name: Update site_home
+      command: "rsync -rl /usr/local/src/onboard/data/ {{ onboard_site_home }}/"
+      when: release.changed
+
+    - name: Symlink the theme
+      file:
+        state: link
+        src:  "{{ onboard_site_home    }}/Themes/Kirkwood/public"
+        dest: "{{ onboard_install_path }}/public/Kirkwood"
+
     - name: Update apache configuration
       template:
         src: onboard.conf
@@ -51,12 +60,12 @@
       notify: apache_restart
 
     - name: Update site_config
-      template: src=site_config.j2 dest={{ onboard_install_path }}/data/site_config.inc
+      template: src=site_config.j2 dest={{ onboard_site_home }}/site_config.inc
 
     - name: Install Google credentials
       copy:
         content: "{{ onboard_google.credentials }}"
-        dest:    "{{ onboard_install_path }}/data/credentials.json"
+        dest:    "{{ onboard_site_home }}/credentials.json"
         mode:    "0640"
 
     - name: Create backup directory
@@ -74,6 +83,9 @@
         dest: /etc/cron.daily/backup.d/onboard.cnf
         mode: 0400
 
-    - name: Update permissions
+    - name: Update application permissions
       file: path={{ onboard_install_path }} state=directory owner=www-data group=staff mode="g+rw" recurse=yes
+
+    - name: Update site_home permissions
+      file: path={{ onboard_site_home    }} state=directory owner=www-data group=staff mode="g+rw" recurse=yes
 ...

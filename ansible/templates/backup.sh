@@ -9,7 +9,7 @@ MYSQL_DBNAME="{{ onboard_db.name }}"
 MYSQL_CREDENTIALS="/etc/cron.daily/backup.d/${APPLICATION_NAME}.cnf"
 BACKUP_DIR="{{ onboard_backup_path }}"
 APPLICATION_HOME="{{ onboard_install_path }}"
-SITE_HOME="${APPLICATION_HOME}/data"
+SITE_HOME="{{ onboard_site_home }}"
 
 # How many days worth of tarballs to keep around
 num_days_to_keep=5

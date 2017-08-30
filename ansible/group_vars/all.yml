@@ -2,6 +2,7 @@
 onboard_archive_path: "../build/onboard.tar.gz"
 onboard_install_path: "/srv/sites/onboard"
 onboard_backup_path:  "/srv/backups/onboard"
+onboard_site_home:    "{{ onboard_install_path }}/data"
 
 onboard_base_uri: "/onboard"
 onboard_base_url: "https://{{ ansible_host }}{{ onboard_base_uri }}"
