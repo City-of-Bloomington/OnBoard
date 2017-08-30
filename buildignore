@@ -5,6 +5,7 @@ dist
 .git/
 .git*
 site_config.inc
+credentials.json
 /data/applicantFiles/*
 /data/meetingFiles/*
 /data/legislationFiles/*

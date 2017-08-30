@@ -2,6 +2,7 @@ site_config.inc
 credentials.json
 backup.cnf
 ansible/roles/City-of-Bloomington.*
+ansible/*.retry
 data/.*
 data/sessions/*
 data/applicantFiles
