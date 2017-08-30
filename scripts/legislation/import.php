@@ -4,15 +4,21 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 /*
+set FOREIGN_KEY_CHECKS=0;
 truncate table legislationFiles;
 truncate table legislationActions;
 truncate table legislation_tags;
-delete from legislation;
+truncate table legislation;
+truncate table legislationStatuses;
+truncate table legislation_tags;
+truncate table tags;
+set FOREIGN_KEY_CHECKS=1;
 */
 declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Application\Models\Committee;
+use Application\Models\Tag;
 use Blossom\Classes\Database;
 
 include '../../bootstrap.inc';
@@ -47,7 +53,6 @@ $subtypes = [
     'Attachment'           => ['id' => 7],
     'Divided Question'     => ['id' => 8],
     'Reasonable Condition' => ['id' => 9]
-
 ];
 
 
@@ -65,6 +70,29 @@ while (($line = fgetcsv($CSV)) !== false) {
 
     $type = new Type($line[TYPE]);
 
+    try {
+        $status = new Status($line[FINAL_OUTCOME]);
+    }
+    catch (\Exception $e) {
+        $status = new Status();
+        $status->setName($line[FINAL_OUTCOME]);
+        $status->save();
+    }
+
+    $tags = [];
+    foreach (explode('|', $line[TAGS]) as $t) {
+        $t = trim($t);
+        if ($t) {
+            try { $tag = new Tag($t); }
+            catch (\Exception $e) {
+                $tag = new Tag();
+                $tag->setName($t);
+                $tag->save();
+            }
+            $tags[] = $tag->getId();
+        }
+    }
+
 
     $l = new Legislation();
     $l->setCommittee($COMMITTEE);
@@ -74,6 +102,7 @@ while (($line = fgetcsv($CSV)) !== false) {
     $l->setSynopsis  ($line[SYNOPSIS]);
     $l->setNotes     ($line[NOTES   ]);
     $l->setType      ($type);
+    $l->setStatus    ($status);
     $l->setAmendsCode($amendsCode);
 
     if ($type->isSubtype()) {
@@ -81,6 +110,8 @@ while (($line = fgetcsv($CSV)) !== false) {
     }
 
     $l->save();
+    if (count($tags)) { $l->saveTags($tags); }
+
     if (!$type->isSubtype()) {
         $parent_id = $l->getId();
     }

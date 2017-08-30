@@ -18,7 +18,7 @@ create table legislationActionTypes (
 
 create table legislationStatus (
     id   int unsigned not null primary key auto_increment,
-    name varchar(32)  not null unique
+    name varchar(64)  not null unique
 );
 
 create table legislation (
