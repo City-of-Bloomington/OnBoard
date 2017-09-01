@@ -36,6 +36,20 @@
         dest: /usr/local/src
       register: release
 
+    - name: Create installation directory
+      file:
+        path: "{{ onboard_install_path }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+
+    - name: Create data directory
+      file:
+        path: "{{ onboard_site_home }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+
     - name: Install release
       command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
       when: release.changed

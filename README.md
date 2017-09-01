@@ -5,7 +5,7 @@ An extensible web application to keep track of boards & commissions details, the
 
 The City of Bloomington uses this application to track information about our boards & commissions. To get a feel for this system, you can view our instance here:
 
-https://bloomington.in.gov/onboard/committees
+https://bloomington.in.gov/onboard
 
 OnBoard is open source and released under the terms of the GNU Affero Public License.
 
