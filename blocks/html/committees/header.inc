@@ -33,14 +33,6 @@ $membersLink = sprintf($a,
 );
 
 
-$current = $current_url->path === BASE_URI.'/committees/meetings';
-$meetingsLink = sprintf($a,
-    BASE_URI."/committees/meetings?committee_id=$committee_id",
-    'meetings',
-    $current ? ' class="current"' : '',
-    $this->_(['meeting', 'meetings', 10])
-);
-
 $current = strpos($current_url->path, BASE_URI.'/legislation') !== false;
 $legislationLink = '';
 if ($this->committee->isLegislative()) {
@@ -117,7 +109,6 @@ echo "
         $pastSeatsLink
         $pastMembersLink
         $applicationsLink
-        $meetingsLink
         $filesLink
         $legislationLink
         $historyLink

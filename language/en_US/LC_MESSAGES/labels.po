@@ -683,8 +683,8 @@ msgstr[1] "Meetings"
 
 msgid "meetingFile"
 msgid_plural "meetingFiles"
-msgstr[0] "Document"
-msgstr[1] "Documents"
+msgstr[0] "Meeting"
+msgstr[1] "Meetings"
 
 msgid "meetingFile_add"
 msgstr "Add Document"
