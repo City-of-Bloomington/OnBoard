@@ -45,7 +45,7 @@ $current = strpos($current_url->path, BASE_URI.'/legislation') !== false;
 $legislationLink = '';
 if ($this->committee->isLegislative()) {
     $legislationLink = sprintf($a,
-        BASE_URI."/legislation?committee_id=$committee_id",
+        BASE_URI."/legislation?committee_id=$committee_id;year=".date('Y'),
         'legislation',
         $current ? ' class="current"' : '',
         $this->_(['legislation', 'legislations', 10])

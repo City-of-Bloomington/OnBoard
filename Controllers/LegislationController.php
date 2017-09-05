@@ -18,7 +18,6 @@ class LegislationController extends Controller
     public function index()
     {
         $_GET['parent_id'] = null;
-        $_GET['year'     ] = !empty($_GET['year']) ? $_GET['year'] : date('Y');
         foreach (['type', 'status'] as $f) {
             if (!empty($_GET[$f]) && empty($_GET["{$f}_id"])) {
                 try {
@@ -32,7 +31,6 @@ class LegislationController extends Controller
         }
 
         $table = new LegislationTable();
-        $vars  = ['list' => $table->find($_GET)];
 
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -40,6 +38,11 @@ class LegislationController extends Controller
         }
 
         if ($this->template->outputFormat == 'html') {
+            $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+            $list  = $table->find($_GET, 'year desc, number desc', true);
+            $list->setCurrentPageNumber($page);
+            $list->setItemCountPerPage(20);
+
             if (isset($committee)) {
                 $this->template->title = $committee->getName();
                 $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
@@ -47,9 +50,15 @@ class LegislationController extends Controller
                 $vars['committee'] = $committee;
             }
             $this->template->blocks[] = new Block('legislation/searchForm.inc');
+            $this->template->blocks[] = new Block('legislation/list.inc', ['list'=>$list]);
+            $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$list]);
+        }
+        else {
+            $this->template->blocks[] = new Block('legislation/list.inc', [
+                'list' => $table->find($_GET)
+            ]);
         }
 
-        $this->template->blocks[] = new Block('legislation/list.inc', $vars);
     }
 
     public function years()
