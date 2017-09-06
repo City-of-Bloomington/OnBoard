@@ -53,6 +53,8 @@ $ZEND_ACL->addResource(new Resource('legislationActions'));
 $ZEND_ACL->addResource(new Resource('legislationActionTypes'));
 $ZEND_ACL->addResource(new Resource('legislationStatuses'));
 
+$ZEND_ACL->addResource(new Resource('reports'));
+
 /**
  * Assign permissions to the resources
  */
@@ -76,7 +78,7 @@ $ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer', 'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
-$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles', 'legislationActions']);
+$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 $ZEND_ACL->allow('Reviewer', 'legislationStatuses', 'index');
 $ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
@@ -89,7 +91,7 @@ $ZEND_ACL->allow('Staff', 'liaisons');
 
 $ZEND_ACL->allow('meetingFileUploader', 'people', 'viewContactInfo');
 $ZEND_ACL->allow('meetingFileUploader', 'meetingFiles');
-$ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions']);
+$ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

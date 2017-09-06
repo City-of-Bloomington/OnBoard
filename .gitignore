@@ -8,6 +8,7 @@ data/sessions/*
 data/applicantFiles
 data/meetingFiles
 data/legislationFiles
+data/reports
 data/Themes/Kirkwood/public/fn1
 *.mo
 screen.css

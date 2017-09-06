@@ -9,6 +9,7 @@ credentials.json
 /data/applicantFiles/*
 /data/meetingFiles/*
 /data/legislationFiles/*
+/data/reports/*
 /data/sessions/*
 /data/Themes/Kirkwood/vendor
 /data/.*

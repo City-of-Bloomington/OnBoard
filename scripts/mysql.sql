@@ -280,3 +280,16 @@ create table legislation_tags (
     foreign key (legislation_id) references legislation(id),
     foreign key (tag_id        ) references tags       (id)
 );
+
+create table reports (
+    id int unsigned not null primary key auto_increment,
+    committee_id     int unsigned not null,
+    title            varchar(128) not null,
+    reportDate       date         not null,
+	internalFilename varchar(128) not null,
+	filename         varchar(128) not null,
+	mime_type        varchar(128) not null,
+	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
+	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	foreign key (committee_id) references committees(id)
+);

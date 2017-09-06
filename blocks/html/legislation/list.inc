@@ -2,8 +2,9 @@
 /**
  * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param array       $this->list   An array of Legislation objects
- * @param Legislation $this->parent The parent legislation for the list
+ * @param array       $this->list      An array of Legislation bjects
+ * @param Committee   $this->committee
+ * @param Legislation $this->parent    The parent legislation for the list
  */
 use Application\Models\Person;
 use Application\Models\Legislation\ActionTypesTable;
@@ -20,30 +21,34 @@ use Blossom\Classes\Url;
             if ($userCanEdit
                 && (!$this->parent || !$this->parent->getType()->isSubtype())) {
 
-                $params = ['return_url' => urlencode(Url::current_url(BASE_HOST))];
-                if ($this->committee) { $params['committee_id'] = $this->committee->getId(); }
+                if ($this->committee) {
+                    $params = [
+                        'committee_id' => $this->committee->getId(),
+                        'return_url'   => urlencode(Url::current_url(BASE_HOST))
+                    ];
 
-                if ($this->parent) {
-                    $params['parent_id'] = $this->parent->getId();
+                    if ($this->parent) {
+                        $params['parent_id'] = $this->parent->getId();
 
-                    $table = new TypesTable();
-                    $list = $table->find(['subtype'=>true]);
-                    foreach ($list as $t) {
-                        $params['type_id'   ] = $t->getId();
+                        $table = new TypesTable();
+                        $list = $table->find(['subtype'=>true]);
+                        foreach ($list as $t) {
+                            $params['type_id'   ] = $t->getId();
 
+                            echo $h->buttonLink(
+                                BASE_URI.'/legislation/update?'.http_build_query($params),
+                                sprintf($this->_('add_something', 'messages'), $t->getName()),
+                                'add'
+                            );
+                        }
+                    }
+                    else {
                         echo $h->buttonLink(
                             BASE_URI.'/legislation/update?'.http_build_query($params),
-                            sprintf($this->_('add_something', 'messages'), $t->getName()),
+                            $this->_('legislation_add'),
                             'add'
                         );
                     }
-                }
-                else {
-                    echo $h->buttonLink(
-                        BASE_URI.'/legislation/update?'.http_build_query($params),
-                        $this->_('legislation_add'),
-                        'add'
-                    );
                 }
             }
         ?>

@@ -153,8 +153,6 @@ abstract class File extends ActiveRecord
 	public function delete()
 	{
 		if ($this->getId()) {
-			$zend_db = Database::getConnection();
-
 			unlink($this->getFullPath());
 			parent::delete();
 		}

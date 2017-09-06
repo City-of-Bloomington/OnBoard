@@ -44,6 +44,15 @@ if ($this->committee->isLegislative()) {
     );
 }
 
+$current = strpos($current_url->path, BASE_URI.'/reports') !== false;
+$reportsLink = '';
+$reportsLink = sprintf($a,
+    BASE_URI."/reports?committee_id=$committee_id",
+    'reports',
+    $current ? ' class="current"' : '',
+    $this->_(['report', 'reports', 10])
+);
+
 $current = $current_url->path == BASE_URI.'/meetingFiles';
 $filesLink = sprintf($a,
     BASE_URI."/meetingFiles?committee_id=$committee_id",
@@ -111,6 +120,7 @@ echo "
         $applicationsLink
         $filesLink
         $legislationLink
+        $reportsLink
         $historyLink
     </nav>
 </header>

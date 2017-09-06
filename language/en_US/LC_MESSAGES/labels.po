@@ -658,8 +658,22 @@ msgstr "Please explain your interest"
 msgid "qualifications"
 msgstr "Please describe your qualifications"
 
+msgid "report"
+msgid_plural "reports"
+msgstr[0] "Report"
+msgstr[1] "Reports"
+
+msgid "report_add"
+msgstr "New Report"
+
+msgid "report_edit"
+msgstr "Edit Report"
+
 msgid "report_view"
 msgstr "View Report"
+
+msgid "report_delete"
+msgstr "Delete Report"
 
 msgid "applicantFile"
 msgstr "Include a resume (optional)"

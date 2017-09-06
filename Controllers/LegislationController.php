@@ -42,6 +42,7 @@ class LegislationController extends Controller
             $list  = $table->find($_GET, 'year desc, number desc', true);
             $list->setCurrentPageNumber($page);
             $list->setItemCountPerPage(20);
+            $vars  = ['list'=>$list];
 
             if (isset($committee)) {
                 $this->template->title = $committee->getName();
@@ -50,7 +51,7 @@ class LegislationController extends Controller
                 $vars['committee'] = $committee;
             }
             $this->template->blocks[] = new Block('legislation/searchForm.inc');
-            $this->template->blocks[] = new Block('legislation/list.inc', ['list'=>$list]);
+            $this->template->blocks[] = new Block('legislation/list.inc', $vars);
             $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$list]);
         }
         else {
