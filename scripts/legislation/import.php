@@ -10,7 +10,6 @@ truncate table legislationActions;
 truncate table legislation_tags;
 truncate table legislation;
 truncate table legislationStatuses;
-truncate table legislation_tags;
 truncate table tags;
 set FOREIGN_KEY_CHECKS=1;
 */
@@ -23,7 +22,8 @@ use Blossom\Classes\Database;
 
 include '../../bootstrap.inc';
 
-$CSV  = fopen('legislation.csv', 'r');
+$CSV   = fopen('legislation.csv', 'r');
+$files = '/home/inghamn/Documents/temp/legislation/files';
 
 define('YEAR',              0);
 define('TYPE',              1);
@@ -45,7 +45,7 @@ $types = [
     'Resolution'              => ['id' => 2, 'abbr'=>'Res'         ],
     'Appropriation Ordinance' => ['id' => 3, 'abbr'=>'App Ord'     ],
     'Bond Ordinance'          => ['id' => 5, 'abbr'=>'Bond Ord'    ],
-    'Special Appropriation'   => ['id' => 6, 'abbr'=>'Spec App Ord']
+    'Special Appropriation Ordinance' => ['id' => 6, 'abbr'=>'Spec App Ord']
 ];
 
 $subtypes = [
@@ -93,7 +93,6 @@ while (($line = fgetcsv($CSV)) !== false) {
         }
     }
 
-
     $l = new Legislation();
     $l->setCommittee($COMMITTEE);
     $l->setTitle     ($line[TITLE   ]);
@@ -134,5 +133,19 @@ while (($line = fgetcsv($CSV)) !== false) {
         $action->setVote      ($line[FINAL_VOTE   ]);
         $action->setOutcome   ($line[FINAL_OUTCOME]);
         $action->save();
+    }
+
+    if (!$type->isSubtype()) {
+        $abbr     = $types[$type->getName()]['abbr'];
+        $tempFile = "$files/{$l->getYear()}/$abbr {$l->getNumber()}.pdf";
+        if (is_file($tempFile)) {
+            $lf = new LegislationFile();
+            $lf->setLegislation($l);
+            $lf->setFile($tempFile);
+            $lf->save();
+        }
+        else {
+            echo "missing $tempFile\n";
+        }
     }
 }
