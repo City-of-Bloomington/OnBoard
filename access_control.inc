@@ -65,7 +65,7 @@ $ZEND_ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view', '
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
-$ZEND_ACL->allow(null, ['meetingFiles', 'legislationFiles'], ['index', 'download', 'years']);
+$ZEND_ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);
 $ZEND_ACL->allow(null, 'legislationTypes', 'index');
 
 
