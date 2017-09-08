@@ -16,7 +16,7 @@ create table legislationActionTypes (
     ordering tinyint unsigned not null
 );
 
-create table legislationStatus (
+create table legislationStatuses (
     id   int unsigned not null primary key auto_increment,
     name varchar(64)  not null unique
 );
@@ -26,14 +26,17 @@ create table legislation (
     committee_id int      unsigned not null,
     type_id      int      unsigned not null,
     parent_id    int      unsigned,
+    status_id    int      unsigned,
     year         smallint unsigned not null,
     number       varchar(24)       not null,
     title        text              not null,
     synopsis     text,
     notes        text,
-    foreign key (committee_id) references committees      (id),
-    foreign key (type_id     ) references legislationTypes(id),
-    foreign key (parent_id   ) references legislation     (id)
+    amendsCode   boolean           not null default 0,
+    foreign key (committee_id) references committees         (id),
+    foreign key (type_id     ) references legislationTypes   (id),
+    foreign key (parent_id   ) references legislation        (id),
+    foreign key (status_id   ) references legislationStatuses(id)
 );
 
 create table legislationActions (
@@ -55,7 +58,7 @@ create table legislationFiles (
 	mime_type        varchar(128) not null,
 	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	foreign key (legislation_id) references (legislation(id)
+	foreign key (legislation_id) references legislation(id)
 );
 
 create table tags (

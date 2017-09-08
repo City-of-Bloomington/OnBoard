@@ -20,10 +20,11 @@ use Application\Models\Committee;
 use Application\Models\Tag;
 use Blossom\Classes\Database;
 
+$_SERVER['SITE_HOME'] = '/srv/data/onboard';
 include '../../bootstrap.inc';
 
 $CSV   = fopen('legislation.csv', 'r');
-$files = '/home/inghamn/Documents/temp/legislation/files';
+$files = '/srv/data/legislation/files';
 
 define('YEAR',              0);
 define('TYPE',              1);
