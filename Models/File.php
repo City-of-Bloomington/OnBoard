@@ -224,7 +224,7 @@ abstract class File extends ActiveRecord
             $info = pathinfo($file);
             $dir  = $info['dirname'];
 
-            $cmd  = 'export HOME='.SITE_HOME.' && '.SOFFICE." --convert-to pdf --headless --outdir $dir $file";
+            $cmd  = SOFFICE.' -env:UserInstallation=file://'.SITE_HOME." --convert-to pdf --headless --outdir $dir $file";
             $out  = "$cmd\n";
             echo $out;
             $out .= shell_exec($cmd);

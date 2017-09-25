@@ -12,7 +12,9 @@
         state: present
       with_items:
         - php-mysql
+        - default-jre
         - libreoffice-common
+        - libreoffice-writer
 
     - name: Create mysql database
       mysql_db:

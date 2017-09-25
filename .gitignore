@@ -11,6 +11,8 @@ data/legislationFiles
 data/reports
 data/Themes/Kirkwood/public/fn1
 *.mo
+.config
+.cache
 screen.css
 screen.css.map
 build

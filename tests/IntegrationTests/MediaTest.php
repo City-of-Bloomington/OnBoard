@@ -5,8 +5,10 @@
  */
 use Application\Models\File;
 
+$_SERVER['SITE_HOME'] = __DIR__;
+
 include '../../bootstrap.inc';
 
-copy(__DIR__.'/testfile', SITE_HOME.'/testfile');
+copy(__DIR__.'/testfile', SITE_HOME.'/test');
 
-File::convertToPDF(SITE_HOME.'/testfile');
+File::convertToPDF(SITE_HOME.'/test');
