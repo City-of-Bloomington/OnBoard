@@ -8,6 +8,7 @@ namespace Application\Controllers;
 use Application\Models\Committee;
 use Application\Models\CommitteeHistory;
 use Application\Models\Member;
+use Application\Models\MemberTable;
 use Application\Models\Seat;
 use Application\Models\Term;
 use Application\Models\TermTable;
@@ -33,27 +34,12 @@ class MembersController extends Controller
 
         if (isset($member)) {
             if (isset($_POST['committee_id'])) {
-                $action = $member->getId() ? 'edit' : 'add';
-
                 try {
-                    $original = $member->getData();
-                    $member->handleUpdate($_POST);
-                    $member->save();
-                    $updated  = $member->getData();
+                    MemberTable::update($_POST, $member);
 
-                    CommitteeHistory::saveNewEntry([
-                        'committee_id'=> $member->getCommittee_id(),
-                        'tablename'   => 'members',
-                        'action'      => $action,
-                        'changes'     => [['original'=>$original, 'updated'=>$updated]]
-                    ]);
-
-                    if ($member->getSeat_id()) {
-                        $url = BASE_URL.'/seats/view?seat_id='.$member->getSeat_id();
-                    }
-                    else {
-                        $url = BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id();
-                    }
+                    $url = $member->getSeat_id()
+                         ? BASE_URL.'/seats/view?seat_id='.$member->getSeat_id()
+                         : BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id();
                     header("Location: $url");
                     exit();
                 }
@@ -113,27 +99,7 @@ class MembersController extends Controller
         if (isset($_POST['newMember'])) {
             $changes = [];
             try {
-                if (isset($currentMember)) {
-                    $original = $currentMember->getData();
-                    $currentMember->handleUpdate($_POST['currentMember']);
-                    $currentMember->save();
-                    $updated = $currentMember->getData();
-
-                    $changes[] = ['original'=>$original, 'updated'=>$updated];
-                }
-
-                $original = $newMember->getData();
-                $newMember->handleUpdate($_POST['newMember']);
-                $newMember->save();
-                $updated  = $newMember->getData();
-                $changes[] = ['original'=>$original, 'updated'=>$updated];
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id'=> $newMember->getCommittee_id(),
-                    'tablename'   => 'members',
-                    'action'      => 'appoint',
-                    'changes'     => $changes
-                ]);
+                MemberTable::appoint($_POST, $newMember, isset($currentMember) ? $currentMember : null);
 
                 header('Location: '.BASE_URL."/committees/members?committee_id={$newMember->getCommittee_id()}");
                 exit();
@@ -168,50 +134,19 @@ class MembersController extends Controller
             $seat = $member->getSeat();
             if ($seat) {
                 if ($seat->getType() === 'termed') {
-                    $changes = [];
-                    try {
-                        $term = $member->getTerm();
-                        if (!$member->getEndDate()) {
-                            $original = $member->getData();
-                            $member->setEndDate($term->getEndDate());
-                            $updated  = $member->getData();
-                            $changes[] = ['original'=>$original, 'updated'=>$updated];
-                        }
+                    $confirmationGiven = !empty($_POST['confirm']) && $_POST['confirm']=='yes';
+                    $committee = $member->getCommittee();
 
-                        $next      = $term->getNextTerm();
-                        $newMember = $next->newMember();
-                        $newMember->setPerson_id($member->getPerson_id());
-                        $newMember->setStartDate($next->getStartDate());
-                    }
+                    try { $vars = MemberTable::reappoint($_POST, $member, $confirmationGiven); }
                     catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-                    if (empty($_SESSION['errorMessages'])
-                        && !empty($_POST['confirm']) && $_POST['confirm']==='yes') {
-                        try {
-                            $member->save();
-                            $newMember->save();
-                            $changes[] = ['updated'=>$newMember->getData()];
-
-                            CommitteeHistory::saveNewEntry([
-                                'committee_id' => $newMember->getCommittee_id(),
-                                'tablename'    => 'members',
-                                'action'       => 'reappoint',
-                                'changes'      => $changes
-                            ]);
-
-                            header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
-                            exit();
-                        }
-                        catch (\Exception $e) {
-                            $_SESSION['errorMessages'][] = $e;
-                        }
+                    if (empty($_SESSION['errorMessages']) && $confirmationGiven) {
+                        header('Location: '.BASE_URL.'/committees/members?committee_id='.$committee->getId());
+                        exit();
                     }
 
-                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $newMember->getCommittee()]);
-                    $this->template->blocks[] = new Block('members/reappointForm.inc', [
-                        'member'    => $member,
-                        'newMember' => $newMember
-                    ]);
+                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
+                    $this->template->blocks[] = new Block('members/reappointForm.inc', $vars);
                 }
             }
 
@@ -238,22 +173,12 @@ class MembersController extends Controller
         if (isset($member)) {
             if (!empty($_POST['currentMember'])) {
                 try {
-                    $original = $member->getData();
-                    $member->setEndDate($_POST['currentMember']['endDate']);
-                    $member->save();
-                    $updated  = $member->getData();
-
-                    CommitteeHistory::saveNewEntry([
-                        'committee_id' => $member->getCommittee_id(),
-                        'tablename'    => 'members',
-                        'action'       => 'resign',
-                        'changes'      => [['original'=>$original, 'updated'=>$updated]]
-                    ]);
+                    MemberTable::resign($_POST, $member);
+                    header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+                    exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-                header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
-                exit();
             }
 
             $seat = $member->getSeat();
@@ -274,21 +199,12 @@ class MembersController extends Controller
         try {
             if (!empty($_REQUEST['member_id'])) {
                 $member  = new Member($_REQUEST['member_id']);
-                $changes = [['original'=>$member->getData()]];
 
                 $return_url = $member->getSeat_id()
                     ? BASE_URL."/seats/view?seat_id={$member->getSeat_id()}"
                     : BASE_URL."/committees/members?committee_id={$member->getCommittee_id()}";
 
-                $member->delete();
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id' => $member->getCommittee_id(),
-                    'tablename'    => 'members',
-                    'action'       => 'delete',
-                    'changes'      => $changes
-                ]);
-
+                MemberTable::delete($member);
                 header("Location: $return_url");
                 exit();
             }

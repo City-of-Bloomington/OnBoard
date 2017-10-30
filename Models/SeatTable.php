@@ -179,4 +179,53 @@ class SeatTable extends TableGateway
                 order by c.name, s.code";
         return self::performDataSelect($sql, $params);
 	}
+
+	//----------------------------------------------------------------
+	// Route Action Functions
+	//
+	// These are functions that match the actions defined in the route
+	//----------------------------------------------------------------
+	public static function update(Seat $seat, array $post)
+	{
+        $action = $seat->getId() ? 'edit' : 'add';
+        $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL => $seat->getData()] : [];
+        $seat->handleUpdate($post);
+        $seat->save();
+        $change[CommitteeHistory::STATE_UPDATED] = $seat->getData();
+
+        CommitteeHistory::saveNewEntry([
+            'committee_id' => $seat->getCommittee_id(),
+            'tablename'    => 'seats',
+            'action'       => $action,
+            'changes'      => [$change]
+        ]);
+	}
+
+	public static function delete(Seat $seat)
+	{
+        $committee_id = $seat->getCommittee_id();
+        $change = [CommitteeHistory::STATE_ORIGINAL=>$seat->getData()];
+        $seat->delete();
+
+        CommitteeHistory::saveNewEntry([
+            'committee_id' => $committee_id,
+            'tablename'    => 'seats',
+            'action'       => 'delete',
+            'changes'      => [$change]
+        ]);
+	}
+
+	public static function end(Seat $seat, array $post)
+	{
+        $change[CommitteeHistory::STATE_ORIGINAL] = $seat->getData();
+        $seat->saveEndDate($post['endDate']);
+        $change[CommitteeHistory::STATE_UPDATED ] = $seat->getData();
+
+        CommitteeHistory::saveNewEntry([
+            'committee_id' =>$seat->getCommittee_id(),
+            'tablename'    =>'seats',
+            'action'       =>'end',
+            'changes'      =>[$change]
+        ]);
+	}
 }

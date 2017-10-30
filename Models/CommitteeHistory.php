@@ -10,6 +10,10 @@ use Blossom\Classes\Database;
 
 class CommitteeHistory extends ActiveRecord
 {
+    const STATE_ORIGINAL = 'original';
+    const STATE_UPDATED  = 'updated';
+    public static $states = [self::STATE_ORIGINAL, self::STATE_UPDATED];
+
 	protected $tablename = 'committeeHistory';
 
 	protected $committee;

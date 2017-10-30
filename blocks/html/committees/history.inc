@@ -4,24 +4,31 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->history An array of CommitteeHistory objects
  */
+use Blossom\Classes\Block;
 ?>
 <section>
     <header><h1><?= $this->_('committeeHistory'); ?></h1></header>
-
-    <table>
     <?php
         foreach ($this->history as $h) {
-            $person = parent::escape($h->getPerson()->getFullname());
+            $person  = parent::escape($h->getPerson()->getFullname());
+            $action  = parent::escape($h->getAction());
+            $table   = parent::escape($h->getTablename());
 
             echo "
-            <tr><td>{$h->getDate(DATE_FORMAT)}</td>
-                <td>$person</td>
-                <td>{$h->getAction()}</td>
-                <td>{$h->getTablename()}</td>
-            </tr>
+            <article>
+                <header>
+                    <h2>{$h->getDate(DATE_FORMAT)}: $person $table:$action</h2>
+                </header>
+                <div>
+            ";
+                foreach ($h->getChanges() as $c) {
+                    $block = new Block("$table/changeLogEntry.inc", ['change'=>$c]);
+                    echo $block->render('html', $this->template);
+                }
+            echo "
+                </div>
+            </article>
             ";
         }
     ?>
-    </table>
-
 </section>

@@ -146,21 +146,8 @@ class CommitteesController extends Controller
         else { $committee = new Committee(); }
 
         if (isset($_POST['name'])) {
-            $action = $committee->getId() ? 'edit' : 'add';
-
             try {
-                $original = $committee->getData();
-                $committee->handleUpdate($_POST);
-                $committee->save();
-                $updated  = $committee->getData();
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id'=> $committee->getId(),
-                    'tablename'   => 'committees',
-                    'action'      => $action,
-                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
-                ]);
-
+                CommitteeTable::update($committee, $_POST);
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");
                 exit();
@@ -188,16 +175,7 @@ class CommitteesController extends Controller
 
         if (isset($_POST['endDate'])) {
             try {
-                $original = $committee->getData();
-                $committee->saveEndDate($_POST['endDate']);
-                $updated  = $committee->getData();
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id'=> $committee->getId(),
-                    'tablename'   => 'committees',
-                    'action'      => 'end',
-                    'changes'     => [['original'=>$original, 'updated'=>$updated]]
-                ]);
+                CommitteeTable::end($committee, $_POST);
 
                 $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
                 header("Location: $url");

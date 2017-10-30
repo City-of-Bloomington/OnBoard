@@ -48,4 +48,40 @@ class CommitteeTable extends TableGateway
 		}
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
+
+	//----------------------------------------------------------------
+	// Route Action Functions
+	//
+	// These are functions that match the actions defined in the route
+	//----------------------------------------------------------------
+	public static function update(Committee $committee, array $post)
+	{
+        $action = $committee->getId() ? 'edit' : 'add';
+        $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()] : [];
+
+        $committee->handleUpdate($post);
+        $committee->save();
+        $change[CommitteeHistory::STATE_UPDATED] = $committee->getData();
+
+        CommitteeHistory::saveNewEntry([
+            'committee_id'=> $committee->getId(),
+            'tablename'   => 'committees',
+            'action'      => $action,
+            'changes'     => [$change]
+        ]);
+	}
+
+	public static function end(Committee $committee, array $post)
+	{
+        $change = [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()];
+        $committee->saveEndDate($post['endDate']);
+        $change[CommitteeHistory::STATE_UPDATED => $committee->getData()];
+
+        CommitteeHistory::saveNewEntry([
+            'committee_id'=> $committee->getId(),
+            'tablename'   => 'committees',
+            'action'      => 'end',
+            'changes'     => [$change]
+        ]);
+	}
 }

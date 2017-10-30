@@ -42,20 +42,8 @@ class TermsController extends Controller
         // Handling the POST
         if (isset($term)) {
             if (isset($_POST['seat_id'])) {
-                $action = $term->getId() ? 'edit' : 'add';
                 try {
-                    $change = $action == 'edit' ? ['original'=>$term->getData()] : [];
-                    $term->handleUpdate($_POST);
-                    $term->save();
-                    $change['updated'] = $term->getData();
-
-                    CommitteeHistory::saveNewEntry([
-                        'committee_id' => $term->getSeat()->getCommittee_id(),
-                        'tablename'    => 'terms',
-                        'action'       => $action,
-                        'changes'      => [$change]
-                    ]);
-
+                    TermTable::update($term, $_POST);
                     header('Location: '.BASE_URL.'/seats/view?seat_id='.$term->getSeat_id());
                     exit();
                 }
@@ -105,17 +93,7 @@ class TermsController extends Controller
             try {
                 $term = new Term($_REQUEST['term_id']);
                 $seat = $term->getSeat();
-
-                $change = ['original'=>$term];
-                $term->delete();
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id' => $seat->getCommittee_id(),
-                    'tablename'    => 'terms',
-                    'action'       => 'delete',
-                    'changes'      => [$change]
-                ]);
-
+                TermTable::delete($term);
                 header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
                 exit();
 

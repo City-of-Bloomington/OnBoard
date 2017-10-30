@@ -125,23 +125,12 @@ class SeatsController extends Controller
 
         if (isset($seat)) {
             if (isset($_POST['committee_id'])) {
-                $action = $seat->getId() ? 'edit' : 'add';
-                $change = $action == 'edit' ? ['original'=>$seat->getData()] : [];
                 try {
-                    $seat->handleUpdate($_POST);
-                    $seat->save();
-                    $change['updated'] = $seat->getData();
-
-                    CommitteeHistory::saveNewEntry([
-                        'committee_id' => $seat->getCommittee_id(),
-                        'tablename'    => 'seats',
-                        'action'       => $action,
-                        'changes'      => [$change]
-                    ]);
+                    SeatTable::update($seat, $_POST);
+                    header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
+                    exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-                header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
-                exit();
             }
             $committee = $seat->getCommittee();
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee'=>$committee]);
@@ -164,17 +153,7 @@ class SeatsController extends Controller
             try {
                 $seat = new Seat($_REQUEST['seat_id']);
                 $committee_id = $seat->getCommittee_id();
-                $change = ['original'=>$seat->getData()];
-
-                $seat->delete();
-
-                CommitteeHistory::saveNewEntry([
-                    'committee_id' => $committee_id,
-                    'tablename'    => 'seats',
-                    'action'       => 'delete',
-                    'changes'      => [$change]
-                ]);
-
+                SeatTable::delete($seat);
                 header('Location: '.BASE_URL."/committees/members?committee_id=$committee_id");
                 exit();
             }
@@ -196,17 +175,7 @@ class SeatsController extends Controller
         if (isset($seat)) {
             if (isset($_POST['endDate'])) {
                 try {
-                    $change['original'] = $seat->getData();
-                    $seat->saveEndDate($_POST['endDate']);
-                    $change['updated' ] = $seat->getData();
-
-                    CommitteeHistory::saveNewEntry([
-                        'committee_id' =>$seat->getCommittee_id(),
-                        'tablename'    =>'seats',
-                        'action'       =>'end',
-                        'changes'      =>[$change]
-                    ]);
-
+                    SeatTable::end($seat, $_POST);
                     header('Location: '.BASE_URL.'/seats/view?seat_id='.$seat->getId());
                     exit();
                 }
