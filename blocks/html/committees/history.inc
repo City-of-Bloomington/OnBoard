@@ -5,21 +5,29 @@
  * @param array $this->history An array of CommitteeHistory objects
  */
 use Blossom\Classes\Block;
+
+$this->template->addToAsset('scripts', BASE_URI.'/js/changeLog.js');
 ?>
 <section>
     <header><h1><?= $this->_('committeeHistory'); ?></h1></header>
     <?php
-        foreach ($this->history as $h) {
+        foreach ($this->history as $i=>$h) {
             $person  = parent::escape($h->getPerson()->getFullname());
             $action  = parent::escape($h->getAction());
             $table   = parent::escape($h->getTablename());
 
             echo "
-            <article>
+            <article class=\"changeLogEntry\">
                 <header>
                     <h2>{$h->getDate(DATE_FORMAT)}: $person $table:$action</h2>
+                    <div class=\"tools\">
+                        <button        id=\"changeLogEntry-control-$i\"
+                            aria-controls=\"changeLogEntry-content-$i\" aria-expanded=\"true\">
+                            {$this->_('expand')}
+                        </button>
+                    </div>
                 </header>
-                <div>
+                <div id=\"changeLogEntry-content-$i\" aria-hidden=\"false\">
             ";
                 foreach ($h->getChanges() as $c) {
                     $block = new Block("$table/changeLogEntry.inc", ['change'=>$c]);
