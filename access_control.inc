@@ -13,6 +13,7 @@ $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Applicants-view-only'), 'Public')
 		 ->addRole(new Role('Reviewer'),             'Public')
 		 ->addRole(new Role('meetingFileUploader'),  'Public')
+         ->addRole(new Role('Liaison'), ['Applicants-view-only', 'meetingFileUploader'])
 		 ->addRole(new Role('Staff'),                'Reviewer')
 		 ->addRole(new Role('Administrator'));
 
