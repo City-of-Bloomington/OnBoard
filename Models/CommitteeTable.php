@@ -73,9 +73,9 @@ class CommitteeTable extends TableGateway
 
 	public static function end(Committee $committee, array $post)
 	{
-        $change = [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()];
+        $change = [CommitteeHistory::STATE_ORIGINAL => $committee->getData()];
         $committee->saveEndDate($post['endDate']);
-        $change[CommitteeHistory::STATE_UPDATED => $committee->getData()];
+        $change[CommitteeHistory::STATE_UPDATED] = $committee->getData();
 
         CommitteeHistory::saveNewEntry([
             'committee_id'=> $committee->getId(),
