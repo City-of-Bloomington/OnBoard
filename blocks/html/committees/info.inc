@@ -74,6 +74,9 @@ if ((!$endDate || $endDate > time())
         foreach ($fields as $f) {
             if ($$f) {
                 switch ($f) {
+                    case 'calendarId':
+                        $$f = "<a href=\"https://calendar.google.com/calendar/embed?src={$$f}\">{$$f}</a>";
+                    break;
                     case 'termEndWarningDays':
                         $$f = $$f.' '.$this->_(['day', 'days', $$f]);
                     break;
