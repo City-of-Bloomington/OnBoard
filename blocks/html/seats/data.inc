@@ -55,8 +55,7 @@ if (isset($this->params['current'])) {
 
     <table>
         <thead>
-            <tr><th></th>
-                <?php
+            <tr><?php
                     if (!$this->committee) {
                         echo "<th>{$this->_('committee')}</th>";
                     }
@@ -107,11 +106,10 @@ if (isset($this->params['current'])) {
                 $classes    = [];
 
                 if ($userCanEdit) {
-                    $editSeatButton = $helper->buttonLink(
-                        BASE_URI."/seats/update?seat_id=$seat_id",
-                        $this->_('seat_edit'),
-                        'edit'
-                    );
+                    $actions[] = [
+                        'url'   => BASE_URI."/seats/update?seat_id=$seat_id",
+                        'label' => $this->_('seat_edit')
+                    ];
                 }
 
                 $committeeName = !$this->committee ? "<td>$committee_name</td>" : '';
@@ -207,7 +205,6 @@ if (isset($this->params['current'])) {
                 }
                 echo "
                 <tr $classes>
-                    <td>$editSeatButton</td>
                     $committeeName
                     <td><a href=\"$seat_uri\">$seat_code <small>($seat_name)</small</a></td>
                     <td>$termDates</td>
