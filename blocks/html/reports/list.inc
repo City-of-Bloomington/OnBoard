@@ -28,26 +28,36 @@ use Application\Models\Person;
     <div>
         <table>
         <?php
+            $helper = $this->template->getHelper('dropdown');
             foreach ($this->list as $r) {
+                $id    = $r->getId();
                 $date  = $r->getReportDate(DATE_FORMAT);
                 $title = parent::escape($r->getTitle());
+                $actions = [];
 
-                $editButton = '';
                 if ($userCanEdit) {
-                    $editButton = $helper->buttonLink(
-                        BASE_URI.'/reports/update?id='.$r->getId(),
-                        $this->_('report_edit'),
-                        'edit'
-                    );
+                    $actions[] = [
+                        'url'   => BASE_URI."/reports/update?id=$id",
+                        'label' => $this->_('report_edit')
+                    ];
                 }
+                if ($userCanDelete) {
+                    $actions[] = [
+                        'url'   => BASE_URI."/reports/delete?id=$id",
+                        'label' => $this->_('report_delete')
+                    ];
+                }
+                $dropdown = $actions
+                        ? $helper->dropdown($actions, $this->_('more'), "report_$id")
+                        : '';
 
-                $url   = BASE_URI.'/reports/download?id='.$r->getId();
+                $url   = BASE_URI."/reports/download?id=$id";
                 $title = "<a href=\"$url\">$title</a>";
 
                 echo "
                 <tr><th>$date</th>
                     <td>$title</td>
-                    <td>$editButton</td>
+                    <td>$dropdown</td>
                 </tr>
                 ";
             }

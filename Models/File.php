@@ -153,8 +153,13 @@ abstract class File extends ActiveRecord
 	public function delete()
 	{
 		if ($this->getId()) {
-			unlink($this->getFullPath());
-			parent::delete();
+			$deleted = unlink($this->getFullPath());
+			if ($deleted) {
+                parent::delete();
+            }
+            else {
+                throw new \Exception('files/badServerPermissions');
+            }
 		}
 	}
 
