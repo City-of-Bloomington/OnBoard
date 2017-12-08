@@ -231,7 +231,6 @@ abstract class File extends ActiveRecord
 
             $cmd  = SOFFICE.' -env:UserInstallation=file://'.SITE_HOME." --convert-to pdf --headless --outdir $dir $file";
             $out  = "$cmd\n";
-            echo $out;
             $out .= shell_exec($cmd);
             if (is_file("$file.pdf")) {
                  rename("$file.pdf", $file);

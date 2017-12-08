@@ -1,14 +1,13 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\Seat;
 use Application\Models\Term;
+use PHPUnit\Framework\TestCase;
 
-require_once '../../bootstrap.inc';
-
-class TermTest extends PHPUnit_Framework_TestCase
+class TermTest extends TestCase
 {
     public function testSetDates()
     {
