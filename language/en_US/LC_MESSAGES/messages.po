@@ -67,3 +67,9 @@ msgstr "Add %s"
 
 msgid "edit_something"
 msgstr "Edit %s"
+
+msgid "board_application_subject"
+msgstr "%s application received"
+
+msgid "board_application_message"
+msgstr "%s has applied for %s"

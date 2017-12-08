@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -140,6 +140,11 @@ class Applicant extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function getFullname() : string
+	{
+        return "{$this->getFirstname()} {$this->getLastname()}";
+	}
+
 	/**
 	 * Applications for this applicant
 	 *
@@ -193,5 +198,4 @@ class Applicant extends ActiveRecord
         }
         return $files;
 	}
-
 }

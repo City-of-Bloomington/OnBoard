@@ -121,6 +121,7 @@ class ApplicantsController extends Controller
                 }
                 $zend_db->getDriver()->getConnection()->commit();
 
+                $this->notifyLiaisons($applicant);
                 $this->template->blocks[] = new Block('applicants/success.inc', ['applicant'=>$applicant]);
 
                 return;
@@ -161,6 +162,21 @@ class ApplicantsController extends Controller
         else {
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
+        }
+    }
+
+    private function notifyLiaisons(Applicant $applicant)
+    {
+        foreach ($applicant->getApplications() as $a) {
+            $people = $a->getPeopleToNotify();
+            if (count($people)) {
+                $b = new Block('liaisons/applicationNotification.inc', ['application'=>$a]);
+                $message = $b->render('txt', $this->template);
+                $subject = sprintf($this->template->_('board_application_subject', 'messages'), $a->getCommittee()->getName());
+                foreach ($people as $p) {
+                    $p->sendNotification($message, $subject);
+                }
+            }
         }
     }
 }
