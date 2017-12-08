@@ -15,6 +15,10 @@
         - default-jre
         - libreoffice-common
         - libreoffice-writer
+        - postfix
+
+    - name: "Postfix start at boot"
+      service: name=postfix state=started enabled=yes
 
     - name: Create mysql database
       mysql_db:
