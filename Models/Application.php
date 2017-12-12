@@ -120,9 +120,10 @@ class Application extends ActiveRecord
                 from people       p
                 join liaisons     l on p.id=l.person_id
                 join applications a on l.committee_id=a.committee_id
-                where a.id=?";
+                where a.id=?
+                  and type=?";
         $zend_db = Database::getConnection();
-        $result  = $zend_db->createStatement($sql)->execute([$this->getId()]);
+        $result  = $zend_db->createStatement($sql)->execute([$this->getId(), Liaison::TYPE_DEPARTMENTAL]);
         foreach ($result as $p) { $people[] = new Person($p); }
 
         return $people;

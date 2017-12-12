@@ -10,6 +10,9 @@ use Blossom\Classes\Database;
 
 class Liaison extends ActiveRecord
 {
+    const TYPE_DEPARTMENTAL = 'departmental';
+    const TYPE_LEGAL        = 'legal';
+
 	protected $tablename = 'liaisons';
 
 	protected $committee;
