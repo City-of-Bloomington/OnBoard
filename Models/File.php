@@ -336,4 +336,19 @@ abstract class File extends ActiveRecord
 	{
         return SITE_HOME."/{$this->tablename}/{$this->getInternalFilename()}";
 	}
+
+	public function sendToBrowser()
+	{
+        $mime     = $this->getMime_type();
+        $filename = $this->getDisplayFilename();
+
+        header('Expires: 0');
+        header('Pragma: cache');
+        header('Cache-Control: private');
+        header("Content-type: $mime");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+
+        readfile($this->getFullpath());
+        exit();
+	}
 }

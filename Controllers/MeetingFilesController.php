@@ -144,8 +144,7 @@ class MeetingFilesController extends Controller
         if (!empty($_GET['meetingFile_id'])) {
             try {
                 $file = new MeetingFile($_GET['meetingFile_id']);
-                $this->template->setFilename('file');
-                $this->template->blocks[] = new Block('files/download.inc', ['downloadFile'=>$file]);
+                $file->sendToBrowser();
             }
             catch (\Exception $e) {
                 header('HTTP/1.1 404 Not Found', true, 404);

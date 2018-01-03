@@ -21,8 +21,7 @@ class ApplicantFilesController extends Controller
         if (!empty($_GET['applicantFile_id'])) {
             try {
                 $file = new ApplicantFile($_GET['applicantFile_id']);
-                $this->template->setFilename('file');
-                $this->template->blocks[] = new Block('files/download.inc', ['downloadFile'=>$file]);
+                $file->sendToBrowser();
             }
             catch (\Exception $e) {
                 header('HTTP/1.1 404 Not Found', true, 404);

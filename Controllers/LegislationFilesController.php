@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationFile;
+use Application\Views\FileDownloadTemplate;
 
 use Blossom\Classes\Controller;
 use Blossom\Classes\Block;
@@ -64,13 +65,19 @@ class LegislationFilesController extends Controller
         }
     }
 
+    /**
+     * Tries to directly stream the file to the browser
+     *
+     * When we send files, we have to bypass the buffered templating system.
+     * The normal Templates are all buffered, and larger files use up all
+     * allowed memory defined in php.ini
+     */
     public function download()
     {
         if (!empty($_GET['id'])) {
             try {
                 $file = new LegislationFile($_GET['id']);
-                $this->template->setFilename('file');
-                $this->template->blocks[] = new Block('files/download.inc', ['downloadFile'=>$file]);
+                $file->sendToBrowser();
             }
             catch (\Exception $e) {
                 header('HTTP/1.1 404 Not Found', true, 404);
