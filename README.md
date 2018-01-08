@@ -25,3 +25,9 @@ apt-get install libreoffice-common libreoffice-writer
 ```
 
 Make sure Apache has permission to write into the SITE_HOME directory.  With some older versions of LibreOffice, I also had to give Apache ownership of that directory.
+
+## Drupal
+
+We also have a drupal module for pulling data from our OnBoard service and integrating it with other content about boards and commissions that is part of our public website. This drupal module is also available on GitHub here:
+
+https://github.com/City-of-Bloomington/drupal-module-onboard
