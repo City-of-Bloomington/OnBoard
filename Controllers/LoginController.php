@@ -17,7 +17,12 @@ class LoginController extends Controller
 	public function __construct(Template $template)
 	{
 		parent::__construct($template);
-		$this->return_url = !empty($_REQUEST['return_url']) ? $_REQUEST['return_url'] : BASE_URL;
+
+		$this->return_url = !empty($_SESSION['return_url'])
+            ? $_SESSION['return_url']
+            : (!empty($_REQUEST['return_url']) ? $_REQUEST['return_url'] : BASE_URL);
+
+        $_SESSION['return_url'] = $this->return_url;
 	}
 
 	/**
@@ -45,6 +50,7 @@ class LoginController extends Controller
 		// have a user account for that person record.
 		try {
 			$_SESSION['USER'] = new Person(\phpCAS::getUser());
+			unset($_SESSION['return_url']);
 			header("Location: {$this->return_url}");
 			exit();
 		}
@@ -65,6 +71,7 @@ class LoginController extends Controller
 				$person = new Person($_POST['username']);
 				if ($person->authenticate($_POST['password'])) {
 					$_SESSION['USER'] = $person;
+                    unset($_SESSION['return_url']);
 					header('Location: '.$this->return_url);
 					exit();
 				}

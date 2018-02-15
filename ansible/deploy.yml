@@ -55,6 +55,7 @@
         state: "directory"
         owner: "www-data"
         group: "staff"
+        mode: 2775
 
     - name: Install release
       command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"

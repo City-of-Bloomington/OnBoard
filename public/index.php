@@ -23,16 +23,24 @@ $template = !empty($_REQUEST['format'])
 
 // Execute the Controller::action()
 if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
-	$USER_ROLE = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
-	if ($ZEND_ACL->isAllowed($USER_ROLE, $resource, $action)) {
-		$controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
-		$c = new $controller($template);
-		$c->$action();
-	}
-	else {
-		header('HTTP/1.1 403 Forbidden', true, 403);
-		$_SESSION['errorMessages'][] = new \Exception('noAccessAllowed');
-	}
+    $controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
+    $c = new $controller($template);
+    if (method_exists($c, $action)) {
+        $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
+        if ($ZEND_ACL->isAllowed($role, $resource, $action)) {
+            $c->$action();
+        }
+        else {
+            header('HTTP/1.1 403 Forbidden', true, 403);
+            $_SESSION['errorMessages'][] = $role == 'Anonymous'
+                ? new \Exception('notLoggedIn')
+                : new \Exception('noAccessAllowed');
+        }
+    }
+    else {
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $template->blocks[] = new Block('404.inc');
+    }
 }
 else {
 	header('HTTP/1.1 404 Not Found', true, 404);
