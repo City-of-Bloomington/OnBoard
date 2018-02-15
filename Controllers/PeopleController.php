@@ -13,22 +13,40 @@ use Blossom\Classes\Url;
 
 class PeopleController extends Controller
 {
+    private static function searchFields(): array
+    {
+        $fields = ['firstname', 'lastname'];
+        if (Person::isAllowed('people', 'viewContactInfo')) {
+            $fields[] = 'email';
+        }
+        return $fields;
+    }
+    
 	public function index()
 	{
-		$this->template->blocks[] = new Block('people/findForm.inc');
-
 		$table = new PeopleTable();
 		$people = $table->search($_GET, 'lastname', true);
 
 		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 		$people->setCurrentPageNumber($page);
 		$people->setItemCountPerPage(20);
+		
+        if ($this->template->outputFormat == 'html') {
+            $this->template->blocks[] = new Block('people/findForm.inc', ['fields'=>self::searchFields()]);
+        }
 
 		if (isset($_GET['firstname'])) {
             $this->template->blocks[] = new Block('people/list.inc',    ['people'   =>$people]);
-            $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
+            if ($this->template->outputFormat == 'html') {
+                $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$people]);
+            }
         }
         $this->template->title = $this->template->_(['person', 'people', 2]).' - '.APPLICATION_NAME;
+	}
+	
+	public function parameters()
+	{
+        $this->template->blocks[] = new Block('people/partials/findParameters.inc', ['fields'=>self::searchFields()]);
 	}
 
 	public function view()

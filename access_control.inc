@@ -63,6 +63,7 @@ $ZEND_ACL->addResource(new Resource('reports'));
 $ZEND_ACL->allow(null, ['callback', 'login']);
 $ZEND_ACL->allow(null, 'index', 'index');
 $ZEND_ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view', 'years']);
+$ZEND_ACL->allow(null, 'people', 'parameters');
 $ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
 $ZEND_ACL->allow(null, 'applicants', 'apply');
