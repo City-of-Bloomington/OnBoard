@@ -50,9 +50,14 @@ class MeetingFilesController extends Controller
 		}
 
         $table = new MeetingFilesTable();
-        $list  = $table->find($search, "{$sort->field} {$sort->direction}", true);
-		$list->setCurrentPageNumber($page);
-		$list->setItemCountPerPage(20);
+        if ($this->template->outputFormat != 'csv') {
+            $list  = $table->find($search, "{$sort->field} {$sort->direction}", true);
+            $list->setCurrentPageNumber($page);
+            $list->setItemCountPerPage(20);
+        }
+        else {
+            $list  = $table->find($search, "{$sort->field} {$sort->direction}");
+        }
 
         $this->template->blocks[] = new Block('meetingFiles/list.inc', [
             'files'     => $list,
