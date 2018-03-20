@@ -22,9 +22,11 @@ class MeetingFilesController extends Controller
             try {
                 $committee = new Committee($_GET['committee_id']);
 
-                $this->template->title = $committee->getName();
-                $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
-                $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+                if ($this->template->outputFormat == 'html') {
+                    $this->template->title = $committee->getName();
+                    $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
+                    $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+                }
 
                 $search['committee_id'] = $committee->getId();
             }
@@ -57,7 +59,6 @@ class MeetingFilesController extends Controller
             'committee' => isset($committee) ? $committee : null,
             'sort'      => $sort
         ]);
-        $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$list]);
     }
 
     public function years()

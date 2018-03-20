@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->files
  * @param Committee      $this->committee (optional)
@@ -9,6 +9,7 @@
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 use Application\Models\Person;
+use Blossom\Classes\Block;
 use Blossom\Classes\Url;
 ?>
 <section>
@@ -110,4 +111,8 @@ use Blossom\Classes\Url;
     ?>
     </tbody>
     </table>
+    <?php
+        $block = new Block('pageNavigation.inc', ['paginator'=>$this->files]);
+        echo $block->render('html', $this->template);
+    ?>
 </section>

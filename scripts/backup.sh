@@ -1,8 +1,7 @@
 #!/bin/bash
 # Creates a tarball containing a full snapshot of the data in the site
 #
-# @copyright Copyright 2011-2017 City of Bloomington, Indiana
-# @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+# @license https://www.gnu.org/licenses/gpl-3.0.txt GNU/GPL, see LICENSE
 APPLICATION_NAME="onboard"
 MYSQLDUMP="/usr/bin/mysqldump"
 MYSQL_DBNAME="${APPLICATION_NAME}"
