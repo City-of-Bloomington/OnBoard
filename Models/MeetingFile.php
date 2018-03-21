@@ -134,7 +134,8 @@ class MeetingFile extends File
 	 */
 	public function getData() {
         $data = $this->data;
-        $data['url'] = $this->getDownloadUrl();
+        $data['url'      ] = $this->getDownloadUrl();
+        $data['committee'] = $this->getCommittee()->getName();
         return $data;
     }
 

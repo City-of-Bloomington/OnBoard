@@ -17,10 +17,17 @@ use Blossom\Classes\Url;
         <h1><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h1>
         <div class="tools">
         <?php
+            $helper = $this->template->getHelper('buttonLink');
+            if (!$this->disableButtons) {
+                $url = new Url(Url::current_url(BASE_HOST));
+                $url->format = 'csv';
+                echo $helper->buttonLink($url, $this->_('csv'), 'download');
+            }
+
+            $helper = $this->template->getHelper('dropdown');
             if ($this->committee && Person::isAllowed('meetingFiles', 'add')) {
                 $actions      = [];
                 $committee_id = $this->committee->getId();
-                $helper       = $this->template->getHelper('dropdown');
                 foreach (MeetingFile::$types as $type) {
                     $actions[] = [
                         'label' => $type,
