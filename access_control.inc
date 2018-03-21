@@ -88,7 +88,8 @@ $ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
 
 $ZEND_ACL->allow('Staff', 'committees', ['edit', 'update']);
 $ZEND_ACL->allow('Staff', 'people',     ['edit', 'update', 'add']);
-$ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign']);
+$ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign', 'edit', 'update']);
+$ZEND_ACL->allow('Staff', 'offices',    ['edit']);
 $ZEND_ACL->allow('Staff', 'liaisons');
 
 $ZEND_ACL->allow('meetingFileUploader', 'people', 'viewContactInfo');
