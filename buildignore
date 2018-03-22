@@ -4,8 +4,10 @@ build
 dist
 .git/
 .git*
+ckan_config.inc
 site_config.inc
 credentials.json
+/data/ckan/*
 /data/applicantFiles/*
 /data/meetingFiles/*
 /data/legislationFiles/*

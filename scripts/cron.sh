@@ -1,21 +1,30 @@
 #!/bin/bash
-# Creates a tarball containing a full snapshot of the data in the site
-#
-# @license https://www.gnu.org/licenses/gpl-3.0.txt GNU/GPL, see LICENSE
+# @copyright 2011-2018 City of Bloomington, Indiana
+# @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
 APPLICATION_NAME="onboard"
+PHP="/usr/bin/php"
 MYSQLDUMP="/usr/bin/mysqldump"
 MYSQL_DBNAME="${APPLICATION_NAME}"
 MYSQL_CREDENTIALS="/etc/cron.daily/backup.d/${APPLICATION_NAME}.cnf"
 BACKUP_DIR="/srv/backups/${APPLICATION_NAME}"
 APPLICATION_HOME="/srv/sites/${APPLICATION_NAME}"
-SITE_HOME="${APPLICATION_HOME}/data"
+SITE_HOME="/srv/data/${APPLICATION_HOME}"
 
+#----------------------------------------------------------
+# Data Warehouse export
+#----------------------------------------------------------
+export SITE_HOME=$SITE_HOME
+# Set this if your OnBoard install lives behind a reverse proxy
+#export HTTP_X_FORWARDED_HOST=some.serer.gov
+$PHP $APPLICATION_HOME/scripts/Ckan/updateCkan.php
+
+#----------------------------------------------------------
+# Backup
+# Creates a tarball containing a full snapshot of the data in the site
+#----------------------------------------------------------
 # How many days worth of tarballs to keep around
 num_days_to_keep=5
 
-#----------------------------------------------------------
-# No Editing Required below this line
-#----------------------------------------------------------
 now=`date +%s`
 today=`date +%F`
 

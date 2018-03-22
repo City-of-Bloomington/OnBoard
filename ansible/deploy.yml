@@ -92,11 +92,11 @@
     - name: Create backup directory
       file: path=/srv/backups/onboard state=directory group=staff mode="g+rw" recurse=yes
 
-    - name: Install CRON backup script
+    - name: "Install CRON script"
       template:
-        src: backup.sh
-        dest: /etc/cron.daily/backup.d/onboard
-        mode: 0755
+        src: "cron.sh"
+        dest: "/etc/cron.daily/backup.d/onboard"
+        mode: "0755"
 
     - name: Install CRON backup credentials
       template:
@@ -104,9 +104,26 @@
         dest: /etc/cron.daily/backup.d/onboard.cnf
         mode: 0400
 
-    - name: Update application permissions
-      file: path={{ onboard_install_path }} state=directory owner=www-data group=staff mode="g+rw" recurse=yes
+    - name: "Install CKAN export configuration"
+      template:
+        src: "ckan_config.inc"
+        dest: "{{ onboard_site_home }}/ckan_config.inc"
 
-    - name: Update site_home permissions
-      file: path={{ onboard_site_home    }} state=directory owner=www-data group=staff mode="g+rw" recurse=yes
+    - name: "Update application permissions"
+      file:
+        path:  "{{ onboard_install_path }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode:  "u=rwX,g=rwX,o=rX"
+        recurse: "yes"
+
+    - name: "Update site_home permissions"
+      file:
+        path: "{{ onboard_site_home }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode:  "u=rwX,g=rwX,o=rX"
+        recurse: "yes"
 ...
