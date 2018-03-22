@@ -7,6 +7,8 @@
  * @param Committee      $this->committee (optional)
  * @param string         $this->title     (optional)
  */
+use Application\Models\Person;
+
 $date = isset($this->params['current'])
     ? $this->params['current']->format('Ymd')
     : date('Ymd');
@@ -16,10 +18,16 @@ $filename.= $this->title ? $this->title : $this->_(['seat', 'seats', count($this
 $filename.= "-$date";
 
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
-echo "Committee,Seat,Appointer,Firstname,Lastname,Term Start,Term End,Appointment Start, Appointment End\n";
+
+$userCanViewContactInfo = Person::isAllowed('people', 'viewConcatInfo');
+$fields = [
+    'Committee','Seat','Appointer','Firstname','Lastname',
+    'Term Start','Term End','Appointment Start', 'Appointment End'
+];
+if ($userCanViewContactInfo) { $fields[] = 'Email'; }
+echo implode(',', $fields)."\n";
 
 $out = fopen('php://output', 'w');
-$now = time();
 
 foreach ($this->data['results'] as $r) {
     $row = [
@@ -33,6 +41,7 @@ foreach ($this->data['results'] as $r) {
         $r['member_startDate'],
         $r['member_endDate']
     ];
+    if ($userCanViewContactInfo) { $row[] = $r['person_email']; }
     fputcsv($out, $row);
 }
 fclose($out);

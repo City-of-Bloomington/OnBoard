@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
@@ -9,6 +9,8 @@
  * @param string    $this->title          (optional)
  * @param boolean   $this->disableButtons (optional)
  */
+use Application\Models\Person;
+
 $DATE_FORMAT = 'Y-m-d';
 
 if ($this->committee) {
@@ -18,6 +20,7 @@ if ($this->committee) {
 }
 // Display current committee members
 // These members will not be associated with a seat
+$userCanViewContactInfo = Person::isAllowed('people', 'viewContactInfo');
 $seats = [];
 foreach ($this->members as $m) {
     $person = $m->getPerson();
@@ -27,6 +30,18 @@ foreach ($this->members as $m) {
         $offices[] = $office->getTitle();
     }
 
+    $currentMember = [
+        'firstname'     => $person->getFirstname(),
+        'lastname'      => $person->getLastname(),
+        'website'       => $person->getWebsite(),
+        'startDate'     => $m->getStartDate($DATE_FORMAT),
+        'endDate'       => $m->getEndDate  ($DATE_FORMAT),
+        'termStartDate' => null,
+        'termEndDate'   => null,
+        'offices'       => implode(', ', $offices)
+    ];
+    if ($userCanViewContactInfo) { $currentMember['email'] = $person->getEmail(); }
+
     $seats[] = [
         'name'          => null,
         'appointedBy'   => null,
@@ -35,17 +50,7 @@ foreach ($this->members as $m) {
         'type'          => null,
         'vacant'        => false,
         'currentTerm'   => null,
-        'currentMember' => [
-            'firstname'     => $person->getFirstname(),
-            'lastname'      => $person->getLastname(),
-            'email'         => $person->getEmail(),
-            'website'       => $person->getWebsite(),
-            'startDate'     => $m->getStartDate($DATE_FORMAT),
-            'endDate'       => $m->getEndDate  ($DATE_FORMAT),
-            'termStartDate' => null,
-            'termEndDate'   => null,
-            'offices'       => implode(', ', $offices)
-        ]
+        'currentMember' => $currentMember
     ];
 }
 echo '"seats":'.json_encode($seats, JSON_NUMERIC_CHECK|JSON_PRETTY_PRINT);

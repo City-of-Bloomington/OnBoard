@@ -6,11 +6,15 @@
  * @param Committee      $this->committee (optional)
  * @param string         $this->title     (optional)
  */
+use Application\Models\Person;
+
 if ($this->committee) {
     echo '{"info":';
         include APPLICATION_HOME.'/blocks/json/committees/info.inc';
     echo ',';
 }
+
+$userCanViewContactInfo = Person::isAllowed('people', 'viewContactInfo');
 
 $seats = [];
 foreach ($this->data['results'] as $r) {
@@ -51,6 +55,7 @@ foreach ($this->data['results'] as $r) {
             'termEndDate'   => $r['member_termEnd'  ],
             'offices'       => $offices
         ];
+        if ($userCanViewContactInfo) { $row['currentMember']['email'] = $r['person_email']; }
     }
     $seats[] = $row;
 }
