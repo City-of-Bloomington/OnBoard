@@ -56,6 +56,7 @@ use Blossom\Classes\Block;
         $helper = $this->template->getHelper('buttonLink');
 
         if (!$this->disableButtons) {
+            $uri = null;
             if ($this->term) {
                 if (Person::isAllowed('members', 'edit')) {
                     echo $helper->buttonLink(
