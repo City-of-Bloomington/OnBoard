@@ -19,7 +19,7 @@ $filename.= "-$date";
 
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 
-$userCanViewContactInfo = Person::isAllowed('people', 'viewConcatInfo');
+$userCanViewContactInfo = Person::isAllowed('people', 'viewContactInfo');
 $fields = [
     'Committee','Seat','Appointer','Firstname','Lastname',
     'Term Start','Term End','Appointment Start', 'Appointment End'
