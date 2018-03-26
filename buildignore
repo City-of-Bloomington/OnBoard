@@ -21,3 +21,4 @@ node_modules
 .ftppass
 .gulp-build
 package.json
+*.retry
