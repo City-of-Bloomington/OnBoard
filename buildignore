@@ -7,6 +7,7 @@ dist
 ckan_config.inc
 site_config.inc
 credentials.json
+/ansible/roles/*
 /data/ckan/*
 /data/applicantFiles/*
 /data/meetingFiles/*
