@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array          $this->params         Query parameters that produced the data
  * @param Zend\Db\Result $this->data           Data structure returned as SeatTable::$dataFields
@@ -95,6 +95,10 @@ if (isset($this->params['current'])) {
                             else {
                                 $$f = null;
                             }
+                        break;
+
+                        case 'seat_voting':
+                            $$f = $v ? " (voting)" : '';
                         break;
 
                         default:
@@ -208,7 +212,7 @@ if (isset($this->params['current'])) {
                     $committeeName
                     <td><a href=\"$seat_uri\">$seat_code <small>($seat_name)</small</a></td>
                     <td>$termDates</td>
-                    <td>$appointer_name</td>
+                    <td>$appointer_name$seat_voting</td>
                     <td>$member $offices</td>
                     <td>$moreLinks</td>
                 </tr>

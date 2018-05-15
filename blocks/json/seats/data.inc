@@ -24,6 +24,7 @@ foreach ($this->data['results'] as $r) {
         'startDate'     => $r['seat_startDate'],
         'endDate'       => $r['seat_endDate'  ],
         'type'          => $r['seat_type'     ],
+        'voting'        => $r['seat_voting'   ] ? true : false,
         'vacant'        => $r['carryOver'     ] || !$r['member_id']
     ];
 
