@@ -23,7 +23,7 @@ if (isset($this->params['current'])) {
 ?>
 <section>
     <header>
-        <h1><?= $title; ?></h1>
+        <h2><?= $title; ?></h2>
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');

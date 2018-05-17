@@ -52,7 +52,7 @@ if ((!$endDate || $endDate > time())
 ?>
 <section>
     <header>
-        <h1><?= $this->_('committee_info') ?></h1>
+        <h2><?= $this->_('committee_info') ?></h2>
         <div class="tools"><?= "$editButton $endButton"; ?></div>
     </header>
     <div>

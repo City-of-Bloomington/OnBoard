@@ -14,7 +14,7 @@ use Blossom\Classes\Url;
 ?>
 <section>
     <header>
-        <h1><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h1>
+        <h2><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h2>
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
