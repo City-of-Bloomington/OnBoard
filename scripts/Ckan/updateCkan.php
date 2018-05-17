@@ -7,7 +7,7 @@ declare (strict_types=1);
 use Scripts\Ckan\Ckan;
 use Blossom\Classes\Database;
 
-include realpath(__DIR__.'/../../bootstrap.inc');
+include realpath(__DIR__.'/../../bootstrap.php');
 
 if (file_exists(SITE_HOME.'/ckan_config.inc')) {
     include __DIR__.'/Ckan.php';

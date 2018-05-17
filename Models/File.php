@@ -217,7 +217,7 @@ abstract class File extends ActiveRecord
 	/**
 	 * In-place conversion of given file to PDF
 	 *
-	 * You must have set the SOFFICE path in bootstrap.inc
+	 * You must have set the SOFFICE path in bootstrap.php
 	 * Apache must have permission to write to the SITE_HOME directory.
 	 * LibreOffice will create .config and .cache directories in SITE_HOME
 	 *

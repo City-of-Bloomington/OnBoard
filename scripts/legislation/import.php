@@ -21,7 +21,7 @@ use Application\Models\Tag;
 use Blossom\Classes\Database;
 
 $_SERVER['SITE_HOME'] = '/srv/data/onboard';
-include '../../bootstrap.inc';
+include '../../bootstrap.php';
 
 $CSV   = fopen('legislation.csv', 'r');
 $files = '/srv/data/legislation/files';
