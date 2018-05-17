@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
+declare (strict_types=1);
 namespace Application\Controllers;
 
 use Application\Models\Committee;
@@ -50,5 +51,27 @@ class CommitteeStatutesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+    }
+
+    public function delete()
+    {
+        if (!empty($_GET['id'])) {
+            try { $statute = new CommitteeStatute($_GET['id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($statute)) {
+            try {
+                $committee_id = $statute->getCommittee_id();
+                $statute->delete();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+            header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee_id);
+            exit();
+        }
+
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $this->template->blocks[] = new Block('404.inc');
     }
 }
