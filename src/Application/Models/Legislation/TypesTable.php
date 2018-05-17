@@ -18,7 +18,7 @@ class TypesTable extends TableGateway
 	{
 		$select = new Select('legislationTypes');
 
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'subtype':

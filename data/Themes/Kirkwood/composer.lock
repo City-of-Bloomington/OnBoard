@@ -1,0 +1,43 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "fca3638a9cc853e2d003e15117975176",
+    "packages": [
+        {
+            "name": "City-of-Bloomington/factory-number-one",
+            "version": "dev-refactor",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/City-of-Bloomington/factory-number-one.git",
+                "reference": "e515404a9a9f6e9f460f08efcf1873ae658b8ac4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/e515404a9a9f6e9f460f08efcf1873ae658b8ac4",
+                "reference": "e515404a9a9f6e9f460f08efcf1873ae658b8ac4",
+                "shasum": ""
+            },
+            "type": "library",
+            "support": {
+                "source": "https://github.com/City-of-Bloomington/factory-number-one/tree/refactor",
+                "issues": "https://github.com/City-of-Bloomington/factory-number-one/issues"
+            },
+            "time": "2017-06-22 15:32:35"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "city-of-bloomington/factory-number-one": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.6"
+    },
+    "platform-dev": []
+}

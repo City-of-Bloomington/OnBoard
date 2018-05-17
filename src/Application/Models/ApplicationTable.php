@@ -22,7 +22,7 @@ class ApplicationTable extends TableGateway
 		$select = new Select(['a'=>'applications']);
 		$select->join(['p'=>'applicants'], 'a.applicant_id=p.id', []);
 
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':

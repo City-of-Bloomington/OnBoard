@@ -21,7 +21,7 @@ class LegislationTable extends TableGateway
 
 	private function processFields(array $fields=null, Select &$select)
 	{
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'parent_id':

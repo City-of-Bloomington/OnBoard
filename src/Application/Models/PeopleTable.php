@@ -20,7 +20,7 @@ class PeopleTable extends TableGateway
 		$select = new Select('people');
 		$select->quantifier(Select::QUANTIFIER_DISTINCT);
 
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'user_account':

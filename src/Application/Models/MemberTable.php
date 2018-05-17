@@ -16,7 +16,7 @@ class MemberTable extends TableGateway
 	public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
 	{
 		$select = new Select('members');
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':

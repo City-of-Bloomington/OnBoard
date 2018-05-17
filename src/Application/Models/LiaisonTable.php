@@ -52,7 +52,7 @@ class LiaisonTable extends TableGateway
     {
         $where  = [];
         $params = [];
-        if (count($fields)) {
+        if ($fields) {
             foreach ($fields as $k=>$v) {
                 if (array_key_exists($k, self::$dataFields)) {
                     $f        = self::$dataFields[$k];

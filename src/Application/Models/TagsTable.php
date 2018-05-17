@@ -19,7 +19,7 @@ class TagsTable extends TableGateway
 		$select = new Select('tags');
 		$select->quantifier(Select::QUANTIFIER_DISTINCT);
 
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'legislation_id':

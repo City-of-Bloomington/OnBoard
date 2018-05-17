@@ -17,7 +17,7 @@ class ApplicantFilesTable extends TableGateway
 	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
 	{
 		$select = new Select(self::TABLE);
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					default:

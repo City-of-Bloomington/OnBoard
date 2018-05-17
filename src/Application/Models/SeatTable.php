@@ -18,7 +18,7 @@ class SeatTable extends TableGateway
 	public function find($fields=null, $order=['s.code', 's.name'], $paginated=false, $limit=null)
 	{
 		$select = new Select(['s'=>'seats']);
-		if (count($fields)) {
+		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':

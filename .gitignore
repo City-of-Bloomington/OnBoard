@@ -19,9 +19,7 @@ data/user
 screen.css
 screen.css.map
 build
-dist
 vendor
-composer.lock
 node_modules
 gulpfile.js
 .ftppass
