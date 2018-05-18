@@ -40,6 +40,12 @@ class CommitteeTable extends TableGateway
                         $select->where(['legislative'=>$value ? 1 : 0]);
 					break;
 
+					case 'takesApplications':
+                        $select->join(['s'=>'seats'], 'committees.id=s.committee_id', [], Select::JOIN_LEFT);
+                        $select->group('committees.id');
+                        $select->where(['s.takesApplications' => (bool)$value]);
+					break;
+
 					default:
 						$select->where([$key=>$value]);
 				}

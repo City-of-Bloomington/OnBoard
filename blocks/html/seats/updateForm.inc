@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -9,7 +9,7 @@ use Application\Models\Seat;
 
 $fields = [
     'id', 'type', 'code', 'committee_id', 'appointer_id',
-    'name', 'requirements', 'termLength', 'voting'
+    'name', 'requirements', 'termLength', 'voting', 'takesApplications'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -80,11 +80,21 @@ $picker = $this->template->getHelper('datePicker');
                 ]);
 
                 echo $helper->field([
-                    'name'=>'voting',
-                    'label'=>$this->_('voting'),
-                    'value'=>$voting,
-                    'type'=>'radio',
-                    'options'=>[
+                    'name'    => 'voting',
+                    'label'   => $this->_('voting'),
+                    'value'   => $voting,
+                    'type'    => 'radio',
+                    'options' => [
+                        ['value'=>1, 'label'=>$this->_('yes')],
+                        ['value'=>0, 'label'=>$this->_('no' )]
+                    ]
+                ]);
+                echo $helper->field([
+                    'name'    => 'takesApplications',
+                    'label'   => $this->_('takesApplications'),
+                    'value'   => $takesApplications,
+                    'type'    => 'radio',
+                    'options' => [
                         ['value'=>1, 'label'=>$this->_('yes')],
                         ['value'=>0, 'label'=>$this->_('no' )]
                     ]

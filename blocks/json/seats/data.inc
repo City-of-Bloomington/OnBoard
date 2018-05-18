@@ -19,13 +19,14 @@ $userCanViewContactInfo = Person::isAllowed('people', 'viewContactInfo');
 $seats = [];
 foreach ($this->data['results'] as $r) {
     $row = [
-        'name'          => $r['seat_name'     ],
-        'appointedBy'   => $r['appointer_name'],
-        'startDate'     => $r['seat_startDate'],
-        'endDate'       => $r['seat_endDate'  ],
-        'type'          => $r['seat_type'     ],
-        'voting'        => $r['seat_voting'   ] ? true : false,
-        'vacant'        => $r['carryOver'     ] || !$r['member_id']
+        'name'              => $r['seat_name'             ],
+        'appointedBy'       => $r['appointer_name'        ],
+        'startDate'         => $r['seat_startDate'        ],
+        'endDate'           => $r['seat_endDate'          ],
+        'type'              => $r['seat_type'             ],
+        'voting'            => $r['seat_voting'           ] ? true : false,
+        'takesApplications' => $r['seat_takesApplications'] ? true : false,
+        'vacant'            => $r['carryOver'             ] || !$r['member_id']
     ];
 
     if ($r['seat_type'] == 'termed') {

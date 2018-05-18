@@ -290,6 +290,9 @@ msgstr "Term Length"
 msgid "voting"
 msgstr "Voting"
 
+msgid "takesApplications"
+msgstr "Takes Applications"
+
 msgid "add_appointer"
 msgstr "Add Appointer"
 

@@ -15,7 +15,7 @@ $helper = $this->template->getHelper('buttonLink');
 ?>
 <section class="termsList">
     <header>
-        <h1><?= $title; ?></h1>
+        <h2><?= $title; ?></h2>
         <?php
             if (isset($this->terms[0]) && !$this->disableButtons
                 && Person::isAllowed('terms', 'generate')) {

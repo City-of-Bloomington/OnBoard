@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Application\Models\TermTable;
@@ -109,15 +110,16 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()           { return parent::get('id');   }
-	public function getType()         { return parent::get('type'); }
-	public function getCode()         { return parent::get('code'); }
-	public function getName()         { return parent::get('name'); }
-	public function getRequirements() { return parent::get('requirements'); }
-	public function getCommittee_id() { return parent::get('committee_id'); }
-	public function getAppointer_id() { return parent::get('appointer_id'); }
-	public function getTermLength()   { return parent::get('termLength'); }
-	public function getVoting()       { return parent::get('voting'); }
+	public function getId()                { return parent::get('id');   }
+	public function getType()              { return parent::get('type'); }
+	public function getCode()              { return parent::get('code'); }
+	public function getName()              { return parent::get('name'); }
+	public function getRequirements()      { return parent::get('requirements'); }
+	public function getCommittee_id()      { return parent::get('committee_id'); }
+	public function getAppointer_id()      { return parent::get('appointer_id'); }
+	public function getTermLength()        { return parent::get('termLength'); }
+	public function getVoting()            { return parent::get('voting'); }
+	public function getTakesApplications() { return parent::get('takesApplications'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
@@ -138,13 +140,14 @@ class Seat extends ActiveRecord
         }
         else { parent::set('termLength', null); }
     }
-    public function setVoting($b) { $this->data['voting'] = $b ? 1 : 0; }
+    public function setVoting           ($b) { $this->data['voting'           ] = $b ? 1 : 0; }
+    public function setTakesApplications($b) { $this->data['takesApplications'] = $b ? 1 : null; }
 
 	public function handleUpdate($post)
 	{
 		$fields = [
             'code', 'name', 'appointer_id', 'startDate',
-            'requirements', 'type', 'termLength', 'voting'
+            'requirements', 'type', 'termLength', 'voting', 'takesApplications'
         ];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
@@ -425,8 +428,6 @@ class Seat extends ActiveRecord
         return false;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isVoting() { return $this->getVoting() ? true : false; }
+	public function isVoting()         : bool { return $this->getVoting()            ? true : false; }
+	public function takesApplications(): bool { return $this->getTakesApplications() ? true : false; }
 }

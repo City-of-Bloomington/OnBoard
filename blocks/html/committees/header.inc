@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -86,7 +86,7 @@ if ($this->committee->getType() === 'open' &&  $this->committee->hasPastMembers(
 }
 
 $applicationsLink = '';
-if (Person::isAllowed('committees', 'applications')) {
+if (Person::isAllowed('committees', 'applications') && $this->committee->takesApplications()) {
     $current = $current_url->path == BASE_URI.'/committees/applications';
     $applicationsLink = sprintf($a,
         BASE_URI."/committees/applications?committee_id=$committee_id",

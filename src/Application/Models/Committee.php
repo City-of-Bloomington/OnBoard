@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Blossom\Classes\ActiveRecord;
@@ -505,7 +506,14 @@ class Committee extends ActiveRecord
 	/**
 	 * @return boolean
 	 */
-	public function isLegislative() { return $this->getLegislative() ? true : false; }
+	public function isLegislative(): bool { return $this->getLegislative() ? true : false; }
+	public function takesApplications(): bool
+	{
+        $zend_db = Database::getConnection();
+        $sql     = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
+        $row     = $zend_db->query($sql)->execute([$this->getId()])->current();
+        return (int)$row['count'] > 0;
+	}
 
 	/**
 	 * Returns an array suitable for serialization

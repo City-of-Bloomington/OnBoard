@@ -23,20 +23,22 @@ $title = $this->_('applications_reportForm_title', 'messages');
             <legend><?= $this->_(['seat', 'seats', count($seats)]); ?></legend>
             <?php
                 foreach ($seats as $s) {
-                    $classes = [];
-                    if ($s->hasVacancy()) { $classes[] = 'vacant'; }
-                    $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+                    if ($s->takesApplications()) {
+                        $classes = [];
+                        if ($s->hasVacancy()) { $classes[] = 'vacant'; }
+                        $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
 
-                    $code = self::escape($s->getCode());
-                    $name = self::escape($s->getName());
-                    echo "
-                    <div $classes>
-                        <label>
-                            <input name=\"seats[]\" type=\"checkbox\" value=\"{$s->getId()}\" />
-                            $code: $name
-                        </label>
-                    </div>
-                    ";
+                        $code = self::escape($s->getCode());
+                        $name = self::escape($s->getName());
+                        echo "
+                        <div $classes>
+                            <label>
+                                <input name=\"seats[]\" type=\"checkbox\" value=\"{$s->getId()}\" />
+                                $code: $name
+                            </label>
+                        </div>
+                        ";
+                    }
                 }
             ?>
         </fieldset>

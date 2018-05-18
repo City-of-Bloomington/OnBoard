@@ -83,17 +83,18 @@ create table appointers (
 insert appointers values(1,'Elected');
 
 create table seats (
-    id int unsigned not null primary key auto_increment,
-    type enum('termed', 'open') not null default 'termed',
-    code varchar(16),
-    name varchar(128) not null,
-	committee_id int unsigned not null,
-	appointer_id int unsigned,
-    startDate date,
-    endDate   date,
-    requirements text,
-    termLength varchar(32),
-    voting boolean not null default 1,
+    id                int unsigned not null primary key auto_increment,
+    type              enum('termed', 'open') not null default 'termed',
+    code              varchar(16),
+    name              varchar(128) not null,
+	committee_id      int unsigned not null,
+	appointer_id      int unsigned,
+    startDate         date,
+    endDate           date,
+    requirements      text,
+    termLength        varchar(32),
+    voting            boolean not null default 1,
+    takesApplications boolean,
 	foreign key (committee_id) references committees(id),
 	foreign key (appointer_id) references appointers(id)
 );

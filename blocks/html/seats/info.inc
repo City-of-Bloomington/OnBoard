@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Seat $this->seat
  */
@@ -54,63 +54,71 @@ echo "
         <h1><a href=\"$uri\">$name</a></h1>
         <div class=\"tools\">$editButton $endButton $deleteButton</div>
     </header>
-        <dl>
-			<dt>{$this->_('type')}</dt>
-            <dd>{$this->_($this->seat->getType())}</dd>
-        </dl>
-        <dl>
-            <dt>{$this->_('code')}</dt>
-            <dd>$code</dd>
-        </dl>
-		<dl>
-			<dt>{$this->_('appointed_by')}</dt>
-			<dd>$appointer</dd>
-		</dl>
-		<dl>
-			<dt>{$this->_('committee')}</dt>
-			<dd><a href=\"$committee_url\">$committee</a></dd>
-		</dl>
+    <table>
+        <tr>
+			<th>{$this->_('type')}</th>
+            <td>{$this->_($this->seat->getType())}</td>
+        </tr>
+        <tr>
+            <th>{$this->_('code')}</th>
+            <td>$code</td>
+        </tr>
+		<tr>
+			<th>{$this->_('appointed_by')}</th>
+			<td>$appointer</td>
+		</tr>
+		<tr>
+			<th>{$this->_('committee')}</th>
+			<td><a href=\"$committee_url\">$committee</a></td>
+		</tr>
 ";
     if ($this->seat->getStartDate()) {
         echo "
-        <dl>
-			<dt>{$this->_('startDate')}</dt>
-			<dd>{$this->seat->getStartDate(DATE_FORMAT)}</dd>
-		</dl>
+        <tr>
+			<th>{$this->_('startDate')}</th>
+			<td>{$this->seat->getStartDate(DATE_FORMAT)}</td>
+		</tr>
         ";
     }
     if ($this->seat->getEndDate()) {
         echo "
-		<dl>
-			<dt>{$this->_('endDate')}</dt>
-			<dd>{$this->seat->getEndDate(DATE_FORMAT)}</dd>
-		</dl>
+		<tr>
+			<th>{$this->_('endDate')}</th>
+			<td>{$this->seat->getEndDate(DATE_FORMAT)}</td>
+		</tr>
         ";
     }
     if ($requirements) {
         echo "
-		<dl>
-			<dt>{$this->_(['requirement', 'requirements', 2])}</dt>
-			<dd>$requirements</dd>
-		</dl>
+		<tr>
+			<th>{$this->_(['requirement', 'requirements', 2])}</th>
+			<td>$requirements</td>
+		</tr>
 		";
     }
     if ($this->seat->getType() === 'termed') {
         $termLength = Seat::$termIntervals[$this->seat->getTermLength()];
         echo "
-		<dl>
-			<dt>{$this->_('termLength')}</dt>
-            <dd>{$termLength}</dd>
-        </dl>
+		<tr>
+			<th>{$this->_('termLength')}</th>
+            <td>{$termLength}</td>
+        </tr>
         ";
     }
     $voting = $this->seat->IsVoting() ? $this->_('yes') : $this->_('no');
     echo "
-        <dl>
-            <dt>{$this->_('voting')}</dt>
-            <dd>$voting</dd>
-        </dl>
+        <tr>
+            <th>{$this->_('voting')}</th>
+            <td>$voting</td>
+        </tr>
+    ";
+    $takesApplications = $this->seat->takesApplications() ? $this->_('yes') : $this->_('no');
+    echo "
+        <tr><th>{$this->_('takesApplications')}</th>
+            <td>$takesApplications</td>
+        </tr>
     ";
 echo "
+    </table>
 </section>
 ";
