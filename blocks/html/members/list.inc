@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
@@ -26,15 +26,12 @@ use Blossom\Classes\Block;
 
             $name = self::escape($member->getPerson()->getFullname());
 
-            $officeTitles = [];
+            $titles  = [];
             $offices = $member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d'));
-            foreach ($offices as $office) {
-                $officeTitles[] = self::escape($office->getTitle());
-            }
-            $officeTitles = implode(', ',$officeTitles);
-            if (count($officeTitles > 0)) {
-                $officeTitles = " <span class=\"offices\">$officeTitles</span>";
-            }
+            foreach ($offices as $o) { $titles[] = self::escape($o->getTitle()); }
+            $titles  = count($titles)
+                     ? ' <span class="offices">'.implode(', ', $titles).'</span>'
+                     : '';
 
             $moreLinks = '';
             if (!$this->disableButtons) {
@@ -44,7 +41,7 @@ use Blossom\Classes\Block;
             }
             $uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
             echo "
-            <tr><td><a href=\"$uri\">$name</a>{$officeTitles}</td>
+            <tr><td><a href=\"$uri\">$name</a>$titles</td>
                 <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
                 <td>$moreLinks</td>
             </tr>
