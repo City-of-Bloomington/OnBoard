@@ -1,31 +1,31 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fca3638a9cc853e2d003e15117975176",
+    "content-hash": "04455c05c9f64df785b725bcdcc6ecdc",
     "packages": [
         {
             "name": "City-of-Bloomington/factory-number-one",
-            "version": "dev-refactor",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Bloomington/factory-number-one.git",
-                "reference": "e515404a9a9f6e9f460f08efcf1873ae658b8ac4"
+                "reference": "4970f905becd4841554291fbaba5a64fcc5fbc2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/e515404a9a9f6e9f460f08efcf1873ae658b8ac4",
-                "reference": "e515404a9a9f6e9f460f08efcf1873ae658b8ac4",
+                "url": "https://api.github.com/repos/City-of-Bloomington/factory-number-one/zipball/4970f905becd4841554291fbaba5a64fcc5fbc2c",
+                "reference": "4970f905becd4841554291fbaba5a64fcc5fbc2c",
                 "shasum": ""
             },
             "type": "library",
             "support": {
-                "source": "https://github.com/City-of-Bloomington/factory-number-one/tree/refactor",
+                "source": "https://github.com/City-of-Bloomington/factory-number-one/tree/master",
                 "issues": "https://github.com/City-of-Bloomington/factory-number-one/issues"
             },
-            "time": "2017-06-22 15:32:35"
+            "time": "2018-03-29T18:46:24+00:00"
         }
     ],
     "packages-dev": [],
