@@ -141,7 +141,7 @@ class Seat extends ActiveRecord
         else { parent::set('termLength', null); }
     }
     public function setVoting           ($b) { $this->data['voting'           ] = $b ? 1 : 0; }
-    public function setTakesApplications($b) { $this->data['takesApplications'] = $b ? 1 : null; }
+    public function setTakesApplications($b) { $this->data['takesApplications'] = $b ? 1 : 0; }
 
 	public function handleUpdate($post)
 	{
