@@ -13,8 +13,10 @@ use Application\Templates\Helpers\ButtonLink;
         <h2><?= $this->_(['committeeStatute', 'committeeStatutes', count($this->statutes)]); ?></h2>
         <div class="tools">
         <?php
-            $helper = $this->template->getHelper('buttonLink');
-            if ($this->committee && Person::isAllowed('committeeStatutes', 'add')) {
+            $helper        = $this->template->getHelper('buttonLink');
+            $userCanEdit   = Person::isAllowed('committeeStatutes', 'update');
+            $userCanDelete = Person::isAllowed('committeeStatutes', 'delete');
+            if ($this->committee && $userCanEdit) {
                 echo $helper->buttonLink(
                     BASE_URI.'/committeeStatutes/update?committee_id='.$this->committee->getId(),
                     $this->_('committeeStatute_add'),
@@ -25,11 +27,8 @@ use Application\Templates\Helpers\ButtonLink;
         </div>
     </header>
     <?php
-        $userCanEdit   = Person::isAllowed('committeeStatutes', 'edit'  );
-        $userCanDelete = Person::isAllowed('committeeStatutes', 'delete');
         $editButton    = '';
         $deleteButton  = '';
-
         foreach ($this->statutes as $s) {
             $citation = self::escape($s->getCitation());
             $url      = self::escape($s->getUrl());

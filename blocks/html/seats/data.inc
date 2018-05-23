@@ -69,8 +69,8 @@ if (isset($this->params['current'])) {
         </thead>
         <tbody>
         <?php
-            $editSeatButton = '';
-            $userCanEdit = !$this->disableButtons && Person::isAllowed('seats', 'edit');
+            $editSeatButton   = '';
+            $userCanEditSeats = !$this->disableButtons && Person::isAllowed('seats', 'update');
 
             foreach ($this->data['results'] as $row) {
                 /**
@@ -109,7 +109,7 @@ if (isset($this->params['current'])) {
                 $actions    = [];
                 $classes    = [];
 
-                if ($userCanEdit) {
+                if ($userCanEditSeats) {
                     $actions[] = [
                         'url'   => BASE_URI."/seats/update?seat_id=$seat_id",
                         'label' => $this->_('seat_edit')
@@ -183,11 +183,11 @@ if (isset($this->params['current'])) {
                     }
                 }
 
-                if (!$this->disableButtons && Person::isAllowed('offices', 'add')) {
+                $userCanEditOffices = !$this->disableButtons && Person::isAllowed('offices', 'update');
+                if ($userCanEditOffices) {
                     $uri = BASE_URI."/offices/update?committee_id=$committee_id;person_id=$person_id";
                     $actions[] = ['url'=>$uri, 'label'=>$this->_('office_add')];
                 }
-                $userCanEditOffices = !$this->disableButtons && Person::isAllowed('offices', 'edit');
                 if ($offices) {
                     $ts = [];
                     foreach (explode(',',$offices) as $o) {
@@ -225,7 +225,7 @@ if (isset($this->params['current'])) {
     if ($this->committee && !$this->disableButtons) {
         $helper = $this->template->getHelper('buttonLink');
 
-        if (Person::isAllowed('seats', 'add')) {
+        if ($userCanEditSeats) {
             echo $helper->buttonLink(
                 BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
                 $this->translate('seat_add'),

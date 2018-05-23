@@ -24,7 +24,7 @@ $helper = $this->template->getHelper('buttonLink');
 $editButton   = '';
 $endButton    = '';
 $deleteButton = '';
-if (Person::isAllowed('seats', 'edit')) {
+if (Person::isAllowed('seats', 'update')) {
 	$editButton = $helper->buttonLink(
 		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
 		$this->_('seat_edit'),

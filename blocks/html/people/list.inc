@@ -46,7 +46,7 @@ use Blossom\Classes\Url;
     ?>
 	</table>
 	<?php
-        if (Person::isAllowed('people', 'add')) {
+        if (Person::isAllowed('people', 'update')) {
             // Preserve any extra parameters passed in
             $url    = new Url(BASE_URL.'/people/update');
             $fields = ['firstname', 'lastname', 'email'];

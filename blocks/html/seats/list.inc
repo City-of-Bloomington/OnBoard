@@ -29,12 +29,13 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
         </thead>
         <tbody>
         <?php
-            $editButton = '';
+            $editButton  = '';
+            $userCanEdit = (!$this->disableButtons && Person::isAllowed('seats', 'update'));
 
             foreach ($this->seats as $seat) {
                 $seat_id = $seat->getId();
 
-                if (!$this->disableButtons && Person::isAllowed('seats', 'edit')) {
+                if ($userCanEdit) {
                     $editButton = $helper->buttonLink(
                         BASE_URI."/seats/update?seat_id=$seat_id",
                         $this->translate('seat_edit'),
@@ -61,7 +62,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
         </tbody>
     </table>
     <?php
-        if (!$this->disableButtons && isset($this->committee) && Person::isAllowed('seats', 'add')) {
+        if ($userCanEdit && isset($this->committee)) {
             echo $helper->buttonLink(
                 BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
                 $this->translate('seat_add'),

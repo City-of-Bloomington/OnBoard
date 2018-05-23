@@ -8,7 +8,7 @@ use Application\Models\LiaisonTable;
 use Application\Models\Person;
 
 $addButton = '';
-if (Person::isAllowed('liaisons', 'add')) {
+if (Person::isAllowed('liaisons', 'update')) {
     $helper    = $this->template->getHelper('buttonLink');
     $addButton = $helper->buttonLink(
         BASE_URI.'/liaisons/update?committee_id='.$this->committee->getId(),

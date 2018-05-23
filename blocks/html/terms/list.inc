@@ -66,7 +66,7 @@ $helper = $this->template->getHelper('buttonLink');
                     'add'
                 );
             }
-            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'add')) {
+            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'update')) {
                 echo $helper->buttonLink(
                     BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
                     $this->_('term_add'),

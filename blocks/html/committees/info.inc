@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -30,7 +30,7 @@ $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 $helper = $this->template->getHelper('buttonLink');
 $editButton = '';
 $endButton  = '';
-$userCanEdit = Person::isAllowed('committees', 'edit');
+$userCanEdit = Person::isAllowed('committees', 'update');
 if ($userCanEdit) {
     $editButton = $helper->buttonLink(
         BASE_URI."/committees/update?committee_id=$id",

@@ -54,8 +54,10 @@ use Blossom\Classes\Block;
 
         if (!$this->disableButtons) {
             $uri = null;
+            $userCanUpdate  = Person::isAllowed('members', 'update' );
+            $userCanAppoint = Person::isAllowed('members', 'appoint');
             if ($this->term) {
-                if (Person::isAllowed('members', 'edit')) {
+                if ($userCanUpdate) {
                     echo $helper->buttonLink(
                         BASE_URI.'/members/update?term_id='.$this->term->getId(),
                         $this->_('member_add'),
@@ -64,10 +66,10 @@ use Blossom\Classes\Block;
                 }
             }
             elseif ($this->seat && $this->seat->getType() === 'open') {
-                if (Person::isAllowed('members', 'update')) {
+                if ($userCanUpdate) {
                     $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
                 }
-                elseif (Person::isAllowed('members', 'appoint')) {
+                elseif ($userCanAppoint) {
                     $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
                 }
 
@@ -76,10 +78,10 @@ use Blossom\Classes\Block;
                 }
             }
             elseif ($this->committee) {
-                if (Person::isAllowed('members', 'update')) {
+                if ($userCanUpdate) {
                     $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
                 }
-                elseif (Person::isAllowed('members', 'appoint')) {
+                elseif ($userCanAppoint) {
                     $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
                 }
 

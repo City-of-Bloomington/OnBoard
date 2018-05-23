@@ -15,7 +15,8 @@ $helper = $this->template->getHelper('buttonLink');
         <h2><?= $this->_(['department', 'departments', count($this->departments)]); ?></h2>
         <div class="tools">
         <?php
-            if (!$this->disableButtons && Person::isAllowed('departments', 'add')) {
+            $userCanEdit = (!$this->disableButtons && Person::isAllowed('departments', 'update'));
+            if ($userCanEdit) {
                 echo $helper->buttonLink(
                     BASE_URI.'/departments/update',
                     $this->_('department_add'),
@@ -30,9 +31,9 @@ $helper = $this->template->getHelper('buttonLink');
     <?php
         $editButton = '';
         foreach ($this->departments as $d) {
-            $name  = self::escape($d->getName());
+            $name = self::escape($d->getName());
 
-            if (!$this->disableButtons && Person::isAllowed('departments', 'edit')) {
+            if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/departments/update?department_id='.$d->getId(),
                     $this->_('department_edit'),

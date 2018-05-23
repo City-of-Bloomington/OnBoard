@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->data
  */
@@ -9,7 +9,7 @@ namespace Application\Models;
 use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\Url;
 
-$userCanEdit = Person::isAllowed('committees', 'edit');
+$userCanEdit = Person::isAllowed('committees', 'update');
 ?>
 <section>
     <header>

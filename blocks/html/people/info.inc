@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Person  $this->person
  * @param boolean $this->disableButtons
@@ -14,7 +14,7 @@ $helper    = $this->template->getHelper('buttonLink');
 $editButton   = '';
 $deleteButton = '';
 if (!$this->disableButtons) {
-    if (Person::isAllowed('people', 'edit')) {
+    if (Person::isAllowed('people', 'update')) {
         $editButton = $helper->buttonLink(
             BASE_URI.'/people/update?person_id='.$person_id,
             $this->_('person_edit'),
@@ -58,7 +58,7 @@ echo "
             $get = 'get'.ucfirst($key);
             $value = self::escape($this->person->$get());
 
-            if ($key === 'username' && !$value && !$this->disableButtons && Person::isAllowed('users')) {
+            if ($key === 'username' && !$value && !$this->disableButtons && Person::isAllowed('users', 'update')) {
                 $value = $helper->buttonLink(
                     BASE_URI.'/users/update?user_id='.$this->person->getId(),
                     $this->_('create_account'),

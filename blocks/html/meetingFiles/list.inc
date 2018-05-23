@@ -11,6 +11,9 @@ use Application\Models\MeetingFilesTable;
 use Application\Models\Person;
 use Blossom\Classes\Block;
 use Blossom\Classes\Url;
+
+$userCanEdit   = Person::isAllowed('meetingFiles', 'update');
+$userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 ?>
 <section>
     <header>
@@ -25,7 +28,7 @@ use Blossom\Classes\Url;
             }
 
             $helper = $this->template->getHelper('dropdown');
-            if ($this->committee && Person::isAllowed('meetingFiles', 'add')) {
+            if ($this->committee && $userCanEdit) {
                 $actions      = [];
                 $committee_id = $this->committee->getId();
                 foreach (MeetingFile::$types as $type) {
@@ -80,9 +83,6 @@ use Blossom\Classes\Url;
     </thead>
     <tbody>
     <?php
-        $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
-        $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
-
         foreach ($this->files as $f) {
             $id       = $f->getId();
             $title    = parent::escape($f->getTitle());
