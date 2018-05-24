@@ -79,7 +79,11 @@ abstract class File extends ActiveRecord
 					$sql = "select * from {$this->tablename} where internalFilename like ?";
 					$id.= '%';
 				}
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+
+				$result = isset($sql)
+                        ? $zend_db->createStatement($sql)->execute([$id])
+                        : [];
+
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}

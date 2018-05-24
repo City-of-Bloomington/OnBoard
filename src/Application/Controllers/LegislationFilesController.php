@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Controllers;
@@ -19,7 +19,7 @@ class LegislationFilesController extends Controller
     public function update()
     {
         if (!empty($_REQUEST['id'])) {
-            try { $file = new LegislationFile($_REQUEST['id']); }
+            try { $file = new LegislationFile((int)$_REQUEST['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else { $file = new LegislationFile(); }
@@ -27,7 +27,7 @@ class LegislationFilesController extends Controller
         if (!$file->getLegislation_id()) {
             if (!empty($_REQUEST['legislation_id'])) {
                 try {
-                    $l = new Legislation($_REQUEST['legislation_id']);
+                    $l = new Legislation((int)$_REQUEST['legislation_id']);
                     $file->setLegislation($l);
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -76,7 +76,7 @@ class LegislationFilesController extends Controller
     {
         if (!empty($_GET['id'])) {
             try {
-                $file = new LegislationFile($_GET['id']);
+                $file = new LegislationFile((int)$_GET['id']);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) {
@@ -94,7 +94,7 @@ class LegislationFilesController extends Controller
     {
         if (!empty($_GET['id'])) {
             try {
-                $file = new LegislationFile($_GET['id']);
+                $file = new LegislationFile((int)$_GET['id']);
                 $legislation_id = $file->getLegislation_id();
                 $file->delete();
                 header('Location: '.BASE_URL.'/legislation/view?id='.$legislation_id);
