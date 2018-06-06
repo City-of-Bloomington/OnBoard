@@ -8,7 +8,6 @@
  */
 use Application\Models\Person;
 
-$actions       = [];
 $userCanEdit   = !$this->disableButtons && Person::isAllowed('liaisons', 'edit');
 $userCanDelete = !$this->disableButtons && Person::isAllowed('liaisons', 'delete');
 
@@ -34,6 +33,7 @@ foreach ($this->data['results'] as $row) {
         }
     }
 
+    $actions   = [];
     $moreLinks = '';
     if ($userCanEdit)   { $actions[] = ['url'=>BASE_URI."/liaisons/update?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
     if ($userCanDelete) { $actions[] = ['url'=>BASE_URI."/liaisons/delete?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
