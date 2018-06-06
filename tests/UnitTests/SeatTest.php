@@ -5,10 +5,9 @@
  */
 use Application\Models\Seat;
 use Application\Models\Term;
+use PHPUnit\Framework\TestCase;
 
-require_once '../../bootstrap.inc';
-
-class SeatTest extends PHPUnit_Framework_TestCase
+class SeatTest extends TestCase
 {
     public static $DATE_FORMAT = 'Y-m-d';
 

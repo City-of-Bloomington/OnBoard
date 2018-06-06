@@ -238,7 +238,10 @@ class Field extends Helper
      */
     public function file(array $params, $required=null, $attr=null)
     {
-        return "<input type=\"file\" name=\"$params[name]\" id=\"$params[id]\" $required $attr />";
+        $current = !empty($params['value'])
+                 ? "<div>$params[value]</div>"
+                 : '';
+        return "$current<input type=\"file\" name=\"$params[name]\" id=\"$params[id]\" $required $attr />";
     }
 
     /**

@@ -9,7 +9,7 @@ $helper = $this->template->getHelper('buttonLink');
 $a = '<a href="%s"%s>%s</a>';
 
 
-$current_url = new Url(Url::current_url());
+$current_url = new Url(Url::current_url(BASE_HOST));
 
 $current = $current_url->path == BASE_URI.'/seats';
 $seatsLink = sprintf($a,

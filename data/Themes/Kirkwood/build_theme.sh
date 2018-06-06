@@ -11,5 +11,8 @@ echo "Building theme dependencies"
 cd $DIR/vendor/City-of-Bloomington/factory-number-one
 ./gulp
 
+cd $DIR
+rsync -rl ./vendor/City-of-Bloomington/factory-number-one/build/assets/ ./public/fn1/
+
 cd $DIR/public/css
 ./build_css.sh

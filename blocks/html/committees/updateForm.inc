@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
 use Application\Models\Committee;
@@ -11,10 +11,10 @@ use Blossom\Classes\View;
 
 $fields = [
     'type', 'yearFormed',
-    'name', 'statutoryName', 'website', 'calendarId',
+    'name', 'statutoryName', 'code', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
     'description', 'meetingSchedule',
-    'termEndWarningDays', 'applicationLifetime'
+    'termEndWarningDays', 'applicationLifetime', 'legislative'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -45,9 +45,20 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
                     'options' => $options
                 ]);
 
+                echo $helper->field([
+                    'name'    => 'legislative',
+                    'label'   => $this->_('legislative'),
+                    'value'   => $legislative,
+                    'type'    => 'radio',
+                    'options' => [
+                        ['value'=>1, 'label'=>$this->_('yes')],
+                        ['value'=>0, 'label'=>$this->_('no' )]
+                    ]
+                ]);
+
                 $fields = [
-                    'name', 'yearFormed', 'statutoryName', 'calendarId',
-                    'website', 'termEndWarningDays', 'applicationLifetime',
+                    'name', 'yearFormed', 'statutoryName', 'code', 'calendarId',
+                    'website', 'videoArchive', 'termEndWarningDays', 'applicationLifetime',
                 ];
                 foreach ($fields as $f) {
                     $p = [

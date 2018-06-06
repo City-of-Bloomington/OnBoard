@@ -15,7 +15,7 @@ $helper = $this->template->getHelper('buttonLink');
 ?>
 <section class="termsList">
     <header>
-        <h1><?= $title; ?></h1>
+        <h2><?= $title; ?></h2>
         <?php
             if (isset($this->terms[0]) && !$this->disableButtons
                 && Person::isAllowed('terms', 'generate')) {
@@ -66,7 +66,7 @@ $helper = $this->template->getHelper('buttonLink');
                     'add'
                 );
             }
-            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'add')) {
+            if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'update')) {
                 echo $helper->buttonLink(
                     BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
                     $this->_('term_add'),

@@ -5,7 +5,7 @@
  */
 use Application\Models\Person;
 
-include '../bootstrap.inc';
+include '../bootstrap.php';
 $person = new Person();
 $person->setFirstname('{{ onboard_admin.firstname }}');
 $person->setLastname ('{{ onboard_admin.lastname  }}');

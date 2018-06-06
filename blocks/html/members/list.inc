@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->members
  *
@@ -26,15 +26,12 @@ use Blossom\Classes\Block;
 
             $name = self::escape($member->getPerson()->getFullname());
 
-            $officeTitles = [];
+            $titles  = [];
             $offices = $member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d'));
-            foreach ($offices as $office) {
-                $officeTitles[] = self::escape($office->getTitle());
-            }
-            $officeTitles = implode(', ',$officeTitles);
-            if (count($officeTitles > 0)) {
-                $officeTitles = " <span class=\"offices\">$officeTitles</span>";
-            }
+            foreach ($offices as $o) { $titles[] = self::escape($o->getTitle()); }
+            $titles  = count($titles)
+                     ? ' <span class="offices">'.implode(', ', $titles).'</span>'
+                     : '';
 
             $moreLinks = '';
             if (!$this->disableButtons) {
@@ -44,7 +41,7 @@ use Blossom\Classes\Block;
             }
             $uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
             echo "
-            <tr><td><a href=\"$uri\">$name</a>{$officeTitles}</td>
+            <tr><td><a href=\"$uri\">$name</a>$titles</td>
                 <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
                 <td>$moreLinks</td>
             </tr>
@@ -56,8 +53,11 @@ use Blossom\Classes\Block;
         $helper = $this->template->getHelper('buttonLink');
 
         if (!$this->disableButtons) {
+            $uri = null;
+            $userCanUpdate  = Person::isAllowed('members', 'update' );
+            $userCanAppoint = Person::isAllowed('members', 'appoint');
             if ($this->term) {
-                if (Person::isAllowed('members', 'edit')) {
+                if ($userCanUpdate) {
                     echo $helper->buttonLink(
                         BASE_URI.'/members/update?term_id='.$this->term->getId(),
                         $this->_('member_add'),
@@ -66,10 +66,10 @@ use Blossom\Classes\Block;
                 }
             }
             elseif ($this->seat && $this->seat->getType() === 'open') {
-                if (Person::isAllowed('members', 'update')) {
+                if ($userCanUpdate) {
                     $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
                 }
-                elseif (Person::isAllowed('members', 'appoint')) {
+                elseif ($userCanAppoint) {
                     $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
                 }
 
@@ -78,10 +78,10 @@ use Blossom\Classes\Block;
                 }
             }
             elseif ($this->committee) {
-                if (Person::isAllowed('members', 'update')) {
+                if ($userCanUpdate) {
                     $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
                 }
-                elseif (Person::isAllowed('members', 'appoint')) {
+                elseif ($userCanAppoint) {
                     $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
                 }
 

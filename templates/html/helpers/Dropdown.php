@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Templates\Helpers;
@@ -13,8 +13,8 @@ class Dropdown extends Helper
 	{
         $html = "
         <nav class=\"dropdown $class\">
-            <button id=\"$id\" class=\"launcher\" aria-haspopup=\"true\" aria-expanded=\"false\">$title</button>
-            <div class=\"links\" aria-labeledby=\"$id\">
+            <button id=\"$id\" class=\"launcher\" aria-haspopup=\"true\" aria-expanded=\"true\">$title</button>
+            <div class=\"links\" aria-labeledby=\"$id\" aria-hidden=\"false\">
                 {$this->renderLinks($links)}
             </div>
         </nav>

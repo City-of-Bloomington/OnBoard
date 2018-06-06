@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
  * @param boolean $this->disableButtons
@@ -20,7 +20,7 @@ foreach (Liaison::$types as $type) {
         $this->_($type)
     );
 }
-$uri = new Url(Url::current_url());
+$uri = new Url(Url::current_url(BASE_HOST));
 $uri->format = 'csv';
 $tools.= $helper->buttonLink($uri, 'csv', 'download');
 

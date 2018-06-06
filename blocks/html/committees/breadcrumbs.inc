@@ -12,7 +12,10 @@ use Application\Models\Person;
         <?php
             if (isset($this->committee)) {
                 $url = BASE_URI.'/committees/info?committee_id='.$this->committee->getId();
-                $name = self::escape($this->committee->getName());
+                $name =   $this->committee->getCode()
+                        ? $this->committee->getCode()
+                        : $this->committee->getName();
+                $name = parent::escape($name);
 
                 echo "<li><a href=\"$url\">$name</a></li>";
             }

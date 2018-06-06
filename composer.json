@@ -19,6 +19,6 @@
         "zendframework/zend-servicemanager": "~2.5"
     },
     "autoload": {
-        "psr-4": {"Application\\": ""}
+        "psr-4": {"Application\\": "src/Application"}
     }
 }

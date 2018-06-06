@@ -1,0 +1,17 @@
+<?php
+/**
+ * @copyright 2018 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ */
+return [
+    'ckan_url'=> 'https://data.bloomington.in.gov',
+    'api_key' => 'XXX-xx-xx-XX',
+    'resources' => [
+        // CKAN Resource ID                    => OnBoard data
+        'XXX-xx-xx-XX' => ['filename'=>'committees.csv', 'uri'=>'/committees?format=csv'     ],
+        'XXX-xx-xx-XX' => ['filename'=>     'seats.csv', 'uri'=>'/seats?format=csv'          ],
+        'XXX-xx-xx-XX' => ['filename'=> 'vacancies.csv', 'uri'=>'/seats/vacancies?format=csv'],
+        'XXX-xx-xx-XX' => ['filename'=>  'liaisons.csv', 'uri'=>'/liaisons?format=csv'       ],
+        'XXX-xx-xx-XX' => ['filename'=>   'meeting.csv', 'uri'=>'/meetingFiles?format=csv'   ]
+    ]
+];

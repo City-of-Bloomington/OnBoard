@@ -14,9 +14,8 @@
  * page redirection to the href provided.  The people search will return the user
  * to the current url once they've chosen a person.
  *
- * @copyright 2013 City of Bloomington, Indiana
+ * @copyright 2013-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Templates\Helpers;
 
@@ -50,8 +49,10 @@ class PersonChooser
 			$id   = $person->getId();
 			$name = View::escape($person->getFullname());
 		}
-		$return_url = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
-		$personChooser = BASE_URI.'/people?return_url='.$return_url;
+		$return_url = new Url(Url::current_url(BASE_HOST));
+		if (isset($return_url->callback_field)) { unset($return_url->callback_field); }
+
+		$personChooser = BASE_URI."/people?callback_field=$fieldname;return_url=$return_url";
 
 		$html = "
 		<input type=\"hidden\" name=\"{$fieldname}\" id=\"{$fieldId}\" value=\"$id\" />

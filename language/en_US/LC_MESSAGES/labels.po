@@ -157,9 +157,6 @@ msgstr "Vote Info"
 msgid "info_term"
 msgstr "Term Info"
 
-msgid "info_topic"
-msgstr "Legislation Info"
-
 msgid "info_seat"
 msgstr "Seat Info"
 
@@ -223,6 +220,9 @@ msgstr "History"
 
 msgid "type"
 msgstr "Type"
+
+msgid "subtype"
+msgstr "Subtype"
 
 msgid "council"
 msgid_plural "councils"
@@ -290,6 +290,9 @@ msgstr "Term Length"
 msgid "voting"
 msgstr "Voting"
 
+msgid "takesApplications"
+msgstr "Takes Applications"
+
 msgid "add_appointer"
 msgstr "Add Appointer"
 
@@ -312,28 +315,6 @@ msgstr "Edit Requirement"
 
 msgid "current_requirements"
 msgstr "Current Requirements"
-
-msgid "topic"
-msgid_plural "topics"
-msgstr[0] "Legislation"
-msgstr[1] "Legislation"
-
-msgid "add_topic"
-msgstr "Add Legislation"
-
-msgid "edit_topic"
-msgstr "Edit Legislation"
-
-msgid "topicType"
-msgid_plural "topicTypes"
-msgstr[0] "Legislation Type"
-msgstr[1] "Legislation Types"
-
-msgid "add_topicType"
-msgstr "Add Legislation Type"
-
-msgid "edit_topicType"
-msgstr "Edit Topic Type"
 
 msgid "vote"
 msgid_plural "votes"
@@ -382,10 +363,10 @@ msgid_plural "tags"
 msgstr[0] "Tag"
 msgstr[1] "Tags"
 
-msgid "add_tag"
+msgid "tag_add"
 msgstr "Add Tag"
 
-msgid "edit_tag"
+msgid "tag_edit"
 msgstr "Edit Tag"
 
 msgid "term"
@@ -512,6 +493,11 @@ msgstr[1] "Vacancies"
 msgid "order"
 msgstr "Order"
 
+msgid "year"
+msgid_plural "years"
+msgstr[0] "Year"
+msgstr[1] "Years"
+
 msgid "day"
 msgid_plural "days"
 msgstr[0] "day"
@@ -540,6 +526,12 @@ msgstr "Description"
 
 msgid "synopsis"
 msgstr "Synopsis"
+
+msgid "notes"
+msgstr "Notes"
+
+msgid "amendsCode"
+msgstr "Amends Code"
 
 msgid "contactInfo"
 msgstr "Contact Information"
@@ -575,6 +567,9 @@ msgstr "Url"
 
 msgid "website"
 msgstr "Website"
+
+msgid "videoArchive"
+msgstr "Video Archive"
 
 msgid "title"
 msgstr "Title"
@@ -666,8 +661,22 @@ msgstr "Please explain your interest"
 msgid "qualifications"
 msgstr "Please describe your qualifications"
 
+msgid "report"
+msgid_plural "reports"
+msgstr[0] "Report"
+msgstr[1] "Reports"
+
+msgid "report_add"
+msgstr "New Report"
+
+msgid "report_edit"
+msgstr "Edit Report"
+
 msgid "report_view"
 msgstr "View Report"
+
+msgid "report_delete"
+msgstr "Delete Report"
 
 msgid "applicantFile"
 msgstr "Include a resume (optional)"
@@ -691,8 +700,8 @@ msgstr[1] "Meetings"
 
 msgid "meetingFile"
 msgid_plural "meetingFiles"
-msgstr[0] "Document"
-msgstr[1] "Documents"
+msgstr[0] "Meeting"
+msgstr[1] "Meetings"
 
 msgid "meetingFile_add"
 msgstr "Add Document"
@@ -711,3 +720,79 @@ msgstr "Last Updated"
 
 msgid "meetingDate"
 msgstr "Meeting Date"
+
+msgid "legislationType"
+msgid_plural "legislationTypes"
+msgstr[0] "Legislation Type"
+msgstr[1] "Legislation Types"
+
+msgid "legislationType_add"
+msgstr "New Legislation Type"
+
+msgid "legislationType_edit"
+msgstr "Edit Legislation Type"
+
+msgid "legislationActionType"
+msgid_plural "legislationActionTypes"
+msgstr[0] "Legislation Action Type"
+msgstr[1] "Legislation Action Types"
+
+msgid "legislationActionType_add"
+msgstr "New Action Type"
+
+msgid "legislationActionType_edit"
+msgstr "Edit Action Type"
+
+msgid "legislation"
+msgid_plural "legislations"
+msgstr[0] "Legislation"
+msgstr[1] "Legislation"
+
+msgid "legislation_add"
+msgstr "Add Legislation"
+
+msgid "legislation_edit"
+msgstr "Edit"
+
+msgid "legislative"
+msgstr "Legislative"
+
+msgid "legislationAction"
+msgid_plural "legislationActions"
+msgstr[0] "Legislative Action"
+msgstr[1] "Legislative Actions"
+
+msgid "legislationAction_add"
+msgstr "New Action"
+
+msgid "legislationAction_edit"
+msgstr "Edit Action"
+
+
+msgid "legislationFile"
+msgid_plural "legislationFiles"
+msgstr[0] "File"
+msgstr[1] "Files"
+
+msgid "legislationFile_add"
+msgstr "Upload New File"
+
+msgid "legislationFile_edit"
+msgstr "Replace File"
+
+msgid "legislationFile_delete"
+msgstr "Delete File"
+
+msgid "legislationStatus"
+msgid_plural "legislationStatuses"
+msgstr[0] "Status"
+msgstr[1] "Statuses"
+
+msgid "legislationStatus_add"
+msgstr "New Status"
+
+msgid "legislationStatus_edit"
+msgstr "Edit Status"
+
+msgid "legislationStatus_delete"
+msgstr "Delete Status"

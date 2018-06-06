@@ -1,15 +1,10 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @param array $this->fields Fields to draw in the search form
  */
-use Application\Models\Person;
-
-$fields = ['firstname', 'lastname'];
-if (Person::isAllowed('people', 'viewContactInfo')) {
-    $fields[] = 'email';
-}
-foreach ($fields as $f) {
+foreach ($this->fields as $f) {
 	$$f = isset($_GET[$f]) ? self::escape($_GET[$f]) : '';
 }
 ?>
@@ -21,7 +16,7 @@ foreach ($fields as $f) {
         <fieldset>
             <?php
                 $h = $this->template->getHelper('field');
-                foreach ($fields as $f) {
+                foreach ($this->fields as $f) {
                     echo $h->field([
                         'label' => $this->_($f),
                         'name'  => $f,
@@ -31,7 +26,7 @@ foreach ($fields as $f) {
                 }
                 // Preserve any extra parameters passed in
                 foreach ($_REQUEST as $key=>$value) {
-                    if (!in_array($key, $fields)) {
+                    if (!in_array($key, $this->fields)) {
                         $key   = self::escape($key);
                         $value = self::escape($value);
                         echo "<input type=\"hidden\" name=\"$key\" value=\"$value\" />\n";

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -11,7 +11,7 @@ $committee_id = $this->committee->getId();
 
 $helper = $this->template->getHelper('buttonLink');
 $a = '<a href="%s" id="%s"%s>%s</a>';
-$current_url = new Url(Url::current_url());
+$current_url = new Url(Url::current_url(BASE_HOST));
 
 $current = $current_url->path == BASE_URI.'/committees/info';
 $infoLink = sprintf($a,
@@ -33,12 +33,24 @@ $membersLink = sprintf($a,
 );
 
 
-$current = $current_url->path === BASE_URI.'/committees/meetings';
-$meetingsLink = sprintf($a,
-    BASE_URI."/committees/meetings?committee_id=$committee_id",
-    'meetings',
+$current = strpos($current_url->path, BASE_URI.'/legislation') !== false;
+$legislationLink = '';
+if ($this->committee->isLegislative()) {
+    $legislationLink = sprintf($a,
+        BASE_URI."/legislation?committee_id=$committee_id;year=".date('Y'),
+        'legislation',
+        $current ? ' class="current"' : '',
+        $this->_(['legislation', 'legislations', 10])
+    );
+}
+
+$current = strpos($current_url->path, BASE_URI.'/reports') !== false;
+$reportsLink = '';
+$reportsLink = sprintf($a,
+    BASE_URI."/reports?committee_id=$committee_id",
+    'reports',
     $current ? ' class="current"' : '',
-    $this->_(['meeting', 'meetings', 10])
+    $this->_(['report', 'reports', 10])
 );
 
 $current = $current_url->path == BASE_URI.'/meetingFiles';
@@ -74,7 +86,7 @@ if ($this->committee->getType() === 'open' &&  $this->committee->hasPastMembers(
 }
 
 $applicationsLink = '';
-if (Person::isAllowed('committees', 'applications')) {
+if (Person::isAllowed('committees', 'applications') && $this->committee->takesApplications()) {
     $current = $current_url->path == BASE_URI.'/committees/applications';
     $applicationsLink = sprintf($a,
         BASE_URI."/committees/applications?committee_id=$committee_id",
@@ -106,8 +118,9 @@ echo "
         $pastSeatsLink
         $pastMembersLink
         $applicationsLink
-        $meetingsLink
         $filesLink
+        $legislationLink
+        $reportsLink
         $historyLink
     </nav>
 </header>

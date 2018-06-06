@@ -15,7 +15,7 @@ use Blossom\Classes\Url;
         <input name="eventId"      type="hidden" value="<?= $this->eventId; ?>" />
         <input name="meetingDate"  type="hidden" value="<?= $this->date->format(DATE_FORMAT); ?>" />
         <input name="type"         type="hidden" value="<?= $this->type; ?>" />
-        <input name="return_url"   type="hidden" value="<?= Url::current_url(); ?>" />
+        <input name="return_url"   type="hidden" value="<?= Url::current_url(BASE_HOST); ?>" />
         <input name="meetingFile"  type="file" />
         <button type="submit" class="upload"><?= $this->_('upload'); ?></button>
     </fieldset>

@@ -1,13 +1,20 @@
 <?php
-define('APPLICATION_NAME','application');
+define('APPLICATION_NAME','onboard');
 
 /**
- * The URL to get to this site
- * Do NOT use a trailing slash
+ * URL Generation settings
+ *
+ * Do NOT use trailing slashes
+ *
+ * If your site is being proxied, change BASE_HOST to the hostname
+ * used for the outside world.
  */
-define('BASE_URL','http://localhost/application');
-define('BASE_URI','/application');
-define('THEME', 'Kirkwood');
+define('BASE_URI' , '/onboard');
+#define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+#                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+#                        : $_SERVER['SERVER_NAME']);
+define('BASE_HOST', $_SERVER['SERVER_NAME']);
+define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
 
 define('RECAPTCHA_SITE_KEY',   '');
 define('RECAPTCHA_SERVER_KEY', '');
@@ -16,14 +23,25 @@ define('GOOGLE_USER_EMAIL', 'user@localhost');
 define('GOOGLE_CALENDAR_URL', 'https://calendar.google.com');
 
 /**
+ * Specify the theme directory
+ *
+  * Remember to create a symbolic link in public/css to the theme CSS
+  * that you declare here.
+ *
+ * A theme can consist of templates, blocks which will override core.
+ * The current theme's screen.css will be included in the HTML head.
+ */
+define('THEME', 'Kirkwood');
+
+/**
  * Database Setup
  * Refer to the PDO documentation for DSN sytnax for your database type
  * http://www.php.net/manual/en/pdo.drivers.php
  */
 define('DB_ADAPTER','Pdo_Mysql');
 define('DB_HOST','localhost');
-define('DB_NAME','application');
-define('DB_USER','application');
+define('DB_NAME','onboard');
+define('DB_USER','onboard');
 define('DB_PASS','password');
 
 /**
@@ -85,3 +103,15 @@ define('LOCALE', 'en_US');
 
 define('TERM_END_WARNING_DEFAULT', 60);
 define('APPLICATION_LIFETIME_DEFAULT', 90);
+define('ADMINISTRATOR_EMAIL', 'someone@localhost');
+
+/**
+ * Skidder is a web service for error loggin.  This application supports
+ * logging errors to a Skidder server.  You must register for an application_id
+ * on the skidder server you want to post errors to.
+ */
+#$writer = new Blossom\Classes\Log\SkidderWriter('https://apps.bloomington.in.gov/skidder/index', 3 );
+#$logger = new Zend\Log\Logger();
+#$logger->addWriter($writer);
+#Zend\Log\Logger::registerErrorHandler($logger);
+#Zend\Log\Logger::registerExceptionHandler($logger);

@@ -43,3 +43,4 @@ drop table topicTypes;
 drop table voteTypes;
 
 alter table committees drop contactInfo;
+alter table committees add videoArchive varchar(128) after website;

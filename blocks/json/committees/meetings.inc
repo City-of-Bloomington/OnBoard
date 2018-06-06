@@ -15,7 +15,11 @@ use Blossom\Classes\Url;
 $out = [];
 foreach ($this->meetings as $date=>$meeting) {
 
-    $out[$date]['eventId'] = !empty($meeting['eventId']) ? $meeting['eventId'] : '';
+    $out[$date]['eventId' ] = !empty($meeting['eventId' ]) ? $meeting['eventId' ] : '';
+    $out[$date]['summary' ] = !empty($meeting['summary' ]) ? $meeting['summary' ] : '';
+    $out[$date]['location'] = !empty($meeting['location']) ? $meeting['location'] : '';
+    $out[$date]['start'   ] = !empty($meeting['start'   ]) ? $meeting['start'   ] : '';
+    $out[$date]['end'     ] = !empty($meeting['end'     ]) ? $meeting['end'     ] : '';
 
     foreach (MeetingFile::$types as $type) {
         if (!empty(  $meeting['files'][$type])) {

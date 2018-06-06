@@ -9,10 +9,10 @@ use Application\Models\Person;
     <div class="container">
         <?php
             $routes = [
-                'committee' => 'committees',
-                'person'    => 'people',
-                'seat'      => 'seats',
-                'liaison'   => 'liaisons'
+                'committee'   => 'committees',
+                'person'      => 'people',
+                'seat'        => 'seats',
+                'liaison'     => 'liaisons'
             ];
             foreach ($routes as $singular => $plural) {
                 if (Person::isAllowed($plural, 'index')) {
@@ -27,20 +27,6 @@ use Application\Models\Person;
                 $uri = BASE_URI.'/applicants/apply';
                 $class = (strpos($_SERVER['REQUEST_URI'], $uri) !== false) ? ' class="current"' : '';
                 echo "<a href=\"$uri\"$class>{$this->_('apply')}</a>";
-            }
-
-            if (defined('VOTE_TRACKING') && VOTE_TRACKING) {
-                $routes = [
-                    'voteType'  => 'voteTypes',
-                    'topic'     => 'topics',
-                    'topicType' => 'topicTypes'
-                ];
-                foreach ($routes as $singular => $plural) {
-                    if (Person::isAllowed($plural, 'index')) {
-                        $uri = BASE_URI."/$plural";
-                        echo "<a href=\"$uri\">{$this->_([$singular, $plural, 2])}</a>";
-                    }
-                }
             }
         ?>
     </div>

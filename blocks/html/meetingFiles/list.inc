@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->files
  * @param Committee      $this->committee (optional)
@@ -9,17 +9,28 @@
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 use Application\Models\Person;
+use Blossom\Classes\Block;
 use Blossom\Classes\Url;
+
+$userCanEdit   = Person::isAllowed('meetingFiles', 'update');
+$userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 ?>
 <section>
     <header>
-        <h1><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h1>
+        <h2><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h2>
         <div class="tools">
         <?php
-            if ($this->committee && Person::isAllowed('meetingFiles', 'add')) {
+            $helper = $this->template->getHelper('buttonLink');
+            if (!$this->disableButtons) {
+                $url = new Url(Url::current_url(BASE_HOST));
+                $url->format = 'csv';
+                echo $helper->buttonLink($url, $this->_('csv'), 'download');
+            }
+
+            $helper = $this->template->getHelper('dropdown');
+            if ($this->committee && $userCanEdit) {
                 $actions      = [];
                 $committee_id = $this->committee->getId();
-                $helper       = $this->template->getHelper('dropdown');
                 foreach (MeetingFile::$types as $type) {
                     $actions[] = [
                         'label' => $type,
@@ -33,11 +44,10 @@ use Blossom\Classes\Url;
     </header>
     <table>
     <thead>
-        <tr><th></th>
-            <?php
-                $url = new Url(Url::current_url());
+        <tr><?php
+                $url = new Url(Url::current_url(BASE_HOST));
 
-                $fields = ['filename', 'meetingDate'];
+                $fields = ['title', 'filename', 'meetingDate'];
                 foreach ($fields as $f) {
                     $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
                     $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
@@ -73,40 +83,43 @@ use Blossom\Classes\Url;
     </thead>
     <tbody>
     <?php
-        $userCanEdit   = Person::isAllowed('meetingFiles', 'edit'  );
-        $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
-        $helper        = $this->template->getHelper('buttonLink');
-
-        $editButton   = '';
-        $deleteButton = '';
         foreach ($this->files as $f) {
+            $id       = $f->getId();
+            $title    = parent::escape($f->getTitle());
             $filename = parent::escape($f->getFilename());
+            $actions  = [];
 
             if ($userCanEdit) {
-                $editButton = $helper->buttonLink(
-                    BASE_URI."/meetingFiles/update?meetingFile_id={$f->getId()}",
-                    $this->_('meetingFile_edit'),
-                    'edit'
-                );
+                $actions[] = [
+                    'url'   => BASE_URI."/meetingFiles/update?meetingFile_id=$id",
+                    'label' => $this->_('meetingFile_edit')
+                ];
             }
             if ($userCanDelete) {
-                $deleteButton = $helper->buttonLink(
-                    BASE_URI."/meetingFiles/delete?meetingFile_id={$f->getId()}",
-                    $this->_('meetingFile_delete'),
-                    'delete'
-                );
+                $actions[] = [
+                    'url'   => BASE_URI."/meetingFiles/delete?meetingFile_id=$id",
+                    'label' => $this->_('meetingFile_delete')
+                ];
             }
-            $url = BASE_URI."/meetingFiles/download?meetingFile_id={$f->getId()}";
+            $dropdown = $actions
+                      ? $helper->dropdown($actions, $this->_('more'), "meetingFile_$id")
+                      : '';
+
+            $url = $f->getDownloadUri();
             echo "
-            <tr><td>$editButton</td>
+            <tr><td>$title</td>
                 <td><a href=\"$url\">$filename</a></td>
                 <td>{$f->getMeetingDate(DATE_FORMAT)}</td>
                 <td>{$f->getType()}</td>
-                <td>$deleteButton</td>
+                <td>$dropdown</td>
             </tr>
             ";
         }
     ?>
     </tbody>
     </table>
+    <?php
+        $block = new Block('pageNavigation.inc', ['paginator'=>$this->files]);
+        echo $block->render('html', $this->template);
+    ?>
 </section>

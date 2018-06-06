@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2007-2017 City of Bloomington, Indiana
+ * @copyright 2007-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Sql\Select $users
  */
@@ -12,7 +12,9 @@ use Application\Templates\Helpers\ButtonLink;
         <h1><?= $this->_(['user','users', 10]); ?></h1>
         <div>
         <?php
-            if (Person::isAllowed('users', 'add')) {
+            $userCanEdit   = Person::isAllowed('users', 'update');
+            $userCanDelete = Person::isAllowed('users', 'delete');
+            if ($userCanEdit) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
                     BASE_URI.'/users/update',
@@ -38,14 +40,14 @@ use Application\Templates\Helpers\ButtonLink;
 			foreach ($this->users as $user) {
 				$editButton   = '';
 				$deleteButton = '';
-				if (Person::isAllowed('users', 'edit')) {
+				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
 						BASE_URI.'/users/update?user_id='.$user->getId(),
 						$this->translate('edit_account'),
 						'edit'
 					);
                 }
-                if (Person::isAllowed('users', 'delete')) {
+                if ($userCanDelete) {
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
 						$this->translate('delete_account'),

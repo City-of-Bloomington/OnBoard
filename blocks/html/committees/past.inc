@@ -12,7 +12,7 @@ use Blossom\Classes\Url;
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
-            $url = new Url(Url::current_url());
+            $url = new Url(Url::current_url(BASE_HOST));
             unset($url->current);
             echo $helper->buttonLink($url, $this->_('committees_current'));
         ?>

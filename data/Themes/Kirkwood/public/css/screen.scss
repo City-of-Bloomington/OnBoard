@@ -23,7 +23,7 @@ thead {
         form, fieldset { margin:0; border:0; }
         font-size:$font-size-small;
         select {
-            color:$color-content-background;
+            color:$color-text-default;
             background-color:$color-table-header-background;
             border:none;
             font-size:$font-size-small;
@@ -96,7 +96,7 @@ table.terms {
         th {
             background-color: $color-border-table;
             border: 1px solid $color-border-input;
-            color: $color-content-background;
+            color: $color-text-default;
             vertical-align: top;
             .launcher {
             }

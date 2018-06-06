@@ -9,10 +9,12 @@ use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
-		 ->addRole(new Role('Public'),        'Anonymous')
-		 ->addRole(new Role('Council'),       'Public')
-		 ->addRole(new Role('Reviewer'),      'Public')
-		 ->addRole(new Role('Staff'),         'Reviewer')
+		 ->addRole(new Role('Public'),               'Anonymous')
+		 ->addRole(new Role('Applicants-view-only'), 'Public')
+		 ->addRole(new Role('Reviewer'),             'Public')
+		 ->addRole(new Role('meetingFileUploader'),  'Public')
+         ->addRole(new Role('Liaison'), ['Applicants-view-only', 'meetingFileUploader'])
+		 ->addRole(new Role('Staff'),                'Reviewer')
 		 ->addRole(new Role('Administrator'));
 
 /**
@@ -45,41 +47,54 @@ $ZEND_ACL->addResource(new Resource('applicantFiles'));
 $ZEND_ACL->addResource(new Resource('meetingFiles'));
 $ZEND_ACL->addResource(new Resource('committeeStatutes'));
 
-$ZEND_ACL->addResource(new Resource('topics'));
-$ZEND_ACL->addResource(new Resource('topicTypes'));
-$ZEND_ACL->addResource(new Resource('votes'));
-$ZEND_ACL->addResource(new Resource('voteTypes'));
+$ZEND_ACL->addResource(new Resource('legislation'));
+$ZEND_ACL->addResource(new Resource('legislationFiles'));
+$ZEND_ACL->addResource(new Resource('legislationTypes'));
+$ZEND_ACL->addResource(new Resource('legislationActions'));
+$ZEND_ACL->addResource(new Resource('legislationActionTypes'));
+$ZEND_ACL->addResource(new Resource('legislationStatuses'));
+
+$ZEND_ACL->addResource(new Resource('reports'));
 
 /**
  * Assign permissions to the resources
  */
 // Permissions for unauthenticated browsing
 $ZEND_ACL->allow(null, ['callback', 'login']);
-$ZEND_ACL->allow(null, 'index', 'index');
-$ZEND_ACL->allow(null, ['people', 'topics', 'liaisons'], ['index','view']);
-$ZEND_ACL->allow(null, 'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
-$ZEND_ACL->allow(null, 'seats', ['index','view', 'vacancies']);
-$ZEND_ACL->allow(null, 'applicants', 'apply');
-$ZEND_ACL->allow(null, 'meetingFiles', ['index', 'download', 'years']);
+$ZEND_ACL->allow(null,  'index', 'index');
+$ZEND_ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view', 'years']);
+$ZEND_ACL->allow(null,  'people', 'parameters');
+$ZEND_ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
+$ZEND_ACL->allow(null,  'seats', ['index','view', 'vacancies']);
+$ZEND_ACL->allow(null,  'applicants', 'apply');
+$ZEND_ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);
+$ZEND_ACL->allow(null,  'legislationTypes', 'index');
 
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Council', 'committees',   'applications');
-$ZEND_ACL->allow('Council', 'applicantFiles', 'download');
-$ZEND_ACL->allow('Council', 'applicants',   ['index', 'view']);
-$ZEND_ACL->allow('Council', 'applications', ['index', 'report']);
-$ZEND_ACL->allow('Council', 'people',       'viewContactInfo');
+$ZEND_ACL->allow('Applicants-view-only', 'committees',   'applications');
+$ZEND_ACL->allow('Applicants-view-only', 'applicantFiles', 'download');
+$ZEND_ACL->allow('Applicants-view-only', 'applicants',   ['index', 'view']);
+$ZEND_ACL->allow('Applicants-view-only', 'applications', ['index', 'report']);
+$ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
 
-$ZEND_ACL->allow('Reviewer', 'committees', 'applications');
-$ZEND_ACL->allow('Reviewer', 'applicantFiles');
-$ZEND_ACL->allow('Reviewer', 'applicants',   ['index', 'view', 'update']);
-$ZEND_ACL->allow('Reviewer', 'applications', ['index', 'archive', 'report']);
-$ZEND_ACL->allow('Reviewer', 'people', 'viewContactInfo');
+$ZEND_ACL->allow('Reviewer',  'committees', 'applications');
+$ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
+$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
+$ZEND_ACL->allow('Reviewer',  'legislationStatuses', 'index');
+$ZEND_ACL->allow('Reviewer',  'applicants',   ['index', 'view', 'update']);
+$ZEND_ACL->allow('Reviewer',  'applications', ['index', 'archive', 'report']);
+$ZEND_ACL->allow('Reviewer',  'people', 'viewContactInfo');
 
-$ZEND_ACL->allow('Staff', 'committees', ['edit', 'update']);
-$ZEND_ACL->allow('Staff', 'people',     ['edit', 'update', 'add']);
-$ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign']);
+$ZEND_ACL->allow('Staff', 'committees', ['update']);
+$ZEND_ACL->allow('Staff', 'people',     ['update']);
+$ZEND_ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign', 'update']);
+$ZEND_ACL->allow('Staff', 'offices',    ['update']);
 $ZEND_ACL->allow('Staff', 'liaisons');
+
+$ZEND_ACL->allow('meetingFileUploader',  'people', 'viewContactInfo');
+$ZEND_ACL->allow('meetingFileUploader',  'meetingFiles');
+$ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

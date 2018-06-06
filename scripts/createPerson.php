@@ -1,12 +1,11 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
+ * @copyright 2012-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 use Application\Models\Person;
 
-include '../bootstrap.inc';
+include '../bootstrap.php';
 $person = new Person();
 $person->setFirstname('Administrator');
 $person->setLastname('Person');

@@ -7,7 +7,7 @@
  */
 use Application\Models\Committee;
 use Application\Models\MeetingFile;
-include '../../bootstrap.inc';
+include '../../bootstrap.php';
 
 $committee = new Committee(10);
 $type      = 'Agenda';

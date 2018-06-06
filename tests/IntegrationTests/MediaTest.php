@@ -4,9 +4,24 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\File;
+use PHPUnit\Framework\TestCase;
 
-include '../../bootstrap.inc';
+class MediaTest extends TestCase
+{
+    public function setUp()
+    {
+        copy(__DIR__.'/testfile', SITE_HOME.'/test');
+    }
 
-copy(__DIR__.'/testfile', SITE_HOME.'/testfile');
+    public function tearDown()
+    {
+        unlink(SITE_HOME.'/test');
+    }
 
-File::convertToPDF(SITE_HOME.'/testfile');
+    public function testPDFConversion()
+    {
+        File::convertToPDF(SITE_HOME.'/test');
+        $info = finfo_open(FILEINFO_MIME_TYPE);
+        $this->assertEquals('application/pdf', finfo_file($info, SITE_HOME.'/test'));
+    }
+}

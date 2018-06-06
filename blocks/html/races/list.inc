@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
+ * @copyright 2009-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->races
  */
@@ -12,8 +12,9 @@ use Application\Templates\Helpers\ButtonLink;
         <h1><?= $this->translate(['race','races', count($this->races)]); ?></h1>
         <div class="tools">
         <?php
-            $helper = $this->template->getHelper('buttonLink');
-            if (Person::isAllowed('races', 'add')) {
+            $helper      = $this->template->getHelper('buttonLink');
+            $userCanEdit = Person::isAllowed('races', 'update');
+            if ($userCanEdit) {
                 echo $helper->buttonLink(
                     BASE_URI.'/races/update',
                     $this->translate('race_add'),
@@ -27,7 +28,7 @@ use Application\Templates\Helpers\ButtonLink;
     <?php
         foreach ($this->races as $race) {
             $editButton = '';
-            if (Person::isAllowed('races', 'edit')) {
+            if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
                     BASE_URI.'/races/update?race_id='.$race->getId(),
                     $this->translate('race_edit'),

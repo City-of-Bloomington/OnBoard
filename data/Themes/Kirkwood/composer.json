@@ -5,6 +5,6 @@
     }],
     "require": {
         "php": ">=5.6",
-        "City-of-Bloomington/factory-number-one": "dev-refactor"
+        "City-of-Bloomington/factory-number-one": "dev-master"
     }
 }

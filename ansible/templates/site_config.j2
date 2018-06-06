@@ -1,0 +1,89 @@
+<?php
+define('APPLICATION_NAME','onboard');
+
+/**
+ * URL Generation settings
+ *
+ * Do NOT use trailing slashes
+ *
+ * If your site is being proxied, change BASE_HOST to the hostname
+ * used for the outside world.
+ */
+define('BASE_URI' , '{{ onboard_base_uri }}');
+define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+                        : '{{ ansible_host }}');
+#define('BASE_HOST', $_SERVER['SERVER_NAME']);
+define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
+
+define('RECAPTCHA_SITE_KEY',   '{{ onboard_recaptcha.site_key   }}');
+define('RECAPTCHA_SERVER_KEY', '{{ onboard_recaptcha.server_key }}');
+define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
+define('GOOGLE_USER_EMAIL',   '{{ onboard_google.user     }}');
+define('GOOGLE_CALENDAR_URL', '{{ onboard_google.calendar }}');
+
+/**
+ * Specify the theme directory
+ *
+  * Remember to create a symbolic link in public/css to the theme CSS
+  * that you declare here.
+ *
+ * A theme can consist of templates, blocks which will override core.
+ * The current theme's screen.css will be included in the HTML head.
+ */
+define('THEME', 'Kirkwood');
+
+/**
+ * Database Setup
+ * Refer to the PDO documentation for DSN sytnax for your database type
+ * http://www.php.net/manual/en/pdo.drivers.php
+ */
+define('DB_ADAPTER','Pdo_Mysql');
+define('DB_HOST','localhost');
+define('DB_NAME','{{ onboard_db.name     }}');
+define('DB_USER','{{ onboard_db.username }}');
+define('DB_PASS','{{ onboard_db.password }}');
+
+/**
+ * Directory Configuration
+ *
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
+ */
+$DIRECTORY_CONFIG = [
+{% if onboard_directory_service %}
+// Example for Directory webservice
+  'Employee' => [
+      'classname' => 'Site\Classes\Employee',
+      'DIRECTORY_SERVER' => '{{ onboard_directory_service }}',
+  ]
+{% endif %}
+];
+
+{% if onboard_cas_host %}
+/**
+ * CAS authentication http://www.jasig.org/cas
+ *
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
+ */
+define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
+define('CAS_SERVER','{{ onboard_cas_host }}');
+define('CAS_URI','cas');
+{% endif %}
+
+define('DATE_FORMAT', 'n/j/Y');
+define('TIME_FORMAT', 'H:i:s');
+define('DATETIME_FORMAT', 'n/j/Y H:i:s');
+
+define('LOCALE', 'en_US');
+
+define('TERM_END_WARNING_DEFAULT', 60);
+define('APPLICATION_LIFETIME_DEFAULT', 90);
+define('ADMINISTRATOR_EMAIL', '{{ onboard_admin_email }}');

@@ -12,7 +12,11 @@ $routes = [
     'departments'=> 'department',
     'appointers' => 'appointer',
     'races'      => 'race',
-    'users'      => 'user'
+    'users'      => 'user',
+    'tags'       => 'tag',
+    'legislationTypes'       => 'legislationType',
+    'legislationActionTypes' => 'legislationActionType',
+    'legislationStatuses'    => 'legislationStatus'
 ];
 
 foreach ($routes as $plural=>$singular) {

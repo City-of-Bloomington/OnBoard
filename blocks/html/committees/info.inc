@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
@@ -11,16 +11,16 @@ use Michelf\MarkdownExtra;
 
 $fields = [
     'id', 'type',
-    'name', 'statutoryName', 'yearFormed', 'website', 'calendarId',
-    'email', 'phone', 'address', 'city', 'state', 'zip', 'termEndWarningDays', 'applicationLifetime'
+    'name', 'statutoryName', 'code', 'yearFormed', 'website', 'videoArchive', 'calendarId',
+    'email', 'phone', 'address', 'city', 'state', 'zip',
+    'termEndWarningDays', 'applicationLifetime', 'legislative'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = View::escape($this->committee->$get());
-}
-
-if ($website) {
-    $website = "<a href=\"$website\">$website</a>";
+    if ($f == 'website' || $f == 'videoArchive') {
+        $$f = "<a href=\"{$$f}\">{$$f}</a>";
+    }
 }
 
 $markdown = new MarkdownExtra();
@@ -30,7 +30,7 @@ $meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
 $helper = $this->template->getHelper('buttonLink');
 $editButton = '';
 $endButton  = '';
-$userCanEdit = Person::isAllowed('committees', 'edit');
+$userCanEdit = Person::isAllowed('committees', 'update');
 if ($userCanEdit) {
     $editButton = $helper->buttonLink(
         BASE_URI."/committees/update?committee_id=$id",
@@ -52,15 +52,15 @@ if ((!$endDate || $endDate > time())
 ?>
 <section>
     <header>
-        <h1><?= $this->_('committee_info') ?></h1>
+        <h2><?= $this->_('committee_info') ?></h2>
         <div class="tools"><?= "$editButton $endButton"; ?></div>
     </header>
     <div>
     <?php
         $fields  = [
             'type', 'yearFormed', 'endDate',
-            'statutoryName', 'website',
-            'email', 'phone', 'address', 'calendarId'
+            'statutoryName', 'code', 'website', 'videoArchive',
+            'email', 'phone', 'address', 'calendarId', 'legislative'
         ];
         if ($userCanEdit) {
             $fields[] = 'termEndWarningDays';
@@ -70,19 +70,29 @@ if ((!$endDate || $endDate > time())
 
         $endDate = $this->committee->getEndDate(DATE_FORMAT);
 
+        echo '<table>';
         foreach ($fields as $f) {
             if ($$f) {
-                if ($f === 'termEndWarningDays') {
-                    $$f = $$f.' '.$this->_(['day', 'days', $$f]);
+                switch ($f) {
+                    case 'calendarId':
+                        $$f = "<a href=\"https://calendar.google.com/calendar/embed?src={$$f}\">{$$f}</a>";
+                    break;
+                    case 'termEndWarningDays':
+                        $$f = $$f.' '.$this->_(['day', 'days', $$f]);
+                    break;
+                    case 'legislative':
+                        $$f = $$f ? $this->_('yes') : $this->_('no');
+                    break;
                 }
                 echo "
-                <dl>
-                    <dt>{$this->_($f)}</dt>
-                    <dd>{$$f}</dd>
+                <tr>
+                    <th>{$this->_($f)}</th>
+                    <td>{$$f}</td>
                 </dl>
                 ";
             }
         }
+        echo '</table>';
     ?>
     <?= $description; ?>
 

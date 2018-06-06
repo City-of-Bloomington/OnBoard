@@ -6,7 +6,7 @@
  * @param Committee $this->committee (optional)
  */
 echo '<ul>';
-foreach ($this->years as $year) {
-    echo "<li>$year</li>";
+foreach ($this->years as $year=>$count) {
+    echo "<li>$year ($count)</li>";
 }
 echo '</ul>';

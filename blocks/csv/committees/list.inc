@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
  */
@@ -11,7 +11,7 @@ $filename.= '-'.date('Ymd');
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 
 $fields = [
-    'id','type','name','website',
+    'id','type','name','website', 'videoArchive',
     'email','phone','address','city','state','zip',
     'statutoryName','yearFormed', 'endDate',
     'seats', 'vacancies'

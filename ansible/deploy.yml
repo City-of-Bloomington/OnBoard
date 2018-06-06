@@ -1,0 +1,129 @@
+---
+- hosts: onboard
+  become: yes
+  roles:
+    - City-of-Bloomington.mysql
+    - City-of-Bloomington.php
+
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - php-mysql
+        - default-jre
+        - libreoffice-common
+        - libreoffice-writer
+        - postfix
+
+    - name: "Postfix start at boot"
+      service: name=postfix state=started enabled=yes
+
+    - name: Create mysql database
+      mysql_db:
+        config_file: "{{ mysql_defaults_extra_file }}"
+        name: "{{ onboard_db.name }}"
+        state: present
+      no_log: True
+
+    - name: Create mysql user for site
+      mysql_user:
+        name:     "{{ onboard_db.username }}"
+        password: "{{ onboard_db.password }}"
+        priv:     "{{ onboard_db.name }}.*:ALL"
+        state: present
+        config_file: "{{ mysql_defaults_extra_file }}"
+      no_log: True
+
+    - name: Extract release
+      unarchive:
+        src: "{{ onboard_archive_path }}"
+        dest: /usr/local/src
+      register: release
+
+    - name: Create installation directory
+      file:
+        path: "{{ onboard_install_path }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+
+    - name: Create data directory
+      file:
+        path: "{{ onboard_site_home }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode: 2775
+
+    - name: Install release
+      command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
+      when: release.changed
+
+    - name: Update site_home
+      command: "rsync -rl /usr/local/src/onboard/data/ {{ onboard_site_home }}/"
+      when: release.changed
+
+    - name: Symlink the theme
+      file:
+        state: link
+        src:  "{{ onboard_site_home    }}/Themes/Kirkwood/public"
+        dest: "{{ onboard_install_path }}/public/Kirkwood"
+
+    - name: Update apache configuration
+      template:
+        src: onboard.conf
+        dest: /etc/apache2/sites-enabled/conf.d/onboard.conf
+        owner: root
+        group: root
+        mode: 0644
+      notify: apache_restart
+
+    - name: Update site_config
+      template: src=site_config.j2 dest={{ onboard_site_home }}/site_config.inc
+
+#    - name: Install Google credentials
+#      copy:
+#        content: "{{ onboard_google.credentials }}"
+#        dest:    "{{ onboard_site_home }}/credentials.json"
+#        mode:    "0640"
+
+    - name: Create backup directory
+      file: path=/srv/backups/onboard state=directory group=staff mode="g+rw" recurse=yes
+
+    - name: "Install CRON script"
+      template:
+        src: "cron.sh"
+        dest: "/etc/cron.daily/backup.d/onboard"
+        mode: "0755"
+
+    - name: Install CRON backup credentials
+      template:
+        src: backup.cnf
+        dest: /etc/cron.daily/backup.d/onboard.cnf
+        mode: 0400
+
+    - name: "Install CKAN export configuration"
+      template:
+        src: "ckan_config.inc"
+        dest: "{{ onboard_site_home }}/ckan_config.inc"
+
+    - name: "Update application permissions"
+      file:
+        path:  "{{ onboard_install_path }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode:  "u=rwX,g=rwX,o=rX"
+        recurse: "yes"
+
+    - name: "Update site_home permissions"
+      file:
+        path: "{{ onboard_site_home }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode:  "u=rwX,g=rwX,o=rX"
+        recurse: "yes"
+...

@@ -1,8 +1,0 @@
-- hosts: onboard
-  become: yes
-  roles:
-    # Dependencies are publish in Ansible Galaxy
-    # Pull these down using ansible-galaxy
-    #
-    # ansible-galaxy install -r roles.yml
-    - onboard

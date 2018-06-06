@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Applicant $this->applicant
  * @param Committee $this->committee (optional)
@@ -49,9 +49,20 @@ $field = $this->template->getHelper('field');
 
             echo $field->field(['name'=>'phone', 'id'=>'phone', 'label'=>$this->_('phone'), 'value'=>$phone, 'type'=>'tel']);
 
-            foreach (['address', 'city', 'zip'] as $f) {
+            foreach (['address', 'city'] as $f) {
                 echo $field->field(['name'=>$f, 'id'=>$f, 'label'=>$this->_($f), 'value'=>$$f]);
             }
+            echo $field->field([
+                'name'  => 'zip',
+                'id'    => 'zip',
+                'label' => $this->_('zip'),
+                'value' => $zip,
+                'type'  => 'number',
+                'attr'  => [
+                    'max' => 99999,
+                    'placeholder' => 'XXXXX'
+                ]
+            ]);
             if ($this->committee) {
                 echo "
                 <input name=\"committee_id\" type=\"hidden\" value=\"{$this->committee->getId()}\" />
@@ -65,7 +76,7 @@ $field = $this->template->getHelper('field');
                 echo '<fieldset id="committees">';
                 $options = [];
                 $table   = new CommitteeTable();
-                $list    = $table->find(['current'=>true]);
+                $list    = $table->find(['current'=>true, 'takesApplications'=>true]);
                 foreach ($list as $c) {
                     $options[] = ['value'=>$c->getId(), 'label'=>parent::escape($c->getName())];
                 }

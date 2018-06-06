@@ -1,4 +1,4 @@
--- @copyright 2006-2016 City of Bloomington, Indiana
+-- @copyright 2006-2017 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
 create table races (
 	id int unsigned not null primary key auto_increment,
@@ -26,7 +26,7 @@ create table people (
 	city      varchar(32),
 	state     varchar(8),
 	zip       varchar(8),
-	about text,
+	website   varchar(128),
 	gender enum('male','female'),
 	race_id int unsigned,
 	username varchar(40) unique,
@@ -41,10 +41,12 @@ create table committees (
 	type enum('seated', 'open') not null default 'seated',
 	name          varchar(128)  not null,
 	statutoryName varchar(128),
+	code          varchar(8),
 	yearFormed    year(4),
 	endDate       date,
 	calendarId    varchar(128),
 	website       varchar(128),
+	videoArchive  varchar(128),
 	email         varchar(128),
 	phone         varchar(128),
 	address       varchar(128),
@@ -54,7 +56,8 @@ create table committees (
     description     text,
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
-	applicationLifetime tinyint unsigned not null default 90
+	applicationLifetime tinyint unsigned not null default 90,
+	legislative    boolean
 );
 
 create table committeeStatutes(
@@ -80,17 +83,18 @@ create table appointers (
 insert appointers values(1,'Elected');
 
 create table seats (
-    id int unsigned not null primary key auto_increment,
-    type enum('termed', 'open') not null default 'termed',
-    code varchar(16),
-    name varchar(128) not null,
-	committee_id int unsigned not null,
-	appointer_id int unsigned,
-    startDate date,
-    endDate   date,
-    requirements text,
-    termLength varchar(32),
-    voting boolean not null default 1,
+    id                int unsigned not null primary key auto_increment,
+    type              enum('termed', 'open') not null default 'termed',
+    code              varchar(16),
+    name              varchar(128) not null,
+	committee_id      int unsigned not null,
+	appointer_id      int unsigned,
+    startDate         date,
+    endDate           date,
+    requirements      text,
+    termLength        varchar(32),
+    voting            boolean not null default 1,
+    takesApplications boolean not null default 0,
 	foreign key (committee_id) references committees(id),
 	foreign key (appointer_id) references appointers(id)
 );
@@ -188,6 +192,7 @@ create table meetingFiles(
     meetingDate      date         not null,
     eventId          varchar(128),
     type             varchar(16)  not null,
+	title            varchar(32),
 	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
 	mime_type        varchar(128) not null,
@@ -206,4 +211,86 @@ create table committeeHistory(
     changes      text,
     foreign key (committee_id) references committees(id),
     foreign key (person_id)    references people    (id)
+);
+
+create table legislationTypes (
+    id      int unsigned not null primary key auto_increment,
+    name    varchar(32)  not null unique,
+    subtype boolean      not null default 0
+);
+
+create table legislationActionTypes (
+    id       int unsigned     not null primary key auto_increment,
+    name     varchar(32)      not null unique,
+    ordering tinyint unsigned not null
+);
+
+create table legislationStatuses (
+    id   int unsigned not null primary key auto_increment,
+    name varchar(64)  not null unique
+);
+
+create table legislation (
+    id           int      unsigned not null primary key auto_increment,
+    committee_id int      unsigned not null,
+    type_id      int      unsigned not null,
+    parent_id    int      unsigned,
+    status_id    int      unsigned,
+    year         smallint unsigned not null,
+    number       varchar(24)       not null,
+    title        text              not null,
+    synopsis     text,
+    notes        text,
+    amendsCode   boolean           not null default 0,
+    foreign key (committee_id) references committees         (id),
+    foreign key (type_id     ) references legislationTypes   (id),
+    foreign key (parent_id   ) references legislation        (id),
+    foreign key (status_id   ) references legislationStatuses(id)
+);
+
+create table legislationActions (
+    id             int unsigned not null primary key auto_increment,
+    legislation_id int unsigned not null,
+    type_id        int unsigned not null,
+    actionDate     date         not null,
+    outcome        varchar(64),
+    vote           varchar(255),
+    foreign key (legislation_id) references legislation(id),
+    foreign key (type_id       ) references legislationActionTypes(id)
+);
+
+create table legislationFiles (
+    id               int unsigned not null primary key auto_increment,
+    legislation_id   int unsigned not null,
+	internalFilename varchar(128) not null,
+	filename         varchar(128) not null,
+	mime_type        varchar(128) not null,
+	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
+	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	foreign key (legislation_id) references legislation(id)
+);
+
+create table tags (
+    id   int unsigned not null primary key auto_increment,
+    name varchar(128) not null
+);
+
+create table legislation_tags (
+    legislation_id int unsigned not null,
+    tag_id         int unsigned not null,
+    foreign key (legislation_id) references legislation(id),
+    foreign key (tag_id        ) references tags       (id)
+);
+
+create table reports (
+    id int unsigned not null primary key auto_increment,
+    committee_id     int unsigned not null,
+    title            varchar(128) not null,
+    reportDate       date         not null,
+	internalFilename varchar(128) not null,
+	filename         varchar(128) not null,
+	mime_type        varchar(128) not null,
+	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
+	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	foreign key (committee_id) references committees(id)
 );
