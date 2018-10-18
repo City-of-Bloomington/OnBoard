@@ -1,6 +1,0 @@
----
-- name: Update the apache config for OnBoard
-  template: src=onboard.conf dest=/etc/apache2/sites-enabled/conf.d/{{ onboard_name }}.conf
-  register: onboard_conf
-  notify:
-    - apache_restart
