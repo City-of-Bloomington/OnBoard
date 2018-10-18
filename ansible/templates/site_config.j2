@@ -38,6 +38,16 @@ define('THEME', 'Kirkwood');
  * Refer to the PDO documentation for DSN sytnax for your database type
  * http://www.php.net/manual/en/pdo.drivers.php
  */
+$DATABASES = [
+    'default' => [
+        'driver'   => 'Pdo_Mysql',
+        'dsn'      => 'mysql:dbname={{ onboard_db.name }};host={{ onboard_db.host }}',
+        'username' => '{{ onboard_db.user }}',
+        'password' => '{{ onboard_db.pass }}',
+        'options'  => []
+    ]
+];
+
 define('DB_ADAPTER','Pdo_Mysql');
 define('DB_HOST','localhost');
 define('DB_NAME','{{ onboard_db.name     }}');
