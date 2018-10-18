@@ -30,6 +30,7 @@ The max image size is the largest upload file size accepted.  Users will not be 
 ```YAML
 onboard_base_uri: "/onboard"
 onboard_base_url: "https://{{ ansible_host }}{{ onboard_base_uri }}"
+onboard_proxy:    "somewhere.org"
 onboard_max_image_size: "100M"
 ```
 

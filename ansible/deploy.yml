@@ -6,16 +6,17 @@
     - City-of-Bloomington.php
 
   tasks:
-    - name: Install dependencies
+    - name: "Install dependencies"
       apt:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - php-mysql
-        - default-jre
-        - libreoffice-common
-        - libreoffice-writer
-        - postfix
+        name: "{{ packages }}"
+        state: "present"
+      vars:
+        packages:
+          - "php-mysql"
+          - "default-jre"
+          - "libreoffice-common"
+          - "libreoffice-writer"
+          - "postfix"
 
     - name: "Postfix start at boot"
       service: name=postfix state=started enabled=yes
@@ -29,8 +30,8 @@
 
     - name: Create mysql user for site
       mysql_user:
-        name:     "{{ onboard_db.username }}"
-        password: "{{ onboard_db.password }}"
+        name:     "{{ onboard_db.user }}"
+        password: "{{ onboard_db.pass }}"
         priv:     "{{ onboard_db.name }}.*:ALL"
         state: present
         config_file: "{{ mysql_defaults_extra_file }}"
@@ -42,20 +43,18 @@
         dest: /usr/local/src
       register: release
 
-    - name: Create installation directory
+    - name: "Create directories"
       file:
-        path: "{{ onboard_install_path }}"
+        path: "{{ item }}"
         state: "directory"
         owner: "www-data"
         group: "staff"
-
-    - name: Create data directory
-      file:
-        path: "{{ onboard_site_home }}"
-        state: "directory"
-        owner: "www-data"
-        group: "staff"
-        mode: 2775
+        mode:  "u=rwX,g=rwXs,o=rX"
+      with_items:
+        - "{{ onboard_install_path }}"
+        - "{{ onboard_backup_path  }}"
+        - "{{ onboard_site_home    }}"
+        - "/var/log/cron"
 
     - name: Install release
       command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
@@ -109,21 +108,21 @@
         src: "ckan_config.inc"
         dest: "{{ onboard_site_home }}/ckan_config.inc"
 
-    - name: "Update application permissions"
-      file:
-        path:  "{{ onboard_install_path }}"
-        state: "directory"
-        owner: "www-data"
-        group: "staff"
-        mode:  "u=rwX,g=rwX,o=rX"
-        recurse: "yes"
+    - name: "Update directory ownership"
+      command: "chown -R www-data:staff {{ item }}"
+      args:
+        warn: "no"
+      with_items:
+        - "{{ onboard_install_path }}"
+        - "{{ onboard_backup_path  }}"
+        - "{{ onboard_site_home    }}"
 
-    - name: "Update site_home permissions"
-      file:
-        path: "{{ onboard_site_home }}"
-        state: "directory"
-        owner: "www-data"
-        group: "staff"
-        mode:  "u=rwX,g=rwX,o=rX"
-        recurse: "yes"
+    - name: "Update directory permission"
+      command: "chmod -R u=rwX,g=rwX,o=rX {{ item }}"
+      args:
+        warn: "no"
+      with_items:
+        - "{{ onboard_install_path }}"
+        - "{{ onboard_backup_path  }}"
+        - "{{ onboard_site_home    }}"
 ...
