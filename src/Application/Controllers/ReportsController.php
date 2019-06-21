@@ -44,7 +44,7 @@ class ReportsController extends Controller
         }
         else {
             $this->template->blocks[] = new Block('reports/list.inc', [
-                'list' => $table->find($_GET)
+                'list' => $table->find($_GET, 'reportDate desc')
             ]);
         }
     }
