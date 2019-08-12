@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04455c05c9f64df785b725bcdcc6ecdc",
+    "content-hash": "e601c367839528393e0d7867403137e7",
     "packages": [
         {
             "name": "City-of-Bloomington/factory-number-one",
