@@ -16,8 +16,7 @@ data/user
 *.mo
 .config
 .cache
-screen.css
-screen.css.map
+screen-*.css*
 build
 vendor
 node_modules
