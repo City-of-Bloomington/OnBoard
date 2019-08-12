@@ -3,8 +3,9 @@ APPNAME := onboard
 
 SASS := $(shell command -v sassc 2> /dev/null)
 MSGFMT := $(shell command -v msgfmt 2> /dev/null)
-
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
+
+VERSION := $(shell cat VERSION | tr -d "[:space:]")
 
 default: clean compile package
 
