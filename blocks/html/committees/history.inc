@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2017-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->history An array of CommitteeHistory objects
  */
 use Blossom\Classes\Block;
 
-$this->template->addToAsset('scripts', BASE_URI.'/js/changeLog.js');
+$this->template->addToAsset('scripts', BASE_URI.'/js/changeLog-'.VERSION.'.js');
 ?>
 <section>
     <header><h2><?= $this->_('committeeHistory'); ?></h2></header>

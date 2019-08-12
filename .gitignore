@@ -11,16 +11,11 @@ data/applicantFiles
 data/meetingFiles
 data/legislationFiles
 data/reports
-data/Themes/Kirkwood/public/fn1
 data/user
 *.mo
 .config
 .cache
 screen-*.css*
+*-*.js
 build
 vendor
-node_modules
-gulpfile.js
-.ftppass
-.gulp-build
-package.json

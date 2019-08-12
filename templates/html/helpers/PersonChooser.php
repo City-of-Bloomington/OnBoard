@@ -41,7 +41,7 @@ class PersonChooser
 	 */
 	public function personChooser($fieldname, $fieldId, Person $person=null)
 	{
-		$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
+		$this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser-'.VERSION.'.js');
 
 		$id   = '';
 		$name = '';

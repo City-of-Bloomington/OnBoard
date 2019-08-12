@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Zend\Paginator $this->people
  */
 use Application\Models\Person;
@@ -24,7 +24,7 @@ use Blossom\Classes\Url;
                 $button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
             }
             elseif (isset($_REQUEST['callback'])) {
-                $this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser.js');
+                $this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser-'.VERSION.'.js');
 
                 $callback = preg_replace('/[^a-zA-Z_\.]/', '', $_REQUEST['callback']);
                 $url = "javascript:self.opener.$callback('{$person->getId()}');";
