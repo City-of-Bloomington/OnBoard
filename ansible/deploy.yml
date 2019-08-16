@@ -103,11 +103,6 @@
         dest: /etc/cron.daily/backup.d/onboard.cnf
         mode: 0400
 
-    - name: "Install CKAN export configuration"
-      template:
-        src: "ckan_config.inc"
-        dest: "{{ onboard_site_home }}/ckan_config.inc"
-
     - name: "Update directory ownership"
       command: "chown -R www-data:staff {{ item }}"
       args:
