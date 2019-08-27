@@ -1,19 +1,19 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Application\Models\File;
 use PHPUnit\Framework\TestCase;
 
 class MediaTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         copy(__DIR__.'/testfile', SITE_HOME.'/test');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink(SITE_HOME.'/test');
     }

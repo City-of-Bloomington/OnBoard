@@ -15,6 +15,7 @@ data/user
 *.mo
 .config
 .cache
+.phpunit.result.cache
 screen-*.css*
 *-*.js
 build

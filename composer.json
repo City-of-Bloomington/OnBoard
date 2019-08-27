@@ -4,7 +4,7 @@
         "url": "https://github.com/City-of-Bloomington/blossom-lib"
     }],
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.2",
         "city-of-bloomington/blossom-lib": "dev-master",
         "michelf/php-markdown": "~1",
         "jasig/phpcas": "~1",
@@ -18,10 +18,18 @@
         "zendframework/zend-permissions-acl": "~2.5",
         "zendframework/zend-servicemanager": "~2.5"
     },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
     "autoload": {
         "psr-4": {
             "Application\\": "src/Application",
             "Domain\\":      "src/Domain"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "src/Test"
         }
     }
 }
