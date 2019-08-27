@@ -22,6 +22,10 @@ class MediaTest extends TestCase
     {
         File::convertToPDF(SITE_HOME.'/test');
         $info = finfo_open(FILEINFO_MIME_TYPE);
-        $this->assertEquals('application/pdf', finfo_file($info, SITE_HOME.'/test'));
+        $this->assertEquals(
+            'application/pdf',
+            finfo_file($info, SITE_HOME.'/test'),
+            'Could not generate a PDF test file'
+        );
     }
 }
