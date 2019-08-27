@@ -37,5 +37,8 @@ package:
 	rsync -rl --exclude-from=buildignore . build/${APPNAME}
 	cd build && tar czf ${APPNAME}-${VERSION}.tar.gz ${APPNAME}
 
+test:
+	vendor/phpunit/phpunit/phpunit -c phpunit.xml
+
 $(LANGUAGES): deps
 	cd $@ && msgfmt -cv *.po
