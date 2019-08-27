@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $htis->committee
  * @param array     $this->meetings
  * @param int       $this->year
@@ -13,7 +13,7 @@ use Blossom\Classes\Url;
 ?>
 <section id="meetings">
     <header>
-        <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->events)]); ?></h1>
+        <h1><?= $this->year.' '.$this->_(['meeting', 'meetings', count($this->meetings)]); ?></h1>
         <div class="tools">
         <?php
             $url = new Url(Url::current_url(BASE_HOST));
