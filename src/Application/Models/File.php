@@ -350,7 +350,7 @@ abstract class File extends ActiveRecord
         header('Pragma: cache');
         header('Cache-Control: private');
         header("Content-type: $mime");
-        header("Content-Disposition: attachment; filename=\"$filename\"");
+        header("Content-Disposition: inline; filename=\"$filename\"");
 
         readfile($this->getFullpath());
         exit();
