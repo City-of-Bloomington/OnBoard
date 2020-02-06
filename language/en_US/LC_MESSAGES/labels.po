@@ -653,7 +653,7 @@ msgid "referredFrom"
 msgstr "How did you hear of this opening?"
 
 msgid "referredOther"
-msgstr "Of other, please describe:"
+msgstr "If other, please describe:"
 
 msgid "interest"
 msgstr "Please explain your interest"
