@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2012-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2012-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -85,6 +85,8 @@ class UsersController extends Controller
 
 	public function delete()
 	{
+        $return_url = $_REQUEST['return_url'] ?? BASE_URL.'/users';
+
 		try {
 			$person = new Person($_REQUEST['user_id']);
 			$person->deleteUserAccount();
@@ -93,7 +95,7 @@ class UsersController extends Controller
 		catch (\Exception $e) {
 			$_SESSION['errorMessages'][] = $e;
 		}
-		header('Location: '.BASE_URL.'/users');
+		header("Location: $return_url");
 		exit();
 	}
 }
