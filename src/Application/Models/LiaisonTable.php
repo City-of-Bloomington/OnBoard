@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -154,5 +154,13 @@ class LiaisonTable extends TableGateway
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
+ 	}
+
+ 	public static function isLiaison(int $person_id, int $committee_id): bool
+ 	{
+        $sql     = 'select id from liaisons where person_id=? and committee_id=?';
+        $zend_db = Database::getConnection();
+        $result  = $zend_db->query($sql)->execute([$person_id, $committee_id]);
+        return count($result) ? true : false;
  	}
 }

@@ -1,11 +1,18 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Role\RoleInterface;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
 use Zend\Permissions\Acl\Resource\GenericResource as Resource;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
+use Zend\Permissions\Acl\Assertion\AssertionInterface;
+
+use Application\Models\LiaisonTable;
+use Application\Models\Member;
+use Application\Models\Term;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
@@ -95,6 +102,38 @@ $ZEND_ACL->allow('Staff', 'liaisons');
 $ZEND_ACL->allow('meetingFileUploader',  'people', 'viewContactInfo');
 $ZEND_ACL->allow('meetingFileUploader',  'meetingFiles');
 $ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
+
+
+class DepartmentalLiaisonAssertion implements AssertionInterface
+{
+    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    {
+        if (isset($_SESSION['USER']) && $_SESSION['USER']->getRole() == 'Liaison') {
+            if ($privilege == 'index') { return true; }
+
+            $committee_id = self::getCommittee_id();
+            if (!$committee_id) { return false; }
+            return LiaisonTable::isLiaison($_SESSION['USER']->getId(), $committee_id);
+        }
+        return false;
+    }
+
+    private static function getCommittee_id(): ?int
+    {
+        if (!empty($_REQUEST['committee_id'])) {
+            return (int)$_REQUEST['committee_id'];
+        }
+        elseif (!empty($_REQUEST['member_id'])) {
+            $member = new Member($_REQUEST['member_id']);
+            return (int)$member->getCommittee_id();
+        }
+        elseif (!empty($_REQUEST['term_id'])) {
+            $term = new Term($_REQUEST['term_id']);
+            return (int)$term->getCommittee()->getId();
+        }
+    }
+}
+$ZEND_ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], new DepartmentalLiaisonAssertion());
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
