@@ -4,23 +4,18 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Role\RoleInterface;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
 use Zend\Permissions\Acl\Resource\GenericResource as Resource;
-use Zend\Permissions\Acl\Resource\ResourceInterface;
-use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
-use Application\Models\LiaisonTable;
-use Application\Models\Member;
-use Application\Models\Term;
+use Application\Authorization\CommitteeAssociation;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
 		 ->addRole(new Role('Public'),               'Anonymous')
-		 ->addRole(new Role('Applicants-view-only'), 'Public')
+		 ->addRole(new Role('Appointer'),            'Public')
 		 ->addRole(new Role('Reviewer'),             'Public')
 		 ->addRole(new Role('meetingFileUploader'),  'Public')
-         ->addRole(new Role('Liaison'), ['Applicants-view-only', 'meetingFileUploader'])
+         ->addRole(new Role('Liaison'), ['Appointer', 'meetingFileUploader'])
 		 ->addRole(new Role('Staff'),                'Reviewer')
 		 ->addRole(new Role('Administrator'));
 
@@ -79,11 +74,11 @@ $ZEND_ACL->allow(null,  'legislationTypes', 'index');
 
 
 // Allow Staff to do stuff
-$ZEND_ACL->allow('Applicants-view-only', 'committees',   'applications');
-$ZEND_ACL->allow('Applicants-view-only', 'applicantFiles', 'download');
-$ZEND_ACL->allow('Applicants-view-only', 'applicants',   ['index', 'view']);
-$ZEND_ACL->allow('Applicants-view-only', 'applications', ['index', 'report']);
-$ZEND_ACL->allow('Applicants-view-only', 'people',       'viewContactInfo');
+$ZEND_ACL->allow('Appointer', 'committees',   'applications');
+$ZEND_ACL->allow('Appointer', 'applicantFiles', 'download');
+$ZEND_ACL->allow('Appointer', 'applicants',   ['index', 'view']);
+$ZEND_ACL->allow('Appointer', 'applications', ['index', 'report']);
+$ZEND_ACL->allow('Appointer', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer',  'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
@@ -104,36 +99,7 @@ $ZEND_ACL->allow('meetingFileUploader',  'meetingFiles');
 $ZEND_ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 
 
-class DepartmentalLiaisonAssertion implements AssertionInterface
-{
-    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
-    {
-        if (isset($_SESSION['USER']) && $_SESSION['USER']->getRole() == 'Liaison') {
-            if ($privilege == 'index') { return true; }
-
-            $committee_id = self::getCommittee_id();
-            if (!$committee_id) { return false; }
-            return LiaisonTable::isLiaison($_SESSION['USER']->getId(), $committee_id);
-        }
-        return false;
-    }
-
-    private static function getCommittee_id(): ?int
-    {
-        if (!empty($_REQUEST['committee_id'])) {
-            return (int)$_REQUEST['committee_id'];
-        }
-        elseif (!empty($_REQUEST['member_id'])) {
-            $member = new Member($_REQUEST['member_id']);
-            return (int)$member->getCommittee_id();
-        }
-        elseif (!empty($_REQUEST['term_id'])) {
-            $term = new Term($_REQUEST['term_id']);
-            return (int)$term->getCommittee()->getId();
-        }
-    }
-}
-$ZEND_ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], new DepartmentalLiaisonAssertion());
+$ZEND_ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], new CommitteeAssociation());
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');

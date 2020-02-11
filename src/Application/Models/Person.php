@@ -97,7 +97,7 @@ class Person extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()        { return parent::get('id');        }
+	public function getId():int    { return (int)parent::get('id');   }
 	public function getFirstname() { return parent::get('firstname'); }
 	public function getLastname()  { return parent::get('lastname');  }
 	public function getEmail()     { return parent::get('email');     }
