@@ -135,13 +135,18 @@ class MembersController extends Controller
             if ($seat) {
                 if ($seat->getType() === 'termed') {
                     $confirmationGiven = !empty($_POST['confirm']) && $_POST['confirm']=='yes';
-                    $committee = $member->getCommittee();
+                    $committee         = $member->getCommittee();
+                    $return_url        = BASE_URL.'/committees/members?committee_id='.$committee->getId();
 
                     try { $vars = MemberTable::reappoint($_POST, $member, $confirmationGiven); }
-                    catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                    catch (\Exception $e) {
+                        $_SESSION['errorMessages'][] = $e;
+                        header('Location: '.$return_url);
+                        exit();
+                    }
 
                     if (empty($_SESSION['errorMessages']) && $confirmationGiven) {
-                        header('Location: '.BASE_URL.'/committees/members?committee_id='.$committee->getId());
+                        header('Location: '.$return_url);
                         exit();
                     }
 
