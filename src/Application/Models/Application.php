@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -72,6 +72,15 @@ class Application extends ActiveRecord
     {
         if ($this->getId()) {
             $sql = 'update applications set archived=now() where id=?';
+            $zend_db = Database::getConnection();
+            $zend_db->query($sql, [$this->getId()]);
+        }
+    }
+
+    public function unarchive()
+    {
+        if ($this->getId()) {
+            $sql = 'update applications set archived=null where id=?';
             $zend_db = Database::getConnection();
             $zend_db->query($sql, [$this->getId()]);
         }

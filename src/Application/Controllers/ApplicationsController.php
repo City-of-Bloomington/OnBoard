@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -27,6 +27,26 @@ class ApplicationsController extends Controller
 
         if (isset($application)) {
             try { $application->archive(); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+
+            header('Location: '.BASE_URI.'/committees/applications?committee_id='.$application->getCommittee_id());
+            exit();
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+    }
+
+    public function unarchive()
+    {
+        if (!empty($_REQUEST['application_id'])) {
+            try { $application = new Application($_REQUEST['application_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($application)) {
+            try { $application->unarchive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
             header('Location: '.BASE_URI.'/committees/applications?committee_id='.$application->getCommittee_id());

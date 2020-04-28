@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Zend\Db\Result $this->applications
  * @param Committee $this->committee (optional)
  * @param Applicant $this->applicant (optional)
@@ -26,6 +26,7 @@ use Application\Models\Person;
         $userCanViewApplications = Person::isAllowed('committees',   'applications');
         $userCanViewApplicant    = Person::isAllowed('applicants',   'view');
         $userCanArchive          = Person::isAllowed('applications', 'archive');
+        $userCanUnArchive        = Person::isAllowed('applications', 'unarchive');
         $userCanDelete           = Person::isAllowed('applications', 'delete');
 
         $helper = $this->template->getHelper('buttonLink');
@@ -62,7 +63,14 @@ use Application\Models\Person;
 
             if ($this->type === 'archived') {
                 $archived = $a->getArchived(DATE_FORMAT);
-                echo "<td>$archived</td>";
+                $button   = '';
+                if ($userCanUnArchive) {
+                    $button = $helper->buttonLink(
+                        BASE_URI.'/applications/unarchive?application_id='.$a->getId(),
+                        $this->_('application_unarchive')
+                    );
+                }
+                echo "<td>$archived $button</td>";
             }
             else {
                 $expires = $a->getExpires(DATE_FORMAT);

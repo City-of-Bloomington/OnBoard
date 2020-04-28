@@ -614,13 +614,16 @@ msgid "application_add"
 msgstr "New Application"
 
 msgid "application_edit"
-msgstr "Edit Application"
+msgstr "Edit"
 
 msgid "application_delete"
-msgstr "Delete Application"
+msgstr "Delete"
 
 msgid "application_archive"
-msgstr "Archive Application"
+msgstr "Archive"
+
+msgid "application_unarchive"
+msgstr "Unarchive"
 
 msgid "applications_current"
 msgstr "Current Applications"
