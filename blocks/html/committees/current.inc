@@ -7,7 +7,7 @@
 namespace Application\Models;
 
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\Url;
+use Web\Url;
 
 $userCanEdit = Person::isAllowed('committees', 'update');
 ?>

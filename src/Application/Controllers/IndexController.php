@@ -6,8 +6,8 @@
  */
 namespace Application\Controllers;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 use Application\Models\CommitteeTable;
 
 class IndexController extends Controller

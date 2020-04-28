@@ -5,7 +5,7 @@
  * @param Member $this->member
  * @param Member $this->newMember
  */
-use Blossom\Classes\Block;
+use Web\Block;
 
 $seat = $this->newMember->getSeat();
 $term = $this->newMember->getTerm();

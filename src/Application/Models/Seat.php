@@ -7,8 +7,8 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Application\Models\TermTable;
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 class Seat extends ActiveRecord
 {

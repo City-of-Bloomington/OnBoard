@@ -6,9 +6,9 @@
 declare (strict_types=1);
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\View;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\View;
+use Web\Database;
 
 class Committee extends ActiveRecord
 {

@@ -5,18 +5,13 @@
     }],
     "require": {
         "php": ">=7.2",
-        "city-of-bloomington/blossom-lib": "dev-master",
         "michelf/php-markdown": "~1",
         "jasig/phpcas": "~1",
-        "aura/router": "~2",
         "google/apiclient": "~2.0",
-        "container-interop/container-interop": "~1",
-        "zendframework/zend-db": "~2.5",
-        "zendframework/zend-log": "~2.5",
-        "zendframework/zend-loader": "~2.5",
-        "zendframework/zend-paginator": "~2.5",
-        "zendframework/zend-permissions-acl": "~2.5",
-        "zendframework/zend-servicemanager": "~2.5"
+        "laminas/laminas-db":              "@stable",
+        "laminas/laminas-log":             "@stable",
+        "laminas/laminas-paginator":       "@stable",
+        "laminas/laminas-permissions-acl": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"
@@ -24,12 +19,9 @@
     "autoload": {
         "psr-4": {
             "Application\\": "src/Application",
-            "Domain\\":      "src/Domain"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Test\\": "src/Test"
+            "Domain\\":      "src/Domain",
+            "Test\\":        "src/Test",
+            "Web\\":         "src/Web"
         }
     }
 }

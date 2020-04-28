@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\ResultSet $this->data
  */
-use Blossom\Classes\Url;
+use Web\Url;
 ?>
 <section>
     <header>

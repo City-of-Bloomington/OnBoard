@@ -7,7 +7,7 @@
  * @param string $this->current_tab
  * @param URL $this->base_url
  */
-use Blossom\Classes\Url;
+use Web\Url;
 
 $url = isset($this->base_url) ? $this->base_url : new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 

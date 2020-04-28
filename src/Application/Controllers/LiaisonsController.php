@@ -10,9 +10,9 @@ use Application\Models\Person;
 use Application\Models\Liaison;
 use Application\Models\LiaisonTable;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
-use Blossom\Classes\Url;
+use Web\Controller;
+use Web\Block;
+use Web\Url;
 
 class LiaisonsController extends Controller
 {

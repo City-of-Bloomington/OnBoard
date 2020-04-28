@@ -7,9 +7,9 @@ namespace Application\Controllers;
 
 use Application\Models\Person;
 use Application\Models\PeopleTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
-use Blossom\Classes\Database;
+use Web\Controller;
+use Web\Block;
+use Web\Database;
 
 class UsersController extends Controller
 {

@@ -6,8 +6,8 @@
 declare (strict_types=1);
 namespace Application\Models\Legislation;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 class Status extends ActiveRecord
 {

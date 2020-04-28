@@ -7,7 +7,7 @@
  */
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
-use Blossom\Classes\Block;
+use Web\Block;
 use Michelf\MarkdownExtra;
 ?>
 <form method="post" action="<?= BASE_URI; ?>/members/appoint">

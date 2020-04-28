@@ -6,7 +6,7 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\Block;
+use Web\Block;
 
 $termLength = new \DateInterval($this->seat->getTermLength());
 

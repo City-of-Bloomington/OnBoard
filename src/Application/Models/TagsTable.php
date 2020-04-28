@@ -5,7 +5,7 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\TableGateway;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 
 class TagsTable extends TableGateway

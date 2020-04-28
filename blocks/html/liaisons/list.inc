@@ -7,7 +7,7 @@
  */
 use Application\Models\Committee;
 use Application\Models\Liaison;
-use Blossom\Classes\Url;
+use Web\Url;
 
 $title = $this->_(['liaison', 'liaisons', count($this->data)]);
 

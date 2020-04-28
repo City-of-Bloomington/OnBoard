@@ -5,7 +5,7 @@
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
-use Blossom\Classes\Block;
+use Web\Block;
 use Michelf\MarkdownExtra;
 
 $committee  = parent::escape($this->legislation->getCommittee()->getName());

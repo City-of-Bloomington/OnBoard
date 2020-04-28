@@ -9,8 +9,8 @@ use Application\Models\Committee;
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class MeetingFilesController extends Controller
 {

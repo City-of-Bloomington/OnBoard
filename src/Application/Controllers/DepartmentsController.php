@@ -8,8 +8,8 @@ namespace Application\Controllers;
 
 use Application\Models\Department;
 use Application\Models\DepartmentTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class DepartmentsController extends Controller
 {

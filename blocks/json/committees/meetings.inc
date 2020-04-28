@@ -8,8 +8,8 @@
  */
 use Application\Models\MeetingFile;
 
-use Blossom\Classes\Block;
-use Blossom\Classes\Url;
+use Web\Block;
+use Web\Url;
 
 
 $out = [];

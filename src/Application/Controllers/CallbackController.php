@@ -8,7 +8,7 @@
  */
 namespace Application\Controllers;
 
-use Blossom\Classes\Controller;
+use Web\Controller;
 
 class CallbackController extends Controller
 {

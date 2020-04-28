@@ -5,9 +5,9 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Template;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Template;
+use Web\Block;
 use Application\Models\Person;
 
 class LoginController extends Controller

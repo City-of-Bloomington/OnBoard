@@ -8,8 +8,8 @@ namespace Application\Controllers;
 
 use Application\Models\Legislation\Status;
 use Application\Models\Legislation\StatusesTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class LegislationStatusesController extends Controller
 {

@@ -5,8 +5,8 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\TableGateway;
+use Web\ActiveRecord;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 
 class MemberTable extends TableGateway

@@ -5,7 +5,7 @@
  */
 namespace Application\Templates\Helpers;
 
-use Blossom\Classes\Helper;
+use Web\Helper;
 
 class Dropdown extends Helper
 {

@@ -10,8 +10,8 @@ use Application\Models\Committee;
 use Application\Models\Reports\Report;
 use Application\Models\Reports\ReportsTable;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class ReportsController extends Controller
 {

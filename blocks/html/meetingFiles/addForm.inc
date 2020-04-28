@@ -7,7 +7,7 @@
  * @param string    $this->eventId
  * @param DateTime  $this->date
  */
-use Blossom\Classes\Url;
+use Web\Url;
 ?>
 <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
     <fieldset>

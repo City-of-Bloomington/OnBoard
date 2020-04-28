@@ -5,9 +5,9 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
-use Blossom\Classes\ExternalIdentity;
+use Web\ActiveRecord;
+use Web\Database;
+use Web\ExternalIdentity;
 
 class Person extends ActiveRecord
 {

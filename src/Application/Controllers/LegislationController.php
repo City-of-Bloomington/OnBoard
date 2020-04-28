@@ -10,8 +10,8 @@ use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\Status;
 use Application\Models\Legislation\Type;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class LegislationController extends Controller
 {

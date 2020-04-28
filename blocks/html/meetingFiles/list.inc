@@ -9,8 +9,8 @@
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 use Application\Models\Person;
-use Blossom\Classes\Block;
-use Blossom\Classes\Url;
+use Web\Block;
+use Web\Url;
 
 $userCanEdit   = Person::isAllowed('meetingFiles', 'update');
 $userCanDelete = Person::isAllowed('meetingFiles', 'delete');

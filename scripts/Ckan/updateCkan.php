@@ -5,7 +5,7 @@
  */
 declare (strict_types=1);
 use Scripts\Ckan\Ckan;
-use Blossom\Classes\Database;
+use Web\Database;
 
 include realpath(__DIR__.'/../../bootstrap.php');
 

@@ -5,8 +5,8 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 class Department extends ActiveRecord
 {

@@ -10,7 +10,7 @@ use Application\Models\Captcha;
 use Application\Models\CommitteeTable;
 use Application\Models\ApplicantFile;
 use Application\Models\Site;
-use Blossom\Classes\Block;
+use Web\Block;
 use Michelf\MarkdownExtra;
 
 $fields = [

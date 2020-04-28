@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Person $this->person
  */
-use Blossom\Classes\Url;
+use Web\Url;
 
 $url = new Url($_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 

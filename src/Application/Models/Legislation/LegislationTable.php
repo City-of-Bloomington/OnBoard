@@ -5,8 +5,8 @@
  */
 namespace Application\Models\Legislation;
 
-use Blossom\Classes\Database;
-use Blossom\Classes\TableGateway;
+use Web\Database;
+use Web\TableGateway;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;

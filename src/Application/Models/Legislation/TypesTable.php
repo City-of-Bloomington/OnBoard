@@ -5,7 +5,7 @@
  */
 namespace Application\Models\Legislation;
 
-use Blossom\Classes\TableGateway;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 
 class TypesTable extends TableGateway

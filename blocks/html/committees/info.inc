@@ -6,7 +6,7 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\View;
+use Web\View;
 use Michelf\MarkdownExtra;
 
 $fields = [

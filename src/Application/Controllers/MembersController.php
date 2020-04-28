@@ -12,8 +12,8 @@ use Application\Models\MemberTable;
 use Application\Models\Seat;
 use Application\Models\Term;
 use Application\Models\TermTable;
-use Blossom\Classes\Block;
-use Blossom\Classes\Controller;
+use Web\Block;
+use Web\Controller;
 
 class MembersController extends Controller
 {

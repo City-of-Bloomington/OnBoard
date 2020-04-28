@@ -5,7 +5,7 @@
  * @param LegislationFile $this->legislationFile
  */
 use Application\Models\Legislation\LegislationFile;
-use Blossom\Classes\Block;
+use Web\Block;
 
 $fields = ['id', 'legislation_id', 'filename'];
 foreach ($fields as $f) {

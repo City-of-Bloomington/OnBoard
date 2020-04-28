@@ -5,7 +5,7 @@
  * @param Committee $this->committee
  */
 use Application\Models\Person;
-use Blossom\Classes\Url;
+use Web\Url;
 
 $committee_id = $this->committee->getId();
 

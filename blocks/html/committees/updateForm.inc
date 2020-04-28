@@ -7,7 +7,7 @@
 use Application\Models\Committee;
 use Application\Models\DepartmentTable;
 use Application\Models\Person;
-use Blossom\Classes\View;
+use Web\View;
 
 $fields = [
     'type', 'yearFormed',

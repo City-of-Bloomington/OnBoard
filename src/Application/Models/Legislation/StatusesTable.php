@@ -6,7 +6,7 @@
 declare (strict_types=1);
 namespace Application\Models\Legislation;
 
-use Blossom\Classes\TableGateway;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 
 class StatusesTable extends TableGateway

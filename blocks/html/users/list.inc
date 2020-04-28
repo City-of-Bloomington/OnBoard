@@ -6,7 +6,7 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\Url;
+use Web\Url;
 ?>
 <section>
     <header>

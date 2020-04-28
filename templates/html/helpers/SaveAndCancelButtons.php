@@ -6,7 +6,7 @@
  */
 namespace Application\Templates\Helpers;
 
-use Blossom\Classes\Template;
+use Web\Template;
 
 class SaveAndCancelButtons
 {

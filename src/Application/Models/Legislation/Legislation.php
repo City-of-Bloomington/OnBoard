@@ -9,8 +9,8 @@ namespace Application\Models\Legislation;
 use Application\Models\Committee;
 use Application\Models\TagsTable;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 class Legislation extends ActiveRecord
 {

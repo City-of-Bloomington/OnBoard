@@ -5,9 +5,9 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
-use Blossom\Classes\TableGateway;
+use Web\ActiveRecord;
+use Web\Database;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Literal;
 

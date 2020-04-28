@@ -14,9 +14,9 @@ use Application\Models\Seat;
 use Application\Models\SeatTable;
 use Application\Models\VoteTable;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
-use Blossom\Classes\Url;
+use Web\Controller;
+use Web\Block;
+use Web\Url;
 
 class CommitteesController extends Controller
 {

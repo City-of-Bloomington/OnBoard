@@ -7,8 +7,8 @@ namespace Application\Models\Legislation;
 
 use Application\Models\File;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 class LegislationFile extends File
 {

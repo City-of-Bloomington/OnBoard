@@ -9,8 +9,8 @@ use Application\Models\Application;
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
 use Application\Models\Seat;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class ApplicationsController extends Controller
 {

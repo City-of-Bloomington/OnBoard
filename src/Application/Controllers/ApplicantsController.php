@@ -10,9 +10,9 @@ use Application\Models\ApplicantTable;
 use Application\Models\Captcha;
 use Application\Models\ApplicantFile;
 use Application\Models\Committee;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
-use Blossom\Classes\Database;
+use Web\Controller;
+use Web\Block;
+use Web\Database;
 
 class ApplicantsController extends Controller
 {

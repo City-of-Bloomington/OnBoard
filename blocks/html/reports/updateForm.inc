@@ -6,7 +6,7 @@
  */
 declare (strict_types=1);
 use Application\Models\Reports\Report;
-use Blossom\Classes\Block;
+use Web\Block;
 
 foreach (['id', 'title', 'committee_id', 'filename'] as $f) {
     $get = 'get'.ucfirst($f);

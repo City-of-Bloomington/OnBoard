@@ -9,8 +9,8 @@ use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationFile;
 use Application\Views\FileDownloadTemplate;
 
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class LegislationFilesController extends Controller
 {

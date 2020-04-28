@@ -3,7 +3,7 @@
  * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
-use Blossom\Classes\Url;
+use Web\Url;
 
 $helper = $this->template->getHelper('buttonLink');
 $a = '<a href="%s"%s>%s</a>';

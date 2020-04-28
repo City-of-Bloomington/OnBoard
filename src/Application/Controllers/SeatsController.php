@@ -10,8 +10,8 @@ use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 use Application\Models\Term;
-use Blossom\Classes\Block;
-use Blossom\Classes\Controller;
+use Web\Block;
+use Web\Controller;
 
 class SeatsController extends Controller
 {

@@ -9,7 +9,7 @@ namespace Application\Models\Reports;
 
 use Application\Models\Committee;
 use Application\Models\File;
-use Blossom\Classes\ActiveRecord;
+use Web\ActiveRecord;
 
 class Report extends File
 {

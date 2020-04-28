@@ -7,9 +7,9 @@ namespace Application\Controllers;
 
 use Application\Models\Person;
 use Application\Models\PeopleTable;
-use Blossom\Classes\Block;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Url;
+use Web\Block;
+use Web\Controller;
+use Web\Url;
 
 class PeopleController extends Controller
 {
@@ -21,7 +21,7 @@ class PeopleController extends Controller
         }
         return $fields;
     }
-    
+
 	public function index()
 	{
 		$table = new PeopleTable();
@@ -30,7 +30,7 @@ class PeopleController extends Controller
 		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
 		$people->setCurrentPageNumber($page);
 		$people->setItemCountPerPage(20);
-		
+
         if ($this->template->outputFormat == 'html') {
             $this->template->blocks[] = new Block('people/findForm.inc', ['fields'=>self::searchFields()]);
         }
@@ -43,7 +43,7 @@ class PeopleController extends Controller
         }
         $this->template->title = $this->template->_(['person', 'people', 2]).' - '.APPLICATION_NAME;
 	}
-	
+
 	public function parameters()
 	{
         $this->template->blocks[] = new Block('people/partials/findParameters.inc', ['fields'=>self::searchFields()]);

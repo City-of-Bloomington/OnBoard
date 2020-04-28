@@ -6,7 +6,7 @@
  * @param array $this->seats
  * @param Committee $this->committee
  */
-use Blossom\Classes\Block;
+use Web\Block;
 ?>
 <section>
     <header>

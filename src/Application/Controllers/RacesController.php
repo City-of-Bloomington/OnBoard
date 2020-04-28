@@ -8,8 +8,8 @@ namespace Application\Controllers;
 
 use Application\Models\Race;
 use Application\Models\RaceTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class RacesController extends Controller
 {

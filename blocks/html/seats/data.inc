@@ -11,7 +11,7 @@
 use Application\Models\Person;
 use Application\Models\Term;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\Url;
+use Web\Url;
 
 $title = $this->title
     ? self::escape($this->title)

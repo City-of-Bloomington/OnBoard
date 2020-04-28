@@ -5,8 +5,8 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\Database;
-use Blossom\Classes\TableGateway;
+use Web\Database;
+use Web\TableGateway;
 use Zend\Db\Sql\Select;
 
 class LiaisonTable extends TableGateway

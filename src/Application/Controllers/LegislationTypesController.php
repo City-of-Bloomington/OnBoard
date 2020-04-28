@@ -8,8 +8,8 @@ namespace Application\Controllers;
 
 use Application\Models\Legislation\Type;
 use Application\Models\Legislation\TypesTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class LegislationTypesController extends Controller
 {

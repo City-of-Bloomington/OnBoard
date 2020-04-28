@@ -5,7 +5,7 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\Database;
+use Web\Database;
 
 class Site
 {

@@ -8,7 +8,7 @@
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
-use Blossom\Classes\Block;
+use Web\Block;
 
 $title  = $this->title ? self::escape($this->title) : $this->_(['term', 'terms', 2]);
 $helper = $this->template->getHelper('buttonLink');

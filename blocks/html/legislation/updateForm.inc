@@ -8,7 +8,7 @@ use Application\Models\TagsTable;
 use Application\Models\Legislation\StatusesTable;
 use Application\Models\Legislation\TypesTable;
 
-use Blossom\Classes\Block;
+use Web\Block;
 
 $fields = [
     'id', 'committee_id', 'type_id', 'parent_id', 'status_id',

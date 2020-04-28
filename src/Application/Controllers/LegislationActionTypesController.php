@@ -7,8 +7,8 @@ namespace Application\Controllers;
 
 use Application\Models\Legislation\ActionType;
 use Application\Models\Legislation\ActionTypesTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class LegislationActionTypesController extends Controller
 {

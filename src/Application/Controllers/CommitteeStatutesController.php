@@ -9,8 +9,8 @@ namespace Application\Controllers;
 use Application\Models\Committee;
 use Application\Models\CommitteeStatute;
 use Application\Models\CommitteeStatuteTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class CommitteeStatutesController extends Controller
 {

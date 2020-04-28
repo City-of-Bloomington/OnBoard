@@ -6,7 +6,7 @@
  */
 use Application\Models\SeatTable;
 use Michelf\MarkdownExtra;
-use Blossom\Classes\Block;
+use Web\Block;
 
 $name = self::escape($this->committee->getName());
 ?>

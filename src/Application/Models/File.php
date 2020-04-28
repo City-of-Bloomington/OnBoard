@@ -8,8 +8,8 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\ActiveRecord;
-use Blossom\Classes\Database;
+use Web\ActiveRecord;
+use Web\Database;
 
 abstract class File extends ActiveRecord
 {

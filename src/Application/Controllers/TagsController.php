@@ -9,8 +9,8 @@ namespace Application\Controllers;
 use Application\Models\Tag;
 use Application\Models\TagsTable;
 
-use Blossom\Classes\Block;
-use Blossom\Classes\Controller;
+use Web\Block;
+use Web\Controller;
 
 class TagsController extends Controller
 {

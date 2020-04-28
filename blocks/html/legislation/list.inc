@@ -10,7 +10,7 @@ use Application\Models\Person;
 use Application\Models\Legislation\ActionTypesTable;
 use Application\Models\Legislation\TypesTable;
 
-use Blossom\Classes\Url;
+use Web\Url;
 ?>
 <section>
     <header>

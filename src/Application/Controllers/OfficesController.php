@@ -8,8 +8,8 @@ namespace Application\Controllers;
 
 use Application\Models\Office;
 use Application\Models\OfficeTable;
-use Blossom\Classes\Block;
-use Blossom\Classes\Controller;
+use Web\Block;
+use Web\Controller;
 
 class OfficesController extends Controller
 {

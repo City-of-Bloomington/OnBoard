@@ -7,8 +7,8 @@ namespace Application\Controllers;
 
 use Application\Models\ApplicantFile;
 use Application\Models\ApplicantFilesTable;
-use Blossom\Classes\Controller;
-use Blossom\Classes\Block;
+use Web\Controller;
+use Web\Block;
 
 class ApplicantFilesController extends Controller
 {

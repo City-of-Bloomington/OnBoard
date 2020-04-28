@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Committee $this->committee
  */
-use Blossom\Classes\Block;
+use Web\Block;
 
 $this->applications = $this->committee->getApplications(['current'=>time()]);
 $seats = $this->committee->getSeats(['current'=>true]);

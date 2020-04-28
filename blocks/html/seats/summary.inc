@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Seat $this->seat
  */
-use Blossom\Classes\Block;
+use Web\Block;
 use Michelf\MarkdownExtra;
 
 $requirements   = self::escape($this->seat->getRequirements());

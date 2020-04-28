@@ -4,7 +4,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Zend\Db\Result $this->data
  */
-use Blossom\Classes\Url;
+use Web\Url;
 
 $filename = APPLICATION_NAME.'-Liaisons-'.date('Ymd');
 header("Content-Disposition: attachment; filename=\"$filename.csv\"");
