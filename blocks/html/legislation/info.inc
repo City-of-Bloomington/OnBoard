@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
@@ -27,18 +27,32 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
 <section>
     <header>
     <?php
-        $h = $this->template->getHelper('buttonLink');
+        $h             = $this->template->getHelper('buttonLink');
+        $userCanEdit   = Person::isAllowed('legislation', 'update');
+        $userCanDelete = Person::isAllowed('legislation', 'delete');
 
         $tools = '';
-        if (Person::isAllowed('legislation', 'update')) {
-            $tools = '<div class="tools">';
-            $tools.= $h->buttonLink(
+        $links = [];
+        if ($userCanEdit) {
+            $links[] = $h->buttonLink(
                 BASE_URI.'/legislation/update?id='.$id,
                 $this->_('legislation_edit'),
                 'edit'
             );
+        }
+        if ($userCanDelete) {
+            $links[] = $h->buttonLink(
+                BASE_URI.'/legislation/delete?id='.$id,
+                $this->_('legislation_delete'),
+                'delete'
+            );
+        }
+        if ($links) {
+            $tools = '<div class="tools">';
+            foreach ($links as $l) { $tools.= $l; }
             $tools.= '</div>';
         }
+
 
         $parent = $this->legislation->getParent();
         if ($parent) {

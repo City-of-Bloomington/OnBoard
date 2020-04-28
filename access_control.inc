@@ -82,7 +82,8 @@ $ZEND_ACL->allow('Appointer', 'people',       'viewContactInfo');
 
 $ZEND_ACL->allow('Reviewer',  'committees', 'applications');
 $ZEND_ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
-$ZEND_ACL->allow('Reviewer', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
+$ZEND_ACL->allow('Reviewer', 'legislation', ['index', 'view', 'years', 'update']);
+$ZEND_ACL->allow('Reviewer', ['legislationFiles', 'legislationActions', 'reports']);
 $ZEND_ACL->allow('Reviewer',  'legislationStatuses', 'index');
 $ZEND_ACL->allow('Reviewer',  'applicants',   ['index', 'view', 'update']);
 $ZEND_ACL->allow('Reviewer',  'applications', ['index', 'archive', 'report']);

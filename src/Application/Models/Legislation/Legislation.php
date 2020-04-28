@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models\Legislation;
@@ -251,5 +251,26 @@ class Legislation extends ActiveRecord
             'actions'    => $actions,
             'files'      => $files
         ];
+    }
+
+    public function delete()
+    {
+        $id = $this->getId();
+        if ($id) {
+            foreach ($this->getFiles() as $f) {
+                $f->delete();
+            }
+
+            $zend_db = Database::getConnection();
+
+            $sql = 'delete from legislationActions where id=?';
+            $zend_db->query($sql)->execute([$id]);
+
+            $sql = 'delete from legislation_tags where legislation_id=?';
+            $zend_db->query($sql)->execute([$id]);
+
+            $sql = 'delete from legislation where id=?';
+            $zend_db->query($sql)->execute([$id]);
+        }
     }
 }

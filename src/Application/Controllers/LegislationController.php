@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -170,5 +170,27 @@ class LegislationController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+    }
+
+    public function delete()
+    {
+        if (!empty($_REQUEST['id'])) {
+            try { $legislation = new Legislation($_REQUEST['id']); }
+            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+        }
+
+        if (isset($legislation)) {
+            $committee_id = $legislation->getCommittee_id();
+            $year         = $legislation->getYear();
+            $return_url   = BASE_URL."/legislation?committee_id=$committee_id;year=$year";
+
+            $legislation->delete();
+
+            header("Location: $return_url");
+            exit();
+        }
+
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $this->template->blocks[] = new Block('404.inc');
     }
 }
