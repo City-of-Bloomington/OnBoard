@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.2",
         "michelf/php-markdown": "~1",
-        "jasig/phpcas": "~1",
+        "apereo/phpcas":                   "@stable",
         "google/apiclient": "~2.0",
         "laminas/laminas-db":              "@stable",
         "laminas/laminas-log":             "@stable",

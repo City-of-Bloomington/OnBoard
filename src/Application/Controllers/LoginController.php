@@ -37,7 +37,6 @@ class LoginController extends Controller
 			exit();
 		}
 
-		require_once CAS.'/CAS.php';
 		\phpCAS::client(CAS_VERSION_2_0, CAS_SERVER, 443, CAS_URI, false);
 		\phpCAS::setNoCasServerValidation();
 		\phpCAS::forceAuthentication();
