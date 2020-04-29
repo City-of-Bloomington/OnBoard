@@ -3,7 +3,6 @@
  * Where on the filesystem this application is installed
  */
 define('APPLICATION_HOME', __DIR__);
-define('BLOSSOM', APPLICATION_HOME.'/vendor/City-of-Bloomington/blossom-lib');
 define('VERSION', trim(file_get_contents(APPLICATION_HOME.'/VERSION')));
 
 // Path to LibreOffice for converting files to PDF

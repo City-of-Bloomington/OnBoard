@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright 2007-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->errorMessages
  */
 ?>
@@ -12,8 +12,7 @@
 	<?php
         $errorDir = "/blocks/html/errorMessages";
 
-		foreach ($this->errorMessages as $e) {
-			$error = $e->getMessage();
+		foreach ($this->errorMessages as $error) {
 			$file = "$errorDir/$error.inc";
 
             if ($this->theme
