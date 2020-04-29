@@ -14,25 +14,19 @@
  * page redirection to the href provided.  The people search will return the user
  * to the current url once they've chosen a person.
  *
- * @copyright 2013-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2013-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-namespace Application\Templates\Helpers;
+namespace Web\Templates\Helpers;
 
 use Application\Models\Person;
+use Web\Helper;
 use Web\Template;
 use Web\Url;
 use Web\View;
 
-class PersonChooser
+class PersonChooser extends Helper
 {
-	private $template;
-
-	public function __construct(Template $template)
-	{
-		$this->template = $template;
-	}
-
 	/**
 	 * @param string $fieldname The name of the person field
 	 * @param string $fieldId   The ID of the person field
