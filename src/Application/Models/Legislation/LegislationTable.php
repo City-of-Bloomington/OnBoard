@@ -7,9 +7,9 @@ namespace Application\Models\Legislation;
 
 use Web\Database;
 use Web\TableGateway;
-use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Expression;
+use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Expression;
 
 class LegislationTable extends TableGateway
 {

@@ -7,7 +7,7 @@ namespace Application\Models;
 
 use Web\Database;
 use Web\TableGateway;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Select;
 
 class LiaisonTable extends TableGateway
 {
@@ -78,8 +78,8 @@ class LiaisonTable extends TableGateway
      */
     private static function performDataSelect($sql, $params)
     {
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute($params);
+        $db = Database::getConnection();
+        $result = $db->query($sql)->execute($params);
         return [
             'fields'  => array_keys(self::$dataFields),
             'results' => $result
@@ -159,8 +159,8 @@ class LiaisonTable extends TableGateway
  	public static function isLiaison(int $person_id, int $committee_id): bool
  	{
         $sql     = 'select id from liaisons where person_id=? and committee_id=?';
-        $zend_db = Database::getConnection();
-        $result  = $zend_db->query($sql)->execute([$person_id, $committee_id]);
+        $db = Database::getConnection();
+        $result  = $db->query($sql)->execute([$person_id, $committee_id]);
         return count($result) ? true : false;
  	}
 }

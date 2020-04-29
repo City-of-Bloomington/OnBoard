@@ -6,8 +6,8 @@
 namespace Application\Models;
 
 use Web\TableGateway;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Predicate\Like;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Predicate\Like;
 
 class PeopleTable extends TableGateway
 {

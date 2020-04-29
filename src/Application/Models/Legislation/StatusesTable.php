@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Web\TableGateway;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Select;
 
 class StatusesTable extends TableGateway
 {

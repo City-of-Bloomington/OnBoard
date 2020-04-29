@@ -25,9 +25,9 @@ class Committee extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				$sql = 'select * from committees where id=?';
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -60,12 +60,12 @@ class Committee extends ActiveRecord
         parent::save();
 
         if ($this->departmentsHaveChanged) {
-            $zend_db = Database::getConnection();
+            $db = Database::getConnection();
             $sql = 'delete from committee_departments where committee_id=?';
-            $zend_db->query($sql, [$this->getId()]);
+            $db->query($sql, [$this->getId()]);
 
             $sql = 'insert committee_departments set committee_id=?,department_id=?';
-            $insert = $zend_db->createStatement($sql);
+            $insert = $db->createStatement($sql);
             foreach (array_keys($this->departments) as $id) {
                 $params = [$this->getId(), $id];
                 try { $insert->execute($params); }
@@ -148,7 +148,7 @@ class Committee extends ActiveRecord
             $d = ActiveRecord::parseDate($date, DATE_FORMAT);
 
             if ($d) {
-                $zend_db = Database::getConnection();
+                $db = Database::getConnection();
 
                 $params = [
                     $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
@@ -164,15 +164,15 @@ class Committee extends ActiveRecord
                     'update members      set endDate=?   where committee_id=?   and endDate   is null',
                     'update committees   set endDate=?   where id=?'
                 ];
-                $zend_db->getDriver()->getConnection()->beginTransaction();
+                $db->getDriver()->getConnection()->beginTransaction();
                 try {
                     foreach ($updates as $sql) {
-                        $zend_db->query($sql)->execute($params);
+                        $db->query($sql)->execute($params);
                     }
-                    $zend_db->getDriver()->getConnection()->commit();
+                    $db->getDriver()->getConnection()->commit();
                 }
                 catch (\Exception $e) {
-                    $zend_db->getDriver()->getConnection()->rollback();
+                    $db->getDriver()->getConnection()->rollback();
                     throw $e;
                 }
             }
@@ -202,7 +202,7 @@ class Committee extends ActiveRecord
 	 * Returns members for the committee
 	 *
 	 * @param array $fields
-	 * @return Zend\Db\ResultSet
+	 * @return Laminas\Db\ResultSet
 	 */
 	public function getMembers(array $fields=null)
 	{
@@ -214,7 +214,7 @@ class Committee extends ActiveRecord
 
 	/**
 	 * @param string $date
-	 * @return Zend\Db\Result
+	 * @return Laminas\Db\Result
 	 */
 	public function getOffices($date=null)
 	{
@@ -229,7 +229,7 @@ class Committee extends ActiveRecord
 	 * Returns a ResultSet containing Seats.
 	 *
 	 * @param array $fields
-	 * @return Zend\Db\ResultSet A ResultSet containing the Seat objects
+	 * @return Laminas\Db\ResultSet A ResultSet containing the Seat objects
 	 */
 	public function getSeats(array $fields=null)
 	{
@@ -250,8 +250,8 @@ class Committee extends ActiveRecord
         $sql = "select count(*) as count from $table
                 where committee_id=?
                   and endDate is not null and endDate < now()";
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute([$this->getId()]);
+        $db = Database::getConnection();
+        $result = $db->query($sql)->execute([$this->getId()]);
         $row = $result->current();
         return $row['count'] ? true : false;
 	}
@@ -264,7 +264,7 @@ class Committee extends ActiveRecord
 	 *
 	 * @param timestamp $timestamp The timestamp for when the terms would have been current
 	 *
-	 * @return Zend\Db\ResultSet
+	 * @return Laminas\Db\ResultSet
 	 */
 	public function getCurrentTerms($timestamp=null)
 	{
@@ -307,7 +307,7 @@ class Committee extends ActiveRecord
 	/**
 	 * Returns all the terms for this committee
 	 *
-	 * @return Zend\Db\ResultSet
+	 * @return Laminas\Db\ResultSet
 	 */
 	public function getTerms()
 	{
@@ -318,7 +318,7 @@ class Committee extends ActiveRecord
 	/**
 	 * Returns all the people who have served on this committee
 	 *
-	 * @return Zend\Db\ResultSet
+	 * @return Laminas\Db\ResultSet
 	 */
 	public function getMemberPeople()
 	{
@@ -382,7 +382,7 @@ class Committee extends ActiveRecord
 	 * Application objects for this committee
 	 *
 	 * @param array $params Additional query parameters
-	 * @return Zend\Db\Result
+	 * @return Laminas\Db\Result
 	 */
 	public function getApplications(array $params=null)
 	{
@@ -394,7 +394,7 @@ class Committee extends ActiveRecord
 	}
 
 	/**
-	 * @return Zend\Db\Result
+	 * @return Laminas\Db\Result
 	 */
 	public function getStatutes()
 	{
@@ -438,8 +438,8 @@ class Committee extends ActiveRecord
                 $where
                 group by c.id
                 order by c.name";
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute();
+        $db = Database::getConnection();
+        $result = $db->query($sql)->execute();
         return $result;
 	}
 
@@ -494,9 +494,9 @@ class Committee extends ActiveRecord
 	{
 		$history = [];
 
-		$zend_db = Database::getConnection();
+		$db = Database::getConnection();
 		$sql = 'select * from committeeHistory where committee_id=? order by date desc';
-		$result = $zend_db->query($sql)->execute([$this->getId()]);
+		$result = $db->query($sql)->execute([$this->getId()]);
 		foreach ($result as $row) {
 			$history[] = new CommitteeHistory($row);
 		}
@@ -509,9 +509,9 @@ class Committee extends ActiveRecord
 	public function isLegislative(): bool { return $this->getLegislative() ? true : false; }
 	public function takesApplications(): bool
 	{
-        $zend_db = Database::getConnection();
+        $db = Database::getConnection();
         $sql     = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
-        $row     = $zend_db->query($sql)->execute([$this->getId()])->current();
+        $row     = $db->query($sql)->execute([$this->getId()])->current();
         return (int)$row['count'] > 0;
 	}
 

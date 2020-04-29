@@ -2,7 +2,7 @@
 /**
  * @copyright 2009-2019 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param Zend\Paginator $this->people
+ * @param Laminas\Paginator $this->people
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;

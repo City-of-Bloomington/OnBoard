@@ -6,7 +6,7 @@
 namespace Application\Models\Legislation;
 
 use Web\TableGateway;
-use Zend\Db\Sql\Select;
+use Laminas\Db\Sql\Select;
 
 class TypesTable extends TableGateway
 {

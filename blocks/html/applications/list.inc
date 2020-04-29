@@ -2,7 +2,7 @@
 /**
  * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\Result $this->applications
+ * @param Laminas\Db\Result $this->applications
  * @param string         $this->title      (optional)
  * @param Committee      $this->committee  (optional)
  * @param Applicant      $this->applicant  (optional)

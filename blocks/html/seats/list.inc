@@ -2,7 +2,7 @@
 /**
  * @copyright 2009-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\ResultSet $this->seats
+ * @param Laminas\Db\ResultSet $this->seats
  * @param Committee         $this->committee      (optional)
  * @param boolean           $this->disableButtons (optional)
  * @param string            $this->title          (optional)

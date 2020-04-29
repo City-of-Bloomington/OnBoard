@@ -36,10 +36,10 @@ class Member extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				$sql = 'select * from members where id=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -158,7 +158,7 @@ class Member extends ActiveRecord
 	 */
 	private function overlapsExistingMember()
 	{
-		$zend_db = Database::getConnection();
+		$db = Database::getConnection();
 
 		$sql = "select id from members
                 where committee_id=? and person_id=?
@@ -171,7 +171,7 @@ class Member extends ActiveRecord
             $this->getStartDate(),    $this->getStartDate()
         ];
 
-        $result = $zend_db->query($sql, $params);
+        $result = $db->query($sql, $params);
 		if (count($result)) { return $result->toArray(); }
 
 		// Make sure this service does not overlap with another member for the same seat
@@ -187,7 +187,7 @@ class Member extends ActiveRecord
                 $this->getStartDate(),    $this->getStartDate()
             ];
 
-            $result = $zend_db->query($sql, $params);
+            $result = $db->query($sql, $params);
             if (count($result)) { return $result->toArray(); }
 		}
 	}

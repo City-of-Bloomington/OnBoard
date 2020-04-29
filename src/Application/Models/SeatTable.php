@@ -8,8 +8,8 @@ namespace Application\Models;
 use Web\ActiveRecord;
 use Web\Database;
 use Web\TableGateway;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Literal;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Literal;
 
 class SeatTable extends TableGateway
 {
@@ -149,8 +149,8 @@ class SeatTable extends TableGateway
      */
     private static function performDataSelect($sql, $params)
     {
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql)->execute($params);
+        $db = Database::getConnection();
+        $result = $db->query($sql)->execute($params);
         return [
             'fields'  => array_keys(self::$dataFields),
             'results' => $result

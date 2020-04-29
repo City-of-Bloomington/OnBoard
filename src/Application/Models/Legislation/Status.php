@@ -20,12 +20,12 @@ class Status extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
                 $sql = ActiveRecord::isId($id)
                     ? 'select * from legislationStatuses where id=?'
                     : 'select * from legislationStatuses where name=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -49,9 +49,9 @@ class Status extends ActiveRecord
 
 	public function delete()
 	{
-        $zend_db = Database::getConnection();
+        $db = Database::getConnection();
         $sql = 'update legislation set status_id=null where status_id=?';
-        $zend_db->createStatement($sql)->execute([$this->getId()]);
+        $db->createStatement($sql)->execute([$this->getId()]);
         parent::delete();
 	}
 

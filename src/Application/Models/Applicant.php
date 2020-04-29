@@ -36,10 +36,10 @@ class Applicant extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
                 $sql = 'select * from applicants where id=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -78,9 +78,9 @@ class Applicant extends ActiveRecord
 	public function delete()
 	{
         if ($this->getId()) {
-            $zend_db = Database::getConnection();
+            $db = Database::getConnection();
             $sql = 'delete from applications where applicant_id=?';
-            $zend_db->query($sql)->execute([$this->getId()]);
+            $db->query($sql)->execute([$this->getId()]);
 
             foreach ($this->getFiles() as $f) { $f->delete(); }
 
@@ -149,7 +149,7 @@ class Applicant extends ActiveRecord
 	 * Applications for this applicant
 	 *
 	 * @param array $params Additional query parameters
-	 * @return Zend\Db\Result
+	 * @return Laminas\Db\Result
 	 */
 	public function getApplications(array $params=null)
 	{
@@ -170,15 +170,15 @@ class Applicant extends ActiveRecord
             $currentCommittees[] = $a->getCommittee_id();
         }
 
-        $zend_db = Database::getConnection();
+        $db = Database::getConnection();
 
-        $delete = $zend_db->createStatement('delete from applications where committee_id=? and applicant_id=?');
+        $delete = $db->createStatement('delete from applications where committee_id=? and applicant_id=?');
         $toDelete = array_diff($currentCommittees, $ids);
         foreach ($toDelete as $committee_id) {
             $delete->execute([$committee_id, $this->getId()]);
         }
 
-        $insert = $zend_db->createStatement('insert applications set committee_id=?,applicant_id=?');
+        $insert = $db->createStatement('insert applications set committee_id=?,applicant_id=?');
         $toInsert = array_diff($ids, $currentCommittees);
         foreach ($toInsert as $committee_id) {
             $insert->execute([$committee_id, $this->getId()]);

@@ -14,8 +14,8 @@ class Site
     public static function getContent($label)
     {
         if (in_array($label, self::$labels)) {
-            $zend_db = Database::getConnection();
-            $result = $zend_db->query('select content from siteContent where label=?')->execute([$label]);
+            $db = Database::getConnection();
+            $result = $db->query('select content from siteContent where label=?')->execute([$label]);
             if (count($result)) {
                 $row = $result->current();
                 return $row['content'];
@@ -31,8 +31,8 @@ class Site
                 ? 'insert siteContent set content=?, label=?'
                 : 'update siteContent set content=? where label=?';
 
-            $zend_db = Database::getConnection();
-            $zend_db->query($sql, [$post['content'], $post['label']]);
+            $db = Database::getConnection();
+            $db->query($sql, [$post['content'], $post['label']]);
         }
     }
 }

@@ -32,14 +32,14 @@ class Appointer extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				if (ActiveRecord::isId($id)) {
 					$sql = 'select * from appointers where id=?';
 				}
 				else {
 					$sql = 'select * from appointers where name=?';
 				}
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}

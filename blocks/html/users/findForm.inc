@@ -28,9 +28,9 @@ foreach ($fields as $f) {
                     ]);
                 }
 
-				global $ZEND_ACL;
+				global $ACL;
 				$options = [['value'=>'']];
-				foreach (array_reverse($ZEND_ACL->getRoles()) as $r) { $options[] = ['value'=>$r]; }
+				foreach (array_reverse($ACL->getRoles()) as $r) { $options[] = ['value'=>$r]; }
 				echo $h->field([
                     'name'     => 'role',
                     'id'       => 'role',

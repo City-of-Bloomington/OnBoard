@@ -2,7 +2,7 @@
 /**
  * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\Result $this->data      Data structure returned as SeatTable::$dataFields
+ * @param Laminas\Db\Result $this->data      Data structure returned as SeatTable::$dataFields
  * @param Committee      $this->committee (optional)
  * @param string         $this->title     (optional)
  */

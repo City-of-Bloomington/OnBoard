@@ -2,7 +2,7 @@
 /**
  * @copyright 2016-2017 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\Result $this->data
+ * @param Laminas\Db\Result $this->data
  */
 $filename = APPLICATION_NAME.'-';
 $filename.= $this->title ? $this->title : $this->_(['committee', 'committees', count($this->data)]);

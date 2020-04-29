@@ -70,7 +70,7 @@ abstract class File extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				if (ActiveRecord::isId($id)) {
 					$sql = "select * from {$this->tablename} where id=?";
 				}
@@ -81,7 +81,7 @@ abstract class File extends ActiveRecord
 				}
 
 				$result = isset($sql)
-                        ? $zend_db->createStatement($sql)->execute([$id])
+                        ? $db->createStatement($sql)->execute([$id])
                         : [];
 
 				if (count($result)) {

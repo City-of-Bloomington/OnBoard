@@ -22,12 +22,12 @@ $template = !empty($_REQUEST['format'])
 	: new Template('default');
 
 // Execute the Controller::action()
-if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
+if (isset($resource) && isset($action) && $ACL->hasResource($resource)) {
     $controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
     $c = new $controller($template);
     if (method_exists($c, $action)) {
         $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
-        if ($ZEND_ACL->isAllowed($role, $resource, $action)) {
+        if ($ACL->isAllowed($role, $resource, $action)) {
             $c->$action();
         }
         else {

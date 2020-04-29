@@ -44,10 +44,10 @@ class Seat extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				$sql = 'select * from seats where id=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -179,14 +179,14 @@ class Seat extends ActiveRecord
                     $this->getId()
                 ];
 
-                $zend_db = Database::getConnection();
-                $zend_db->getDriver()->getConnection()->beginTransaction();
+                $db = Database::getConnection();
+                $db->getDriver()->getConnection()->beginTransaction();
                 try {
-                    foreach ($updates as $sql) { $zend_db->query($sql)->execute($params); }
-                    $zend_db->getDriver()->getConnection()->commit();
+                    foreach ($updates as $sql) { $db->query($sql)->execute($params); }
+                    $db->getDriver()->getConnection()->commit();
                 }
                 catch (\Exception $e) {
-                    $zend_db->getDriver()->getConnection()->rollback();
+                    $db->getDriver()->getConnection()->rollback();
                     throw $e;
                 }
             }
@@ -208,8 +208,8 @@ class Seat extends ActiveRecord
                     union
                     select id from members where seat_id=?
                 ) foreignKeys";
-        $zend_db = Database::getConnection();
-        $result = $zend_db->query($sql, [$this->getId(), $this->getId()]);
+        $db = Database::getConnection();
+        $result = $db->query($sql, [$this->getId(), $this->getId()]);
         if ($result) {
             $row = $result->current();
             return (int)$row['count'] === 0 ? true : false;
@@ -217,7 +217,7 @@ class Seat extends ActiveRecord
 	}
 
 	/**
-	 * @return Zend\Db\Result
+	 * @return Laminas\Db\Result
 	 */
 	public function getMembers()
 	{
@@ -389,9 +389,9 @@ class Seat extends ActiveRecord
 
         if ($committee->getType() === 'seated') {
             // Seats on seated committees can only be deleted if there are no terms
-            $zend_db = Database::getConnection();
+            $db = Database::getConnection();
             $sql = 'select count(*) as count from terms where seat_id=?';
-            $result = $zend_db->query($sql, [$this->getId()]);
+            $result = $db->query($sql, [$this->getId()]);
             $row = $result->current();
             return $row['count'] === 0;
         }

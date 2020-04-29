@@ -33,10 +33,10 @@ class Application extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
                 $sql = 'select * from applications where id=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -72,8 +72,8 @@ class Application extends ActiveRecord
     {
         if ($this->getId()) {
             $sql = 'update applications set archived=now() where id=?';
-            $zend_db = Database::getConnection();
-            $zend_db->query($sql, [$this->getId()]);
+            $db = Database::getConnection();
+            $db->query($sql, [$this->getId()]);
         }
     }
 
@@ -81,8 +81,8 @@ class Application extends ActiveRecord
     {
         if ($this->getId()) {
             $sql = 'update applications set archived=null where id=?';
-            $zend_db = Database::getConnection();
-            $zend_db->query($sql, [$this->getId()]);
+            $db = Database::getConnection();
+            $db->query($sql, [$this->getId()]);
         }
     }
 
@@ -131,8 +131,8 @@ class Application extends ActiveRecord
                 join applications a on l.committee_id=a.committee_id
                 where a.id=?
                   and type=?";
-        $zend_db = Database::getConnection();
-        $result  = $zend_db->createStatement($sql)->execute([$this->getId(), Liaison::TYPE_DEPARTMENTAL]);
+        $db = Database::getConnection();
+        $result  = $db->createStatement($sql)->execute([$this->getId(), Liaison::TYPE_DEPARTMENTAL]);
         foreach ($result as $p) { $people[] = new Person($p); }
 
         return $people;

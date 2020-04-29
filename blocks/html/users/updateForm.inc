@@ -36,9 +36,9 @@ foreach ($fields as $f) {
                 echo $field->field(['name'=>'password', 'id'=>'password', 'label'=>$this->_('password'), 'type'=>'password']);
 				echo $field->field(['name'=>'email',    'id'=>'email',    'label'=>$this->_('email'   ), 'value'=>$email]);
 
-				global $ZEND_ACL;
+				global $ACL;
 				$options = [];
-				foreach (array_reverse($ZEND_ACL->getRoles()) as $r) { $options[] = ['value'=>$r]; }
+				foreach (array_reverse($ACL->getRoles()) as $r) { $options[] = ['value'=>$r]; }
 				echo $field->field([
                     'name'     => 'role',
                     'id'       => 'role',

@@ -38,10 +38,10 @@ class Legislation extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$zend_db = Database::getConnection();
+				$db = Database::getConnection();
 				$sql = 'select * from legislation where id=?';
 
-				$result = $zend_db->createStatement($sql)->execute([$id]);
+				$result = $db->createStatement($sql)->execute([$id]);
 				if (count($result)) {
 					$this->exchangeArray($result->current());
 				}
@@ -190,13 +190,13 @@ class Legislation extends ActiveRecord
 	{
         $id = $this->getId();
         if ($id) {
-            $zend_db = Database::getConnection();
+            $db = Database::getConnection();
 
             $sql = 'delete from legislation_tags where legislation_id=?';
-            $zend_db->query($sql)->execute([$id]);
+            $db->query($sql)->execute([$id]);
 
             $sql = 'insert into legislation_tags (legislation_id, tag_id) values(?, ?)';
-            $insert = $zend_db->createStatement($sql);
+            $insert = $db->createStatement($sql);
             foreach ($tag_ids as $tid) {
                 $insert->execute([$id, $tid]);
             }
@@ -261,16 +261,16 @@ class Legislation extends ActiveRecord
                 $f->delete();
             }
 
-            $zend_db = Database::getConnection();
+            $db = Database::getConnection();
 
             $sql = 'delete from legislationActions where id=?';
-            $zend_db->query($sql)->execute([$id]);
+            $db->query($sql)->execute([$id]);
 
             $sql = 'delete from legislation_tags where legislation_id=?';
-            $zend_db->query($sql)->execute([$id]);
+            $db->query($sql)->execute([$id]);
 
             $sql = 'delete from legislation where id=?';
-            $zend_db->query($sql)->execute([$id]);
+            $db->query($sql)->execute([$id]);
         }
     }
 }

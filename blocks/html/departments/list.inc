@@ -2,7 +2,7 @@
 /**
  * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param Zend\Db\Result $this->departments
+ * @param Laminas\Db\Result $this->departments
  * @param boolean        $this->disableButtons
  */
 use Application\Models\Person;

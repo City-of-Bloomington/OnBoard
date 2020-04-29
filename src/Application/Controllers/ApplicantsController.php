@@ -102,8 +102,8 @@ class ApplicantsController extends Controller
         $applicant = new Applicant();
 
         if (isset($_POST['firstname']) && Captcha::verify()) {
-            $zend_db = Database::getConnection();
-            $zend_db->getDriver()->getConnection()->beginTransaction();
+            $db = Database::getConnection();
+            $db->getDriver()->getConnection()->beginTransaction();
             try {
 
                 $applicant->handleUpdate($_POST);
@@ -119,7 +119,7 @@ class ApplicantsController extends Controller
                     $file->setFile($_FILES['applicantFile']);
                     $file->save();
                 }
-                $zend_db->getDriver()->getConnection()->commit();
+                $db->getDriver()->getConnection()->commit();
 
                 $this->notifyLiaisons($applicant);
                 $this->template->blocks[] = new Block('applicants/success.inc', ['applicant'=>$applicant]);
@@ -127,7 +127,7 @@ class ApplicantsController extends Controller
                 return;
             }
             catch (\Exception $e) {
-                $zend_db->getDriver()->getConnection()->rollback();
+                $db->getDriver()->getConnection()->rollback();
                 $_SESSION['errorMessages'][] = $e;
             }
         }
