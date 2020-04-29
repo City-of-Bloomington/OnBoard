@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -10,13 +10,15 @@ use Application\Models\ApplicantTable;
 use Application\Models\Captcha;
 use Application\Models\ApplicantFile;
 use Application\Models\Committee;
+
 use Web\Controller;
 use Web\Block;
 use Web\Database;
+use Web\View;
 
 class ApplicantsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $table = new ApplicantTable();
         $list = $table->find();
@@ -24,9 +26,10 @@ class ApplicantsController extends Controller
         $title = $this->template->_(['applicant', 'applicants', count($list)]);
         $this->template->title = $title.' - '.APPLICATION_HOME;
         $this->template->blocks[] = new Block('applicants/list.inc', ['applicants'=>$list]);
+        return $this->template;
     }
 
-    public function view()
+    public function view(): View
     {
         if (!empty($_REQUEST['applicant_id'])) {
             try { $applicant = new Applicant($_REQUEST['applicant_id']); }
@@ -52,9 +55,10 @@ class ApplicantsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['applicant_id'])) {
             try { $applicant = new Applicant($_REQUEST['applicant_id']); }
@@ -95,9 +99,10 @@ class ApplicantsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function apply()
+    public function apply(): View
     {
         $applicant = new Applicant();
 
@@ -124,7 +129,7 @@ class ApplicantsController extends Controller
                 $this->notifyLiaisons($applicant);
                 $this->template->blocks[] = new Block('applicants/success.inc', ['applicant'=>$applicant]);
 
-                return;
+                return $this->template;
             }
             catch (\Exception $e) {
                 $db->getDriver()->getConnection()->rollback();
@@ -145,9 +150,10 @@ class ApplicantsController extends Controller
         $block = new Block('applicants/applyForm.inc', ['applicant'=>$applicant]);
         if (isset($committee)) { $block->committee = $committee; }
         $this->template->blocks[] = $block;
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_REQUEST['applicant_id'])) {
             try { $applicant = new Applicant($_REQUEST['applicant_id']); }
@@ -163,6 +169,7 @@ class ApplicantsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
     private function notifyLiaisons(Applicant $applicant)

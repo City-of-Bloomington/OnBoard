@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Controllers;
@@ -12,10 +12,11 @@ use Application\Models\Reports\ReportsTable;
 
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class ReportsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -47,9 +48,10 @@ class ReportsController extends Controller
                 'list' => $table->find($_GET, 'reportDate desc')
             ]);
         }
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['id'])) {
             try { $report = new Report($_REQUEST['id']); }
@@ -96,9 +98,10 @@ class ReportsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function download()
+    public function download(): View
     {
         if (!empty($_GET['id'])) {
             try {
@@ -114,9 +117,10 @@ class ReportsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_GET['id'])) {
             try {
@@ -135,5 +139,6 @@ class ReportsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

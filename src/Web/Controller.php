@@ -9,12 +9,12 @@ abstract class Controller
 {
 	protected $template;
 
-	abstract public function index();
-
-	public function __construct(Template &$template)
+	public function __construct()
 	{
-		$this->template = $template;
-		$this->template->controller = get_class($this);
+        // Create the default Template
+        $this->template = !empty($_REQUEST['format'])
+                        ? new Template('default', $_REQUEST['format'])
+                        : new Template('default');
 	}
 
 	/**

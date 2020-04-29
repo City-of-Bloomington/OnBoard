@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -13,10 +13,11 @@ use Application\Models\LiaisonTable;
 use Web\Controller;
 use Web\Block;
 use Web\Url;
+use Web\View;
 
 class LiaisonsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $type = (!empty($_GET['type']) && in_array($_GET['type'], Liaison::$types))
             ? $_GET['type']
@@ -31,9 +32,10 @@ class LiaisonsController extends Controller
 
         $this->template->title = $title.' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block('liaisons/list.inc', ['data'=>$data]);
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['liaison_id'])) {
             try {
@@ -78,9 +80,10 @@ class LiaisonsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_REQUEST['liaison_id'])) {
             try {
@@ -100,5 +103,6 @@ class LiaisonsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

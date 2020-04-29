@@ -1,26 +1,29 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Legislation\ActionType;
 use Application\Models\Legislation\ActionTypesTable;
+
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class LegislationActionTypesController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $table = new ActionTypesTable();
         $list  = $table->find();
 
         $this->template->blocks[] = new Block('legislation/actionTypes.inc', ['types'=>$list]);
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['id'])) {
             try { $type = new ActionType($_REQUEST['id']); }
@@ -45,5 +48,6 @@ class LegislationActionTypesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

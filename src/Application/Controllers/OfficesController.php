@@ -1,23 +1,20 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Office;
 use Application\Models\OfficeTable;
+
 use Web\Block;
 use Web\Controller;
+use Web\View;
 
 class OfficesController extends Controller
 {
-	public function index()
-	{
-	}
-
-	public function update()
+	public function update(): View
 	{
 		if (empty($_REQUEST['office_id'])) {
 			$office = new Office();
@@ -57,5 +54,6 @@ class OfficesController extends Controller
 		$this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
 		$this->template->blocks[] = new Block('offices/list.inc',           ['offices'   => $committee->getOffices(date('Y-m-d'))]);
 		$this->template->blocks[] = new Block('offices/updateForm.inc',     ['office'    => $office]);
+        return $this->template;
 	}
 }

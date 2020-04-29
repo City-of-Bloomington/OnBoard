@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -11,10 +11,11 @@ use Application\Models\MeetingFilesTable;
 
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class MeetingFilesController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $search = [];
 
@@ -64,9 +65,10 @@ class MeetingFilesController extends Controller
             'committee' => isset($committee) ? $committee : null,
             'sort'      => $sort
         ]);
+        return $this->template;
     }
 
-    public function years()
+    public function years(): View
     {
         $search = [];
 
@@ -91,9 +93,10 @@ class MeetingFilesController extends Controller
             'years'    => $years,
             'committe' => isset($committee) ? $committee : null
         ]);
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['meetingFile_id'])) {
             try { $file = new MeetingFile($_REQUEST['meetingFile_id']); }
@@ -143,9 +146,10 @@ class MeetingFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function download()
+    public function download(): View
     {
         if (!empty($_GET['meetingFile_id'])) {
             try {
@@ -161,9 +165,10 @@ class MeetingFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_GET['meetingFile_id'])) {
             try {
@@ -182,5 +187,6 @@ class MeetingFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

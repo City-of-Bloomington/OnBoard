@@ -7,13 +7,15 @@ namespace Application\Controllers;
 
 use Application\Models\Person;
 use Application\Models\PeopleTable;
+
 use Web\Controller;
 use Web\Block;
 use Web\Database;
+use Web\View;
 
 class UsersController extends Controller
 {
-	public function index()
+	public function index(): View
 	{
         $_GET['user_account'] = true;
 
@@ -29,9 +31,10 @@ class UsersController extends Controller
 		$this->template->blocks[] = new Block('users/findForm.inc');
 		$this->template->blocks[] = new Block('users/list.inc',     ['users'    =>$users]);
 		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$users]);
+        return $this->template;
 	}
 
-	public function update()
+	public function update(): View
 	{
         if (!empty($_REQUEST['user_id'])) {
             try { $person = new Person($_REQUEST['user_id']); }
@@ -81,9 +84,10 @@ class UsersController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
 	}
 
-	public function delete()
+	public function delete(): View
 	{
         $return_url = $_REQUEST['return_url'] ?? BASE_URL.'/users';
 
@@ -97,5 +101,6 @@ class UsersController extends Controller
 		}
 		header("Location: $return_url");
 		exit();
+        return $this->template;
 	}
 }

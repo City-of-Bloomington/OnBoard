@@ -9,16 +9,14 @@ use Application\Models\Application;
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
 use Application\Models\Seat;
+
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class ApplicationsController extends Controller
 {
-    public function index()
-    {
-    }
-
-    public function archive()
+    public function archive(): View
     {
         if (!empty($_REQUEST['application_id'])) {
             try { $application = new Application($_REQUEST['application_id']); }
@@ -36,9 +34,10 @@ class ApplicationsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function unarchive()
+    public function unarchive(): View
     {
         if (!empty($_REQUEST['application_id'])) {
             try { $application = new Application($_REQUEST['application_id']); }
@@ -56,9 +55,10 @@ class ApplicationsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function report()
+    public function report(): View
     {
         if (!empty($_REQUEST['committee_id'])) {
             try { $committee = new Committee($_REQUEST['committee_id']); }
@@ -89,10 +89,10 @@ class ApplicationsController extends Controller
                 'seats'        => $seats
             ]);
         }
-
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_REQUEST['application_id'])) {
             try { $application = new Application($_REQUEST['application_id']); }
@@ -110,5 +110,6 @@ class ApplicationsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

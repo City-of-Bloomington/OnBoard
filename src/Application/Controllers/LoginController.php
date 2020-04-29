@@ -1,22 +1,24 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2012-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
+
 use Web\Controller;
 use Web\Template;
 use Web\Block;
+use Web\View;
+
 use Application\Models\Person;
 
 class LoginController extends Controller
 {
 	private $return_url;
 
-	public function __construct(Template $template)
+	public function __construct()
 	{
-		parent::__construct($template);
+		parent::__construct();
 
 		$this->return_url = !empty($_SESSION['return_url'])
             ? $_SESSION['return_url']
@@ -28,7 +30,7 @@ class LoginController extends Controller
 	/**
 	 * Attempts to authenticate users via CAS
 	 */
-	public function index()
+	public function index(): View
 	{
 		// If they don't have CAS configured, send them onto the application's
 		// internal authentication system
@@ -58,12 +60,13 @@ class LoginController extends Controller
 		}
 
 		$this->template->blocks[] = new Block('loginForm.inc',array('return_url'=>$this->return_url));
+        return $this->template;
 	}
 
 	/**
 	 * Attempts to authenticate users based on AuthenticationMethod
 	 */
-	public function login()
+	public function login(): View
 	{
 		if (isset($_POST['username'])) {
 			try {
@@ -83,6 +86,7 @@ class LoginController extends Controller
 			}
 		}
 		$this->template->blocks[] = new Block('loginForm.inc',array('return_url'=>$this->return_url));
+        return $this->template;
 	}
 
 	public function logout()

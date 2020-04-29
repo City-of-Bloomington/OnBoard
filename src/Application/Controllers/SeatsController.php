@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -10,8 +10,10 @@ use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 use Application\Models\Term;
+
 use Web\Block;
 use Web\Controller;
+use Web\View;
 
 class SeatsController extends Controller
 {
@@ -40,7 +42,7 @@ class SeatsController extends Controller
      *
      * @param string $_GET['current'] Effective date for the query
      */
-    public function index()
+    public function index(): View
     {
         $params = $this->parseQueryParameters();
         $data   = SeatTable::currentData($params);
@@ -51,6 +53,7 @@ class SeatsController extends Controller
             $this->template->blocks[] = new Block('seats/header.inc');
         }
         $this->template->blocks[] = new Block('seats/data.inc', ['data'=>$data, 'params'=>$params]);
+        return $this->template;
     }
 
     /**
@@ -58,7 +61,7 @@ class SeatsController extends Controller
      *
      * @param string $_GET['current'] Effective date for the query
      */
-    public function vacancies()
+    public function vacancies(): View
     {
         $params = $this->parseQueryParameters();
         $params['vacant'] = true;
@@ -72,9 +75,10 @@ class SeatsController extends Controller
             $this->template->blocks[] = new Block('seats/header.inc');
         }
         $this->template->blocks[] = new Block('seats/data.inc', ['params'=>$params, 'data'=>$data, 'title'=>$title]);
+        return $this->template;
     }
 
-    public function view()
+    public function view(): View
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
@@ -104,9 +108,10 @@ class SeatsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
@@ -145,9 +150,10 @@ class SeatsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
@@ -161,9 +167,10 @@ class SeatsController extends Controller
         }
         header('Location: '.BASE_URL.'/committees');
         exit();
+        return $this->template;
     }
 
-    public function end()
+    public function end(): View
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
@@ -187,5 +194,6 @@ class SeatsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

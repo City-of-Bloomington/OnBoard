@@ -11,12 +11,11 @@ use Application\Views\FileDownloadTemplate;
 
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class LegislationFilesController extends Controller
 {
-    public function index() { }
-
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['id'])) {
             try { $file = new LegislationFile((int)$_REQUEST['id']); }
@@ -63,6 +62,7 @@ class LegislationFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
     /**
@@ -72,7 +72,7 @@ class LegislationFilesController extends Controller
      * The normal Templates are all buffered, and larger files use up all
      * allowed memory defined in php.ini
      */
-    public function download()
+    public function download(): View
     {
         if (!empty($_GET['id'])) {
             try {
@@ -88,9 +88,10 @@ class LegislationFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_GET['id'])) {
             try {
@@ -109,5 +110,6 @@ class LegislationFilesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }

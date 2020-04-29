@@ -1,15 +1,17 @@
 <?php
 /**
- * @copyright 2012-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2012-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Person;
 use Application\Models\PeopleTable;
+
 use Web\Block;
 use Web\Controller;
 use Web\Url;
+use Web\View;
 
 class PeopleController extends Controller
 {
@@ -22,7 +24,7 @@ class PeopleController extends Controller
         return $fields;
     }
 
-	public function index()
+	public function index(): View
 	{
 		$table = new PeopleTable();
 		$people = $table->search($_GET, 'lastname', true);
@@ -42,14 +44,16 @@ class PeopleController extends Controller
             }
         }
         $this->template->title = $this->template->_(['person', 'people', 2]).' - '.APPLICATION_NAME;
+        return $this->template;
 	}
 
-	public function parameters()
+	public function parameters(): View
 	{
         $this->template->blocks[] = new Block('people/partials/findParameters.inc', ['fields'=>self::searchFields()]);
+        return $this->template;
 	}
 
-	public function view()
+	public function view(): View
 	{
         if (!empty($_REQUEST['person_id'])) {
             try { $person = new Person($_REQUEST['person_id']); }
@@ -69,9 +73,10 @@ class PeopleController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
 	}
 
-	public function update()
+	public function update(): View
 	{
 		$errorURL = isset($_REQUEST['return_url']) ? $_REQUEST['return_url'] : BASE_URL.'/people';
 
@@ -115,9 +120,10 @@ class PeopleController extends Controller
 		}
 
 		$this->template->blocks[] = new Block('people/updateForm.inc',array('person'=>$person));
+        return $this->template;
 	}
 
-	public function delete()
+	public function delete(): View
 	{
         if (!empty($_REQUEST['person_id'])) {
             try {
@@ -128,5 +134,6 @@ class PeopleController extends Controller
         }
         header('Location: '.BASE_URL.'/people');
         exit();
+        return $this->template;
 	}
 }

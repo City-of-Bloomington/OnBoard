@@ -1,19 +1,20 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Department;
 use Application\Models\DepartmentTable;
+
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class DepartmentsController extends Controller
 {
-	public function index()
+	public function index(): View
 	{
         $table = new DepartmentTable();
         $list = $table->find();
@@ -21,9 +22,10 @@ class DepartmentsController extends Controller
         $title = $this->template->_(['department', 'departments', count($list)]);
         $this->template->title = $title.' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block('departments/list.inc', ['departments'=>$list]);
+        return $this->template;
 	}
 
-	public function update()
+	public function update(): View
 	{
         if (!empty($_REQUEST['department_id'])) {
             try { $department = new Department($_REQUEST['department_id']); }
@@ -49,5 +51,6 @@ class DepartmentsController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
 	}
 }

@@ -10,12 +10,14 @@ use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\Status;
 use Application\Models\Legislation\Type;
+
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class LegislationController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $_GET['parent_id'] = null;
         foreach (['type', 'status'] as $f) {
@@ -59,10 +61,10 @@ class LegislationController extends Controller
                 'list' => $table->find($_GET)
             ]);
         }
-
+        return $this->template;
     }
 
-    public function years()
+    public function years(): View
     {
         $search = [];
 
@@ -87,9 +89,10 @@ class LegislationController extends Controller
             'years'     => $years,
             'committee' => isset($committee) ? $committee : null
         ]);
+        return $this->template;
     }
 
-    public function view()
+    public function view(): View
     {
         try { $legislation = new Legislation($_GET['id']); }
         catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
@@ -108,9 +111,10 @@ class LegislationController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['id'])) {
             try { $legislation = new Legislation($_REQUEST['id']); }
@@ -170,9 +174,10 @@ class LegislationController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         if (!empty($_REQUEST['id'])) {
             try { $legislation = new Legislation($_REQUEST['id']); }
@@ -192,5 +197,6 @@ class LegislationController extends Controller
 
         header('HTTP/1.1 404 Not Found', true, 404);
         $this->template->blocks[] = new Block('404.inc');
+        return $this->template;
     }
 }

@@ -16,21 +16,17 @@ if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['RE
 	$action   = isset($matches[4]) ? $matches[4] : 'index';
 }
 
-// Create the default Template
-$template = !empty($_REQUEST['format'])
-	? new Template('default',$_REQUEST['format'])
-	: new Template('default');
-
 // Execute the Controller::action()
 if (isset($resource) && isset($action) && $ACL->hasResource($resource)) {
     $controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
-    $c = new $controller($template);
+    $c = new $controller();
     if (method_exists($c, $action)) {
         $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
         if ($ACL->isAllowed($role, $resource, $action)) {
-            $c->$action();
+            $template = $c->$action();
         }
         else {
+            $template = new Template();
             header('HTTP/1.1 403 Forbidden', true, 403);
             $_SESSION['errorMessages'][] = $role == 'Anonymous'
                 ? new \Exception('notLoggedIn')
@@ -39,11 +35,13 @@ if (isset($resource) && isset($action) && $ACL->hasResource($resource)) {
     }
     else {
         header('HTTP/1.1 404 Not Found', true, 404);
+        $template = new Template();
         $template->blocks[] = new Block('404.inc');
     }
 }
 else {
 	header('HTTP/1.1 404 Not Found', true, 404);
+	$template = new Template();
 	$template->blocks[] = new Block('404.inc');
 }
 

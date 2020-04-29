@@ -1,19 +1,20 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Appointer;
 use Application\Models\AppointerTable;
+
 use Web\Controller;
 use Web\Block;
+use Web\View;
 
 class AppointersController extends Controller
 {
-	public function index()
+	public function index(): View
 	{
 		$table = new AppointerTable();
 		$appointers = $table->find();
@@ -21,9 +22,10 @@ class AppointersController extends Controller
 		$title = $this->template->_(['appointer', 'appointers', count($appointers)]);
 		$this->template->title = $title.' - '.APPLICATION_NAME;
 		$this->template->blocks[] = new Block('appointers/list.inc', ['appointers'=>$appointers]);
+        return $this->template;
 	}
 
-	public function update()
+	public function update(): View
 	{
 		if (!empty($_REQUEST['appointer_id'])) {
 			try {
@@ -52,5 +54,6 @@ class AppointersController extends Controller
 		}
 
 		$this->template->blocks[] = new Block('appointers/updateForm.inc', ['appointer'=>$appointer]);
+        return $this->template;
 	}
 }

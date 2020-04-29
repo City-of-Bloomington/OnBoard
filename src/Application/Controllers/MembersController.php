@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -12,14 +12,14 @@ use Application\Models\MemberTable;
 use Application\Models\Seat;
 use Application\Models\Term;
 use Application\Models\TermTable;
+
 use Web\Block;
 use Web\Controller;
+use Web\View;
 
 class MembersController extends Controller
 {
-    public function index() { }
-
-    public function update()
+    public function update(): View
     {
         try {
             if (isset($_REQUEST['member_id'])) { $member = new Member($_REQUEST['member_id']); }
@@ -68,9 +68,10 @@ class MembersController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function appoint()
+    public function appoint(): View
     {
         try {
             if (    !empty($_REQUEST['term_id'     ])) { $o = new Term     ($_REQUEST['term_id']); }
@@ -93,7 +94,7 @@ class MembersController extends Controller
             $_SESSION['errorMessages'][] = $e;
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
-            return;
+            return $this->template;
         }
 
         if (isset($_POST['newMember'])) {
@@ -119,9 +120,10 @@ class MembersController extends Controller
             $form->currentMember = $currentMember;
         }
         $this->template->blocks[] = $form;
+        return $this->template;
     }
 
-    public function reappoint()
+    public function reappoint(): View
     {
         if (!empty($_REQUEST['member_id'])) {
             try {
@@ -160,9 +162,10 @@ class MembersController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function resign()
+    public function resign(): View
     {
         $this->template->setFilename('contextInfo');
         try {
@@ -197,9 +200,10 @@ class MembersController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function delete()
+    public function delete(): View
     {
         try {
             if (!empty($_REQUEST['member_id'])) {
@@ -218,5 +222,6 @@ class MembersController extends Controller
 
         header('Location: '.BASE_URL.'/committees');
         exit();
+        return $this->template;
     }
 }

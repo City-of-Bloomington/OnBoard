@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
@@ -17,10 +17,11 @@ use Application\Models\VoteTable;
 use Web\Controller;
 use Web\Block;
 use Web\Url;
+use Web\View;
 
 class CommitteesController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         if ($this->template->outputFormat === 'html') {
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc');
@@ -40,9 +41,11 @@ class CommitteesController extends Controller
         }
         $this->template->title = $this->template->_("committees_$block").' - '.APPLICATION_NAME;
         $this->template->blocks[] = new Block("committees/$block.inc", ['data'=>$data]);
+
+        return $this->template;
     }
 
-    public function report()
+    public function report(): View
     {
         $table = new CommitteeTable();
         $list = $table->find(['current'=>true]);
@@ -51,10 +54,10 @@ class CommitteesController extends Controller
         foreach ($list as $committee) {
             $this->template->blocks[] = new Block('committees/report.inc', ['committee'=>$committee]);
         }
-
+        return $this->template;
     }
 
-    public function info()
+    public function info(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -84,9 +87,10 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function members()
+    public function members(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -130,9 +134,10 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function update()
+    public function update(): View
     {
         if (!empty($_REQUEST['committee_id'])) {
             try { $committee = new Committee($_REQUEST['committee_id']); }
@@ -140,7 +145,7 @@ class CommitteesController extends Controller
                 $_SESSION['errorMessages'][] = $e;
                 header('HTTP/1.1 404 Not Found', true, 404);
                 $this->template->blocks[] = new Block('404.inc');
-                return;
+                return $this->template;
             }
         }
         else { $committee = new Committee(); }
@@ -158,9 +163,10 @@ class CommitteesController extends Controller
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee' => $committee]);
+        return $this->template;
     }
 
-    public function end()
+    public function end(): View
     {
         if (!empty($_REQUEST['committee_id'])) {
             try { $committee = new Committee($_REQUEST['committee_id']); }
@@ -168,7 +174,7 @@ class CommitteesController extends Controller
                 $_SESSION['errorMessages'][] = $e;
                 header('HTTP/1.1 404 Not Found', true, 404);
                 $this->template->blocks[] = new Block('404.inc');
-                return;
+                return $this->template;
             }
         }
         else { $committee = new Committee(); }
@@ -186,9 +192,10 @@ class CommitteesController extends Controller
         $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
         $this->template->blocks[] = new Block('committees/endDateForm.inc', ['committee' => $committee]);
+        return $this->template;
     }
 
-    public function seats()
+    public function seats(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -215,9 +222,10 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function applications()
+    public function applications(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -250,9 +258,10 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function meetings()
+    public function meetings(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -286,7 +295,7 @@ class CommitteesController extends Controller
 
         if (!isset($year) || !isset($start) || !isset($end)) {
             header('HTTP/1.1 400 Bad Request', true, 400);
-            return false;
+            return $this->template;
         }
 
         if (isset($committee)) {
@@ -308,9 +317,10 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 
-    public function history()
+    public function history(): View
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
@@ -327,5 +337,6 @@ class CommitteesController extends Controller
             header('HTTP/1.1 404 Not Found', true, 404);
             $this->template->blocks[] = new Block('404.inc');
         }
+        return $this->template;
     }
 }
