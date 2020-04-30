@@ -8,7 +8,7 @@ JAVASCRIPT := $(shell find public -name '*.js' ! -name '*-*.js')
 
 VERSION := $(shell cat VERSION | tr -d "[:space:]")
 
-default: clean compile package
+default: clean compile test package
 
 deps:
 ifndef SASS
@@ -38,7 +38,7 @@ package:
 	cd build && tar czf ${APPNAME}-${VERSION}.tar.gz ${APPNAME}
 
 test:
-	vendor/phpunit/phpunit/phpunit -c phpunit.xml
+	vendor/phpunit/phpunit/phpunit -c src/Test/Unit.xml
 
 $(LANGUAGES): deps
 	cd $@ && msgfmt -cv *.po

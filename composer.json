@@ -6,6 +6,7 @@
     "require": {
         "php": ">=7.2",
         "michelf/php-markdown": "~1",
+        "aura/router": "~2",
         "apereo/phpcas":                   "@stable",
         "google/apiclient": "~2.0",
         "laminas/laminas-db":              "@stable",

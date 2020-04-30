@@ -11,38 +11,37 @@ $startTime = microtime(1);
 include '../bootstrap.php';
 
 // Check for routes
-if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
-	$resource = isset($matches[2]) ? $matches[2] : 'index';
-	$action   = isset($matches[4]) ? $matches[4] : 'index';
+$p     = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$route = $ROUTES->match($p, $_SERVER);
+if ($route) {
+    if (isset($route->params['controller']) && isset($route->params['action'])) {
+        $controller = $route->params['controller'];
+        $action     = $route->params['action'];
+        $c = new $controller();
+        if (method_exists($c, $action)) {
+            list($resource, $permission) = explode('.', $route->name);
+            $role = isset($_SESSION['USER']) ? $_SESSION['USER']->role : 'Anonymous';
+            if (   $ACL->hasResource($resource)
+                && $ACL->isAllowed($role, $resource, $permission)) {
+
+                $template = $c->$action();
+            }
+            else {
+                $template = new Template();
+                header('HTTP/1.1 403 Forbidden', true, 403);
+                $_SESSION['errorMessages'][] = $role == 'Anonymous'
+                    ? new \Exception('notLoggedIn')
+                    : new \Exception('noAccessAllowed');
+            }
+        }
+    }
 }
 
-// Execute the Controller::action()
-if (isset($resource) && isset($action) && $ACL->hasResource($resource)) {
-    $controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
-    $c = new $controller();
-    if (method_exists($c, $action)) {
-        $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
-        if ($ACL->isAllowed($role, $resource, $action)) {
-            $template = $c->$action();
-        }
-        else {
-            $template = new Template();
-            header('HTTP/1.1 403 Forbidden', true, 403);
-            $_SESSION['errorMessages'][] = $role == 'Anonymous'
-                ? new \Exception('notLoggedIn')
-                : new \Exception('noAccessAllowed');
-        }
-    }
-    else {
-        header('HTTP/1.1 404 Not Found', true, 404);
-        $template = new Template();
-        $template->blocks[] = new Block('404.inc');
-    }
-}
-else {
-	header('HTTP/1.1 404 Not Found', true, 404);
-	$template = new Template();
-	$template->blocks[] = new Block('404.inc');
+
+if (!isset($template)) {
+    header('HTTP/1.1 404 Not Found', true, 404);
+    $template = new Template();
+    $template->blocks[] = new Block('404.inc');
 }
 
 echo $template->render();

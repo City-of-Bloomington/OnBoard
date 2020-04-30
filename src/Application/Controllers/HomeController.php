@@ -6,15 +6,13 @@
 namespace Application\Controllers;
 
 use Web\Controller;
-use Web\Block;
 use Web\View;
-use Application\Models\CommitteeTable;
 
-class IndexController extends Controller
+class HomeController extends Controller
 {
 	public function index(): View
 	{
-        header('Location: '.BASE_URL.'/committees');
+        header('Location: '.View::generateUrl('committees.index'));
         exit();
         return $this->template;
 	}

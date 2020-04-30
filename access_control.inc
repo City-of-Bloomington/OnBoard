@@ -20,50 +20,21 @@ $ACL->addRole(new Role('Anonymous'))
 	->addRole(new Role('Administrator'));
 
 /**
- * Declare all the controllers as resources
- *
- * These need to match what's going to be in the URL.
- * The resource should be the name of the controller, lowercased,
- * and with the word "Controller" stripped off.
+ * Create resources for all the routes
  */
-$ACL->addResource(new Resource('index'));
-$ACL->addResource(new Resource('callback'));
-$ACL->addResource(new Resource('login'));
-$ACL->addResource(new Resource('departments'));
-$ACL->addResource(new Resource('people'));
-$ACL->addResource(new Resource('users'));
-$ACL->addResource(new Resource('site'));
-
-$ACL->addResource(new Resource('appointers'));
-$ACL->addResource(new Resource('committees'));
-$ACL->addResource(new Resource('offices'));
-$ACL->addResource(new Resource('races'));
-$ACL->addResource(new Resource('seats'));
-$ACL->addResource(new Resource('tags'));
-$ACL->addResource(new Resource('terms'));
-$ACL->addResource(new Resource('members'));
-$ACL->addResource(new Resource('liaisons'));
-$ACL->addResource(new Resource('applicants'));
-$ACL->addResource(new Resource('applications'));
-$ACL->addResource(new Resource('applicantFiles'));
-$ACL->addResource(new Resource('meetingFiles'));
-$ACL->addResource(new Resource('committeeStatutes'));
-
-$ACL->addResource(new Resource('legislation'));
-$ACL->addResource(new Resource('legislationFiles'));
-$ACL->addResource(new Resource('legislationTypes'));
-$ACL->addResource(new Resource('legislationActions'));
-$ACL->addResource(new Resource('legislationActionTypes'));
-$ACL->addResource(new Resource('legislationStatuses'));
-
-$ACL->addResource(new Resource('reports'));
+foreach ($ROUTES->getRoutes() as $r) {
+    list($resource, $permission) = explode('.', $r->name);
+    if (!$ACL->hasResource($resource)) {
+         $ACL->addResource(new Resource($resource));
+    }
+}
 
 /**
  * Assign permissions to the resources
  */
 // Permissions for unauthenticated browsing
 $ACL->allow(null, ['callback', 'login']);
-$ACL->allow(null,  'index', 'index');
+$ACL->allow(null,  'home', 'index');
 $ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view', 'years']);
 $ACL->allow(null,  'people', 'parameters');
 $ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);

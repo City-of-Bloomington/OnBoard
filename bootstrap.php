@@ -28,7 +28,7 @@ $loader = require APPLICATION_HOME.'/vendor/autoload.php';
 $loader->addPsr4('Site\\', SITE_HOME);
 
 include SITE_HOME.'/site_config.inc';
-#include APPLICATION_HOME.'/routes.inc';
+include APPLICATION_HOME.'/src/Web/routes.php';
 include APPLICATION_HOME.'/access_control.inc';
 
 /**
