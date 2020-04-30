@@ -37,7 +37,7 @@ class TagsController extends Controller
                 try {
                     $tag->handleUpdate($_POST);
                     $tag->save();
-                    header('Location: '.BASE_URL.'/tags');
+                    header('Location: '.View::generateUrl('tags.index'));
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

@@ -40,7 +40,8 @@ class DepartmentsController extends Controller
                 try {
                     $department->handleUpdate($_POST);
                     $department->save();
-                    header('Location: '.BASE_URL.'/departments');
+                    $return_url = View::generateUrl('departments.index');
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

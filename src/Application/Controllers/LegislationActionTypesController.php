@@ -36,7 +36,8 @@ class LegislationActionTypesController extends Controller
                 try {
                     $type->handleUpdate($_POST);
                     $type->save();
-                    header('Location: '.BASE_URL.'/legislationActionTypes');
+                    $return_url = View::generateUrl('legislationActionTypes.index');
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

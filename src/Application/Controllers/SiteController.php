@@ -26,7 +26,7 @@ class SiteController extends Controller
             if (isset($_POST['label'])) {
                 try {
                     Site::saveContent($_POST);
-                    header('Location: '.BASE_URL.'/site');
+                    header('Location: '.View::generateUrl('site.index'));
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

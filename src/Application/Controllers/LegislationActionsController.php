@@ -38,7 +38,8 @@ class LegislationActionsController extends Controller
                 try {
                     $action->handleUpdate($_POST);
                     $action->save();
-                    header('Location: '.BASE_URL.'/legislation/view?id='.$action->getLegislation_id());
+                    $return_url = View::generateUrl('legislation.view').'?id='.$action->getLegislation_id();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

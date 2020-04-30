@@ -47,7 +47,8 @@ class TermsController extends Controller
             if (isset($_POST['seat_id'])) {
                 try {
                     TermTable::update($term, $_POST);
-                    header('Location: '.BASE_URL.'/seats/view?seat_id='.$term->getSeat_id());
+                    $return_url = View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -82,7 +83,8 @@ class TermsController extends Controller
             try { $newTerm->save(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-            header('Location: '.BASE_URL.'/seats/view?seat_id='.$term->getSeat_id());
+            $return_url = View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
+            header("Location: $return_url");
             exit();
         }
         else {
@@ -98,14 +100,16 @@ class TermsController extends Controller
             try {
                 $term = new Term($_REQUEST['term_id']);
                 $seat = $term->getSeat();
+                $url  = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
+
                 TermTable::delete($term);
-                header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
+                header("Location: $url");
                 exit();
 
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        header('Location: '.BASE_URL.'/committees');
+        header('Location: '.View::generateUrl('committees.index'));
         exit();
         return $this->template;
 	}

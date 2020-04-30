@@ -150,8 +150,8 @@ class LegislationController extends Controller
             $_SESSION['return_url'] =    !empty($_REQUEST['return_url'])
                                     ? urldecode($_REQUEST['return_url'])
                                     : ($legislation->getId()
-                                        ? BASE_URL.'/legislation/view?id='.$legislation->getId()
-                                        : BASE_URL.'/legislation');
+                                        ? View::generateUrl('legislation.view').'?id='.$legislation->getId()
+                                        : View::generateUrl('legislation.index'));
 
             if (isset($_POST['number'])) {
                 try {
@@ -187,7 +187,7 @@ class LegislationController extends Controller
         if (isset($legislation)) {
             $committee_id = $legislation->getCommittee_id();
             $year         = $legislation->getYear();
-            $return_url   = BASE_URL."/legislation?committee_id=$committee_id;year=$year";
+            $return_url   = View::generateUrl('legislation.index')."?committee_id=$committee_id;year=$year";
 
             $legislation->delete();
 

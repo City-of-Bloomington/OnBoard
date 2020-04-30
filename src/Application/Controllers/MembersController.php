@@ -38,8 +38,8 @@ class MembersController extends Controller
                     MemberTable::update($_POST, $member);
 
                     $url = $member->getSeat_id()
-                         ? BASE_URL.'/seats/view?seat_id='.$member->getSeat_id()
-                         : BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id();
+                         ? View::generateUrl('seats.view').'?seat_id='.$member->getSeat_id()
+                         : View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
                     header("Location: $url");
                     exit();
                 }
@@ -102,7 +102,8 @@ class MembersController extends Controller
             try {
                 MemberTable::appoint($_POST, $newMember, isset($currentMember) ? $currentMember : null);
 
-                header('Location: '.BASE_URL."/committees/members?committee_id={$newMember->getCommittee_id()}");
+                $return_url = View::generateUrl('committees.members')."?committee_id={$newMember->getCommittee_id()}";
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -138,7 +139,7 @@ class MembersController extends Controller
                 if ($seat->getType() === 'termed') {
                     $confirmationGiven = !empty($_POST['confirm']) && $_POST['confirm']=='yes';
                     $committee         = $member->getCommittee();
-                    $return_url        = BASE_URL.'/committees/members?committee_id='.$committee->getId();
+                    $return_url        = View::generateUrl('committees.members').'?committee_id='.$committee->getId();
 
                     try { $vars = MemberTable::reappoint($_POST, $member, $confirmationGiven); }
                     catch (\Exception $e) {
@@ -182,7 +183,8 @@ class MembersController extends Controller
             if (!empty($_POST['currentMember'])) {
                 try {
                     MemberTable::resign($_POST, $member);
-                    header('Location: '.BASE_URL.'/committees/members?committee_id='.$member->getCommittee_id());
+                    $return_url = View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -210,8 +212,8 @@ class MembersController extends Controller
                 $member  = new Member($_REQUEST['member_id']);
 
                 $return_url = $member->getSeat_id()
-                    ? BASE_URL."/seats/view?seat_id={$member->getSeat_id()}"
-                    : BASE_URL."/committees/members?committee_id={$member->getCommittee_id()}";
+                    ? View::generateUrl('seats.view')."?seat_id={$member->getSeat_id()}"
+                    : View::generateUrl('committees.members')."?committee_id={$member->getCommittee_id()}";
 
                 MemberTable::delete($member);
                 header("Location: $return_url");
@@ -220,7 +222,7 @@ class MembersController extends Controller
         }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-        header('Location: '.BASE_URL.'/committees');
+        header('Location: '.View::generateUrl('committees.index'));
         exit();
         return $this->template;
     }

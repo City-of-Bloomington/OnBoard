@@ -38,8 +38,8 @@ class ApplicantFilesController extends Controller
 	{
         if (!empty($_GET['applicantFile_id'])) {
             try {
-                $file = new ApplicantFile($_GET['applicantFile_id']);
-                $return_url = BASE_URL.'/applicants/view?applicant_id='.$file->getApplicant_id();
+                $file       = new ApplicantFile($_GET['applicantFile_id']);
+                $return_url = View::generateUrl('applicants.view').'?applicant_id='.$file->getApplicant_id();
 
                 $file->delete();
                 header("Location: $return_url");

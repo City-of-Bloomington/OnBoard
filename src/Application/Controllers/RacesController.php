@@ -27,13 +27,14 @@ class RacesController extends Controller
 
 	public function update(): View
 	{
+        $return_url = View::generateUrl('races.index');
 		if (!empty($_REQUEST['race_id'])) {
 			try {
 				$race = new Race($_REQUEST['race_id']);
 			}
 			catch (\Exception $e) {
 				$_SESSION['errorMessages'][] = $e;
-				header("Location: $errorURL");
+				header("Location: $return_url");
 				exit();
 			}
 		}
@@ -45,7 +46,7 @@ class RacesController extends Controller
 			$race->setName($_POST['name']);
 			try {
 				$race->save();
-				header('Location: '.BASE_URL.'/races');
+				header("Location: $return_url");
 				exit();
 			}
 			catch (\Exception $e) {

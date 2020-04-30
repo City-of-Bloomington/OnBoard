@@ -153,7 +153,7 @@ class CommitteesController extends Controller
         if (isset($_POST['name'])) {
             try {
                 CommitteeTable::update($committee, $_POST);
-                $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
+                $url = View::generateUrl('committees.info').'?committee_id='.$committee->getId();
                 header("Location: $url");
                 exit();
             }
@@ -183,7 +183,7 @@ class CommitteesController extends Controller
             try {
                 CommitteeTable::end($committee, $_POST);
 
-                $url = BASE_URL."/committees/info?committee_id={$committee->getId()}";
+                $url = View::generateUrl('committees.info').'?committee_id='.$committee->getId();
                 header("Location: $url");
                 exit();
             }

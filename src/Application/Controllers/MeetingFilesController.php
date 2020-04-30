@@ -129,7 +129,7 @@ class MeetingFilesController extends Controller
 
                     $return_url = !empty($_POST['return_url'])
                         ? $_POST['return_url']
-                        : BASE_URL."/meetingFiles?committee_id={$file->getCommittee_id()}";
+                        : View::generateUrl('meetingFiles.index')."?committee_id={$file->getCommittee_id()}";
                     header("Location: $return_url");
                     exit();
                 }
@@ -172,10 +172,11 @@ class MeetingFilesController extends Controller
     {
         if (!empty($_GET['meetingFile_id'])) {
             try {
-                $file = new MeetingFile($_GET['meetingFile_id']);
-                $committe = $file->getCommittee();
+                $file       = new MeetingFile($_GET['meetingFile_id']);
+                $committee  = $file->getCommittee();
+                $return_url = View::generateUrl('meetingFiles.index').'?committee_id='.$committee->getId();
                 $file->delete();
-                header('Location: '.BASE_URI.'/meetingFiles?committee_id='.$committe->getId());
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) {

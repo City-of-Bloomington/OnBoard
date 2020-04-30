@@ -27,7 +27,8 @@ class ApplicationsController extends Controller
             try { $application->archive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-            header('Location: '.BASE_URI.'/committees/applications?committee_id='.$application->getCommittee_id());
+            $return_url = View::generateUrl('committees.applications').'?committee_id='.$application->getCommittee_id();
+            header("Location: $return_url");
             exit();
         }
         else {
@@ -48,7 +49,8 @@ class ApplicationsController extends Controller
             try { $application->unarchive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-            header('Location: '.BASE_URI.'/committees/applications?committee_id='.$application->getCommittee_id());
+            $return_url = View::generateUrl('committees.applications').'?committee_id='.$application->getCommittee_id();
+            header("Location: $return_url");
             exit();
         }
         else {
@@ -103,7 +105,8 @@ class ApplicationsController extends Controller
             $committee_id = $application->getCommittee_id();
             $application->delete();
 
-            header('Location: '.BASE_URL.'/committees/applications?committee_id='.$committee_id);
+            $return_url = View::generateUrl('committees.applications').'?committee_id='.$committee_id;
+            header("Location: $return_url");
             exit();
         }
         else {

@@ -78,16 +78,11 @@ class ReportsController extends Controller
                 try {
                     $report->handleUpdate($_POST, $file);
                     $report->save();
-
-                    header('Location: '.BASE_URL.'/reports?committee_id='.$report->getCommittee_id());
+                    $return_url = View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
+                    header("Location: $return_url");
                     exit();
                 }
-                catch (\Exception $e) {
-                    #echo "{$e->getMessage()}\n";
-                    #print_r($report);
-                    #exit();
-                    $_SESSION['errorMessages'][] = $e;
-                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
             $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $report->getCommittee()]);
@@ -124,10 +119,13 @@ class ReportsController extends Controller
     {
         if (!empty($_GET['id'])) {
             try {
-                $file = new Report($_GET['id']);
+                $file         = new Report($_GET['id']);
                 $committee_id = $file->getCommittee_id();
+                $return_url   = View::generateUrl('reports.index').'?committee_id='.$committee_id;
+
                 $file->delete();
-                header('Location: '.BASE_URL.'/reports?committee_id='.$committee_id);
+
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) {

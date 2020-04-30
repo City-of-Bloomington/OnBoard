@@ -27,13 +27,15 @@ class AppointersController extends Controller
 
 	public function update(): View
 	{
+        $return_url = View::generateUrl('appointers.index');
+
 		if (!empty($_REQUEST['appointer_id'])) {
 			try {
 				$appointer = new Appointer($_REQUEST['appointer_id']);
 			}
 			catch (\Exception $e) {
 				$_SESSION['errorMessages'][] = $e;
-				header("Location: $errorURL");
+				header("Location: $return_url");
 				exit();
 			}
 		}
@@ -45,7 +47,7 @@ class AppointersController extends Controller
 			$appointer->setName($_POST['name']);
 			try {
 				$appointer->save();
-				header('Location: '.BASE_URL.'/appointers');
+				header("Location: $return_url");
 				exit();
 			}
 			catch (\Exception $e) {

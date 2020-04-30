@@ -78,7 +78,9 @@ class PeopleController extends Controller
 
 	public function update(): View
 	{
-		$errorURL = isset($_REQUEST['return_url']) ? $_REQUEST['return_url'] : BASE_URL.'/people';
+		$errorURL = isset($_REQUEST['return_url'])
+                  ? $_REQUEST['return_url']
+                  : View::generateUrl('people.index');
 
 		if (isset($_REQUEST['person_id']) && $_REQUEST['person_id']) {
 			try {
@@ -104,7 +106,7 @@ class PeopleController extends Controller
 					$return_url->person_id = $person->getId();
 				}
 				elseif (isset($_REQUEST['callback'])) {
-					$return_url = new Url(BASE_URL.'/callback');
+					$return_url = new Url(View::generateUrl('callback.index'));
 					$return_url->callback = $_REQUEST['callback'];
 					$return_url->data = "{$person->getId()}";
 				}
@@ -132,7 +134,7 @@ class PeopleController extends Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        header('Location: '.BASE_URL.'/people');
+        header('Location: '.View::generateUrl('people.index'));
         exit();
         return $this->template;
 	}

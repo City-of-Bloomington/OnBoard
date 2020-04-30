@@ -38,7 +38,8 @@ class CommitteeStatutesController extends Controller
                 try {
                     $statute->handleUpdate($_POST);
                     $statute->save();
-                    header('Location: '.BASE_URL.'/committees/info?committee_id='.$statute->getCommittee_id());
+                    $return_url = View::generateUrl('committees.info').'?committee_id='.$statute->getCommittee_id();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -66,7 +67,8 @@ class CommitteeStatutesController extends Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-            header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee_id);
+            $return_url = View::generateUrl('committees.info').'?committee_id='.$committee_id;
+            header("Location: $return_url");
             exit();
         }
 

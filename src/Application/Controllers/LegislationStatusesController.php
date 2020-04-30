@@ -37,7 +37,7 @@ class LegislationStatusesController extends Controller
                 try {
                     $status->handleUpdate($_POST);
                     $status->save();
-                    header('Location: '.BASE_URL.'/legislationStatuses');
+                    header('Location: '.View::generateUrl('legislationStatuses.index'));
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -63,7 +63,7 @@ class LegislationStatusesController extends Controller
             $status->delete();
         }
 
-        header('Location: '.BASE_URL.'/legislationStatuses');
+        header('Location: '.View::generateUrl('legislationStatuses.index'));
         exit();
         return $this->template;
     }

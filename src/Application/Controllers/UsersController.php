@@ -64,7 +64,7 @@ class UsersController extends Controller
                     if (isset($existingPerson)) { $existingPerson->save(); }
                     else { $person->save(); }
 
-                    header('Location: '.BASE_URL.'/users');
+                    header('Location: '.View::generateUrl('users.index'));
                     exit();
                 }
                 catch (\Exception $e) {
@@ -89,7 +89,7 @@ class UsersController extends Controller
 
 	public function delete(): View
 	{
-        $return_url = $_REQUEST['return_url'] ?? BASE_URL.'/users';
+        $return_url = $_REQUEST['return_url'] ?? View::generateUrl('users.index');
 
 		try {
 			$person = new Person($_REQUEST['user_id']);

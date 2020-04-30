@@ -87,7 +87,8 @@ class ApplicantsController extends Controller
                             }
                         }
                     }
-                    header('Location: '.BASE_URI.'/applicants/view?applicant_id='.$applicant->getId());
+                    $return_url = View::generateUrl('applicants.view').'?applicant_id='.$applicant->getId();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

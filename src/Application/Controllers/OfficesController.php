@@ -25,7 +25,7 @@ class OfficesController extends Controller
 			}
 			else {
 				$_SESSION['errorMessages'][] = new \Exception('offices/missingCommittee');
-				header('Location: '.BASE_URL.'/committees');
+				header('Location: '.View::generateUrl('committees.index'));
 				exit();
 			}
 		}
@@ -35,7 +35,7 @@ class OfficesController extends Controller
 			}
 			catch (\Exception $e) {
 				$_SESSION['errorMessages'][] = $e;
-				header('Location: '.BASE_URL.'/committees');
+				header('Location: '.View::generateUrl('committees.index'));
 				exit();
 			}
 		}
@@ -44,7 +44,8 @@ class OfficesController extends Controller
 			try {
 				$office->handleUpdate($_POST);
 				$office->save();
-				header('Location: '.BASE_URL.'/committees/members?committee_id='.$office->getCommittee_id());
+				$return_url = View::generateUrl('committees.members').'?committee_id='.$office->getCommittee_id();
+				header("Location: $return_url");
 				exit();
 			}
 			catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

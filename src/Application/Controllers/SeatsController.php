@@ -132,7 +132,8 @@ class SeatsController extends Controller
             if (isset($_POST['committee_id'])) {
                 try {
                     SeatTable::update($seat, $_POST);
-                    header('Location: '.BASE_URL."/seats/view?seat_id={$seat->getId()}");
+                    $return_url = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -160,12 +161,13 @@ class SeatsController extends Controller
                 $seat = new Seat($_REQUEST['seat_id']);
                 $committee_id = $seat->getCommittee_id();
                 SeatTable::delete($seat);
-                header('Location: '.BASE_URL."/committees/members?committee_id=$committee_id");
+                $return_url = View::generateUrl('committees.members')."?committee_id=$committee_id";
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
-        header('Location: '.BASE_URL.'/committees');
+        header('Location: '.View::generateUrl('committees.index'));
         exit();
         return $this->template;
     }
@@ -183,7 +185,8 @@ class SeatsController extends Controller
             if (isset($_POST['endDate'])) {
                 try {
                     SeatTable::end($seat, $_POST);
-                    header('Location: '.BASE_URL.'/seats/view?seat_id='.$seat->getId());
+                    $return_url = View::generateUrl('seats.view').'?seat_id='.$seat->getId();
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }

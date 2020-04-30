@@ -66,7 +66,9 @@ class LiaisonsController extends Controller
                     $liaison->handleUpdate($_POST);
                     $liaison->save();
 
-                    header('Location: '.BASE_URL.'/committees/info?committee_id='.$liaison->getCommittee_id());
+                    $return_url = View::generateUrl('committees.info').'?committee_id='.$liaison->getCommittee_id();
+
+                    header("Location: $return_url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -93,7 +95,8 @@ class LiaisonsController extends Controller
                 try { $liaison->delete(); }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
-                header('Location: '.BASE_URL.'/committees/info?committee_id='.$committee_id);
+                $return_url = View::generateUrl('committees.info')."?committee_id=$committee_id";
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
