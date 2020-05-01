@@ -48,9 +48,8 @@ class CommitteesController extends Controller
     public function report(): View
     {
         $table = new CommitteeTable();
-        $list = $table->find(['current'=>true]);
+        $list  = $table->find(['current'=>true]);
 
-        $block = new Block('committees/report.inc');
         foreach ($list as $committee) {
             $this->template->blocks[] = new Block('committees/report.inc', ['committee'=>$committee]);
         }

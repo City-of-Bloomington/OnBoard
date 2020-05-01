@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param CommitteeStatute $this->committeeStatute
  */
 $fields = ['id', 'committee_id', 'citation', 'url'];
@@ -18,7 +18,7 @@ $title     = $id ? $this->_('committeeStatute_edit') : $this->_('committeeStatut
         <h1><?= $committee; ?></h1>
     </header>
 
-    <form method="post" action="<?= BASE_URI; ?>/committeeStatutes/update">
+    <form method="post">
         <fieldset><legend><?= $title; ?></legend>
             <input name="committeeStatute_id" type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"        type="hidden" value="<?= $committee_id; ?>" />
@@ -32,7 +32,7 @@ $title     = $id ? $this->_('committeeStatute_edit') : $this->_('committeeStatut
                 }
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
-                echo $h->saveAndCancelButtons(BASE_URI.'/committees/info?committee_id='.$committee_id);
+                echo $h->saveAndCancelButtons(parent::generateUri('committees.info')."?committee_id=$committee_id");
             ?>
         </fieldset>
     </form>

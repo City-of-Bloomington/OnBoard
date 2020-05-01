@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->tags  An array of Tag objects
  */
 use Application\Models\Person;
 
 $userCanUpdate = Person::isAllowed('tags', 'update');
-$helper = $this->template->getHelper('buttonLink');
+$helper        = $this->template->getHelper('buttonLink');
 ?>
 <section>
     <header>
@@ -16,7 +16,7 @@ $helper = $this->template->getHelper('buttonLink');
         <?php
             if ($userCanUpdate) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/tags/update',
+                    parent::generateUri('tags.update'),
                     $this->_('tag_add'),
                     'add'
                 );
@@ -27,12 +27,12 @@ $helper = $this->template->getHelper('buttonLink');
     <ul>
     <?php
         foreach ($this->tags as $t) {
-            $name = parent::escape($t->getName());
-
+            $id         = $t->getId();
+            $name       = parent::escape($t->getName());
             $editButton = '';
             if ($userCanUpdate) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/tags/update?id='.$t->getId(),
+                    parent::generateUri('tags.update')."?id=$id",
                     $this->_('tag_edit'),
                     'edit'
                 );

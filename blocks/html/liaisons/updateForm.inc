@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Liaison $this->liaison
  */
 use Application\Models\Liaison;
@@ -16,7 +16,7 @@ foreach ($fields as $f) {
     <header>
         <h1><?= $this->_('liaison_add'); ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/liaisons/update">
+    <form method="post">
         <fieldset>
             <input name="liaison_id"   type="hidden" value="<?= $id; ?>" />
             <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
@@ -46,7 +46,7 @@ foreach ($fields as $f) {
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 echo $helper->saveAndCancelButtons(
-                    BASE_URI.'/committees/info?committee_id='.$committee_id
+                    parent::generateUri('committees.info')."?committee_id=$committee_id"
                 );
             ?>
         </fieldset>

@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->data
  */
 namespace Application\Models;
@@ -19,7 +19,7 @@ $userCanEdit = Person::isAllowed('committees', 'update');
             $helper = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/committees/update',
+                    parent::generateUri('committees.update'),
                     $this->_('committee_add'),
                     'add'
                 );
@@ -43,8 +43,9 @@ $userCanEdit = Person::isAllowed('committees', 'update');
         <tbody>
         <?php
             foreach ($this->data as $c) {
+                $id   = $c['id'];
                 $name = self::escape($c['name']);
-                $url = BASE_URI.'/committees/info?committee_id='.$c['id'];
+                $url  = parent::generateUri('committees.info')."?committee_id=$id";
 
                 if ($c['type'] === 'seated') {
                     $seatCount = (int)$c['seats'];
@@ -55,11 +56,13 @@ $userCanEdit = Person::isAllowed('committees', 'update');
                 $vacancies = (int)$c['vacancies'];
                 if ($vacancies === 0) { $vacancies = ''; }
 
-                $apps = (int)$c['applications'];
-                if ($apps === 0) { $apps = ''; }
-                $applications = $userCanViewApplications
-                    ? "<td><a href=\"".BASE_URI."/committees/applications?committee_id=$c[id]\">$apps</a></td>"
-                    : '';
+                $applications = '';
+                if ($userCanViewApplications) {
+                    $apps = (int)$c['applications'];
+                    if ($apps === 0) { $apps = ''; }
+                    $appUri = parent::generateUri('committees.applications')."?committee_id=$id";
+                    $applications = "<td><a href=\"$appUri\">$apps</a></td>";
+                }
 
                 echo "
                 <tr><td><a href=\"$url\">$name</a></td>

@@ -16,7 +16,7 @@ $ROUTES->attach('login', '/login', function ($r) {
 
     $r->add('login',  '/login' )->addValues(['action' => 'login' ]);
     $r->add('logout', '/logout')->addValues(['action' => 'logout']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('applicantFiles', '/applicantFiles', function ($r) {
@@ -32,7 +32,8 @@ $ROUTES->attach('applicants', '/applicants', function ($r) {
     $r->add('view',   '/view'  )->addValues(['action' => 'view'  ]);
     $r->add('update', '/update')->addValues(['action' => 'update']);
     $r->add('delete', '/delete')->addValues(['action' => 'delete']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('apply',  '/apply' )->addValues(['action' => 'apply' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('applications', '/applications', function ($r) {
@@ -48,7 +49,7 @@ $ROUTES->attach('appointers', '/appointers', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\AppointersController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('committees', '/committees', function ($r) {
@@ -63,7 +64,7 @@ $ROUTES->attach('committees', '/committees', function ($r) {
     $r->add('applications', '/applications')->addValues(['action' => 'applications']);
     $r->add('meetings',     '/meetings'    )->addValues(['action' => 'meetings'    ]);
     $r->add('history',      '/history'     )->addValues(['action' => 'history'     ]);
-    $r->add('index',        '/'            )->addValues(['action' => 'index'       ]);
+    $r->add('index',        ''             )->addValues(['action' => 'index'       ]);
 });
 
 $ROUTES->attach('committeeStatutes', '/committeeStatutes', function ($r) {
@@ -77,7 +78,7 @@ $ROUTES->attach('departments', '/departments', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\DepartmentsController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('legislationActions', '/legislationActions', function ($r) {
@@ -90,7 +91,7 @@ $ROUTES->attach('legislationActionTypes', '/legislationActionTypes', function ($
     $r->setValues(['controller' => 'Application\Controllers\LegislationActionTypesController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('legislation', '/legislation', function ($r) {
@@ -100,7 +101,7 @@ $ROUTES->attach('legislation', '/legislation', function ($r) {
     $r->add('update', '/update')->addValues(['action' => 'update']);
     $r->add('delete', '/delete')->addValues(['action' => 'delete']);
     $r->add('years',  '/years' )->addValues(['action' => 'years' ]);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('legislationFiles', '/legislationFiles', function ($r) {
@@ -116,14 +117,14 @@ $ROUTES->attach('legislationStatuses', '/legislationStatuses', function ($r) {
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
     $r->add('delete', '/delete')->addValues(['action' => 'delete']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('legislationTypes', '/legislationTypes', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\LegislationTypesController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('liaisons', '/liaisons', function ($r) {
@@ -131,7 +132,7 @@ $ROUTES->attach('liaisons', '/liaisons', function ($r) {
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
     $r->add('delete', '/delete')->addValues(['action' => 'delete']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('meetingFiles', '/meetingFiles', function ($r) {
@@ -141,7 +142,7 @@ $ROUTES->attach('meetingFiles', '/meetingFiles', function ($r) {
     $r->add('update',   '/update'  )->addValues(['action' => 'update'  ]);
     $r->add('delete',   '/delete'  )->addValues(['action' => 'delete'  ]);
     $r->add('years',    '/years'   )->addValues(['action' => 'years'   ]);
-    $r->add('index',    '/'        )->addValues(['action' => 'index'   ]);
+    $r->add('index',    ''         )->addValues(['action' => 'index'   ]);
 });
 
 $ROUTES->attach('members', '/members', function ($r) {
@@ -167,14 +168,14 @@ $ROUTES->attach('people', '/people', function ($r) {
     $r->add('update',     '/update'    )->addValues(['action' => 'update'    ]);
     $r->add('delete',     '/delete'    )->addValues(['action' => 'delete'    ]);
     $r->add('parameters', '/parameters')->addValues(['action' => 'parameters']);
-    $r->add('index',      '/'          )->addValues(['action' => 'index'     ]);
+    $r->add('index',      ''           )->addValues(['action' => 'index'     ]);
 });
 
 $ROUTES->attach('races', '/races', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\RacesController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('reports', '/reports', function ($r) {
@@ -183,7 +184,7 @@ $ROUTES->attach('reports', '/reports', function ($r) {
     $r->add('download', '/download')->addValues(['action' => 'download']);
     $r->add('update',   '/update'  )->addValues(['action' => 'update'  ]);
     $r->add('delete',   '/delete'  )->addValues(['action' => 'delete'  ]);
-    $r->add('index',    '/'        )->addValues(['action' => 'index'   ]);
+    $r->add('index',    ''         )->addValues(['action' => 'index'   ]);
 });
 
 $ROUTES->attach('seats', '/seats', function ($r) {
@@ -194,21 +195,21 @@ $ROUTES->attach('seats', '/seats', function ($r) {
     $r->add('update',    '/update'   )->addValues(['action' => 'update'   ]);
     $r->add('delete',    '/delete'   )->addValues(['action' => 'delete'   ]);
     $r->add('end',       '/end'      )->addValues(['action' => 'end'      ]);
-    $r->add('index',     '/'         )->addValues(['action' => 'index'    ]);
+    $r->add('index',     ''          )->addValues(['action' => 'index'    ]);
 });
 
 $ROUTES->attach('site', '/site', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\SiteController']);
 
     $r->add('updateContent', '/updateContent')->addValues(['action' => 'updateContent']);
-    $r->add('index',  '/'                    )->addValues(['action' => 'index'        ]);
+    $r->add('index',  ''                     )->addValues(['action' => 'index'        ]);
 });
 
 $ROUTES->attach('tags', '/tags', function ($r) {
     $r->setValues(['controller' => 'Application\Controllers\TagsController']);
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });
 
 $ROUTES->attach('terms', '/terms', function ($r) {
@@ -217,7 +218,7 @@ $ROUTES->attach('terms', '/terms', function ($r) {
     $r->add('update',   '/update'  )->addValues(['action' => 'update'  ]);
     $r->add('delete',   '/delete'  )->addValues(['action' => 'delete'  ]);
     $r->add('generate', '/generate')->addValues(['action' => 'generate']);
-    $r->add('index',    '/'        )->addValues(['action' => 'index'   ]);
+    $r->add('index',    ''         )->addValues(['action' => 'index'   ]);
 });
 
 $ROUTES->attach('users', '/users', function ($r) {
@@ -225,5 +226,5 @@ $ROUTES->attach('users', '/users', function ($r) {
 
     $r->add('update', '/update')->addValues(['action' => 'update']);
     $r->add('delete', '/delete')->addValues(['action' => 'delete']);
-    $r->add('index',  '/'      )->addValues(['action' => 'index' ]);
+    $r->add('index',  ''       )->addValues(['action' => 'index' ]);
 });

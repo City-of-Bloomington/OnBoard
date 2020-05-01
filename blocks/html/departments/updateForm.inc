@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Department $this->department
  */
 $fields = ['name'];
@@ -24,7 +24,7 @@ $title = $this->department->getId() ? $this->_('department_edit') : $this->_('de
                 echo $field->field(['name'=>'name', 'id'=>'name', 'label'=>$this->_('name'), 'value'=>$name, 'required'=>true]);
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons(BASE_URI.'/departments');
+				echo $helper->saveAndCancelButtons(parent::generateUri('departments.index'));
 			?>
 		</fieldset>
 	</form>

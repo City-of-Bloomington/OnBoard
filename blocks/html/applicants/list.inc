@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->applicants
  */
 use Application\Models\Person;
@@ -13,7 +13,7 @@ use Application\Models\Person;
 
     <table>
     <?php
-        $fields = ['firstname', 'lastname', 'email', 'phone'];
+        $fields = ['id', 'firstname', 'lastname', 'email', 'phone'];
 
         $userCanView   = Person::isAllowed('applicants', 'view');
         $userCanDelete = Person::isAllowed('applicants', 'delete');
@@ -28,13 +28,13 @@ use Application\Models\Person;
             $name = "$firstname $lastname";
 
             if ($userCanView) {
-                $uri = BASE_URI.'/applicants/view?applicant_id='.$app->getId();
+                $uri = parent::generateUri('applicants.view')."?applicant_id=$id";
                 $name = "<a href=\"$uri\">$name</a>";
             }
             $deleteButton = '';
             if ($userCanDelete) {
                 $deleteButton = $helper->buttonLink(
-                    BASE_URI.'/applicants/delete?applicant_id='.$app->getId(),
+                    parent::generateUri('applicants.delete')."?applicant_id=$id",
                     $this->_('applicant_delete'),
                     'delete'
                 );

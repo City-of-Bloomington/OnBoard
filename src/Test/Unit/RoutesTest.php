@@ -27,7 +27,7 @@ class RoutesTest extends TestCase
     public function testRoutes(Route $r)
     {
         list($resource, $action) = explode('.', $r->name);
-        $uri = $action == 'index' ? "/$resource/" : "/$resource/$action";
+        $uri = $action == 'index' ? "/$resource" : "/$resource/$action";
 
         if ($resource == 'home'    ) { $uri = '/'; }
         if ($resource == 'callback') { $uri = '/callback'; }

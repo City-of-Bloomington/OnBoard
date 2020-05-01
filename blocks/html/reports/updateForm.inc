@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Report $this->report
  */
 declare (strict_types=1);
@@ -20,7 +20,7 @@ $helper  = $this->template->getHelper('field');
     <header>
         <h2><?= $heading; ?></h2>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/reports/update" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <fieldset>
             <input name="id"           type="hidden" value="<?= $id;           ?>" />
             <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
@@ -45,7 +45,7 @@ $helper  = $this->template->getHelper('field');
         </fieldset>
         <fieldset>
             <?php
-                $downloadUrl = BASE_URI."/legislationFiles/download?id=$id";
+                $downloadUrl = parent::generateUri('legislationFiles.download')."?id=$id";
                 $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
 
                 $accept = [];
@@ -63,7 +63,7 @@ $helper  = $this->template->getHelper('field');
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
-                echo $helper->saveAndCancelButtons(BASE_URI.'/reports?committee_id='.$committee_id);
+                echo $helper->saveAndCancelButtons(parent::generateUri('reports.index')."?committee_id=$committee_id");
             ?>
         </fieldset>
     </form>

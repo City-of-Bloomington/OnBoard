@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Application\Models\CommitteeTable;
 use Application\Models\Legislation\LegislationTable;
@@ -36,7 +36,7 @@ foreach ($fields as $f) {
         $years = array_keys($data);
         $max   = current($years);
         $min   =     end($years);
-        $uri   = BASE_URI."/legislation/years?committee_id=$committee_id";
+        $uri   = parent::generateUri('legislation.years')."?committee_id=$committee_id";
         echo $h->field([
             'name'     => 'year',
             'id'       => 'year',

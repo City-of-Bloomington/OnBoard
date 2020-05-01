@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     $this->list      An array of Report objects
  * @param Committee $this->committee
  */
@@ -17,7 +17,7 @@ use Application\Models\Person;
             if ($userCanEdit && $this->committee) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
-                    BASE_URI.'/reports/update?committee_id='.$this->committee->getId(),
+                    parent::generateUri('reports.update').'?committee_id='.$this->committee->getId(),
                     $this->_('report_add'),
                     'add'
                 );
@@ -30,20 +30,20 @@ use Application\Models\Person;
         <?php
             $helper = $this->template->getHelper('dropdown');
             foreach ($this->list as $r) {
-                $id    = $r->getId();
-                $date  = $r->getReportDate(DATE_FORMAT);
-                $title = parent::escape($r->getTitle());
+                $id      = $r->getId();
+                $date    = $r->getReportDate(DATE_FORMAT);
+                $title   = parent::escape($r->getTitle());
                 $actions = [];
 
                 if ($userCanEdit) {
                     $actions[] = [
-                        'url'   => BASE_URI."/reports/update?id=$id",
+                        'url'   => parent::generateUri('reports.update')."?id=$id",
                         'label' => $this->_('report_edit')
                     ];
                 }
                 if ($userCanDelete) {
                     $actions[] = [
-                        'url'   => BASE_URI."/reports/delete?id=$id",
+                        'url'   => parent::generateUri('reports.delete')."?id=$id",
                         'label' => $this->_('report_delete')
                     ];
                 }
@@ -51,7 +51,7 @@ use Application\Models\Person;
                         ? $helper->dropdown($actions, $this->_('more'), "report_$id")
                         : '';
 
-                $url   = BASE_URI."/reports/download?id=$id";
+                $url   = parent::generateUri('reports.download')."?id=$id";
                 $title = "<a href=\"$url\">$title</a>";
 
                 echo "

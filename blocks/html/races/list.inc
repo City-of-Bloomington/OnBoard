@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->races
  */
 use Application\Models\Person;
@@ -16,7 +16,7 @@ use Application\Templates\Helpers\ButtonLink;
             $userCanEdit = Person::isAllowed('races', 'update');
             if ($userCanEdit) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/races/update',
+                    parent::generateUri('races.update'),
                     $this->translate('race_add'),
                     'add'
                 );
@@ -30,7 +30,7 @@ use Application\Templates\Helpers\ButtonLink;
             $editButton = '';
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/races/update?race_id='.$race->getId(),
+                    parent::generateUri('races.update').'?race_id='.$race->getId(),
                     $this->translate('race_edit'),
                     'edit'
                 );

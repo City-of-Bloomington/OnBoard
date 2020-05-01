@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Office $this->office
  */
 
@@ -13,7 +13,7 @@ $helper = $this->template->getHelper('field');
         <h1><?= $title; ?></h1>
         <h2><?= self::escape($this->office->getPerson()->getFullname()); ?></h2>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/offices/update">
+    <form method="post">
         <fieldset><legend><?= $this->_('info_office'); ?></legend>
             <input name="office_id"    type="hidden" value="<?= $this->office->getId(); ?>" />
             <input name="committee_id" type="hidden" value="<?= $this->office->getCommittee_id(); ?>" />
@@ -45,7 +45,7 @@ $helper = $this->template->getHelper('field');
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 echo $helper->saveAndCancelButtons(
-                    BASE_URI.'/committees/members?committee_id='.$this->office->getCommittee_id()
+                    parent::generateUri('committees.members').'?committee_id='.$this->office->getCommittee_id()
                 );
             ?>
         </fieldset>

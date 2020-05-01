@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->data
  */
 use Web\Url;
@@ -22,8 +22,8 @@ use Web\Url;
     <table>
     <?php
         foreach ($this->data as $c) {
-            $uri     = BASE_URI.'/committees/info?committee_id='.$c['id'];
-            $name    = self::escape($c['name']);
+            $uri     = parent::generateUri('committees.info')."?committee_id=$c[id]";
+            $name    =  self::escape($c['name'   ]);
             $endDate = new \DateTime($c['endDate']);
 
             echo "

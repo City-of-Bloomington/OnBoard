@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
 use Application\Models\Committee;
@@ -10,6 +10,7 @@ use Application\Models\Person;
 use Web\View;
 
 $fields = [
+    'id',
     'type', 'yearFormed',
     'name', 'statutoryName', 'code', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
@@ -21,15 +22,15 @@ foreach ($fields as $f) {
     $$f = View::escape($this->committee->$get());
 }
 
-$title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('committee_add');
+$title = $id ? $this->_('committee_edit') : $this->_('committee_add');
 ?>
 <section>
     <header>
         <h1><?= $this->_($title); ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/committees/update">
+    <form method="post">
         <fieldset><legend><?= $this->_('committee_info'); ?></legend>
-            <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
+            <input name="committee_id" type="hidden" value="<?= $id; ?>" />
 
             <?php
                 $helper = $this->template->getHelper('field');
@@ -159,10 +160,9 @@ $title = $this->committee->getId() ? $this->_('committee_edit') : $this->_('comm
         <fieldset><legend><?= $this->_('submit'); ?></legend>
         <?php
             $helper = $this->template->getHelper('saveAndCancelButtons');
-
-            $uri = $this->committee->getId()
-                    ? BASE_URI."/committees/info?committee_id={$this->committee->getId()}"
-                    : BASE_URI."/committees";
+            $uri    = $id
+                    ? parent::generateUri('committees.info' )."?committee_id=$id"
+                    : parent::generateUri('committees.index');
             echo $helper->saveAndCancelButtons($uri);
         ?>
         </fieldset>

@@ -16,7 +16,7 @@ use Application\Models\Person;
             ];
             foreach ($routes as $singular => $plural) {
                 if (Person::isAllowed($plural, 'index')) {
-                    $uri   = BASE_URI."/$plural";
+                    $uri   = parent::generateUri("$plural.index");
                     $class = (strpos($_SERVER['REQUEST_URI'], $uri) !== false) ? ' class="current"' : '';
                     echo "<a href=\"$uri\"$class>{$this->_([$singular, $plural, 2])}</a>";
                 }
@@ -24,7 +24,7 @@ use Application\Models\Person;
 
 
             if (Person::isAllowed('applicants', 'apply')) {
-                $uri = BASE_URI.'/applicants/apply';
+                $uri   = parent::generateUri('applicants.apply');
                 $class = (strpos($_SERVER['REQUEST_URI'], $uri) !== false) ? ' class="current"' : '';
                 echo "<a href=\"$uri\"$class>{$this->_('apply')}</a>";
             }

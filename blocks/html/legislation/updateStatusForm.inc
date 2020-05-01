@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Status $this->status
  */
 $id      = $this->status->getId();
@@ -13,7 +13,7 @@ $title = $id ? $this->_('legislationStatus_edit') : $this->_('legislationStatus_
     <header>
         <h1><?= $title; ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/legislationStatuses/update">
+    <form method="post">
         <fieldset>
             <input name="id" type="hidden" value="<?= $id; ?>" />
             <?php
@@ -27,7 +27,7 @@ $title = $id ? $this->_('legislationStatus_edit') : $this->_('legislationStatus_
                 ]);
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
-                echo $h->saveAndCancelButtons(BASE_URI.'/legislationStatuses');
+                echo $h->saveAndCancelButtons(parent::generateUri('legislationStatuses.index'));
             ?>
         </fieldset>
     </form>

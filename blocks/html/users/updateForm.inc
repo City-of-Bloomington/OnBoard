@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2006-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2006-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param User $this->user
  */
 use Application\Models\Person;
@@ -13,7 +13,7 @@ foreach ($fields as $f) {
 }
 ?>
 <section>
-	<form method="post" action="<?= BASE_URI; ?>/users/update">
+	<form method="post">
 		<fieldset><legend><?= $this->_(['user','users', 10]); ?></legend>
 			<input name="user_id" type="hidden" value="<?= $id; ?>" />
 
@@ -50,7 +50,7 @@ foreach ($fields as $f) {
 				]);
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons(BASE_URI.'/users');
+				echo $helper->saveAndCancelButtons(parent::generateUri('users.index'));
 			?>
 		</fieldset>
 	</form>

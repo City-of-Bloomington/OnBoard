@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person  $this->person
  * @param boolean $this->disableButtons
  */
@@ -16,14 +16,14 @@ $deleteButton = '';
 if (!$this->disableButtons) {
     if (Person::isAllowed('people', 'update')) {
         $editButton = $helper->buttonLink(
-            BASE_URI.'/people/update?person_id='.$person_id,
+            parent::generateUri('people.update')."?person_id=$person_id",
             $this->_('person_edit'),
             'edit'
         );
     }
     if ($this->person->isSafeToDelete() && Person::isAllowed('people', 'delete')) {
         $deleteButton = $helper->buttonLink(
-            BASE_URI.'/people/delete?person_id='.$person_id,
+            parent::generateUri('people.delete')."?person_id=$person_id",
             $this->_('person_delete'),
             'delete'
         );
@@ -60,7 +60,7 @@ echo "
 
             if ($key === 'username' && !$value && !$this->disableButtons && Person::isAllowed('users', 'update')) {
                 $value = $helper->buttonLink(
-                    BASE_URI.'/users/update?user_id='.$this->person->getId(),
+                    parent::generateUri('users.update')."?user_id=$person_id",
                     $this->_('create_account'),
                     'add'
                 );

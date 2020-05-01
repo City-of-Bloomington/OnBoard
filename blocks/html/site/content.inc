@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Application\Models\Person;
 use Application\Models\Site;
@@ -11,23 +11,20 @@ use Michelf\MarkdownExtra;
     <header>
         <h1><?= $this->_('siteContent'); ?></h1>
     </header>
-
     <?php
         $userCanEdit = Person::isAllowed('site', 'updateContent');
-        $helper = $this->template->getHelper('buttonLink');
-
-        $editButton = '';
+        $helper      = $this->template->getHelper('buttonLink');
+        $editButton  = '';
         foreach (Site::$labels as $label) {
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI."/site/updateContent?label=$label",
+                    parent::generateUri('site.updateContent')."?label=$label",
                     $this->_('content_edit'),
                     'edit'
                 );
             }
             $markdown = new MarkdownExtra();
-            $content = $markdown->transform(Site::getContent($label));
-
+            $content  = $markdown->transform(Site::getContent($label));
             echo "
             <article>
                 <header>

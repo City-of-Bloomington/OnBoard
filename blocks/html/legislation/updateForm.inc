@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation $this->legislation
  */
 use Application\Models\TagsTable;
@@ -44,7 +44,7 @@ foreach ($fields as $f) {
             }
         ?>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/legislation/update">
+    <form method="post">
         <fieldset>
             <input name="id"           type="hidden" value="<?= $id;           ?>" />
             <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />

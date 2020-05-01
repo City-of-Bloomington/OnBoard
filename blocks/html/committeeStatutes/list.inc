@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->statutes
- * @param Committee      $this->committee (optional)
+ * @param Committee         $this->committee (optional)
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -18,7 +18,7 @@ use Application\Templates\Helpers\ButtonLink;
             $userCanDelete = Person::isAllowed('committeeStatutes', 'delete');
             if ($this->committee && $userCanEdit) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/committeeStatutes/update?committee_id='.$this->committee->getId(),
+                    parent::generateUri('committeeStatutes.update').'?committee_id='.$this->committee->getId(),
                     $this->_('committeeStatute_add'),
                     'add'
                 );
@@ -34,7 +34,7 @@ use Application\Templates\Helpers\ButtonLink;
             $url      = self::escape($s->getUrl());
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/committeeStatutes/update?committeeStatute_id='.$s->getId(),
+                    parent::generateUri('committeeStatutes.update').'?committeeStatute_id='.$s->getId(),
                     $this->_('edit'),
                     'edit'
                 );
@@ -42,7 +42,7 @@ use Application\Templates\Helpers\ButtonLink;
             }
             if ($userCanDelete) {
                 $deleteButton = $helper->buttonLink(
-                    BASE_URI.'/committeeStatutes/delete?id='.$s->getId(),
+                    parent::generateUri('committeeStatutes.delete').'?id='.$s->getId(),
                     $this->_('delete'),
                     'delete'
                 );

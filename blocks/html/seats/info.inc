@@ -1,39 +1,41 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Seat $this->seat
  */
 use Application\Models\Person;
 use Application\Models\Seat;
 use Michelf\MarkdownExtra;
 
+$seat_id       = $this->seat->getId();
+$committee_id  = $this->seat->getCommittee_id();
 $name          = self::escape($this->seat->getName());
 $code          = self::escape($this->seat->getCode());
 $appointer     = self::escape($this->seat->getAppointer());
 $committee     = self::escape($this->seat->getCommittee()->getName());
-$committee_url = BASE_URI.'/committees/info?committee_id='.$this->seat->getCommittee_id();
+$committee_url = parent::generateUri('committees.info')."?committee_id=$committee_id";
 $requirements  = self::escape($this->seat->getRequirements());
 
 if ($requirements) {
-	$markdown = new MarkdownExtra();
+	$markdown     = new MarkdownExtra();
 	$requirements = $markdown->transform($requirements);
 }
 
-$helper = $this->template->getHelper('buttonLink');
+$helper       = $this->template->getHelper('buttonLink');
 $editButton   = '';
 $endButton    = '';
 $deleteButton = '';
 if (Person::isAllowed('seats', 'update')) {
 	$editButton = $helper->buttonLink(
-		BASE_URI.'/seats/update?seat_id='.$this->seat->getId(),
+		parent::generateUri('seats.update')."?seat_id=$seat_id",
 		$this->_('seat_edit'),
 		'edit'
 	);
 }
 if (Person::isAllowed('seats', 'delete') && $this->seat->isSafeToDelete()) {
     $deleteButton = $helper->buttonLink(
-        BASE_URI.'/seats/delete?seat_id='.$this->seat->getId(),
+		parent::generateUri('seats.delete')."?seat_id=$seat_id",
         $this->_('seat_delete'),
         'delete'
     );
@@ -41,13 +43,13 @@ if (Person::isAllowed('seats', 'delete') && $this->seat->isSafeToDelete()) {
 $endDate = $this->seat->getEndDate('U');
 if ((!$endDate || $endDate > time()) && Person::isAllowed('seats', 'end')) {
     $endButton = $helper->buttonLink(
-        BASE_URI.'/seats/end?seat_id='.$this->seat->getId(),
+		parent::generateUri('seats.end')."?seat_id=$seat_id",
         $this->_('seat_end'),
         'delete'
     );
 }
 
-$uri = BASE_URI.'/seats/view?seat_id='.$this->seat->getId();
+$uri = parent::generateUri('seats.view')."?seat_id=$seat_id";
 echo "
 <section>
     <header>

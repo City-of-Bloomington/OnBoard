@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant $this->applicant
- * @param boolean $this->disableButtons
+ * @param boolean   $this->disableButtons
  */
 use Application\Models\Person;
 
@@ -17,7 +17,7 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
             if (!$this->disableButtons && Person::isAllowed('applicants', 'update')) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
-                    BASE_URI.'/applicants/update?applicant_id='.$this->applicant->getId(),
+                    parent::generateUri('applicants.update').'?applicant_id='.$this->applicant->getId(),
                     $this->_('applicant_edit'),
                     'edit'
                 );
@@ -55,10 +55,10 @@ $name = self::escape("{$this->applicant->getFirstname()} {$this->applicant->getL
                 <dt>{$this->_('applicantFile')}</dt><dd>
             ";
                 $files = $this->applicant->getFiles();
+                $uri   = parent::generateUri('applicantFiles.download');
                 foreach ($files as $f) {
-                    $uri = BASE_URI.'/applicantFiles/download?applicantFile_id='.$f->getId();
                     $filename = self::escape($f->getFilename());
-                    echo "<a href=\"$uri\" class=\"{$f->getMime_type()}\">$filename</a>";
+                    echo "<a href=\"$uri?applicantFile_id={$f->getId()}\" class=\"{$f->getMime_type()}\">$filename</a>";
                 }
             echo "
                 </dd>

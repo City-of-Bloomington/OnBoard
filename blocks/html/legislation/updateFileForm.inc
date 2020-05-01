@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param LegislationFile $this->legislationFile
  */
 use Application\Models\Legislation\LegislationFile;
@@ -19,14 +19,14 @@ $heading = $id ? $this->_('legislationFile_edit') : $this->_('legislationFile_ad
     <header>
         <h1><?= $heading; ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/legislationFiles/update" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <fieldset>
             <input type="hidden" name="id"             value="<?= $id ?>" />
             <input type="hidden" name="legislation_id" value="<?= $legislation_id; ?>" />
             <?php
                 $h = $this->template->getHelper('field');
 
-                $downloadUrl = BASE_URI."/legislationFiles/download?id=$id";
+                $downloadUrl = parent::generateUri('legislationFiles.download')."?id=$id";
                 $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
 
                 $accept = [];

@@ -48,14 +48,14 @@ use Web\Url;
 				$user_id      = $user->getId();
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
-						BASE_URI."/users/update?user_id=$user_id;return_url=$return_url",
+						parent::generateUri('users.update')."?user_id=$user_id;return_url=$return_url",
 						$this->translate('edit_account'),
 						'edit'
 					);
                 }
                 if ($userCanDelete) {
 					$deleteButton = $helper->buttonLink(
-						BASE_URI."/users/delete?user_id=$user_id;return_url=$return_url",
+						parent::generateUri('users.delete')."?user_id=$user_id;return_url=$return_url",
 						$this->translate('delete_account'),
 						'delete'
 					);
@@ -63,7 +63,7 @@ use Web\Url;
 
 				$name = self::escape($user->getFullname());
 				if ($userCanView) {
-                    $uri  = BASE_URI."/people/view?person_id=$user_id";
+                    $uri  = parent::generateUri('people.view')."/people/view?person_id=$user_id";
                     $name = "<a href=\"$uri\">$name</a>";
 				}
 				echo "

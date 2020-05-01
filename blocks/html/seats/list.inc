@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->seats
  * @param Committee         $this->committee      (optional)
  * @param boolean           $this->disableButtons (optional)
@@ -37,7 +37,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
 
                 if ($userCanEdit) {
                     $editButton = $helper->buttonLink(
-                        BASE_URI."/seats/update?seat_id=$seat_id",
+                        parent::generateUri('seats.update')."?seat_id=$seat_id",
                         $this->translate('seat_edit'),
                         'edit'
                     );
@@ -64,7 +64,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
     <?php
         if ($userCanEdit && isset($this->committee)) {
             echo $helper->buttonLink(
-                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                parent::generateUri('seats.update')."?committee_id={$this->committee->getId()}",
                 $this->translate('seat_add'),
                 'add'
             );

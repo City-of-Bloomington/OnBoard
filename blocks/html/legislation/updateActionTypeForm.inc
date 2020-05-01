@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param LegislationActionType $this->type
  */
 $id       = $this->type->getId();
@@ -14,7 +14,7 @@ $title = $id ? $this->_('legislationActionType_edit') : $this->_('legislationAct
     <header>
         <h1><?= $title; ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/legislationActionTypes/update">
+    <form method="post">
         <fieldset>
             <input name="id" type="hidden" value="<?= $id; ?>" />
             <?php
@@ -35,7 +35,7 @@ $title = $id ? $this->_('legislationActionType_edit') : $this->_('legislationAct
                 ]);
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
-                echo $h->saveAndCancelButtons(BASE_URI.'/legislationActionTypes');
+                echo $h->saveAndCancelButtons(parent::generateUri('legislationActionTypes.index'));
             ?>
         </fieldset>
     </form>

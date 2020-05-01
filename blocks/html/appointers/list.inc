@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->appointers
  */
 use Application\Models\Person;
@@ -16,7 +16,7 @@ use Web\View;
             $helper = $this->template->getHelper('buttonLink');
             if (Person::isAllowed('appointers')) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/appointers/update',
+                    parent::generateUri('appointers.update'),
                     $this->translate('add_appointer'),
                     'add'
                 );
@@ -30,7 +30,7 @@ use Web\View;
             $editButton = '';
             if (Person::isAllowed('appointers')) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/appointers/update?appointer_id='.$appointer->getId(),
+                    parent::generateUri('appointers.update').'?appointer_id='.$appointer->getId(),
                     $this->translate('edit'),
                     'edit'
                 );

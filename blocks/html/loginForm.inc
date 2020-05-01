@@ -1,4 +1,4 @@
-<form method="post" action="<?= BASE_URI; ?>/login/login">
+<form method="post">
 	<fieldset><legend><?= $this->_('login'); ?></legend>
 		<input name="return_url" type="hidden" value="<?= self::escape($this->return_url); ?>" />
 

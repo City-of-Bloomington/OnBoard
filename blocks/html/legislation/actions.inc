@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
@@ -18,7 +18,7 @@ if ($userCanEditActions) {
         ]);
 
         echo $helper->buttonLink(
-            BASE_URI."/legislationActions/update?$params",
+            parent::generateUri('legislationActions.update')."?$params",
             sprintf($this->_('add_something', 'messages'), parent::escape($t->getName())),
             'add'
         );
@@ -38,7 +38,7 @@ foreach (Legislation::actionTypes() as $t) {
 
         if ($userCanEditActions) {
             $button = $helper->buttonLink(
-                BASE_URI.'/legislationActions/update?id='.$action->getId(),
+                parent::generateUri('legislationActions.update').'?id='.$action->getId(),
                 $this->_('legislationAction_edit'),
                 'edit'
             );

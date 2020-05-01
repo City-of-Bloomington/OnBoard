@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param Seat $this->seat
  */
 use Application\Models\AppointerTable;
@@ -13,17 +13,17 @@ $fields = [
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
-    $$f = $this->seat->$get();
+    $$f  = $this->seat->$get();
 }
 
-$title = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
+$title  = $this->seat->getId() ? $this->_('seat_edit') : $this->_('seat_add');
 $picker = $this->template->getHelper('datePicker');
 ?>
 <section>
     <header>
         <h1><?= $title; ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/seats/update">
+    <form method="post">
         <fieldset><legend><?= $this->_('info_seat'); ?></legend>
             <input name="seat_id"       type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
@@ -109,9 +109,9 @@ $picker = $this->template->getHelper('datePicker');
         <fieldset>
         <?php
             $helper = $this->template->getHelper('saveAndCancelButtons');
-            $uri = $id
-                ? BASE_URI."/seats/view?seat_id=$id"
-                : BASE_URI."/committees/members?committee_id=$committee_id";
+            $uri    = $id
+                      ? parent::generateUri('seats.view')."?seat_id=$id"
+                      : parent::generateUri('committees.members')."?committee_id=$committee_id";
             echo $helper->saveAndCancelButtons($uri);
         ?>
         </fieldset>

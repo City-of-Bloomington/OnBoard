@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @param array          $this->params         Query parameters that produced the data
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array             $this->params         Query parameters that produced the data
  * @param Laminas\Db\Result $this->data           Data structure returned as SeatTable::$dataFields
- * @param Committee      $this->committee      (optional)
- * @param string         $this->title          (optional)
- * @param bool           $this->disableButtons (optional)
+ * @param Committee         $this->committee      (optional)
+ * @param string            $this->title          (optional)
+ * @param bool              $this->disableButtons (optional)
  */
 use Application\Models\Person;
 use Application\Models\Term;
@@ -14,8 +14,8 @@ use Application\Templates\Helpers\ButtonLink;
 use Web\Url;
 
 $title = $this->title
-    ? self::escape($this->title)
-    : $this->_(['seat', 'seats', count($this->data['results'])]);
+         ? self::escape($this->title)
+         : $this->_(['seat', 'seats', count($this->data['results'])]);
 
 if (isset($this->params['current'])) {
     $title.= ' ('.$this->params['current']->format(DATE_FORMAT).')';
@@ -111,15 +111,15 @@ if (isset($this->params['current'])) {
 
                 if ($userCanEditSeats) {
                     $actions[] = [
-                        'url'   => BASE_URI."/seats/update?seat_id=$seat_id",
+                        'url'   => parent::generateUri('seats.update')."?seat_id=$seat_id",
                         'label' => $this->_('seat_edit')
                     ];
                 }
 
                 $committeeName = !$this->committee ? "<td>$committee_name</td>" : '';
-                $seat_uri      = BASE_URI."/seats/view?seat_id=$seat_id";
+                $seat_uri      = parent::generateUri('seats.view')."?seat_id=$seat_id";
                 if ($person_id) {
-                    $uri       = BASE_URI."/people/view?person_id=$person_id";
+                    $uri       = parent::generateUri('people.view')."?person_id=$person_id";
                     $member    = "<a href=\"$uri\">$person_firstname $person_lastname</a>";
                     $termDates = "$member_termStart - $member_termEnd";
 
@@ -130,8 +130,8 @@ if (isset($this->params['current'])) {
                         // Appoint
                         if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
                             $uri = $seat_type === 'termed'
-                                ? BASE_URI."/members/appoint?term_id=$term_id"
-                                : BASE_URI."/members/appoint?seat_id=$seat_id";
+                                   ? parent::generateUri('members.appoint')."?term_id=$term_id"
+                                   : parent::generateUri('members.appoint')."?seat_id=$seat_id";
 
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
                         }
@@ -144,7 +144,7 @@ if (isset($this->params['current'])) {
                         $t = new Term($term_id);
                         $n = $t->getNextTerm();
                         if ($n->isVacant()) {
-                            $uri = BASE_URI."/members/reappoint?member_id=$member_id";
+                            $uri = parent::generateUri('members.reappoint')."?member_id=$member_id";
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                         }
                         else {
@@ -165,7 +165,7 @@ if (isset($this->params['current'])) {
                         && !$this->disableButtons
                         && Person::isAllowed('members', 'resign')) {
 
-                        $uri = BASE_URI."/members/resign?member_id=$member_id";
+                        $uri = parent::generateUri('members.resign')."/members/resign?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
                 }
@@ -176,8 +176,8 @@ if (isset($this->params['current'])) {
 
                     if (!$this->disableButtons && Person::isAllowed('members', 'appoint')) {
                         $uri = $seat_type === 'termed'
-                            ? BASE_URI."/members/appoint?term_id=$term_id"
-                            : BASE_URI."/members/appoint?seat_id=$seat_id";
+                               ? parent::generateUri('members.appoint')."?term_id=$term_id"
+                               : parent::generateUri('members.appoint')."?seat_id=$seat_id";
 
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
                     }
@@ -185,8 +185,10 @@ if (isset($this->params['current'])) {
 
                 $userCanEditOffices = !$this->disableButtons && Person::isAllowed('offices', 'update');
                 if ($userCanEditOffices) {
-                    $uri = BASE_URI."/offices/update?committee_id=$committee_id;person_id=$person_id";
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('office_add')];
+                    $actions[] = [
+                        'url'   => parent::generateUri('offices.update')."?committee_id=$committee_id;person_id=$person_id",
+                        'label' => $this->_('office_add')
+                    ];
                 }
                 if ($offices) {
                     $ts = [];
@@ -194,14 +196,16 @@ if (isset($this->params['current'])) {
                         list($office_id, $office_title) = explode('|', $o);
                         $ts[] = $office_title;
                         if ($userCanEditOffices) {
-                            $uri = BASE_URI."/offices/update?office_id=$office_id";
-                            $actions[] = ['url'=>$uri, 'label'=>"{$this->_('edit')} $office_title"];
+                            $actions[] = [
+                                'url'   => parent::generateUri('offices.update')."?office_id=$office_id",
+                                'label' => "{$this->_('edit')} $office_title"
+                            ];
                         }
                     }
                     $offices = '<span class="offices">'.implode(',', $ts).'</span>';
                 }
 
-                $classes  = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
+                $classes   = count($classes) ? 'class="'.implode(' ', $classes).'"' : '';
                 $moreLinks = '';
                 if (isset($_SESSION['USER']) && count($actions)) {
                     $h = $this->template->getHelper('dropdown');
@@ -223,18 +227,19 @@ if (isset($this->params['current'])) {
     </table>
     <?php
     if ($this->committee && !$this->disableButtons) {
-        $helper = $this->template->getHelper('buttonLink');
+        $helper       = $this->template->getHelper('buttonLink');
+        $committee_id = $this->committee->getId();
 
         if ($userCanEditSeats) {
             echo $helper->buttonLink(
-                BASE_URI."/seats/update?committee_id={$this->committee->getId()}",
+                parent::generateUri('seats.update')."?committee_id=$committee_id",
                 $this->translate('seat_add'),
                 'add'
             );
         }
         if ($this->committee->hasVacancy()) {
             echo $helper->buttonLink(
-                BASE_URI.'/applicants/apply?committee_id='.$this->committee->getId(),
+                parent::generateUri('applicants.apply')."?committee_id=$committee_id",
                 $this->_('apply'),
                 'apply'
             );

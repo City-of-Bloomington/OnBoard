@@ -35,14 +35,14 @@ $synopsis = $markdown->transform($this->legislation->getSynopsis());
         $links = [];
         if ($userCanEdit) {
             $links[] = $h->buttonLink(
-                BASE_URI.'/legislation/update?id='.$id,
+                parent::generateUri('legislation.update')."?id=$id",
                 $this->_('legislation_edit'),
                 'edit'
             );
         }
         if ($userCanDelete) {
             $links[] = $h->buttonLink(
-                BASE_URI.'/legislation/delete?id='.$id,
+                parent::generateUri('legislation.delete')."?id=$id",
                 $this->_('legislation_delete'),
                 'delete'
             );

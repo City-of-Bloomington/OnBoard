@@ -1,17 +1,18 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Race $this->race
  */
-$name = parent::escape($this->race->getName());
-$title = $this->race->getId() ? $this->_('race_add') : $this->_('race_add');
+$race_id = $this->race->getId();
+$name    = parent::escape($this->race->getName());
+$title   = $race_id ? $this->_('race_add') : $this->_('race_add');
 ?>
 <section>
 	<h1><?= $title; ?></h1>
-	<form method="post" action="<?= BASE_URI; ?>/races/update">
+	<form method="post">
 		<fieldset><legend><?= $name; ?></legend>
-			<input name="race_id" type="hidden" value="<?= $this->race->getId(); ?>" />
+			<input name="race_id" type="hidden" value="<?= $race_id; ?>" />
 			<?php
                 $helper = $this->template->getHelper('field');
                 echo $helper->field([
@@ -23,7 +24,7 @@ $title = $this->race->getId() ? $this->_('race_add') : $this->_('race_add');
                 ]);
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons(BASE_URI.'/races');
+				echo $helper->saveAndCancelButtons(parent::generateUri('races.index'));
 			?>
 		</fieldset>
 	</form>

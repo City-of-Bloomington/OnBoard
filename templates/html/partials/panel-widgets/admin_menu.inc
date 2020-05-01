@@ -22,11 +22,11 @@ $routes = [
 foreach ($routes as $plural=>$singular) {
     $requiredAction = 'index';
     if (Person::isAllowed($plural, $requiredAction)) {
-        $links[] = ['url'=>BASE_URI."/$plural", 'label'=>$this->_([$singular, $plural, 2])];
+        $links[] = ['url'=>parent::generateUri("$plural.index"), 'label'=>$this->_([$singular, $plural, 2])];
     }
 }
 if (Person::isAllowed('site', 'siteContent')) {
-    $links[] = ['url'=>BASE_URI.'/site', 'label'=>$this->_('siteContent')];
+    $links[] = ['url'=>parent::generateUri('site.index'), 'label'=>$this->_('siteContent')];
 }
 
 if ($links) {
@@ -37,7 +37,7 @@ if ($links) {
     //
     // https://github.com/City-of-Bloomington/OnBoard/issues/3
     //
-    $links[] = ['url'=>BASE_URI.'/committees/report', 'label'=>'Master Report'];
+    $links[] = ['url'=>parent::generateUri('committees.report'), 'label'=>'Master Report'];
 
     $helper = $this->getHelper('dropdown');
     echo $helper->dropdown($links, $this->_('admin'), 'admin_menu');

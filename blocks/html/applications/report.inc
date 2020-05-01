@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->applications
  * @param array $this->seats
  * @param Committee $this->committee
@@ -15,7 +15,7 @@ use Web\Block;
         <?php
             $helper = $this->template->getHelper('buttonLink');
             echo $helper->buttonLink(
-                BASE_URI."/committees/applications?committee_id={$this->committee->getId()}",
+                parent::generateUri('committees.applications')."?committee_id={$this->committee->getId()}",
                 $this->_('applications_back'),
                 'back'
             );

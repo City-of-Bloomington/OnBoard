@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->statuses
  */
 declare (strict_types=1);
@@ -17,7 +17,7 @@ use Application\Models\Person;
             if ($userCanEdit) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
-                    BASE_URI.'/legislationStatuses/update',
+                    parent::generateUri('legislationStatuses.update'),
                     $this->_('legislationStatus_add'),
                     'add'
                 );
@@ -28,18 +28,19 @@ use Application\Models\Person;
     <table>
     <?php
         foreach ($this->statuses as $s) {
+            $status_id    = $s->getId();
             $editButton   = '';
             $deleteButton = '';
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/legislationStatuses/update?id='.$s->getId(),
+                    parent::generateUri('legislationStatuses.update')."?id=$status_id",
                     $this->_('legislationStatus_edit'),
                     'edit'
                 );
             }
             if ($userCanDelete) {
                 $deleteButton = $helper->buttonLink(
-                    BASE_URI.'/legislationStatuses/delete?id='.$s->getId(),
+                    parent::generateUri('legislationStatuses.delete')."?id=$status_id",
                     $this->_('legislationStatus_delete'),
                     'delete'
                 );

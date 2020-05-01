@@ -1,27 +1,27 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person $this->person
  */
 use Application\Models\Person;
 use Application\Models\RaceTable;
 
-$fields = ['gender', 'race_id', 'address', 'city', 'state', 'zip'];
+$fields = ['id', 'gender', 'race_id', 'address', 'city', 'state', 'zip'];
 foreach ($fields as $f) {
 	$get = 'get'.ucfirst($f);
 	$$f  = self::escape($this->person->$get());
 }
 
-$title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add');
+$title = $id ? $this->_('person_edit') : $this->_('person_add');
 ?>
 <section class="updatePersonForm">
     <header>
         <h1><?= $title; ?></h1>
     </header>
-	<form method="post" action="<?= BASE_URI; ?>/people/update">
+	<form method="post">
 		<fieldset><legend><?= $this->_('info_person'); ?></legend>
-			<input name="person_id" type="hidden" value="<?= $this->person->getId(); ?>" />
+			<input name="person_id" type="hidden" value="<?= $id; ?>" />
 			<?php
 				// Preserve any extra parameters passed in
 				foreach ($_REQUEST as $key=>$value) {
@@ -95,16 +95,16 @@ $title = $this->person->getId() ? $this->_('person_edit') : $this->_('person_add
 				if (isset($_REQUEST['return_url'])) {
 					$return_url = urlencode($_REQUEST['return_url']);
 				}
-				elseif ($this->person->getId()) {
+				elseif ($id) {
 					$return_url = $this->person->getUrl();
 				}
 				else {
-					$return_url = BASE_URI.'/people';
+					$return_url = parent::generateUri('people.index');
 				}
 
 				$onclick = isset($_REQUEST['callback'])
-					? 'onclick="self.close();"'
-					: '';
+					       ? 'onclick="self.close();"'
+					       : '';
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');
 				echo $helper->saveAndCancelButtons($return_url, $onclick);

@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array       $this->list      An array of Legislation bjects
  * @param Committee   $this->committee
  * @param Legislation $this->parent    The parent legislation for the list
@@ -36,7 +36,7 @@ use Web\Url;
                             $params['type_id'   ] = $t->getId();
 
                             echo $h->buttonLink(
-                                BASE_URI.'/legislation/update?'.http_build_query($params),
+                                parent::generateUri('legislation.update').'?'.http_build_query($params),
                                 sprintf($this->_('add_something', 'messages'), $t->getName()),
                                 'add'
                             );
@@ -44,7 +44,7 @@ use Web\Url;
                     }
                     else {
                         echo $h->buttonLink(
-                            BASE_URI.'/legislation/update?'.http_build_query($params),
+                            parent::generateUri('legislation.update').'?'.http_build_query($params),
                             $this->_('legislation_add'),
                             'add'
                         );
@@ -64,13 +64,13 @@ use Web\Url;
                     ? '('.parent::escape($l->getStatus()->getName()).')'
                     : '';
 
-            $uri = BASE_URI.'/legislation/view?id='.$l->getId();
+            $uri = parent::generateUri('legislation.view').'?id='.$l->getId();
 
             $downloadButton = '';
             $files = $l->getFiles();
             if (count($files)) {
                 foreach ($files as $f) {
-                    $u    = BASE_URI.'/legislationFiles/download?id='.$f->getId();
+                    $u    = parent::generateUri('legislationFiles.download').'?id='.$f->getId();
                     $name = parent::escape($f->getFilename());
                     $downloadButton.= $h->buttonLink($u, $this->_('download'), 'download');
                 }

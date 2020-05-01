@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant $this->applicant
  */
 use Application\Models\ApplicantFile;
@@ -19,13 +19,20 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
         <h1><?= $title; ?></h1>
     </header>
 
-    <form method="post" action="<?= BASE_URI; ?>/applicants/update" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <fieldset><legend><?= $this->_('info_person'); ?></legend>
             <input name="applicant_id" type="hidden" value="<?= $id; ?>" />
-
             <?php
-                $this->person = $this->applicant;
-                $this->_include('people/partials/personalInfoFields.inc');
+                $fields = ['firstname', 'lastname', 'email', 'phone'];
+                foreach ($fields as $f) {
+                    $get = 'get'.ucfirst($f);
+                    $$f = self::escape($this->applicant->$get());
+                }
+                $field = $this->template->getHelper('field');
+                echo $field->field(['name'=>'firstname', 'id'=>'firstname', 'label'=>$this->_('firstname'), 'value'=>$firstname, 'required'=>true]);
+                echo $field->field(['name'=>'lastname',  'id'=>'lastname',  'label'=>$this->_('lastname'),  'value'=>$lastname,  'required'=>true]);
+                echo $field->field(['name'=>'email',     'id'=>'email',     'label'=>$this->_('email'),     'value'=>$email,     'type'=>'email']);
+                echo $field->field(['name'=>'phone',     'id'=>'phone',     'label'=>$this->_('phone'),     'value'=>$phone,     'type'=>'tel'  ]);
             ?>
         </fieldset>
 
@@ -54,7 +61,7 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
         <fieldset>
         <?php
             $helper = $this->template->getHelper('saveAndCancelButtons');
-            echo $helper->saveAndCancelButtons(BASE_URI.'/applicants/view?applicant_id='.$id);
+            echo $helper->saveAndCancelButtons(parent::generateUri('applicants.view')."?applicant_id=$id");
         ?>
         </fieldset>
     </form>

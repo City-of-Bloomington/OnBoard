@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->fields Fields to draw in the search form
  */
 foreach ($this->fields as $f) {
@@ -12,7 +12,7 @@ foreach ($this->fields as $f) {
     <header>
         <h1><?= $this->_('find_person'); ?></h1>
     </header>
-    <form method="get" action="<?= BASE_URI; ?>/people">
+    <form method="get">
         <fieldset>
             <?php
                 $h = $this->template->getHelper('field');

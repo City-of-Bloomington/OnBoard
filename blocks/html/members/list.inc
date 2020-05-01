@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->members
  *
  * @param Committee $this->committee      (optional)
@@ -23,8 +23,8 @@ use Web\Block;
 
         foreach ($this->members as $member) {
             $member_id = $member->getId();
-
-            $name = self::escape($member->getPerson()->getFullname());
+            $person_id = $member->getPerson_id();
+            $name      = self::escape($member->getPerson()->getFullname());
 
             $titles  = [];
             $offices = $member->getPerson()->getOffices($member->getCommittee(), date('Y-m-d'));
@@ -37,9 +37,9 @@ use Web\Block;
             if (!$this->disableButtons) {
                 $actions->member  = $member;
                 $actions->offices = $offices;
-                $moreLinks = $actions->render('html', $this->template);
+                $moreLinks        = $actions->render('html', $this->template);
             }
-            $uri = BASE_URI.'/people/view?person_id='.$member->getPerson_id();
+            $uri = parent::generateUri('people.view')."?person_id=$person_id";
             echo "
             <tr><td><a href=\"$uri\">$name</a>$titles</td>
                 <td>{$member->getStartDate(DATE_FORMAT)} - {$member->getEndDate(DATE_FORMAT)}</td>
@@ -57,20 +57,22 @@ use Web\Block;
             $userCanUpdate  = Person::isAllowed('members', 'update' );
             $userCanAppoint = Person::isAllowed('members', 'appoint');
             if ($this->term) {
+                $term_id = $this->term->getId();
                 if ($userCanUpdate) {
                     echo $helper->buttonLink(
-                        BASE_URI.'/members/update?term_id='.$this->term->getId(),
+                        parent::generateUri('members.update')."?term_id=$term_id",
                         $this->_('member_add'),
                         'add'
                     );
                 }
             }
             elseif ($this->seat && $this->seat->getType() === 'open') {
+                $seat_id = $this->seat->getId();
                 if ($userCanUpdate) {
-                    $uri = BASE_URI.'/members/update?seat_id='.$this->seat->getId();
+                    $uri = parent::generateUri('members.update')."?seat_id=$seat_id".$this->seat->getId();
                 }
                 elseif ($userCanAppoint) {
-                    $uri = BASE_URI.'/members/appoint?seat_id='.$this->seat->getId();
+                    $uri = parent::generateUri('members.appoint')."?seat_id=$seat_id";
                 }
 
                 if (isset($uri)) {
@@ -78,11 +80,12 @@ use Web\Block;
                 }
             }
             elseif ($this->committee) {
+                $committee_id = $this->committee->getId();
                 if ($userCanUpdate) {
-                    $uri = BASE_URI.'/members/update?committee_id='.$this->committee->getId();
+                    $uri = parent::generateUri('members.update')."?committee_id=$committee_id";
                 }
                 elseif ($userCanAppoint) {
-                    $uri = BASE_URI.'/members/appoint?committee_id='.$this->committee->getid();
+                    $uri = parent::generateUri('members.appoint')."?committee_id=$committee_id";
                 }
 
                 if (isset($uri)) {
@@ -91,7 +94,7 @@ use Web\Block;
 
                 if ($this->committee->hasVacancy()) {
                     echo $helper->buttonLink(
-                        BASE_URI.'/applicants/apply?committee_id='.$this->committee->getId(),
+                        parent::generateUri('applicants.apply')."?committee_id=$committee_id",
                         $this->_('apply'),
                         'apply'
                     );

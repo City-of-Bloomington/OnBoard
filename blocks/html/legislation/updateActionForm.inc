@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Action $this->action
  */
 use Application\Models\Legislation\Action;
@@ -20,7 +20,7 @@ $type        = parent::escape($this->action->getType()       ->getName());
         <h1><?= $legislation; ?></h1>
         <h2><?= $type; ?></h2>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/legislationActions/update">
+    <form method="post">
         <fieldset>
             <input name="id"             type="hidden" value="<?= $id; ?>" />
             <input name="legislation_id" type="hidden" value="<?= $legislation_id; ?>" />
@@ -57,7 +57,7 @@ $type        = parent::escape($this->action->getType()       ->getName());
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
                 echo $h->saveAndCancelButtons(
-                    BASE_URI.'/legislation/view?id='.$legislation_id
+                    parent::generateUri('legislation.view')."?id=$legislation_id"
                 );
             ?>
         </fieldset>

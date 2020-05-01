@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param Member $this->newMember
  * @param Member $this->currentMember (optional)
  */
@@ -10,7 +10,7 @@ use Application\Models\Seat;
 use Web\Block;
 use Michelf\MarkdownExtra;
 ?>
-<form method="post" action="<?= BASE_URI; ?>/members/appoint">
+<form method="post">
     <?php if ($this->currentMember): ?>
         <section>
             <header>
@@ -94,7 +94,7 @@ use Michelf\MarkdownExtra;
             <?php
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 echo $helper->saveAndCancelButtons(
-                    BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
+                    parent::generateUri('committees.members').'?committee_id='.$this->newMember->getCommittee_id()
                 );
             ?>
             </div>

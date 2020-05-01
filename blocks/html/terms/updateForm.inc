@@ -1,12 +1,10 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Term $this->term
  */
-
-$title = $this->term->getId() ? $this->_('term_edit') : $this->_('term_add');
-
+$title  = $this->term->getId() ? $this->_('term_edit') : $this->_('term_add');
 $helper = $this->template->getHelper('field');
 ?>
 <section>
@@ -37,7 +35,7 @@ $helper = $this->template->getHelper('field');
             }
 
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			echo $helper->saveAndCancelButtons(BASE_URI.'/seats/view?seat_id='.$this->term->getSeat_id());
+			echo $helper->saveAndCancelButtons(parent::generateUri('seats.view').'?seat_id='.$this->term->getSeat_id());
 		?>
 	</form>
 </section>

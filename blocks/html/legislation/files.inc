@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
@@ -19,9 +19,10 @@ if (count($files)) {
 
     echo '<ul>';
     foreach ($files as $f) {
+        $file_id = $f->getId();
         if ($userCanUploadFiles) {
             $editButton = $helper->buttonLink(
-                BASE_URI.'/legislationFiles/update?id='.$f->getId(),
+                parent::generateUri('legislationFiles.update')."?id=$file_id",
                 $this->_('legislationFile_edit'),
                 'edit'
             );
@@ -29,14 +30,14 @@ if (count($files)) {
 
         if ($userCanDeleteFiles) {
             $deleteButton = $helper->buttonLink(
-                BASE_URI.'/legislationFiles/delete?id='.$f->getId(),
+                parent::generateUri('legislationFiles.delete')."?id=$file_id",
                 $this->_('legislationFile_delete'),
                 'delete'
             );
         }
 
-        $uri = BASE_URI.'/legislationFiles/download?id='.$f->getId();
-        $name = parent::escape($f->getFilename());
+        $uri            = parent::generateUri('legislationFiles.download')."?id=$file_id";
+        $name           = parent::escape($f->getFilename());
         $downloadButton = $helper->buttonLink($uri, $this->_('download'), 'download');
         echo "
         <li>$downloadButton
@@ -50,7 +51,7 @@ if (count($files)) {
 else {
     if ($userCanUploadFiles) {
         echo $helper->buttonLink(
-            BASE_URI.'/legislationFiles/update?legislation_id='.$this->legislation->getId(),
+            parent::generateUri('legislationFiles.update').'?legislation_id='.$this->legislation->getId(),
             $this->_('legislationFile_add'),
             'upload'
         );

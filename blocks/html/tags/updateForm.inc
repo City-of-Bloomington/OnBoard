@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Tag $this->tag
  */
 $id   = $this->tag->getId();
@@ -12,7 +12,7 @@ $title = $id ? $this->_('tag_edit') : $this->_('tag_add');
 ?>
 <section>
     <header><h1><?= $title; ?></h1></header>
-    <form method="post" action="<?= BASE_URI; ?>/tags/update">
+    <form method="post">
         <fieldset>
             <input name="id" type="hidden" value="<?= $id; ?>" />
 
@@ -27,7 +27,7 @@ $title = $id ? $this->_('tag_edit') : $this->_('tag_add');
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
-                echo $helper->saveAndCancelButtons(BASE_URI.'/tags');
+                echo $helper->saveAndCancelButtons(parent::generateUri('tags.index'));
             ?>
 
         </fieldset>

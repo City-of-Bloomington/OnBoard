@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Member $this->member
  * @param Member $this->newMember
  */
@@ -44,14 +44,14 @@ $term = $this->newMember->getTerm();
             </div>
         </section>
 
-        <form method="post" action="<?= BASE_URI; ?>/members/reappoint">
+        <form method="post">
             <input name="member_id" type="hidden" value="<?= $this->member->getId(); ?>" />
             <input name="confirm"   type="hidden" value="yes" />
             <div>
                 <?php
                     $helper = $this->template->getHelper('saveAndCancelButtons');
                     echo $helper->saveAndCancelButtons(
-                        BASE_URI.'/committees/members?committee_id='.$this->newMember->getCommittee_id()
+                        parent::generateUri('committees.members').'?committee_id='.$this->newMember->getCommittee_id()
                     );
                 ?>
             </div>

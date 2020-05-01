@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->departments
- * @param boolean        $this->disableButtons
+ * @param boolean           $this->disableButtons
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
@@ -18,7 +18,7 @@ $helper = $this->template->getHelper('buttonLink');
             $userCanEdit = (!$this->disableButtons && Person::isAllowed('departments', 'update'));
             if ($userCanEdit) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/departments/update',
+                    parent::generateUri('departments.update'),
                     $this->_('department_add'),
                     'add'
                 );
@@ -35,7 +35,7 @@ $helper = $this->template->getHelper('buttonLink');
 
             if ($userCanEdit) {
                 $editButton = $helper->buttonLink(
-                    BASE_URI.'/departments/update?department_id='.$d->getId(),
+                    parent::generateUri('departments.update').'?department_id='.$d->getId(),
                     $this->_('department_edit'),
                     'edit'
                 );

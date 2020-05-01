@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Member $this->member
  */
 $fields = ['id', 'committee_id', 'seat_id', 'term_id', 'person_id'];
@@ -23,7 +23,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
         ?>
     </header>
 
-	<form method="post" action="<?= BASE_URI; ?>/members/update">
+	<form method="post">
         <fieldset>
         <input name="member_id"    type="hidden" value="<?= $id;           ?>" />
 		<input name="term_id"      type="hidden" value="<?= $term_id;      ?>" />
@@ -58,9 +58,9 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
             ]);
 
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			$uri = $seat_id
-                ? BASE_URI.'/seats/view?seat_id='.$seat_id
-                : BASE_URI.'/committees/members?committee_id='.$committee_id;
+			$uri    = $seat_id
+                    ? parent::generateUri('seats.view')."?seat_id=$seat_id"
+                    : parent::generateUri('committees.members')."?committee_id=$committee_id";
 			echo $helper->saveAndCancelButtons($uri);
 		?>
         </fieldset>

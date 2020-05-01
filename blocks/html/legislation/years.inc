@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     $this->years
  * @param Committee $this->committee (optional)
  */
@@ -13,7 +13,7 @@ $params = $this->committee
 
 foreach ($this->years as $year=>$count) {
     $params['year'] = $year;
-    $uri = BASE_URI.'/legislation?'.http_build_query($params);
+    $uri = parent::generateUri('legislation.index').'?'.http_build_query($params);
     echo "
     <tr><th><a href=\"$uri\">$year</a></th>
         <td>$count</td>

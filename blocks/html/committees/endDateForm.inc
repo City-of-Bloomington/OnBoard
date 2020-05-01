@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
 ?>
@@ -26,7 +26,7 @@
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
                 echo $helper->saveAndCancelButtons(
-                    BASE_URI.'/committees/info?committee_id='.$this->committee->getId()
+                    parent::generateUri('committees.info').'?committee_id='.$this->committee->getId()
                 );
             ?>
         </fieldset>

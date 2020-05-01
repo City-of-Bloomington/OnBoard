@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->data
  * @param boolean $this->disableButtons
  */
@@ -16,7 +16,7 @@ $helper = $this->template->getHelper('buttonLink');
 $tools = '';
 foreach (Liaison::$types as $type) {
     $tools.= $helper->buttonLink(
-        BASE_URI.'/liaisons?type='.$type,
+        parent::generateUri('liaisons.index')."?type=$type",
         $this->_($type)
     );
 }

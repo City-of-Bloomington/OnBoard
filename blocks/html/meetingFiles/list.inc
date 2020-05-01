@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2018-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->files
- * @param Committee      $this->committee (optional)
- * @param stdClass       $this->sort
+ * @param Committee         $this->committee (optional)
+ * @param stdClass          $this->sort
  */
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
@@ -34,7 +34,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                 foreach (MeetingFile::$types as $type) {
                     $actions[] = [
                         'label' => $type,
-                        'url'   => BASE_URI."/meetingFiles/update?type=$type;committee_id=$committee_id"
+                        'url'   => parent::generateUri('meetingFiles.update')."?type=$type;committee_id=$committee_id"
                     ];
                 }
                 echo $helper->dropdown($actions, $this->_('add'), 'meetingFile_add');
@@ -91,13 +91,13 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 
             if ($userCanEdit) {
                 $actions[] = [
-                    'url'   => BASE_URI."/meetingFiles/update?meetingFile_id=$id",
+                    'url'   => parent::generateUri('meetingFiles.update')."?meetingFile_id=$id",
                     'label' => $this->_('meetingFile_edit')
                 ];
             }
             if ($userCanDelete) {
                 $actions[] = [
-                    'url'   => BASE_URI."/meetingFiles/delete?meetingFile_id=$id",
+                    'url'   => parent::generateUri('meetingFiles.delete')."?meetingFile_id=$id",
                     'label' => $this->_('meetingFile_delete')
                 ];
             }

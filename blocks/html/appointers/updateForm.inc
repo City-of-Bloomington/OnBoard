@@ -1,17 +1,17 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Race $this->appointer
  */
-$name = self::escape($this->appointer->getName());
+$name  = self::escape($this->appointer->getName());
 $title = $this->appointer->getId() ? $this->_('edit_appointer') : $this->_('add_appointer');
 ?>
 <section>
     <header>
         <h1><?= $title; ?></h1>
     </header>
-	<form method="post" action="<?= BASE_URI; ?>/appointers/update">
+	<form method="post">
 		<fieldset><legend><?= $name; ?></legend>
 			<input name="appointer_id" type="hidden" value="<?= $this->appointer->getId(); ?>" />
 
@@ -26,7 +26,7 @@ $title = $this->appointer->getId() ? $this->_('edit_appointer') : $this->_('add_
                 ]);
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');
-				echo $helper->saveAndCancelButtons(BASE_URI.'/appointers');
+				echo $helper->saveAndCancelButtons(parent::generateUri('appointers.index'));
 			?>
 		</fieldset>
 	</form>

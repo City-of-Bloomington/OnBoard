@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->data
  * @param boolean        $this->disableButtons
  * @param Committee      $this->committee      (optional)
@@ -21,12 +21,12 @@ foreach ($this->data['results'] as $row) {
     foreach ($row as $f=>$v) { $$f = parent::escape($v); }
 
     if (!$this->committee) {
-        $committeeUri  = BASE_URI."/committees/info?committee_id=$committee_id";
+        $committeeUri  = parent::generateUri('committees.info')."?committee_id=$committee_id";
         $committeeTD   = "<td><a href=\"$committeeUri\">$committee</a></td>";
     }
 
     if (!$this->person) {
-        $personUri     = BASE_URI."/people/view?person_id=$person_id";
+        $personUri     = parent::generateUri('people.view')."?person_id=$person_id";
         $personTD = "<td><a href=\"$personUri\">$firstname $lastname</a></td>";
         if (Person::isAllowed('people', 'viewContactInfo')) {
             $personTD.= "<td>$email</td><td>$phone</td>";
@@ -35,8 +35,8 @@ foreach ($this->data['results'] as $row) {
 
     $actions   = [];
     $moreLinks = '';
-    if ($userCanEdit)   { $actions[] = ['url'=>BASE_URI."/liaisons/update?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
-    if ($userCanDelete) { $actions[] = ['url'=>BASE_URI."/liaisons/delete?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
+    if ($userCanEdit)   { $actions[] = ['url'=>parent::generateUri('liaisons.update')."?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
+    if ($userCanDelete) { $actions[] = ['url'=>parent::generateUri('liaisons.update')."?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
     if (count($actions)) {
         $h = $this->template->getHelper('dropdown');
         $moreLinks = '<td>'.$h->dropdown($actions, $this->_('more'), "actions_$liaison_id").'</td>';

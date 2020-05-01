@@ -20,7 +20,7 @@ if ($route) {
         $c = new $controller();
         if (method_exists($c, $action)) {
             list($resource, $permission) = explode('.', $route->name);
-            $role = isset($_SESSION['USER']) ? $_SESSION['USER']->role : 'Anonymous';
+            $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
             if (   $ACL->hasResource($resource)
                 && $ACL->isAllowed($role, $resource, $permission)) {
 

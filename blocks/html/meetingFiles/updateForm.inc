@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param MeetingFile $this->meetingFile
  */
 use Application\Models\MeetingFile;
@@ -23,7 +23,7 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
         <h1><?= $heading; ?></h1>
     </header>
 
-    <form method="post" action="<?= BASE_URI; ?>/meetingFiles/update" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <fieldset>
             <input name="meetingFile_id" type="hidden" value="<?= $id; ?>" />
             <input name="committee_id"   type="hidden" value="<?= $committee_id; ?>" />
@@ -109,7 +109,7 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
                     ]);
                 }
 
-                $downloadUrl = BASE_URI."/meetingFiles/download?meetingFile_id=$id";
+                $downloadUrl = parent::generateUri('meetingFiles.download')."?meetingFile_id=$id";
                 $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
 
                 $accept = [];
@@ -127,7 +127,7 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
                 ]);
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
-                echo $helper->saveAndCancelButtons(BASE_URI.'/meetingFiles?committee_id='.$committee->getId());
+                echo $helper->saveAndCancelButtons(parent::generateUri('meetingFiles.index').'?committee_id='.$committee->getId());
             ?>
         </fieldset>
     </form>

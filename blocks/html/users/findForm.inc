@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Application\Models\Person;
 
@@ -14,7 +14,7 @@ foreach ($fields as $f) {
     <header>
         <h1><?= $this->_('find_person'); ?></h1>
     </header>
-    <form method="get" action="<?= BASE_URI; ?>/users">
+    <form method="get">
         <fieldset>
             <?php
                 $h = $this->template->getHelper('field');

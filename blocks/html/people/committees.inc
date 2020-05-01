@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person $this->person
  */
 use Application\Models\LiaisonTable;
@@ -16,12 +16,12 @@ $members = $this->person->getMembers();
 $committees = [];
 foreach ($members as $member) {
     $committee      = $member->getCommittee();
-    $committee_uri  = BASE_URI.'/committees/members?committee_id='.$committee->getId();
+    $committee_uri  = parent::generateUri('committees.members').'?committee_id='.$committee->getId();
     $committee_name = self::escape($committee->getName());
 
-    $offices = $this->person->getOffices($committee);
+    $offices        = $this->person->getOffices($committee);
     if (count($offices)) {
-        $o = $offices[0];
+        $o      = $offices[0];
         $office = self::escape($o->getTitle());
         $office = "($office)";
     }

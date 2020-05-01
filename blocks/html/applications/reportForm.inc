@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
 use Web\Block;
@@ -18,7 +18,7 @@ $title = $this->_('applications_reportForm_title', 'messages');
         <h2><?= $title; ?></h2>
     </header>
 
-    <form method="get" action="<?= BASE_URI; ?>/applications/report">
+    <form method="get" action="<?= parent::generateUri('applications.report'); ?>">
         <fieldset id="seats">
             <legend><?= $this->_(['seat', 'seats', count($seats)]); ?></legend>
             <?php

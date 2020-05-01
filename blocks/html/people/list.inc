@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2019 City of Bloomington, Indiana
+ * @copyright 2009-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Paginator $this->people
  */
@@ -16,10 +16,12 @@ use Web\Url;
     <?php
         $helper = $this->template->getHelper('buttonLink');
         foreach ($this->people as $person) {
+            $person_id = $person->getId();
+
             if (isset( $_REQUEST['return_url'])) {
-                $callbackField = isset($_REQUEST['callback_field']) ? $_REQUEST['callback_field'] : 'person_id';
-                $url = new Url($_REQUEST['return_url']);
-                $url->$callbackField = $person->getId();
+                $callbackField       = isset($_REQUEST['callback_field']) ? $_REQUEST['callback_field'] : 'person_id';
+                $url                 = new Url($_REQUEST['return_url']);
+                $url->$callbackField = $person_id;
 
                 $button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
             }
@@ -27,11 +29,11 @@ use Web\Url;
                 $this->template->addToAsset('scripts', BASE_URI.'/js/people/chooser-'.VERSION.'.js');
 
                 $callback = preg_replace('/[^a-zA-Z_\.]/', '', $_REQUEST['callback']);
-                $url = "javascript:self.opener.$callback('{$person->getId()}');";
-                $button = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
+                $url      = "javascript:self.opener.$callback('$person_id');";
+                $button   = $helper->buttonLink($url, $this->_('person_choose'), 'choosePerson');
             }
             else {
-                $url = BASE_URI.'/people/view?person_id='.$person->getId();
+                $url = parent::generateUri('people.view')."?person_id=$person_id";
             }
 
             $name  = self::escape($person->getFullname());

@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->types An arra of Legislation Action Type objects
  */
 use Application\Models\Person;
@@ -15,7 +15,7 @@ use Application\Models\Person;
             $h = $this->template->getHelper('buttonLink');
             if ($userCanEdit) {
                 echo $h->buttonLink(
-                    BASE_URI.'/legislationActionTypes/update',
+                    parent::generateUri('legislationActionTypes.update'),
                     $this->_('legislationActionType_add'),
                     'add'
                 );
@@ -29,7 +29,7 @@ use Application\Models\Person;
         foreach ($this->types as $t) {
             if ($userCanEdit) {
                 $editButton = $h->buttonLink(
-                    BASE_URI.'/legislationActionTypes/update?id='.$t->getId(),
+                    parent::generateUri('legislationActionTypes.update').'?id='.$t->getId(),
                     $this->_('legislationActionType_edit'),
                     'edit'
                 );

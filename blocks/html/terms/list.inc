@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param array   $this->terms
  * @param Seat    $this->seat           (optional)
  * @param boolean $this->disableButtons (optional)
@@ -22,7 +22,7 @@ $helper = $this->template->getHelper('buttonLink');
 
                 echo '<div class="tools">';
                 echo $helper->buttonLink(
-                    BASE_URI.'/terms/generate?direction=next;term_id='.$this->terms[0]->getId(),
+                    parent::generateUri('terms.generate').'?direction=next;term_id='.$this->terms[0]->getId(),
                     $this->_('term_add_next'),
                     'add'
                 );
@@ -36,12 +36,11 @@ $helper = $this->template->getHelper('buttonLink');
         $actions    = new Block('terms/partials/actions.inc');
 
         foreach ($this->terms as $term) {
-            $term_id = $term->getId();
-
+            $term_id   = $term->getId();
             $moreLinks = '';
             if (!$this->disableButtons) {
                 $actions->term = $term;
-                $moreLinks = $actions->render('html', $this->template);
+                $moreLinks     = $actions->render('html', $this->template);
             }
 
             $memberList->term    = $term;
@@ -61,14 +60,14 @@ $helper = $this->template->getHelper('buttonLink');
         if (!$this->disableButtons) {
             if (isset($term) && Person::isAllowed('terms', 'generate')) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/terms/generate?direction=previous;term_id='.$term->getId(),
+                    parent::generateUri('terms.generate').'?direction=previous;term_id='.$term->getId(),
                     $this->_('term_add_previous'),
                     'add'
                 );
             }
             if (isset($this->seat)  && !count($this->terms) && Person::isAllowed('terms', 'update')) {
                 echo $helper->buttonLink(
-                    BASE_URI.'/terms/update?seat_id='.$this->seat->getId(),
+                    parent::generateUri('terms.update').'?seat_id='.$this->seat->getId(),
                     $this->_('term_add'),
                     'add'
                 );

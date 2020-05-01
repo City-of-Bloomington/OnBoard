@@ -176,10 +176,10 @@ msgid "create_account"
 msgstr "Create Account"
 
 msgid "edit_account"
-msgstr "Edit Account"
+msgstr "Edit"
 
 msgid "delete_account"
-msgstr "Delete Account"
+msgstr "Delete"
 
 msgid "race"
 msgid_plural "races"
@@ -187,10 +187,10 @@ msgstr[0] "Ethnicity"
 msgstr[1] "Ethnicities"
 
 msgid "race_edit"
-msgstr "Edit Ethnicity"
+msgstr "Edit"
 
 msgid "race_add"
-msgstr "Add Ethnicity"
+msgstr "New Ethnicity"
 
 msgid "committee"
 msgid_plural "committees"
@@ -259,13 +259,13 @@ msgid "seat_add"
 msgstr "Add Seat"
 
 msgid "seat_edit"
-msgstr "Edit Seat"
+msgstr "Edit"
 
 msgid "seat_end"
 msgstr "End Seat"
 
 msgid "seat_delete"
-msgstr "Delete Seat"
+msgstr "Delete"
 
 msgid "seats_current"
 msgstr "Current Seats"
@@ -733,7 +733,7 @@ msgid "legislationType_add"
 msgstr "New Legislation Type"
 
 msgid "legislationType_edit"
-msgstr "Edit Legislation Type"
+msgstr "Edit"
 
 msgid "legislationActionType"
 msgid_plural "legislationActionTypes"
@@ -744,7 +744,7 @@ msgid "legislationActionType_add"
 msgstr "New Action Type"
 
 msgid "legislationActionType_edit"
-msgstr "Edit Action Type"
+msgstr "Edit"
 
 msgid "legislation"
 msgid_plural "legislations"
@@ -791,14 +791,14 @@ msgstr "Delete File"
 
 msgid "legislationStatus"
 msgid_plural "legislationStatuses"
-msgstr[0] "Status"
-msgstr[1] "Statuses"
+msgstr[0] "Legislation Status"
+msgstr[1] "Legislation Statuses"
 
 msgid "legislationStatus_add"
 msgstr "New Status"
 
 msgid "legislationStatus_edit"
-msgstr "Edit Status"
+msgstr "Edit"
 
 msgid "legislationStatus_delete"
-msgstr "Delete Status"
+msgstr "Delete"
