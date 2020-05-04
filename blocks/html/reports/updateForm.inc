@@ -38,7 +38,7 @@ $helper  = $this->template->getHelper('field');
                     'id'       => 'reportDate',
                     'label'    => $this->_('date'),
                     'type'     => 'date',
-                    'value'    => $this->report->getReportDate('U'),
+                    'value'    => new \DateTime($this->report->getReportDate()),
                     'required' => true
                 ]);
             ?>

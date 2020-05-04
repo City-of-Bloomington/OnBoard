@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 
@@ -30,7 +30,7 @@ class Report extends File
         parent::__construct($id);
     }
 
-    private function validateDatabaseInformation()
+    public function validateDatabaseInformation()
     {
         if (!$this->getTitle() || !$this->getCommittee_id()) {
             throw new \Exception('missingRequiredFields');
@@ -58,23 +58,9 @@ class Report extends File
     public function getReportDate($format=null) { return parent::getDateData('reportDate', $format); }
 
     public function setTitle     ($s) { parent::set('title', $s ); }
-    public function setReportDate($d) { parent::setDateData('reportDate', $d); }
+    public function setReportDate(string $d, string $format) { parent::setDateData('reportDate', $d, $format); }
 	public function setCommittee_id        ($i) { parent::setForeignKeyField ('\Application\Models\Committee', 'committee_id', $i); }
 	public function setCommittee (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
-
-    public function handleUpdate(array $post, array $file=null)
-    {
-        $this->setCommittee_id($post['committee_id']);
-        $this->setTitle       ($post['title'       ]);
-        $this->setReportDate  ($post['reportDate'  ]);
-
-        // Before we save the file, make sure all the database information is correct
-        $this->validateDatabaseInformation();
-        // If they are editing an existing document, they do not need to upload a new file
-        if ($file) {
-            $this->setFile($file);
-        }
-    }
 
 	//----------------------------------------------------------------
 	//----------------------------------------------------------------

@@ -76,7 +76,14 @@ class ReportsController extends Controller
                       : null;
 
                 try {
-                    $report->handleUpdate($_POST, $file);
+                    $report->setCommittee_id($_POST['committee_id']);
+                    $report->setTitle       ($_POST['title'       ]);
+                    $report->setReportDate  ($_POST['reportDate'  ], 'Y-m-d');
+                    // Before we save the file, make sure all the database information is correct
+                    $report->validateDatabaseInformation();
+                    // If they are editing an existing document, they do not need to upload a new file
+                    if ($file) { $report->setFile($file); }
+
                     $report->save();
                     $return_url = View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
                     header("Location: $return_url");
