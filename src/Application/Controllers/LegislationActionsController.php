@@ -36,7 +36,12 @@ class LegislationActionsController extends Controller
         if (isset($action)) {
             if (isset($_POST['legislation_id'])) {
                 try {
-                    $action->handleUpdate($_POST);
+                    $action->setLegislation_id($_POST['legislation_id']);
+                    $action->setType_id       ($_POST['type_id'       ]);
+                    $action->setActionDate    ($_POST['actionDate'    ], 'Y-m-d');
+                    $action->setOutcome       ($_POST['outcome'       ]);
+                    $action->setVote          ($_POST['vote'          ]);
+
                     $action->save();
                     $return_url = View::generateUrl('legislation.view').'?id='.$action->getLegislation_id();
                     header("Location: $return_url");

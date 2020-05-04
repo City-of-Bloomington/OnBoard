@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
 
@@ -50,7 +50,7 @@ class Action extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
-			$this->setActionDate(date(DATE_FORMAT));
+			$this->setActionDate(date(DATE_FORMAT), DATE_FORMAT);
 		}
 	}
 
@@ -79,16 +79,7 @@ class Action extends ActiveRecord
 	public function setLegislation(Legislation $o) { parent::setForeignKeyObject(__namespace__.'\Legislation', 'legislation_id', $o); }
 	public function setType_id                ($i) { parent::setForeignKeyField (__namespace__.'\ActionType', 'type_id', $i); }
 	public function setType        (ActionType $o) { parent::setForeignKeyObject(__namespace__.'\ActionType', 'type_id', $o); }
-	public function setActionDate($d) { parent::setDateData('actionDate', $d); }
+	public function setActionDate(string $d, string $format) { parent::setDateData('actionDate', $d, $format); }
 	public function setOutcome   ($s) { parent::set('outcome', $s); }
 	public function setVote      ($s) { parent::set('vote',    $s); }
-
-	public function handleUpdate(array $post)
-	{
-        $fields = ['legislation_id', 'type_id', 'actionDate', 'outcome', 'vote'];
-        foreach ($fields as $f) {
-            $set = 'set'.ucfirst($f);
-            $this->$set($post[$f]);
-        }
-	}
 }

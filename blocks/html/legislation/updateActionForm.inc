@@ -33,7 +33,7 @@ $type        = parent::escape($this->action->getType()       ->getName());
                     'id'      => 'actionDate',
                     'label'   => $this->_('date'),
                     'type'    => 'date',
-                    'value'   => $this->action->getActionDate('U'),
+                    'value'   => new \DateTime($this->action->getActionDate()),
                     'required'=> true
                 ]);
 
