@@ -104,7 +104,7 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
                         'name'     => 'meetingDate',
                         'label'    => $this->_('meetingDate'),
                         'type'     => 'date',
-                        'value'    => $this->meetingFile->getMeetingDate('U'),
+                        'value'    => new \DateTime($this->meetingFile->getMeetingDate()),
                         'required' => true
                     ]);
                 }

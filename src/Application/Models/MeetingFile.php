@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -33,7 +33,7 @@ class MeetingFile extends File
         'application/rtf'                                                         => 'rtf'
     ];
 
-    private function validateDatabaseInformation()
+    public function validateDatabaseInformation()
     {
         $committee = $this->getCommittee();
         if ($committee->getCalendarId()) {
@@ -91,26 +91,7 @@ class MeetingFile extends File
 	public function setEventId     ($s) { parent::set('eventId', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
-	public function setMeetingDate ($d) { parent::setDateData('meetingDate', $d); }
-
-	public function handleUpdate(array $post, array $file=null)
-	{
-        $fields = ['type', 'title', 'eventId', 'committee_id', 'meetingDate'];
-        foreach ($fields as $f) {
-            if (isset($post[$f])) {
-                $set = 'set'.ucfirst($f);
-                $this->$set($post[$f]);
-            }
-        }
-
-        // Before we save the file, make sure all the database information is correct
-        $this->validateDatabaseInformation();
-
-        // If they are editing an existing document, they do not need to upload a new file
-        if ($file) {
-            $this->setFile($file);
-        }
-	}
+	public function setMeetingDate (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('meetingDate', $date, $format); }
 
 	//----------------------------------------------------------------
 	// Custom Functions

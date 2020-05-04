@@ -119,17 +119,28 @@ class MeetingFilesController extends Controller
         if (isset($file) && $file->getCommittee_id()) {
             if (isset($_POST['type'])) {
                 try {
-                    $file->handleUpdate(
-                        $_POST,
-                        (isset($_FILES['meetingFile']) && $_FILES['meetingFile']['error'] != UPLOAD_ERR_NO_FILE)
-                             ? $_FILES['meetingFile']
-                             : null
-                    );
+                    $file->setType        ($_POST['type'        ]);
+                    $file->setTitle       ($_POST['title'       ]);
+                    $file->setEventId     ($_POST['eventId'     ]);
+                    $file->setCommittee_id($_POST['committee_id']);
+                    if (!empty($_POST['meetingDate'])) {
+                        $file->setMeetingDate ($_POST['meetingDate' ], 'Y-m-d');
+                    }
+                    else {
+                        $file->setMeetingDate(null);
+                    }
+                    // Before we save the file, make sure all the database information is correct
+                    $file->validateDatabaseInformation();
+                    // If they are editing an existing document, they do not need to upload a new file
+                    if (isset($_FILES['meetingFile']) && $_FILES['meetingFile']['error'] != UPLOAD_ERR_NO_FILE) {
+                        $file->setFile($_FILES['meetingFile']);
+                    }
+
                     $file->save();
 
                     $return_url = !empty($_POST['return_url'])
-                        ? $_POST['return_url']
-                        : View::generateUrl('meetingFiles.index')."?committee_id={$file->getCommittee_id()}";
+                                  ? $_POST['return_url']
+                                  : View::generateUrl('meetingFiles.index')."?committee_id={$file->getCommittee_id()}";
                     header("Location: $return_url");
                     exit();
                 }
