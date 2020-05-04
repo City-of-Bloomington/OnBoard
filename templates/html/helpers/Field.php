@@ -44,6 +44,13 @@ class Field extends Helper
                     $renderInput = 'input';
                 break;
 
+                case 'toggle':
+                    if (!empty($params['value'])) { $params['attr']['checked'] = 'true'; }
+                    $params['value'] = 1;
+                    $params['type' ] = 'checkbox';
+                    $renderInput     = 'input';
+                break;
+
                 case 'select':
                 case 'textarea':
                 case 'radio':

@@ -26,6 +26,14 @@ use Application\Models\Person;
         </div>
     </header>
     <table>
+        <thead>
+            <tr><th></th>
+                <th><?= $this->_('status'); ?></th>
+                <th><?= $this->_('active'); ?></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
     <?php
         foreach ($this->statuses as $s) {
             $status_id    = $s->getId();
@@ -45,14 +53,17 @@ use Application\Models\Person;
                     'delete'
                 );
             }
-            $name = parent::escape($s->getName());
+            $name   = parent::escape($s->getName());
+            $active = $s->getActive();
             echo "
             <tr><td>$editButton</td>
                 <td>$name</td>
+                <td>$active</td>
                 <td>$deleteButton</td>
             </tr>
             ";
         }
     ?>
+        </tbody>
     </table>
 </section>

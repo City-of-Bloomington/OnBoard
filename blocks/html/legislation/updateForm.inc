@@ -113,7 +113,8 @@ foreach ($fields as $f) {
 
             $options = [['value'=>'']];
             $table   = new StatusesTable();
-            $list    = $table->find();
+            $search  = $id ? null : ['active' => 1]; // New legislation should only use active statuses
+            $list    = $table->find($search);
             foreach ($list as $s) { $options[] = ['value'=>$s->getId(), 'label'=>parent::escape($s->getName())]; }
             echo $helper->field([
                 'name'    => 'status_id',

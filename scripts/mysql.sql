@@ -226,8 +226,9 @@ create table legislationActionTypes (
 );
 
 create table legislationStatuses (
-    id   int unsigned not null primary key auto_increment,
-    name varchar(64)  not null unique
+    id     int unsigned not null primary key auto_increment,
+    name   varchar(64)  not null unique,
+    active boolean      not null default 0
 );
 
 create table legislation (
