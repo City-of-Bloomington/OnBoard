@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
@@ -137,46 +137,6 @@ class Committee extends ActiveRecord
 			$set = 'set'.ucfirst($f);
 			$this->$set($post[$f]);
 		}
-	}
-
-	/**
-	 * @param string $date
-	 */
-	public function saveEndDate($date)
-	{
-        if ($this->getId()) {
-            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
-
-            if ($d) {
-                $db = Database::getConnection();
-
-                $params = [
-                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
-                    $this->getId()
-                ];
-
-                $updates = [
-                    "update terms t join seats s on t.seat_id=s.id
-                                         set t.endDate=? where s.committee_id=? and t.endDate is null",
-                    'update applications set archived=?  where committee_id=?   and archived  is null',
-                    'update offices      set endDate=?   where committee_id=?   and endDate   is null',
-                    'update seats        set endDate=?   where committee_id=?   and endDate   is null',
-                    'update members      set endDate=?   where committee_id=?   and endDate   is null',
-                    'update committees   set endDate=?   where id=?'
-                ];
-                $db->getDriver()->getConnection()->beginTransaction();
-                try {
-                    foreach ($updates as $sql) {
-                        $db->query($sql)->execute($params);
-                    }
-                    $db->getDriver()->getConnection()->commit();
-                }
-                catch (\Exception $e) {
-                    $db->getDriver()->getConnection()->rollback();
-                    throw $e;
-                }
-            }
-        }
 	}
 
 	//----------------------------------------------------------------

@@ -180,7 +180,7 @@ class CommitteesController extends Controller
 
         if (isset($_POST['endDate'])) {
             try {
-                CommitteeTable::end($committee, $_POST);
+                CommitteeTable::end($committee, new \DateTime($_POST['endDate']));
 
                 $url = View::generateUrl('committees.info').'?committee_id='.$committee->getId();
                 header("Location: $url");
