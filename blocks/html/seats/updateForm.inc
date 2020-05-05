@@ -64,7 +64,7 @@ $picker = $this->template->getHelper('datePicker');
                     'name'     => 'startDate',
                     'id'       => 'startDate',
                     'type'     => 'date',
-                    'value'    => $this->seat->getStartDate('U'),
+                    'value'    => new \DateTime($this->seat->getStartDate()),
                     'required' => true
                 ]);
 

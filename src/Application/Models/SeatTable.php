@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -187,19 +188,26 @@ class SeatTable extends TableGateway
 	//
 	// These are functions that match the actions defined in the route
 	//----------------------------------------------------------------
-	public static function update(Seat $seat, array $post)
+	public static function update(Seat $seat)
 	{
-        $action = $seat->getId() ? 'edit' : 'add';
-        $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL => $seat->getData()] : [];
-        $seat->handleUpdate($post);
+        if ($seat->getId()) {
+            $action   = 'edit';
+            $original = new Seat($seat->getId());
+        }
+        else {
+            $action   = 'add';
+            $original = [];
+        }
+        $changes = [CommitteeHistory::STATE_ORIGINAL => $original->getData(),
+                    CommitteeHistory::STATE_UPDATED  =>     $seat->getData()];
+
         $seat->save();
-        $change[CommitteeHistory::STATE_UPDATED] = $seat->getData();
 
         CommitteeHistory::saveNewEntry([
             'committee_id' => $seat->getCommittee_id(),
             'tablename'    => 'seats',
             'action'       => $action,
-            'changes'      => [$change]
+            'changes'      => $changes
         ]);
 	}
 
@@ -217,10 +225,10 @@ class SeatTable extends TableGateway
         ]);
 	}
 
-	public static function end(Seat $seat, array $post)
+	public static function end(Seat $seat, \DateTime $endDate)
 	{
         $change[CommitteeHistory::STATE_ORIGINAL] = $seat->getData();
-        $seat->saveEndDate($post['endDate']);
+        $seat->saveEndDate($endDate);
         $change[CommitteeHistory::STATE_UPDATED ] = $seat->getData();
 
         CommitteeHistory::saveNewEntry([

@@ -3,6 +3,7 @@
  * @copyright 2014-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Controllers;
 
 use Application\Models\Committee;
@@ -114,15 +115,13 @@ class SeatsController extends Controller
     public function update(): View
     {
         if (!empty($_REQUEST['seat_id'])) {
-            try {
-                $seat = new Seat($_REQUEST['seat_id']);
-            }
+            try { $seat = new Seat($_REQUEST['seat_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         elseif (!empty($_REQUEST['committee_id'])) {
             try {
                 $committee = new Committee($_REQUEST['committee_id']);
-                $seat = new Seat();
+                $seat      = new Seat();
                 $seat->setCommittee($committee);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
@@ -131,7 +130,17 @@ class SeatsController extends Controller
         if (isset($seat)) {
             if (isset($_POST['committee_id'])) {
                 try {
-                    SeatTable::update($seat, $_POST);
+                    $seat->setCode             ($_POST['code'             ]);
+                    $seat->setName             ($_POST['name'             ]);
+                    $seat->setAppointer_id     ($_POST['appointer_id'     ]);
+                    $seat->setStartDate        ($_POST['startDate'], 'Y-m-d');
+                    $seat->setRequirements     ($_POST['requirements'     ]);
+                    $seat->setType             ($_POST['type'             ]);
+                    $seat->setTermLength       ($_POST['termLength'       ]);
+                    $seat->setVoting           ($_POST['voting'           ]);
+                    $seat->setTakesApplications($_POST['takesApplications']);
+
+                    SeatTable::update($seat);
                     $return_url = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
                     header("Location: $return_url");
                     exit();
@@ -184,7 +193,7 @@ class SeatsController extends Controller
         if (isset($seat)) {
             if (isset($_POST['endDate'])) {
                 try {
-                    SeatTable::end($seat, $_POST);
+                    SeatTable::end($seat, new \DateTime($_POST['endDate']));
                     $return_url = View::generateUrl('seats.view').'?seat_id='.$seat->getId();
                     header("Location: $return_url");
                     exit();

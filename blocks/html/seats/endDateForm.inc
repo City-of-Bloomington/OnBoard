@@ -19,7 +19,7 @@
                     'label'    => $this->_('endDate'),
                     'name'     => 'endDate',
                     'id'       => 'endDate',
-                    'value'    => time(),
+                    'value'    => new \DateTime(),
                     'type'     => 'date',
                     'required' => true
                 ]);

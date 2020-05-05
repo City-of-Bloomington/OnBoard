@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2009-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
@@ -122,8 +122,8 @@ class Seat extends ActiveRecord
 	public function getTakesApplications() { return parent::get('takesApplications'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
-	public function getStartDate($f=null) { return parent::getDateData('startDate', $f); }
-	public function getEndDate  ($f=null) { return parent::getDateData('endDate',   $f); }
+	public function getStartDate(?string $format=null) { return parent::getDateData('startDate', $format); }
+	public function getEndDate  (?string $format=null) { return parent::getDateData('endDate',   $format); }
 
 	public function setType        ($s) { parent::set('type', $s === 'termed' ? 'termed': 'open'); }
 	public function setCode        ($s) { parent::set('code', $s); }
@@ -133,7 +133,7 @@ class Seat extends ActiveRecord
 	public function setAppointer_id($i) { parent::setForeignKeyField (__namespace__.'\Appointer', 'appointer_id', $i); }
 	public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setAppointer($o)    { parent::setForeignKeyObject(__namespace__.'\Appointer', 'appointer_id', $o); }
-	public function setStartDate($d) { parent::setDateData('startDate', $d); }
+	public function setStartDate(?string $date, ?string $format='Y-m-d') { parent::setDateData('startDate', $date, $format); }
 	public function setTermLength($s) {
         if ($s) {
             if (array_key_exists($s, self::$termIntervals)) { parent::set('termLength', $s); }
@@ -143,52 +143,33 @@ class Seat extends ActiveRecord
     public function setVoting           ($b) { $this->data['voting'           ] = $b ? 1 : 0; }
     public function setTakesApplications($b) { $this->data['takesApplications'] = $b ? 1 : 0; }
 
-	public function handleUpdate($post)
-	{
-		$fields = [
-            'code', 'name', 'appointer_id', 'startDate',
-            'requirements', 'type', 'termLength', 'voting', 'takesApplications'
-        ];
-		foreach ($fields as $f) {
-			$set = 'set'.ucfirst($f);
-			$this->$set($post[$f]);
-		}
-
-	}
-
-	/**
-	 * @param string $date
-	 */
-	public function saveEndDate($date)
+	public function saveEndDate(\DateTime $date)
 	{
         if ($this->getId()) {
-            $d = ActiveRecord::parseDate($date, DATE_FORMAT);
-            if ($d) {
-                // Make sure the end date falls after the start date
-                $start = (int)$this->getStartDate('U');
-                $end   = (int)$d->format('U');
-                if ($end < $start) { throw new \Exception('invalidEndDate'); }
+            // Make sure the end date falls after the start date
+            $start = (int)$this->getStartDate('U');
+            $end   = (int)$date->format('U');
+            if ($end < $start) { throw new \Exception('invalidEndDate'); }
 
-                $updates = [
-                    'update terms   set endDate=? where seat_id=? and endDate is null',
-                    'update members set endDate=? where seat_id=? and endDate is null',
-                    'update seats   set endDate=? where id=?',
-                ];
-                $params = [
-                    $d->format(ActiveRecord::MYSQL_DATE_FORMAT),
-                    $this->getId()
-                ];
+            $updates = [
+                'update terms   set endDate=? where seat_id=? and endDate is null',
+                'update members set endDate=? where seat_id=? and endDate is null',
+                'update seats   set endDate=? where id=?',
+            ];
+            $params = [
+                $date->format(ActiveRecord::MYSQL_DATE_FORMAT),
+                $this->getId()
+            ];
 
-                $db = Database::getConnection();
-                $db->getDriver()->getConnection()->beginTransaction();
-                try {
-                    foreach ($updates as $sql) { $db->query($sql)->execute($params); }
-                    $db->getDriver()->getConnection()->commit();
-                }
-                catch (\Exception $e) {
-                    $db->getDriver()->getConnection()->rollback();
-                    throw $e;
-                }
+            $db = Database::getConnection();
+            $db->getDriver()->getConnection()->beginTransaction();
+            try {
+                foreach ($updates as $sql) { $db->query($sql)->execute($params); }
+                $db->getDriver()->getConnection()->commit();
+            }
+            catch (\Exception $e) {
+                $db->getDriver()->getConnection()->rollback();
+                throw $e;
             }
         }
 	}
