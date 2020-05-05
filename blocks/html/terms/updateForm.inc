@@ -19,7 +19,7 @@ $helper = $this->template->getHelper('field');
                 'name'     => 'startDate',
                 'id'       => 'startDate',
                 'label'    => $this->_('startDate'),
-                'value'    => $this->term->getStartDate('U'),
+                'value'    => new \DateTime($this->term->getStartDate()),
                 'type'     => 'date',
                 'required' => true
             ]);
@@ -28,7 +28,7 @@ $helper = $this->template->getHelper('field');
                     'name'     => 'endDate',
                     'id'       => 'endDate',
                     'label'    => $this->_('endDate'),
-                    'value'    => $this->term->getEndDate('U'),
+                    'value'    => new \DateTime($this->term->getEndDate()),
                     'type'     => 'date',
                     'required' => true
                 ]);

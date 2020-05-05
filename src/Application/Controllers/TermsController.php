@@ -46,7 +46,9 @@ class TermsController extends Controller
         if (isset($term)) {
             if (isset($_POST['seat_id'])) {
                 try {
-                    TermTable::update($term, $_POST);
+                    $term->setStartDate($_POST['startDate'], 'Y-m-d');
+                    $term->setEndDate  ($_POST['endDate'  ], 'Y-m-d');
+                    TermTable::update($term);
                     $return_url = View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
                     header("Location: $return_url");
                     exit();

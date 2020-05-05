@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2014-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -44,13 +45,20 @@ class TermTable extends TableGateway
 	//
 	// These are functions that match the actions defined in the route
 	//----------------------------------------------------------------
-	public static function update(Term $term, array $post)
+	public static function update(Term $term)
 	{
-        $action = $term->getId() ? 'edit' : 'add';
-        $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL=>$term->getData()] : [];
-        $term->handleUpdate($post);
+        if ($term->getId()) {
+            $action   = 'edit';
+            $original = new Term($term->getId());
+        }
+        else {
+            $action   = 'add';
+            $original = [];
+        }
+        $change  = [CommitteeHistory::STATE_ORIGINAL => $original,
+                    CommitteeHistory::STATE_UPDATED  => $term->getData()];
+
         $term->save();
-        $change[CommitteeHistory::STATE_UPDATED] = $term->getData();
 
         CommitteeHistory::saveNewEntry([
             'committee_id' => $term->getSeat()->getCommittee_id(),
