@@ -29,25 +29,27 @@ class MembersController extends Controller
                 elseif (isset($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
                 $member = $o->newMember();
             }
+            if (isset($_REQUEST['person_id'])) { $member->setPerson_id($_REQUEST['person_id']); }
+            if (isset($_REQUEST['startDate'])) { $member->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
         }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
         if (isset($member)) {
             if (isset($_POST['committee_id'])) {
                 try {
-                    MemberTable::update($_POST, $member);
+                    if (!empty($_POST['endDate'])) {
+                           $member->setEndDate($_POST['endDate'], 'Y-m-d');
+                    }
+                    else { $member->setEndDate(null); }
+
+                    MemberTable::update($member);
 
                     $url = $member->getSeat_id()
-                         ? View::generateUrl('seats.view').'?seat_id='.$member->getSeat_id()
-                         : View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
+                           ? View::generateUrl('seats.view').'?seat_id='.$member->getSeat_id()
+                           : View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
                     header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-            }
-
-            if (isset($_REQUEST['person_id'])) {
-                try { $member->setPerson_id($_REQUEST['person_id']); }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
@@ -89,6 +91,9 @@ class MembersController extends Controller
                 $currentMember = $seat->getLatestMember();
                 if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
             }
+
+            if (isset($_REQUEST['newMember']['person_id'])) { $newMember->setPerson_id($_POST['newMember']['person_id']); }
+            if (isset($_REQUEST['newMember']['startDate'])) { $newMember->setStartDate($_POST['newMember']['startDate'], 'Y-m-d'); }
         }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e;
@@ -98,9 +103,10 @@ class MembersController extends Controller
         }
 
         if (isset($_POST['newMember'])) {
-            $changes = [];
             try {
-                MemberTable::appoint($_POST, $newMember, isset($currentMember) ? $currentMember : null);
+                $endDate = !empty($_POST['currentMember']['endDate']) ? new \DateTime($_POST['currentMember']['endDate']) : null;
+
+                MemberTable::appoint($newMember, $endDate);
 
                 $return_url = View::generateUrl('committees.members')."?committee_id={$newMember->getCommittee_id()}";
                 header("Location: $return_url");
@@ -109,10 +115,6 @@ class MembersController extends Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 
-        if (isset($_REQUEST['newMember']['person_id'])) {
-            try { $newMember->setPerson_id($_REQUEST['newMember']['person_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
-        }
 
         $form = new Block('members/appointForm.inc', ['newMember' => $newMember]);
 

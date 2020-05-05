@@ -45,7 +45,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
                 'name'     => 'startDate',
                 'id'       => 'startDate',
                 'label'    => $this->_('startDate'),
-                'value'    => $this->member->getStartDate('U'),
+                'value'    => new \DateTime($this->member->getStartDate()),
                 'type'     => 'date',
                 'required' => true
             ]);
@@ -53,7 +53,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
                 'name'     => 'endDate',
                 'id'       => 'endDate',
                 'label'    => $this->_('endDate'),
-                'value'    => $this->member->getEndDate('U'),
+                'value'    => new \DateTime($this->member->getEndDate()),
                 'type'     => 'date'
             ]);
 

@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -119,8 +120,8 @@ class Member extends ActiveRecord
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setSeat        ($o) { parent::setForeignKeyObject(__namespace__.'\Seat',      'seat_id',      $o); }
 	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
-	public function setStartDate($d) { parent::setDateData('startDate', $d); }
-	public function setEndDate  ($d) { parent::setDateData('endDate',   $d); }
+	public function setStartDate(?string $date=null, ?string $format='Y-m-d') { parent::setDateData('startDate', $date, $format); }
+	public function setEndDate  (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('endDate',   $date, $format); }
 
 	public function setTerm_id($i)
 	{
@@ -132,18 +133,6 @@ class Member extends ActiveRecord
         parent::setForeignKeyObject(__namespace__.'\Term', 'term_id', $o);
         $this->populateDates($o);
     }
-
-
-	public function handleUpdate($post)
-	{
-        $fields = ['committee_id', 'seat_id', 'term_id', 'person_id', 'startDate', 'endDate'];
-        foreach ($fields as $f) {
-            if (isset($post[$f])) {
-                $set = 'set'.ucfirst($f);
-                $this->$set($post[$f]);
-            }
-        }
-	}
 
 	//----------------------------------------------------------------
 	// Custom Functions

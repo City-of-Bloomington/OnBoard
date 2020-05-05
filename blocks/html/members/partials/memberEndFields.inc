@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Member $this->currentMember
  */
 $helper = $this->template->getHelper('field');
@@ -12,7 +12,7 @@ $helper = $this->template->getHelper('field');
         'name'  => 'currentMember[endDate]',
         'id'    => 'currentMember-endDate',
         'label' => $this->_('endDate'),
-        'value' => $this->currentMember->getEndDate('U'),
+        'value' => new \DateTime($this->currentMember->getEndDate()),
         'type'  => 'date'
     ]);
 ?>

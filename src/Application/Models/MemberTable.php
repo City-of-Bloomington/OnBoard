@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -43,40 +43,44 @@ class MemberTable extends TableGateway
 	//
 	// These are functions that match the actions defined in the route
 	//----------------------------------------------------------------
-	public static function update(array $post, Member $member)
+	public static function update(Member $member)
 	{
-        $action   = $member->getId() ? 'edit' : 'add';
-        $original = $member->getData();
-        $member->handleUpdate($post);
+        if ($member->getId()) {
+            $action   = 'edit';
+            $original = new Member($member->getId());
+        }
+        else {
+            $action   = 'add';
+            $original = [];
+        }
+
         $member->save();
 
-        $updated  = $member->getData();
         CommitteeHistory::saveNewEntry([
             'committee_id'=> $member->getCommittee_id(),
             'tablename'   => 'members',
             'action'      => $action,
-            'changes'     => $action == 'edit'
-                           ? [['original'=>$original, 'updated'=>$updated]]
-                           : [['updated'=>$updated]]
+            'changes'     => ['original'=>$original, 'updated'=>$member->getData()]
         ]);
 	}
 
-	public static function appoint(array $post, Member $newMember, Member $currentMember=null)
+	public static function appoint(Member $newMember, ?\DateTime $currentMemberEndDate=null)
 	{
-        if ($currentMember) {
-            $original = $currentMember->getData();
-            $currentMember->handleUpdate($post['currentMember']);
-            $currentMember->save();
-            $updated = $currentMember->getData();
-
-            $changes[] = ['original'=>$original, 'updated'=>$updated];
+        $seat = $newMember->getSeat();
+        if ($seat) {
+            // Close out the current member
+            $currentMember = $seat->getLatestMember();
+            if ($currentMember && !$currentMember->getEndDate() && $currentMemberEndDate) {
+                $original  = $currentMember->getData();
+                $currentMember->setEndDate($currentMemberEndDate->format('Y-m-d'), 'Y-m-d');
+                $currentMember->save();
+                $updated   = $currentMember->getData();
+                $changes[] = ['original'=>$original, 'updated'=>$updated];
+            }
         }
 
-        $original = $newMember->getData();
-        $newMember->handleUpdate($post['newMember']);
         $newMember->save();
-        $updated  = $newMember->getData();
-        $changes[] = ['original'=>$original, 'updated'=>$updated];
+        $changes[] = ['original'=>[], 'updated'=>$newMember->getData()];
 
         CommitteeHistory::saveNewEntry([
             'committee_id'=> $newMember->getCommittee_id(),
