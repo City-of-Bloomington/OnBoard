@@ -7,7 +7,7 @@ use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
-use Application\Authorization\CommitteeAssociation;
+use Web\Auth\CommitteeAssociation;
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))

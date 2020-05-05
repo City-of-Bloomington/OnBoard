@@ -6,13 +6,12 @@
  * same committee as the given resource.  This will not work for citizen
  * applicants to committees, as a single application is associated with multiple
  * committees.
- * @see Application\Authorization\ApplicantAssociation
  *
  * @copyright 2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Application\Authorization;
+namespace Web\Auth;
 
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Role\RoleInterface;
@@ -36,6 +35,9 @@ class CommitteeAssociation implements AssertionInterface
 
             // What committee is the user associated with
             switch ($role->__toString()) {
+                case 'Appointer':
+                break;
+
                 case 'Liaison':
                     return LiaisonTable::isLiaison($_SESSION['USER']->getId(), $committee_id);
                 break;
