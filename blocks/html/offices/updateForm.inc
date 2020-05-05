@@ -4,7 +4,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Office $this->office
  */
-
+$startDate = new \DateTime($this->office->getStartDate());
+$endDate   = $this->office->getEndDate()
+             ? new \DateTime($this->office->getEndDate())
+             : null;
 $title = $this->office->getId() ? $this->_('office_edit') : $this->_('office_add');
 $helper = $this->template->getHelper('field');
 ?>
@@ -31,7 +34,7 @@ $helper = $this->template->getHelper('field');
                     'name'     => 'startDate',
                     'id'       => 'startDate',
                     'label'    => $this->_('startDate'),
-                    'value'    => $this->office->getStartDate('U'),
+                    'value'    => $startDate,
                     'type'     => 'date',
                     'required' => true
                 ]);
@@ -39,7 +42,7 @@ $helper = $this->template->getHelper('field');
                     'name'     => 'endDate',
                     'id'       => 'endDate',
                     'label'    => $this->_('endDate'),
-                    'value'    => $this->office->getEndDate('U'),
+                    'value'    => $endDate,
                     'type'     => 'date'
                 ]);
 

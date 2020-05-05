@@ -3,6 +3,7 @@
  * @copyright 2014-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Controllers;
 
 use Application\Models\Office;
@@ -42,7 +43,15 @@ class OfficesController extends Controller
 
 		if (isset($_POST['title'])) {
 			try {
-				$office->handleUpdate($_POST);
+				$office->setTitle($_POST['title']);
+				$office->setStartDate($_POST['startDate'], 'Y-m-d');
+				if (!empty($_POST['endDate'])) {
+                    $office->setEndDate($_POST['endDate'], 'Y-m-d');
+				}
+				else {
+                    $office->setEndDate(null);
+				}
+
 				$office->save();
 				$return_url = View::generateUrl('committees.members').'?committee_id='.$office->getCommittee_id();
 				header("Location: $return_url");

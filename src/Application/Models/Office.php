@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -87,26 +87,16 @@ class Office extends ActiveRecord
 	public function getPerson_id()    { return parent::get('person_id'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person',    'person_id'); }
-	public function getStartDate($f)  { return parent::getDateData('startDate', $f); }
-	public function getEndDate  ($f)  { return parent::getDateData('endDate',   $f); }
+	public function getStartDate(?string $format=null)  { return parent::getDateData('startDate', $format); }
+	public function getEndDate  (?string $format=null)  { return parent::getDateData('endDate',   $format); }
 
 	public function setTitle       ($s) { parent::set('title', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
-	public function setStartDate   ($d) { parent::setDateData('startDate', $d); }
-	public function setEndDate     ($d) { parent::setDateData('endDate',   $d); }
-
-	public function handleUpdate($post)
-	{
-		// Committee and Person should already be set before we draw the form
-		$fields = ['title', 'startDate', 'endDate'];
-		foreach ($fields as $f) {
-			$set = 'set'.ucfirst($f);
-			$this->$set($post[$f]);
-		}
-	}
+	public function setStartDate(?string $date=null, ?string $format='Y-m-d') { parent::setDateData('startDate', $date, $format); }
+	public function setEndDate  (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('endDate',   $date, $format); }
 
 	//----------------------------------------------------------------
 	// Custom Functions
