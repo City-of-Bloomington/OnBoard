@@ -110,16 +110,16 @@ class Seat extends ActiveRecord
 	//----------------------------------------------------------------
 	// Generic Getters & Setters
 	//----------------------------------------------------------------
-	public function getId()                { return parent::get('id');   }
-	public function getType()              { return parent::get('type'); }
-	public function getCode()              { return parent::get('code'); }
-	public function getName()              { return parent::get('name'); }
-	public function getRequirements()      { return parent::get('requirements'); }
-	public function getCommittee_id()      { return parent::get('committee_id'); }
-	public function getAppointer_id()      { return parent::get('appointer_id'); }
-	public function getTermLength()        { return parent::get('termLength'); }
-	public function getVoting()            { return parent::get('voting'); }
-	public function getTakesApplications() { return parent::get('takesApplications'); }
+	public function getId()                { return (int)parent::get('id');   }
+	public function getType()              { return      parent::get('type'); }
+	public function getCode()              { return      parent::get('code'); }
+	public function getName()              { return      parent::get('name'); }
+	public function getRequirements()      { return      parent::get('requirements'); }
+	public function getCommittee_id()      { return (int)parent::get('committee_id'); }
+	public function getAppointer_id()      { return (int)parent::get('appointer_id'); }
+	public function getTermLength()        { return      parent::get('termLength'); }
+	public function getVoting()            { return      parent::get('voting'); }
+	public function getTakesApplications() { return      parent::get('takesApplications'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getAppointer()    { return parent::getForeignKeyObject(__namespace__.'\Appointer', 'appointer_id'); }
 	public function getStartDate(?string $format=null) { return parent::getDateData('startDate', $format); }
@@ -274,7 +274,7 @@ class Seat extends ActiveRecord
 	 * @TODO Generate previous terms for timestamps in the past
 	 * @param int $timestamp
 	 */
-	public function getTerm($timestamp=null)
+	public function getTerm(?int $timestamp=null)
 	{
         if (!$timestamp) { $timestamp = time(); }
 
@@ -385,12 +385,12 @@ class Seat extends ActiveRecord
 	/**
 	 * @return boolean
 	 */
-	public function hasVacancy($timestamp=null)
+	public function hasVacancy(?int $timestamp=null)
 	{
         if (!$timestamp) { $timestamp = time(); }
 
         // Seats cannot be vacant if they're not active anymore
-        if (!$this->getEndDate() || $this->getEndDate('U') > $timestamp) {
+        if (!$this->getEndDate() || (int)$this->getEndDate('U') > $timestamp) {
             if ($this->getType() === 'termed') {
                 $term = $this->getTerm($timestamp);
                 if ($term) {

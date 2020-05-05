@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param Seat $this->seat
  */
 use Application\Models\Person;
@@ -18,7 +18,7 @@ if ($currentTerm) {
 
     $d = new \DateTime();
     $d->sub($termLength);
-    $previousTerm = $this->seat->getTerm($d->format('U'));
+    $previousTerm = $this->seat->getTerm((int)$d->format('U'));
     if ($previousTerm) {
         $list[] = $previousTerm;
     }

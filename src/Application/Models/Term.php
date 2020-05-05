@@ -222,7 +222,7 @@ class Term extends ActiveRecord
         $d = new \DateTime($this->getEndDate());
         $d->add($twoDays);
 
-        return $seat->getTerm($d->format('U'));
+        return $seat->getTerm((int)$d->format('U'));
 	}
 
 	/**

@@ -3,6 +3,7 @@
  * @copyright 2016-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -152,5 +153,10 @@ class MemberTable extends TableGateway
             'action'       => 'delete',
             'changes'      => $changes
         ]);
+	}
+
+	public static function isMember(int $person_id, int $committee_id): bool
+	{
+
 	}
 }
