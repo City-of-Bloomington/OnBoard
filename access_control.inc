@@ -9,6 +9,8 @@ use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
 use Web\Auth\CommitteeAssociation;
 
+$requiresCommitteeAssociation = new CommitteeAssociation();
+
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
 	->addRole(new Role('Public'),               'Anonymous')
@@ -45,11 +47,11 @@ $ACL->allow(null,  'legislationTypes', 'index');
 
 
 // Allow Staff to do stuff
-$ACL->allow('Appointer', 'committees',   'applications');
-$ACL->allow('Appointer', 'applicantFiles', 'download');
-$ACL->allow('Appointer', 'applicants',   ['index', 'view']);
-$ACL->allow('Appointer', 'applications', ['index', 'report']);
-$ACL->allow('Appointer', 'people',       'viewContactInfo');
+$ACL->allow('Appointer', 'committees',     'applications', $requiresCommitteeAssociation); // committee_id
+$ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresCommitteeAssociation); // applicantFile_id
+$ACL->allow('Appointer', 'applicants',     'view',         $requiresCommitteeAssociation); // applicant_id
+$ACL->allow('Appointer', 'applications',   'report',       $requiresCommitteeAssociation); // committee_id
+$ACL->allow('Appointer', 'people',         'viewContactInfo');
 
 $ACL->allow('Reviewer',  'committees', 'applications');
 $ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
@@ -71,7 +73,7 @@ $ACL->allow('meetingFileUploader',  'meetingFiles');
 $ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 
 
-$ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], new CommitteeAssociation());
+$ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
 
 // Administrator is allowed access to everything
 $ACL->allow('Administrator');

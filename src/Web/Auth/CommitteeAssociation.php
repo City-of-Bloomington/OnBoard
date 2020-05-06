@@ -18,8 +18,11 @@ use Laminas\Permissions\Acl\Role\RoleInterface;
 use Laminas\Permissions\Acl\Resource\ResourceInterface;
 use Laminas\Permissions\Acl\Assertion\AssertionInterface;
 
+use Application\Models\ApplicantFilesTable;
+use Application\Models\ApplicantTable;
 use Application\Models\LiaisonTable;
 use Application\Models\Member;
+use Application\Models\MemberTable;
 use Application\Models\Seat;
 use Application\Models\Term;
 
@@ -28,18 +31,28 @@ class CommitteeAssociation implements AssertionInterface
     public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
-
-            // What committee is the resource associated with
+            $user_id      = $_SESSION['USER']->getId();
             $committee_id = self::getCommittee_id();
-            if (!$committee_id) { return false; }
 
-            // What committee is the user associated with
             switch ($role->__toString()) {
                 case 'Appointer':
+                    if ($committee_id) {
+                        return MemberTable::isMember($user_id, $committee_id);
+                    }
+
+                    if (!empty($_REQUEST['applicant_id'])) {
+                        return ApplicantTable::shareCommittee($user_id, (int)$_REQUEST['applicant_id']);
+                    }
+
+                    if (!empty($_REQUEST['applicantFile_id'])) {
+                        return ApplicantFilesTable::shareCommittee($user_id, (int)$_REQUEST['applicantFile_id']);
+                    }
                 break;
 
                 case 'Liaison':
-                    return LiaisonTable::isLiaison($_SESSION['USER']->getId(), $committee_id);
+                    if ($committee_id) {
+                        return LiaisonTable::isLiaison($user_id, $committee_id);
+                    }
                 break;
 
                 case 'Administrator':
@@ -47,12 +60,14 @@ class CommitteeAssociation implements AssertionInterface
                 break;
 
                 default:
-                    return false;
             }
         }
         return false;
     }
 
+    /**
+     * Determine if we're dealing with a single committee by looking at the request parameters
+     */
     private static function getCommittee_id(): ?int
     {
         if (!empty($_REQUEST['committee_id'])) {

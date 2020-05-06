@@ -1,10 +1,12 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
+use Web\Database;
 use Web\TableGateway;
 use Laminas\Db\Sql\Select;
 
@@ -26,5 +28,20 @@ class ApplicantFilesTable extends TableGateway
 			}
 		}
 		return parent::performSelect($select, $order, $paginated, $limit);
+	}
+
+	/**
+	 * Check if the user shares a committee with the file's applicant.
+	 */
+	public static function shareCommittee(int $user_id, int $file_id): bool
+	{
+        $sql    = "select a.committee_id
+                   from applicantFiles f
+                   join applications   a on f.applicant_id=a.applicant_id
+                   join members        m on a.committee_id=m.committee_id and (m.endDate is null or m.endDate > now())
+                   where m.person_id=? and  f.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$user_id, $file_id]);
+        return count($result) ? true : false;
 	}
 }

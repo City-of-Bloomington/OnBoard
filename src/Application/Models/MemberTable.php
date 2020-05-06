@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
+use Web\Database;
 use Web\TableGateway;
 use Laminas\Db\Sql\Select;
 
@@ -157,6 +158,9 @@ class MemberTable extends TableGateway
 
 	public static function isMember(int $person_id, int $committee_id): bool
 	{
-
+        $sql    = "select id from members where person_id=? and committee_id=? and (endDate is null or endDate > now())";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$person_id, $committee_id]);
+        return count($result) ? true : false;
 	}
 }
