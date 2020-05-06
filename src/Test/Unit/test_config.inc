@@ -58,7 +58,7 @@ $DATABASES = [
  *
  * See: ExternalIdentity
  */
-$DIRECTORY_CONFIG = [
+$LDAP = [
 // Example for ADS style authentication
 //  'Ldap' => [
 //      'classname' => 'Site\Classes\Ldap',

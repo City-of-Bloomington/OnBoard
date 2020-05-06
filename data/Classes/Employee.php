@@ -16,12 +16,14 @@
  * You will ned to change the namespace to Site\Classes.  You might also
  * want to change the name of the class to suit your own needs.
  *
- * @copyright 2011-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2011-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Site\Classes;
 
-use Web\ExternalIdentity;
+use Web\Auth\ExternalIdentity;
+ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
 
 class Employee implements ExternalIdentity
 {
@@ -31,27 +33,24 @@ class Employee implements ExternalIdentity
 
 	private static function getConfig()
 	{
-        global $DIRECTORY_CONFIG;
+        global $LDAP;
 
         if (!self::$config) {
-             self::$config = $DIRECTORY_CONFIG['Employee'];
+             self::$config = $LDAP['Employee'];
         }
         return self::$config;
 	}
 
 	/**
-	 * @param array $config
-	 * @param string $username
-	 * @param string $password
 	 * @throws Exception
 	 */
-	public static function authenticate($username, $password)
+	public static function authenticate(string $username, string $password): bool
 	{
         $config = self::getConfig();
 
-		$bindUser = sprintf(str_replace('{username}','%s',$config['DIRECTORY_USER_BINDING']),$username);
+		$bindUser = sprintf(str_replace('{username}','%s',$config['user_binding']), $username);
 
-		$connection = ldap_connect($config['DIRECTORY_SERVER']) or die("Couldn't connect to ADS");
+		$connection = ldap_connect($config['server']) or die("Couldn't connect to ADS");
 		ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
 		if (ldap_bind($connection,$bindUser,$password)) {
 			return true;
@@ -61,11 +60,8 @@ class Employee implements ExternalIdentity
 
 	/**
 	 * Loads an entry from the LDAP server for the given user
-	 *
-	 * @param array $config
-	 * @param string $username
 	 */
-	public function __construct($username)
+	public function __construct(string $username)
 	{
         $config = self::getConfig();
 
@@ -73,8 +69,8 @@ class Employee implements ExternalIdentity
 
 		$result = ldap_search(
 			self::$connection,
-			$config['DIRECTORY_BASE_DN'],
-			$config['DIRECTORY_USERNAME_ATTRIBUTE']."=$username"
+			$config['base_dn'],
+			$config['username_attribute']."=$username"
 		);
 		if (ldap_count_entries(self::$connection,$result)) {
 			$entries = ldap_get_entries(self::$connection, $result);
@@ -93,14 +89,14 @@ class Employee implements ExternalIdentity
         $config = self::getConfig();
 
 		if (!self::$connection) {
-			if (self::$connection = ldap_connect($config['DIRECTORY_SERVER'])) {
+			if (self::$connection = ldap_connect($config['server'])) {
 				ldap_set_option(self::$connection, LDAP_OPT_PROTOCOL_VERSION,3);
 				ldap_set_option(self::$connection, LDAP_OPT_REFERRALS, 0);
-				if (!empty($config['DIRECTORY_ADMIN_BINDING'])) {
+				if (!empty($config['admin_binding'])) {
 					if (!ldap_bind(
 							self::$connection,
-							$config['DIRECTORY_ADMIN_BINDING'],
-							$config['DIRECTORY_ADMIN_PASS']
+							$config['admin_binding'],
+							$config['admin_pass']
 						)) {
 						throw new \Exception(ldap_error(self::$connection));
 					}

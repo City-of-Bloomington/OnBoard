@@ -49,42 +49,23 @@ $DATABASES = [
 ];
 
 /**
- * Directory Configuration
+ * Ldap Authentication Configuration
  *
  * This supports doing user authentication from multiple external
  * directories, such as LDAP or ADS. This is required since city staff
  * are in a seperate LDAP directory from public user accounts.
- * Classes that implement ExternalIdentity should have an entry here.
- *
- * See: ExternalIdentity
+ * Classes that implement AuthenticationInterface should have an entry here.
  */
-$DIRECTORY_CONFIG = [
-// Example for ADS style authentication
-//  'Ldap' => [
-//      'classname' => 'Site\Classes\Ldap',
-//      'DIRECTORY_SERVER'=>'ldaps://example.org:636',
-//      'DIRECTORY_BASE_DN'=>'OU=Department,DC=example,DC=org',
-//      'DIRECTORY_USERNAME_ATTRIBUTE'=>'CN',
-//      'DIRECTORY_USER_BINDING'=>'{username}@example.org',
-//      'DIRECTORY_ADMIN_BINDING'=>'admin@example.org',
-//      'DIRECTORY_ADMIN_PASS'=>'password'
-//  ]
-//
-// Example for LDAP style authentication
-//  'Ldap' => [
-//      'classname' => 'Site\Classes\Ldap',
-//      'DIRECTORY_SERVER'=>'ldaps://example.org:636');
-//      'DIRECTORY_BASE_DN'=>'ou=people,o=ldap.domain.somewhere');
-//      'DIRECTORY_USERNAME_ATTRIBUTE'=>'uid');
-//      'DIRECTORY_USER_BINDING'=>'uid={username},'.DIRECTORY_BASE_DN);
-//      'DIRECTORY_ADMIN_BINDING'=>'uid=admin,'.DIRECTORY_BASE_DN);
-//      'DIRECTORY_ADMIN_PASS'=>'password');
-//  ]
-// Example for Directory webservice
-//  'Employee' => [
-//      'classname' => 'Site\Classes\Employee',
-//      'DIRECTORY_SERVER' => 'http://localhost/directory',
-//  ]
+$LDAP = [
+    'Employee' => [
+        'classname'          => 'Site\Employee',
+        'server'             => 'ldaps://ldap.example.org:636',
+        'base_dn'            => 'DC=ldap,DC=example,DC=org',
+        'username_attribute' => 'sAMAccountName',
+        'user_binding'       => '{username}@bldap.example.org',
+        'admin_binding'      => 'admin@ldap.example.org',
+        'admin_pass'         => 'secret password'
+    ]
 ];
 
 /**

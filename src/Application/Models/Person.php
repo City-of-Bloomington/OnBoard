@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright 2009-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
 use Web\ActiveRecord;
 use Web\Database;
-use Web\ExternalIdentity;
+use Web\Auth\ExternalIdentity;
 
 class Person extends ActiveRecord
 {
@@ -167,7 +167,7 @@ class Person extends ActiveRecord
 	 */
 	public function handleUpdateUserAccount($post)
 	{
-        global $DIRECTORY_CONFIG;
+        global $LDAP;
 
 		$fields = ['username', 'email', 'authenticationMethod', 'role'];
 		foreach ($fields as $f) {
@@ -183,7 +183,7 @@ class Person extends ActiveRecord
 
 		$method = $this->getAuthenticationMethod();
 		if ($this->getUsername() && $method && $method != 'local') {
-            $class = $DIRECTORY_CONFIG[$method]['classname'];
+            $class = $LDAP[$method]['classname'];
 			$identity = new $class($this->getUsername());
 			$this->populateFromExternalIdentity($identity);
 		}
@@ -203,8 +203,8 @@ class Person extends ActiveRecord
 	 */
 	public static function getAuthenticationMethods()
 	{
-		global $DIRECTORY_CONFIG;
-		return array_merge(['local'], array_keys($DIRECTORY_CONFIG));
+		global $LDAP;
+		return array_merge(['local'], array_keys($LDAP));
 	}
 
 	/**
@@ -219,7 +219,7 @@ class Person extends ActiveRecord
 	 */
 	public function authenticate($password)
 	{
-        global $DIRECTORY_CONFIG;
+        global $LDAP;
 
 		if ($this->getUsername()) {
 			switch($this->getAuthenticationMethod()) {
@@ -229,7 +229,7 @@ class Person extends ActiveRecord
 
 				default:
 					$method = $this->getAuthenticationMethod();
-					$class = $DIRECTORY_CONFIG[$method]['classname'];
+					$class = $LDAP[$method]['classname'];
 					return $class::authenticate($this->getUsername(),$password);
 			}
 		}

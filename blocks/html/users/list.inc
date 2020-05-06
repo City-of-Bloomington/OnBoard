@@ -63,7 +63,7 @@ use Web\Url;
 
 				$name = self::escape($user->getFullname());
 				if ($userCanView) {
-                    $uri  = parent::generateUri('people.view')."/people/view?person_id=$user_id";
+                    $uri  = parent::generateUri('people.view')."?person_id=$user_id";
                     $name = "<a href=\"$uri\">$name</a>";
 				}
 				echo "

@@ -7,13 +7,13 @@
  * with your own webservice, you will probably need to customize
  * the this class.
  *
- * @copyright 2011-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2011-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Site\Classes;
 
-use Blossom\Classes\ExternalIdentity;
-use Blossom\Classes\Url;
+use Web\Auth\ExternalIdentity;
+use Web\Url;
 
 class Employee implements ExternalIdentity
 {
