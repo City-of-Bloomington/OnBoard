@@ -38,7 +38,7 @@ foreach (Legislation::actionTypes() as $t) {
 
         if ($userCanEditActions) {
             $button = $helper->buttonLink(
-                parent::generateUri('legislationActions.update').'?id='.$action->getId(),
+                parent::generateUri('legislationActions.update').'?legislationAction_id='.$action->getId(),
                 $this->_('legislationAction_edit'),
                 'edit'
             );

@@ -22,9 +22,9 @@ $type        = parent::escape($this->action->getType()       ->getName());
     </header>
     <form method="post">
         <fieldset>
-            <input name="id"             type="hidden" value="<?= $id; ?>" />
-            <input name="legislation_id" type="hidden" value="<?= $legislation_id; ?>" />
-            <input name="type_id"        type="hidden" value="<?= $type_id; ?>" />
+            <input name="legislationAction_id" type="hidden" value="<?= $id; ?>" />
+            <input name="legislation_id"       type="hidden" value="<?= $legislation_id; ?>" />
+            <input name="type_id"              type="hidden" value="<?= $type_id; ?>" />
 
             <?php
                 $h = $this->template->getHelper('field');

@@ -15,8 +15,8 @@ class LegislationActionsController extends Controller
 {
     public function update(): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $action = new Action($_REQUEST['id']); }
+        if (!empty($_REQUEST['legislationAction_id'])) {
+            try { $action = new Action($_REQUEST['legislationAction_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else {
