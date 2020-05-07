@@ -135,7 +135,7 @@ class Person extends ActiveRecord
 	public function getPassword()             { return parent::get('password'); } # Encrypted
 	public function getRole()                 { return parent::get('role');     }
 	public function getAuthenticationMethod() { return parent::get('authenticationMethod'); }
-	public function getDepartment_id()           { return parent::get('department_id'); }
+	public function getDepartment_id(): ?int     { return !empty($this->data['department_id']) ? (int)$this->data['department_id'] : null; }
 	public function getDepartment(): ?Department { return parent::getForeignKeyObject(__namespace__.'\Department', 'department_id'); }
 
 	public function setUsername            ($s) { parent::set('username',             $s); }

@@ -8,8 +8,10 @@ use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
 use Web\Auth\CommitteeAssociation;
+use Web\Auth\DepartmentAssociation;
 
-$requiresCommitteeAssociation = new CommitteeAssociation();
+$requiresCommitteeAssociation  = new CommitteeAssociation();
+$requiresDepartmentAssociation = new DepartmentAssociation();
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
@@ -69,9 +71,10 @@ $ACL->allow('Staff', 'offices',    ['update']);
 $ACL->allow('Staff', 'liaisons');
 
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
-$ACL->allow('Clerk',  'meetingFiles');
-$ACL->allow('Clerk', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
-
+$ACL->allow('Clerk',
+            ['meetingFiles', 'legislation', 'legislationFiles', 'legislationActions', 'reports'],
+            ['update', 'delete'],
+            $requiresDepartmentAssociation);
 
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
 

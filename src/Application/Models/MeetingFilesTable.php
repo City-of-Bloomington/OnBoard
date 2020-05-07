@@ -69,4 +69,18 @@ class MeetingFilesTable extends TableGateway
         }
         return $out;
 	}
+
+	/**
+	 * Check if a meetingFile has a given department
+     */
+	public static function hasDepartment(int $department_id, int $file_id): bool
+	{
+        $sql    = "select d.department_id
+                   from meetingFiles          f
+                   join committee_departments d on f.committee_id=d.committee_id
+                   where d.department_id=? and f.id=?;";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $file_id]);
+        return count($result) ? true : false;
+	}
 }

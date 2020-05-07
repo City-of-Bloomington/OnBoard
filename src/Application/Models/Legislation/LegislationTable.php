@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Web\Database;
@@ -71,5 +72,19 @@ class LegislationTable extends TableGateway
             $out[$row['year']] = (int)$row['count'];
         }
         return $out;
+	}
+
+	/**
+	 * Check if a legislation has a given department
+     */
+	public static function hasDepartment(int $department_id, int $legislation_id): bool
+	{
+        $sql    = "select d.department_id
+                   from legislation           l
+                   join committee_departments d on l.committee_id=d.committee_id
+                   where d.department_id=? and l.id=?;";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $legislation_id]);
+        return count($result) ? true : false;
 	}
 }

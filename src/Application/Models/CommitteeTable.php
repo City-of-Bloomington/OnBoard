@@ -112,4 +112,14 @@ class CommitteeTable extends TableGateway
             'changes'     => [$change]
         ]);
 	}
+
+	public static function hasDepartment(int $department_id, int $committee_id): bool
+	{
+        $sql    = "select committee_id
+                   from committee_departments
+                   where department_id=? and committee_id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $committee_id]);
+        return count($result) ? true : false;
+	}
 }
