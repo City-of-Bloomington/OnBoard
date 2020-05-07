@@ -13,12 +13,12 @@ $requiresCommitteeAssociation = new CommitteeAssociation();
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
-	->addRole(new Role('Public'),               'Anonymous')
-	->addRole(new Role('Appointer'),            'Public')
-	->addRole(new Role('Reviewer'),             'Public')
-	->addRole(new Role('meetingFileUploader'),  'Public')
-    ->addRole(new Role('Liaison'), ['Appointer', 'meetingFileUploader'])
-	->addRole(new Role('Staff'),                'Reviewer')
+	->addRole(new Role('Public'),     'Anonymous')
+	->addRole(new Role('Appointer'),  'Public')
+	->addRole(new Role('Reviewer'),   'Public')
+	->addRole(new Role('Clerk'),      'Public')
+    ->addRole(new Role('Liaison'),   ['Appointer', 'Clerk'])
+	->addRole(new Role('Staff'),      'Reviewer')
 	->addRole(new Role('Administrator'));
 
 /**
@@ -68,9 +68,9 @@ $ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign', '
 $ACL->allow('Staff', 'offices',    ['update']);
 $ACL->allow('Staff', 'liaisons');
 
-$ACL->allow('meetingFileUploader',  'people', 'viewContactInfo');
-$ACL->allow('meetingFileUploader',  'meetingFiles');
-$ACL->allow('meetingFileUploader', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
+$ACL->allow('Clerk',  'people', 'viewContactInfo');
+$ACL->allow('Clerk',  'meetingFiles');
+$ACL->allow('Clerk', ['legislation', 'legislationFiles', 'legislationActions', 'reports']);
 
 
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
