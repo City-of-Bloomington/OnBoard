@@ -53,8 +53,8 @@ class ReportsController extends Controller
 
     public function update(): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $report = new Report($_REQUEST['id']); }
+        if (!empty($_REQUEST['report_id'])) {
+            try { $report = new Report($_REQUEST['report_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else { $report = new Report(); }
@@ -105,9 +105,9 @@ class ReportsController extends Controller
 
     public function download(): View
     {
-        if (!empty($_GET['id'])) {
+        if (!empty($_GET['report_id'])) {
             try {
-                $file = new Report($_GET['id']);
+                $file = new Report($_GET['report_id']);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) {
@@ -124,9 +124,9 @@ class ReportsController extends Controller
 
     public function delete(): View
     {
-        if (!empty($_GET['id'])) {
+        if (!empty($_GET['report_id'])) {
             try {
-                $file         = new Report($_GET['id']);
+                $file         = new Report($_GET['report_id']);
                 $committee_id = $file->getCommittee_id();
                 $return_url   = View::generateUrl('reports.index').'?committee_id='.$committee_id;
 

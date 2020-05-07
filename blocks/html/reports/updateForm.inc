@@ -22,7 +22,7 @@ $helper  = $this->template->getHelper('field');
     </header>
     <form method="post" enctype="multipart/form-data">
         <fieldset>
-            <input name="id"           type="hidden" value="<?= $id;           ?>" />
+            <input name="report_id"    type="hidden" value="<?= $id;           ?>" />
             <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
             <?php
                 echo $helper->field([

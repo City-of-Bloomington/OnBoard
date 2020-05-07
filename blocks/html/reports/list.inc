@@ -37,13 +37,13 @@ use Application\Models\Person;
 
                 if ($userCanEdit) {
                     $actions[] = [
-                        'url'   => parent::generateUri('reports.update')."?id=$id",
+                        'url'   => parent::generateUri('reports.update')."?report_id=$id",
                         'label' => $this->_('report_edit')
                     ];
                 }
                 if ($userCanDelete) {
                     $actions[] = [
-                        'url'   => parent::generateUri('reports.delete')."?id=$id",
+                        'url'   => parent::generateUri('reports.delete')."?report_id=$id",
                         'label' => $this->_('report_delete')
                     ];
                 }
@@ -51,7 +51,7 @@ use Application\Models\Person;
                         ? $helper->dropdown($actions, $this->_('more'), "report_$id")
                         : '';
 
-                $url   = parent::generateUri('reports.download')."?id=$id";
+                $url   = parent::generateUri('reports.download')."?report_id=$id";
                 $title = "<a href=\"$url\">$title</a>";
 
                 echo "
