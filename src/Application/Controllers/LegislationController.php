@@ -94,7 +94,7 @@ class LegislationController extends Controller
 
     public function view(): View
     {
-        try { $legislation = new Legislation($_GET['id']); }
+        try { $legislation = new Legislation($_GET['legislation_id']); }
         catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
 
         if (isset($legislation)) {
@@ -116,8 +116,8 @@ class LegislationController extends Controller
 
     public function update(): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $legislation = new Legislation($_REQUEST['id']); }
+        if (!empty($_REQUEST['legislation_id'])) {
+            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
         }
         else { $legislation = new Legislation(); }
@@ -150,7 +150,7 @@ class LegislationController extends Controller
             $_SESSION['return_url'] =    !empty($_REQUEST['return_url'])
                                     ? urldecode($_REQUEST['return_url'])
                                     : ($legislation->getId()
-                                        ? View::generateUrl('legislation.view').'?id='.$legislation->getId()
+                                        ? View::generateUrl('legislation.view').'?legislation_id='.$legislation->getId()
                                         : View::generateUrl('legislation.index'));
 
             if (isset($_POST['number'])) {
@@ -179,8 +179,8 @@ class LegislationController extends Controller
 
     public function delete(): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $legislation = new Legislation($_REQUEST['id']); }
+        if (!empty($_REQUEST['legislation_id'])) {
+            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
         }
 

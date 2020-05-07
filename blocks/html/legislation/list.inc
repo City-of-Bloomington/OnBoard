@@ -64,7 +64,7 @@ use Web\Url;
                     ? '('.parent::escape($l->getStatus()->getName()).')'
                     : '';
 
-            $uri = parent::generateUri('legislation.view').'?id='.$l->getId();
+            $uri = parent::generateUri('legislation.view').'?legislation_id='.$l->getId();
 
             $downloadButton = '';
             $files = $l->getFiles();

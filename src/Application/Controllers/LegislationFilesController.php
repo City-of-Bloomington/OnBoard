@@ -36,7 +36,7 @@ class LegislationFilesController extends Controller
         $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
                                 ? $_REQUEST['return_url']
                                 : ($file->getLegislation_id()
-                                    ? View::generateUrl('legislation.view').'?id='.$file->getLegislation_id()
+                                    ? View::generateUrl('legislation.view').'?legislation_id='.$file->getLegislation_id()
                                     : View::generateUrl('legislation.index'));
 
 
@@ -98,7 +98,7 @@ class LegislationFilesController extends Controller
                 $file = new LegislationFile((int)$_GET['id']);
                 $legislation_id = $file->getLegislation_id();
                 $file->delete();
-                $return_url = View::generateUrl('legislation.view')."?id=$legislation_id";
+                $return_url = View::generateUrl('legislation.view')."?legislation_id=$legislation_id";
                 header("Location: $return_url");
                 exit();
             }

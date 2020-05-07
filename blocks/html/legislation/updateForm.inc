@@ -46,9 +46,9 @@ foreach ($fields as $f) {
     </header>
     <form method="post">
         <fieldset>
-            <input name="id"           type="hidden" value="<?= $id;           ?>" />
-            <input name="committee_id" type="hidden" value="<?= $committee_id; ?>" />
-            <input name="parent_id"    type="hidden" value="<?= $parent_id;    ?>" />
+            <input name="legislation_id" type="hidden" value="<?= $id;           ?>" />
+            <input name="committee_id"   type="hidden" value="<?= $committee_id; ?>" />
+            <input name="parent_id"      type="hidden" value="<?= $parent_id;    ?>" />
         <?php
             $helper = $this->template->getHelper('field');
 

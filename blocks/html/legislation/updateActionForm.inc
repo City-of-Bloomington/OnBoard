@@ -57,7 +57,7 @@ $type        = parent::escape($this->action->getType()       ->getName());
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
                 echo $h->saveAndCancelButtons(
-                    parent::generateUri('legislation.view')."?id=$legislation_id"
+                    parent::generateUri('legislation.view')."?legislation_id=$legislation_id"
                 );
             ?>
         </fieldset>

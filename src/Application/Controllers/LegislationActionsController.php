@@ -43,7 +43,7 @@ class LegislationActionsController extends Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    $return_url = View::generateUrl('legislation.view').'?id='.$action->getLegislation_id();
+                    $return_url = View::generateUrl('legislation.view').'?legislation_id='.$action->getLegislation_id();
                     header("Location: $return_url");
                     exit();
                 }
