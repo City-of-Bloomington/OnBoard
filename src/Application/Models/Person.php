@@ -3,6 +3,7 @@
  * @copyright 2009-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
@@ -13,6 +14,7 @@ class Person extends ActiveRecord
 {
 	protected $tablename = 'people';
 	protected $race;
+	protected $department;
 
 	public static $STATES = ['IN'];
 
@@ -133,10 +135,14 @@ class Person extends ActiveRecord
 	public function getPassword()             { return parent::get('password'); } # Encrypted
 	public function getRole()                 { return parent::get('role');     }
 	public function getAuthenticationMethod() { return parent::get('authenticationMethod'); }
+	public function getDepartment_id()           { return parent::get('department_id'); }
+	public function getDepartment(): ?Department { return parent::getForeignKeyObject(__namespace__.'\Department', 'department_id'); }
 
 	public function setUsername            ($s) { parent::set('username',             $s); }
 	public function setRole                ($s) { parent::set('role',                 $s); }
 	public function setAuthenticationMethod($s) { parent::set('authenticationMethod', $s); }
+	public function setDepartment_id        ($i) { parent::setForeignKeyField (__namespace__.'\Department', 'department_id', $i); }
+	public function setDepartment(Department $o) { parent::setForeignKeyObject(__namespace__.'\Department', 'department_id', $o); }
 
 	public function setPassword($s)
 	{
@@ -169,7 +175,7 @@ class Person extends ActiveRecord
 	{
         global $LDAP;
 
-		$fields = ['username', 'email', 'authenticationMethod', 'role'];
+		$fields = ['username', 'email', 'authenticationMethod', 'role', 'department_id'];
 		foreach ($fields as $f) {
 			if (isset($post[$f])) {
 				$set = 'set'.ucfirst($f);

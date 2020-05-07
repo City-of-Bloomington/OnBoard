@@ -7,6 +7,7 @@ namespace Application\Controllers;
 
 use Application\Models\Person;
 use Application\Models\PeopleTable;
+use Application\Models\DepartmentTable;
 
 use Web\Controller;
 use Web\Block;
@@ -72,7 +73,11 @@ class UsersController extends Controller
                 }
             }
 
-            $this->template->blocks[] = new Block('users/updateForm.inc', ['user'=>$person]);
+            $departments = new DepartmentTable();
+            $this->template->blocks[] = new Block('users/updateForm.inc', [
+                'user'        => $person,
+                'departments' => $departments->find()
+            ]);
             if ($person->getId()) {
                 $this->template->blocks[] = new Block('people/info.inc', [
                     'person'         => $person,

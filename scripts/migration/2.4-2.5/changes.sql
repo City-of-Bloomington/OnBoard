@@ -12,3 +12,6 @@ update legislationStatuses set active=1 where name in (
     'Vetoed',
     'Withdrawn'
 );
+
+alter table people add department_id int unsigned;
+alter table people add foreign key (department_id) references departments(id);

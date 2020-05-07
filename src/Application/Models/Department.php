@@ -81,4 +81,5 @@ class Department extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
+	public function __toString() { return $this->get('name'); }
 }

@@ -1,5 +1,5 @@
--- @copyright 2006-2017 City of Bloomington, Indiana
--- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE.txt
+-- @copyright 2006-2020 City of Bloomington, Indiana
+-- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
 create table races (
 	id int unsigned not null primary key auto_increment,
 	name varchar(50) not null unique
@@ -12,7 +12,7 @@ insert races set name='Asian';
 insert races set name='Other';
 
 create table departments (
-    id int unsigned not null primary key auto_increment,
+    id    int unsigned not null primary key auto_increment,
     name  varchar(128) not null unique
 );
 
@@ -27,13 +27,15 @@ create table people (
 	state     varchar(8),
 	zip       varchar(8),
 	website   varchar(128),
-	gender enum('male','female'),
-	race_id int unsigned,
-	username varchar(40) unique,
-	password varchar(40),
+	gender    enum('male','female'),
+	race_id   int unsigned,
+	username             varchar(40) unique,
+	password             varchar(40),
 	authenticationMethod varchar(40),
-	role varchar(30),
-	foreign key (race_id) references races(id)
+	role                 varchar(30),
+	department_id        int unsigned,
+	foreign key (race_id      ) references races(id),
+	foreign key (department_id) references departments(id)
 );
 
 create table committees (

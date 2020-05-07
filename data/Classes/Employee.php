@@ -23,7 +23,7 @@ declare (strict_types=1);
 namespace Site\Classes;
 
 use Web\Auth\ExternalIdentity;
-ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
+#ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
 
 class Employee implements ExternalIdentity
 {

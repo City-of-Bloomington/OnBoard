@@ -2,11 +2,12 @@
 /**
  * @copyright 2006-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param User $this->user
+ * @param User  $this->user
+ * @param array $this->departments     Used to populate the department select options
  */
 use Application\Models\Person;
 
-$fields = ['id', 'authenticationMethod', 'role', 'username', 'email'];
+$fields = ['id', 'authenticationMethod', 'role', 'username', 'email', 'department_id'];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
     $$f = self::escape($this->user->$get());
@@ -47,6 +48,17 @@ foreach ($fields as $f) {
                     'type'     => 'select',
                     'options'  => $options,
                     'required' => true
+				]);
+
+				$options = [['value' => '']];
+				foreach ($this->departments as $d) { $options[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
+				echo $field->field([
+                    'name'     => 'department_id',
+                    'id'       => 'department_id',
+                    'label'    => $this->_('department'),
+                    'value'    => $department_id,
+                    'type'     => 'select',
+                    'options'  => $options
 				]);
 
 				$helper = $this->template->getHelper('saveAndCancelButtons');

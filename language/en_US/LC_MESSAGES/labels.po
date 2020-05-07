@@ -589,7 +589,7 @@ msgid "department_add"
 msgstr "New Department"
 
 msgid "department_edit"
-msgstr "Edit Department"
+msgstr "Edit"
 
 msgid "applicant"
 msgid_plural "applicants"

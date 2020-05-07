@@ -30,10 +30,11 @@ use Web\Url;
 	<table>
 		<thead>
 			<tr><th></th>
-				<th><?= $this->_('username'); ?></th>
-				<th><?= $this->_('name'); ?></th>
+				<th><?= $this->_('username'            ); ?></th>
+				<th><?= $this->_('name'                ); ?></th>
 				<th><?= $this->_('authenticationMethod'); ?></th>
-				<th><?= $this->_('role'); ?></th>
+				<th><?= $this->_('role'                ); ?></th>
+				<th><?= $this->_('department'          ); ?>
 				<th></th>
 			</tr>
 		</thead>
@@ -72,6 +73,7 @@ use Web\Url;
 					<td>$name</td>
 					<td>{$user->getAuthenticationMethod()}</td>
 					<td>{$user->getRole()}</td>
+					<td>{$user->getDepartment()}</td>
 					<td>$deleteButton</td>
 				</tr>
 				";
