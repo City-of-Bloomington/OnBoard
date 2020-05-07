@@ -21,12 +21,12 @@ $heading = $id ? $this->_('legislationFile_edit') : $this->_('legislationFile_ad
     </header>
     <form method="post" enctype="multipart/form-data">
         <fieldset>
-            <input type="hidden" name="id"             value="<?= $id ?>" />
-            <input type="hidden" name="legislation_id" value="<?= $legislation_id; ?>" />
+            <input type="hidden" name="legislationFile_id" value="<?= $id ?>" />
+            <input type="hidden" name="legislation_id"     value="<?= $legislation_id; ?>" />
             <?php
                 $h = $this->template->getHelper('field');
 
-                $downloadUrl = parent::generateUri('legislationFiles.download')."?id=$id";
+                $downloadUrl = parent::generateUri('legislationFiles.download')."?legislationFile_id=$id";
                 $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
 
                 $accept = [];

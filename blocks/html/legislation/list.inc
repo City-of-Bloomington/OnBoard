@@ -70,7 +70,7 @@ use Web\Url;
             $files = $l->getFiles();
             if (count($files)) {
                 foreach ($files as $f) {
-                    $u    = parent::generateUri('legislationFiles.download').'?id='.$f->getId();
+                    $u    = parent::generateUri('legislationFiles.download').'?legislationFile_id='.$f->getId();
                     $name = parent::escape($f->getFilename());
                     $downloadButton.= $h->buttonLink($u, $this->_('download'), 'download');
                 }

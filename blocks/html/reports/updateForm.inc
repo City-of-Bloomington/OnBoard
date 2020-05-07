@@ -45,7 +45,7 @@ $helper  = $this->template->getHelper('field');
         </fieldset>
         <fieldset>
             <?php
-                $downloadUrl = parent::generateUri('legislationFiles.download')."?id=$id";
+                $downloadUrl = parent::generateUri('legislationFiles.download')."?legislationFile_id=$id";
                 $currentFile = $filename ? "<a href=\"$downloadUrl\">$filename</a>" : '';
 
                 $accept = [];

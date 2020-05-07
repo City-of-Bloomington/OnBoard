@@ -17,8 +17,8 @@ class LegislationFilesController extends Controller
 {
     public function update(): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $file = new LegislationFile((int)$_REQUEST['id']); }
+        if (!empty($_REQUEST['legislationFile_id'])) {
+            try { $file = new LegislationFile((int)$_REQUEST['legislationFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         else { $file = new LegislationFile(); }
@@ -74,9 +74,9 @@ class LegislationFilesController extends Controller
      */
     public function download(): View
     {
-        if (!empty($_GET['id'])) {
+        if (!empty($_GET['legislationFile_id'])) {
             try {
-                $file = new LegislationFile((int)$_GET['id']);
+                $file = new LegislationFile((int)$_GET['legislationFile_id']);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) {
@@ -93,9 +93,9 @@ class LegislationFilesController extends Controller
 
     public function delete(): View
     {
-        if (!empty($_GET['id'])) {
+        if (!empty($_GET['legislationFile_id'])) {
             try {
-                $file = new LegislationFile((int)$_GET['id']);
+                $file = new LegislationFile((int)$_GET['legislationFile_id']);
                 $legislation_id = $file->getLegislation_id();
                 $file->delete();
                 $return_url = View::generateUrl('legislation.view')."?legislation_id=$legislation_id";

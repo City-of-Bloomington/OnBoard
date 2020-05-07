@@ -22,7 +22,7 @@ if (count($files)) {
         $file_id = $f->getId();
         if ($userCanUploadFiles) {
             $editButton = $helper->buttonLink(
-                parent::generateUri('legislationFiles.update')."?id=$file_id",
+                parent::generateUri('legislationFiles.update')."?legislationFile_id=$file_id",
                 $this->_('legislationFile_edit'),
                 'edit'
             );
@@ -30,13 +30,13 @@ if (count($files)) {
 
         if ($userCanDeleteFiles) {
             $deleteButton = $helper->buttonLink(
-                parent::generateUri('legislationFiles.delete')."?id=$file_id",
+                parent::generateUri('legislationFiles.delete')."?legislationFile_id=$file_id",
                 $this->_('legislationFile_delete'),
                 'delete'
             );
         }
 
-        $uri            = parent::generateUri('legislationFiles.download')."?id=$file_id";
+        $uri            = parent::generateUri('legislationFiles.download')."?legislationFile_id=$file_id";
         $name           = parent::escape($f->getFilename());
         $downloadButton = $helper->buttonLink($uri, $this->_('download'), 'download');
         echo "
