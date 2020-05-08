@@ -27,4 +27,18 @@ class ApplicantTable extends TableGateway
         $result = $db->query($sql)->execute([$user_id, $applicant_id]);
         return count($result) ? true : false;
 	}
+
+    /**
+     * Check if an applicant is for a given department
+     */
+    public static function hasDepartment(int $department_id, int $applicant_id): bool
+    {
+        $sql    = "select c.department_id
+                    from applications          a
+                    join committee_departments c on a.committee_id=c.committee_id
+                    where c.department_id=? and a.applicant_id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $applicant_id]);
+        return count($result) ? true : false;
+    }
 }

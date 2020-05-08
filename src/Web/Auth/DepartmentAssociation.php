@@ -17,6 +17,8 @@ use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\LegislationFilesTable;
 use Application\Models\Legislation\ActionsTable;
 use Application\Models\Reports\ReportsTable;
+use Application\Models\ApplicantTable;
+use Application\Models\ApplicantFilesTable;
 
 class DepartmentAssociation implements AssertionInterface
 {
@@ -30,6 +32,9 @@ class DepartmentAssociation implements AssertionInterface
             if (!empty($_REQUEST[  'legislationFile_id'])) return LegislationFilesTable::hasDepartment($did, (int)$_REQUEST[  'legislationFile_id']);
             if (!empty($_REQUEST['legislationAction_id'])) return          ActionsTable::hasDepartment($did, (int)$_REQUEST['legislationAction_id']);
             if (!empty($_REQUEST[           'report_id'])) return          ReportsTable::hasDepartment($did, (int)$_REQUEST[           'report_id']);
+
+            if (!empty($_REQUEST[        'applicant_id'])) return        ApplicantTable::hasDepartment($did, (int)$_REQUEST[        'applicant_id']);
+            if (!empty($_REQUEST[    'applicantFile_id'])) return   ApplicantFilesTable::hasDepartment($did, (int)$_REQUEST[    'applicantFile_id']);
        }
        return false;
     }

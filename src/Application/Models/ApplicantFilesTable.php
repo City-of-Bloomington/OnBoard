@@ -44,4 +44,19 @@ class ApplicantFilesTable extends TableGateway
         $result = $db->query($sql)->execute([$user_id, $file_id]);
         return count($result) ? true : false;
 	}
+
+    /**
+     * Check if an applicant is for a given department
+     */
+    public static function hasDepartment(int $department_id, int $file_id): bool
+    {
+        $sql    = "select c.department_id
+                    from applicantFiles f
+                    join applications   a on f.applicant_id=a.applicant_id
+                    join committee_departments c on a.committee_id=c.committee_id
+                    where c.department_id=? and f.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $file_id]);
+        return count($result) ? true : false;
+    }
 }

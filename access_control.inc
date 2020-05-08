@@ -15,13 +15,12 @@ $requiresDepartmentAssociation = new DepartmentAssociation();
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
-	->addRole(new Role('Public'),     'Anonymous')
-	->addRole(new Role('Appointer'),  'Public')
-	->addRole(new Role('Reviewer'),   'Public')
-	->addRole(new Role('Clerk'),      'Public')
+    ->addRole(new Role('Public'),     'Anonymous')
+    ->addRole(new Role('Appointer'),  'Public')
+    ->addRole(new Role('Clerk'),      'Public')
     ->addRole(new Role('Liaison'),   ['Appointer', 'Clerk'])
-	->addRole(new Role('Staff'),      'Reviewer')
-	->addRole(new Role('Administrator'));
+    ->addRole(new Role('Staff'),      'Public')
+    ->addRole(new Role('Administrator'));
 
 /**
  * Create resources for all the routes
@@ -37,38 +36,32 @@ foreach ($ROUTES->getRoutes() as $r) {
  * Assign permissions to the resources
  */
 // Permissions for unauthenticated browsing
-$ACL->allow(null, ['callback', 'login']);
-$ACL->allow(null,  'home', 'index');
-$ACL->allow(null, ['people', 'legislation', 'liaisons'], ['index','view', 'years']);
-$ACL->allow(null,  'people', 'parameters');
-$ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
-$ACL->allow(null,  'seats', ['index','view', 'vacancies']);
-$ACL->allow(null,  'applicants', 'apply');
-$ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);
+$ACL->allow(null,  'home',             'index');
+$ACL->allow(null,  'people',           'parameters');
 $ACL->allow(null,  'legislationTypes', 'index');
+$ACL->allow(null,  'committees',      ['index','info', 'members', 'seats', 'report', 'meetings']);
+$ACL->allow(null,  'seats',           ['index','view', 'vacancies']);
+$ACL->allow(null,  'applicants',       'apply');
+$ACL->allow(null, ['callback', 'login']);
+$ACL->allow(null, ['people', 'legislation', 'liaisons'],           ['index', 'view',     'years']);
+$ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);
 
-
-// Allow Staff to do stuff
-$ACL->allow('Appointer', 'committees',     'applications', $requiresCommitteeAssociation); // committee_id
-$ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresCommitteeAssociation); // applicantFile_id
-$ACL->allow('Appointer', 'applicants',     'view',         $requiresCommitteeAssociation); // applicant_id
-$ACL->allow('Appointer', 'applications',   'report',       $requiresCommitteeAssociation); // committee_id
+$ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
+$ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);
+$ACL->allow('Appointer', 'applicants',     'view',         $requiresDepartmentAssociation);
+$ACL->allow('Appointer', 'applications',   'report',       $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'people',         'viewContactInfo');
 
-$ACL->allow('Reviewer',  'committees', 'applications');
-$ACL->allow('Reviewer', ['applicantFiles', 'meetingFiles']);
-$ACL->allow('Reviewer', 'legislation', ['index', 'view', 'years', 'update']);
-$ACL->allow('Reviewer', ['legislationFiles', 'legislationActions', 'reports']);
-$ACL->allow('Reviewer',  'legislationStatuses', 'index');
-$ACL->allow('Reviewer',  'applicants',   ['index', 'view', 'update']);
-$ACL->allow('Reviewer',  'applications', ['index', 'archive', 'unarchive', 'report']);
-$ACL->allow('Reviewer',  'people', 'viewContactInfo');
-
-$ACL->allow('Staff', 'committees', ['update']);
-$ACL->allow('Staff', 'people',     ['update']);
-$ACL->allow('Staff', 'members',    ['index', 'appoint', 'reappoint', 'resign', 'update']);
-$ACL->allow('Staff', 'offices',    ['update']);
-$ACL->allow('Staff', 'liaisons');
+$ACL->allow('Staff',  'committees',   ['update', 'applications']);
+$ACL->allow('Staff',  'people',       ['update', 'viewContactInfo']);
+$ACL->allow('Staff',  'members',      ['index', 'appoint', 'reappoint', 'resign', 'update']);
+$ACL->allow('Staff',  'offices',      ['update']);
+$ACL->allow('Staff',  'applicants',   ['index', 'view', 'update']);
+$ACL->allow('Staff',  'applications', ['index', 'archive', 'unarchive', 'report']);
+$ACL->allow('Staff', ['applicantFiles',
+                      'meetingFiles', 'reports',
+                      'legislation', 'legislationActions', 'legislationFiles', 'legislationStatuses',
+                      'liaisons']);
 
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',

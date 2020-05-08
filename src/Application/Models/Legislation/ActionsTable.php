@@ -27,7 +27,7 @@ class ActionsTable extends TableGateway
                    from legislationActions    a
                    join legislation           l on a.legislation_id=l.id
                    join committee_departments d on l.committee_id=d.committee_id
-                   where d.department_id=? and a.id=?;";
+                   where d.department_id=? and a.id=?";
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$department_id, $action_id]);
         return count($result) ? true : false;

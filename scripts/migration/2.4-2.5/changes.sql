@@ -16,4 +16,7 @@ update legislationStatuses set active=1 where name in (
 alter table people add department_id int unsigned;
 alter table people add foreign key (department_id) references departments(id);
 
-update people set role='Clerk' where role='meetingFileUploader';
+update people set role='Clerk'     where role='meetingFileUploader';
+update people set department_id=6  where role='Appointer';
+update people set department_id=8  where role='Reviewer';
+update people set role='Appointer' where role='Reviewer';
