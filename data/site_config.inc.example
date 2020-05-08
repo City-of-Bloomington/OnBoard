@@ -91,12 +91,11 @@ define('APPLICATION_LIFETIME_DEFAULT', 90);
 define('ADMINISTRATOR_EMAIL', 'someone@localhost');
 
 /**
- * Skidder is a web service for error loggin.  This application supports
- * logging errors to a Skidder server.  You must register for an application_id
- * on the skidder server you want to post errors to.
+ * Graylog is a centralized log manager
+ *
+ * This application supports sending errors and exceptions to a graylog instance.
+ * This is handy for notifying developers of a problem before users notice.
+ * @see https://graylog.org
  */
-#$writer = new Blossom\Classes\Log\SkidderWriter('https://apps.bloomington.in.gov/skidder/index', 3 );
-#$logger = new Zend\Log\Logger();
-#$logger->addWriter($writer);
-#Zend\Log\Logger::registerErrorHandler($logger);
-#Zend\Log\Logger::registerExceptionHandler($logger);
+#define('GRAYLOG_DOMAIN', 'graylog.example.org');
+#define('GRAYLOG_PORT',   12201);

@@ -41,3 +41,19 @@ if (!defined('STDIN')) {
 	ini_set('session.cookie_path', BASE_URI);
 	session_start();
 }
+
+/**
+ * Graylog is a centralized log manager
+ *
+ * This application supports sending errors and exceptions to a graylog instance.
+ * This is handy for notifying developers of a problem before users notice.
+ * @see https://graylog.org
+ */
+if (defined('GRAYLOG_DOMAIN') && defined('GRAYLOG_PORT')) {
+    $graylog = new Web\GraylogWriter(GRAYLOG_DOMAIN, GRAYLOG_PORT);
+    $logger  = new Laminas\Log\Logger();
+    $logger->addWriter($graylog);
+    Laminas\Log\Logger::registerErrorHandler($logger);
+    Laminas\Log\Logger::registerExceptionHandler($logger);
+    Laminas\Log\Logger::registerFatalErrorShutdownFunction($logger);
+}
