@@ -94,8 +94,10 @@ class LegislationController extends Controller
 
     public function view(): View
     {
-        try { $legislation = new Legislation($_GET['legislation_id']); }
-        catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+        if (!empty($_GET['legislation_id'])) {
+            try { $legislation = new Legislation($_GET['legislation_id']); }
+            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e; }
+        }
 
         if (isset($legislation)) {
             $committee = $legislation->getCommittee();
