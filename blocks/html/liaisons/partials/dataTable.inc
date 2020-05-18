@@ -36,7 +36,7 @@ foreach ($this->data['results'] as $row) {
     $actions   = [];
     $moreLinks = '';
     if ($userCanEdit)   { $actions[] = ['url'=>parent::generateUri('liaisons.update')."?liaison_id=$liaison_id", 'label'=>$this->_('liaison_edit'  )]; }
-    if ($userCanDelete) { $actions[] = ['url'=>parent::generateUri('liaisons.update')."?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
+    if ($userCanDelete) { $actions[] = ['url'=>parent::generateUri('liaisons.delete')."?liaison_id=$liaison_id", 'label'=>$this->_('liaison_delete')]; }
     if (count($actions)) {
         $h = $this->template->getHelper('dropdown');
         $moreLinks = '<td>'.$h->dropdown($actions, $this->_('more'), "actions_$liaison_id").'</td>';
