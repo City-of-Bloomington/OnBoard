@@ -50,7 +50,7 @@ use Web\Url;
 	<?php
         if (Person::isAllowed('people', 'update')) {
             // Preserve any extra parameters passed in
-            $url    = new Url(BASE_URL.'/people/update');
+            $url    = new Url(parent::generateUrl('people.update'));
             $fields = ['firstname', 'lastname', 'email'];
             foreach ($_REQUEST as $key=>$value) {
                 if (!in_array($key, $fields)) { $url->$key = $value; }

@@ -11,6 +11,7 @@ use Application\Models\TagsTable;
 
 use Web\ActiveRecord;
 use Web\Database;
+use Web\View;
 
 class Legislation extends ActiveRecord
 {
@@ -229,9 +230,10 @@ class Legislation extends ActiveRecord
         }
 
         $files = [];
+        $url   = View::generateUrl('legislationFiles.download');
         foreach ($this->getFiles() as $f) {
             $files[] = [
-                'url' => BASE_URL.'/legislationFiles/download?id='.$f->getId()
+                'url' => $url.'?legislationFile_id='.$f->getId()
             ];
         }
 

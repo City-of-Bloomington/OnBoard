@@ -45,9 +45,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
                 $code      = self::escape($seat->getCode());
                 $name      = self::escape($seat->getName());
                 $appointer = self::escape($seat->getAppointer());
-                $uri  = BASE_URI."/seats/view?seat_id=$seat_id";
-
-
+                $uri       = parent::generateUri('seats.view')."?seat_id=$seat_id";
                 echo "
                 <tr><td>$editButton</td>
                     <td>$code</td>

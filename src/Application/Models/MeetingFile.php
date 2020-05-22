@@ -7,6 +7,7 @@ namespace Application\Models;
 
 use Web\ActiveRecord;
 use Web\Database;
+use Web\View;
 
 class MeetingFile extends File
 {
@@ -149,6 +150,6 @@ class MeetingFile extends File
 	/**
 	 * @return string
 	 */
-	public function getDownloadUrl() { return BASE_URL.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
-	public function getDownloadUri() { return BASE_URI.'/meetingFiles/download?meetingFile_id='.$this->getId(); }
+	public function getDownloadUrl() { return  View::generateUrl('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
+	public function getDownloadUri() { return  View::generateUri('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
 }

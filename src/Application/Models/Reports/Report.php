@@ -10,6 +10,7 @@ namespace Application\Models\Reports;
 use Application\Models\Committee;
 use Application\Models\File;
 use Web\ActiveRecord;
+use Web\View;
 
 class Report extends File
 {
@@ -64,12 +65,6 @@ class Report extends File
 
 	//----------------------------------------------------------------
 	//----------------------------------------------------------------
-	/**
-	 * @return string
-	 */
-	public function getDownloadUrl() { return BASE_URL.'/reports/download?id='.$this->getId(); }
-	public function getDownloadUri() { return BASE_URI.'/reports/download?id='.$this->getId(); }
-
 	public function toArray()
 	{
         return [
@@ -77,7 +72,7 @@ class Report extends File
             'committee' => $this->getCommittee()->getName(),
             'title'     => $this->getTitle(),
             'date'      => $this->getReportDate(),
-            'url'       => $this->getDownloadUrl()
+            'url'       => View::generateUrl('reports.download').'?report_id='.$this->getId()
         ];
 	}
 }

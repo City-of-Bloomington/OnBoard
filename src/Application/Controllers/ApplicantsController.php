@@ -163,7 +163,7 @@ class ApplicantsController extends Controller
 
         if (isset($applicant)) {
             $applicant->delete();
-            header('Location: '.BASE_URL.'/applicants');
+            header('Location: '.View::generateUrl('applicants.index'));
             exit();
         }
         else {

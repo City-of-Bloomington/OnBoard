@@ -19,7 +19,7 @@ use Web\Url;
             if ($userCanEdit) {
                 $helper = $this->template->getHelper('buttonLink');
                 echo $helper->buttonLink(
-                    BASE_URI.'/users/update',
+                    parent::generateUri('users.update'),
                     $this->translate('create_account'),
                     'add'
                 );

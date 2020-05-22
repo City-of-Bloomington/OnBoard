@@ -9,7 +9,7 @@
     <header>
         <h1><?= $this->_('committee_end'); ?></h1>
     </header>
-    <form method="post" action="<?= BASE_URI; ?>/committees/end">
+    <form method="post">
         <fieldset>
             <input name="committee_id" type="hidden" value="<?= $this->committee->getId(); ?>" />
 

@@ -16,7 +16,7 @@ $title = $this->department->getId() ? $this->_('department_edit') : $this->_('de
     <header>
         <h1><?= $title; ?></h1>
     </header>
-	<form method="post" action="<?= BASE_URI; ?>/departments/update">
+	<form method="post">
 		<fieldset><legend><?= $name; ?></legend>
 			<input name="department_id" type="hidden" value="<?= $this->department->getId(); ?>" />
 			<?php

@@ -44,9 +44,9 @@ $title = $id ? $this->_('applicant_edit') : $this->_('applicant_add');
 
             foreach ($this->applicant->getFiles() as $f) {
                 $file_id  = $f->getId();
-                $uri      = BASE_URI.'/files/download?file_id='.$file_id;
-                $filename = self::escape($m->getFilename());
-                $filename = "<a href=\"$uri\" class=\"{$m->getMime_type()}\">$filename</a>";
+                $uri      = parent::generateUri('applicantFiles.download').'?applicantFile_id='.$file_id;
+                $filename = self::escape($f->getFilename());
+                $filename = "<a href=\"$uri\" class=\"{$f->getMime_type()}\">$filename</a>";
                 echo "
                 <dl><dt><label for=\"applicantFile_$file_id\">$filename</label></dt>
                     <dd><input type=\"file\" name=\"applicantFile[$file_id]\" id=\"applicantFile_$file_id\" accept=\"$accept\" /></dd>

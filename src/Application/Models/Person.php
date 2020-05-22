@@ -8,6 +8,7 @@ namespace Application\Models;
 
 use Web\ActiveRecord;
 use Web\Database;
+use Web\View;
 use Web\Auth\ExternalIdentity;
 
 class Person extends ActiveRecord
@@ -291,8 +292,8 @@ class Person extends ActiveRecord
 	/**
 	 * @return string
 	 */
-	public function getUrl() { return BASE_URL.'/people/view?person_id='.$this->getId(); }
-	public function getUri() { return BASE_URI.'/people/view?person_id='.$this->getId(); }
+	public function getUrl() { return View::generateUrl('people.view').'?person_id='.$this->getId(); }
+	public function getUri() { return View::generateUrl('people.view').'?person_id='.$this->getId(); }
 
 	/**
 	 * @return Laminas\Db\ResultSet

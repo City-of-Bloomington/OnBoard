@@ -11,7 +11,7 @@ $helper = $this->template->getHelper('field');
     <header>
         <h1><?= $title; ?></h1>
     </header>
-	<form method="post" action="<?= BASE_URI; ?>/terms/update" >
+	<form method="post">
 		<input name="term_id" type="hidden" value="<?= $this->term->getId();      ?>" />
 		<input name="seat_id" type="hidden" value="<?= $this->term->getSeat_id(); ?>" />
 		<?php
