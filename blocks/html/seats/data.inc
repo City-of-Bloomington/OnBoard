@@ -165,7 +165,7 @@ if (isset($this->params['current'])) {
                         && !$this->disableButtons
                         && Person::isAllowed('members', 'resign')) {
 
-                        $uri = parent::generateUri('members.resign')."/members/resign?member_id=$member_id";
+                        $uri = parent::generateUri('members.resign')."?member_id=$member_id";
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
                 }
