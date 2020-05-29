@@ -51,6 +51,10 @@ class PeopleTable extends TableGateway
                         }
                     break;
 
+                    case 'department_id':
+                        if ($value) { $select->where([$key=>$value]); }
+                    break;
+
 					default:
                         if (in_array($key, self::$columns)) {
                             $select->where([$key=>$value]);
@@ -72,6 +76,7 @@ class PeopleTable extends TableGateway
                 break;
 
                 case 'role':
+                case 'department_id':
                 case 'authenticationMethod':
                     if ($v) { $select->where([$k=>$v]); }
                 break;

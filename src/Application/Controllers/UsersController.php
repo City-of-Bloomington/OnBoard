@@ -27,11 +27,20 @@ class UsersController extends Controller
 		$users->setCurrentPageNumber($page);
 		$users->setItemCountPerPage(20);
 
+		global $ACL;
+		$departments = new DepartmentTable();
+
 		$title = $this->template->_(['user', 'users', 2]);
 		$this->template->title = $title.' - '.APPLICATION_NAME;
-		$this->template->blocks[] = new Block('users/findForm.inc');
-		$this->template->blocks[] = new Block('users/list.inc',     ['users'    =>$users]);
-		$this->template->blocks[] = new Block('pageNavigation.inc', ['paginator'=>$users]);
+		$this->template->blocks = [
+            new Block('users/findForm.inc', [
+                'departments'           => $departments->find(),
+                'roles'                 => $ACL->getRoles(),
+                'authenticationMethods' => Person::getAuthenticationMethods()
+            ]),
+            new Block('users/list.inc',     ['users'    =>$users]),
+            new Block('pageNavigation.inc', ['paginator'=>$users])
+		];
         return $this->template;
 	}
 

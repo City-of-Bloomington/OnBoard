@@ -2,10 +2,13 @@
 /**
  * @copyright 2017-2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array $this->departments
+ * @param array $this->roles
+ * @param array $this->authenticationMethods
  */
 use Application\Models\Person;
 
-$fields = ['firstname', 'lastname', 'username', 'email', 'role', 'authenticationMethod'];
+$fields = ['firstname', 'lastname', 'username', 'email', 'department_id', 'role', 'authenticationMethod'];
 foreach ($fields as $f) {
 	$$f = isset($_GET[$f]) ? self::escape($_GET[$f]) : '';
 }
@@ -28,9 +31,20 @@ foreach ($fields as $f) {
                     ]);
                 }
 
-				global $ACL;
+                $options = [['value'=>'']];
+                foreach ($this->departments as $d) { $options[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
+				echo $h->field([
+                    'name'     => 'department_id',
+                    'id'       => 'department_id',
+                    'label'    => $this->_('department'),
+                    'value'    => $department_id,
+                    'type'     => 'select',
+                    'options'  => $options
+				]);
+
+
 				$options = [['value'=>'']];
-				foreach (array_reverse($ACL->getRoles()) as $r) { $options[] = ['value'=>$r]; }
+				foreach (array_reverse($this->roles) as $r) { $options[] = ['value'=>$r]; }
 				echo $h->field([
                     'name'     => 'role',
                     'id'       => 'role',
@@ -41,7 +55,7 @@ foreach ($fields as $f) {
 				]);
 
                 $options = [['value'=>'']];
-                foreach (Person::getAuthenticationMethods() as $m) { $options[] = ['value'=>$m]; }
+                foreach ($this->authenticationMethods as $m) { $options[] = ['value'=>$m]; }
                 echo $h->field([
                     'name'     => 'authenticationMethod',
                     'id'       => 'authenticationMethod',
