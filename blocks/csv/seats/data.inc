@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array          $this->params    Parameters used to generate data
  * @param Laminas\Db\Result $this->data      Data structure returned as SeatTable::$dataFields
  * @param Committee      $this->committee (optional)
@@ -24,7 +24,13 @@ $fields = [
     'Committee','Seat','Appointer','Firstname','Lastname',
     'Term Start','Term End','Appointment Start', 'Appointment End'
 ];
-if ($userCanViewContactInfo) { $fields[] = 'Email'; }
+if ($userCanViewContactInfo) {
+    $fields[] = 'Email';
+    $fields[] = 'Address';
+    $fields[] = 'City';
+    $fields[] = 'State';
+    $fields[] = 'Zip';
+}
 echo implode(',', $fields)."\n";
 
 $out = fopen('php://output', 'w');
@@ -41,7 +47,13 @@ foreach ($this->data['results'] as $r) {
         $r['member_startDate'],
         $r['member_endDate']
     ];
-    if ($userCanViewContactInfo) { $row[] = $r['person_email']; }
+    if ($userCanViewContactInfo) {
+        $row[] = $r['person_email'  ];
+        $row[] = $r['person_address'];
+        $row[] = $r['person_city'   ];
+        $row[] = $r['person_state'  ];
+        $row[] = $r['person_zip'    ];
+    }
     fputcsv($out, $row);
 }
 fclose($out);
