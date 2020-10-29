@@ -93,7 +93,7 @@
 
     - name: "Install CRON script"
       template:
-        src: "cron.sh"
+        src: "backup.sh"
         dest: "/etc/cron.daily/backup.d/onboard"
         mode: "0755"
 
