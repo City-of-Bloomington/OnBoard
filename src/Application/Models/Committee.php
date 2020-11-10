@@ -375,8 +375,8 @@ class Committee extends ActiveRecord
                 : 'where (c.endDate is not null and now() >= c.endDate)';
         }
 
-        $sql = "select  c.id, c.name, c.type, c.website, c.videoArchive, c.email, c.phone,
-                        c.address, c.city, c.state, c.zip,
+        $sql = "select  c.id, c.name, c.type, c.website, c.videoArchive, c.calendarId,
+                        c.email, c.phone, c.address, c.city, c.state, c.zip,
                         c.statutoryName, c.yearFormed, c.endDate, c.legislative,
                         count(s.id) as seats,
                         sum(

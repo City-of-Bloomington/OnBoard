@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2014-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2020 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->data
  */
 $fields = [
-    'id','type','name','website', 'videoArchive',
+    'id','type','name','website', 'videoArchive', 'calendarId',
     'email','phone','address','city','state','zip',
     'statutoryName','yearFormed', 'legislative',
     'seats', 'vacancies'
