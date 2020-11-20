@@ -22,20 +22,20 @@ class MembersController extends Controller
     public function update(): View
     {
         try {
-            if (isset($_REQUEST['member_id'])) { $member = new Member($_REQUEST['member_id']); }
+            if (!empty($_REQUEST['member_id'])) { $member = new Member($_REQUEST['member_id']); }
             else {
-                if     (isset($_REQUEST['term_id'     ])) { $o = new Term($_REQUEST['term_id']); }
-                elseif (isset($_REQUEST['seat_id'     ])) { $o = new Seat($_REQUEST['seat_id']); }
-                elseif (isset($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
+                if     (!empty($_REQUEST['term_id'     ])) { $o = new Term($_REQUEST['term_id']); }
+                elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat($_REQUEST['seat_id']); }
+                elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
                 $member = $o->newMember();
             }
-            if (isset($_REQUEST['person_id'])) { $member->setPerson_id($_REQUEST['person_id']); }
-            if (isset($_REQUEST['startDate'])) { $member->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
+            if (!empty($_REQUEST['person_id'])) { $member->setPerson_id($_REQUEST['person_id']); }
+            if (!empty($_REQUEST['startDate'])) { $member->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
         }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
 
         if (isset($member)) {
-            if (isset($_POST['committee_id'])) {
+            if (!empty($_POST['committee_id'])) {
                 try {
                     if (!empty($_POST['endDate'])) {
                            $member->setEndDate($_POST['endDate'], 'Y-m-d');
