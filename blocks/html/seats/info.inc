@@ -99,12 +99,13 @@ echo "
 		";
     }
     if ($this->seat->getType() === 'termed') {
-        $termLength = Seat::$termIntervals[$this->seat->getTermLength()];
+        $termLength   = Seat::$termIntervals[$this->seat->getTermLength()];
+        $termModifier = $this->seat->getTermModifier()
+                      ? Seat::$termModifiers[$this->seat->getTermModifier()]
+                      : '';
         echo "
-		<tr>
-			<th>{$this->_('termLength')}</th>
-            <td>{$termLength}</td>
-        </tr>
+        <tr><th>{$this->_('termLength'  )}</th><td>{$termLength}</td></tr>
+        <tr><th>{$this->_('termModifier')}</th><td>{$termModifier}</td></tr>
         ";
     }
     $voting = $this->seat->IsVoting() ? $this->_('yes') : $this->_('no');

@@ -19,6 +19,9 @@ class Seat extends ActiveRecord
         'P3Y' => '3 years',
         'P4Y' => '4 years'
     ];
+    public static $termModifiers = [
+        'second monday of' => 'Second Monday of the month'
+    ];
 
 	protected $tablename = 'seats';
 
@@ -117,7 +120,8 @@ class Seat extends ActiveRecord
 	public function getRequirements()      { return      parent::get('requirements'); }
 	public function getCommittee_id()      { return (int)parent::get('committee_id'); }
 	public function getAppointer_id()      { return (int)parent::get('appointer_id'); }
-	public function getTermLength()        { return      parent::get('termLength'); }
+	public function getTermLength()        { return      parent::get('termLength'  ); }
+	public function getTermModifier()      { return      parent::get('termModifier'); }
 	public function getVoting()            { return      parent::get('voting'); }
 	public function getTakesApplications() { return      parent::get('takesApplications'); }
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
@@ -139,6 +143,12 @@ class Seat extends ActiveRecord
             if (array_key_exists($s, self::$termIntervals)) { parent::set('termLength', $s); }
         }
         else { parent::set('termLength', null); }
+    }
+    public function setTermModifier($s) {
+        if ($s) {
+            if (array_key_exists($s, self::$termModifiers)) { parent::set('termModifier', $s); }
+        }
+        else { parent::set('termModifier', null); }
     }
     public function setVoting           ($b) { $this->data['voting'           ] = $b ? 1 : 0; }
     public function setTakesApplications($b) { $this->data['takesApplications'] = $b ? 1 : 0; }

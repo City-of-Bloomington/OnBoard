@@ -237,19 +237,21 @@ class Term extends ActiveRecord
         $seat = $this->getSeat();
         $termLength = new \DateInterval($seat->getTermLength());
         $oneDay     = new \DateInterval('P1D');
+        $termMod    = $seat->getTermModifier();
 
-        $s = new \DateTime($this->getStartDate());
-        $e = new \DateTime($this->getEndDate());
+        $start = new \DateTime($this->getStartDate());
+        $start->add($termLength);
+        if ($termMod) { $start->modify($termMod); }
 
-        $start = $e->add($oneDay    )->format(DATE_FORMAT);
 
-        $e->add($termLength);
-        $e->sub($oneDay);
-        $end = $e->format(DATE_FORMAT);
+        $end = clone($start);
+        $end->add($termLength);
+        if ($termMod) { $end->modify($termMod); }
+        $end->sub($oneDay);
 
         $term = new Term();
-        $term->setStartDate($start);
-        $term->setEndDate  ($end);
+        $term->setStartDate($start->format(DATE_FORMAT));
+        $term->setEndDate  ($end  ->format(DATE_FORMAT));
         $term->setSeat($seat);
         return $term;
 	}
@@ -266,19 +268,20 @@ class Term extends ActiveRecord
         $seat = $this->getSeat();
         $termLength = new \DateInterval($seat->getTermLength());
         $oneDay     = new \DateInterval('P1D');
+        $termMod    = $seat->getTermModifier();
 
-        $s = new \DateTime($this->getStartDate());
-        $e = new \DateTime($this->getEndDate());
+        $start = new \DateTime($this->getStartDate());
+        $start->sub($termLength);
+        if ($termMod) { $start->modify($termMod); }
 
-        $end = $s->sub($oneDay)->format(DATE_FORMAT);
-
-        $s->sub($termLength);
-        $s->add($oneDay);
-        $start = $s->format(DATE_FORMAT);
+        $end = clone($start);
+        $end->add($termLength);
+        if ($termMod) { $end->modify($termMod); }
+        $end->sub($oneDay);
 
         $term = new Term();
-        $term->setStartDate($start);
-        $term->setEndDate  ($end);
+        $term->setStartDate($start->format(DATE_FORMAT));
+        $term->setEndDate  ($end  ->format(DATE_FORMAT));
         $term->setSeat($seat);
         return $term;
 	}

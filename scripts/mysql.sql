@@ -95,6 +95,7 @@ create table seats (
     endDate           date,
     requirements      text,
     termLength        varchar(32),
+    termModifier      varchar(32),
     voting            boolean not null default 1,
     takesApplications boolean not null default 0,
 	foreign key (committee_id) references committees(id),

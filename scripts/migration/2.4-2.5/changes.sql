@@ -20,3 +20,5 @@ update people set role='Clerk'     where role='meetingFileUploader';
 update people set department_id=6  where role='Appointer';
 update people set department_id=8  where role='Reviewer';
 update people set role='Appointer' where role='Reviewer';
+
+alter table seats add termModifier varchar(32) after termLength;

@@ -287,6 +287,9 @@ msgstr "Open"
 msgid "termLength"
 msgstr "Term Length"
 
+msgid "termModifier"
+msgstr "Term Modifier"
+
 msgid "voting"
 msgstr "Voting"
 

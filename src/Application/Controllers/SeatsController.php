@@ -137,6 +137,7 @@ class SeatsController extends Controller
                     $seat->setRequirements     ($_POST['requirements'     ]);
                     $seat->setType             ($_POST['type'             ]);
                     $seat->setTermLength       ($_POST['termLength'       ]);
+                    $seat->setTermModifier     ($_POST['termModifier'     ]);
                     $seat->setVoting           ($_POST['voting'           ]);
                     $seat->setTakesApplications($_POST['takesApplications']);
 

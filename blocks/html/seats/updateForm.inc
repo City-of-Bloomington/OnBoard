@@ -9,7 +9,7 @@ use Application\Models\Seat;
 
 $fields = [
     'id', 'type', 'code', 'committee_id', 'appointer_id',
-    'name', 'requirements', 'termLength', 'voting', 'takesApplications'
+    'name', 'requirements', 'termLength', 'termModifier', 'voting', 'takesApplications'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -29,18 +29,6 @@ $picker = $this->template->getHelper('datePicker');
             <input name="committee_id"  type="hidden" value="<?= $committee_id; ?>" />
             <?php
                 $helper = $this->template->getHelper('field');
-
-                $options = [];
-                foreach (Seat::$types as $t) { $options[] = ['value'=>$t, 'label'=>$this->_($t)]; }
-                echo $helper->field([
-                    'name'     => 'type',
-                    'id'       => 'type',
-                    'label'    => $this->_('type'),
-                    'value'    => $type,
-                    'type'     => 'select',
-                    'options'  => $options,
-                    'required' => true
-                ]);
 
                 echo $helper->field(['label'=>$this->_('code'), 'name'=>'code', 'id'=>'code', 'value'=>$code ]);
                 echo $helper->field(['label'=>$this->_('name'), 'name'=>'name', 'id'=>'name', 'value'=>$name, 'required'=>true]);
@@ -68,17 +56,6 @@ $picker = $this->template->getHelper('datePicker');
                     'required' => true
                 ]);
 
-                $options = [];
-                foreach (Seat::$termIntervals as $interval => $label) { $options[] = ['value'=>$interval, 'label'=>$label]; }
-                echo $helper->field([
-                    'name'    => 'termLength',
-                    'id'      => 'termLength',
-                    'label'   => $this->_('termLength'),
-                    'value'   => $termLength,
-                    'type'    => 'select',
-                    'options' => $options
-                ]);
-
                 echo $helper->field([
                     'name'    => 'voting',
                     'label'   => $this->_('voting'),
@@ -98,6 +75,44 @@ $picker = $this->template->getHelper('datePicker');
                         ['value'=>1, 'label'=>$this->_('yes')],
                         ['value'=>0, 'label'=>$this->_('no' )]
                     ]
+                ]);
+            ?>
+        </fieldset>
+
+        <fieldset><legend><?= $this->_('info_term'); ?></legend>
+            <?php
+                $options = [];
+                foreach (Seat::$types as $t) { $options[] = ['value'=>$t, 'label'=>$this->_($t)]; }
+                echo $helper->field([
+                    'name'     => 'type',
+                    'id'       => 'type',
+                    'label'    => $this->_('type'),
+                    'value'    => $type,
+                    'type'     => 'select',
+                    'options'  => $options,
+                    'required' => true
+                ]);
+
+                $options = [];
+                foreach (Seat::$termIntervals as $interval => $label) { $options[] = ['value'=>$interval, 'label'=>$label]; }
+                echo $helper->field([
+                    'name'    => 'termLength',
+                    'id'      => 'termLength',
+                    'label'   => $this->_('termLength'),
+                    'value'   => $termLength,
+                    'type'    => 'select',
+                    'options' => $options
+                ]);
+
+                $options = [['value'=>'']];
+                foreach (Seat::$termModifiers as $modifier => $label) { $options[] = ['value'=>$modifier, 'label'=>$label]; }
+                echo $helper->field([
+                    'name'    => 'termModifier',
+                    'id'      => 'termModifier',
+                    'label'   => $this->_('termModifier'),
+                    'value'   => $termModifier,
+                    'type'    => 'select',
+                    'options' => $options
                 ]);
             ?>
         </fieldset>
