@@ -200,7 +200,7 @@ class SeatTable extends TableGateway
         }
         else {
             $action   = 'add';
-            $original = [];
+            $original = new Seat();
         }
         $changes = [CommitteeHistory::STATE_ORIGINAL => $original->getData(),
                     CommitteeHistory::STATE_UPDATED  =>     $seat->getData()];
