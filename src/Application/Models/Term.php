@@ -66,17 +66,20 @@ class Term extends ActiveRecord
         if (!$seat) { throw new \Exception('terms/missingSeat'); }
 
         // Create a valid endDate if there isn't one already
-        $termLength = new \DateInterval($seat->getTermLength());
-        $oneDay     = new \DateInterval('P1D');
 		if (!$this->getEndDate()) {
+            $termLength = new \DateInterval($seat->getTermLength());
+            $termMod    = $seat->getTermModifier();
+            $oneDay     = new \DateInterval('P1D');
+
             $s = new \DateTime($this->getStartDate());
             $s->add($termLength);
+            if ($termMod) { $s->modify($termMod); }
             $s->sub($oneDay);
             $this->setEndDate($s->format(DATE_FORMAT));
         }
 
 		// Make sure this term is not overlapping terms for the seat
-		$db = Database::getConnection();
+		$db  = Database::getConnection();
 		$sql = "select id from terms
                 where seat_id=?
                 and (?<endDate and ?>startDate)";
