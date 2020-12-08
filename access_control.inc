@@ -19,7 +19,7 @@ $ACL->addRole(new Role('Anonymous'))
     ->addRole(new Role('Appointer'),  'Public')
     ->addRole(new Role('Clerk'),      'Public')
     ->addRole(new Role('Liaison'),   ['Appointer', 'Clerk'])
-    ->addRole(new Role('Staff'),      'Public')
+    ->addRole(new Role('Staff'))
     ->addRole(new Role('Administrator'));
 
 /**
@@ -52,16 +52,8 @@ $ACL->allow('Appointer', 'applicants',     'view',         $requiresDepartmentAs
 $ACL->allow('Appointer', 'applications',   'report',       $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'people',         'viewContactInfo');
 
-$ACL->allow('Staff',  'committees',   ['update', 'applications']);
-$ACL->allow('Staff',  'people',       ['update', 'viewContactInfo']);
-$ACL->allow('Staff',  'members',      ['index', 'appoint', 'reappoint', 'resign', 'update']);
-$ACL->allow('Staff',  'offices',      ['update']);
-$ACL->allow('Staff',  'applicants',   ['index', 'view', 'update']);
-$ACL->allow('Staff',  'applications', ['index', 'archive', 'unarchive', 'report']);
-$ACL->allow('Staff', ['applicantFiles',
-                      'meetingFiles', 'reports',
-                      'legislation', 'legislationActions', 'legislationFiles', 'legislationStatuses',
-                      'liaisons']);
+$ACL->allow('Staff');
+$ACL->deny ('Staff', 'users', ['update', 'delete']);
 
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',
@@ -69,6 +61,7 @@ $ACL->allow('Clerk',
             ['update', 'delete'],
             $requiresDepartmentAssociation);
 
+$ACL->allow('Liaison', 'committees', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
 
 // Administrator is allowed access to everything
