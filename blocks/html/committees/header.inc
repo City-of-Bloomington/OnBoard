@@ -57,6 +57,17 @@ $filesLink = sprintf($a, "$uri?committee_id=$committee_id",
                          'meetingFiles',
                          $current ? ' class="current"' : '',
                          $this->_(['meetingFile', 'meetingFiles', 10]));
+// Seats
+// Only show the seats link if the user has permission to edit them
+$seatsLink = '';
+if (Person::isAllowed('seats', 'update') && $this->committee->getType()=='seated') {
+    $uri       = parent::generateUri('committees.seats');
+    $current   = $current_url->path == $uri;
+    $seatsLink = sprintf($a, "$uri?committee_id=$committee_id",
+                             'seats',
+                             $current ? ' class="current"' : '',
+                             $this->_(['seat', 'seats', 10]));
+}
 
 // Past Seats
 $pastSeatsLink = '';
@@ -110,6 +121,7 @@ echo "
     <nav>
         $infoLink
         $membersLink
+        $seatsLink
         $pastSeatsLink
         $pastMembersLink
         $applicationsLink
