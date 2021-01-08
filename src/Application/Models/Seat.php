@@ -20,6 +20,7 @@ class Seat extends ActiveRecord
         'P4Y' => '4 years'
     ];
     public static $termModifiers = [
+        'first monday of'  => 'First Monday of the month',
         'second monday of' => 'Second Monday of the month'
     ];
 
