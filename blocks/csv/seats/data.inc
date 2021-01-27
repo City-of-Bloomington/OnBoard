@@ -21,7 +21,7 @@ header("Content-Disposition: attachment; filename=\"$filename.csv\"");
 
 $userCanViewContactInfo = Person::isAllowed('people', 'viewContactInfo');
 $fields = [
-    'Committee','Seat','Appointer','Firstname','Lastname',
+    'Committee','Seat Code', 'Seat Name','Appointer','Firstname','Lastname',
     'Term Start','Term End','Appointment Start', 'Appointment End'
 ];
 if ($userCanViewContactInfo) {
@@ -38,6 +38,7 @@ $out = fopen('php://output', 'w');
 foreach ($this->data['results'] as $r) {
     $row = [
         $r['committee_name'],
+        $r['seat_code'],
         $r['seat_name'],
         $r['appointer_name'],
         $r['person_firstname'],
