@@ -63,6 +63,7 @@ $ACL->allow('Clerk',
 
 $ACL->allow('Liaison', 'committees', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
+$ACL->allow('Liaison', 'people', 'update');
 
 // Administrator is allowed access to everything
 $ACL->allow('Administrator');
