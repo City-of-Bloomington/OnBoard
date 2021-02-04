@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\ResultSet $this->data
  */
@@ -8,7 +8,7 @@ $fields = [
     'id','type','name','website', 'videoArchive', 'calendarId',
     'email','phone','address','city','state','zip',
     'statutoryName','yearFormed', 'legislative',
-    'seats', 'vacancies'
+    'seats', 'vacancies', 'takesApplications'
 ];
 $data = [];
 foreach ($this->data as $c) {
@@ -22,6 +22,7 @@ foreach ($this->data as $c) {
             case 'id':
             case 'seats':
             case 'vacancies':
+            case 'takesApplications':
                 $row[$f] = (int)$c[$f];
             break;
 

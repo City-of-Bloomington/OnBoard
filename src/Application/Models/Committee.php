@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -379,6 +379,7 @@ class Committee extends ActiveRecord
                         c.email, c.phone, c.address, c.city, c.state, c.zip,
                         c.statutoryName, c.yearFormed, c.endDate, c.legislative,
                         count(s.id) as seats,
+                        sum(s.takesApplications) as takesApplications,
                         sum(
                             case when ((s.endDate is null or now() <= s.endDate) and s.type='termed' and t.id is not null and tm.id is null) then 1
                                  when ((s.endDate is null or now() <= s.endDate) and s.type='open'   and m.id is null)                       then 1
