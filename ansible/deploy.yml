@@ -17,6 +17,7 @@
           - "libreoffice-common"
           - "libreoffice-writer"
           - "postfix"
+          - 'poppler-utils'
 
     - name: "Postfix start at boot"
       service: name=postfix state=started enabled=yes

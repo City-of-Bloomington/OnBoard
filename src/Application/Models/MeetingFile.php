@@ -152,4 +152,12 @@ class MeetingFile extends File
 	 */
 	public function getDownloadUrl() { return  View::generateUrl('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
 	public function getDownloadUri() { return  View::generateUri('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
+
+	/**
+	 * Extracts plain text out of a PDF
+	 */
+	public function extractText(): string
+	{
+        return shell_exec("pdftotext {$this->getFullPath()} -");
+	}
 }
