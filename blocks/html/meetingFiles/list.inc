@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright 2018-2020 City of Bloomington, Indiana
+ * @copyright 2018-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->files
  * @param Committee         $this->committee (optional)
  * @param stdClass          $this->sort
+ * @param array             $this->years   Available years for this committee
  */
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
@@ -40,6 +41,27 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                 echo $helper->dropdown($actions, $this->_('add'), 'meetingFile_add');
             }
         ?>
+            <form method="get">
+                <fieldset>
+                <?php
+                    if ($this->committee) {
+                        echo "<input name=\"committee_id\" type=\"hidden\" value=\"{$this->committee->getId()}\" />";
+                    }
+                    $h       = $this->template->getHelper('field');
+                    $options = [['value'=>'']];
+                    foreach ($this->years as $y) { $options[] = ['value'=>$y]; }
+                    echo $h->field([
+                        'name'    => 'year',
+                        'id'      => 'year',
+                        'label'   => $this->_('year'),
+                        'type'    => 'select',
+                        'value'   => !empty($_GET['year']) ? (int)$_GET['year'] : '',
+                        'options' => $options,
+                        'attr'    => ['onchange'=>'this.form.submit();']
+                    ]);
+                ?>
+                </fieldset>
+            </form>
         </div>
     </header>
     <table>

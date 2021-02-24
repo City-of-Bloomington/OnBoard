@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -30,6 +30,10 @@ class MeetingFilesTable extends TableGateway
 
                     case 'end':
                         $select->where(['meetingDate <= ?'=>$value->format('Y-m-d')]);
+                    break;
+
+                    case 'year':
+                        $select->where(['year(meetingDate)=?' => (int)$value]);
                     break;
 
 					default:

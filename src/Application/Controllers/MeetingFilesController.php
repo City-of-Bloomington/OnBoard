@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
@@ -49,6 +49,9 @@ class MeetingFilesController extends Controller
 		if (!empty($_GET['type'])) {
             if (in_array($_GET['type'], MeetingFilesTable::$types)) { $search['type'] = $_GET['type']; }
 		}
+		if (!empty($_GET['year'])) {
+            $search['year'] = (int)$_GET['year'];
+		}
 
         $table = new MeetingFilesTable();
         if ($this->template->outputFormat != 'csv') {
@@ -60,10 +63,14 @@ class MeetingFilesController extends Controller
             $list  = $table->find($search, "{$sort->field} {$sort->direction}");
         }
 
+        // The list of years we give the block should all years available
+        if (isset($search['year'])) { unset($search['year']); }
+
         $this->template->blocks[] = new Block('meetingFiles/list.inc', [
             'files'     => $list,
             'committee' => isset($committee) ? $committee : null,
-            'sort'      => $sort
+            'sort'      => $sort,
+            'years'     => array_keys($table->years($search))
         ]);
         return $this->template;
     }
