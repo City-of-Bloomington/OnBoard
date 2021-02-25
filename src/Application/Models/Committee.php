@@ -433,7 +433,8 @@ class Committee extends ActiveRecord
                     'summary'  => $e->summary,
                     'location' => $e->location,
                     'start'    => $eventStart->format('c'),
-                    'end'      => $eventEnd  ->format('c')
+                    'end'      => $eventEnd  ->format('c'),
+                    'htmlLink' => $e->htmlLink
                 ];
             }
         }
