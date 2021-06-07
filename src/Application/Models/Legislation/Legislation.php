@@ -265,7 +265,7 @@ class Legislation extends ActiveRecord
 
             $db = Database::getConnection();
 
-            $sql = 'delete from legislationActions where id=?';
+            $sql = 'delete from legislationActions where legislation_id=?';
             $db->query($sql)->execute([$id]);
 
             $sql = 'delete from legislation_tags where legislation_id=?';
