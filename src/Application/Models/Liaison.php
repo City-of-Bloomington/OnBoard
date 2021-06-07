@@ -54,7 +54,7 @@ class Liaison extends ActiveRecord
 	public function validate()
 	{
 		if (!$this->getCommittee_id() || !$this->getPerson_id()) {
-			throw new Exception('missingRequiredFields');
+			throw new \Exception('missingRequiredFields');
 		}
     }
 
