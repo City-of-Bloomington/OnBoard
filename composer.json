@@ -4,7 +4,7 @@
         "url": "https://github.com/City-of-Bloomington/blossom-lib"
     }],
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "michelf/php-markdown": "~1",
         "aura/router": "~2",
         "google/apiclient": "~2.0",
@@ -13,7 +13,9 @@
         "laminas/laminas-db":              "@stable",
         "laminas/laminas-log":             "@stable",
         "laminas/laminas-paginator":       "@stable",
-        "laminas/laminas-permissions-acl": "@stable"
+        "laminas/laminas-permissions-acl": "@stable",
+        "solarium/solarium":               "@stable",
+        "symfony/event-dispatcher":        "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"

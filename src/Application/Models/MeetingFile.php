@@ -158,6 +158,17 @@ class MeetingFile extends File
 	 */
 	public function extractText(): string
 	{
-        return shell_exec("pdftotext {$this->getFullPath()} -");
+        return shell_exec("pdftotext -enc UTF-8 -nodiag -nopgbrk -eol unix {$this->getFullPath()} -") ?: '';
+	}
+
+	public function getSolrFields(): array
+	{
+        return [
+            'id'    => $this->getId(),
+            'type'  => $this->getType(),
+            'title' => $this->getTitle() ?: "{$this->getCommittee()->getName()} {$this->getMeetingDate()} {$this->getType()}",
+            'url'   => $this->getDownloadUrl(),
+            'text'  => $this->extractText(),
+        ];
 	}
 }
