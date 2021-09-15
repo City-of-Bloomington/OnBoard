@@ -163,12 +163,16 @@ class MeetingFile extends File
 
 	public function getSolrFields(): array
 	{
+        $date    = new \DateTime($this->getMeetingDate());
+        $updated = new \DateTime($this->getUpdated());
         return [
-            'id'    => $this->getId(),
-            'type'  => $this->getType(),
-            'title' => $this->getTitle() ?: "{$this->getCommittee()->getName()} {$this->getMeetingDate()} {$this->getType()}",
-            'url'   => $this->getDownloadUrl(),
-            'text'  => $this->extractText(),
+            'id'      => $this->getId(),
+            'type'    => $this->getType(),
+            'title'   => $this->getTitle() ?: "{$this->getCommittee()->getName()} {$this->getMeetingDate()} {$this->getType()}",
+            'url'     => $this->getDownloadUrl(),
+            'text'    => $this->extractText(),
+            'date'    => $this->getMeetingDate(),
+            'changed' => $this->getUpdated()
         ];
 	}
 }

@@ -15,6 +15,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Solr
 {
+    public const DATETIME_FORMAT = 'Y-m-d\TH:i:s\Z';
+    
     private $client;
 
     /**
@@ -74,15 +76,23 @@ class Solr
     public function prepareIndexFields(File $file): array
     {
         $data = $file->getSolrFields();
+        
+        $utc     = new \DateTimeZone('UTC');
+        $date    = new \DateTime($data['date']);
+        $changed = new \DateTime($data['changed']);
+        $date   ->setTimezone($utc);
+        $changed->setTimezone($utc);
 
         return [
-            'site'                       => BASE_URL,
-            'id'                         => APPLICATION_NAME."-$data[type]-$data[id]",
-            'index_id'                   => APPLICATION_NAME,
-            'ss_search_api_id'           => "$data[type]-$data[id]",
-            'ss_type'                    => $data['type' ],
-            'ss_title'                   => $data['title'],
-            'ss_url'                     => $data['url'  ],
+            'site'             => BASE_URL,
+            'id'               => APPLICATION_NAME."-$data[type]-$data[id]",
+            'index_id'         => APPLICATION_NAME,
+            'ss_search_api_id' => "$data[type]-$data[id]",
+            'ss_type'          => $data['type' ],
+            'ss_title'         => $data['title'],
+            'ss_url'           => $data['url'  ],
+            'ds_date'          => $date   ->format(self::DATETIME_FORMAT),
+            'ds_changed'       => $changed->format(self::DATETIME_FORMAT),
             'tm_X3b_en_aggregated_field' => self::filterControlCharacters($data['text'])
         ];
     }
