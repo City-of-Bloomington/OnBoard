@@ -20,6 +20,7 @@ foreach ($this->meetings as $date=>$meeting) {
     $out[$date]['location'] = !empty($meeting['location']) ? $meeting['location'] : '';
     $out[$date]['start'   ] = !empty($meeting['start'   ]) ? $meeting['start'   ] : '';
     $out[$date]['end'     ] = !empty($meeting['end'     ]) ? $meeting['end'     ] : '';
+    $out[$date]['htmlLink'] = !empty($meeting['htmlLink']) ? $meeting['htmlLink'] : '';
 
     foreach (MeetingFile::$types as $type) {
         if (!empty(  $meeting['files'][$type])) {

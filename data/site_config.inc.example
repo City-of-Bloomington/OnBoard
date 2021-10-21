@@ -68,6 +68,17 @@ $LDAP = [
     ]
 ];
 
+$SOLR = [
+    'onboard' => [
+        'scheme'   => 'https',
+        'host'     => 'solr.example.org',
+        'port'     => 443,
+        'core'     => 'onboard',
+        'username' => 'onboard',
+        'password' => ''
+    ]
+];
+
 /**
  * CAS authentication http://www.jasig.org/cas
  *

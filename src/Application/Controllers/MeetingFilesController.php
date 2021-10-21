@@ -13,6 +13,8 @@ use Web\Controller;
 use Web\Block;
 use Web\View;
 
+use Web\Search\Solr;
+
 class MeetingFilesController extends Controller
 {
     public function index(): View
@@ -144,6 +146,10 @@ class MeetingFilesController extends Controller
                     }
 
                     $file->save();
+
+                    global $SOLR;
+                    $solr = new Solr($SOLR['onboard']);
+                    $solr->add($file);
 
                     $return_url = !empty($_POST['return_url'])
                                   ? $_POST['return_url']
