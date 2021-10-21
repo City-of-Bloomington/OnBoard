@@ -1,0 +1,3 @@
+[mysqldump]
+user={{ onboard_db.user }}
+password={{ onboard_db.pass }}
