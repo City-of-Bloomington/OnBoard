@@ -134,6 +134,12 @@ abstract class File extends ActiveRecord
         }
 
         parent::save();
+
+        $db  = Database::getConnection();
+        $sql = "select * from {$this->tablename} where id=?";
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        $this->exchangeArray($res->current());
+
     }
 
     protected function saveFile($tempFile, $newFile)
