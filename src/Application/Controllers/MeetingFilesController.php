@@ -41,7 +41,9 @@ class MeetingFilesController extends Controller
 		$sort->field     = 'meetingDate';
 		$sort->direction = 'desc';
 		if (!empty($_GET['sort'])) {
-            list($f, $d) = explode(' ', $_GET['sort']);
+            $s = explode(' ', $_GET['sort']);
+            $f = $s[0];
+            $d = $s[1] ?? 'desc';
             if (in_array($f, MeetingFilesTable::$sortableFields)) {
                 $sort->field     = $f;
                 $sort->direction = $d == 'asc' ? 'asc' : 'desc';
