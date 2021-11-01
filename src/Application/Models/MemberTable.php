@@ -62,7 +62,7 @@ class MemberTable extends TableGateway
             'committee_id'=> $member->getCommittee_id(),
             'tablename'   => 'members',
             'action'      => $action,
-            'changes'     => ['original'=>$original, 'updated'=>$member->getData()]
+            'changes'     => [['original'=>$original, 'updated'=>$member->getData()]]
         ]);
 	}
 

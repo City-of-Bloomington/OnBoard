@@ -202,8 +202,8 @@ class SeatTable extends TableGateway
             $action   = 'add';
             $original = new Seat();
         }
-        $changes = [CommitteeHistory::STATE_ORIGINAL => $original->getData(),
-                    CommitteeHistory::STATE_UPDATED  =>     $seat->getData()];
+        $changes = [[CommitteeHistory::STATE_ORIGINAL => $original->getData(),
+                     CommitteeHistory::STATE_UPDATED  =>     $seat->getData()]];
 
         $seat->save();
 
