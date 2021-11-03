@@ -92,7 +92,13 @@ class Member extends ActiveRecord
 		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
 		$overlap = $this->overlapsExistingMember();
 		if ($overlap) {
-            throw new \Exception('members/overlapping');
+            $name =    $this->getPerson()->getFullname();
+            $s1   =    $this->getSeat()->getName();
+            $s2   = $overlap->getSeat()->getName();
+
+            $message = "The appointment for $name to the $s1 seat overlaps their appointment to the $s2 seat.
+                        Members are not permitted to serve on multiple seats of the same board or commission at the same time";
+            throw new \Exception($message);
 		}
 	}
 
@@ -143,13 +149,13 @@ class Member extends ActiveRecord
 	 * Make sure this member is not overlapping any existing members
 	 *
 	 * @see http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
-	 * @return array An array of member IDs that overlap this member
+	 * @return Member  A membership that overlaps this member
 	 */
-	private function overlapsExistingMember()
+	private function overlapsExistingMember(): ?Member
 	{
 		$db = Database::getConnection();
 
-		$sql = "select id from members
+		$sql = "select * from members
                 where committee_id=? and person_id=?
                 and ((startDate is null) or (? is null)       or (startDate <= ?) )
                 and ((? is null)         or (endDate is null) or (? <= endDate)   )";
@@ -161,12 +167,12 @@ class Member extends ActiveRecord
         ];
 
         $result = $db->query($sql, $params);
-		if (count($result)) { return $result->toArray(); }
+		if (count($result)) { return new Member($result->toArray()[0]); }
 
 		// Make sure this service does not overlap with another member for the same seat
 		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
 		if ($this->getSeat_id()) {
-            $sql = "select id from members where seat_id=?
+            $sql = "select * from members where seat_id=?
                     and ((startDate is null) or (? is null)       or (startDate <= ?) )
                     and ((? is null)         or (endDate is null) or (? <= endDate)   )";
             if ($this->getId()) { $sql.= " and id!={$this->getId()}"; }
@@ -177,8 +183,9 @@ class Member extends ActiveRecord
             ];
 
             $result = $db->query($sql, $params);
-            if (count($result)) { return $result->toArray(); }
+            if (count($result)) { return new Member($result->toArray()[0]); }
 		}
+		return null;
 	}
 
     /**

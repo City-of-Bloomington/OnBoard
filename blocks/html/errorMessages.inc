@@ -23,7 +23,12 @@
                 include     APPLICATION_HOME.$file;
 			}
 			else {
-				echo "<p>{$this->_($error, 'errors')}</p>";
+                if (is_a($error, "Exception")) {
+                    echo "<p>{$this->_($error->getMessage(), 'errors')}</p>";
+                }
+                else {
+                    echo "<p>{$this->_($error, 'errors')}</p>";
+                }
 			}
 		}
 	?>
