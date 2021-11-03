@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
+ * @copyright 2017-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param array $this->change  Array of JSON data for the change
  */
@@ -15,7 +15,12 @@ foreach (CommitteeHistory::$states as $state) {
         $change = $this->change[$state];
         $seat   = !empty($change['seat_id'  ]) ? new Seat  ($change['seat_id'  ]) : null;
         $term   = !empty($change['term_id'  ]) ? new Term  ($change['term_id'  ]) : null;
-        $person = !empty($change['person_id']) ? new Person($change['person_id']) : null;
+        $person = null;
+
+        if (!empty($change['person_id'])) {
+            try                  { $person = new Person($change['person_id']); }
+            catch(\Exception $e) { $person = new Person(['firstname'=>'Unknown', 'lastname'=>'Person']); }
+        }
 
         $$state = [
             'id'        => !empty($change['id']) ? $change['id'] : '',
