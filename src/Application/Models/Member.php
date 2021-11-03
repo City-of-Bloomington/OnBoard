@@ -83,10 +83,23 @@ class Member extends ActiveRecord
             throw new \Exception('missingRequiredFields');
         }
 
-		// Make sure the end date falls after the start date
-		$start = (int)$this->getStartDate('U');
-		$end   = (int)$this->getEndDate  ('U');
-		if ($end && $end < $start) { throw new \Exception('invalidEndDate'); }
+		if ($this->getEndDate()) {
+            $start = new \DateTime($this->getStartDate());
+            $end   = new \DateTime($this->  getEndDate());
+            $start->setTime(0,0,0,0);
+            $end  ->setTime(0,0,0,0);
+
+            if ($end < $start) {
+                throw new \Exception('invalidEndDate');
+            }
+            if ($seat->getType() == 'termed') {
+                $te = new \DateTime($this->getTerm()->getEndDate());
+                if ($end > $te) {
+                    throw new \Exception('invalidEndDate');
+                }
+            }
+
+		}
 
 		// Make sure this person is not serving overlapping terms for the same committee
 		// http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates

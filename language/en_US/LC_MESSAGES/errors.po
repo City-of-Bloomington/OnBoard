@@ -24,7 +24,7 @@ msgid "invalidDate"
 msgstr "You provided an invalid date."
 
 msgid "invalidEndDate"
-msgstr "The end date must come after the start date"
+msgstr "The end date is invalid"
 
 msgid "invalidLogin"
 msgstr "The username and password combination you entered is not correct."
