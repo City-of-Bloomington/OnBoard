@@ -49,11 +49,16 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
                 'type'     => 'date',
                 'required' => true
             ]);
+
+            $endDate = $this->member->getEndDate()
+                     ? new \DateTime($this->member->getEndDate())
+                     : null;
+
             echo $helper->field([
                 'name'     => 'endDate',
                 'id'       => 'endDate',
                 'label'    => $this->_('endDate'),
-                'value'    => new \DateTime($this->member->getEndDate()),
+                'value'    => $endDate,
                 'type'     => 'date'
             ]);
 
