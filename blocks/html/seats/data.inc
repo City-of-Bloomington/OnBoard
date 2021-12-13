@@ -137,15 +137,15 @@ if (isset($this->params['current'])) {
                         }
                     }
 
-                    if (!$this->disableButtons
-                        && Person::isAllowed('members', 'reappoint')
-                        && $seat_type === 'termed') {
-
+                    if ($seat_type === 'termed') {
                         $t = new Term($term_id);
                         $n = $t->getNextTerm();
+
                         if ($n->isVacant()) {
-                            $uri = parent::generateUri('members.reappoint')."?member_id=$member_id";
-                            $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                            if (!$this->disableButtons && Person::isAllowed('members', 'reappoint')) {
+                                $uri = parent::generateUri('members.reappoint')."?member_id=$member_id";
+                                $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                            }
                         }
                         else {
                             // Since the next term is not vacant, we should not set the CSS status
