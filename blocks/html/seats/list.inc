@@ -23,6 +23,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
                 <th><?= $this->_('code'); ?></th>
                 <th><?= $this->_('name'); ?></th>
                 <th><?= $this->_(['appointer', 'appointers', 1]); ?></th>
+                <th><?= $this->_('type'); ?></th>
                 <th><?= $this->_('startDate'); ?></th>
                 <th><?= $this->_('endDate'); ?></th>
             </tr>
@@ -51,6 +52,7 @@ $title  = $this->title ? self::escape($this->title) : $this->_(['seat', 'seats',
                     <td>$code</td>
                     <td><a href=\"$uri\">$name</a></td>
                     <td>$appointer</td>
+                    <td>{$seat->getType()}</td>
                     <td>{$seat->getStartDate(DATE_FORMAT)}</td>
                     <td>{$seat->getEndDate(DATE_FORMAT)}</td>
                 </tr>
