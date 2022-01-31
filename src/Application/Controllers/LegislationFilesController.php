@@ -76,7 +76,9 @@ class LegislationFilesController extends Controller
     {
         if (!empty($_GET['legislationFile_id'])) {
             try {
-                $file = new LegislationFile((int)$_GET['legislationFile_id']);
+                $id   = (int)$_GET['legislationFile_id'];
+                if (!$id) { throw new \Exception('files/unknownFile'); }
+                $file = new LegislationFile($id);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) {
