@@ -303,8 +303,8 @@ class CommitteesController extends Controller
 
             $this->template->title = $committee->getName();
             if ($this->template->outputFormat == 'html') {
-                $this->template->blocks[] = new Block('committees/breadcrumbs.inc',  ['committee' => $committee]);
-                $this->template->blocks[] = new Block('committees/header.inc',       ['committee' => $committee]);
+                header("Location: ".View::generateUrl('meetingFiles.index'));
+                exit();
             }
             $this->template->blocks[] = new Block('committees/meetings.inc', [
                 'committee' => $committee,

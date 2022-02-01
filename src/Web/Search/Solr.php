@@ -89,7 +89,6 @@ class Solr
         }
 
         $req = $this->client->createRequest($query);
-        error_log($req->getUri());
         return $this->client->execute($query);
     }
 

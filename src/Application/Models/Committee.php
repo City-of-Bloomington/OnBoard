@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2021 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -405,9 +405,18 @@ class Committee extends ActiveRecord
 	}
 
 	/**
+	 * Returns meeting information for a date range.
+	 *
+	 * Meetings are organizd by date and event_id.  For meetings without
+	 * a Google Calendar event, the event_id is zero.  This means, if
+	 * there are multiple meetings on the same day, that are not in a
+	 * Calendar, they will all be lumped together as a single meeting.
+	 *
+	 * $meetings[date][event_id][..]
+	 *
 	 * @return array  An array of meeting dates
 	 */
-	public function getMeetings(\DateTime $start, \DateTime $end)
+	public function getMeetings(\DateTime $start, \DateTime $end): array
 	{
         $meetings = [];
 
@@ -424,11 +433,11 @@ class Committee extends ActiveRecord
                     $eventStart = new \DateTime($e->start->date);
                     $eventEnd   = new \DateTime($e->end  ->date);
                 }
-                $year  = $eventStart->format('Y');
-                $month = $eventStart->format('m');
-                $day   = $eventStart->format('d');
 
-                $meetings[$eventStart->format('Y-m-d')] = [
+                $date     = $eventStart->format('Y-m-d');
+                $event_id = $e->id;
+
+                $meetings[$date][$event_id] = [
                     'eventId'  => $e->id,
                     'summary'  => $e->summary,
                     'location' => $e->location,
@@ -442,7 +451,9 @@ class Committee extends ActiveRecord
         $table = new MeetingFilesTable();
         $list  = $table->find(['start'=>$start, 'end'=>$end, 'committee_id'=>$this->getId()]);
         foreach ($list as $f) {
-            $meetings[$f->getMeetingDate('Y-m-d')]['files'][$f->getType()][] = $f;
+            $date     = $f->getMeetingDate('Y-m-d');
+            $event_id = $f->getEventId() ?? 0;
+            $meetings[$date][$event_id]['files'][$f->getType()][] = $f->getData();
         }
         ksort($meetings);
 

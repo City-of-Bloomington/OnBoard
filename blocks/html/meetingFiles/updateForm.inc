@@ -69,10 +69,12 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
 
                     $meetings = $committee->getMeetings($start, $end);
                     $options  = [['value'=>'']];
-                    foreach ($meetings as $d=>$m) {
-                        if (!empty($m['eventId'])) {
-                            $date = new \DateTime($d);
-                            $options[] = ['value'=>$m['eventId'], 'label'=>$date->format('F j Y')];
+                    foreach ($meetings as $date=>$day) {
+                        foreach ($day as $event_id=>$m) {
+                            if (!empty($m['eventId'])) {
+                                $start = new \DateTime($m['start']);
+                                $options[] = ['value'=>$m['eventId'], 'label'=>$start->format('F j Y g:i a')];
+                            }
                         }
                     }
 

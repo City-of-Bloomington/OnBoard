@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2019 City of Bloomington, Indiana
+ * @copyright 2017-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $htis->committee
  * @param array     $this->meetings
@@ -27,25 +27,27 @@ use Web\Url;
     </header>
     <?php
         $block = new Block('meetingFiles/meetingTypeFiles.inc', ['committee'=>$this->committee]);
-        foreach ($this->meetings as $date=>$meeting) {
-            $d = new \DateTime($date);
-            echo "
-            <div class=\"meeting\">
-                <h2><span class=\"month\">{$d->format('F')}</span>
-                    <span class=\"day\">{$d->format('j')}</span>
-                </h2>
-            ";
+        foreach ($this->meetings as $date=>$day) {
+            foreach ($day as $event_id=>$meeting) {
+                $d = new \DateTime($date);
+                echo "
+                <div class=\"meeting\">
+                    <h2><span class=\"month\">{$d->format('F')}</span>
+                        <span class=\"day\">{$d->format('j')}</span>
+                    </h2>
+                ";
 
-            $block->date = $d;
-            $block->eventId = !empty($meeting['eventId']) ? $meeting['eventId'] : '';
-            foreach (MeetingFile::$types as $type) {
-                $block->type = $type;
-                $block->files = !empty($meeting['files'][$type]) ? $meeting['files'][$type] : [];
-                echo $block->render('html', $this->template);
+                $block->date = $d;
+                $block->eventId = !empty($meeting['eventId']) ? $meeting['eventId'] : '';
+                foreach (MeetingFile::$types as $type) {
+                    $block->type = $type;
+                    $block->files = !empty($meeting['files'][$type]) ? $meeting['files'][$type] : [];
+                    echo $block->render('html', $this->template);
+                }
+                echo "
+                </div>
+                ";
             }
-            echo "
-            </div>
-            ";
         }
     ?>
 </section>
