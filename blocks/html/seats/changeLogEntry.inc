@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 use Application\Models\Appointer;
@@ -9,8 +9,15 @@ use Application\Models\CommitteeHistory;
 
 foreach (CommitteeHistory::$states as $state) {
     if (    isset($this->change[$state]) && count($this->change[$state])) {
-        $change = $this->change[$state];
-        $appointer = !empty($change['appointer_id']) ? new Appointer($change['appointer_id']) : null;
+        $change    = $this->change[$state];
+        $appointer = null;
+
+        if (!empty($change['appointer_id'])) {
+            try { $appointer = new Appointer($change['appointer_id']); }
+            catch (\Exception $e) {
+                // The appointer may no longer exist
+            }
+        }
 
         $$state = [
             'id'           => !empty($change['id'  ]) ? $change['id'] : '',

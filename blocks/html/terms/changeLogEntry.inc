@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017-2021 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->change  Array of JSON data for the change
  */
 declare (strict_types=1);
@@ -13,7 +13,14 @@ $keys = ['id', 'seat', 'startDate', 'endDate'];
 foreach (CommitteeHistory::$states as $state) {
     if (    isset($this->change[$state]) && count($this->change[$state])) {
         $change = $this->change[$state];
-        $seat   = !empty($change['seat_id'  ]) ? new Seat  ($change['seat_id'  ]) : null;
+        $seat   = null;
+
+        if (!empty($change['seat_id'])) {
+            try { $seat = new Seat($change['seat_id']); }
+            catch (\Exception $e) {
+                // The seat may no longer exist
+            }
+        }
 
         $$state = [
             'id'        => !empty($change['id'       ]) ? $change['id'        ] : '',
