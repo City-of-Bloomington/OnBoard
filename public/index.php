@@ -1,8 +1,9 @@
 <?php
 /**
- * @copyright 2012-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2012-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+use GuzzleHttp\Psr7\ServerRequest;
 use Web\Template;
 use Web\Block;
 
@@ -11,12 +12,15 @@ $startTime = microtime(1);
 include '../bootstrap.php';
 
 // Check for routes
-$p     = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$route = $ROUTES->match($p, $_SERVER);
+$request = ServerRequest::fromGlobals();
+$matcher = $ROUTES->getMatcher();
+$route   = $matcher->match($request);
+
 if ($route) {
-    if (isset($route->params['controller']) && isset($route->params['action'])) {
-        $controller = $route->params['controller'];
-        $action     = $route->params['action'];
+    $controller = $route->handler;
+    $action     = $route->__get('extras')['action'];
+
+    if ($controller && $action) {
         $c = new $controller();
         if (method_exists($c, $action)) {
             list($resource, $permission) = explode('.', $route->name);
@@ -36,7 +40,6 @@ if ($route) {
         }
     }
 }
-
 
 if (!isset($template)) {
     header('HTTP/1.1 404 Not Found', true, 404);

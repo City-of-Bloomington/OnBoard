@@ -4,9 +4,9 @@
         "url": "https://github.com/City-of-Bloomington/blossom-lib"
     }],
     "require": {
-        "php": ">=7.3",
+        "php": ">=8.1",
         "michelf/php-markdown": "~1",
-        "aura/router": "~2",
+        "aura/router": "~3",
         "google/apiclient": "~2.0",
         "apereo/phpcas":                   "@stable",
         "graylog2/gelf-php":               "@stable",

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2018 City of Bloomington, Indiana
+ * @copyright 2006-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
@@ -89,14 +89,16 @@ abstract class View
 	 */
 	public static function escape($input, $quotes=ENT_QUOTES)
 	{
-		if (is_array($input)) {
-			foreach ($input as $key=>$value) {
-				$input[$key] = self::escape($value,$quotes);
-			}
-		}
-		else {
-			$input = htmlspecialchars(trim($input), $quotes, 'UTF-8');
-		}
+        if ($input) {
+            if (is_array($input)) {
+                foreach ($input as $key=>$value) {
+                    $input[$key] = self::escape($value,$quotes);
+                }
+            }
+            else {
+                $input = htmlspecialchars(trim($input), $quotes, 'UTF-8');
+            }
+        }
 
 		return $input;
 	}
@@ -204,7 +206,8 @@ abstract class View
     public static function generateUri($route_name, $params=[])
     {
         global $ROUTES;
-        return $ROUTES->generate($route_name, $params);
+        $helper = $ROUTES->newRouteHelper();
+        return $helper($route_name, $params);
     }
     public static function generateUrl($route_name, $params=[])
     {
