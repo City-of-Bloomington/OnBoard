@@ -17,6 +17,11 @@ $map->attach('login.', '/login', function ($r) {
     $r->get('index',  ''       , 'Application\Controllers\LoginController')->extras(['action' => 'index' ]);
 });
 
+$map->attach('alternates.', '/alternates', function ($r) {
+    $r->get('update', '/update', 'Application\Controllers\AlternatesController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('delete', '/delete', 'Application\Controllers\AlternatesController')->extras(['action' => 'delete']);
+});
+
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
     $r->get('download', '/download', 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'download']);
     $r->get('delete',   '/delete'  , 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'delete'  ]);

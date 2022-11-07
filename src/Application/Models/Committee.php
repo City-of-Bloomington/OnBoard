@@ -158,6 +158,17 @@ class Committee extends ActiveRecord
         throw new \Exception('committees/invalidMember');
 	}
 
+	public function newAlternate(): Alternate
+	{
+		if ($this->getType() === 'open') {
+			$alternate = new Alternate();
+			$alternate->setCommittee($this);
+			return $alternate;
+		}
+
+		throw new \Exception('committees/invalidAlternate');
+	}
+
 	/**
 	 * Returns members for the committee
 	 *

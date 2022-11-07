@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -217,6 +217,12 @@ class Seat extends ActiveRecord
 		return $table->find(['seat_id'=>$this->getId()]);
 	}
 
+	public function getAlternates()
+	{
+		$table = new AlternateTable();
+		return $table->find(['seat_id'=>$this->getId()]);
+	}
+
 	/**
 	 * @return Member
 	 */
@@ -231,16 +237,22 @@ class Seat extends ActiveRecord
 
 	/**
 	 * Returns the most recent member for this seat
-	 *
-	 * @return Member
 	 */
-	public function getLatestMember()
+	public function getLatestMember(): ?Member
 	{
         $table = new MemberTable();
         $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
         if (count($list)) {
             return $list->current();
         }
+	}
+	public function getLastestAlternate(): ?Alternate
+	{
+		$table = new AlternateTable();
+		$list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
+		if (count($list)) {
+			return $list->current();
+		}
 	}
 
 	/**
@@ -260,6 +272,18 @@ class Seat extends ActiveRecord
         }
 
         throw new \Exception('seats/invalidMember');
+	}
+
+	public function newAlternate(): Alternate
+	{
+		if ($this->getType() === 'open') {
+			$alternate = new Alternate();
+			$alternate->setSeat($this);
+			$alternate->setCommittee_id($this->getCommittee_id());
+			return $alternate;
+		}
+
+		throw new \Exception('seats/invalidAlternate');
 	}
 
 	/**

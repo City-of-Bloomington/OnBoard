@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -151,6 +151,18 @@ class Term extends ActiveRecord
         return $member;
 	}
 
+	public function newAlternate(): Alternate
+	{
+		$seat = $this->getSeat();
+
+		$alternate = new Alternate();
+		$alternate->setTerm($this);
+		$alternate->setSeat($seat);
+		$alternate->setCommittee_id($seat->getCommittee_id());
+
+		return $alternate;
+	}
+
 	/**
 	 * @param int $timestamp
 	 * @return Member
@@ -172,6 +184,15 @@ class Term extends ActiveRecord
 	{
         $table = new MemberTable();
         return $table->find(['term_id'=>$this->getId()]);
+	}
+
+	/**
+	 * @return Laminas\Db\Result
+	 */
+	public function getAlternates()
+	{
+		$table = new AlternateTable();
+		return $table->find(['term_id'=>$this->getId()]);
 	}
 
 	/**

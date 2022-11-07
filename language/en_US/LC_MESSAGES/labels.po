@@ -1,5 +1,5 @@
 # Translation
-# Copyright (C) 2013-2020 City of Bloomington
+# Copyright (C) 2013-2022 City of Bloomington
 # This file is distributed under the same license as the onboard package.
 #
 domain "labels"
@@ -403,6 +403,20 @@ msgstr "Past Terms"
 
 msgid "seat_term"
 msgstr "Seat Term"
+
+msgid "alternate"
+msgid_plural "alternates"
+msgstr[0] "Alternate"
+msgstr[1] "Alternates"
+
+msgid "alternate_add"
+msgstr "Add Alternate"
+
+msgid "alternate_edit"
+msgstr "Edit Alternate"
+
+msgid "alternate_delete"
+msgstr "Delete Alternate"
 
 msgid "member"
 msgid_plural "members"

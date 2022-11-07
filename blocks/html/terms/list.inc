@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param array   $this->terms
  * @param Seat    $this->seat           (optional)
@@ -31,9 +31,14 @@ $helper = $this->template->getHelper('buttonLink');
         ?>
     </header>
     <table class="terms">
+    <thead>
+        <tr><th>Terms</th><th>Members</th><th>Alternates</th></tr>
+    </thead>
+    <tbody>
     <?php
-        $memberList = new Block('members/list.inc', ['disableButtons'=>$this->disableButtons]);
-        $actions    = new Block('terms/partials/actions.inc');
+        $memberList    = new Block(   'members/list.inc', ['disableButtons'=>$this->disableButtons]);
+        $alternateList = new Block('alternates/list.inc', ['disableButtons'=>$this->disableButtons]);
+        $actions       = new Block('terms/partials/actions.inc');
 
         foreach ($this->terms as $term) {
             $term_id   = $term->getId();
@@ -43,18 +48,22 @@ $helper = $this->template->getHelper('buttonLink');
                 $moreLinks     = $actions->render('html', $this->template);
             }
 
-            $memberList->term    = $term;
-            $memberList->members = $term->getMembers();
+            $memberList   ->term = $term;
+            $alternateList->term = $term;
+            $memberList   ->members    = $term->getMembers();
+            $alternateList->alternates = $term->getAlternates();
             echo "
             <tr><th>{$term->getStartDate(DATE_FORMAT)} - {$term->getEndDate(DATE_FORMAT)}
                     $moreLinks
                 </th>
-                <td>{$memberList->render('html', $this->template)}</td>
+                <td>{$memberList   ->render('html', $this->template)}</td>
+                <td>{$alternateList->render('html', $this->template)}</td>
             </tr>
             ";
         }
 
 	?>
+	</tbody>
 	</table>
 	<?php
         if (!$this->disableButtons) {
