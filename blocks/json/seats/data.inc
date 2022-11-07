@@ -48,16 +48,29 @@ foreach ($this->data['results'] as $r) {
         }
 
         $row['currentMember'] = [
-            'firstname'     => $r['person_firstname'],
-            'lastname'      => $r['person_lastname' ],
-            'website'       => $r['person_website'  ],
+            'firstname'     => $r['member_firstname'],
+            'lastname'      => $r['member_lastname' ],
+            'website'       => $r['member_website'  ],
             'startDate'     => $r['member_startDate'],
             'endDate'       => $r['member_endDate'  ],
             'termStartDate' => $r['member_termStart'],
             'termEndDate'   => $r['member_termEnd'  ],
             'offices'       => $offices
         ];
-        if ($userCanViewContactInfo) { $row['currentMember']['email'] = $r['person_email']; }
+        if ($userCanViewContactInfo) { $row['currentMember']['email'] = $r['member_email']; }
+    }
+
+    if ($r['alternate_id']) {
+        $row['currentAlternate'] = [
+            'firstname'     => $r['alternate_firstname'],
+            'lastname'      => $r['alternate_lastname' ],
+            'website'       => $r['alternate_website'  ],
+            'startDate'     => $r['alternate_startDate'],
+            'endDate'       => $r['alternate_endDate'  ],
+            'termStartDate' => $r['alternate_termStart'],
+            'termEndDate'   => $r['alternate_termEnd'  ],
+        ];
+        if ($userCanViewContactInfo) { $row['currentAlternate']['email'] = $r['alternate_email']; }
     }
     $seats[] = $row;
 }

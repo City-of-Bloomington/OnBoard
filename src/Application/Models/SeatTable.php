@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -72,21 +72,35 @@ class SeatTable extends TableGateway
         'seat_takesApplications' => 's.takesApplications',
         'appointer_name'         => 'a.name',
         'member_id'              => 'm.id',
-        'person_id'              => 'm.person_id',
-        'person_firstname'       => 'p.firstname',
-        'person_lastname'        => 'p.lastname',
-        'person_email'           => 'p.email',
-        'person_website'         => 'p.website',
-        'person_address'         => 'p.address',
-        'person_city'            => 'p.city',
-        'person_state'           => 'p.state',
-        'person_zip'             => 'p.zip',
-        'seat_startDate'         => 's.startDate',
-        'seat_endDate'           => 's.endDate',
+        'member_person_id'       => 'm.person_id',
+        'member_firstname'       => 'mp.firstname',
+        'member_lastname'        => 'mp.lastname',
+        'member_email'           => 'mp.email',
+        'member_website'         => 'mp.website',
+        'member_address'         => 'mp.address',
+        'member_city'            => 'mp.city',
+        'member_state'           => 'mp.state',
+        'member_zip'             => 'mp.zip',
         'member_startDate'       => 'm.startDate',
         'member_endDate'         => 'm.endDate',
         'member_termStart'       => "mt.startDate",
         'member_termEnd'         => "mt.endDate",
+        'alternate_id'           => 'alt.id',
+        'alternate_person_id'    => 'alt.person_id',
+        'alternate_firstname'    => 'ap.firstname',
+        'alternate_lastname'     => 'ap.lastname',
+        'alternate_email'        => 'ap.email',
+        'alternate_website'      => 'ap.website',
+        'alternate_address'      => 'ap.address',
+        'alternate_city'         => 'ap.city',
+        'alternate_state'        => 'ap.state',
+        'alternate_zip'          => 'ap.zip',
+        'alternate_startDate'    => 'alt.startDate',
+        'alternate_endDate'      => 'alt.endDate',
+        'alternate_termStart'    => "at.startDate",
+        'alternate_termEnd'      => "at.endDate",
+        'seat_startDate'         => 's.startDate',
+        'seat_endDate'           => 's.endDate',
         'term_id'                => 't.id',
         'term_startDate'         => "t.startDate",
         'term_endDate'           => "t.endDate",
@@ -175,13 +189,16 @@ class SeatTable extends TableGateway
 
         $columns = self::getDataColumns();
         $sql = "select  $columns
-                from seats           s
-                join committees      c  on s.committee_id=c.id
-                left join appointers a  on s.appointer_id=a.id
-                left join members    m  on s.id=m.seat_id and ((m.startDate is null or m.startDate <= '$date') and (m.endDate is null or m.endDate >= '$date'))
-                left join terms      mt on m.term_id=mt.id
-                left join terms      t  on s.id=t.seat_id and ((t.startDate is null or t.startDate <= '$date') and (t.endDate is null or t.endDate >= '$date'))
-                left join people     p on m.person_id=p.id
+                from seats             s
+                join committees        c  on s.committee_id=c.id
+                left join appointers   a  on s.appointer_id=a.id
+                left join terms        t  on s.id=  t.seat_id and ((  t.startDate is null or   t.startDate <= '$date') and (  t.endDate is null or   t.endDate >= '$date'))
+                left join members      m  on s.id=  m.seat_id and ((  m.startDate is null or   m.startDate <= '$date') and (  m.endDate is null or   m.endDate >= '$date'))
+                left join alternates alt  on s.id=alt.seat_id and ((alt.startDate is null or alt.startDate <= '$date') and (alt.endDate is null or alt.endDate >= '$date'))
+                left join terms       mt  on   m.term_id=mt.id
+                left join terms       at  on alt.term_id=at.id
+                left join people      mp  on   m.person_id=mp.id
+                left join people      ap  on alt.person_id=ap.id
                 $where
                 order by c.name, s.code";
         return self::performDataSelect($sql, $params);

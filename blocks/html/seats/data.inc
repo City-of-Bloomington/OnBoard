@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array             $this->params         Query parameters that produced the data
  * @param Laminas\Db\Result $this->data           Data structure returned as SeatTable::$dataFields
@@ -82,12 +82,16 @@ if (isset($this->params['current'])) {
                     switch ($f) {
                         case 'seat_startDate':
                         case 'seat_endDate':
+                        case 'term_startDate':
+                        case 'term_endDate':
                         case 'member_startDate':
                         case 'member_endDate':
                         case 'member_termStart':
                         case 'member_termEnd':
-                        case 'term_startDate':
-                        case 'term_endDate':
+                        case 'alternate_startDate':
+                        case 'alternate_endDate':
+                        case 'alternate_termStart':
+                        case 'alternate_termEnd':
                             if ($v) {
                                 $d = new \DateTime($v);
                                 $$f = $d->format(DATE_FORMAT);
@@ -118,9 +122,15 @@ if (isset($this->params['current'])) {
 
                 $committeeName = !$this->committee ? "<td>$committee_name</td>" : '';
                 $seat_uri      = parent::generateUri('seats.view')."?seat_id=$seat_id";
-                if ($person_id) {
-                    $uri       = parent::generateUri('people.view')."?person_id=$person_id";
-                    $member    = "<a href=\"$uri\">$person_firstname $person_lastname</a>";
+
+                if ($alternate_person_id) {
+                    $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
+                    $alternate = "<a href=\"$uri\">($alternate_firstname $alternate_lastname)</a>";
+                } else { $alternate = ''; }
+
+                if ($member_person_id) {
+                    $uri       = parent::generateUri('people.view')."?person_id=$member_person_id";
+                    $member    = "<a href=\"$uri\">$member_firstname $member_lastname</a>";
                     $termDates = "$member_termStart - $member_termEnd";
 
                     // Check if near the end of term
@@ -186,7 +196,7 @@ if (isset($this->params['current'])) {
                 $userCanEditOffices = !$this->disableButtons && Person::isAllowed('offices', 'update');
                 if ($userCanEditOffices) {
                     $actions[] = [
-                        'url'   => parent::generateUri('offices.update')."?committee_id=$committee_id;person_id=$person_id",
+                        'url'   => parent::generateUri('offices.update')."?committee_id=$committee_id;person_id=$member_person_id",
                         'label' => $this->_('office_add')
                     ];
                 }
@@ -217,7 +227,7 @@ if (isset($this->params['current'])) {
                     <td><a href=\"$seat_uri\">$seat_code <small>($seat_name)</small</a></td>
                     <td>$termDates</td>
                     <td>$appointer_name$seat_voting</td>
-                    <td>$member $offices</td>
+                    <td>$member $offices $alternate</td>
                     <td>$moreLinks</td>
                 </tr>
                 ";
