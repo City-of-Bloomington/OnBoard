@@ -16,7 +16,7 @@ if ($currentTerm) {
 
     $list = [$nextTerm, $currentTerm];
 
-    $d = new \DateTime();
+    $d = new \DateTime('now');
     $d->sub($termLength);
     $previousTerm = $this->seat->getTerm((int)$d->format('U'));
     if ($previousTerm) {

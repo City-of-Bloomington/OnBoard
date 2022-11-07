@@ -10,13 +10,13 @@ $currentTerm = $this->seat->getTerm(time());
 if ($currentTerm) {
     $defaultTermId = $currentTerm->getId();
 
-    $d = new \DateTime();
+    $d = new \DateTime('now');
     $d->add($termLength);
     $nextTerm = $this->seat->getTerm((int)$d->format('U'));
 
     $list = [$nextTerm, $currentTerm];
 
-    $d = new \DateTime();
+    $d = new \DateTime('now');
     $d->sub($termLength);
     $previousTerm = $this->seat->getTerm((int)$d->format('U'));
     if ($previousTerm) {

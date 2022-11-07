@@ -12,7 +12,7 @@ $helper = $this->template->getHelper('field');
         'name'  => 'currentMember[endDate]',
         'id'    => 'currentMember-endDate',
         'label' => $this->_('endDate'),
-        'value' => new \DateTime($this->currentMember->getEndDate()),
+        'value' => new \DateTime($this->currentMember->getEndDate() ?? 'now'),
         'type'  => 'date'
     ]);
 ?>

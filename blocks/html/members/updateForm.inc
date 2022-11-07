@@ -45,7 +45,7 @@ $title = $this->member->getId() ? $this->_('member_edit') : $this->_('member_add
                 'name'     => 'startDate',
                 'id'       => 'startDate',
                 'label'    => $this->_('startDate'),
-                'value'    => new \DateTime($this->member->getStartDate()),
+                'value'    => new \DateTime($this->member->getStartDate() ?? 'now'),
                 'type'     => 'date',
                 'required' => true
             ]);

@@ -84,7 +84,7 @@ use Michelf\MarkdownExtra;
                     'name'     => 'newMember[startDate]',
                     'id'       => 'newMember-startDate',
                     'label'    => $this->_('startDate'),
-                    'value'    => new \DateTime($this->newMember->getStartDate()),
+                    'value'    => new \DateTime($this->newMember->getStartDate() ?? 'now'),
                     'type'     => 'date',
                     'required' => true
                 ]);
