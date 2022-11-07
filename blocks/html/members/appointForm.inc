@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
  * @param Member $this->newMember
  * @param Member $this->currentMember (optional)
@@ -8,7 +8,7 @@
 use Application\Models\AppointerTable;
 use Application\Models\Seat;
 use Web\Block;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 ?>
 <form method="post">
     <?php if ($this->currentMember): ?>
@@ -36,8 +36,7 @@ use Michelf\MarkdownExtra;
             if ($seat) {
                 $requirements = $seat->getRequirements();
                 if ($requirements) {
-                    $markdown     = new MarkdownExtra();
-                    $requirements = $markdown->transform($requirements);
+                    $requirements = Markdown::defaultTransform($requirements);
                     echo "
                     <aside>
                         <dl><dt>{$this->_(['requirement', 'requirements', 2])}</dt>

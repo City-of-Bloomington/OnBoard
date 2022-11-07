@@ -5,7 +5,7 @@
     }],
     "require": {
         "php": ">=8.1",
-        "michelf/php-markdown": "~1",
+        "michelf/php-markdown":            "@stable",
         "aura/router": "~3",
         "google/apiclient": "~2.0",
         "apereo/phpcas":                   "@stable",

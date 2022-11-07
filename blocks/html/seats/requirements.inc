@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array $this->seats An array of Seat objects
  */
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 ?>
 <section>
     <header>
@@ -17,9 +17,8 @@ use Michelf\MarkdownExtra;
             $name = self::escape($seat->getName());
             $requirements = $seat->getRequirements();
 
-            $markdown = new MarkdownExtra();
             $requirements = $requirements
-                ? $markdown->transform($requirements)
+                ? Markdown::defaultTransform($requirements)
                 : $this->_('none');
 
             echo "

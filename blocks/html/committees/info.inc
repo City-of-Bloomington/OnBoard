@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Web\View;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 
 $fields = [
     'id', 'type',
@@ -22,10 +22,12 @@ foreach ($fields as $f) {
         $$f = "<a href=\"{$$f}\">{$$f}</a>";
     }
 }
-
-$markdown        = new MarkdownExtra();
-$description     = $markdown->transform($this->committee->getDescription());
-$meetingSchedule = $markdown->transform($this->committee->getMeetingSchedule());
+$description     = $this->committee->getDescription()
+                 ? Markdown::defaultTransform($this->committee->getDescription())
+                 : '';
+$meetingSchedule = $this->committee->getMeetingSchedule()
+                 ? Markdown::defaultTransform($this->committee->getMeetingSchedule())
+                 : '';
 
 $helper      = $this->template->getHelper('buttonLink');
 $editButton  = '';

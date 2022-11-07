@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Application\Models\Person;
 use Application\Models\Site;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 ?>
 <section>
     <header>
@@ -23,8 +23,7 @@ use Michelf\MarkdownExtra;
                     'edit'
                 );
             }
-            $markdown = new MarkdownExtra();
-            $content  = $markdown->transform(Site::getContent($label));
+            $content = Markdown::defaultTransform(Site::getContent($label));
             echo "
             <article>
                 <header>

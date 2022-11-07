@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
 use Application\Models\SeatTable;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 use Web\Block;
 
 $name = self::escape($this->committee->getName());
@@ -20,12 +20,11 @@ $name = self::escape($this->committee->getName());
         ?>
     </header>
     <?php
-        $markdown = new MarkdownExtra();
         $description     = $this->committee->getDescription();
         $meetingSchedule = $this->committee->getMeetingSchedule();
         foreach (['description', 'meetingSchedule'] as $f) {
             if ($$f) {
-                $value = $markdown->transform($$f);
+                $value = Markdown::defaultTransform($$f);
                 echo "<dl><dt>{$this->_($f)}</dt><dd>$value</dd></dl>";
             }
         }

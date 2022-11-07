@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation $this->legislation
  */
 use Application\Models\Person;
 use Web\Block;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 
 $committee  = parent::escape($this->legislation->getCommittee()->getName());
 $type       = parent::escape($this->legislation->getType()     ->getName());
@@ -21,8 +21,8 @@ foreach ($fields as $f) {
     $$f  = parent::escape($this->legislation->$get());
 }
 
-$markdown = new MarkdownExtra();
-$synopsis = $markdown->transform($this->legislation->getSynopsis());
+$synopsis = $this->legislation->getSynopsis();
+if ($synopsis) { $synopsis = Markdown::defaultTransform($synopsis); }
 ?>
 <section>
     <header>

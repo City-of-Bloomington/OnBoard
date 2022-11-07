@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
  * @param Seat $this->seat
  */
 use Application\Models\Person;
 use Application\Models\Seat;
-use Michelf\MarkdownExtra;
+use Michelf\Markdown;
 
 $seat_id       = $this->seat->getId();
 $committee_id  = $this->seat->getCommittee_id();
@@ -18,8 +18,7 @@ $committee_url = parent::generateUri('committees.info')."?committee_id=$committe
 $requirements  = self::escape($this->seat->getRequirements());
 
 if ($requirements) {
-	$markdown     = new MarkdownExtra();
-	$requirements = $markdown->transform($requirements);
+	$requirements = Markdown::defaultTransform($requirements);
 }
 
 $helper       = $this->template->getHelper('buttonLink');
