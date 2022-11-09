@@ -49,26 +49,28 @@ $DATABASES = [
 ];
 
 /**
- * Directory Configuration
+ * Ldap Authentication Configuration
  *
  * This supports doing user authentication from multiple external
  * directories, such as LDAP or ADS. This is required since city staff
  * are in a seperate LDAP directory from public user accounts.
- * Classes that implement ExternalIdentity should have an entry here.
+ * Classes that implement AuthenticationInterface should have an entry here.
  *
- * See: ExternalIdentity
+ * @see Domain\Auth
  */
-$DIRECTORY_CONFIG = [
-{% if onboard_directory_service %}
-// Example for Directory webservice
-  'Employee' => [
-      'classname' => 'Site\Classes\Employee',
-      'DIRECTORY_SERVER' => '{{ onboard_directory_service }}',
-  ]
-{% endif %}
+$LDAP = [
+    'Employee' => [
+        'classname'          => 'Site\Classes\Employee',
+        'server'             => '{{ onboard_ldap.server             }}',
+        'base_dn'            => '{{ onboard_ldap.base_dn            }}',
+        'username_attribute' => '{{ onboard_ldap.username_attribute }}',
+        'user_binding'       => '{{ onboard_ldap.user_binding       }}',
+        'admin_binding'      => '{{ onboard_ldap.admin_binding      }}',
+        'admin_pass'         => '{{ onboard_ldap.admin_pass         }}'
+    ]
 ];
 
-{% if onboard_cas_host %}
+{% if onboard_cas %}
 /**
  * CAS authentication http://www.jasig.org/cas
  *
@@ -77,9 +79,22 @@ $DIRECTORY_CONFIG = [
  * phpCAS is a PHP library for handling the calls to the CAS service
  * It is the official library, part of the Jasig CAS project
  */
-define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
-define('CAS_SERVER','{{ onboard_cas_host }}');
-define('CAS_URI','cas');
+$CAS = [
+    'server' => '{{ onboard_cas.host }}',
+    'uri'    => '{{ onboard_cas.uri  }}'
+];
+{% endif %}
+
+{% if onboard_graylog %}
+/**
+ * Graylog is a centralized log manager
+ *
+ * This application supports sending errors and exceptions to a graylog instance.
+ * This is handy for notifying developers of a problem before users notice.
+ * @see https://graylog.org
+ **/
+define('GRAYLOG_DOMAIN', '{{ onboard_graylog.host }}');
+define('GRAYLOG_PORT',    {{ onboard_graylog.port }});
 {% endif %}
 
 define('DATE_FORMAT', 'n/j/Y');

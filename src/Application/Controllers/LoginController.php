@@ -32,15 +32,17 @@ class LoginController extends Controller
 	 */
 	public function index(): View
 	{
+		global $CAS;
+
 		// If they don't have CAS configured, send them onto the application's
 		// internal authentication system
-		if (!defined('CAS')) {
+		if (!isset($CAS['server']) && !isset($CAS['uri'])) {
             $url = View::generateUrl('login.login').'?return_url='.$this->return_url;
 			header("Location: $url");
 			exit();
 		}
 
-		\phpCAS::client(CAS_VERSION_2_0, CAS_SERVER, 443, CAS_URI, 'https://'.BASE_HOST);
+		\phpCAS::client(CAS_VERSION_2_0, $CAS['server'], 443, $CAS['uri'], 'https://'.BASE_HOST);
 		\phpCAS::setNoCasServerValidation();
 		\phpCAS::forceAuthentication();
 		// at this step, the user has been authenticated by the CAS server
