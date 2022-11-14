@@ -69,8 +69,9 @@ if (isset($this->params['current'])) {
         </thead>
         <tbody>
         <?php
-            $editSeatButton   = '';
-            $userCanEditSeats = !$this->disableButtons && Person::isAllowed('seats', 'update');
+            $editSeatButton        = '';
+            $userCanEditSeats      = !$this->disableButtons && Person::isAllowed('seats', 'update');
+            $userCanEditAlternates = !$this->disableButtons && Person::isAllowed('alternates', 'update');
 
             foreach ($this->data['results'] as $row) {
                 /**
@@ -122,17 +123,23 @@ if (isset($this->params['current'])) {
 
                 $committeeName = !$this->committee ? "<td>$committee_name</td>" : '';
                 $seat_uri      = parent::generateUri('seats.view')."?seat_id=$seat_id";
+                $alternate     = '';
 
-                if ($alternate_person_id) {
-                    $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
-                    $alternate = "<a href=\"$uri\">($alternate_firstname $alternate_lastname)</a>";
-                    $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id;return_url=".urlencode($current_url);
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_edit')];
-                }
-                else {
-                    $uri       = parent::generateUri('alternates.update')."?return_url=".urlencode($current_url);
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_add')];
-                    $alternate = '';
+                if ($this->committee && $this->committee->allowsAlternates()) {
+                    if ($alternate_person_id) {
+                        $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
+                        $alternate = "<a href=\"$uri\">({$this->_('alternate')}: $alternate_firstname $alternate_lastname)</a>";
+                        if ($userCanEditAlternates) {
+                            $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id;return_url=".urlencode($current_url);
+                            $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_edit')];
+                        }
+                    }
+                    else {
+                        if ($userCanEditAlternates) {
+                            $uri       = parent::generateUri('alternates.update')."?return_url=".urlencode($current_url);
+                            $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_add')];
+                        }
+                    }
                 }
 
                 if ($member_person_id) {

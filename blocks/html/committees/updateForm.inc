@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee $this->committee
  */
@@ -9,13 +9,15 @@ use Application\Models\DepartmentTable;
 use Application\Models\Person;
 use Web\View;
 
+
+
 $fields = [
     'id',
     'type', 'yearFormed',
     'name', 'statutoryName', 'code', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
     'description', 'meetingSchedule',
-    'termEndWarningDays', 'applicationLifetime', 'legislative'
+    'termEndWarningDays', 'applicationLifetime', 'legislative', 'alternates'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -45,18 +47,19 @@ $title = $id ? $this->_('committee_edit') : $this->_('committee_add');
                     'value'   => $type,
                     'options' => $options
                 ]);
+            ?>
+            <dl class="radio">
+                <dt><?= $this->_('legislative'); ?></dt>
+                <dd><label><input name="legislative" id="legislative" type="radio" value="1" <?= $legislative ? 'checked="checked"' : ''; ?> /> Yes</label></dd>
+                <dd><label><input name="legislative" id="legislative" type="radio" value="0" <?= $legislative ? '' : 'checked="checked"'; ?> />  No</label></dd>
+            </dl>
+            <dl class="radio">
+                <dt><?= $this->_('alternates'); ?></dt>
+                <dd><label><input name="alternates" id="alternates" type="radio" value="1" <?= $alternates ? 'checked="checked"' : ''; ?> /> Yes</label></dd>
+                <dd><label><input name="alternates" id="alternates" type="radio" value="0" <?= $alternates ? '' : 'checked="checked"'; ?> />  No</label></dd>
+            </dl>
 
-                echo $helper->field([
-                    'name'    => 'legislative',
-                    'label'   => $this->_('legislative'),
-                    'value'   => $legislative,
-                    'type'    => 'radio',
-                    'options' => [
-                        ['value'=>1, 'label'=>$this->_('yes')],
-                        ['value'=>0, 'label'=>$this->_('no' )]
-                    ]
-                ]);
-
+            <?php
                 $fields = [
                     'name', 'yearFormed', 'statutoryName', 'code', 'calendarId',
                     'website', 'videoArchive', 'termEndWarningDays', 'applicationLifetime',

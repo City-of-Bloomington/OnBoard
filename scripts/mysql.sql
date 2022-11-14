@@ -59,7 +59,8 @@ create table committees (
 	meetingSchedule text,
 	termEndWarningDays  tinyint unsigned not null default 0,
 	applicationLifetime tinyint unsigned not null default 90,
-	legislative    boolean
+	legislative    boolean,
+	alternates     boolean
 );
 
 create table committeeStatutes(

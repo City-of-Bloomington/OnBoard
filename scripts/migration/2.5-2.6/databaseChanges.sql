@@ -12,3 +12,4 @@ create table alternates (
 	foreign key (person_id)    references people    (id)
 );
 
+alter table committees add alternates boolean;

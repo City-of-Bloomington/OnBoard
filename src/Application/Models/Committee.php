@@ -97,7 +97,8 @@ class Committee extends ActiveRecord
 	public function getTermEndWarningDays()  { return parent::get('termEndWarningDays'); }
 	public function getApplicationLifetime() { return parent::get('applicationLifetime'); }
 	public function getEndDate($f=null)    { return parent::getDateData('endDate', $f); }
-	public function getLegislative() { return parent::get('legislative') ? true : false; }
+	public function getLegislative(): bool { return parent::get('legislative') ? true : false; }
+	public function getAlternates (): bool { return parent::get('alternates' ) ? true : false; }
 
 	public function setType($s) { parent::set('type', $s === 'seated' ? 'seated': 'open'); }
 	public function setName            ($s) { parent::set('name',             $s); }
@@ -118,6 +119,7 @@ class Committee extends ActiveRecord
 	public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
 	public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
 	public function setLegislative($b) { $this->data['legislative'] = $b ? 1 : 0; }
+	public function setAlternates ($b) { $this->data['alternates' ] = $b ? 1 : 0; }
 
 	/**
 	 * @param array $post The POST request
@@ -131,7 +133,7 @@ class Committee extends ActiveRecord
 			'name', 'statutoryName', 'code', 'website', 'videoArchive', 'yearFormed', 'calendarId',
 			'email', 'phone', 'address', 'city', 'state', 'zip',
 			'description', 'meetingSchedule',
-			'termEndWarningDays', 'applicationLifetime', 'legislative'
+			'termEndWarningDays', 'applicationLifetime', 'legislative', 'alternates'
 		];
 		foreach ($fields as $f) {
 			$set = 'set'.ucfirst($f);
@@ -487,15 +489,13 @@ class Committee extends ActiveRecord
 		return $history;
 	}
 
-	/**
-	 * @return boolean
-	 */
-	public function isLegislative(): bool { return $this->getLegislative() ? true : false; }
+	public function isLegislative    (): bool { return $this->getLegislative(); }
+	public function allowsAlternates (): bool { return $this->getAlternates(); }
 	public function takesApplications(): bool
 	{
-        $db = Database::getConnection();
-        $sql     = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
-        $row     = $db->query($sql)->execute([$this->getId()])->current();
+        $db  = Database::getConnection();
+        $sql = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
+        $row = $db->query($sql)->execute([$this->getId()])->current();
         return (int)$row['count'] > 0;
 	}
 

@@ -13,7 +13,7 @@ $fields = [
     'id', 'type',
     'name', 'statutoryName', 'code', 'yearFormed', 'website', 'videoArchive', 'calendarId',
     'email', 'phone', 'address', 'city', 'state', 'zip',
-    'termEndWarningDays', 'applicationLifetime', 'legislative'
+    'termEndWarningDays', 'applicationLifetime', 'legislative', 'alternates'
 ];
 foreach ($fields as $f) {
     $get = 'get'.ucfirst($f);
@@ -62,7 +62,7 @@ if ((!$endDate || $endDate > time())
         $fields  = [
             'type', 'yearFormed', 'endDate',
             'statutoryName', 'code', 'website', 'videoArchive',
-            'email', 'phone', 'address', 'calendarId', 'legislative'
+            'email', 'phone', 'address', 'calendarId', 'legislative', 'alternates'
         ];
         if ($userCanEdit) {
             $fields[] = 'termEndWarningDays';
@@ -83,6 +83,7 @@ if ((!$endDate || $endDate > time())
                         $$f = $$f.' '.$this->_(['day', 'days', $$f]);
                     break;
                     case 'legislative':
+                    case  'alternates':
                         $$f = $$f ? $this->_('yes') : $this->_('no');
                     break;
                 }
