@@ -126,17 +126,23 @@ if (isset($this->params['current'])) {
                 $alternate     = '';
 
                 if ($this->committee && $this->committee->allowsAlternates()) {
+                    $p = ['return_url' => $current_url];
+                    if ($term_id) { $p['term_id'] = $term_id; }
+                    else          { $p['seat_id'] = $seat_id; }
                     if ($alternate_person_id) {
                         $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
                         $alternate = "<a href=\"$uri\">({$this->_('alternate')}: $alternate_firstname $alternate_lastname)</a>";
                         if ($userCanEditAlternates) {
-                            $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id;return_url=".urlencode($current_url);
+                            $p['alternate_id'] = $alternate_id;
+                            $q         = http_build_query($p, '', ';');
+                            $uri       = parent::generateUri('alternates.update')."?$q";
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_edit')];
                         }
                     }
                     else {
                         if ($userCanEditAlternates) {
-                            $uri       = parent::generateUri('alternates.update')."?return_url=".urlencode($current_url);
+                            $q         = http_build_query($p, '', ';');
+                            $uri       = parent::generateUri('alternates.update')."?$q";
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_add')];
                         }
                     }

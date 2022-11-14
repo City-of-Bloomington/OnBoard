@@ -63,9 +63,14 @@ $title = $this->alternate->getId() ? $this->_('alternate_edit') : $this->_('alte
             ]);
 
 			$helper = $this->template->getHelper('saveAndCancelButtons');
-			$uri    = $seat_id
-                    ? parent::generateUri('seats.view')."?seat_id=$seat_id"
-                    : parent::generateUri('committees.members')."?committee_id=$committee_id";
+            if (!empty($_SESSION['return_url'])) {
+                $uri = $_SESSION['return_url'];
+            }
+            else {
+                $uri = $seat_id
+                     ? parent::generateUri('seats.view')."?seat_id=$seat_id"
+                     : parent::generateUri('committees.members')."?committee_id=$committee_id";
+            }
 			echo $helper->saveAndCancelButtons($uri);
 		?>
         </fieldset>

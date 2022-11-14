@@ -8,6 +8,7 @@ declare (strict_types=1);
 use Application\Models\Person;
 use Application\Templates\Helpers\ButtonLink;
 use Web\Block;
+use Web\Url;
 ?>
 <section class="alternatesList">
     <table>
@@ -35,23 +36,22 @@ use Web\Block;
     ?>
     </table>
     <?php
-        $helper = $this->template->getHelper('buttonLink');
         if (!$this->disableButtons && Person::isAllowed('alternates', 'update')) {
-            $uri = null;
+            $p = ['return_url' => Url::current_url(BASE_HOST)];
             if ($this->term) {
-                $term_id = $this->term->getId();
-                $uri     = parent::generateUri('alternates.update')."?term_id=$term_id";
-                echo $helper->buttonLink($uri, $this->_('alternate_add'), 'add');
+                $p['term_id'] = $this->term->getId();
+                $uri = parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';');
+                echo "<a href=\"$uri\" class=\"add button\">{$this->_('alternate_add')}</a>";
             }
             elseif ($this->seat && $this->seat->getType() === 'open') {
-                $seat_id = $this->seat->getId();
-                $uri     = parent::generateUri('alternates.update')."?seat_id=$seat_id".$this->seat->getId();
-                echo $helper->buttonLink($uri, $this->_('alternate_add'), 'add');
+                $p['seat_id'] = $this->seat->getId();
+                $uri = parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';');
+                echo "<a href=\"$uri\" class=\"add button\">{$this->_('alternate_add')}</a>";
             }
             elseif ($this->committee) {
-                $committee_id = $this->committee->getId();
-                $uri          = parent::generateUri('alternates.update')."?committee_id=$committee_id";
-                echo $helper->buttonLink($uri, $this->_('alternate_add'), 'add');
+                $p['committee_id'] = $this->committee->getId();
+                $uri = parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';');
+                echo "<a href=\"$uri\" class=\"add button\">{$this->_('alternate_add')}</a>";
             }
         }
     ?>
