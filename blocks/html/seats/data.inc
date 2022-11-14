@@ -13,10 +13,10 @@ use Application\Models\Term;
 use Application\Templates\Helpers\ButtonLink;
 use Web\Url;
 
+$current_url  = Url::current_url(BASE_HOST);
 $title = $this->title
          ? self::escape($this->title)
          : $this->_(['seat', 'seats', count($this->data['results'])]);
-
 if (isset($this->params['current'])) {
     $title.= ' ('.$this->params['current']->format(DATE_FORMAT).')';
 }
@@ -126,11 +126,11 @@ if (isset($this->params['current'])) {
                 if ($alternate_person_id) {
                     $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
                     $alternate = "<a href=\"$uri\">($alternate_firstname $alternate_lastname)</a>";
-                    $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id";
+                    $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id;return_url=".urlencode($current_url);
                     $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_edit')];
                 }
                 else {
-                    $uri       = parent::generateUri('alternates.update');
+                    $uri       = parent::generateUri('alternates.update')."?return_url=".urlencode($current_url);
                     $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_add')];
                     $alternate = '';
                 }

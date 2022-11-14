@@ -21,6 +21,8 @@ class AlternatesController extends Controller
 {
     public function update(): View
     {
+        if (isset($_GET['return_url'])) { $_SESSION['return_url'] = $_GET['return_url']; }
+
         try {
             if (!empty($_REQUEST['alternate_id'])) { $alternate = new Alternate($_REQUEST['alternate_id']); }
             else {
@@ -44,9 +46,16 @@ class AlternatesController extends Controller
 
                     AlternateTable::update($alternate);
 
-                    $url = $alternate->getSeat_id()
-                           ? View::generateUrl('seats.view').'?seat_id='.$alternate->getSeat_id()
-                           : View::generateUrl('committees.members').'?committee_id='.$alternate->getCommittee_id();
+                    if (!empty($_SESSION['return_url'])) {
+                        $url = $_SESSION['return_url'];
+                        unset( $_SESSION['return_url']);
+                    }
+                    else {
+                        $url = $alternate->getSeat_id()
+                             ? View::generateUrl('seats.view').'?seat_id='.$alternate->getSeat_id()
+                             : View::generateUrl('committees.members').'?committee_id='.$alternate->getCommittee_id();
+                    }
+
                     header("Location: $url");
                     exit();
                 }
