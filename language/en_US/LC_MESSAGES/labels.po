@@ -259,7 +259,7 @@ msgid "seat_add"
 msgstr "Add Seat"
 
 msgid "seat_edit"
-msgstr "Edit"
+msgstr "Edit Seat"
 
 msgid "seat_end"
 msgstr "End Seat"
@@ -435,10 +435,10 @@ msgid "member_edit"
 msgstr "Edit Membership"
 
 msgid "member_end"
-msgstr "Resign"
+msgstr "Resign Member"
 
 msgid "member_continue"
-msgstr "Reappoint"
+msgstr "Reappoint Member"
 
 msgid "member_delete"
 msgstr "Delete Member"

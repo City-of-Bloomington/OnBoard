@@ -126,7 +126,14 @@ if (isset($this->params['current'])) {
                 if ($alternate_person_id) {
                     $uri       = parent::generateUri('people.view')."?person_id=$alternate_person_id";
                     $alternate = "<a href=\"$uri\">($alternate_firstname $alternate_lastname)</a>";
-                } else { $alternate = ''; }
+                    $uri       = parent::generateUri('alternates.update')."?alternate_id=$alternate_id";
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_edit')];
+                }
+                else {
+                    $uri       = parent::generateUri('alternates.update');
+                    $actions[] = ['url'=>$uri, 'label'=>$this->_('alternate_add')];
+                    $alternate = '';
+                }
 
                 if ($member_person_id) {
                     $uri       = parent::generateUri('people.view')."?person_id=$member_person_id";
