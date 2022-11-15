@@ -76,7 +76,9 @@ abstract class ActiveRecord
 	 */
 	protected function set($fieldname, $value)
 	{
-		$value = trim($value);
+		if ($value) {
+			$value = trim($value);
+		}
 		$this->data[$fieldname] = $value ? $value : null;
 	}
 
@@ -121,8 +123,8 @@ abstract class ActiveRecord
 	 */
 	protected function setDateData($dateField, $date, $format=DATETIME_FORMAT, $databaseFormat=self::MYSQL_DATETIME_FORMAT)
 	{
-		$date = trim($date);
 		if ($date) {
+			$date = trim($date);
             try {
                 $d = self::parseDate($date, $format);
                 $this->data[$dateField] = $d->format($databaseFormat);
@@ -189,14 +191,14 @@ abstract class ActiveRecord
 	 */
 	protected function setForeignKeyField($class, $field, $id)
 	{
-		$id = trim($id);
-		$var = preg_replace('/_id$/', '', $field);
 		if ($id) {
+			$id  = trim($id);
+			$var = preg_replace('/_id$/', '', $field);
 			$this->$var = new $class($id);
 			$this->data[$field] = $this->$var->getId();
 		}
 		else {
-			$this->$field = null;
+			$this->$field       = null;
 			$this->data[$field] = null;
 		}
 	}
