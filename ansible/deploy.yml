@@ -16,6 +16,7 @@
           - "default-jre"
           - "libreoffice-common"
           - "libreoffice-writer"
+          - "libreoffice-java-common"
           - "postfix"
           - 'poppler-utils'
 
@@ -112,6 +113,7 @@
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
+        - "/var/www" # Needed to avoid dconf errors when running libreoffce as www-data
 
     - name: "Update directory permission"
       command: "chmod -R u=rwX,g=rwX,o=rX {{ item }}"
