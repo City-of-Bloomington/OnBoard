@@ -101,12 +101,14 @@ $heading = $id ? $this->_('meetingFile_edit') : $this->_('meetingFile_add');
                 }
                 else {
                     // They can type whatever date they like
+                    $d     = $this->meetingFile->getMeetingDate();
+                    $value = $d ? new \DateTime($d) : new \DateTime('now');
                     echo $helper->field([
                         'id'       => 'meetingDate',
                         'name'     => 'meetingDate',
                         'label'    => $this->_('meetingDate'),
                         'type'     => 'date',
-                        'value'    => new \DateTime($this->meetingFile->getMeetingDate()),
+                        'value'    => $value,
                         'required' => true
                     ]);
                 }

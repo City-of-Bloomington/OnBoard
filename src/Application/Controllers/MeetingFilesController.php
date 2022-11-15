@@ -132,10 +132,12 @@ class MeetingFilesController extends Controller
                 try {
                     $file->setType        ($_POST['type'        ]);
                     $file->setTitle       ($_POST['title'       ]);
-                    $file->setEventId     ($_POST['eventId'     ]);
                     $file->setCommittee_id($_POST['committee_id']);
+                    if (!empty($_POST['eventId'])) {
+                        $file->setEventId($_POST['eventId']);
+                    }
                     if (!empty($_POST['meetingDate'])) {
-                        $file->setMeetingDate ($_POST['meetingDate' ], 'Y-m-d');
+                        $file->setMeetingDate($_POST['meetingDate' ], 'Y-m-d');
                     }
                     else {
                         $file->setMeetingDate(null);
