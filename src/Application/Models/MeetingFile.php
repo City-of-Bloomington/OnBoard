@@ -31,7 +31,8 @@ class MeetingFile extends File
         'application/vnd.oasis.opendocument'                                      => 'odf',
         'application/vnd.oasis.opendocument.text'                                 => 'odt',
         'application/pdf'                                                         => 'pdf',
-        'application/rtf'                                                         => 'rtf'
+        'application/rtf'                                                         => 'rtf',
+               'text/rtf'                                                         => 'rtf'
     ];
 
     public function validateDatabaseInformation()

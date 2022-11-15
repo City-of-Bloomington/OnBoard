@@ -25,7 +25,8 @@ abstract class File extends ActiveRecord
         'application/vnd.oasis.opendocument'                                      => 'odf',
         'application/vnd.oasis.opendocument.text'                                 => 'odt',
         'application/pdf'                                                         => 'pdf',
-        'application/rtf'                                                         => 'rtf'
+        'application/rtf'                                                         => 'rtf',
+		       'text/rtf'                                                         => 'rtf'
 
 		#'jpg' =>['mime_type'=>'image/jpeg'],
 		#'gif' =>['mime_type'=>'image/gif' ],
