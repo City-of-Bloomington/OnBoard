@@ -127,9 +127,11 @@ class Person extends ActiveRecord
 	public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
 	public function setGender   ($s)
 	{
-		strtolower(trim($s)) == 'male'
-			? parent::set('gender', 'male')
-			: parent::set('gender', 'female');
+		if ($s) {
+			strtolower(trim($s)) == 'male'
+				? parent::set('gender', 'male')
+				: parent::set('gender', 'female');
+		}
 	}
 
 	public function getUsername()             { return parent::get('username'); }
