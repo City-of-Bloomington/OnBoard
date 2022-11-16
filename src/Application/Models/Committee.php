@@ -523,7 +523,8 @@ class Committee extends ActiveRecord
             'meetingSchedule'  => $this->getMeetingSchedule(),
             'vacancy'          => $this->hasVacancy(),
             'description'      => $this->getDescription(),
-            'legislative'      => $this->isLegislative()
+            'legislative'      => $this->isLegislative(),
+            'alternates'       => $this->allowsAlternates()
         ];
         $statutes = $this->getStatutes();
         if (count($statutes)) {
