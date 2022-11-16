@@ -418,6 +418,9 @@ msgstr "Edit Alternate"
 msgid "alternate_delete"
 msgstr "Delete Alternate"
 
+msgid "alternate_vacant"
+msgstr "No alternate appointed"
+
 msgid "member"
 msgid_plural "members"
 msgstr[0] "Member"

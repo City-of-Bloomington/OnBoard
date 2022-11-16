@@ -140,7 +140,7 @@ if (isset($this->params['current'])) {
                         }
                     }
                     else {
-                        $alternate = "({$this->_('alternate')}: {$this->_('vacant')})";
+                        $alternate = "({$this->_('alternate_vacant')})";
                         if ($userCanEditAlternates) {
                             $q         = http_build_query($p, '', ';');
                             $uri       = parent::generateUri('alternates.update')."?$q";
