@@ -3,8 +3,8 @@
  * Files will be stored as /data/{tablename}/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2022 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2021 City of Bloomington, Indiana
+ * @copyright 2021-2022 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -112,6 +112,19 @@ class Solr
         $update->addDocuments([$doc]);
         $update->addCommit();
         return $this->client->update($update);
+    }
+
+    /**
+     * Delete a single file from the index
+     */
+    public function delete(File $file): ResultInterface
+    {
+        $fields = $this->prepareIndexFields($file);
+        $delete = $this->client->createUpdate();
+        $delete->addDeleteQuery('id:'.$fields['id']);
+        $delete->addCommit();
+        $delete->addOptimize();
+        return $this->client->update($delete);
     }
 
     public function prepareIndexFields(File $file): array

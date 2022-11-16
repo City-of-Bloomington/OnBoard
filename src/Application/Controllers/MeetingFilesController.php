@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2021 City of Bloomington, Indiana
+ * @copyright 2017-2022 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
@@ -203,6 +203,11 @@ class MeetingFilesController extends Controller
                 $file       = new MeetingFile($_GET['meetingFile_id']);
                 $committee  = $file->getCommittee();
                 $return_url = View::generateUrl('meetingFiles.index').'?committee_id='.$committee->getId();
+
+                global $SOLR;
+                $solr = new Solr($SOLR['onboard']);
+                $solr->delete($file);
+
                 $file->delete();
                 header("Location: $return_url");
                 exit();
