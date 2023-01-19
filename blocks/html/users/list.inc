@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2007-2020 City of Bloomington, Indiana
+ * @copyright 2007-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Sql\Select $users
  */
@@ -16,14 +16,20 @@ use Web\Url;
             $userCanView   = Person::isAllowed('people', 'view'  );
             $userCanEdit   = Person::isAllowed('users',  'update');
             $userCanDelete = Person::isAllowed('users',  'delete');
-            if ($userCanEdit) {
-                $helper = $this->template->getHelper('buttonLink');
+			$helper        = $this->template->getHelper('buttonLink');
+
+			if ($userCanEdit) {
                 echo $helper->buttonLink(
                     parent::generateUri('users.update'),
                     $this->translate('create_account'),
                     'add'
                 );
             }
+
+            $current_url = new Url(Url::current_url(BASE_HOST));
+			unset($current_url->page);
+			$current_url->format = 'csv';
+			echo $helper->buttonLink($current_url, $this->_('csv'), 'download');
         ?>
         </div>
     </header>
