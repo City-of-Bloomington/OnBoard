@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2020-2022 City of Bloomington, Indiana
+ * @copyright 2020-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -67,6 +67,7 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 
 $map->attach('departments.', '/departments', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\DepartmentsController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('view',   '/view',   'Application\Controllers\DepartmentsController')->extras(['action' => 'view'  ]);
     $r->get('index',  ''       , 'Application\Controllers\DepartmentsController')->extras(['action' => 'index' ]);
 });
 

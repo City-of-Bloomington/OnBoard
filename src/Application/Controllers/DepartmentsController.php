@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
@@ -24,6 +24,26 @@ class DepartmentsController extends Controller
         $this->template->blocks[] = new Block('departments/list.inc', ['departments'=>$list]);
         return $this->template;
 	}
+
+	public function view(): View
+    {
+        if (!empty($_REQUEST['department_id'])) {
+            try { $department = new Department($_REQUEST['department_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        }
+
+        if (isset($department)) {
+            $this->template->title  = $department->getName().' - '.APPLICATION_NAME;
+            $this->template->blocks = [
+                new Block('departments/info.inc', ['department' => $department])
+            ];
+        }
+        else {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $this->template->blocks[] = new Block('404.inc');
+        }
+        return $this->template;
+    }
 
 	public function update(): View
 	{

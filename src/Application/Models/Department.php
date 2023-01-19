@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2023 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -82,4 +82,16 @@ class Department extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	public function __toString() { return $this->get('name'); }
+
+	public function getCommittees()
+	{
+		$table = new CommitteeTable();
+		return $table->find(['department_id'=>$this->getId()]);
+	}
+
+	public function getUsers()
+	{
+		$table = new PeopleTable();
+		return $table->find(['user_account'=>true, 'department_id'=>$this->getid()]);
+	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -37,6 +37,11 @@ class CommitteeTable extends TableGateway
                         $select->join(['l'=>'committee_liaisons'], 'committees.id=l.committee_id', []);
                         $select->where(['l.person_id' => $value]);
 					break;
+
+                    case 'department_id':
+                        $select->join(['d'=>'committee_departments'], 'committees.id=d.committee_id', []);
+                        $select->where(['d.department_id' => $value]);
+                    break;
 
                     case 'legislative':
                     case  'alternates':

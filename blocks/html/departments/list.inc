@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->departments
  * @param boolean           $this->disableButtons
@@ -31,6 +31,7 @@ $helper = $this->template->getHelper('buttonLink');
     <?php
         $editButton = '';
         foreach ($this->departments as $d) {
+            $url  = parent::generateUri('departments.view').'?department_id='.$d->getId();
             $name = self::escape($d->getName());
 
             if ($userCanEdit) {
@@ -43,7 +44,7 @@ $helper = $this->template->getHelper('buttonLink');
 
             echo "
             <tr><td>$editButton</td>
-                <td>$name</td>
+                <td><a href=\"$url\">$name</a></td>
             </tr>
             ";
         }
