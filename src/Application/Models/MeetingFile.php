@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2022 City of Bloomington, Indiana
+ * @copyright 2017-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -88,12 +88,19 @@ class MeetingFile extends File
 	public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
 	public function getMeetingDate($f=null) { return parent::getDateData('meetingDate', $f); }
 
+	public function getUpdated_by():    ?int    { return !empty($this->data['updated_by']) ? (int)$this->data['updated_by']     : null; }
+	public function getUpdatedPerson(): ?Person { return $this->getUpdated_by()            ? new Person($this->getUpdated_by()) : null; }
+
+
 	public function setType        ($s) { parent::set('type',    $s); }
 	public function setTitle       ($s) { parent::set('title',   $s); }
 	public function setEventId     ($s) { parent::set('eventId', $s); }
 	public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setMeetingDate (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('meetingDate', $date, $format); }
+
+	public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
+	public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
 
 	//----------------------------------------------------------------
 	// Custom Functions

@@ -130,9 +130,12 @@ class MeetingFilesController extends Controller
         if (isset($file) && $file->getCommittee_id()) {
             if (isset($_POST['type'])) {
                 try {
+                    $file->setUpdatedPerson($_SESSION['USER']);
+
                     $file->setType        ($_POST['type'        ]);
                     $file->setTitle       ($_POST['title'       ]);
                     $file->setCommittee_id($_POST['committee_id']);
+
                     if (!empty($_POST['eventId'])) {
                         $file->setEventId($_POST['eventId']);
                     }

@@ -1,4 +1,4 @@
--- @copyright 2006-2020 City of Bloomington, Indiana
+-- @copyright 2006-2023 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
 create table races (
 	id int unsigned not null primary key auto_increment,
@@ -216,7 +216,9 @@ create table meetingFiles(
 	mime_type        varchar(128) not null,
 	created          datetime     not null /*!50700 default CURRENT_TIMESTAMP */,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	updated_by       int unsigned,
 	foreign key (committee_id) references committees(id)
+	foreign key (updated_by)   references people(id)
 );
 
 create table committeeHistory(
