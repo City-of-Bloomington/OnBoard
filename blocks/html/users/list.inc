@@ -53,6 +53,7 @@ use Web\Url;
 				$editButton   = '';
 				$deleteButton = '';
 				$user_id      = $user->getId();
+				$class        = $user->getExternalIdentity() ? '' : ' class="missing"';
 				if ($userCanEdit) {
 					$editButton = $helper->buttonLink(
 						parent::generateUri('users.update')."?user_id=$user_id;return_url=$return_url",
@@ -73,8 +74,10 @@ use Web\Url;
                     $uri  = parent::generateUri('people.view')."?person_id=$user_id";
                     $name = "<a href=\"$uri\">$name</a>";
 				}
+
 				echo "
-				<tr><td>$editButton</td>
+				<tr $class>
+					<td>$editButton</td>
 					<td>{$user->getUsername()}</td>
 					<td>$name</td>
 					<td>{$user->getAuthenticationMethod()}</td>
