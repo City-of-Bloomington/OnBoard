@@ -244,6 +244,27 @@ class Person extends ActiveRecord
 		}
 	}
 
+	public function getExternalIdentity(): ?ExternalIdentity
+	{
+		global $LDAP;
+
+		if ($this->getUsername()) {
+			switch($this->getAuthenticationMethod()) {
+				case "local":
+					return null;
+
+				default:
+					$method = $this->getAuthenticationMethod();
+					$class  = $LDAP[$method]['classname'];
+					try {
+						return new $class($this->getUsername());
+					}
+					catch (\Exception $e) { }
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Checks if the user is supposed to have acces to the resource
 	 *

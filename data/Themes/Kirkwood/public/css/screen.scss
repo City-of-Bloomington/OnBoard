@@ -129,7 +129,8 @@ p {
 
 a.current { font-weight:bold; }
 
-tr.carryover { background-color:#fc6; }
+table tr.missing   td { background-color: $color-error; }
+table tr.carryover td { background-color: #fc6; }
 th a.sort {
     padding-right:$iconSpacing;
     background-repeat:no-repeat;
