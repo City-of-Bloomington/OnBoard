@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2022 City of Bloomington, Indiana
+ * @copyright 2022-2023 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -90,12 +90,12 @@ class Alternate extends ActiveRecord
             $end  ->setTime(0,0,0,0);
 
             if ($end < $start) {
-                throw new \Exception('invalidEndDate');
+                throw new \Exception('invalidEndDateBeforeStart');
             }
             if ($seat->getType() == 'termed') {
                 $te = new \DateTime($this->getTerm()->getEndDate());
                 if ($end > $te) {
-                    throw new \Exception('invalidEndDate');
+                    throw new \Exception('invalidEndDateAfterTerm');
                 }
             }
         }

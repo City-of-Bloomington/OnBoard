@@ -18,7 +18,7 @@
         "symfony/event-dispatcher":        "@stable"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "~9.0"
     },
     "autoload": {
         "psr-4": {

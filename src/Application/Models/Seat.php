@@ -160,7 +160,7 @@ class Seat extends ActiveRecord
             // Make sure the end date falls after the start date
             $start = (int)$this->getStartDate('U');
             $end   = (int)$date->format('U');
-            if ($end < $start) { throw new \Exception('invalidEndDate'); }
+            if ($end < $start) { throw new \Exception('invalidEndDateBeforeStart'); }
 
             $updates = [
                 'update terms   set endDate=? where seat_id=? and endDate is null',

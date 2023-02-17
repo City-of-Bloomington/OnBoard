@@ -1,5 +1,5 @@
 # Translation
-# Copyright (C) 2016-2018 City of Bloomington
+# Copyright (C) 2016-2023 City of Bloomington
 # This file is distributed under the same license as the OnBoard package.
 #
 domain "errors"
@@ -23,8 +23,11 @@ msgstr ""
 msgid "invalidDate"
 msgstr "You provided an invalid date."
 
-msgid "invalidEndDate"
-msgstr "The end date is invalid"
+msgid "invalidEndDateBeforeStart"
+msgstr "The end date must come after the start date"
+
+msgid "invalidEndDateAfterTerm"
+msgstr "The end date must come before the end of the term"
 
 msgid "invalidLogin"
 msgstr "The username and password combination you entered is not correct."
