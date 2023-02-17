@@ -90,15 +90,14 @@ class Member extends ActiveRecord
             $end  ->setTime(0,0,0,0);
 
             if ($end < $start) {
-                throw new \Exception('invalidEndDate');
+                throw new \Exception('invalidEndDateBeforeStart');
             }
             if ($seat->getType() == 'termed') {
                 $te = new \DateTime($this->getTerm()->getEndDate());
                 if ($end > $te) {
-                    throw new \Exception('invalidEndDate');
+                    throw new \Exception('invalidEndDateAfterTerm');
                 }
             }
-
 		}
 
 		// Make sure this person is not serving overlapping terms for the same committee
@@ -106,10 +105,11 @@ class Member extends ActiveRecord
 		$overlap = $this->overlapsExistingMember();
 		if ($overlap) {
             $name =    $this->getPerson()->getFullname();
-            $s1   =    $this->getSeat()->getName();
-            $s2   = $overlap->getSeat()->getName();
+            $s1   =    $this->getSeat()->getCode();
+            $s2   = $overlap->getSeat()->getCode();
 
-            $message = "The appointment for $name to the $s1 seat overlaps their appointment to the $s2 seat.
+            $message = "The appointment for            {$this->getPerson()->getFullname()} to the    {$this->getSeat()->getCode()} seat
+                        overlaps the appointment of {$overlap->getPerson()->getFullname()} to the {$overlap->getSeat()->getCode()} seat.
                         Members are not permitted to serve on multiple seats of the same board or commission at the same time";
             throw new \Exception($message);
 		}
