@@ -9,7 +9,7 @@
         "aura/router": "~3",
         "google/apiclient": "~2.0",
         "apereo/phpcas":                   "@stable",
-        "graylog2/gelf-php":               "@stable",
+        "graylog2/gelf-php":               "~1",
         "laminas/laminas-db":              "@stable",
         "laminas/laminas-log":             "@stable",
         "laminas/laminas-paginator":       "@stable",
