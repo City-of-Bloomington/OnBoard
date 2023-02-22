@@ -92,7 +92,7 @@ class Member extends ActiveRecord
             if ($end < $start) {
                 throw new \Exception('invalidEndDateBeforeStart');
             }
-            if ($seat->getType() == 'termed') {
+            if ($seat && $seat->getType() == 'termed') {
                 $te = new \DateTime($this->getTerm()->getEndDate());
                 if ($end > $te) {
                     throw new \Exception('invalidEndDateAfterTerm');

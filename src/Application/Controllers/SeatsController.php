@@ -139,7 +139,7 @@ class SeatsController extends Controller
                     $seat->setTermLength       ($_POST['termLength'       ]);
                     $seat->setTermModifier     ($_POST['termModifier'     ]);
                     $seat->setVoting           ($_POST['voting'           ]);
-                    $seat->setTakesApplications($_POST['takesApplications']);
+                    $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
                     SeatTable::update($seat);
                     $return_url = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
