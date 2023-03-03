@@ -215,6 +215,9 @@ msgstr "Current Committees"
 msgid "committees_past"
 msgstr "Past Committees"
 
+msgid "committees_all"
+msgstr "All Boards &amp; Commissions"
+
 msgid "committeeHistory"
 msgstr "History"
 
@@ -734,6 +737,9 @@ msgstr "Edit Document"
 
 msgid "meetingFile_delete"
 msgstr "Delete Document"
+
+msgid "meetingFile_search"
+msgstr "Board &amp; Commission Search"
 
 msgid "filename"
 msgstr "Filename"

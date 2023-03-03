@@ -24,7 +24,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 ?>
 <section>
     <header>
-        <h2><?= $this->_(['meetingFile', 'meetingFiles', count($this->files)]); ?></h2>
+        <?php if (!$this->committee_id) { echo "<h2>{$this->_('meetingFile_search')}</h2>"; } ?>
         <div class="tools">
         <?php
             $helper = $this->template->getHelper('buttonLink');
@@ -50,7 +50,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                 <fieldset>
                 <?php
                     $h       = $this->template->getHelper('field');
-                    $options = [['value'=>'']];
+                    $options = [['value'=>'', 'label'=>$this->_('committees_all')]];
                     foreach ($this->committees as $c) { $options[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
                     echo $h->field([
                         'name'    => 'committee_id',
