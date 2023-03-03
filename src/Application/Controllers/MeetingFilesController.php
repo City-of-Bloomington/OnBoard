@@ -54,10 +54,9 @@ class MeetingFilesController extends Controller
 		if (!empty($_GET['type']) && in_array($_GET['type'], MeetingFilesTable::$types)) {
             $search['type'] = $_GET['type'];
 		}
-
-		if (!empty($_GET['year'])) {
-            $search['year'] = (int)$_GET['year'];
-		}
+		if (!empty($_GET['year'     ])) { $search['year' ] = (int)$_GET['year']; }
+		if (!empty($_GET['startDate'])) { $search['start'] = new \DateTime($_GET['startDate']); }
+        if (!empty($_GET['endDate'  ])) { $search['end'  ] = new \DateTime($_GET['endDate'  ]); }
 
         $files = new MeetingFilesTable();
         if ($this->template->outputFormat != 'csv') {
@@ -85,6 +84,8 @@ class MeetingFilesController extends Controller
             'committee_id' => $search['committee_id'] ?? null,
             'type'         => $search['type'        ] ?? null,
             'year'         => $search['year'        ] ?? null,
+            'startDate'    => $search['start'       ] ?? null,
+            'endDate'      => $search['end'         ] ?? null,
             'sort'         => $sort,
             'committees'   => $committees->find(),
             'types'        => MeetingFilesTable::$types,

@@ -6,6 +6,8 @@
  * @param int      $this->committee_id   The chosen committee
  * @param int      $this->year           The chosen year
  * @param string   $this->type           The chosen file type
+ * @param DateTime $this->startDate      The chosen start date
+ * @param DateTime $this->endDate        The chosen end date
  * @param stdClass $this->sort           The chosen sorting
  * @param array    $this->committees     List of committees to choose from
  * @param array    $this->types          List of file types to choose from
@@ -72,6 +74,22 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                         'attr'    => ['onchange'=>'this.form.submit();']
                     ]);
 
+                    echo $h->field([
+                        'name'     => 'startDate',
+                        'id'       => 'startDate',
+                        'label'    => $this->_('startDate'),
+                        'value'    => $this->startDate ? $this->startDate : null,
+                        'type'     => 'date'
+                    ]);
+
+                    echo $h->field([
+                        'name'     => 'endDate',
+                        'id'       => 'endDate',
+                        'label'    => $this->_('endDate'),
+                        'value'    => $this->endDate ? $this->endDate : null,
+                        'type'     => 'date'
+                    ]);
+
                     $options = [['value'=>'']];
                     foreach ($this->years as $y) { $options[] = ['value'=>$y]; }
                     echo $h->field([
@@ -84,6 +102,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                         'attr'    => ['onchange'=>'this.form.submit();']
                     ]);
                 ?>
+                <button type="submit"><?= $this->_('search'); ?></button>
                 </fieldset>
             </form>
         </div>
