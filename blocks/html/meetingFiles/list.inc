@@ -1,11 +1,15 @@
 <?php
 /**
- * @copyright 2018-2021 City of Bloomington, Indiana
+ * @copyright 2018-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param Laminas\Db\Result $this->files
- * @param Committee         $this->committee (optional)
- * @param stdClass          $this->sort
- * @param array             $this->years   Available years for this committee
+ * @param Laminas\Db\Result $this->files The search results
+ * @param int      $this->committee_id   The chosen committee
+ * @param int      $this->year           The chosen year
+ * @param string   $this->type           The chosen file type
+ * @param stdClass $this->sort           The chosen sorting
+ * @param array    $this->committees     List of committees to choose from
+ * @param array    $this->types          List of file types to choose from
+ * @param array    $this->years          List of years to choose from
  */
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
@@ -29,13 +33,12 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
             }
 
             $helper = $this->template->getHelper('dropdown');
-            if ($this->committee && $userCanEdit) {
+            if ($this->committee_id && $userCanEdit) {
                 $actions      = [];
-                $committee_id = $this->committee->getId();
-                foreach (MeetingFile::$types as $type) {
+                foreach ($this->types as $t) {
                     $actions[] = [
-                        'label' => $type,
-                        'url'   => parent::generateUri('meetingFiles.update')."?type=$type;committee_id=$committee_id"
+                        'label' => $t,
+                        'url'   => parent::generateUri('meetingFiles.update')."?type=$t;committee_id={$this->committee_id}"
                     ];
                 }
                 echo $helper->dropdown($actions, $this->_('add'), 'meetingFile_add');
@@ -44,10 +47,31 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
             <form method="get">
                 <fieldset>
                 <?php
-                    if ($this->committee) {
-                        echo "<input name=\"committee_id\" type=\"hidden\" value=\"{$this->committee->getId()}\" />";
-                    }
                     $h       = $this->template->getHelper('field');
+                    $options = [['value'=>'']];
+                    foreach ($this->committees as $c) { $options[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+                    echo $h->field([
+                        'name'    => 'committee_id',
+                        'id'      => 'committee_id',
+                        'label'   => $this->_('committee'),
+                        'type'    => 'select',
+                        'value'   => $this->committee_id ?? null,
+                        'options' => $options,
+                        'attr'    => ['onchange'=>'this.form.submit();']
+                    ]);
+
+                    $options = [['value'=>'']];
+                    foreach ($this->types as $t) { $options[] = ['value'=>$t]; }
+                    echo $h->field([
+                        'name'    => 'type',
+                        'id'      => 'type',
+                        'label'   => $this->_('type'),
+                        'type'    => 'select',
+                        'value'   => $this->type ?? null,
+                        'options' => $options,
+                        'attr'    => ['onchange'=>'this.form.submit();']
+                    ]);
+
                     $options = [['value'=>'']];
                     foreach ($this->years as $y) { $options[] = ['value'=>$y]; }
                     echo $h->field([
@@ -55,7 +79,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                         'id'      => 'year',
                         'label'   => $this->_('year'),
                         'type'    => 'select',
-                        'value'   => !empty($_GET['year']) ? (int)$_GET['year'] : '',
+                        'value'   => $this->year ?? null,
                         'options' => $options,
                         'attr'    => ['onchange'=>'this.form.submit();']
                     ]);
@@ -76,30 +100,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                     echo "<th><a href=\"$url\"$class>{$this->_($f)}</a></th>";
                 }
             ?>
-            <th><form method="get">
-                    <fieldset>
-                        <?php
-                            foreach ($_GET as $k=>$v) {
-                                if ($k != 'type') {
-                                    $k = parent::escape($k);
-                                    $v = parent::escape($v);
-                                    echo "<input name=\"$k\" type=\"hidden\" value=\"$v\" />";
-                                }
-                            }
-                        ?>
-                        <select name="type" onChange="this.form.submit();">
-                            <option value=""><?= $this->_('type'); ?></option>
-                            <?php
-                                $type = !empty($_GET['type']) ? $_GET['type'] : null;
-                                foreach (MeetingFilesTable::$types as $t) {
-                                    $selected = !empty($_GET['type']) && $_GET['type']==$t ? 'selected="true"' : '';
-                                    echo "<option $selected>$t</option>";
-                                }
-                            ?>
-                        </select>
-                    </fieldset>
-                </form>
-            </th>
+            <th><?= $this->_('type'); ?></th>
             <th></th>
         </tr>
     </thead>

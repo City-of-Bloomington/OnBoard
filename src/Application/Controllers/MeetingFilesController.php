@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2017-2022 City of Bloomington, Indiana
+ * @copyright 2017-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 
@@ -50,31 +51,44 @@ class MeetingFilesController extends Controller
             }
 		}
 
-		if (!empty($_GET['type'])) {
-            if (in_array($_GET['type'], MeetingFilesTable::$types)) { $search['type'] = $_GET['type']; }
+		if (!empty($_GET['type']) && in_array($_GET['type'], MeetingFilesTable::$types)) {
+            $search['type'] = $_GET['type'];
 		}
+
 		if (!empty($_GET['year'])) {
             $search['year'] = (int)$_GET['year'];
 		}
 
-        $table = new MeetingFilesTable();
+        $files = new MeetingFilesTable();
         if ($this->template->outputFormat != 'csv') {
-            $list  = $table->find($search, "{$sort->field} {$sort->direction}", true);
+            $list  = $files->find($search, "{$sort->field} {$sort->direction}", true);
             $list->setCurrentPageNumber($page);
             $list->setItemCountPerPage(20);
         }
         else {
-            $list  = $table->find($search, "{$sort->field} {$sort->direction}");
+            $list  = $files->find($search, "{$sort->field} {$sort->direction}");
         }
 
         // The list of years we give the block should all years available
-        if (isset($search['year'])) { unset($search['year']); }
+        if (isset($search['year'])) {
+            $s = $search;
+            unset($s['year']);
+            $years = array_keys($files->years($s));
+        }
+        else {
+            $years = array_keys($files->years($search));
+        }
 
+        $committees = new CommitteeTable();
         $this->template->blocks[] = new Block('meetingFiles/list.inc', [
-            'files'     => $list,
-            'committee' => isset($committee) ? $committee : null,
-            'sort'      => $sort,
-            'years'     => array_keys($table->years($search))
+            'files'        => $list,
+            'committee_id' => $search['committee_id'] ?? null,
+            'type'         => $search['type'        ] ?? null,
+            'year'         => $search['year'        ] ?? null,
+            'sort'         => $sort,
+            'committees'   => $committees->find(),
+            'types'        => MeetingFilesTable::$types,
+            'years'        => $years
         ]);
         return $this->template;
     }
