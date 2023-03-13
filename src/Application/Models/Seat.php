@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2022 City of Bloomington, Indiana
+ * @copyright 2009-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -245,6 +245,7 @@ class Seat extends ActiveRecord
         if (count($list)) {
             return $list->current();
         }
+        return null;
 	}
 	public function getLastestAlternate(): ?Alternate
 	{
@@ -253,6 +254,7 @@ class Seat extends ActiveRecord
 		if (count($list)) {
 			return $list->current();
 		}
+		return null;
 	}
 
 	/**
