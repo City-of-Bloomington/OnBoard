@@ -498,6 +498,13 @@ class Committee extends ActiveRecord
         $row = $db->query($sql)->execute([$this->getId()])->current();
         return (int)$row['count'] > 0;
 	}
+	public function hasReports(): bool
+	{
+		$db  = Database::getConnection();
+		$sql = 'select count(*) as count from reports where committee_id=?';
+		$row = $db->query($sql)->execute([$this->getId()])->current();
+		return (int)$row['count'] > 0;
+	}
 
 	/**
 	 * Returns an array suitable for serialization
@@ -524,7 +531,8 @@ class Committee extends ActiveRecord
             'vacancy'          => $this->hasVacancy(),
             'description'      => $this->getDescription(),
             'legislative'      => $this->isLegislative(),
-            'alternates'       => $this->allowsAlternates()
+            'alternates'       => $this->allowsAlternates(),
+            'reports'          => $this->hasReports()
         ];
         $statutes = $this->getStatutes();
         if (count($statutes)) {
