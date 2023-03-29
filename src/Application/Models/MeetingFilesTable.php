@@ -36,6 +36,15 @@ class MeetingFilesTable extends TableGateway
                         $select->where(['year(meetingDate)=?' => (int)$value]);
                     break;
 
+                    case 'indexed':
+                        if ($value) {
+                            $select->where(['indexed>updated']);
+                        }
+                        else {
+                            $select->where(['indexed is null or updated>indexed']);
+                        }
+                    break;
+
 					default:
 						$select->where([$key=>$value]);
 				}

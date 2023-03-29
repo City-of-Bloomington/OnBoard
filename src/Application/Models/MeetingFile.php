@@ -95,6 +95,10 @@ class MeetingFile extends File
 	public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
 	public function setMeetingDate (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('meetingDate', $date, $format); }
 
+	public function setIndexed(\DateTime $d)    { $this->data['indexed'   ] = $d->format(ActiveRecord::MYSQL_DATETIME_FORMAT); }
+	public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
+	public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
+
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------
