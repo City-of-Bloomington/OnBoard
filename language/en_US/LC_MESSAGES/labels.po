@@ -739,7 +739,7 @@ msgid "meetingFile_delete"
 msgstr "Delete Document"
 
 msgid "meetingFile_search"
-msgstr "Board &amp; Commission Search"
+msgstr "Board &amp; Commission Meeting File Search"
 
 msgid "filename"
 msgstr "Filename"

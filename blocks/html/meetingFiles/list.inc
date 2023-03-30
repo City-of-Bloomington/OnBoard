@@ -112,24 +112,25 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
         <tr><?php
                 $url = new Url(Url::current_url(BASE_HOST));
 
-                $fields = ['title', 'filename', 'meetingDate'];
+                $fields = ['meetingDate'];
                 foreach ($fields as $f) {
                     $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
                     $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
                     echo "<th><a href=\"$url\"$class>{$this->_($f)}</a></th>";
                 }
             ?>
-            <th><?= $this->_('type'); ?></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
     <?php
         foreach ($this->files as $f) {
-            $id       = $f->getId();
-            $title    = parent::escape($f->getTitle());
-            $filename = parent::escape($f->getFilename());
-            $actions  = [];
+            $id        = $f->getId();
+            $committee = parent::escape($f->getCommittee()->getName());
+            $title     = parent::escape($f->getTitle());
+            $filename  = parent::escape($f->getFilename());
+            $actions   = [];
 
             if ($userCanEdit) {
                 $actions[] = [
@@ -149,10 +150,12 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
 
             $url = $f->getDownloadUri();
             echo "
-            <tr><td>$title</td>
-                <td><a href=\"$url\">$filename</a></td>
-                <td>{$f->getMeetingDate(DATE_FORMAT)}</td>
-                <td>{$f->getType()}</td>
+            <tr><th>{$f->getMeetingDate(DATE_FORMAT)}</th>
+                <td><div>$committee</div>
+                    <div>$title</div>
+                    <div><a href=\"$url\">$filename</a></div>
+                    <div>{$f->getType()}</div>
+                </td>
                 <td>$dropdown</td>
             </tr>
             ";
