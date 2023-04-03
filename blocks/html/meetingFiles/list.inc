@@ -112,14 +112,18 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
         <tr><?php
                 $url = new Url(Url::current_url(BASE_HOST));
 
-                $fields = ['meetingDate'];
+                $fields = ['meetingDate', 'type', 'committee', 'title'];
                 foreach ($fields as $f) {
-                    $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
-                    $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
-                    echo "<th><a href=\"$url\"$class>{$this->_($f)}</a></th>";
+                    if (in_array($f, MeetingFilesTable::$sortableFields)) {
+                        $url->sort = ($this->sort->field == $f && $this->sort->direction == 'desc') ? "$f asc" : "$f desc";
+                        $class     =  $this->sort->field == $f ? " class=\"sort {$this->sort->direction}\"" : '';
+                        echo "<th><a href=\"$url\"$class>{$this->_($f)}</a></th>";
+                    }
+                    else {
+                        echo "<th>{$this->_($f)}</th>";
+                    }
                 }
             ?>
-            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -151,11 +155,9 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
             $url = $f->getDownloadUri();
             echo "
             <tr><th>{$f->getMeetingDate(DATE_FORMAT)}</th>
-                <td><div>$committee</div>
-                    <div>$title</div>
-                    <div><a href=\"$url\">$filename</a></div>
-                    <div>{$f->getType()}</div>
-                </td>
+                <td><a href=\"$url\">{$f->getType()}</a></td>
+                <td><a href=\"$url\">$committee</a></td>
+                <td><a href=\"$url\">$title</a></td>
                 <td>$dropdown</td>
             </tr>
             ";
