@@ -214,9 +214,9 @@ create table meetingFiles(
 	internalFilename varchar(128) not null,
 	filename         varchar(128) not null,
 	mime_type        varchar(128) not null,
-	created          datetime     not null default CURRENT_TIMESTAMP,
-	indexed          datetime,
+	created          timestamp    not null default CURRENT_TIMESTAMP,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	indexed          timestamp
 	foreign key (committee_id) references committees(id)
 );
 
