@@ -151,10 +151,6 @@ class MeetingFilesController extends Controller
 
                     $file->save();
 
-                    global $SOLR;
-                    $solr = new Solr($SOLR['onboard']);
-                    $solr->add($file);
-
                     $return_url = !empty($_POST['return_url'])
                                   ? $_POST['return_url']
                                   : View::generateUrl('meetingFiles.index')."?committee_id={$file->getCommittee_id()}";
