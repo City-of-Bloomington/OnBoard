@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2021 City of Bloomington, Indiana
+ * @copyright 2017-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -14,7 +14,6 @@ use Laminas\Db\Sql\Expression;
 class MeetingFilesTable extends TableGateway
 {
     const TABLE = 'meetingFiles';
-    public static $types          = ['Agenda', 'Minutes', 'Packet'];
     public static $sortableFields = ['filename', 'meetingDate', 'created'];
 
 	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }

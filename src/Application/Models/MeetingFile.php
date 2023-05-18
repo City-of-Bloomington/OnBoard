@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2022 City of Bloomington, Indiana
+ * @copyright 2017-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -20,7 +20,7 @@ class MeetingFile extends File
 	protected $committee;
 	protected $event;
 
-	public static $types = ['Agenda', 'Minutes', 'Packet'];
+	public static $types = ['Agenda', 'Memorandum', 'Minutes', 'Packet'];
 
 	/**
 	 * Whitelist of accepted file types
