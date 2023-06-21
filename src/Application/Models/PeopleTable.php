@@ -81,6 +81,10 @@ class PeopleTable extends TableGateway
                     if ($v) { $select->where([$k=>$v]); }
                 break;
 
+				case 'username':
+					$select->where->like($k, "$v%");
+				break;
+
                 default:
                     if ($v && in_array($k, self::$columns)) {
                         $select->where->like($k, "$v%");
