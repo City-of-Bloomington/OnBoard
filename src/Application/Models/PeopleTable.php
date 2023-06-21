@@ -13,35 +13,35 @@ class PeopleTable extends TableGateway
 {
     public static $columns = ['firstname', 'lastname'];
 
-	public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
+    public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
-	public function find($fields=null, $order='lastname', $paginated=false, $limit=null)
-	{
-		$select = new Select('people');
-		$select->quantifier(Select::QUANTIFIER_DISTINCT);
+    public function find($fields=null, $order='lastname', $paginated=false, $limit=null)
+    {
+        $select = new Select('people');
+        $select->quantifier(Select::QUANTIFIER_DISTINCT);
 
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					case 'user_account':
-						if ($value) {
-							$select->where('username is not null');
-						}
-						else {
-							$select->where('username is null');
-						}
-					break;
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'user_account':
+                        if ($value) {
+                            $select->where('username is not null');
+                        }
+                        else {
+                            $select->where('username is null');
+                        }
+                    break;
 
-					case 'liaison':
+                    case 'liaison':
                         if ($value) {
                             $select->join(['l'=>'committee_liaisons'], 'people.id=l.person_id', []);
                         }
-					break;
+                    break;
 
-					case 'committee_id':
-						$select->join(['t'=>'terms'], 'people.id=t.person_id', []);
-						$select->join(['s'=>'seats'], 't.seat_id=s.id',        []);
-						$select->where(['s.committee_id'=>$value]);
+                    case 'committee_id':
+                        $select->join(['t'=>'terms'], 'people.id=t.person_id', []);
+                        $select->join(['s'=>'seats'], 't.seat_id=s.id',        []);
+                        $select->where(['s.committee_id'=>$value]);
                     break;
 
                     case 'email':
@@ -55,20 +55,20 @@ class PeopleTable extends TableGateway
                         if ($value) { $select->where([$key=>$value]); }
                     break;
 
-					default:
+                    default:
                         if (in_array($key, self::$columns)) {
                             $select->where([$key=>$value]);
                         }
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	public function search($fields, $order='lastname', $paginated=false, $limit=null)
-	{
-		$select = new Select('people');
-		foreach ($fields as $k => $v) {
+    public function search($fields, $order='lastname', $paginated=false, $limit=null)
+    {
+        $select = new Select('people');
+        foreach ($fields as $k => $v) {
             switch ($k) {
                 case 'user_account':
                     if ($v) { $select->where('username is not null'); }
@@ -86,7 +86,7 @@ class PeopleTable extends TableGateway
                         $select->where->like($k, "$v%");
                     }
             }
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 }
