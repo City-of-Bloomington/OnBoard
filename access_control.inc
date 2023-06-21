@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Laminas\Permissions\Acl\Acl;
@@ -63,6 +63,7 @@ $ACL->allow('Clerk',
 
 $ACL->allow('Liaison', 'committees', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
+$ACL->allow('Liaison', 'offices', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'people', 'update');
 
 // Administrator is allowed access to everything
