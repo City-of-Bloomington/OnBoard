@@ -82,7 +82,14 @@ class PeopleTable extends TableGateway
                 break;
 
                 case 'username':
-                    $select->where->like($k, "$v%");
+                    if ($v) { $select->where->like($k, "$v%"); }
+                break;
+
+                case 'email':
+                case 'phone':
+                    if ($v && Person::isAllowed('people', 'viewContactInfo')) {
+                        $select->where->like($k, "$v%");
+                    }
                 break;
 
                 default:
