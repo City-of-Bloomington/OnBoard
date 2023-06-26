@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2018-2021 City of Bloomington, Indiana
+ * @copyright 2018-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->files
  * @param Committee         $this->committee (optional)
@@ -91,7 +91,7 @@ $userCanDelete = Person::isAllowed('meetingFiles', 'delete');
                             <option value=""><?= $this->_('type'); ?></option>
                             <?php
                                 $type = !empty($_GET['type']) ? $_GET['type'] : null;
-                                foreach (MeetingFilesTable::$types as $t) {
+                                foreach (MeetingFile::$types as $t) {
                                     $selected = !empty($_GET['type']) && $_GET['type']==$t ? 'selected="true"' : '';
                                     echo "<option $selected>$t</option>";
                                 }

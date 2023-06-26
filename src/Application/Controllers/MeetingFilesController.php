@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2022 City of Bloomington, Indiana
+ * @copyright 2017-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
@@ -51,7 +51,7 @@ class MeetingFilesController extends Controller
 		}
 
 		if (!empty($_GET['type'])) {
-            if (in_array($_GET['type'], MeetingFilesTable::$types)) { $search['type'] = $_GET['type']; }
+            if (in_array($_GET['type'], MeetingFile::$types)) { $search['type'] = $_GET['type']; }
 		}
 		if (!empty($_GET['year'])) {
             $search['year'] = (int)$_GET['year'];

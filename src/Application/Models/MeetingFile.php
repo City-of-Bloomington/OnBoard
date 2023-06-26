@@ -20,7 +20,7 @@ class MeetingFile extends File
 	protected $committee;
 	protected $event;
 
-	public static $types = ['Agenda', 'Minutes', 'Packet'];
+	public static $types = ['Agenda', 'Memorandum', 'Minutes', 'Packet'];
 
 	/**
 	 * Whitelist of accepted file types

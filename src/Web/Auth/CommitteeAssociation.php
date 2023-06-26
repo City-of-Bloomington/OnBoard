@@ -7,7 +7,7 @@
  * applicants to committees, as a single application is associated with multiple
  * committees.
  *
- * @copyright 2020 City of Bloomington, Indiana
+ * @copyright 2020-2023 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -23,6 +23,7 @@ use Application\Models\ApplicantTable;
 use Application\Models\LiaisonTable;
 use Application\Models\Member;
 use Application\Models\MemberTable;
+use Application\Models\Office;
 use Application\Models\Seat;
 use Application\Models\Term;
 
@@ -84,6 +85,10 @@ class CommitteeAssociation implements AssertionInterface
         elseif (!empty($_REQUEST['seat_id'])) {
             $seat = new Seat($_REQUEST['seat_id']);
             return (int)$seat->getCommittee_id();
+        }
+        elseif (!empty($_REQUEST['office_id'])) {
+            $office = new Office($_REQUEST['office_id']);
+            return (int)$office->getCommittee_id();
         }
         return null;
     }
