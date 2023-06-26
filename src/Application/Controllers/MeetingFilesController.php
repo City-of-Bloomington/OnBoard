@@ -133,6 +133,7 @@ class MeetingFilesController extends Controller
                     $file->setType        ($_POST['type'        ]);
                     $file->setTitle       ($_POST['title'       ]);
                     $file->setCommittee_id($_POST['committee_id']);
+                    $file->setUpdatedPerson($_SESSION['USER']);
                     if (!empty($_POST['eventId'])) {
                         $file->setEventId($_POST['eventId']);
                     }
