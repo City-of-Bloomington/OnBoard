@@ -1,10 +1,9 @@
 #!/bin/bash
-# @copyright Copyright 2011-2019 City of Bloomington, Indiana
+# @copyright Copyright 2011-2023 City of Bloomington, Indiana
 # @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE
 APPLICATION_NAME="onboard"
-MYSQLDUMP="/usr/bin/mysqldump"
 MYSQL_DBNAME="{{ onboard_db.name }}"
-MYSQL_CREDENTIALS="/etc/cron.daily/backup.d/${APPLICATION_NAME}.cnf"
+MYSQL_CREDENTIALS="/etc/mysql/debian.cnf"
 BACKUP_DIR="{{ onboard_backup_path }}"
 APPLICATION_HOME="{{ onboard_install_path }}"
 SITE_HOME="{{ onboard_site_home }}"
@@ -25,7 +24,7 @@ today=`date +%F`
 # for any restorations of uploaded files.
 
 # Dump the database
-$MYSQLDUMP --defaults-extra-file=$MYSQL_CREDENTIALS $MYSQL_DBNAME > $SITE_HOME/$MYSQL_DBNAME.sql
+mysqldump --defaults-extra-file=$MYSQL_CREDENTIALS $MYSQL_DBNAME > $SITE_HOME/$MYSQL_DBNAME.sql
 cd $SITE_HOME
 tar czf $today.tar.gz $MYSQL_DBNAME.sql
 mv $today.tar.gz $BACKUP_DIR
@@ -34,9 +33,9 @@ mv $today.tar.gz $BACKUP_DIR
 cd $BACKUP_DIR
 for file in `ls`
 do
-	atime=`stat -c %Y $file`
-	if [ $(( $now - $atime >= $num_days_to_keep*24*60*60 )) = 1 ]
-	then
-		rm $file
-	fi
+    atime=`stat -c %Y $file`
+    if [ $(( $now - $atime >= $num_days_to_keep*24*60*60 )) = 1 ]
+    then
+        rm $file
+    fi
 done
