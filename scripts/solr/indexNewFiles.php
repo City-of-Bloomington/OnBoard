@@ -10,6 +10,8 @@ use Application\Models\MeetingFilesTable;
 use Web\Database;
 use Web\Search\Solr;
 
+$_SERVER['REQUEST_URI'] = __FILE__;
+
 include '../../bootstrap.php';
 
 $solr   = new Solr($SOLR['onboard']);

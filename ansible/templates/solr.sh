@@ -4,4 +4,5 @@
 APPLICATION_HOME="{{ onboard_install_path }}"
 SITE_HOME="{{ onboard_site_home }}"
 
-SITE_HOME=$SITE_HOME php $APPLICATION_HOME/scripts/solr/indexNewFiles.php
+cd $APPLICATION_HOME/scripts/solr
+SITE_HOME=$SITE_HOME php indexNewFiles.php
