@@ -46,17 +46,16 @@
       register: release
 
     - name: "Create directories"
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: "directory"
         owner: "www-data"
         group: "staff"
         mode:  "u=rwX,g=rwXs,o=rX"
-      with_items:
+      loop:
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
-        - "/var/log/cron"
 
     - name: Install release
       command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
@@ -65,12 +64,6 @@
     - name: Update site_home
       command: "rsync -rl /usr/local/src/onboard/data/ {{ onboard_site_home }}/"
       when: release.changed
-
-    - name: Symlink the theme
-      file:
-        state: link
-        src:  "{{ onboard_site_home    }}/Themes/Kirkwood/public"
-        dest: "{{ onboard_install_path }}/public/Kirkwood"
 
     - name: Update apache configuration
       template:
@@ -90,20 +83,14 @@
 #        dest:    "{{ onboard_site_home }}/credentials.json"
 #        mode:    "0640"
 
-    - name: Create backup directory
-      file: path=/srv/backups/onboard state=directory group=staff mode="g+rw" recurse=yes
-
-    - name: "Install CRON script"
+    - name: "Install CRON scripts"
       template:
-        src: "backup.sh"
-        dest: "/etc/cron.daily/backup.d/onboard"
+        src:  "{{ item.src  }}"
+        dest: "{{ item.dest }}"
         mode: "0755"
-
-    - name: Install CRON backup credentials
-      template:
-        src: backup.cnf
-        dest: /etc/cron.daily/backup.d/onboard.cnf
-        mode: 0400
+      loop:
+        - { src: 'backup.sh', dest: '/etc/cron.daily/backup.d/onboard' }
+        - { src: 'solr.sh',   dest: '/etc/cron.hourly/onboard' }
 
     - name: "Update directory ownership"
       command: "chown -R www-data:staff {{ item }}"
