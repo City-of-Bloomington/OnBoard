@@ -15,11 +15,6 @@ $_SERVER['REQUEST_URI'] = __FILE__;
 include '../../bootstrap.php';
 
 $solr   = new Solr($SOLR['onboard']);
-$client = $solr->getClient();
-$client->getAdapter()->setTimeout(20);
-$buffer = $client->getPlugin('bufferedadd');
-$buffer->setBufferSize(100);
-
 $table  = new MeetingFilesTable();
 $files  = $table->find(['indexed'=>false]);
 $total  = count($files);
@@ -28,17 +23,12 @@ $c      = 0;
 $db     = Database::getConnection();
 $update = $db->createStatement('update meetingFiles set indexed=CURRENT_TIMESTAMP where id=?');
 
+$solr->setTimeout(20);
+
 echo "Found $total\n";
 foreach ($files as $f) {
     $c++;
     echo "{$f->getFullPath()} {$f->getId()} $c/$total\n";
-    $data = $solr->prepareIndexFields($f);
-    $buffer->createDocument($data);
-
+    $solr->add($f);
     $update->execute([$f->getId()]);
 }
-$buffer->commit();
-
-$update = $client->createUpdate();
-$update->addOptimize();
-$client->update($update);

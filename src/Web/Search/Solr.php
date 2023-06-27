@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2021-2022 City of Bloomington, Indiana
+ * @copyright 2021-2023 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -34,13 +34,13 @@ class Solr
     public function __construct(array $config)
     {
         $curl         = new Curl();
-        $curl->setTimeout(10);
         $this->client = new Client($curl,
                                    new EventDispatcher(),
                                    ['endpoint'=>['solr'=>$config]]);
     }
 
     public function getClient(): Client { return $this->client; }
+    public function setTimeout(int $s)  { $this->client->getAdapter()->setTimeout($s); }
 
     /**
      * @param string $search
