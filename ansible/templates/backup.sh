@@ -24,10 +24,9 @@ today=`date +%F`
 # for any restorations of uploaded files.
 
 # Dump the database
-mysqldump --defaults-extra-file=$MYSQL_CREDENTIALS $MYSQL_DBNAME > $SITE_HOME/$MYSQL_DBNAME.sql
-cd $SITE_HOME
-tar czf $today.tar.gz $MYSQL_DBNAME.sql
-mv $today.tar.gz $BACKUP_DIR
+cd $BACKUP_DIR
+mysqldump --defaults-extra-file=$MYSQL_CREDENTIALS $MYSQL_DBNAME > $today.sql
+gzip $today.sql
 
 # Purge any backup tarballs that are too old
 cd $BACKUP_DIR
