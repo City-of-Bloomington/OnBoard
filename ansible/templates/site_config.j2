@@ -10,10 +10,13 @@ define('APPLICATION_NAME','onboard');
  * used for the outside world.
  */
 define('BASE_URI' , '{{ onboard_base_uri }}');
+{% if onboard_proxy %}
+define('BASE_HOST', '{{ onboard_proxy }}');
+{% else %}
 define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
                         ? $_SERVER['HTTP_X_FORWARDED_HOST']
                         : '{{ ansible_host }}');
-#define('BASE_HOST', $_SERVER['SERVER_NAME']);
+{% endif %}
 define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
 
 define('RECAPTCHA_SITE_KEY',   '{{ onboard_recaptcha.site_key   }}');
