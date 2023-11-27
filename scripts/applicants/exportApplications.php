@@ -38,10 +38,10 @@ $cl
 ## Please explain your interest
 {$p->getInterest()}
 
-## Please describe your qualications
+## Please describe your qualifications
 {$p->getQualifications()}
         ";
-        file_put_contents("$dir/{$p->getFullname()}.md", $md);
+        file_put_contents("$dir/{$p->getFullname()}.txt", $md);
 
         foreach ($p->getFiles() as $f) {
             $filename = "{$p->getFullname()}.{$f->getExtension()}";
