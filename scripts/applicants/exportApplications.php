@@ -5,6 +5,7 @@
  */
 declare (strict_types=1);
 
+use Application\Models\Applicant;
 use Application\Models\CommitteeTable;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
@@ -18,9 +19,21 @@ foreach ($committees as $c) {
 
     foreach ($c->getApplications(['current'=>time()]) as $a) {
         $p  = $a->getApplicant();
-        $cl = $p->getCityLimits() ? 'Yes' : 'No';
+        $md = renderMarkdown($p);
 
-        $md = "{$p->getFullname()}
+        file_put_contents("$dir/{$p->getFullname()}.txt", $md);
+
+        foreach ($p->getFiles() as $f) {
+            $filename = "{$p->getFullname()}.{$f->getExtension()}";
+            copy($f->getFullpath(), "$dir/$filename");
+        }
+    }
+}
+
+function renderMarkdown(Applicant $p): string
+{
+    $cl = $p->getCityLimits() ? 'Yes' : 'No';
+    return "{$p->getFullname()}
 -----------
 {$p->getEmail()}
 {$p->getPhone()}
@@ -41,12 +54,5 @@ $cl
 
 ## Please describe your qualifications
 {$p->getQualifications()}
-        ";
-        file_put_contents("$dir/{$p->getFullname()}.txt", $md);
-
-        foreach ($p->getFiles() as $f) {
-            $filename = "{$p->getFullname()}.{$f->getExtension()}";
-            copy($f->getFullpath(), "$dir/$filename");
-        }
-    }
+";
 }
