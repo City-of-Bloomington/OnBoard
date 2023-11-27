@@ -16,9 +16,10 @@ foreach ($committees as $c) {
     $dir = "./applications/{$c->getName()}";
     if (!is_dir($dir)) { mkdir($dir, 0775, true); }
 
-    foreach ($c->getApplications() as $a) {
+    foreach ($c->getApplications(['current'=>time()]) as $a) {
         $p  = $a->getApplicant();
         $cl = $p->getCityLimits() ? 'Yes' : 'No';
+
         $md = "{$p->getFullname()}
 -----------
 {$p->getEmail()}
