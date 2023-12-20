@@ -17,7 +17,7 @@ foreach ($committees as $c) {
     $dir = "./applications/{$c->getName()}";
     if (!is_dir($dir)) { mkdir($dir, 0775, true); }
 
-    foreach ($c->getApplications(['current'=>time()]) as $a) {
+    foreach ($c->getApplications(['since'=>strtotime('2023-11-28')]) as $a) {
         $p  = $a->getApplicant();
         $md = renderMarkdown($p);
 

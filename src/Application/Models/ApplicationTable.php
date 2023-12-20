@@ -25,6 +25,7 @@ class ApplicationTable extends TableGateway
 		if ($fields) {
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
+					// Datetime values are expected to be timestamps
 					case 'current':
 						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
 						$select->where("(a.archived is null or a.archived>='$date')");
@@ -33,6 +34,11 @@ class ApplicationTable extends TableGateway
                     case 'archived':
 						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
 						$select->where("(a.archived is not null and a.archived<='$date')");
+						break;
+
+					case 'since':
+						$date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $value);
+						$select->where("a.created>'$date'");
 						break;
 
 					default:
