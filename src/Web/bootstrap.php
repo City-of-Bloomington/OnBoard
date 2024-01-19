@@ -2,7 +2,7 @@
 /**
  * Where on the filesystem this application is installed
  */
-define('APPLICATION_HOME', __DIR__);
+define('APPLICATION_HOME', realpath(__DIR__.'/../../'));
 define('VERSION', trim(file_get_contents(APPLICATION_HOME.'/VERSION')));
 
 // Path to LibreOffice for converting files to PDF
@@ -27,20 +27,9 @@ define('SITE_HOME', !empty($_SERVER['SITE_HOME']) ? $_SERVER['SITE_HOME'] : __DI
 $loader = require APPLICATION_HOME.'/vendor/autoload.php';
 $loader->addPsr4('Site\\', SITE_HOME);
 
-include SITE_HOME.'/site_config.inc';
+include SITE_HOME.'/site_config.php';
 include APPLICATION_HOME.'/src/Web/routes.php';
-include APPLICATION_HOME.'/access_control.inc';
-
-/**
- * Session Startup
- * Don't start a session for CLI usage.
- * We only want sessions when PHP code is executed from the webserver
- */
-if (!defined('STDIN')) {
-	ini_set('session.save_path', SITE_HOME.'/sessions');
-	ini_set('session.cookie_path', BASE_URI);
-	session_start();
-}
+include APPLICATION_HOME.'/src/Web/access_control.php';
 
 /**
  * Graylog is a centralized log manager

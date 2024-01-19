@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2012-2022 City of Bloomington, Indiana
+ * @copyright 2012-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use GuzzleHttp\Psr7\ServerRequest;
@@ -9,7 +9,10 @@ use Web\Block;
 
 $startTime = microtime(1);
 
-include '../bootstrap.php';
+include '../src/Web/bootstrap.php';
+ini_set('session.save_path', SITE_HOME.'/sessions');
+ini_set('session.cookie_path', BASE_URI);
+session_start();
 
 // Check for routes
 $request = ServerRequest::fromGlobals();
