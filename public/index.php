@@ -3,11 +3,13 @@
  * @copyright 2012-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+declare (strict_types=1);
+
 use GuzzleHttp\Psr7\ServerRequest;
 use Web\Template;
 use Web\Block;
 
-$startTime = microtime(1);
+$startTime = microtime(true);
 
 include '../src/Web/bootstrap.php';
 ini_set('session.save_path', SITE_HOME.'/sessions');
@@ -23,24 +25,29 @@ if ($route) {
     $controller = $route->handler;
     $action     = $route->__get('extras')['action'];
 
-    if ($controller && $action) {
-        $c = new $controller();
-        if (method_exists($c, $action)) {
-            list($resource, $permission) = explode('.', $route->name);
-            $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
-            if (   $ACL->hasResource($resource)
-                && $ACL->isAllowed($role, $resource, $permission)) {
+    list($resource, $permission) = explode('.', $route->name);
+    $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
+    if (   $ACL->hasResource($resource)
+        && $ACL->isAllowed($role, $resource, $permission)) {
 
+        // Modern twig controllers returning a View
+        if (is_callable($controller)) {
+            $template = $controller($route->attributes);
+        }
+        // Legacy Templates and Blocks
+        elseif ($controller && $action) {
+            $c = new $controller();
+            if (method_exists($c, $action)) {
                 $template = $c->$action();
             }
-            else {
-                $template = new Template();
-                header('HTTP/1.1 403 Forbidden', true, 403);
-                $_SESSION['errorMessages'][] = $role == 'Anonymous'
-                    ? new \Exception('notLoggedIn')
-                    : new \Exception('noAccessAllowed');
-            }
         }
+    }
+    else {
+        $template = new Template();
+        header('HTTP/1.1 403 Forbidden', true, 403);
+        $_SESSION['errorMessages'][] = $role == 'Anonymous'
+        ? new \Exception('notLoggedIn')
+        : new \Exception('noAccessAllowed');
     }
 }
 
@@ -54,7 +61,7 @@ echo $template->render();
 
 if ($template->outputFormat === 'html') {
     # Calculate the process time
-    $endTime = microtime(1);
+    $endTime = microtime(true);
     $processTime = $endTime - $startTime;
     echo "<!-- Process Time: $processTime -->";
 }

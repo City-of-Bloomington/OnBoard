@@ -55,7 +55,7 @@ class Block extends View
 	 * @param string $outputFormat
 	 * @return string
 	 */
-	public function render($outputFormat='html', Template $template=null)
+	public function render($outputFormat='html', Template $template=null): string
 	{
 		$block = "/blocks/$outputFormat/{$this->file}";
 		$this->template = $template;

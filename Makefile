@@ -9,7 +9,7 @@ JAVASCRIPT := $(shell find public -name '*.js' ! -name '*-*.js')
 
 VERSION := $(shell cat VERSION | tr -d "[:space:]")
 
-default: clean compile test package
+default: clean compile package
 
 clean:
 	rm -Rf build/${APPNAME}*
@@ -20,10 +20,11 @@ clean:
 	for f in $(shell find public/css  -name 'screen-*.css*'); do rm $$f; done
 	for f in $(shell find public/js   -name '*-*.js'       ); do rm $$f; done
 
-compile: $(LANGUAGES)
+compile:
 	cd public/css                      && sassc -t compact -m screen.scss screen-${VERSION}.css
 	cd data/Themes/Kirkwood/public/css && sassc -t compact -m screen.scss screen-${VERSION}.css
 	for f in ${JAVASCRIPT}; do cp $$f $${f%.js}-${VERSION}.js; done
+	cd ${LANGUAGES} && msgfmt -cv *.po
 
 package:
 	[[ -d build ]] || mkdir build

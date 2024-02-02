@@ -1,15 +1,28 @@
 <?php
 /**
- * @copyright 2006-2022 City of Bloomington, Indiana
+ * @copyright 2006-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
+
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Extra\Markdown\MarkdownExtension;
+use Twig\Extra\Markdown\MichelfMarkdown;
+use Twig\Extra\Markdown\MarkdownRuntime;
+use Twig\RuntimeLoader\RuntimeLoaderInterface;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
+use Twig\TwigTest;
 
 abstract class View
 {
     protected $theme;
     protected $theme_config = [];
 	protected $vars         = [];
+
+    protected $twig;
+    public    $outputFormat = 'html';
 
 	abstract public function render();
 
@@ -18,25 +31,70 @@ abstract class View
 	 */
 	public function __construct(array $vars=null)
 	{
+        // Twig templates
+        $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
+        $tpl = [];
+
         if (defined('THEME')) {
             $dir = SITE_HOME.'/Themes/'.THEME;
 
+            // Old Templating
             if (is_dir($dir)) {
                 $this->theme = $dir;
                 $config_file = $dir.'/theme_config.inc';
 
                 if (is_file($config_file)) { $this->theme_config = require $config_file; }
             }
+
+            // Twig Templates
+            if (is_dir ( "$dir/templates")) {
+                $tpl[] = "$dir/templates";
+            }
         }
 
+		// Old Templating
 		if ($vars) {
 			foreach ($vars as $name=>$value) {
 				$this->vars[$name] = $value;
 			}
 		}
 
-        $locale = LOCALE.'.utf8';
+		// Twig Templates
+		$tpl[]      = APPLICATION_HOME.'/templates';
+        $loader     = new FilesystemLoader($tpl);
+        $this->twig = new Environment($loader, ['cache'            => false,
+                                                'strict_variables' => true,
+                                                'debug'            => true]);
+        global $route;
+        $this->twig->addGlobal('APPLICATION_NAME', APPLICATION_NAME);
+        $this->twig->addGlobal('VERSION',          VERSION);
+        $this->twig->addGlobal('BASE_URL',         BASE_URL);
+        $this->twig->addGlobal('BASE_URI',         BASE_URI);
+        $this->twig->addGlobal('REQUEST_URI',      $_SERVER['REQUEST_URI']);
+        $this->twig->addGlobal('ROUTE_NAME',       $route->name);
+        $this->twig->addGlobal('LANG',             strtolower(substr(LOCALE, 0, 2)));
+        if (isset($_SESSION['USER'])) {
+            $this->twig->addGlobal('USER', $_SESSION['USER']);
+        }
+        $this->twig->addExtension(new DebugExtension());
+        $this->twig->addExtension(new MarkdownExtension());
 
+        $this->twig->addFunction(new TwigFunction('_'  ,         [$this, 'translate'  ]));
+        $this->twig->addFunction(new TwigFunction('uri',         [$this, 'generateUri']));
+        $this->twig->addFunction(new TwigFunction('url',         [$this, 'generateUrl']));
+        $this->twig->addFunction(new TwigFunction('isAllowed',   [$this, 'isAllowed'  ]));
+        $this->twig->addFunction(new TwigFunction('current_url', [$this, 'current_url']));
+
+        $this->twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
+            public function load($class) {
+                if (MarkdownRuntime::class === $class) {
+                    return new MarkdownRuntime(new MichelfMarkdown());
+                }
+            }
+        });
+
+
+        $locale = LOCALE.'.utf8';
         putenv("LC_ALL=$locale");
         setlocale(LC_ALL, $locale);
         bindtextdomain('labels',   APPLICATION_HOME.'/language');
@@ -212,6 +270,10 @@ abstract class View
     public static function generateUrl($route_name, $params=[])
     {
         return "https://".BASE_HOST.self::generateUri($route_name, $params);
+    }
+    public static function current_url(): Url
+    {
+        return new Url(Url::current_url(BASE_HOST));
     }
 
 	public static function isAllowed(string $resource, ?string $action=null): bool
