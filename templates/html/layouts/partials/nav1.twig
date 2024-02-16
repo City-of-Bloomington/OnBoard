@@ -1,0 +1,22 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array data
+ #}
+<nav id="nav1">
+{% if isAllowed('committees', 'index') %}
+<a href="{{ uri('committees.index') }}">{{ _(['committee', 'committees', 10]) }}</a>
+{% endif %}
+{% if isAllowed('people', 'index') %}
+<a href="{{ uri('people.index') }}">{{ _(['person', 'people', 10]) }}</a>
+{% endif %}
+{% if isAllowed('seats', 'index') %}
+<a href="{{ uri('seats.index') }}">{{ _(['seat', 'seats', 10]) }}</a>
+{% endif %}
+{% if isAllowed('liaisons', 'index') %}
+<a href="{{ uri('liaisons.index') }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
+{% endif %}
+{% if isAllowed('applicants', 'apply') %}
+<a href="{{ uri('applicants.apply') }}">{{ _('apply') }}</a>
+{% endif %}
+</nav>

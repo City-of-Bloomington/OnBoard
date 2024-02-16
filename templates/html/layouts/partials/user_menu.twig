@@ -1,0 +1,8 @@
+<nav>
+{% if USER is defined %}
+    <header><h3>{{ USER.getFullname() }}</h3></header>
+    <a href="{{ uri('login.logout') }}">{{ _('logout') }}</a>
+{% else %}
+    <a href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+{% endif %}
+</nav>

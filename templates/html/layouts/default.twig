@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANG }}" lang="{{ LANG }}">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ BASE_URI }}/css/screen-{{ VERSION }}.css" />
+    <title>{{ title is defined ? title : APPLICATION_NAME }}</title>
+    <script type="text/javascript">
+        var BASE_URL = '{{ BASE_URL }}',
+            BASE_URI = '{{ BASE_URI }}';
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1><a href="{{ BASE_URI }}">{{ APPLICATION_NAME }}</a></h1>
+        {{ include('html/layouts/partials/nav1.twig') }}
+    </header>
+	<main>
+        <div id="content-panel">
+            {% if errorMessages is defined %}
+            {{ include('html/layouts/partials/errorMessages.twig') }}
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div id="panel-one">
+            {{ include('html/layouts/partials/admin_menu.twig') }}
+        </div>
+	</main>
+    <footer>
+        {{ include('html/layouts/partials/user_menu.twig') }}
+    </footer>
+    <script type="text/javascript" src="{{ BASE_URI }}/js/menus-{{ VERSION }}.js"></script>
+    <script type="text/javascript" src="{{ BASE_URI }}/js/onboard-{{ VERSION }}.js"></script>
+</body>
+</html>

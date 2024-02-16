@@ -1,0 +1,32 @@
+<nav>
+    {% if isAllowed('applicants', 'index') %}
+    <a href="{{ uri('applicants.index') }}">{{ _(['applicant', 'applicants', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('departments', 'index') %}
+    <a href="{{ uri('departments.index') }}">{{ _(['department', 'departments', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('appointers', 'index') %}
+    <a href="{{ uri('appointers.index') }}">{{ _(['appointer', 'appointers', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('races', 'index') %}
+    <a href="{{ uri('races.index') }}">{{ _(['race', 'races', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('users', 'index') %}
+    <a href="{{ uri('users.index') }}">{{ _(['user', 'users', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('tags', 'index') %}
+    <a href="{{ uri('tags.index') }}">{{ _(['tag', 'tags', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('legislationTypes', 'index') %}
+    <a href="{{ uri('legislationTypes.index') }}">{{ _(['legislationType', 'legislationTypes', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('legislationActionTypes', 'index') %}
+    <a href="{{ uri('legislationActionTypes.index') }}">{{ _(['legislationActionType', 'legislationActionTypes', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('legislationStatuses', 'index') %}
+    <a href="{{ uri('legislationStatuses.index') }}">{{ _(['legislationStatus', 'legislationStatuses', 10]) }}</a>
+    {% endif %}
+    {% if isAllowed('site', 'siteContent') %}
+    <a href="{{ uri('site.index') }}">{{ _('siteContent') }}</a>
+    {% endif %}
+</nav>

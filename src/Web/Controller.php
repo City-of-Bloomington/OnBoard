@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2012-2020 City of Bloomington, Indiana
+ * @copyright 2012-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
 
 abstract class Controller
 {
+	protected const ITEMS_PER_PAGE = 20;
 	protected $template;
 
 	public function __construct()
@@ -31,6 +32,6 @@ abstract class Controller
 	public static function generateUrl($route_name, $params=[])
 	{
         global $ROUTES;
-        return "$_SERVER[REQUEST_SCHEME]://$_SERVER[SERVER_NAME]".$ROUTES->generate($route_name, $params);
+        return "https://$_SERVER[SERVER_NAME]".$ROUTES->generate($route_name, $params);
 	}
 }

@@ -1,0 +1,13 @@
+{#
+ * @copyright 2007-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array errorMessages
+#}
+<section id="errorMessages">
+    <header>
+        <h1>{{ _('error') }}</h1>
+    </header>
+    {% for e in errorMessages %}
+    <p>{{ _(e, 'errors') }}</p>
+    {% endfor %}
+</section>

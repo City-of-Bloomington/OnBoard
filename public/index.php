@@ -22,22 +22,21 @@ $matcher = $ROUTES->getMatcher();
 $route   = $matcher->match($request);
 
 if ($route) {
-    $controller = $route->handler;
-    $action     = $route->__get('extras')['action'];
-
     list($resource, $permission) = explode('.', $route->name);
     $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
     if (   $ACL->hasResource($resource)
         && $ACL->isAllowed($role, $resource, $permission)) {
 
+        $controller = $route->handler;
+        $c = new $controller();
         // Modern twig controllers returning a View
-        if (is_callable($controller)) {
-            $template = $controller($route->attributes);
+        if (is_callable($c)) {
+            $template = $c($route->attributes);
         }
         // Legacy Templates and Blocks
-        elseif ($controller && $action) {
-            $c = new $controller();
-            if (method_exists($c, $action)) {
+        elseif ($c) {
+            $action = $route->__get('extras')['action'];
+            if ($action && method_exists($c, $action)) {
                 $template = $c->$action();
             }
         }
