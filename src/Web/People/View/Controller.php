@@ -5,6 +5,7 @@
  */
 declare (strict_types=1);
 namespace Web\People\View;
+use Application\Models\Person;
 
 class Controller extends \Web\Controller
 {

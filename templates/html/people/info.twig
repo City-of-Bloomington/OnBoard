@@ -2,27 +2,20 @@
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
- * @param bool   disableButtons
+ * @param array  actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
 <section>
     <header><h2>{{ person.getFullname() }}</h2></header>
-    {% if isAllowed('people', 'update') or (if isAllowed('people', 'delete') and person.isSafeToDelete()) %}
+    {% if actionLinks %}
     <nav>
-        {% if isAllowed('people', 'update') %}
-        <a href="{{ uri('people.update') }}?person_id={{ person.getId() }}">
-        {{ _('person_edit') }}
-        </a>
-        {% endif %}
-
-        {% if isAllowed('people', 'delete') and person.isSafeToDelete() %}
-        <a href="{{ uri('people.delete') }}?person_id={{ person.getId() }}">
-        {{ _('person_delete') }}
-        </a>
-        {% endif %}
+        {% for action, link in actionLinks %}
+        <a href="{{ link.url }}" class="{{ action }}">{{ link.label }}</a>
+        {% endfor %}
     </nav>
     {% endif %}
+
     <table>
         <tr><th>{{ _('username') }}</th><td>{{ person.getUsername() }}</td></tr>
         <tr><th>{{ _('gender'  ) }}</th><td>{{ person.getGender()   }}</td></tr>
@@ -30,7 +23,7 @@
         <tr><th>{{ _('website' ) }}</th>
             <td><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></td>
         </tr>
-        {% if isAllowed('people'.'viewContactInfo') %}
+        {% if isAllowed('people', 'viewContactInfo') %}
         <tr><th>{{ _('email')   }}</th><td>{{ person.getEmail()   }}</td></tr>
         <tr><th>{{ _('phone')   }}</th><td>{{ person.getPhone()   }}</td></tr>
         <tr><th>{{ _('address') }}</th><td>{{ person.getAddress() }}</td></tr>

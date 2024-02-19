@@ -10,12 +10,29 @@ use Application\Models\Person;
 
 class View extends \Web\View
 {
-    public function __construct(Person $person)
+    public function __construct(Person $person, bool $disableButtons=false)
     {
         parent::__construct();
 
+        $links = [];
+        if (!$disableButtons) {
+            if (parent::isAllowed('people', 'update')) {
+                $links['edit'] = [
+                    'url'   => parent::generateUri('people.update')."?person_id=".$person->getId(),
+                    'label' => parent::_('person_edit')
+                ];
+            }
+            if (parent::isAllowed('people', 'delete') && $person->isSafeToDelete()) {
+                $links['delete'] = [
+                    'url'   => parent::generateUri('people.delete')."?person_id=".$person->getId(),
+                    'label' => parent::_('person_delete')
+                ];
+            }
+        }
+
         $this->vars = [
-            'person' => $person
+            'person'      => $person,
+            'actionLinks' => $links
         ];
     }
 
