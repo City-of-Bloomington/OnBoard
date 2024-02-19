@@ -1,0 +1,106 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param int    person_id
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param string phone
+ * @param string website
+ * @param string gender
+ * @param string race_id
+ * @param string address
+ * @param string city
+ * @param string state
+ * @param string zip
+ * @param array  races      Options for race_id
+ * @param array  states     Options for state
+ *
+ * @param string return_url
+ * @param array  additional_params
+ * @param bool   callback   Whether this form is being rendered as a callback modal
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h2>{{ person_id ? _('person_edit') : _('person_add') }}</h2></header>
+
+    <form method="post">
+        <fieldset><legend>{{ _('person_info') }}</legend>
+            {% if person_id %}
+            <input name="person_id" type="hidden" value="{{ person_id }}" />
+            {% endif %}
+            <div>
+                <label for="firstname">{{ _('firstname') }}</label>
+                <input name="firstname" id="firstname" value="{{ firstname }}" />
+            </div>
+            <div>
+                <label for="lastname">{{ _('lastname') }}</label>
+                <input name="lastname" id="lastname" value="{{ lastname }}" />
+            </div>
+            <div>
+                <label for="email">{{ _('email') }}</label>
+                <input name="email" id="email" value="{{ email }}" />
+            </div>
+            <div>
+                <label for="phone">{{ _('phone') }}</label>
+                <input name="phone" id="phone" value="{{ phone }}" />
+            </div>
+            <div>
+                <label for="website">{{ _('website') }}</label>
+                <input name="website" id="website" value="{{ website }}" />
+            </div>
+            <div>
+                <label for="gender">{{ _('gender') }}</label>
+                <select name="gender" id="gender">
+                    <option></option>
+                    <option value=  "male" {{ gender==  'male' ? 'selected="true"' : '' }}>M</option>
+                    <option value="female" {{ gender=='female' ? 'selected="true"' : '' }}>F</option>
+                </select>
+            </div>
+            <div>
+                <label for="race_id">{{ _('race') }}</label>
+                <select name="race_id" id="race_id">
+                    <option></option>
+                    {% for r in races %}
+                    <option value="{{ r.getId() }}" {{ race_id==r.getId() ? 'selected="true"' : '' }}>{{ r.getName() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _('address') }}</legend>
+            <div>
+                <label for="address">{{ _('address') }}</label>
+                <textarea>{{ address }}</textarea>
+            </div>
+            <div>
+                <label for="city">{{ _('city') }}</label>
+                <input name="city" id="city" value="{{ city }}" />
+            </div>
+            <div>
+                <label for="state">{{ _('state') }}</label>
+                <select name="state" id="state">
+                    {% for s in states %}
+                    <option {{ s==state ? 'selected="true"' : '' }}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="zip">{{ _('zip') }}</label>
+                <input name="zip" id="zip" value="{{ zip }}" />
+            </div>
+        </fieldset>
+
+        <fieldset>
+            {% for k, v in additional_params %}
+            <input name="{{ k }}" type="hidden" value="{{ v }}" />
+            {% endfor %}
+
+            <button type="submit">{{ _('save') }}</button>
+            <a href="{{ return_url }}" {{ callback ? 'onclick="self.close();"' : '' }}>{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

@@ -133,7 +133,7 @@ $map->attach('offices.', '/offices', function ($r) {
 
 $map->attach('people.', '/people', function ($r) {
     $r->get('view',       '/view'      , Web\People\View\Controller::class);
-    $r->get('update',     '/update'    , 'Application\Controllers\PeopleController')->extras(['action' => 'update'    ])->allows(['POST']);
+    $r->get('update',     '/update'    , Web\People\Update\Controller::class)->allows(['POST']);
     $r->get('delete',     '/delete'    , 'Application\Controllers\PeopleController')->extras(['action' => 'delete'    ]);
     $r->get('parameters', '/parameters', 'Application\Controllers\PeopleController')->extras(['action' => 'parameters']);
     $r->get('index',      ''           , Web\People\Find\Controller::class);
