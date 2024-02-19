@@ -1,0 +1,44 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Person person
+ * @param bool   disableButtons
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h2>{{ person.getFullname() }}</h2></header>
+    {% if isAllowed('people', 'update') or (if isAllowed('people', 'delete') and person.isSafeToDelete()) %}
+    <nav>
+        {% if isAllowed('people', 'update') %}
+        <a href="{{ uri('people.update') }}?person_id={{ person.getId() }}">
+        {{ _('person_edit') }}
+        </a>
+        {% endif %}
+
+        {% if isAllowed('people', 'delete') and person.isSafeToDelete() %}
+        <a href="{{ uri('people.delete') }}?person_id={{ person.getId() }}">
+        {{ _('person_delete') }}
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
+    <table>
+        <tr><th>{{ _('username') }}</th><td>{{ person.getUsername() }}</td></tr>
+        <tr><th>{{ _('gender'  ) }}</th><td>{{ person.getGender()   }}</td></tr>
+        <tr><th>{{ _('race'    ) }}</th><td>{{ person.getRace()     }}</td></tr>
+        <tr><th>{{ _('website' ) }}</th>
+            <td><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></td>
+        </tr>
+        {% if isAllowed('people'.'viewContactInfo') %}
+        <tr><th>{{ _('email')   }}</th><td>{{ person.getEmail()   }}</td></tr>
+        <tr><th>{{ _('phone')   }}</th><td>{{ person.getPhone()   }}</td></tr>
+        <tr><th>{{ _('address') }}</th><td>{{ person.getAddress() }}</td></tr>
+        <tr><th>{{ _('city')    }}</th><td>{{ person.getCity()    }}</td></tr>
+        <tr><th>{{ _('state')   }}</th><td>{{ person.getState()   }}</td></tr>
+        <tr><th>{{ _('zip')     }}</th><td>{{ person.getZip()     }}</td></tr>
+        {% endif %}
+    </table>
+</section>
+
+{% endblock %}

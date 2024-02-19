@@ -136,7 +136,7 @@ $map->attach('people.', '/people', function ($r) {
     $r->get('update',     '/update'    , 'Application\Controllers\PeopleController')->extras(['action' => 'update'    ])->allows(['POST']);
     $r->get('delete',     '/delete'    , 'Application\Controllers\PeopleController')->extras(['action' => 'delete'    ]);
     $r->get('parameters', '/parameters', 'Application\Controllers\PeopleController')->extras(['action' => 'parameters']);
-    $r->get('index',      ''           , 'Application\Controllers\PeopleController')->extras(['action' => 'index'     ]);
+    $r->get('index',      ''           , Web\People\Find\Controller::class);
 });
 
 $map->attach('races.', '/races', function ($r) {

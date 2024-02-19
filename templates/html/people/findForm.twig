@@ -1,0 +1,51 @@
+{#
+ * @copyright 2017-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param array  people         Array of people search results
+ * @param int    total
+ * @param int    itemsPerPage
+ * @param int    currentPage
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+
+{% block content %}
+<section>
+    <header>
+        <h1>{{ _(['person', 'people', 100]) }}</h1>
+    </header>
+    <form method="get">
+        <fieldset>
+            <div><label  for="firstname">{{ _('firstname') }}</label>
+                 <input name="firstname" id="firstname" value="{{ firstname }}" />
+            </div>
+            <div><label  for="lastname">{{ _('lastname') }}</label>
+                 <input name="lastname" id="lastname" value="{{ lastname }}" />
+            </div>
+            {% if isAllowed('people', 'viewContactInfo')%}
+            <div><label  for="email">{{ _('email') }}</label>
+                 <input name="email" id="email" value="{{ email }}" />
+            </div>
+            {% endif %}
+            <button type="submit" class="search">{{ _('search') }}</button>
+        </fieldset>
+    </form>
+    {% if firstname or lastname or email %}
+        {% if not people %}
+        <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
+        {% endif %}
+    {% endif %}
+
+    {% if people %}
+        {{ include('html/people/list.twig') }}
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+
+{% endblock %}

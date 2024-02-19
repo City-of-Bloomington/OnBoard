@@ -1,0 +1,19 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Laminas\Paginator people
+ #}
+<table>
+{% for p in people %}
+<tr><td><a href="{{ uri('people.view') }}?person_id={{ p.getId() }}">{{ p.getFullName() }}</a></td>
+    {% if isAllowed('people', 'viewContactInfo') %}
+    <td>{{ p.getEmail() }}</td>
+    <td>{{ p.getPhone() }}</td>
+    {% endif %}
+</tr>
+{% endfor %}
+</table>
+
+{% if isAllowed('people', 'update') %}
+<a href="{{ uri('people.update') }}?return_url={{ REQUEST_URI }}" class="add button">{{ _('person_add') }}</a>
+{% endif %}
