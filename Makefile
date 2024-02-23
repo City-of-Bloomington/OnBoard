@@ -6,6 +6,8 @@ K := $(foreach r, ${REQS}, $(if $(shell command -v ${r} 2> /dev/null), '', $(err
 
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
 JAVASCRIPT := $(shell find public -name '*.js' ! -name '*-*.js')
+SASS := $(shell find -name screen.scss -not -path '*/build/*')
+CSS := $(patsubst %.scss, %-$(VERSION).css, $(SASS))
 
 VERSION := $(shell cat VERSION | tr -d "[:space:]")
 
@@ -20,9 +22,7 @@ clean:
 	for f in $(shell find public/css  -name 'screen-*.css*'); do rm $$f; done
 	for f in $(shell find public/js   -name '*-*.js'       ); do rm $$f; done
 
-compile:
-	cd public/css                      && sassc -t compact -m screen.scss screen-${VERSION}.css
-	cd data/Themes/Kirkwood/public/css && sassc -t compact -m screen.scss screen-${VERSION}.css
+compile: $(CSS)
 	for f in ${JAVASCRIPT}; do cp $$f $${f%.js}-${VERSION}.js; done
 	cd ${LANGUAGES} && msgfmt -cv *.po
 
@@ -36,3 +36,6 @@ test:
 
 $(LANGUAGES):
 	cd $@ && msgfmt -cv *.po
+
+$(CSS): $(SASS)
+	cd $(@D) && sassc -t compact -m screen.scss screen-${VERSION}.css
