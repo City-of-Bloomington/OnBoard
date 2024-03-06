@@ -9,11 +9,7 @@
 <section>
     <header><h2>{{ person.getFullname() }}</h2></header>
     {% if actionLinks %}
-    <nav>
-        {% for action, link in actionLinks %}
-        <a href="{{ link.url }}" class="{{ action }}">{{ link.label }}</a>
-        {% endfor %}
-    </nav>
+    {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
 
     <table>

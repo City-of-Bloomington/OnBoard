@@ -1,0 +1,12 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee (optional)
+ #}
+<nav>
+    <ul><li><a href="{{ BASE_URI }}">{{ _(['committee', 'committees', 10]) }}</a></li>
+        {% if committee is defined %}
+        <li><a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}">{{ committee.getName() }}</a></li>
+        {% endif %}
+    </ul>
+</nav>

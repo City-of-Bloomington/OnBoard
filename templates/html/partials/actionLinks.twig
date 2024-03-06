@@ -1,0 +1,10 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array actionLinks
+ #}
+<nav>
+    {% for action, link in actionLinks %}
+    <a href="{{ link.url }}" class="{{ action }}">{{ link.label }}</a>
+    {% endfor %}
+</nav>

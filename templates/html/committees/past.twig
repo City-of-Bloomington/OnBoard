@@ -1,0 +1,20 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array committees
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ _('committees_past') }}</h1></header>
+    <table>
+    {% for c in committees %}
+    <tr><td><a href="{{ uri('committees.info') }}?committee_id={{ c.id }}">{{ c.name }}</a></td>
+        <td>{{ c.endDate }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <a href="{{ BASE_URI }}">{{ _('committees_current') }}</a>
+</section>
+
+{% endblock %}

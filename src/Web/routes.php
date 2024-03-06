@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2020-2023 City of Bloomington, Indiana
+ * @copyright 2020-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -8,7 +8,7 @@ declare (strict_types=1);
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
 
-$map->get('home.index',     '/',         'Application\Controllers\HomeController'    )->extras(['action'=>'index']);
+$map->get('home.index',     '/',         Web\Committees\List\Controller::class);
 $map->get('callback.index', '/callback', 'Application\Controllers\CallbackController')->extras(['action'=>'index']);
 
 $map->attach('login.', '/login', function ($r) {
@@ -57,7 +57,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('applications', '/applications', 'Application\Controllers\CommitteesController')->extras(['action' => 'applications']);
     $r->get('meetings',     '/meetings'    , 'Application\Controllers\CommitteesController')->extras(['action' => 'meetings'    ]);
     $r->get('history',      '/history'     , 'Application\Controllers\CommitteesController')->extras(['action' => 'history'     ]);
-    $r->get('index',        ''             , 'Application\Controllers\CommitteesController')->extras(['action' => 'index'       ]);
+    $r->get('index',        ''             , Web\Committees\List\Controller::class);
 });
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
@@ -132,11 +132,10 @@ $map->attach('offices.', '/offices', function ($r) {
 });
 
 $map->attach('people.', '/people', function ($r) {
-    $r->get('view',       '/view'      , Web\People\View\Controller::class);
-    $r->get('update',     '/update'    , Web\People\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',     '/delete'    , 'Application\Controllers\PeopleController')->extras(['action' => 'delete'    ]);
-    $r->get('parameters', '/parameters', 'Application\Controllers\PeopleController')->extras(['action' => 'parameters']);
-    $r->get('index',      ''           , Web\People\Find\Controller::class);
+    $r->get('view',       '/view'  , Web\People\View\Controller::class);
+    $r->get('update',     '/update', Web\People\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',     '/delete', Web\People\Delete\Controller::class);
+    $r->get('index',      ''       , Web\People\Find\Controller::class);
 });
 
 $map->attach('races.', '/races', function ($r) {
