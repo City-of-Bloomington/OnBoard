@@ -47,7 +47,7 @@
         {{ _(['meetingFile', 'meetingFiles', 10]) }}
      </a>
      {% if committee.isLegislative() %}
-     <a href="{{ uri('legislation.index') }}?committee_id={{ committee.getId() }};year={{ now|date('Y') }}"
+     <a href="{{ uri('legislation.index') }}?committee_id={{ committee.getId() }};year={{ 'now'|date('Y') }}"
         {{ ROUTE_NAME=='legislation.index' ? 'class="current"' : '' }}>
         {{ _(['legislation', 'legislations', 10]) }}
      </a>

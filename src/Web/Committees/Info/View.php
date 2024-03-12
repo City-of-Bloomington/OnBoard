@@ -29,8 +29,7 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'   => $committee,
-            'actionLinks' => $links,
-            'vacancies'   => $committee->getVacancyCount()
+            'actionLinks' => $links
         ];
     }
 

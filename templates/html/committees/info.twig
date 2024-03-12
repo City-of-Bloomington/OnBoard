@@ -2,7 +2,6 @@
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param int       vacancies   Number of current vacancies
  * @param array     actionLinks (optional)
  #}
 {% extends "html/layouts/default.twig" %}
@@ -10,6 +9,7 @@
 <section>
     <header>
         <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
         </h2>
         {{ include('html/committees/partials/header.twig') }}
