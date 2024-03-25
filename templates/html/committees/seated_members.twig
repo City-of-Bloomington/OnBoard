@@ -54,7 +54,7 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td>{% if row.actionLinks %}
+                <td>{% if row.actionLinks is defined %}
                     {% for a in row.actionLinks %}<a href="{{ a.url }}">{{ a.label }}</a>{% endfor %}
                     {% endif %}
                 </td>

@@ -35,8 +35,10 @@ class Controller extends \Web\Controller
                     $search['current'] = false;
                 }
 
-                $members = $committee->getMembers($search);
-                return new OpenView($committee, $members, $current);
+                $members = [];
+                $results = $committee->getMembers($search);
+                foreach ($results as $member) { $members[] = $member; }
+                return new OpenView($committee, $members, $search['current']);
             }
         }
         return new \Web\View\NotFoundView();

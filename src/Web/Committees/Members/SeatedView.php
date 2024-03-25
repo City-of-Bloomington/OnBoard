@@ -9,6 +9,7 @@ declare (strict_types=1);
 namespace Web\Committees\Members;
 
 use Application\Models\Committee;
+use Application\Models\Term;
 use Web\View;
 
 class SeatedView extends View
@@ -49,8 +50,6 @@ class SeatedView extends View
      */
     private function createActionLinks(Committee $committee, array &$seat_data)
     {
-        $actions = [];
-
         $userCanEditSeats      = parent::isAllowed('seats',      'update');
         $userCanEditAlternates = parent::isAllowed('alternates', 'update');
         $userCanAppointMembers = parent::isAllowed('members',    'appoint');
@@ -58,6 +57,8 @@ class SeatedView extends View
         $alternates            = $committee->allowsAlternates();
 
         foreach ($seat_data as $i=>$row) {
+            $actions = [];
+
             if ($userCanEditSeats) {
                 $actions[] = [
                     'url'   => parent::generateUri('seats.update')."?seat_id=$row[seat_id]",

@@ -40,8 +40,10 @@
 
         {{ committee.getDescription()|markdown_to_html }}
 
+        {% if committee.getMeetingSchedule() %}
         <h3>{{ _('meetingSchedule') }}</h3>
         {{ committee.getMeetingSchedule()|markdown_to_html }}
+        {% endif %}
     </div>
 </section>
 {% endblock %}

@@ -22,14 +22,20 @@
         {{ ROUTE_NAME=='committees.members' and current ? 'class="current"' : '' }}>
         {{ _(['current_member', 'current_members', 10]) }}
      </a>
-     <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='committees.seats' and current ? 'class="current"' : '' }}>
-        {{ _(['seat', 'seats', 10]) }}
-     </a>
-     <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }};current=0"
-        {{ ROUTE_NAME=='committees.seats' and not current ? 'class="current"' : '' }}>
-        {{ _('seats_past') }}
-     </a>
+
+     {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
+         <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }}"
+            {{ ROUTE_NAME=='committees.seats' and current ? 'class="current"' : '' }}>
+            {{ _(['seat', 'seats', 10]) }}
+         </a>
+         {% if committee.hasPastSeats() %}
+         <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }};current=0"
+            {{ ROUTE_NAME=='committees.seats' and not current ? 'class="current"' : '' }}>
+            {{ _('seats_past') }}
+         </a>
+         {% endif %}
+     {% endif %}
+
      {% if committee.getType()=='open' and committee.hasPastMembers() %}
      <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }};current=0"
         {{ ROUTE_NAME=='committees.members' and not current ? 'class="current"' : '' }}>
