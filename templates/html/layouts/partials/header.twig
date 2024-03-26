@@ -1,0 +1,36 @@
+<header class="navbar navbar-expand-sm shadow-sm">
+    <div class="container">
+        <div class="navbar-brand d-md-none">
+            <a class="navbar-brand"  href="https://bloomington.in.gov/" aria-label="Official Homepage of the City of Bloomington, Indiana">
+                <img src="https://bloomington.in.gov/static/snowflake-blue.svg" alt="City of Bloomington Logo" height="55" class="d-inline-block align-text-center">
+            </a>
+            <a class="navbar-brand" href="{{ BASE_URI }}">
+                {{ APPLICATION_NAME }}
+            </a>
+        </div>
+        <div class="navbar-brand d-none d-md-block">
+            <a class="navbar-brand"  href="https://bloomington.in.gov/" aria-label="Official Homepage of the City of Bloomington, Indiana">
+                <img src="https://bloomington.in.gov/static/cob-logo-horizontal.svg" alt="City of Bloomington Logo" style="padding-right:5%;" height="55" class="d-inline-block align-text-center">
+            </a>
+            <a class="navbar-brand" href="{{ BASE_URI }}">
+                {{ APPLICATION_NAME }}
+            </a>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ BASE_URI }}/help">Help</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
+            </li>
+            {% if USER is defined and USER.getRole()=='Administrator' %}
+            <li class="nav-item">
+                {{ include('html/layouts/partials/admin_menu.twig') }}
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                {{ include('html/layouts/partials/user_menu.twig') }}
+            </li>
+        </ul>
+    </div>
+</header>

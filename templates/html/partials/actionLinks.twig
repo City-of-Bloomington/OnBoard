@@ -5,6 +5,6 @@
  #}
 <nav>
     {% for action, link in actionLinks %}
-    <a href="{{ link.url }}" class="{{ action }}">{{ link.label }}</a>
+    <a href="{{ link.url }}" class="btn btn-secondary {{ action }}">{{ link.label }}</a>
     {% endfor %}
 </nav>

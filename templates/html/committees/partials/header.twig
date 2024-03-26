@@ -13,59 +13,79 @@
 #}
 {% set url     = current_url() %}
 {% set current = url.current is defined and url.current==0 ? false : true %}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.info' ? 'active' : '' }}">
+           {{ _('committee_info') }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.members' and current ? 'active' : '' }}">
+           {{ _(['current_member', 'current_members', 10]) }}
+        </a>
+    </li>
 
-<nav><a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='committees.info' ? 'class="current"' : '' }}>
-        {{ _('committee_info') }}
-     </a>
-     <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='committees.members' and current ? 'class="current"' : '' }}>
-        {{ _(['current_member', 'current_members', 10]) }}
-     </a>
+    {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
+    <li class="nav-item">
+        <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.seats' and current ? 'active' : '' }}">
+           {{ _(['seat', 'seats', 10]) }}
+        </a>
+    </li>
+        {% if committee.hasPastSeats() %}
+        <li class="nav-item">
+            <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }};current=0"
+               class="nav-link {{ ROUTE_NAME=='committees.seats' and not current ? 'active' : '' }}">
+               {{ _('seats_past') }}
+            </a>
+        </li>
+        {% endif %}
+    {% endif %}
 
-     {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
-         <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }}"
-            {{ ROUTE_NAME=='committees.seats' and current ? 'class="current"' : '' }}>
-            {{ _(['seat', 'seats', 10]) }}
-         </a>
-         {% if committee.hasPastSeats() %}
-         <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }};current=0"
-            {{ ROUTE_NAME=='committees.seats' and not current ? 'class="current"' : '' }}>
-            {{ _('seats_past') }}
-         </a>
-         {% endif %}
-     {% endif %}
-
-     {% if committee.getType()=='open' and committee.hasPastMembers() %}
-     <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }};current=0"
-        {{ ROUTE_NAME=='committees.members' and not current ? 'class="current"' : '' }}>
-        {{ _(['past_member', 'past_members', 10]) }}
-     </a>
-     {% endif %}
-     {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
-     <a href="{{ uri('committees.applications') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='committees.applications' ? 'class="current"' : '' }}>
-        {{ _(['application', 'applications', 10]) }}
-     </a>
-     {% endif %}
-     <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='meetingFiles.index' ? 'class="current"' : '' }}>
-        {{ _(['meetingFile', 'meetingFiles', 10]) }}
-     </a>
-     {% if committee.isLegislative() %}
-     <a href="{{ uri('legislation.index') }}?committee_id={{ committee.getId() }};year={{ 'now'|date('Y') }}"
-        {{ ROUTE_NAME=='legislation.index' ? 'class="current"' : '' }}>
-        {{ _(['legislation', 'legislations', 10]) }}
-     </a>
-     {% endif %}
-     <a href="{{ uri('reports.index') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='reports.index' ? 'class="current"' : '' }}>
-        {{ _(['report', 'reports', 10]) }}
-     </a>
-     {% if isAllowed('committees', 'history') %}
-     <a href="{{ uri('committees.history') }}?committee_id={{ committee.getId() }}"
-        {{ ROUTE_NAME=='committees.history' ? 'class="current"' : '' }}>
-        {{ _('committeeHistory') }}
-     </a>
-     {% endif %}
-</nav>
+    {% if committee.getType()=='open' and committee.hasPastMembers() %}
+    <li class="nav-item">
+        <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }};current=0"
+           class="nav-link {{ ROUTE_NAME=='committees.members' and not current ? 'active' : '' }}">
+           {{ _(['past_member', 'past_members', 10]) }}
+        </a>
+    </li>
+    {% endif %}
+    {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
+    <li class="nav-item">
+        <a href="{{ uri('committees.applications') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.applications' ? 'active' : '' }}">
+           {{ _(['application', 'applications', 10]) }}
+        </a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='meetingFiles.index' ? 'active' : '' }}">
+           {{ _(['meetingFile', 'meetingFiles', 10]) }}
+        </a>
+    </li>
+    {% if committee.isLegislative() %}
+    <li class="nav-item">
+        <a href="{{ uri('legislation.index') }}?committee_id={{ committee.getId() }};year={{ 'now'|date('Y') }}"
+           class="nav-link {{ ROUTE_NAME=='legislation.index' ? 'active' : '' }}">
+           {{ _(['legislation', 'legislations', 10]) }}
+        </a>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a href="{{ uri('reports.index') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='reports.index' ? 'active' : '' }}">
+           {{ _(['report', 'reports', 10]) }}
+        </a>
+    </li>
+    {% if isAllowed('committees', 'history') %}
+    <li class="nav-item">
+        <a href="{{ uri('committees.history') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.history' ? 'active' : '' }}">
+           {{ _('committeeHistory') }}
+        </a>
+    </li>
+    {% endif %}
+</ul>

@@ -55,7 +55,7 @@
                     {% endif %}
                 </td>
                 <td>{% if row.actionLinks is defined %}
-                    {% for a in row.actionLinks %}<a href="{{ a.url }}">{{ a.label }}</a>{% endfor %}
+                    {{ include('html/partials/moreLinks.twig', { moreLinks: row.actionLinks }) }}
                     {% endif %}
                 </td>
             </tr>
