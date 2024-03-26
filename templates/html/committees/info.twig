@@ -18,7 +18,7 @@
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
     <div>
-        <table>
+        <table class="table">
             {% if committee.getType()          %}<tr><th>{{ _('type'         ) }}</th><td>{{ committee.getType()          }}</td></tr>{% endif %}
             {% if committee.getYearFormed()    %}<tr><th>{{ _('yearFormed'   ) }}</th><td>{{ committee.getYearFormed()    }}</td></tr>{% endif %}
             {% if committee.getEndDate()       %}<tr><th>{{ _('endDate'      ) }}</th><td>{{ committee.getEndDate()       }}</td></tr>{% endif %}

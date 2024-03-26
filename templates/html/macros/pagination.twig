@@ -16,12 +16,16 @@
             {% set upperBound = (pageNumber - delta + pageRange) %}
         {% endif %}
 
-        <nav class="pageNavigation">
+        <nav>
+        <ul class="pagination">
         {% set url = current_url() %}
         {% for i in lowerBound..upperBound %}
             {% do url.__set('page', i) %}
-            <a href="{{ url }}">{{ i }}</a>
+            <li class="page-item">
+                <a class="page-link {{ pageNumber==i ? 'active' : ''}}" href="{{ url }}">{{ i }}</a>
+            </li>
         {% endfor %}
+        </ul>
         </nav>
     {% endif %}
 {% endmacro %}

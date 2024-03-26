@@ -1,5 +1,5 @@
 {#
- * @copyright 2017-2021 City of Bloomington, Indiana
+ * @copyright 2017-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param string firstname
  * @param string lastname
@@ -15,22 +15,22 @@
 {% block content %}
 <section>
     <header>
-        <h1>{{ _(['person', 'people', 100]) }}</h1>
+        <h2>{{ _(['person', 'people', 100]) }}</h2>
     </header>
     <form method="get">
         <fieldset>
-            <div><label  for="firstname">{{ _('firstname') }}</label>
-                 <input name="firstname" id="firstname" value="{{ firstname }}" />
+            <div><label  for="firstname" class="form-label">{{ _('firstname') }}</label>
+                 <input name="firstname" id="firstname" value="{{ firstname }}" class="form-control" />
             </div>
-            <div><label  for="lastname">{{ _('lastname') }}</label>
-                 <input name="lastname" id="lastname" value="{{ lastname }}" />
+            <div><label  for="lastname" class="form-label">{{ _('lastname') }}</label>
+                 <input name="lastname" id="lastname" value="{{ lastname }}" class="form-control" />
             </div>
             {% if isAllowed('people', 'viewContactInfo')%}
-            <div><label  for="email">{{ _('email') }}</label>
-                 <input name="email" id="email" value="{{ email }}" />
+            <div><label  for="email" class="form-label">{{ _('email') }}</label>
+                 <input name="email" id="email" value="{{ email }}" class="form-control" />
             </div>
             {% endif %}
-            <button type="submit" class="search">{{ _('search') }}</button>
+            <button type="submit" class="btn btn-primary">{{ _('search') }}</button>
         </fieldset>
     </form>
     {% if firstname or lastname or email %}

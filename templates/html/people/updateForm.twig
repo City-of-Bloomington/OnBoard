@@ -31,36 +31,36 @@
             <input name="person_id" type="hidden" value="{{ person_id }}" />
             {% endif %}
             <div>
-                <label for="firstname">{{ _('firstname') }}</label>
-                <input name="firstname" id="firstname" value="{{ firstname }}" />
+                <label for="firstname" class="form-label">{{ _('firstname') }}</label>
+                <input name="firstname" id="firstname" value="{{ firstname }}" class="form-control" />
             </div>
             <div>
-                <label for="lastname">{{ _('lastname') }}</label>
-                <input name="lastname" id="lastname" value="{{ lastname }}" />
+                <label for="lastname" class="form-label">{{ _('lastname') }}</label>
+                <input name="lastname" id="lastname" value="{{ lastname }}" class="form-control" />
             </div>
             <div>
-                <label for="email">{{ _('email') }}</label>
-                <input name="email" id="email" value="{{ email }}" />
+                <label for="email" class="form-label">{{ _('email') }}</label>
+                <input name="email" id="email" value="{{ email }}" type="email" class="form-control" />
             </div>
             <div>
-                <label for="phone">{{ _('phone') }}</label>
-                <input name="phone" id="phone" value="{{ phone }}" />
+                <label for="phone" class="form-label">{{ _('phone') }}</label>
+                <input name="phone" id="phone" value="{{ phone }}" type="tel" class="form-control" />
             </div>
             <div>
-                <label for="website">{{ _('website') }}</label>
-                <input name="website" id="website" value="{{ website }}" />
+                <label for="website" class="form-label">{{ _('website') }}</label>
+                <input name="website" id="website" value="{{ website }}" type="url" class="form-control" />
             </div>
             <div>
-                <label for="gender">{{ _('gender') }}</label>
-                <select name="gender" id="gender">
+                <label for="gender" class="form-label">{{ _('gender') }}</label>
+                <select name="gender" id="gender" class="form-select">
                     <option></option>
                     <option value=  "male" {{ gender==  'male' ? 'selected="true"' : '' }}>M</option>
                     <option value="female" {{ gender=='female' ? 'selected="true"' : '' }}>F</option>
                 </select>
             </div>
             <div>
-                <label for="race_id">{{ _('race') }}</label>
-                <select name="race_id" id="race_id">
+                <label for="race_id" class="form-label">{{ _('race') }}</label>
+                <select name="race_id" id="race_id" class="form-select" >
                     <option></option>
                     {% for r in races %}
                     <option value="{{ r.getId() }}" {{ race_id==r.getId() ? 'selected="true"' : '' }}>{{ r.getName() }}</option>
@@ -71,24 +71,24 @@
 
         <fieldset><legend>{{ _('address') }}</legend>
             <div>
-                <label for="address">{{ _('address') }}</label>
-                <textarea>{{ address }}</textarea>
+                <label for="address" class="form-label">{{ _('address') }}</label>
+                <textarea class="form-control">{{ address }}</textarea>
             </div>
             <div>
-                <label for="city">{{ _('city') }}</label>
-                <input name="city" id="city" value="{{ city }}" />
+                <label for="city" class="form-label">{{ _('city') }}</label>
+                <input name="city" id="city" value="{{ city }}" class="form-control" />
             </div>
             <div>
-                <label for="state">{{ _('state') }}</label>
-                <select name="state" id="state">
+                <label for="state" class="form-label">{{ _('state') }}</label>
+                <select name="state" id="state" class="form-control">
                     {% for s in states %}
                     <option {{ s==state ? 'selected="true"' : '' }}>{{ s }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div>
-                <label for="zip">{{ _('zip') }}</label>
-                <input name="zip" id="zip" value="{{ zip }}" />
+                <label for="zip" class="form-label">{{ _('zip') }}</label>
+                <input name="zip" id="zip" value="{{ zip }}" type="number" class="form-control" />
             </div>
         </fieldset>
 
@@ -97,8 +97,8 @@
             <input name="{{ k }}" type="hidden" value="{{ v }}" />
             {% endfor %}
 
-            <button type="submit">{{ _('save') }}</button>
-            <a href="{{ return_url }}" {{ callback ? 'onclick="self.close();"' : '' }}>{{ _('cancel') }}</a>
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger" href="{{ return_url }}" {{ callback ? 'onclick="self.close();"' : '' }}>{{ _('cancel') }}</a>
         </fieldset>
     </form>
 </section>
