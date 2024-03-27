@@ -1,0 +1,165 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     committee_types   Options for committee_type
+ * @param array     departments       Options for departments
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}</h2>
+        {{ include('html/committees/partials/header.twig') }}
+
+        <h3>{{ committee.getId() ? _('committee_edit') : _('committee_add') }}</h3>
+    </header>
+
+    <form method="post">
+        <fieldset><legend>{{ _('committee_info') }}</legend>
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+
+            <div>
+                <label for="type" class="form-label">{{ _('type') }}</label>
+                <select name="type" id="type" class="form-select">
+                {% for t in committee_types %}
+                <option value="{{ t }}" {{ committee.getType()==t ? 'selected="true"' : '' }}>{{ _(t) }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-check form-switch">
+                <input name="legislative" id="legislative"
+                       type="checkbox" value="1" {{ committee.getLegislative() ? 'checked="true"': '' }}
+                       class="form-check-input"  role="switch" />
+                <label for="legislative" class="form-check-label">{{ _('legislative') }}</label>
+            </div>
+
+            <div class="form-check form-switch">
+                <input name="alternates" id="alternates"
+                       type="checkbox" value="1" {{ committee.getAlternates() ? 'checked="true"': '' }}
+                       class="form-check-input"  role="switch" />
+                <label for="legislative" class="form-check-label">{{ _('alternates') }}</label>
+            </div>
+
+            <div>
+                <label for="name" class="form-label">{{ _('name') }}</label>
+                <input name="name" id="name" value="{{ committee.getName() }}" class="form-control" />
+            </div>
+
+            <div>
+                <label for="yearFormed" class="form-label">{{ _('yearFormed') }}</label>
+                <input name="yearFormed" id="yearFormed" value="{{ committee.getYearFormed() }}"
+                       type="number" class="form-control" />
+            </div>
+
+            <div>
+                <label for="statutoryName" class="form-label">{{ _('statutoryName') }}</label>
+                <input name="statutoryName" id="statutoryName" value="{{ committee.getStatutoryName() }}" class="form-control" />
+            </div>
+
+            <div>
+                <label for="code" class="form-label">{{ _('code') }}</label>
+                <input name="code" id="code" value="{{ committee.getCode() }}" class="form-control" />
+            </div>
+
+            <div>
+                <label for="calendarId" class="form-label">{{ _('calendarId') }}</label>
+                <input name="calendarId" id="calendarId" value="{{ committee.getCalendarId() }}"
+                       type="email" class="form-control" />
+            </div>
+
+            <div>
+                <label for="website" class="form-label">{{ _('website') }}</label>
+                <input name="website" id="website" value="{{ committee.getWebsite() }}"
+                       type="url" class="form-control" />
+            </div>
+
+            <div>
+                <label for="videoArchive" class="form-label">{{ _('videoArchive') }}</label>
+                <input name="videoArchive" id="videoArchive" value="{{ committee.getVideoArchive() }}"
+                       type="url" class="form-control" />
+            </div>
+
+            <div>
+                <label for="termEndWarningDays" class="form-label">{{ _('termEndWarningDays') }}</label>
+                <input name="termEndWarningDays" id="termEndWarningDays" value="{{ committee.getTermEndWarningDays() }}"
+                       type="number" class="form-control" />
+            </div>
+
+            <div>
+                <label for="applicationLifetime" class="form-label">{{ _('applicationLifetime') }}</label>
+                <input name="applicationLifetime" id="applicationLifetime" value="{{ committee.getApplicationLifetime() }}"
+                       type="number" class="form-control" />
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _(['department', 'departments', 2]) }}</legend>
+            <div>
+                <label for="departments" class="form-label">{{ _(['department', 'departments', 2]) }}</label>
+                <select name="departments[]" id="departments" multiple="true" size="8" class="form-select">
+                        <option value=""></option>
+                        {% for d in departments %}
+                        <option value="{{ d.getId() }}" {{ committee.hasDepartment(d) ? 'selected="true"' : '' }}>{{ d.getName() }}</option>
+                        {% endfor %}
+                    </select>
+                </dd>
+            </dl>
+        </fieldset>
+
+        <fieldset><legend>{{ _('contactInfo') }}</legend>
+            <div>
+                <label for="address" class="form-label">{{ _('address') }}</label>
+                <textarea name="address" id="address" class="form-control">{{ committee.getAddress() }}</textarea>
+            </div>
+
+            <div>
+                <label for="city" class="form-label">{{ _('city') }}</label>
+                <input name="city" id="city" value="{{ committee.getCity() }}" class="form-control" />
+            </div>
+
+            <div>
+                <label for="state" class="form-label">{{ _('state') }}</label>
+                <select name="state" id="state" class="form-select">
+                    <option>IN</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="zip" class="form-label">{{ _('zip') }}</label>
+                <input name="zip" id="zip" value="{{ committee.getZip() }}" class="form-control" size="5" />
+            </div>
+
+            <div>
+                <label for="email" class="form-label">{{ _('email') }}</label>
+                <input name="email" id="email" value="{{ committee.getEmail() }}"
+                       type="email" class="form-control" />
+            </div>
+
+            <div>
+                <label for="phone" class="form-label">{{ _('phone') }}</label>
+                <input name="phone" id="phone" value="{{ committee.getPhone() }}"
+                       type="tel" class="form-control" />
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _('description') }}</legend>
+            <textarea name="description" id="description" class="form-control">{{ committee.getDescription() }}</textarea>
+        </fieldset>
+
+        <fieldset><legend>{{ _('meetingSchedule') }}</legend>
+            <textarea name="meetingSchedule" id="meetingSchedule" class="form-control">{{ committee.getMeetingSchedule() }}</textarea>
+        </fieldset>
+
+        <fieldset><legend>{{ _('submit') }}</legend>
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger"
+               href="{{ committee.getId() ? uri('committees.info') ~ '?committee_id=' ~ committee.getId() : uri('committees.index') }}">
+               {{ _('cancel') }}
+            </a>
+        </fieldset>
+    </form>
+
+</section>
+
+{% endblock %}
