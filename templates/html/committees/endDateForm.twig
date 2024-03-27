@@ -1,0 +1,31 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array data
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}</h2>
+        {{ include('html/committees/partials/header.twig') }}
+
+        <h3>{{ _('committee_end') }}</h3>
+    </header>
+
+    <form method="post">
+        <fieldset>
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+
+            <div>
+                <label for="endDate" class="form-label">{{ _('endDate') }}</label>
+                <input name="endDate" id="endDate" value="{{ 'now'|date('Y-m-d') }}"
+                       type="date" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Save</button>
+            <a class="btn btn-danger" href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}">{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

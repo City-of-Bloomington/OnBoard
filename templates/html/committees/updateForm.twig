@@ -21,11 +21,17 @@
 
             <div>
                 <label for="type" class="form-label">{{ _('type') }}</label>
-                <select name="type" id="type" class="form-select">
+                <select name="type" id="type" class="form-select" required="true">
                 {% for t in committee_types %}
                 <option value="{{ t }}" {{ committee.getType()==t ? 'selected="true"' : '' }}>{{ _(t) }}</option>
                 {% endfor %}
                 </select>
+            </div>
+
+            <div>
+                <label for="name" class="form-label">{{ _('name') }}</label>
+                <input name="name" id="name" value="{{ committee.getName() }}" required="true"
+                       class="form-control" />
             </div>
 
             <div class="form-check form-switch">
@@ -42,10 +48,6 @@
                 <label for="legislative" class="form-check-label">{{ _('alternates') }}</label>
             </div>
 
-            <div>
-                <label for="name" class="form-label">{{ _('name') }}</label>
-                <input name="name" id="name" value="{{ committee.getName() }}" class="form-control" />
-            </div>
 
             <div>
                 <label for="yearFormed" class="form-label">{{ _('yearFormed') }}</label>
