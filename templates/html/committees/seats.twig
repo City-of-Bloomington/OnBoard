@@ -1,0 +1,51 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     seats
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <table class="table">
+    <thead>
+        <tr><th></th>
+            <th>{{ _('code')      }}</th>
+            <th>{{ _('name')      }}</th>
+            <th>{{ _(['appointer', 'appointers', 1]) }}</th>
+            <th>{{ _('type')      }}</th>
+            <th>{{ _('startDate') }}</th>
+            <th>{{ _('endDate')   }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% set userCanEdit=isAllowed('seats', 'update') %}
+        {% for s in seats %}
+        <tr><td>{% if userCanEdit %}
+                <a class="btn btn-primary" href="{{ uri('seats.update') }}?seat_id={{ s.getId() }}">{{ _('seat_edit') }}</a>
+                {% endif %}
+            </td>
+            <td>{{ s.getCode() }}</td>
+            <td><a href="{{ uri('seats.view') }}?seat_id={{ s.getId() }}">{{ s.getName() }}</a></td>
+            <td>{{ s.getAppointer() }}</td>
+            <td>{{ s.getType() }}</td>
+            <td>{{ s.getStartDate(DATE_FORMAT) }}</td>
+            <td>{{ s.getEndDate  (DATE_FORMAT) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    {% if isAllowed('seats', 'update') %}
+    <a class="btn btn-primary" href="{{ uri('seats.update') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
+    {% endif %}
+</section>
+{% endblock %}

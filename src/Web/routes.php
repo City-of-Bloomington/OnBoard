@@ -53,7 +53,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('members',      '/members'     , Web\Committees\Members\Controller::class);
     $r->get('update',       '/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/end'         , Web\Committees\End\Controller::class)->allows(['POST']);
-    $r->get('seats',        '/seats'       , 'Application\Controllers\CommitteesController')->extras(['action' => 'seats'       ]);
+    $r->get('seats',        '/seats'       , Web\Committees\Seats\Controller::class);
     $r->get('applications', '/applications', 'Application\Controllers\CommitteesController')->extras(['action' => 'applications']);
     $r->get('meetings',     '/meetings'    , 'Application\Controllers\CommitteesController')->extras(['action' => 'meetings'    ]);
     $r->get('history',      '/history'     , 'Application\Controllers\CommitteesController')->extras(['action' => 'history'     ]);

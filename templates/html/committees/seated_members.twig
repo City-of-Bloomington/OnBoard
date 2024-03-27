@@ -31,7 +31,7 @@
         <tbody>
         {% for row in seat_data %}
             <tr><td><a href="{{ uri('seats.view') }}?seat_id={{ row.seat_id }}">{{ row.seat_code }} {{ row.seat_name }}</a></td>
-                <td>{{ row.term_startDate|date('n/j/Y') }} - {{ row.term_endDate|date('n/j/Y') }}</td>
+                <td>{{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}</td>
                 <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}</td>
                 <td>{% if row.member_person_id %}
                     {{ row.member_firstname }} {{ row.member_lastname }}

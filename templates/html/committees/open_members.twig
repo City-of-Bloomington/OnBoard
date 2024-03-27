@@ -23,7 +23,7 @@
             {{ member.getPerson().getFullname() }}
             </a>
         </td>
-        <td>{{ member.getStartDate('n/j/Y') }} - {{ member.getEndDate('n/j/Y') }}</td>
+        <td>{{ member.getStartDate(DATE_FORMAT) }} - {{ member.getEndDate(DATE_FORMAT) }}</td>
         <td>{% if row.actionLinks is defined %}
             {% for a in row.actionLinks %}<a href="{{ a.url }}">{{ a.label }}</a>{% endfor %}
             {% endif %}

@@ -52,7 +52,7 @@
             <div>
                 <label for="yearFormed" class="form-label">{{ _('yearFormed') }}</label>
                 <input name="yearFormed" id="yearFormed" value="{{ committee.getYearFormed() }}"
-                       type="number" class="form-control" />
+                       type="number" class="form-control" size="4" />
             </div>
 
             <div>
@@ -62,7 +62,8 @@
 
             <div>
                 <label for="code" class="form-label">{{ _('code') }}</label>
-                <input name="code" id="code" value="{{ committee.getCode() }}" class="form-control" />
+                <input name="code" id="code" value="{{ committee.getCode() }}"
+                       class="form-control" size="5" />
             </div>
 
             <div>
@@ -86,13 +87,13 @@
             <div>
                 <label for="termEndWarningDays" class="form-label">{{ _('termEndWarningDays') }}</label>
                 <input name="termEndWarningDays" id="termEndWarningDays" value="{{ committee.getTermEndWarningDays() }}"
-                       type="number" class="form-control" />
+                       type="number" class="form-control" size="4" />
             </div>
 
             <div>
                 <label for="applicationLifetime" class="form-label">{{ _('applicationLifetime') }}</label>
                 <input name="applicationLifetime" id="applicationLifetime" value="{{ committee.getApplicationLifetime() }}"
-                       type="number" class="form-control" />
+                       type="number" class="form-control" size="4" />
             </div>
         </fieldset>
 

@@ -19,16 +19,16 @@
     {% endif %}
     <div>
         <table class="table">
-            {% if committee.getType()          %}<tr><th>{{ _('type'         ) }}</th><td>{{ committee.getType()          }}</td></tr>{% endif %}
-            {% if committee.getYearFormed()    %}<tr><th>{{ _('yearFormed'   ) }}</th><td>{{ committee.getYearFormed()    }}</td></tr>{% endif %}
-            {% if committee.getEndDate()       %}<tr><th>{{ _('endDate'      ) }}</th><td>{{ committee.getEndDate()       }}</td></tr>{% endif %}
-            {% if committee.getStatutoryName() %}<tr><th>{{ _('statutoryName') }}</th><td>{{ committee.getStatutoryName() }}</td></tr>{% endif %}
-            {% if committee.getCode()          %}<tr><th>{{ _('code'         ) }}</th><td>{{ committee.getCode()          }}</td></tr>{% endif %}
-            {% if committee.getWebsite()       %}<tr><th>{{ _('website'      ) }}</th><td>{{ committee.getWebsite()       }}</td></tr>{% endif %}
-            {% if committee.getVideoArchive()  %}<tr><th>{{ _('videoArchive' ) }}</th><td>{{ committee.getVideoArchive()  }}</td></tr>{% endif %}
-            {% if committee.getEmail()         %}<tr><th>{{ _('email'        ) }}</th><td>{{ committee.getEmail()         }}</td></tr>{% endif %}
-            {% if committee.getPhone()         %}<tr><th>{{ _('phone'        ) }}</th><td>{{ committee.getPhone()         }}</td></tr>{% endif %}
-            {% if committee.getAddress()       %}<tr><th>{{ _('address'      ) }}</th><td>{{ committee.getAddress()       }}</td></tr>{% endif %}
+            {% if committee.getType()          %}<tr><th>{{ _('type'         ) }}</th><td>{{ committee.getType()               }}</td></tr>{% endif %}
+            {% if committee.getYearFormed()    %}<tr><th>{{ _('yearFormed'   ) }}</th><td>{{ committee.getYearFormed()         }}</td></tr>{% endif %}
+            {% if committee.getEndDate()       %}<tr><th>{{ _('endDate'      ) }}</th><td>{{ committee.getEndDate(DATE_FORMAT) }}</td></tr>{% endif %}
+            {% if committee.getStatutoryName() %}<tr><th>{{ _('statutoryName') }}</th><td>{{ committee.getStatutoryName()      }}</td></tr>{% endif %}
+            {% if committee.getCode()          %}<tr><th>{{ _('code'         ) }}</th><td>{{ committee.getCode()               }}</td></tr>{% endif %}
+            {% if committee.getWebsite()       %}<tr><th>{{ _('website'      ) }}</th><td>{{ committee.getWebsite()            }}</td></tr>{% endif %}
+            {% if committee.getVideoArchive()  %}<tr><th>{{ _('videoArchive' ) }}</th><td>{{ committee.getVideoArchive()       }}</td></tr>{% endif %}
+            {% if committee.getEmail()         %}<tr><th>{{ _('email'        ) }}</th><td>{{ committee.getEmail()              }}</td></tr>{% endif %}
+            {% if committee.getPhone()         %}<tr><th>{{ _('phone'        ) }}</th><td>{{ committee.getPhone()              }}</td></tr>{% endif %}
+            {% if committee.getAddress()       %}<tr><th>{{ _('address'      ) }}</th><td>{{ committee.getAddress()            }}</td></tr>{% endif %}
             {% if committee.getCalendarId()    %}<tr><th>{{ _('calendarId'   ) }}</th><td><a href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></td></tr>{% endif %}
             <tr><th>{{ _('legislative') }}</th><td>{{ committee.getLegislative() ? _('yes') : _('no') }}</td></tr>
             <tr><th>{{ _('alternates' ) }}</th><td>{{ committee.getAlternates()  ? _('yes') : _('no') }}</td></tr>
