@@ -9,22 +9,21 @@ use Web\View as BaseView;
 
 class View extends BaseView
 {
-    private $types;
+    private $data;
     private $isUpdate;
 
-    public function __construct($types, $isUpdate = false)
+    public function __construct($data, $isUpdate = false)
     {
         parent::__construct();
-        $this->types = $types;
+        $this->data = $data;
         $this->isUpdate = $isUpdate;
     }
 
     public function render(): string
     {
         $template = $this->isUpdate ? 'updateTypeForm.twig' : 'typesList.twig';
-        return $this->twig->render("html/legislation/types/{$template}", [
-            'types' => $this->types,
-            'isUpdate' => $this->isUpdate
-        ]);
+        $context = $this->isUpdate ? ['type' => $this->data] : ['types' => $this->data];
+        return $this->twig->render("html/legislation/types/{$template}", $context);
     }
 }
+

@@ -1,4 +1,3 @@
-{# templates/html/legislation/types/typesList.twig #}
 {% extends "html/layouts/default.twig" %}
 
 {% block content %}
@@ -8,7 +7,7 @@
             <h1>Legislation Types</h1>
         </div>
         <div class="card-body">
-            <a href="{{ path_for('legislationTypes.update') }}" class="btn btn-primary mb-3">New Legislation Type</a>
+            <a href="{{ uri('legislationTypes.update') }}" class="btn btn-primary mb-3">New Legislation Type</a>
             <table class="table">
                 <thead>
                     <tr>
@@ -21,7 +20,7 @@
                     {% for type in types %}
                     <tr>
                         <td>
-                            <a href="{{ path_for('legislationTypes.update', {'id': type.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="{{ uri('legislationTypes.update', {'id': type.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
                         </td>
                         <td>{{ type.name }}</td>
                         <td>{% if type.subtype %}Subtype{% endif %}</td>
@@ -37,4 +36,5 @@
     </div>
 </main>
 {% endblock %}
+
 
