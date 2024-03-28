@@ -12,10 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body class="min-vh-100 vstack">
     {{ include('html/layouts/partials/header.twig') }}
     {{ include('html/layouts/partials/nav1.twig') }}
-    <main class="container">
+    <main class="container p-2 flex-grow-1">
         {% if errorMessages is defined %}
         {{ include('html/layouts/partials/errorMessages.twig') }}
         {% endif %}
@@ -23,8 +23,7 @@
         {% block content %}
         {% endblock %}
 	</main>
-    <footer>
-    </footer>
+    {{ include('html/layouts/partials/footer.twig') }}
     <script type="text/javascript" src="{{ BASE_URI }}/js/onboard-{{ VERSION }}.js"></script>
 </body>
 </html>
