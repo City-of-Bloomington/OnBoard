@@ -1,0 +1,40 @@
+{# templates/html/legislation/types/typesList.twig #}
+{% extends "html/layouts/default.twig" %}
+
+{% block content %}
+<main class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h1>Legislation Types</h1>
+        </div>
+        <div class="card-body">
+            <a href="{{ path_for('legislationTypes.update') }}" class="btn btn-primary mb-3">New Legislation Type</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Subtype</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for type in types %}
+                    <tr>
+                        <td>
+                            <a href="{{ path_for('legislationTypes.update', {'id': type.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                        </td>
+                        <td>{{ type.name }}</td>
+                        <td>{% if type.subtype %}Subtype{% endif %}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No legislation types found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}
+

@@ -101,8 +101,8 @@ $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
 });
 
 $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LegislationTypesController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('index',  ''       , 'Application\Controllers\LegislationTypesController')->extras(['action' => 'index' ]);
+    $r->get('update', '/update', Web\Legislation\Types\Controller::class)->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('index',  '', Web\Legislation\Types\Controller::class)->extras(['action' => 'index']);
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
