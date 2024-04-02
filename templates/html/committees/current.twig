@@ -7,17 +7,16 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
-    <header>
-        <h1>{{ _(['committee', 'committees', 10]) }}</h1>
+<section class="container">
+    <header class="d-flex flex-wrap">
+        <h1 class="me-3">{{ _(['committee', 'committees', 10]) }}</h1>
+        {% if actionLinks %}
+            {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
     </header>
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-
-    <table class="table table-hover">
+    <table class="table table-hover table-bordered">
         <thead>
-            <tr><th></th>
+            <tr><th>Name</th>
                 <th>{{ _(['seat',    'seats',     10]) }}</th>
                 <th>{{ _(['vacancy', 'vacancies', 10]) }}</th>
                 {% if isAllowed('committees', 'applications') %}
