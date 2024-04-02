@@ -4,6 +4,37 @@
         {{ USER.getFullname() }}
     </button>
     <ul class="dropdown-menu">
+        {% if isAllowed('applicants', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('applicants.index') }}">{{ _(['applicant', 'applicants', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('departments', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('departments.index') }}">{{ _(['department', 'departments', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('appointers', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('appointers.index') }}">{{ _(['appointer', 'appointers', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('races', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('races.index') }}">{{ _(['race', 'races', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('users', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('users.index') }}">{{ _(['user', 'users', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('tags', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('tags.index') }}">{{ _(['tag', 'tags', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('legislationTypes', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('legislationTypes.index') }}">{{ _(['legislationType', 'legislationTypes', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('legislationActionTypes', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('legislationActionTypes.index') }}">{{ _(['legislationActionType', 'legislationActionTypes', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('legislationStatuses', 'index') %}
+            <li><a class="dropdown-item" href="{{ uri('legislationStatuses.index') }}">{{ _(['legislationStatus', 'legislationStatuses', 10]) }}</a></li>
+            {% endif %}
+            {% if isAllowed('site', 'siteContent') %}
+            <li><a class="dropdown-item" href="{{ uri('site.index') }}">{{ _('siteContent') }}</a></li>
+        {% endif %}
+
         <li><a class="dropdown-item" href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
     </ul>
 </div>

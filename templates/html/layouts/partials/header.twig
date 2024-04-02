@@ -23,11 +23,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
             </li>
-            {% if USER is defined and USER.getRole()=='Administrator' %}
-            <li class="nav-item">
-                {{ include('html/layouts/partials/admin_menu.twig') }}
-            </li>
-            {% endif %}
             <li class="nav-item">
                 {{ include('html/layouts/partials/user_menu.twig') }}
             </li>
