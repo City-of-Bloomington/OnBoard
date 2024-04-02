@@ -16,12 +16,14 @@
     {{ include('html/layouts/partials/header.twig') }}
     {{ include('html/layouts/partials/nav1.twig') }}
     <main class="container p-2 flex-grow-1">
-        {% if errorMessages is defined %}
-        {{ include('html/layouts/partials/errorMessages.twig') }}
-        {% endif %}
+        <div>
+            {% if errorMessages is defined %}
+            {{ include('html/layouts/partials/errorMessages.twig') }}
+            {% endif %}
 
-        {% block content %}
-        {% endblock %}
+            {% block content %}
+            {% endblock %}
+        </div>
 	</main>
     {{ include('html/layouts/partials/footer.twig') }}
     <script type="text/javascript" src="{{ BASE_URI }}/js/onboard-{{ VERSION }}.js"></script>
