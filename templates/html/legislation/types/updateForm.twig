@@ -1,0 +1,32 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Type   type
+ * @param string title
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h2>{{ title }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <div>
+                <label for="name" class="form-label">{{ _('name') }}</label>
+                <input name="name" id="name" value="{{ type.name }}" required="true" class="form-control" />
+            </div>
+            <div>
+                <div class="form-check form-switch">
+                    <input name="subtype" id="subtype" type="checkbox" value="1"
+                           class="form-check-input" role="switch" {% if type.subtype %}checked="true"{% endif %} />
+                    <label class="form-check-label" for="subtype">{{ _('subtype') }}</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger" href="{{ uri('legislationTypes.index') }}">{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+</section>
+{% endblock %}
+

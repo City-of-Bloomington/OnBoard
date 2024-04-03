@@ -1,0 +1,26 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array types
+ * @param array actionLinks (optional)
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h2>{{ _(['legislationType', 'legislationTypes', 10]) }}</h2></header>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <table class="table">
+    {% for t in types %}
+    <tr><td><a href="{{ uri('legislationTypes.update') }}?id={{ t.getId() }}" class="btn btn-secondary">
+            {{ _('edit') }}
+            </a>
+        </td>
+        <td>{{ t.getName() }}</td>
+        <td>{% if t.isSubtype() %}{{ _('subtype') }}{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
