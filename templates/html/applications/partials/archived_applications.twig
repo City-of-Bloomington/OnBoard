@@ -1,0 +1,51 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array archived_applications
+ #}
+<section>
+    <header>
+        <h2>{{ _('applications_archived') }}</h2>
+    </header>
+
+    <table class="table">
+        <thead>
+            <tr><th>{{ _('created' ) }}</th>
+                <th>{{ _('name'    ) }}</th>
+                <th>{{ _('archived') }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in archived_applications %}
+            {% set p = a.getApplicant() %}
+            <tr><td>{{ a.getCreated(DATE_FORMAT) }}</td>
+                <td>{% if userCanViewApplicant %}
+                    <a href="{{ uri('applicants.view') }}?applicant_id={{ a.getApplicant_id() }}">
+                        {{ p.getFirstname() }} {{ p.getLastname() }}
+                    </a>
+                    {% else %}
+                    {{ p.getFirstname() }} {{ p.getLastname() }}
+                    {% endif %}
+                </td>
+                <td>{{ a.getArchived(DATE_FORMAT) }}</td>
+                <td>{% if userCanUnArchive %}
+                    <a class="btn btn-primary"
+                       href="{{ uri('applications.unarchive') }}?application_id={{ a.getId() }}">
+                        {{ _('application_unarchive') }}
+                    </a>
+                    {% endif %}
+
+                    {% if userCanDelete %}
+                    <a class="btn btn-primary"
+                       href="{{ uri('applications.delete') }}?application_id={{ a.getId() }}">
+                        {{ _('application_delete') }}
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+

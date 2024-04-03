@@ -1,0 +1,59 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array     applicants
+ * @param array     seats
+ * @param Committee committee
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+        <h3>{{ _('applications_reportForm_title', 'messages') }}</h3>
+    </header>
+
+    {% if seats %}
+    <section>
+        <header><h4>{{ _(['requirement', 'requirements', 10]) }}</h4></header>
+        <dl>{% for s in seats %}
+            {% if s.getRequirements() %}
+            <dt>{{ s.getCode() }}: {{ s.getName() }}</dt>
+            <dd>{{ s.getRequirements() | markdown_to_html }}</dd>
+            {% endif %}
+            {% endfor %}
+        </dl>
+    </section>
+    {% endif %}
+
+    {% for a in applicants %}
+    <article>
+        <header><h4>{{ a.getFirstname() }} {{ a.getLastname() }}</h4></header>
+        <dl><dt>{{ _('email'         ) }}</dt><dd>{{ a.getEmail() }}</dd>
+            <dt>{{ _('phone'         ) }}</dt><dd>{{ a.getPhone() }}</dd>
+            <dt>{{ _('address'       ) }}</dt><dd><address>{{ a.getAddress() }}\n{{ a.getCity() }} {{ a.getZip() }}</address></dd>
+            <dt>{{ _('citylimits'    ) }}</dt><dd>{{ a.getCitylimits() ? 'Yes' : 'No' }}</dd>
+            <dt>{{ _('occupation'    ) }}</dt><dd>{{ a.getOccupation()     }}</dd>
+            <dt>{{ _('referredFrom'  ) }}</dt><dd>{{ a.getReferredFrom()   }}</dd>
+            <dt>{{ _('referredOther' ) }}</dt><dd>{{ a.getReferredOther()  }}</dd>
+            <dt>{{ _('interest'      ) }}</dt><dd>{{ a.getInterest()       }}</dd>
+            <dt>{{ _('qualifications') }}</dt><dd>{{ a.getQualifications() }}</dd>
+
+            {% if isAllowed('applicantFiles', 'download') %}
+            <dt>{{ _('applicantFile') }}</dt>
+            <dd>{% for f in a.getFiles() %}
+                <a href="{{ uri('applicantFiles.download') }}?applicantFile_id={{ f.getId() }}">{{ f.getFilename() }}</a>
+                {% endfor %}
+            </dd>
+            {% endif %}
+        </dl>
+    </article>
+    {% endfor %}
+
+</section>
+
+{% endblock %}

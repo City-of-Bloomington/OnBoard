@@ -36,10 +36,10 @@ $map->attach('applicants.', '/applicants', function ($r) {
 });
 
 $map->attach('applications.', '/applications', function ($r) {
-    $r->get('archive',   '/archive'  , 'Application\Controllers\ApplicationsController')->extras(['action' => 'archive'  ]);
-    $r->get('unarchive', '/unarchive', 'Application\Controllers\ApplicationsController')->extras(['action' => 'unarchive']);
-    $r->get('report',    '/report'   , 'Application\Controllers\ApplicationsController')->extras(['action' => 'report'   ]);
-    $r->get('delete',    '/delete'   , 'Application\Controllers\ApplicationsController')->extras(['action' => 'delete'   ]);
+    $r->get('archive',   '/archive'  , Web\Applications\Archive\Controller::class);
+    $r->get('unarchive', '/unarchive', Web\Applications\Unarchive\Controller::class);
+    $r->get('report',    '/report'   , Web\Applications\Report\Controller::class)->allows(['POST']);
+    $r->get('delete',    '/delete'   , Web\Applications\Delete\Controller::class);
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {
@@ -54,7 +54,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('update',       '/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/end'         , Web\Committees\End\Controller::class)->allows(['POST']);
     $r->get('seats',        '/seats'       , Web\Committees\Seats\Controller::class);
-    $r->get('applications', '/applications', 'Application\Controllers\CommitteesController')->extras(['action' => 'applications']);
+    $r->get('applications', '/applications', Web\Committees\Applications\Controller::class);
     $r->get('meetings',     '/meetings'    , 'Application\Controllers\CommitteesController')->extras(['action' => 'meetings'    ]);
     $r->get('history',      '/history'     , 'Application\Controllers\CommitteesController')->extras(['action' => 'history'     ]);
     $r->get('index',        ''             , Web\Committees\List\Controller::class);
