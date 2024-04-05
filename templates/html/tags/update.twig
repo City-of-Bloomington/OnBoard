@@ -1,0 +1,25 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Type   type
+ * @param string title
+ #}
+{% extends "html/layouts/default.twig" %}
+
+{% block content %}
+<section>
+    <header><h1>Edit Tag</h1></header>
+    <form method="post" class="form">
+        <fieldset>
+            <input name="id" type="hidden" value="{{ tag.id }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input name="name" id="name" value="{{ tag.name }}" required="true" class="form-control">
+            </div>
+            
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="/onboard/tags" class="btn btn-danger">Cancel</a>
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

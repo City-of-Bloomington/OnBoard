@@ -167,9 +167,13 @@ $map->attach('site.', '/site', function ($r) {
 });
 
 $map->attach('tags.', '/tags', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\TagsController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('index',  ''       , 'Application\Controllers\TagsController')->extras(['action' => 'index' ]);
+    $r->get('index', '', Web\Tags\List\Controller::class);
+    $r->get('add', '/add', Web\Tags\Add\Controller::class);
+    $r->post('add.post', '/add', Web\Tags\Add\Controller::class);
+    $r->get('update', '/update', Web\Tags\Update\Controller::class);
+    $r->post('update.post', '/update', Web\Tags\Update\Controller::class);
 });
+
 
 $map->attach('terms.', '/terms', function ($r) {
     $r->get('update',   '/update'  , 'Application\Controllers\TermsController')->extras(['action' => 'update'  ])->allows(['POST']);
