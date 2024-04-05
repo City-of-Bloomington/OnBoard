@@ -75,10 +75,12 @@ $map->attach('legislationActions.', '/legislationActions', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\LegislationActionsController')->extras(['action' => 'update'])->allows(['POST']);
 });
 
+
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LegislationActionTypesController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('index',  ''       , 'Application\Controllers\LegislationActionTypesController')->extras(['action' => 'index' ]);
+    $r->get('update', '/update', Web\Legislation\Action\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  '',        Web\Legislation\Action\Info\Controller::class);
 });
+
 
 $map->attach('legislation.', '/legislation', function ($r) {
     $r->get('view',   '/view'  , 'Application\Controllers\LegislationController')->extras(['action' => 'view'  ]);
