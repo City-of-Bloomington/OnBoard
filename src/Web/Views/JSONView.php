@@ -8,11 +8,15 @@ namespace Web\Views;
 
 class JSONView extends \Web\View
 {
-    public function __construct(public array $data) { }
+    public function __construct(public array $data)
+    {
+        $this->outputFormat = 'json';
+    }
 
     public function render(): string
     {
         header('Content-type: application/json; charset=utf-8');
-        echo json_encode($data, JSON_PRETTY_PRINT);
+        echo json_encode($this->data, JSON_PRETTY_PRINT);
+        return '';
     }
 }

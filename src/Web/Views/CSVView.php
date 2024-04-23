@@ -14,6 +14,8 @@ class CSVView extends \Web\View
 
     public function __construct(string $filename, array $data)
     {
+        $this->outputFormat = 'csv';
+
         header("Content-Disposition: attachment; filename=\"$filename.csv\"");
         if ($data) {
             $this->data = array_merge([array_keys($data[0])], $data);
