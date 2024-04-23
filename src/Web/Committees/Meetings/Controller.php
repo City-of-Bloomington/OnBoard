@@ -47,18 +47,20 @@ class Controller extends \Web\Controller
         }
 
         if (isset($committee)) {
-
             $meetings = $committee->getMeetings($start, $end);
 
-            if ($this->template->outputFormat == 'html') {
-                header("Location: ".\Web\View::generateUrl('meetingFiles.index'));
-                exit();
+            switch ($this->outputFormat) {
+                case 'html':
+                    header("Location: ".\Web\View::generateUrl('meetingFiles.index'));
+                    exit();
+                break;
+
+                case 'json':
+                    return new \Web\Views\JSONView($meetings);
+                break;
+
+                default:
             }
-            $this->template->blocks[] = new Block('committees/meetings.inc', [
-                'committee' => $committee,
-                'meetings'  => $meetings,
-                'year'      => $year
-            ]);
         }
 
         return \Web\Views\NotFoundView();
