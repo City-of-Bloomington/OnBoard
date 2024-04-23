@@ -1,0 +1,114 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     files
+ * @param array     sort
+ * @param array     years  Available years for the committee
+ * @param array     types  Meeting file types
+ * @param array     actionLinks
+ * @param array     addLinks
+ *
+ * Pagination parameters
+ * @param int       total
+ * @param int       itemsPerPage
+ * @param int       currentPage
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+
+{% block content %}
+<section>
+    <header>
+        {% if committee %}
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+        {% endif %}
+
+        <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+        {{ include('html/partials/actionLinks.twig') }}
+
+        {% if addLinks %}
+        <nav class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ _('add') }}
+            </button>
+            <ul class="dropdown-menu">
+                {% for link in addLinks %}
+                <li><a href="{{ link.url }}" class="dropdown-item">{{ link.label }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <form method="get">
+            <fieldset>
+                {% if committee %}
+                <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
+                {% endif %}
+                <div>
+                    <label for="year">{{ _('year') }}</label>
+                    <select name="year" id="year" onchange="this.form.submit();">
+                        <option value=""></option>
+                        {% for y in years %}
+                        <option>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </fieldset>
+        </form>
+    </header>
+
+    <table>
+    <thead>
+        {% set url = current_url() %}
+        <tr><th>{% do url.__set('sort', (sort.field=='title' and sort.direction=='desc') ? 'title asc' : 'title desc') %}
+                <a href="{{ url }}">{{ _('title') }}</a>
+            </th>
+            <th>{% do url.__set('sort', (sort.field=='filename' and sort.direction=='desc') ? 'filename asc' : 'filename desc') %}
+                <a href="{{ url }}">{{ _('filename') }}</a>
+            </th>
+            <th>{% do url.__set('sort', (sort.field=='meetingDate' and sort.direction=='desc') ? 'meetingDate asc' : 'meetingDate desc') %}
+                <a href="{{ url }}">{{ _('meetingDate') }}</a>
+            </th>
+            <th><form method="get">
+                    <fieldset>
+                        {% for k,v in url.parameters %}
+                        {% if k!='type' %}
+                        <input name="{{ k }}" type="hidden" value="{{ v }}" />
+                        {% endif %}
+                        {% endfor %}
+                        <select name="type" onchange="this.form.submit();">
+                            <option value="">{{ _('type') }}</option>
+                            {% for t in types %}
+                            <option {{ t in url.parameters and url.parameters.type==t ? 'selected="true"' : '' }}>{{ t }}</option>
+                            {% endfor %}
+                        </select>
+                    </fieldset>
+                </form>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in files %}
+        <tr><td>{{ f.title }}</td>
+            <td>{{ f.filename }}</td>
+            <td>{{ f.meetingDate }}</td>
+            <td>{{ f.type }}</td>
+            <td>{% if f.actions %}
+                {{ include('html/partials/moreLinks.twig', { moreLinks: f.actions }) }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    {% if total > itemsPerPage %}</section>
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+{% endblock %}

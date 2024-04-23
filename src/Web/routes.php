@@ -118,7 +118,7 @@ $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
     $r->get('update',   '/update'  , 'Application\Controllers\MeetingFilesController')->extras(['action' => 'update'  ])->allows(['POST']);
     $r->get('delete',   '/delete'  , 'Application\Controllers\MeetingFilesController')->extras(['action' => 'delete'  ]);
     $r->get('years',    '/years'   , 'Application\Controllers\MeetingFilesController')->extras(['action' => 'years'   ]);
-    $r->get('index',    ''         , 'Application\Controllers\MeetingFilesController')->extras(['action' => 'index'   ]);
+    $r->get('index',    ''         , Web\MeetingFiles\List\Controller::class);
 });
 
 $map->attach('members.', '/members', function ($r) {
