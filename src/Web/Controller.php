@@ -12,7 +12,10 @@ abstract class Controller
 
 	public function __construct()
 	{
-        // Create the default Template
+		// Twig system
+        $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
+
+        // Create the legacy Template
         $this->template = !empty($_REQUEST['format'])
                         ? new Template('default', $_REQUEST['format'])
                         : new Template('default');

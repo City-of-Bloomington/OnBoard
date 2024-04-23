@@ -47,7 +47,7 @@ class Controller extends \Web\Controller
 		}
 
         $table = new MeetingFilesTable();
-        if ($this->template->outputFormat != 'csv') {
+        if ($this->outputFormat != 'csv') {
             $list  = $table->find($search, "$sort[field] $sort[direction]", true);
             $list->setCurrentPageNumber($page);
             $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
@@ -58,19 +58,31 @@ class Controller extends \Web\Controller
             $list  = $table->find($search, "$sort[field] $sort[direction]");
             $totalItemCount = count($list);
         }
-        $files = [];
-        foreach ($list as $f) { $files[] = $f; }
-
 
         // The list of years we give the block should all years available
         if (isset($search['year'])) { unset($search['year']); }
 
-        return new View($files,
-                        $sort,
-                        array_keys($table->years($search)),
-                        $totalItemCount,
-                        $page,
-                        parent::ITEMS_PER_PAGE,
-                        $committee);
+        switch ($this->outputFormat) {
+            case 'csv':
+                $files = [];
+                foreach ($list as $f) { $files[] = $f->getData(); }
+
+                $filename = APPLICATION_NAME.'-Meetings-'.date('Ymd');
+                return new \Web\Views\CSVView($filename, $files);
+            break;
+
+            default:
+                $files = [];
+                foreach ($list as $f) { $files[] = $f; }
+
+                return new View($files,
+                                $sort,
+                                array_keys($table->years($search)),
+                                $totalItemCount,
+                                $page,
+                                parent::ITEMS_PER_PAGE,
+                                $committee);
+        }
+
     }
 }
