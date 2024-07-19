@@ -8,13 +8,10 @@ namespace Web\Tags\List;
 
 class View extends \Web\View
 {
-    private $tags;
-
     public function __construct($tags)
     {
         parent::__construct();
-        $this->tags = $tags;
-        $this->vars['tags'] = $this->tags;
+        $this->vars['tags'] = $tags;
     }
 
     public function render(): string

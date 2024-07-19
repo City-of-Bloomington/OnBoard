@@ -167,11 +167,9 @@ $map->attach('site.', '/site', function ($r) {
 });
 
 $map->attach('tags.', '/tags', function ($r) {
-    $r->get('index', '', Web\Tags\List\Controller::class);
-    $r->get('add', '/add', Web\Tags\Add\Controller::class);
-    $r->post('add.post', '/add', Web\Tags\Add\Controller::class);
-    $r->get('update', '/update', Web\Tags\Update\Controller::class);
-    $r->post('update.post', '/update', Web\Tags\Update\Controller::class);
+    $r->get('index',  '',        Web\Tags\List\Controller::class);
+    $r->get('add',    '/add',    Web\Tags\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/update', Web\Tags\Update\Controller::class)->allows(['POST']);
 });
 
 

@@ -6,15 +6,14 @@
 declare(strict_types=1);
 namespace Web\Tags\Update;
 
+use Application\Models\Tag;
+
 class View extends \Web\View
 {
-    private $tag;
-
-    public function __construct($tag)
+    public function __construct(Tag $tag)
     {
         parent::__construct();
-        $this->tag = $tag;
-        $this->vars['tag'] = $this->tag;
+        $this->vars['tag'] = $tag;
     }
 
     public function render(): string

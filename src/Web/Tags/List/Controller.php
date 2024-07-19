@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): View
     {
         $table = new TagsTable();
-        $tags = $table->find();
+        $tags  = $table->find();
         return new View($tags);
     }
 }

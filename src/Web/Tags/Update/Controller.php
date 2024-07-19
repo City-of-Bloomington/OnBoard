@@ -14,9 +14,8 @@ class Controller extends \Web\Controller
     {
         $tag = null;
         if (!empty($_REQUEST['id'])) {
-            try {
-                $tag = new Tag($_REQUEST['id']);
-            } catch (\Exception $e) {
+            try { $tag = new Tag($_REQUEST['id']); }
+            catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e;
             }
         }
@@ -27,7 +26,8 @@ class Controller extends \Web\Controller
                 $tag->save();
                 header('Location: ' . View::generateUrl('tags.list'));
                 exit();
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e;
             }
         }
