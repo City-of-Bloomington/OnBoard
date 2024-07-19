@@ -8,6 +8,7 @@ namespace Web;
 abstract class Controller
 {
 	protected const ITEMS_PER_PAGE = 20;
+	protected $outputFormat;
 	protected $template;
 
 	public function __construct()
