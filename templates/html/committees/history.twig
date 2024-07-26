@@ -1,0 +1,51 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     history    An array of CommitteeHistory objects
+ * @param array     states     An array of possible states a history object can have
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+
+        <h3>{{ _('committeeHistory') }}</h3>
+    </header>
+
+    <div>
+    {% for h in history %}
+    <details>
+        <summary>
+            {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
+        </summary>
+        {% for change in h.changes %}
+        <table>
+        <thead>
+            <tr><th></th>
+                {% for s in states %}
+                <th>{{ s }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for k, c in change %}
+            <tr><th>{{ k }}</th>
+                {% for s in states %}
+                <td>{% if c[s] is defined %}{{ c[s] }}{% endif %}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% endfor %}
+    </details>
+    {% endfor %}
+    </div>
+</section>
+{% endblock %}

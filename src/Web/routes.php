@@ -56,7 +56,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('seats',        '/seats'       , Web\Committees\Seats\Controller::class);
     $r->get('applications', '/applications', Web\Committees\Applications\Controller::class);
     $r->get('meetings',     '/meetings'    , Web\Committees\Meetings\Controller::class);
-    $r->get('history',      '/history'     , 'Application\Controllers\CommitteesController')->extras(['action' => 'history'     ]);
+    $r->get('history',      '/history'     , Web\Committees\History\Controller::class);
     $r->get('index',        ''             , Web\Committees\List\Controller::class);
 });
 
