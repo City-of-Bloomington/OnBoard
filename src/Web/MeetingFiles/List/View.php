@@ -23,12 +23,12 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'    => $committee,
-            'files'        => self::createFileData($files),
+            'files'        => $this->createFileData($files),
             'sort'         => $sort,
             'years'        => $years,
             'types'        => MeetingFile::$types,
-            'actionLinks'  => self::createActionLinks(),
-            'addLinks'     => self::createAddLinks($committee),
+            'actionLinks'  => $this->createActionLinks(),
+            'addLinks'     => $this->createAddLinks($committee),
             'total'        => $totalItemCount,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage
@@ -40,14 +40,14 @@ class View extends \Web\View
         return $this->twig->render($this->outputFormat.'/meetingFiles/list.twig', $this->vars);
     }
 
-    private static function createActionLinks(): array
+    private function createActionLinks(): array
     {
         $url = parent::current_url();
         $url->format = 'csv';
         return [['url' => $url, 'label' => 'csv']];
     }
 
-    private static function createAddLinks($committee): array
+    private function createAddLinks($committee): array
     {
         $addLinks = [];
         if ($committee && parent::isAllowed('meetingFiles', 'update')) {
@@ -56,14 +56,14 @@ class View extends \Web\View
             foreach (MeetingFile::$types as $t) {
                 $addLinks[] = [
                     'url'   => "$url?type=$t;committee_id=$id",
-                    'label' => parent::_($t)
+                    'label' => $this->_($t)
                 ];
             }
         }
         return $addLinks;
     }
 
-    private static function createFileData(array $files): array
+    private function createFileData(array $files): array
     {
         $filedata = [];
         $userCanEdit   = parent::isAllowed('meetingFiles', 'update');
@@ -80,13 +80,13 @@ class View extends \Web\View
             if ($userCanEdit) {
                 $d['actions']['edit'] = [
                     'url'   => parent::generateUri('meetingFiles.update').'?meetingFile_id='.$f->getId(),
-                    'label' => parent::_('meetingFile_edit')
+                    'label' => $this->_('meetingFile_edit')
                 ];
             }
             if ($userCanDelete) {
                 $d['actions']['delete'] = [
                     'url'   => parent::generateUri('meetingFiles.delete').'?meetingFile_id='.$f->getId(),
-                    'label' => parent::_('meetingFile_delete')
+                    'label' => $this->_('meetingFile_delete')
                 ];
             }
             $filedata[] = $d;
