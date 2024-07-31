@@ -49,7 +49,7 @@ $map->attach('appointers.', '/appointers', function ($r) {
 
 $map->attach('committees.', '/committees', function ($r) {
     $r->get('info',         '/info'        , Web\Committees\Info\Controller::class);
-    $r->get('report',       '/report'      , 'Application\Controllers\CommitteesController')->extras(['action' => 'report'      ]);
+    $r->get('report',       '/report'      , Web\Committees\Report\Controller::class);
     $r->get('members',      '/members'     , Web\Committees\Members\Controller::class);
     $r->get('update',       '/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/end'         , Web\Committees\End\Controller::class)->allows(['POST']);

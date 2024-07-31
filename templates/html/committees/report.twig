@@ -1,0 +1,33 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array committees  An array of raw committee data
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+
+{% for i, committee in committees %}
+<article>
+    <header>
+        <h2>{{ committee.getName() }}</h2>
+        {% if committee.statutes is defined %}
+        {% for s in committee.getStatutes() %}
+        <h3><a href="{{ s.getUrl() }}">{{ s.getCitation() }}</a></h3>
+        {% endfor %}
+        {% endif %}
+    </header>
+
+    <dl><dt>{{ _('description') }}</dt>
+        <dd>{{ committee.getDescription() ?? '' | markdown_to_html }}</dd>
+
+        <dt>{{ _('meetingSchedule') }}</dt>
+        <dd>{{ committee.getMeetingSchedule() ?? '' | markdown_to_html }}</dd>
+    </dl>
+
+    {% if committee.getType() == 'seated' and members[i] is defined %}
+    {{ include('html/seats/partials/table.twig', {'data': members[i] } ) }}
+    {% endif %}
+</article>
+{% endfor %}
+
+{% endblock %}

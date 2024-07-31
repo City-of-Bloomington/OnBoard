@@ -1,0 +1,19 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array data
+ * @param array actionLinks
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _(['seat', 'seats', 10]) }}</h2>
+    </header>
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    {{ include('html/seats/partials/table.twig') }}
+</section>
+{% endblock %}
