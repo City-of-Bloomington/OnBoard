@@ -18,10 +18,16 @@
     </header>
 
     <dl><dt>{{ _('description') }}</dt>
-        <dd>{{ committee.getDescription() ?? '' | markdown_to_html }}</dd>
+        <dd>{% apply markdown_to_html %}
+            {{ committee.getDescription() }}
+            {% endapply %}
+        </dd>
 
         <dt>{{ _('meetingSchedule') }}</dt>
-        <dd>{{ committee.getMeetingSchedule() ?? '' | markdown_to_html }}</dd>
+        <dd>{% apply markdown_to_html %}
+            {{ committee.getMeetingSchedule() }}
+            {% endapply %}
+        </dd>
     </dl>
 
     {% if committee.getType() == 'seated' and members[i] is defined %}

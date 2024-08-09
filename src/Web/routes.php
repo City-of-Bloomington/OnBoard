@@ -153,7 +153,7 @@ $map->attach('reports.', '/reports', function ($r) {
 });
 
 $map->attach('seats.', '/seats', function ($r) {
-    $r->get('vacancies', '/vacancies', 'Application\Controllers\SeatsController')->extras(['action' => 'vacancies']);
+    $r->get('vacancies', '/vacancies', Web\Seats\Vacancies\Controller::class);
     $r->get('view',      '/view'     , 'Application\Controllers\SeatsController')->extras(['action' => 'view'     ]);
     $r->get('update',    '/update'   , 'Application\Controllers\SeatsController')->extras(['action' => 'update'   ])->allows(['POST']);
     $r->get('delete',    '/delete'   , 'Application\Controllers\SeatsController')->extras(['action' => 'delete'   ]);

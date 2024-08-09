@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Seats\List;
+namespace Web\Seats\Vacancies;
 
 use Application\Models\SeatTable;
 
@@ -12,24 +12,23 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $data   = [];
-        $search = self::parseQueryParameters();
+        $search = $this->parseQueryParameters();
+        $search['vacant'] = true;
         $result = SeatTable::currentData($search);
+        $data   = [];
         foreach ($result['results'] as $row) {
             $data[] = $row;
         }
 
         switch ($this->outputFormat) {
             case 'csv':
-                $filename = APPLICATION_NAME.'-seats-'.date('Ymd');
+                $filename = APPLICATION_NAME.'-Vacancies-'.date('Ymd');
                 return new \Web\Views\CSVView($filename, $data);
             break;
 
             default:
                 return new View($data);
         }
-
-
     }
 
     /**
@@ -49,5 +48,4 @@ class Controller extends \Web\Controller
         }
         return [];
     }
-
 }

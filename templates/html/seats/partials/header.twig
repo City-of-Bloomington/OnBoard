@@ -1,0 +1,28 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string    ROUTE_NAME   Global
+ #}
+
+{#
+   Several of the routes use a current=0 parameter to designate "past" listings
+   To determine which route is the current route, we often need to check for this parameter.
+   "Past" routes will have a current=0 parameter in the URL.
+   "Current" routes will not have the parameter at all
+#}
+{% set url     = current_url() %}
+{% set current = url.current is defined and url.current==0 ? false : true %}
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a href="{{ uri('seats.index') }}"
+           class="nav-link {{ ROUTE_NAME=='seats.index' ? 'active' : '' }}">
+           {{ _(['seat', 'seats', 10]) }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ uri('seats.vacancies') }}"
+           class="nav-link {{ ROUTE_NAME=='seats.vacancies' ? 'active' : '' }}">
+           {{ _(['vacancy', 'vacancies', 10]) }}
+        </a>
+    </li>
+</ul>

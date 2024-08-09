@@ -6,7 +6,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Views;
+namespace Web\Seats;
 
 class CSVView extends \Web\View
 {
@@ -20,6 +20,21 @@ class CSVView extends \Web\View
         $this->outputFormat = 'csv';
 
         header("Content-Disposition: attachment; filename=\"$filename.csv\"");
+
+        $userCanViewContactInfo = parent::isAllowed('people', 'viewContactInfo');
+        $fields = [
+            'Committee','Seat Code', 'Seat Name','Appointer','Firstname','Lastname',
+            'Term Start','Term End','Appointment Start', 'Appointment End'
+        ];
+        if ($userCanViewContactInfo) {
+            $fields[] = 'Email';
+            $fields[] = 'Address';
+            $fields[] = 'City';
+            $fields[] = 'State';
+            $fields[] = 'Zip';
+        }
+        echo implode(',', $fields)."\n";
+
         if ($data) {
             $this->data = array_merge([array_keys($data[0])], $data);
         }
