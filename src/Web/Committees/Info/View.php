@@ -15,15 +15,17 @@ class View extends \Web\View
         parent::__construct();
         $links = [];
         if (parent::isAllowed('committees', 'update')) {
-            $links['edit'] = [
+            $links[] = [
                 'url'   => parent::generateUri('committees.update').'?committee_id='.$committee->getId(),
-                'label' => parent::_('edit')
+                'label' => parent::_('edit'),
+                'class' => 'edit'
             ];
         }
         if (parent::isAllowed('committees', 'end')) {
-            $links['end'] = [
+            $links[] = [
                 'url'    => parent::generateUri('committees.end').'?committee_id='.$committee->getId(),
-                'label'  => parent::_('committee_end')
+                'label'  => parent::_('committee_end'),
+                'class'  => 'end'
             ];
         }
 

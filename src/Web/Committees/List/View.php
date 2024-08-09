@@ -14,9 +14,10 @@ class View extends \Web\View
 
         $links = [];
         if (parent::isAllowed('people', 'update')) {
-            $links['add'] = [
+            $links[] = [
                 'url'   => parent::generateUri('committees.update'),
-                'label' => parent::_('committee_add')
+                'label' => parent::_('committee_add'),
+                'class' => 'add'
             ];
         }
 

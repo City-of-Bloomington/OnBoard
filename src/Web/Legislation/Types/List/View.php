@@ -14,9 +14,10 @@ class View extends \Web\View
 
         $links = [];
         if (parent::isAllowed('legislationTypes', 'update')) {
-            $links['add'] = [
+            $links[] = [
                 'url'   => parent::generateUri('legislationTypes.update'),
-                'label' => parent::_('legislationType_add')
+                'label' => parent::_('legislationType_add'),
+                'class' => 'add'
             ];
         }
 

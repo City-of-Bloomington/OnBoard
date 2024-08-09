@@ -17,15 +17,17 @@ class View extends \Web\View
         $links = [];
         if (!$disableButtons) {
             if (parent::isAllowed('people', 'update')) {
-                $links['edit'] = [
+                $links[] = [
                     'url'   => parent::generateUri('people.update')."?person_id=".$person->getId(),
-                    'label' => parent::_('person_edit')
+                    'label' => parent::_('person_edit'),
+                    'class' => 'edit'
                 ];
             }
             if (parent::isAllowed('people', 'delete') && $person->isSafeToDelete()) {
-                $links['delete'] = [
+                $links[] = [
                     'url'   => parent::generateUri('people.delete')."?person_id=".$person->getId(),
-                    'label' => parent::_('person_delete')
+                    'label' => parent::_('person_delete'),
+                    'class' => 'delete'
                 ];
             }
         }
