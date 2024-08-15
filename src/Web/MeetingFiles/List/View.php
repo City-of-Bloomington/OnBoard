@@ -56,7 +56,8 @@ class View extends \Web\View
             foreach (MeetingFile::$types as $t) {
                 $addLinks[] = [
                     'url'   => "$url?type=$t;committee_id=$id",
-                    'label' => $this->_($t)
+                    'label' => $this->_($t),
+                    'class' => 'add'
                 ];
             }
         }
@@ -78,15 +79,17 @@ class View extends \Web\View
                 'actions'     => []
             ];
             if ($userCanEdit) {
-                $d['actions']['edit'] = [
+                $d['actions'][] = [
                     'url'   => parent::generateUri('meetingFiles.update').'?meetingFile_id='.$f->getId(),
-                    'label' => $this->_('meetingFile_edit')
+                    'label' => $this->_('meetingFile_edit'),
+                    'class' => 'edit'
                 ];
             }
             if ($userCanDelete) {
-                $d['actions']['delete'] = [
+                $d['actions'][] = [
                     'url'   => parent::generateUri('meetingFiles.delete').'?meetingFile_id='.$f->getId(),
-                    'label' => $this->_('meetingFile_delete')
+                    'label' => $this->_('meetingFile_delete'),
+                    'class' => 'delete'
                 ];
             }
             $filedata[] = $d;

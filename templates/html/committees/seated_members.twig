@@ -56,7 +56,7 @@
                     {% endif %}
                 </td>
                 <td>{% if row.actionLinks is defined %}
-                    {{ include('html/partials/moreLinks.twig', { moreLinks: row.actionLinks }) }}
+                    {{ include('html/partials/moreLinks.twig', { actionLinks: row.actionLinks }) }}
                     {% endif %}
                 </td>
             </tr>

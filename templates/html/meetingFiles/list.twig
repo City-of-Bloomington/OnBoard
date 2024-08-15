@@ -100,7 +100,7 @@
             <td>{{ f.meetingDate }}</td>
             <td>{{ f.type }}</td>
             <td>{% if f.actions %}
-                {{ include('html/partials/moreLinks.twig', { moreLinks: f.actions }) }}
+                {{ include('html/partials/moreLinks.twig', { actionLinks: f.actions }) }}
                 {% endif %}
             </td>
         </tr>
