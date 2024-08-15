@@ -49,7 +49,7 @@
 
                     {% if committee.allowsAlternates() %}
                         {% if row.alternate_person_id %}
-                        {{ row.alternate_firstname }} {{ row.altername_lastname }}
+                        {{ row.alternate_firstname }} {{ row.alternate_lastname }}
                         {% else %}
                         {{ _('alternate_vacant') }}
                         {% endif %}

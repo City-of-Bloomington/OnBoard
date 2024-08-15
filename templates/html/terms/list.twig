@@ -1,0 +1,40 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array Terms
+ * @param array actionLinks
+ #}
+<section>
+    <header><h3>{{ _(['term', 'terms', 10]) }}</h3></header>
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <table class="table">
+        <thead>
+            <tr><th>{{ _('term') }}</th>
+                <th>{{ _(['member', 'members', 10]) }}</th>
+                <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
+        </thead>
+        <tbody>
+            {% for t in terms %}
+            <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
+                    {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
+                </td>
+                <td>{% for m in t.members %}
+                    {{ m.name }}
+                    {{ m.startDate|date('m/d/Y') }} - {{ m.endDate|date('m/d/Y') }}
+                    {% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}
+                    {% endfor %}
+                </td>
+                <td>{% for a in t.alternates %}
+                    {{ a.name }}
+                    {{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}
+                    {% if a.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: a.actionLinks}, with_context=false) }}{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
