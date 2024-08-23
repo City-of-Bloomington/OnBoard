@@ -21,19 +21,39 @@ class View extends \Web\View
 
         $this->vars = [
             'seat'          => $seat,
-            'terms'         => $this->term_data($seat),
             'committee'     => $seat->getCommittee(),
             'seatActions'   => self::actionLinksForSeat($seat),
             'termIntervals' => Seat::$termIntervals,
             'termModifiers' => Seat::$termModifiers
         ];
 
-        if ($this->vars['terms'] && parent::isAllowed('terms', 'generate')) {
-            $this->vars['termActions'] = [[
-                'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
-                'label' => parent::_('term_add_next'),
-                'class' => 'add'
-            ]];
+        if ($seat->getType() == 'termed') {
+            $this->vars['terms'] = $this->term_data($seat);
+            if (parent::isAllowed('terms', 'generate')) {
+                $this->vars['termActions'] = [[
+                    'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
+                    'label' => parent::_('term_add_next'),
+                    'class' => 'add'
+                ]];
+            }
+        }
+        else {
+            $this->vars['members'] = $this->member_data($seat);
+
+            if (parent::isAllowed('members', 'update')) {
+                $this->vars['memberActions'] = [[
+                    'url'   => parent::generateUri('members.update')."?seat_id={$seat->getId()}",
+                    'label' => parent::_('member_add'),
+                    'class' => 'add'
+                ]];
+            }
+            elseif (parent::isAllowed('members', 'appoint')) {
+                $this->vars['memberActions'] = [[
+                    'url'   => parent::generateUri('members.appoint')."?seat_id={$seat->getId()}",
+                    'label' => parent::_('member_add'),
+                    'class' => 'add'
+                ]];
+            }
         }
     }
 
@@ -186,11 +206,11 @@ class View extends \Web\View
         return $terms;
     }
 
-    private function member_data(Term $term): array
+    private function member_data(Seat|Term $t): array
     {
         $members = [];
 
-        foreach ($term->getMembers() as $m) {
+        foreach ($t->getMembers() as $m) {
             $titles  = [];
             $offices = $m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d'));
             foreach ($offices as $o) { $titles[] = $o->getTitle(); }

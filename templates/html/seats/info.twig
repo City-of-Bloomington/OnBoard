@@ -69,11 +69,20 @@
     </table>
 
     {% if seat.getType() == 'termed' %}
-    {{ include('html/terms/list.twig', {terms: terms, actionLinks: termActions}, with_context=false) }}
+        {{ include('html/terms/list.twig', {terms: terms, actionLinks: termActions}, with_context=false) }}
     {% else %}
+        <table>
+        {% for m in members %}
+        <tr><td>{{ m.name }}</td>
+            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate|date('m/d/Y') }}</td>
+            <td>{% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% if memberActions is defined %}
+        {{ include('html/partials/actionLinks.twig', {actionLinks: memberActions}, with_context=false) }}
+        {% endif %}
     {% endif %}
-
-
 
 </section>
 

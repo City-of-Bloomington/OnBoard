@@ -69,7 +69,7 @@ use Web\Block;
             elseif ($this->seat && $this->seat->getType() === 'open') {
                 $seat_id = $this->seat->getId();
                 if ($userCanUpdate) {
-                    $uri = parent::generateUri('members.update')."?seat_id=$seat_id".$this->seat->getId();
+                    $uri = parent::generateUri('members.update')."?seat_id=$seat_id";
                 }
                 elseif ($userCanAppoint) {
                     $uri = parent::generateUri('members.appoint')."?seat_id=$seat_id";
