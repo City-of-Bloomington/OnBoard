@@ -23,6 +23,7 @@ class View extends \Web\View
             'seat'          => $seat,
             'committee'     => $seat->getCommittee(),
             'seatActions'   => self::actionLinksForSeat($seat),
+            'termActions'   => [],
             'termIntervals' => Seat::$termIntervals,
             'termModifiers' => Seat::$termModifiers
         ];
@@ -30,11 +31,25 @@ class View extends \Web\View
         if ($seat->getType() == 'termed') {
             $this->vars['terms'] = $this->term_data($seat);
             if (parent::isAllowed('terms', 'generate')) {
-                $this->vars['termActions'] = [[
-                    'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
-                    'label' => parent::_('term_add_next'),
-                    'class' => 'add'
-                ]];
+                if (isset($this->vars['terms'][0])) {
+                    $this->vars['termActions'][] = [
+                        'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
+                        'label' => parent::_('term_add_next'),
+                        'class' => 'add'
+                    ];
+                    $this->vars['termActions'][] = [
+                        'url'   => parent::generateUri('terms.generate').'?direction=pervious;term_id='.$this->vars['terms'][array_key_last($this->vars['terms'])]['term_id'],
+                        'label' => parent::_('term_add_previous'),
+                        'class' => 'add'
+                    ];
+                }
+                else {
+                    $this->vars['termActions'][] = [
+                        'url'   => parent::generateUri('terms.update')."?seat_id={$seat->getId()}",
+                        'label' => parent::_('term_add'),
+                        'class' => 'add'
+                    ];
+                }
             }
         }
         else {

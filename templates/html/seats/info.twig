@@ -69,8 +69,42 @@
     </table>
 
     {% if seat.getType() == 'termed' %}
-        {{ include('html/terms/list.twig', {terms: terms, actionLinks: termActions}, with_context=false) }}
-    {% else %}
+    <section>
+        <header><h3>{{ _(['term', 'terms', 10]) }}</h3></header>
+        {% if termActions %}
+        {{ include('html/partials/actionLinks.twig', {actionLinks: termActions}, with_context=false) }}
+        {% endif %}
+        <table class="table">
+            <thead>
+                <tr><th>{{ _('term') }}</th>
+                    <th>{{ _(['member', 'members', 10]) }}</th>
+                    <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
+            </thead>
+            <tbody>
+                {% for t in terms %}
+                <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
+                        {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
+                    </td>
+                    <td>{% for m in t.members %}
+                        {{ m.name }}
+                        {{ m.startDate|date('m/d/Y') }} - {{ m.endDate|date('m/d/Y') }}
+                        {% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{% for a in t.alternates %}
+                        {{ a.name }}
+                        {{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}
+                        {% if a.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: a.actionLinks}, with_context=false) }}{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% elseif members is defined %}
+    <section>
+        <header><h3>{{ _(['member', 'members', 10]) }}</h3>
         <table>
         {% for m in members %}
         <tr><td>{{ m.name }}</td>
@@ -83,7 +117,7 @@
         {{ include('html/partials/actionLinks.twig', {actionLinks: memberActions}, with_context=false) }}
         {% endif %}
     {% endif %}
+    </section>
 
 </section>
-
 {% endblock %}

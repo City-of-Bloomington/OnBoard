@@ -1,14 +1,7 @@
 {#
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param Seat      seat          Seat Object
- * @param Committee committee     Committee Object
- *
- * Dropdown Options
- * @param array appointers
- * @param array types
- * @param array termIntervals
- * @param array termModifiers
+ * @param array data
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
@@ -20,10 +13,10 @@
         {{ include('html/seats/partials/formFields.twig') }}
 
         <fieldset>
-            <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
+            <input name="committee_id" type="hidden" value="{{ seat.getCommittee_id() }}" />
             <button type="submit" class="btn btn-success">{{ _('save') }}</button>
             <a class="btn btn-danger"
-                href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">
+                href="{{ uri('committees.members') }}?committee_id={{ seat.getCommittee_id() }}">
                {{ _('cancel') }}
             </a>
         </fieldset>
