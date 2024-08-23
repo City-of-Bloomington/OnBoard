@@ -1,0 +1,51 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Seat      seat
+ * @param Committee committee
+ * @param Term      term
+ *
+ * Metadata
+ * @param array termIntervals  Human readable termIntervals lookup
+ * @param array termModifiers  Human readable termModifiers lookup
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+<section>
+    <header><h2>{{ seat.name }}</h2></header>
+    {{ include('html/seats/partials/seat_info.twig') }}
+</section>
+
+<section>
+    <header><h2>{{ term.getId() ? _('term_edit') : _('term_add') }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="term_id" type="hidden" value="{{ term.getId() }}" />
+            <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
+
+            <div class="form-group">
+                <label  for="startDate">{{ _('startDate') }}</label>
+                <input name="startDate" class="form-control"
+                         id="startDate" type="date" required="true"
+                    value="{{ term.getStartDate('Y-m-d') }}" />
+            </div>
+            <div class="form-group">
+                <label  for="endDate">{{ _('endDate') }}</label>
+                <input name="endDate" class="form-control"
+                         id="endDate" type="date" required="true"
+                      value="{{ term.getStartDate('Y-m-d') }}" />
+            </div>
+
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger"
+                href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">
+               {{ _('cancel') }}
+            </a>
+
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

@@ -173,12 +173,10 @@ $map->attach('tags.', '/tags', function ($r) {
     $r->get('update', '/update', Web\Tags\Update\Controller::class)->allows(['POST']);
 });
 
-
 $map->attach('terms.', '/terms', function ($r) {
-    $r->get('update',   '/update'  , 'Application\Controllers\TermsController')->extras(['action' => 'update'  ])->allows(['POST']);
+    $r->get('update',   '/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
     $r->get('delete',   '/delete'  , Web\Terms\Delete\Controller::class);
     $r->get('generate', '/generate', Web\Terms\Generate\Controller::class);
-    $r->get('index',    ''         , 'Application\Controllers\TermsController')->extras(['action' => 'index'   ]);
 });
 
 $map->attach('users.', '/users', function ($r) {

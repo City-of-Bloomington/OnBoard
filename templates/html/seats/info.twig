@@ -22,51 +22,7 @@
     {{ include('html/partials/actionLinks.twig', {actionLinks: seatActions}, with_context=false) }}
     {% endif %}
 
-    <table class="table">
-        <tr><th>{{ _('type') }}</th>
-            <td>{{ _(seat.getType()) }}</td>
-        </tr>
-        <tr><th>{{ _('code') }}</th>
-            <td>{{ seat.getCode() }}</td>
-        </tr>
-		<tr><th>{{ _('appointed_by') }}</th>
-			<td>{{ seat.getAppointer() }}</td>
-		</tr>
-		<tr><th>{{ _('committee') }}</th>
-			<td><a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}">
-                    {{ committee.getName() }}
-                </a>
-            </td>
-		</tr>
-		{% if seat.getStartDate() %}
-        <tr><th>{{ _('startDate') }}</th>
-			<td>{{ seat.getStartDate(DATE_FORMAT) }}</td>
-		</tr>
-		{% endif %}
-		{% if seat.getEndDate() %}
-		<tr><th>{{ _('endDate') }}</th>
-			<td>{{ seat.getEndDate(DATE_FORMAT) }}</td>
-		</tr>
-		{% endif %}
-
-		{% if seat.getRequirements() %}
-		<tr><th>{{ _(['requirement', 'requirements', 10]) }}</th>
-			<td>{{ seat.getRequirements() }}</td>
-		</tr>
-		{% endif %}
-
-		{% if seat.getType() == 'termed' %}
-        <tr><th>{{ _('termLength'  ) }}</th><td>{{ termIntervals[seat.getTermLength()] }}</td></tr>
-        <tr><th>{{ _('termModifier') }}</th><td>{{ seat.getTermModifier() ? termModifiers[seat.getTermModifier()] : '' }}</td></tr>
-		{% endif %}
-
-        <tr><th>{{ _('voting') }}</th>
-            <td>{{ seat.isVoting() ? _('yes') : _('no') }}</td>
-        </tr>
-        <tr><th>{{ _('takesApplications') }}</th>
-            <td>{{ seat.takesApplications() ? _('yes') : _('no') }}</td>
-        </tr>
-    </table>
+    {{ include('html/seats/partials/seat_info.twig') }}
 
     {% if seat.getType() == 'termed' %}
     <section>
