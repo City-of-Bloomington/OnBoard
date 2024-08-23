@@ -1,0 +1,32 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array data
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+<section>
+    <header><h2>{{ _('seat_end') }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
+
+            <div class="form-group">
+                <label  for="endDate">{{ _('endDate') }}</label>
+                <input name="endDate" class="form-control"
+                         id="endDate" type="date"
+                    value="{{ 'now'|date('Y-m-d') }}" />
+            </div>
+
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger"
+                href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">
+               {{ _('cancel') }}
+            </a>
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

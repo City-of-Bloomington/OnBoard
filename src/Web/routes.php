@@ -158,7 +158,7 @@ $map->attach('seats.', '/seats', function ($r) {
     $r->get('add',       '/add'      , Web\Seats\Add\Controller::class)->allows(['POST']);
     $r->get('update',    '/update'   , Web\Seats\Update\Controller::class)->allows(['POST']);
     $r->get('delete',    '/delete'   , 'Application\Controllers\SeatsController')->extras(['action' => 'delete'   ]);
-    $r->get('end',       '/end'      , 'Application\Controllers\SeatsController')->extras(['action' => 'end'      ])->allows(['POST']);
+    $r->get('end',       '/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
     $r->get('index',     ''          , Web\Seats\List\Controller::class);
 });
 
