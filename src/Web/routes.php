@@ -176,8 +176,8 @@ $map->attach('tags.', '/tags', function ($r) {
 
 $map->attach('terms.', '/terms', function ($r) {
     $r->get('update',   '/update'  , 'Application\Controllers\TermsController')->extras(['action' => 'update'  ])->allows(['POST']);
-    $r->get('delete',   '/delete'  , 'Application\Controllers\TermsController')->extras(['action' => 'delete'  ]);
-    $r->get('generate', '/generate', 'Application\Controllers\TermsController')->extras(['action' => 'generate']);
+    $r->get('delete',   '/delete'  , Web\Terms\Delete\Controller::class);
+    $r->get('generate', '/generate', Web\Terms\Generate\Controller::class);
     $r->get('index',    ''         , 'Application\Controllers\TermsController')->extras(['action' => 'index'   ]);
 });
 

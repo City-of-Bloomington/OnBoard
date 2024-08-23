@@ -45,8 +45,8 @@
     </tbody>
     </table>
 
-    {% if isAllowed('seats', 'update') %}
-    <a class="btn btn-primary" href="{{ uri('seats.update') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
+    {% if isAllowed('seats', 'add') %}
+    <a class="btn btn-primary" href="{{ uri('seats.add') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
     {% endif %}
 </section>
 {% endblock %}
