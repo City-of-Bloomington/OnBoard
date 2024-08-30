@@ -14,7 +14,23 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['person_id'])) {
             try {
                 $person = new Person($_REQUEST['person_id']);
-                return new View($person);
+
+                switch ($this->outputFormat) {
+                    case 'json':
+                        return new \Web\Views\JSONView([
+                            'id'        => $person->getId(),
+                            'firstname' => $person->getFirstname(),
+                            'lastname'  => $person->getLastname(),
+                            'website'   => $person->getWebsite(),
+                            'username'  => $person->getUsername(),
+                            'gender'    => $person->getGender(),
+                            'race'      => $person->getRace()
+                        ]);
+                        break;
+
+                    default:
+                        return new View($person);
+                }
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }

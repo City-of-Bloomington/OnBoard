@@ -1,5 +1,5 @@
 {#
- * @copyright 2017-2024 City of Bloomington, Indiana
+ * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param string firstname
  * @param string lastname
@@ -8,8 +8,9 @@
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
+ * @param string return_url
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/chooser.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
 <section>
@@ -20,6 +21,8 @@
         <fieldset>
             {{ include('html/people/partials/findFields.twig') }}
 
+            <input name="callback"   type="hidden" value="1" />
+            <input name="return_url" type="hidden" value="{{ return_url }}" />
             <button type="submit" class="btn btn-primary">{{ _('search') }}</button>
         </fieldset>
     </form>

@@ -43,7 +43,7 @@
                     </td>
                     <td>{% for m in t.members %}
                         {{ m.name }}
-                        {{ m.startDate|date('m/d/Y') }} - {{ m.endDate|date('m/d/Y') }}
+                        {{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}
                         {% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}
                         {% endfor %}
                     </td>
@@ -64,7 +64,7 @@
         <table>
         {% for m in members %}
         <tr><td>{{ m.name }}</td>
-            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate|date('m/d/Y') }}</td>
+            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
             <td>{% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}</td>
         </tr>
         {% endfor %}
