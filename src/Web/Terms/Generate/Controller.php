@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['term_id'])) {
             try { $term = new Term($_REQUEST['term_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (empty($_REQUEST['direction'])) { $_REQUEST['direction'] = 'next'; }
@@ -23,7 +23,7 @@ class Controller extends \Web\Controller
         if (isset($term)) {
             $newTerm = $term->$gen();
             try { $newTerm->save(); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
             $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
             header("Location: $return_url");

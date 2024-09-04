@@ -15,7 +15,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['seat_id'])) {
             try { $seat = new Seat($_REQUEST['seat_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($seat)) {
@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
                     header("Location: $return_url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
             return new View($seat);

@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
             try {
                 $action = new Action($_REQUEST['legislationAction_id']);
             } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         } else {
             if (!empty($_REQUEST['legislation_id']) && !empty($_REQUEST['type_id'])) {
@@ -30,7 +30,7 @@ class Controller extends \Web\Controller
                     $action->setLegislation_id($_REQUEST['legislation_id']);
                     $action->setType_id($_REQUEST['type_id']);
                 } catch (\Exception $e) {
-                    $_SESSION['errorMessages'][] = $e;
+                    $_SESSION['errorMessages'][] = $e->getMessage();
                 }
             }
         }
@@ -44,7 +44,7 @@ class Controller extends \Web\Controller
                 header("Location: $return_url");
                 exit();
             } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 

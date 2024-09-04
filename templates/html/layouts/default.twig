@@ -7,7 +7,7 @@
     {{ include('html/layouts/partials/nav1.twig') }}
     <main class="container p-2 flex-grow-1">
         <div>
-            {% if errorMessages is defined %}
+            {% if ERROR_MESSAGES is defined %}
             {{ include('html/layouts/partials/errorMessages.twig') }}
             {% endif %}
 

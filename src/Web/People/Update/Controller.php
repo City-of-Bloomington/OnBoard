@@ -20,7 +20,7 @@ class Controller extends \Web\Controller
                 $person = new Person($_REQUEST['person_id']);
             }
             catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
                 return new \Web\Views\NotFoundView();
             }
         }
@@ -49,7 +49,7 @@ class Controller extends \Web\Controller
                 exit();
             }
             catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 

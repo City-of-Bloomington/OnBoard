@@ -35,7 +35,7 @@ class Controller extends \Web\Controller
                        : new   ListView($committee, $applications_current, $applications_archived);
 
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         return new \Web\Views\NotFoundView();

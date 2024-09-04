@@ -22,7 +22,7 @@ class Controller extends \Web\Controller
                 header("Location: $return_url");
                 exit();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
         header('Location: '.\Web\View::generateUrl('committees.index'));
         exit();

@@ -39,7 +39,7 @@ class Controller extends \Web\Controller
                 }
                 return new View($applicants, $committee, $seats);
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         return new \Web\Views\NotFoundView();

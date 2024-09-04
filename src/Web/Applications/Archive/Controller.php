@@ -14,12 +14,12 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['application_id'])) {
             try { $application = new Application($_REQUEST['application_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($application)) {
             try { $application->archive(); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
             $return_url = \Web\View::generateUrl('committees.applications').'?committee_id='.$application->getCommittee_id();
             header("Location: $return_url");

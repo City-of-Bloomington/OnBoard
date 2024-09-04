@@ -16,7 +16,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($committee)) {

@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
                 $committee = new Committee($_GET['committee_id']);
                 $search['committee_id'] = $committee->getId();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
 		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;

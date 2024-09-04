@@ -16,7 +16,7 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['id'])) {
             try { $tag = new Tag($_REQUEST['id']); }
             catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 
@@ -28,7 +28,7 @@ class Controller extends \Web\Controller
                 exit();
             }
             catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 

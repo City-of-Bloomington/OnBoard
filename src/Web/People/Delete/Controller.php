@@ -17,7 +17,7 @@ class Controller extends \Web\Controller
                 $person = new Person($_REQUEST['person_id']);
                 $person->delete();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
         header('Location: '.\Web\View::generateUrl('people.index'));
         exit();

@@ -27,7 +27,7 @@ class Controller extends \Web\Controller
             if (!empty($_REQUEST['person_id'])) { $member->setPerson_id($_REQUEST['person_id']); }
             if (!empty($_REQUEST['startDate'])) { $member->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
         }
-        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
         if (isset($member)) {
             if (!empty($_POST['committee_id'])) {
@@ -45,7 +45,7 @@ class Controller extends \Web\Controller
                     header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
             return new View($member);
 

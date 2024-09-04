@@ -1,13 +1,12 @@
 {#
- * @copyright 2007-2021 City of Bloomington, Indiana
+ * @copyright 2007-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array errorMessages
+ * @param array ERROR_MESSAGES   An array of strings to display
+ *
+ * @see Web\View.php
 #}
-<section id="errorMessages">
-    <header>
-        <h1>{{ _('error') }}</h1>
-    </header>
-    {% for e in errorMessages %}
+<section id="errorMessages" class="alert alert-warning">
+    {% for e in ERROR_MESSAGES %}
     <p>{{ _(e, 'errors') }}</p>
     {% endfor %}
 </section>

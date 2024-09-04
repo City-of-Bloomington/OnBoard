@@ -16,7 +16,7 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['committee_id'])) {
             try { $committee = new Committee($_REQUEST['committee_id']); }
             catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
                 return new \Web\Views\NotFoundView();
             }
         }
@@ -30,7 +30,7 @@ class Controller extends \Web\Controller
                 header("Location: $url");
                 exit();
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         return new View($committee);

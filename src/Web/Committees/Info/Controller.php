@@ -17,7 +17,7 @@ class Controller extends \Web\Controller
                 $committee = new Committee($_GET['committee_id']);
                 return new View($committee);
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         return new \Web\Views\NotFoundView();

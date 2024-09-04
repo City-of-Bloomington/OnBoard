@@ -37,7 +37,7 @@ class Controller extends \Web\Controller
             if (isset($_REQUEST['newMember']['startDate'])) { $newMember->setStartDate($_POST['newMember']['startDate'], 'Y-m-d'); }
         }
         catch (\Exception $e) {
-            $_SESSION['errorMessages'][] = $e;
+            $_SESSION['errorMessages'][] = $e->getMessage();
             return \Web\Views\NotFoundView();
         }
 

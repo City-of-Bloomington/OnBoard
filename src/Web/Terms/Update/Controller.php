@@ -16,7 +16,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['term_id'])) {
             try { $term = new Term($_REQUEST['term_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
         elseif (!empty($_REQUEST['seat_id'])) {
             try {
@@ -24,7 +24,7 @@ class Controller extends \Web\Controller
                 $term = new Term();
                 $term->setSeat($seat);
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         // Handling the POST
@@ -38,7 +38,7 @@ class Controller extends \Web\Controller
                     header("Location: $return_url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
             $seat = $term->getSeat();

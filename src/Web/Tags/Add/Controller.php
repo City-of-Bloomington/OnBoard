@@ -20,7 +20,7 @@ class Controller extends \Web\Controller
                 header('Location: ' . View::generateUrl('tags.list'));
                 exit();
             } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
         return new View($tag);

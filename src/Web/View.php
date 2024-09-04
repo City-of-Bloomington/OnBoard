@@ -80,6 +80,10 @@ abstract class View
         if (isset($_SESSION['USER'])) {
             $this->twig->addGlobal('USER', $_SESSION['USER']);
         }
+        if (isset($_SESSION['errorMessages'])) {
+            $this->twig->addGlobal('ERROR_MESSAGES', $_SESSION['errorMessages']);
+            unset($_SESSION['errorMessages']);
+        }
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new MarkdownExtension());
 

@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['application_id'])) {
             try { $application = new Application($_REQUEST['application_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($application)) {

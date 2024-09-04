@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['id'])) {
             try { $type = new Type($_REQUEST['id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
         else { $type = new Type(); }
 
@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
                     header('Location: '.\Web\View::generateUrl('legislationTypes.index'));
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
             return new View($type);
         }

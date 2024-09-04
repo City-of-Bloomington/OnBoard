@@ -17,7 +17,7 @@ class Controller extends \Web\Controller
                 $seat = new Seat($_REQUEST['seat_id']);
                 return new View($seat);
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($seat)) {
