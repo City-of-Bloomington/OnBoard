@@ -1,0 +1,90 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param Member    newMember
+ *
+ * Optional Parameters
+ * @param Member    currentMember
+ * @param string    requirements
+ * @param array     recentMembers
+ * @param array     termOptions     Array of term objects
+ #}
+{% import 'html/macros/personChooser.twig' as chooser %}
+
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+
+<form method="post">
+    {% if currentMember %}
+    <fieldset>
+        <legend>{{ _('retirePrevious') }}</legend>
+        <div>
+            <p>{{ _('endServiceHelpText', 'messages')|format(currentMember.getPerson().getFullname(), currentMember.getPerson().getFullname())|raw }}</p>
+            {{ include('html/members/partials/memberEndFields.twig') }}
+        </div>
+    </fieldset>
+    {% endif %}
+
+    <fieldset>
+        <legend>{{ _('appointToSeat', 'messages')|format(newMember.getCommittee().getName()) }}</legend>
+        <input name="newMember[committee_id]" type="hidden" value="{{ newMember.getCommittee_id() }}" />
+        <input name="newMember[seat_id]"      type="hidden" value="{{ newMember.getSeat_id()      }}" />
+
+        {% if requirements %}
+        <div>{{ requirements | markdown_to_html }}</div>
+        {% endif %}
+
+
+
+        <section>
+            <h2>{{ _('new_member') }}</h2>
+            <div clas="form-group">
+                <input id="newMember[person_id]" type="hidden" required="true"
+                     name="newMember[person_id]" value="{{ newMember.getPerson_id() }}" />
+                {{ chooser.personChooser('newMember[person_id]', 'newMember[person_id]', newMember.getPerson() ) }}
+            </div>
+
+            {% if termOptions %}
+            <div class="form-group">
+                <label for="newMember-term_id">{{ _('term') }}</label>
+                <select id="newMember-term_id" name="newMember[term_id]" class="form-select" required="true">
+                    {% for t in termOptions %}
+                    <option value="{{ t.getId() }}" {{ newMember.getTerm_id()==t.getId() ? 'selected="true"' : '' }}>
+                        {{ t.getStartDate(DATE_FORMAT) }} - {{ t.getEndDate(DATE_FORMAT) }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="newMember-startDate">{{ _('startDate') }}</label>
+                <input  id="newMember-startDate" class="form-control"
+                      name="newMember[startDate]" type="date" required="true"
+                    value="{{ newMember.getStartDate() ? newMember.getStartDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
+            </div>
+
+        </section>
+
+        <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+        <a class="btn btn-danger"
+            href="{{ uri('committees.members') }}?committee_id={{ newMember.getCommittee_id() }}">
+            {{ _('cancel') }}
+        </a>
+    </fieldset>
+
+</form>
+
+{% if recentMembers %}
+<section>
+    <header><h3>{{ _(['recent_member', 'recent_members', 10]) }}</h3></header>
+    {% for t in recentMembers %}
+    <div>{{ t.members }} {{ t.startDate }} - {{ t.endDate }}<div>
+    {% endfor %}
+</section>
+{% endif %}
+
+<script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
+{% endblock %}

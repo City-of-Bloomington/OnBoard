@@ -1,0 +1,12 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Member   currentMember
+ #}
+<input name="currentMember[member_id]" type="hidden" value="{{ currentMember.getId() }}" />
+<div class="form-group">
+    <label  for="currentMember-endDate">{{ _('endDate') }}</label>
+    <input name="currentMember[endDate]" class="form-control"
+             id="currentMember-endDate" type="date"
+        value="{{ currentMember.getTerm() ? currentMember.getTerm().getEndDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
+</div>

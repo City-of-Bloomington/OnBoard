@@ -3,7 +3,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  #}
 {% macro personChooser(fieldname, fieldid, person) %}
-<span id="{{ fieldid }}-name">{{ person.getFullname() }}</span>
+<span id="{{ fieldid }}-name">{{ person ? person.getFullname() : '' }}</span>
 <a class="button person"
     href="{{ BASE_URI }}/people?callback=1;return_url={{ current_url() }}"
     onclick="PERSON_CHOOSER.open(event, '{{ fieldid }}');">
