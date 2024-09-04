@@ -1,0 +1,18 @@
+{% extends "html/layouts/default.twig" %}
+
+{% block content %}
+<section>
+    <header>
+        <h1>Update Appointer</h1>
+    </header>
+    <form method="post" action="{{ uri('appointers.update') }}">
+        <input type="hidden" name="appointer_id" value="{{ appointer.id }}">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ appointer.name }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ uri('appointers.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</section>
+{% endblock %}
