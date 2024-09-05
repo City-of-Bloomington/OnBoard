@@ -123,11 +123,11 @@ $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
 });
 
 $map->attach('members.', '/members', function ($r) {
-    $r->get('appoint',   '/appoint'  , Web\Members\Appoint\Controller::class)->allows(['POST']);
+    $r->get('appoint',   '/appoint'  , Web\Members\Appoint\Controller::class  )->allows(['POST']);
     $r->get('reappoint', '/reappoint', Web\Members\Reappoint\Controller::class)->allows(['POST']);
-    $r->get('update',    '/update'   , Web\Members\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',    '/delete'   , 'Application\Controllers\MembersController')->extras(['action' => 'delete'   ]);
-    $r->get('resign',    '/resign'   , Web\Members\Resign\Controller::class)->allows(['POST']);
+    $r->get('update',    '/update'   , Web\Members\Update\Controller::class   )->allows(['POST']);
+    $r->get('resign',    '/resign'   , Web\Members\Resign\Controller::class   )->allows(['POST']);
+    $r->get('delete',    '/delete'   , Web\Members\Delete\Controller::class);
 });
 
 $map->attach('offices.', '/offices', function ($r) {
@@ -183,5 +183,5 @@ $map->attach('terms.', '/terms', function ($r) {
 $map->attach('users.', '/users', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\UsersController')->extras(['action' => 'update'])->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\UsersController')->extras(['action' => 'delete']);
-    $r->get('index',  ''       , 'Application\Controllers\UsersController')->extras(['action' => 'index' ]);
+    $r->get('index',  ''       , Web\Users\Find\Controller::class);
 });
