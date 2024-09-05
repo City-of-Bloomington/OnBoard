@@ -124,7 +124,7 @@ $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
 
 $map->attach('members.', '/members', function ($r) {
     $r->get('appoint',   '/appoint'  , Web\Members\Appoint\Controller::class)->allows(['POST']);
-    $r->get('reappoint', '/reappoint', 'Application\Controllers\MembersController')->extras(['action' => 'reappoint'])->allows(['POST']);
+    $r->get('reappoint', '/reappoint', Web\Members\Reappoint\Controller::class)->allows(['POST']);
     $r->get('update',    '/update'   , Web\Members\Update\Controller::class)->allows(['POST']);
     $r->get('delete',    '/delete'   , 'Application\Controllers\MembersController')->extras(['action' => 'delete'   ]);
     $r->get('resign',    '/resign'   , 'Application\Controllers\MembersController')->extras(['action' => 'resign'   ])->allows(['POST']);

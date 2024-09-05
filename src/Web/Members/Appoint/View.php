@@ -32,7 +32,7 @@ class View extends \Web\View
         return $this->twig->render('html/members/appointForm.twig', $this->vars);
     }
 
-    private static function recentMembers(Seat $seat): array
+    public static function recentMembers(Seat $seat): array
     {
         $out        = [];
         $termLength = new \DateInterval($seat->getTermLength());

@@ -92,7 +92,10 @@ class MemberTable extends TableGateway
         ]);
 	}
 
-	public static function reappoint(array $post, Member $member, bool $confirm=false)
+	/**
+     * Returns the new membership on success
+     */
+	public static function reappoint(Member $member): Member
 	{
         $changes = [];
         $term = $member->getTerm();
@@ -108,23 +111,18 @@ class MemberTable extends TableGateway
         $newMember->setPerson_id($member->getPerson_id());
         $newMember->setStartDate($next->getStartDate());
 
-        if ($confirm) {
-            $member->save();
-            $newMember->save();
-            $changes[] = ['updated'=>$newMember->getData()];
+        $member->save();
+        $newMember->save();
+        $changes[] = ['updated'=>$newMember->getData()];
 
-            CommitteeHistory::saveNewEntry([
-                'committee_id' => $newMember->getCommittee_id(),
-                'tablename'    => 'members',
-                'action'       => 'reappoint',
-                'changes'      => $changes
-            ]);
-        }
+        CommitteeHistory::saveNewEntry([
+            'committee_id' => $newMember->getCommittee_id(),
+            'tablename'    => 'members',
+            'action'       => 'reappoint',
+            'changes'      => $changes
+        ]);
 
-        return [
-            'member'    => $member,
-            'newMember' => $newMember
-        ];
+        return $newMember;
 	}
 
 	public static function resign(array $post, Member $member)
