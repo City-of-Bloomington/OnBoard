@@ -1,0 +1,90 @@
+{#
+ * @copyright 2018-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * @param array  users  Search Results
+ *
+ * Query parameters that were used for the search
+ * @param string username
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param int    department_id
+ * @param string role
+ * @param string authenticationMethod
+ *
+ * Pagination
+ * @param int    total
+ * @param int    itemsPerPage
+ * @param int    currentPage
+ *
+ * @param array  additional_params    Additional URL parameters to preserve
+ *
+ * Metadata
+ * @param array  departments
+ * @param array  roles
+ * @param array  authenticationMethods
+#}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _(['user', 'users', 100]) }}</h2>
+    </header>
+    {% if actionLinks %}
+    {% for l in actionLinks %}
+    {{ forms.actionLink(l.url, l.label, l.class) }}
+    {% endfor %}
+    {% endif %}
+    <form method="get" action="{{ uri('users.index') }}">
+        <fieldset>
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname )}}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname'),  lastname  )}}
+            {{ forms.field_text('username',  'username',  _('username'),  username  )}}
+            {{ forms.field_text('email',     'email',     _('email'),     email     )}}
+
+            {{ forms.field_select('department_id', 'department_id', _('department'), department_id, departments, false, {onchange:'this.form.submit();'} )}}
+            {{ forms.field_select('role', 'role', _('role'), role, roles, false, {onchange:'this.form.submit();'} )}}
+            {{ forms.field_select('authenticationMethod', 'authenticationMethod', _('authenticationMethod'), authenticationMethod, authenticationMethods, false, {onchange:'this.form.submit();'} )}}
+
+            {{ forms.button('submit', _('search'), 'search') }}
+            {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+
+    {% if users %}
+    <table class="table">
+        <thead>
+            <tr><th>{{ _('username'            ) }}</th>
+                <th>{{ _('name'                ) }}</th>
+                <th>{{ _('authenticationMethod') }}</th>
+                <th>{{ _('role'                ) }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for u in users %}
+            {% set link=uri('people.view') ~ '?person_id=' ~ u.id %}
+            <tr><td><a href="{{ link }}">{{ u.username }}</a></td>
+                <td><a href="{{ link }}">{{ u.firstname }} {{ u.lastname }}</a></td>
+                <td><a href="{{ link }}">{{ u.authenticationMethod }}</a></td>
+                <td><a href="{{ link }}">{{ u.role }}</a></td>
+                <td>{% if isAllowed('users', 'update') %}
+                    {{ forms.actionLink(uri('users.update') ~ '?user_id=' ~ u.id, _('edit_account'), 'edit') }}
+                    {% endif %}
+                    {% if isAllowed('users', 'delete') %}
+                    {{ forms.actionLink(uri('users.delete') ~ '?user_id=' ~ u.id, _('delete_account'), 'delete') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+    {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+{% endblock %}

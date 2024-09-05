@@ -3,6 +3,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array actionLinks
  #}
-{% for link in actionLinks %}
-<a href="{{ link.url }}" class="btn btn-secondary align-self-center {{ link.class ?? '' }}">{{ link.label }}</a>
+{% import 'html/macros/forms.twig' as forms %}
+{% for l in actionLinks %}
+{{ forms.actionLink(l.url, l.label, l.class ?? null) }}
 {% endfor %}

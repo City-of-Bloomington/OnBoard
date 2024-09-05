@@ -1,0 +1,36 @@
+{% macro actionLink(url, label, class) %}
+{% set classmap={
+ 'add':    'btn-success',
+ 'edit':   'btn-primary',
+ 'delete': 'btn-danger',
+ 'cancel': 'btn-danger'
+} %}
+<a href="{{ url }}" class="btn {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center">{{ label }}</a>
+{% endmacro %}
+
+{% macro button(type, label, class) %}
+{% set classmap={
+ 'search': 'btn-primary',
+ 'save':   'btn-success'
+} %}
+<button type="{{ type }}" class="btn {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }}">{{ label }}</button>
+
+{% endmacro %}
+
+{% macro field_text(id, name, label, value, required=false, attr={}) %}
+<div class="form-group">
+    <label for="{{ id }}">{{ label }}</label>
+    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" class="form-control" {% for k,v in attr %}{{ k }}="{{ v }}" {% endfor %} />
+</div>
+{% endmacro %}
+
+{% macro field_select(id, name, label, value, options, required=false, attr={}) %}
+<div class="form-group">
+    <label for="{{ id }}">{{ label }}</label>
+    <select id="{{ id }}" name="{{ name }}" class="form-control" {% for k,v in attr %}{{ k }}="{{ v }}" {% endfor %}>
+    {% for o in options %}
+    <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.label ?? o.value }}</option>
+    {% endfor %}
+    </select>
+</div>
+{% endmacro %}
