@@ -125,10 +125,10 @@ class MemberTable extends TableGateway
         return $newMember;
 	}
 
-	public static function resign(array $post, Member $member)
+	public static function resign(Member $member, \DateTime $endDate)
 	{
         $original = $member->getData();
-        $member->setEndDate($post['currentMember']['endDate']);
+        $member->setEndDate($endDate->format('Y-m-d'));
         $member->save();
         $updated  = $member->getData();
 

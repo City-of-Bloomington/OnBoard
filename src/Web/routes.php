@@ -127,7 +127,7 @@ $map->attach('members.', '/members', function ($r) {
     $r->get('reappoint', '/reappoint', Web\Members\Reappoint\Controller::class)->allows(['POST']);
     $r->get('update',    '/update'   , Web\Members\Update\Controller::class)->allows(['POST']);
     $r->get('delete',    '/delete'   , 'Application\Controllers\MembersController')->extras(['action' => 'delete'   ]);
-    $r->get('resign',    '/resign'   , 'Application\Controllers\MembersController')->extras(['action' => 'resign'   ])->allows(['POST']);
+    $r->get('resign',    '/resign'   , Web\Members\Resign\Controller::class)->allows(['POST']);
 });
 
 $map->attach('offices.', '/offices', function ($r) {

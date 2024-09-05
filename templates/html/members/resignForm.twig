@@ -1,0 +1,38 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Member    member
+ * @param Committee committee
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+<section>
+    <header><h2>{{ _('member_end') }}</h2></header>
+
+    <form method="post">
+        <fieldset><legend>{{ member.getPerson().getFullname() }}</legend>
+            <input name="member_id" type="hidden" value="{{ member.getId() }}" />
+
+            <div class="form-group">
+                <label for="endDate">{{ _('endDate') }}</label>
+                <input  id="endDate" class="form-control"
+                      name="endDate" type="date"
+                    value="{{ member.getEndDate() ? member.getEndDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
+            </div>
+
+            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
+            <a class="btn btn-danger"
+                href="{{ uri('committees.members') }}?committee_id={{ member.getCommittee_id() }}">
+                {{ _('cancel') }}
+            </a>
+        </fieldset>
+    </form>
+</section>
+
+{% if member.getSeat_id() %}
+{{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context='false') }}
+{{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context='false') }}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Seat seat
+ #}
+<section>
+    <header>
+        <h3><a href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">{{ seat.getName() }}</a></h3>
+    </header>
+
+    <dl><dt>{{ _('appointed_by') }}</dt>
+        <dd>{{ seat.getAppointer() }}</dd>
+
+        {% if seat.getRequirements() %}
+        <dt>{{ _(['requirement', 'requirements', 10]) }}</dt>
+        <dd>{{ seat.getRequirements()|markdown_to_html }}</dd>
+        {% endif %}
+    </dl>
+</section>
