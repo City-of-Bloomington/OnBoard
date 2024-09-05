@@ -15,6 +15,9 @@ class View extends \Web\View
     {
         parent::__construct();
 
+        $csv = parent::current_url();
+        $csv->format = 'csv';
+
 
         $this->vars = [
             'users'                 => $users,
@@ -34,7 +37,10 @@ class View extends \Web\View
             'actionLinks' => [
                 ['url'   => parent::generateUri('users.update'),
                  'label' => parent::_('create_account'),
-                 'class' => 'add']
+                 'class' => 'add'],
+                ['url'   => $csv->__toString(),
+                 'label' => 'csv',
+                 'class' => 'download'],
             ]
         ];
     }

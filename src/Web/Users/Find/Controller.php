@@ -19,7 +19,21 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'csv':
                 $users = $people->search($_GET);
-                return new CSVView($users);
+                $data  = [];
+                foreach ($users as $u) {
+                    $columns = ['id', 'username', 'firstname','lastname', 'email', 'department', 'role'];
+                    $data[] = [
+                        'id'         => $u->getId(),
+                        'username'   => $u->getUsername(),
+                        'firstname'  => $u->getFirstname(),
+                        'lastname'   => $u->getLastname(),
+                        'email'      => $u->getEmail(),
+                        'department' => $u->getDepartment(),
+                        'role'       => $u->getRole()
+                    ];
+                }
+                $filename = APPLICATION_NAME.'-users-'.date('Ymd');
+                return new \Web\Views\CSVView($filename, $data);
             break;
 
             default:

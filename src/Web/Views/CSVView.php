@@ -20,6 +20,7 @@ class CSVView extends \Web\View
         $this->outputFormat = 'csv';
 
         header("Content-Disposition: attachment; filename=\"$filename.csv\"");
+        // Use the array keys as the first row for column names
         if ($data) {
             $this->data = array_merge([array_keys($data[0])], $data);
         }
