@@ -1,0 +1,39 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Person user
+ *
+ * Metadata
+ * @param array  departments
+ * @param array  roles
+ * @param array  authenticationMethods
+ * @
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h2>{{ user.getId() ? _('edit_account') : _('create_account') }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="user_id" type="hidden" value="{{ user.id }}" />
+            {{ forms.field_select('authenticationMethod', 'authenticationMethod', _('authenticationMethod'), user.authenticationMethod, authenticationMethods, true )}}
+            {{ forms.field_text('username', 'username', _('username'), user.username, true )}}
+            {{ forms.field_password('password',  'password',  _('password'), user.password )}}
+            {{ forms.field_email('email', 'email', _('email'), user.email )}}
+
+            {{ forms.field_select('role', 'role', _('role'), user.role, roles, true )}}
+            {{ forms.field_select('department_id', 'department_id', _('department'), user.department_id, departments )}}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+
+    {% if user.id %}
+    {{ include('html/people/partials/info.twig', {person:user}, with_context='false') }}
+    {% endif %}
+</section>
+
+{% endblock %}

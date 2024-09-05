@@ -43,7 +43,7 @@
             {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname )}}
             {{ forms.field_text('lastname',  'lastname',  _('lastname'),  lastname  )}}
             {{ forms.field_text('username',  'username',  _('username'),  username  )}}
-            {{ forms.field_text('email',     'email',     _('email'),     email     )}}
+            {{ forms.field_email('email',     'email',     _('email'),     email    )}}
 
             {{ forms.field_select('department_id', 'department_id', _('department'), department_id, departments, false, {onchange:'this.form.submit();'} )}}
             {{ forms.field_select('role', 'role', _('role'), role, roles, false, {onchange:'this.form.submit();'} )}}

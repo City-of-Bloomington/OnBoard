@@ -181,7 +181,7 @@ $map->attach('terms.', '/terms', function ($r) {
 });
 
 $map->attach('users.', '/users', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\UsersController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\Users\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\UsersController')->extras(['action' => 'delete']);
     $r->get('index',  ''       , Web\Users\Find\Controller::class);
 });
