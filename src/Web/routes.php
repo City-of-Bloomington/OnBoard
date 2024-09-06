@@ -18,8 +18,8 @@ $map->attach('login.', '/login', function ($r) {
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\AlternatesController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\AlternatesController')->extras(['action' => 'delete']);
+    $r->get('update', '/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/delete', Web\Alternates\Delete\Controller::class);
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
@@ -109,8 +109,8 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LiaisonsController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\LiaisonsController')->extras(['action' => 'delete']);
+    $r->get('update', '/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/delete', Web\Liaisons\Delete\Controller::class);
     $r->get('index',  ''       , Web\Liaisons\List\Controller::class);
 });
 
@@ -142,8 +142,8 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\RacesController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('index',  ''       , 'Application\Controllers\RacesController')->extras(['action' => 'index' ]);
+    $r->get('update', '/update', Web\Races\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  ''       , Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {

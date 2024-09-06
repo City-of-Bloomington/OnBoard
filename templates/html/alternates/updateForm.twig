@@ -1,0 +1,43 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Alternate alternate
+ * @param Committee committee
+ * @param Seat      seat
+ * @param Term      term
+ * @param strin     return_url
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"         as forms   %}
+{% import  'html/macros/personChooser.twig' as chooser %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+<section>
+    <header>
+        <h2>{{ alternate.getId() ? _('alternate_edit') : _('alternate_add') }}</h2>
+        {% if term %}<h3>{{ term.getStartDate(DATE_FORMAT) }} - {{ term.getEndDate(DATE_FORMAT) }}</h3>{% endif %}
+    </header>
+
+	<form method="post">
+        <fieldset>
+            <input name="alternate_id" type="hidden" value="{{ alternate.getId()           }}" />
+            <input name="term_id"      type="hidden" value="{{ alternate.getTerm_id()      }}" />
+            <input name="seat_id"      type="hidden" value="{{ alternate.getSeat_id()      }}" />
+            <input name="committee_id" type="hidden" value="{{ alternate.getCommittee_id() }}" />
+
+            <div clas="form-group">
+                <input type="hidden" name="person_id" id="person_id" value="{{ alternate.getPerson_id() }}" required="true" />
+                {{ chooser.personChooser('person_id', 'person_id', alternate.getPerson() ) }}
+            </div>
+
+            {{ forms.field_date('startDate', 'startDate', _('startDate'), alternate.getStartDate() ? alternate.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
+            {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), alternate.getEndDate('Y-m-d') )}}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel'), 'cancel') }}
+        </fieldset>
+	</form>
+</section>
+<script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
+
+{% endblock %}

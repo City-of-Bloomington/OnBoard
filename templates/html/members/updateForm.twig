@@ -5,8 +5,8 @@
  * @param Committee committee
  * @param string    return_url
  #}
-{% import 'html/macros/personChooser.twig' as chooser %}
-
+{% import  'html/macros/personChooser.twig' as chooser %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
 {{ include('html/committees/breadcrumbs.twig') }}
@@ -20,25 +20,16 @@
             <input name="term_id"      type="hidden" value="{{ member.getTerm_id() ?? '' }}" />
             <input name="seat_id"      type="hidden" value="{{ member.getSeat_id() ?? '' }}" />
 
-            <div class="form-group">
-                <label  for="startDate">{{ _('startDate') }}</label>
-                <input name="startDate" class="form-control"
-                        id="startDate" type="date" required="true"
-                    value="{{ member.getStartDate('Y-m-d') }}" />
-            </div>
-            <div class="form-group">
-                <label  for="endDate">{{ _('endDate') }}</label>
-                <input name="endDate" class="form-control"
-                        id="endDate" type="date"
-                    value="{{ member.getEndDate() ? member.getEndDate('Y-m-d') : '' }}" />
-            </div>
+            {{ forms.field_date('startDate', 'startDate', _('startDate'), member.getStartDate() ? member.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
+            {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), member.getEndDate('Y-m-d') )}}
+
             <div clas="form-group">
                 <input type="hidden" name="person_id" id="person_id" value="{{ person.getId() }}" />
                 {{ chooser.personChooser('person_id', 'person_id', person) }}
             </div>
 
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger" href="{{ return_url }}">{{ _('cancel') }}</a>
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel'), 'cancel') }}
         </fieldset>
 	</form>
 </section>

@@ -12,6 +12,7 @@
  * @param array termModifiers  Human readable termModifiers lookup
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 {{ include('html/committees/breadcrumbs.twig') }}
 <section>
@@ -37,21 +38,35 @@
                     <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
             </thead>
             <tbody>
+                {% set canEditMembers    = isAllowed('members',    'update') %}
+                {% set canEditAlternates = isAllowed('alternates', 'update') %}
                 {% for t in terms %}
                 <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
                         {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
                     </td>
-                    <td>{% for m in t.members %}
-                        {{ m.name }}
-                        {{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}
-                        {% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}
+                    <td>{% if canEditMembers %}
+                        {{ forms.actionLink(uri('members.update') ~ '?term_id=' ~ t.term_id, _('member_add'), 'add') }}
+                        {% endif %}
+                        <table>
+                        {% for m in t.members %}
+                        <tr><th>{{ m.name }}</th>
+                            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
+                            <td>{% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}</td>
+                        </tr>
                         {% endfor %}
+                        </table>
                     </td>
-                    <td>{% for a in t.alternates %}
-                        {{ a.name }}
-                        {{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}
-                        {% if a.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: a.actionLinks}, with_context=false) }}{% endif %}
+                    <td>{% if canEditAlternates %}
+                        {{ forms.actionLink(uri('alternates.update') ~ '?term_id=' ~ t.term_id, _('alternate_add'), 'add') }}
+                        {% endif %}
+                        <table>
+                        {% for a in t.alternates %}
+                        <tr><th>{{ a.name }}</th>
+                            <td>{{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}</td>
+                            <td>{% if a.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: a.actionLinks}, with_context=false) }}{% endif %}</td>
+                        </tr>
                         {% endfor %}
+                        </table>
                     </td>
                 </tr>
                 {% endfor %}
