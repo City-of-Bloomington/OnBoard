@@ -32,7 +32,7 @@
     </form>
 
     {% if user.id %}
-    {{ include('html/people/partials/info.twig', {person:user}, with_context='false') }}
+    {{ include('html/people/partials/info.twig', {person:user}, with_context=false) }}
     {% endif %}
 </section>
 

@@ -14,7 +14,7 @@
     <table>
     {% for row in data %}
     <tr><td><a href="{{ uri('committees.info') }}?committee_id={{ row.committee_id }}">{{ row.committee }}</a></td>
-        <td>{{ row.type }}</td>
+        <td>{{ _(row.type) }}</td>
         <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
 
         {% if isAllowed('people', 'viewContactInfo') %}

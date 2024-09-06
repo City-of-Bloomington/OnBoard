@@ -2,9 +2,13 @@
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
+ * @param array     liaisons
  * @param array     actionLinks (optional)
+ *
+ * @see LiasonTable::$dataFields
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 {{ include('html/committees/breadcrumbs.twig') }}
 <section>
@@ -46,5 +50,29 @@
         {{ committee.getMeetingSchedule()|markdown_to_html }}
         {% endif %}
     </div>
+</section>
+
+<section>
+    <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
+    {% if isAllowed('liaisons', 'update') %}
+    {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
+    {% endif %}
+
+    {% if liaisons %}
+    <table class="table">
+    {% for row in liaisons %}
+    <tr><td>{{ _(row.type) }}</td>
+        <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+        {% if isAllowed('people', 'viewContactInfo') %}
+        <td>{{ row.email }}</td>
+        <td>{{ row.phone }}</td>
+        {% endif %}
+
+        {% if row.actionLinks %}
+        <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
+        {% endif %}
+    {% endfor %}
+    </table>
+    {% endif %}
 </section>
 {% endblock %}

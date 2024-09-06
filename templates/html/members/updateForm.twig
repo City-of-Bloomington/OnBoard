@@ -45,8 +45,8 @@
 <script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
 
 {% if member.getSeat_id() %}
-{{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context='false') }}
-{{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context='false') }}
+{{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
+{{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
 {% endif %}
 
 {% endblock %}
