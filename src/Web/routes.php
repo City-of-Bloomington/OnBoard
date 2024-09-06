@@ -142,7 +142,7 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/update', Web\Races\Updte\Controller::class)->allows(['POST']);
+    $r->get('update', '/update', Web\Races\Update\Controller::class)->allows(['POST']);
     $r->get('index',  ''       , Web\Races\List\Controller::class);
 });
 

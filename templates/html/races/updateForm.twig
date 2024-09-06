@@ -1,0 +1,24 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Race race
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h2>{{ race.getId() ? _('race_edit') : _('race_add') }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="race_id" type="hidden" value="{{ race.getId() }}" />
+
+            {{ forms.field_text('name', 'name', _('name'), race.getName(), true )}}
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('races.index'), _('cancel'), 'cancel') }}
+
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}
