@@ -18,7 +18,7 @@ $map->attach('login.', '/login', function ($r) {
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\AlternatesController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\AlternatesController')->extras(['action' => 'delete']);
 });
 
