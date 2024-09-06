@@ -4,16 +4,15 @@
 
 <body class="min-vh-100 vstack">
     {{ include('html/layouts/partials/header.twig') }}
-    {{ include('html/layouts/partials/nav1.twig') }}
     <main class="container p-2 flex-grow-1">
-        <div>
-            {% if ERROR_MESSAGES is defined %}
-            {{ include('html/layouts/partials/errorMessages.twig') }}
-            {% endif %}
+        {{ include('html/layouts/partials/nav1.twig') }}
+        
+        {% if ERROR_MESSAGES is defined %}
+        {{ include('html/layouts/partials/errorMessages.twig') }}
+        {% endif %}
 
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
 	</main>
     {{ include('html/layouts/partials/footer.twig') }}
 </body>
