@@ -6,8 +6,7 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
-<section>
+<section class="container">
     <header>
         <h2>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
