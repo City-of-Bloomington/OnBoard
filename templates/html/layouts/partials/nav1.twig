@@ -3,34 +3,32 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-<header>
-<nav id="nav1" class="container">
-<ul class="nav nav-pills">
+<nav id="nav1" class="container mb-2">
+<ul class="nav nav-underline">
     {% if isAllowed('committees', 'index') %}
     <li class="nav-item">
-        <a href="{{ uri('committees.index') }}" class="nav-link">{{ _(['committee', 'committees', 10]) }}</a>
+        <a href="{{ uri('committees.index') }}" class="nav-link {{ ROUTE_NAME=='committees.index' ? 'active' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
     </li>
     {% endif %}
     {% if isAllowed('people', 'index') %}
     <li class="nav-item">
-        <a href="{{ uri('people.index') }}" class="nav-link">{{ _(['person', 'people', 10]) }}</a>
+        <a href="{{ uri('people.index') }}" class="nav-link {{ ROUTE_NAME=='people.index' ? 'active' : '' }}">{{ _(['person', 'people', 10]) }}</a>
     </li>
     {% endif %}
     {% if isAllowed('seats', 'index') %}
     <li class="nav-item">
-        <a href="{{ uri('seats.index') }}" class="nav-link">{{ _(['seat', 'seats', 10]) }}</a>
+        <a href="{{ uri('seats.index') }}" class="nav-link {{ ROUTE_NAME=='seats.index' ? 'active' : '' }}">{{ _(['seat', 'seats', 10]) }}</a>
     </li>
     {% endif %}
     {% if isAllowed('liaisons', 'index') %}
     <li class="nav-item">
-        <a href="{{ uri('liaisons.index') }}" class="nav-link">{{ _(['liaison', 'liaisons', 10]) }}</a>
+        <a href="{{ uri('liaisons.index') }}" class="nav-link {{ ROUTE_NAME=='liaisons.index' ? 'active' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
     </li>
     {% endif %}
     {% if isAllowed('applicants', 'apply') %}
     <li class="nav-item">
-        <a href="{{ uri('applicants.apply') }}" class="nav-link">{{ _('apply') }}</a>
+        <a href="{{ uri('applicants.apply') }}" class="nav-link {{ ROUTE_NAME=='liaisons.apply' ? 'active' : '' }}">{{ _('apply') }}</a>
     </li>
     {% endif %}
 </ul>
 </nav>
-</header>
