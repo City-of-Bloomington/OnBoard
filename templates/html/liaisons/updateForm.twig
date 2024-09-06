@@ -1,0 +1,35 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Liaison   liaison
+ * @param Committee committee
+ #}
+{% extends 'html/layouts/default.twig' %}
+{% import  'html/macros/forms.twig' as forms %}
+{% import  'html/macros/personChooser.twig' as chooser %}
+{% block content %}
+{{ include('html/committees/breadcrumbs.twig') }}
+
+<section>
+    <header><h2>{{ liaison.getId() ? _('liaison_edit') : _('liaison_add') }}</h2></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="liaison_id"   type="hidden" value="{{ liaison.getId() }}" />
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+
+            {{ forms.field_select('type', 'type', _('type'), liaison.getType(), types, true )}}
+
+            <div clas="form-group">
+                <input type="hidden" name="person_id" id="person_id" value="{{ liaison.getPerson_id() }}" />
+                {{ chooser.personChooser('person_id', 'person_id', liaison.getPerson() ) }}
+            </div>
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('liaisons.index'), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+<script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
+
+{% endblock %}

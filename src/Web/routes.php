@@ -109,7 +109,7 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LiaisonsController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\LiaisonsController')->extras(['action' => 'delete']);
     $r->get('index',  ''       , Web\Liaisons\List\Controller::class);
 });
