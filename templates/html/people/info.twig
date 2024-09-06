@@ -6,7 +6,7 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
+<section class="container">
     <header><h2>{{ person.getFullname() }}</h2></header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
