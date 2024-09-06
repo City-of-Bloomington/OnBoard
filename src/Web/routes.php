@@ -165,7 +165,7 @@ $map->attach('seats.', '/seats', function ($r) {
 
 $map->attach('site.', '/site', function ($r) {
     $r->get('updateContent', '/updateContent', 'Application\Controllers\SiteController')->extras(['action' => 'updateContent'])->allows(['POST']);
-    $r->get('index',  ''                     , 'Application\Controllers\SiteController')->extras(['action' => 'index'        ]);
+    $r->get('index',  ''                     , Web\Site\Content\Controller::class);
 });
 
 $map->attach('tags.', '/tags', function ($r) {

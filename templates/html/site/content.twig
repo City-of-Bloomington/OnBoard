@@ -1,0 +1,30 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array content
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+
+<section>
+    <header>
+        <h2>{{ _('siteContent') }}</h2>
+    </header>
+
+    {% for label, message in content %}
+    <article>
+        <header>
+            <h3>{{ _(label) }}</h3>
+            {% if isAllowed('site', 'updateContent') %}
+            {{ forms.actionLink(uri('site.updateContent') ~ '?label=' ~ label, _('content_edit'), 'edit') }}
+            {% endif %}
+        </header>
+        <div>
+        {{ message|markdown_to_html }}
+        </div>
+    </article>
+    {% endfor %}
+</section>
+
+{% endblock %}
