@@ -1,0 +1,28 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string label
+ * @param string content
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+
+<section>
+    <header>
+        <h2>{{ _('content_edit') }}</h2>
+    </header>
+
+    <form method="post">
+        <fieldset>
+            <legend>{{ label }}</legend>
+            <input name="label" type="hidden" value="{{ label }}" />
+            {{ forms.field_textarea('content', 'content', _(label), content, true) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('site.index'), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

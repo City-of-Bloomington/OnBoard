@@ -48,3 +48,10 @@
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="email" class="form-control" {{ required ? 'required="true"' : '' }} {% for k,v in attr %}{{ k }}="{{ v }}" {% endfor %} />
 </div>
 {% endmacro %}
+
+{% macro field_textarea(id, name, label, value, required=false, attr={}) %}
+<div class="form-group">
+    <label   for="{{ id }}">{{ label }}</label>
+    <textarea id="{{ id }}" name="{{ name }}" class="form-control" {{ required ? 'required="true"' : '' }} {% for k,v in attr %}{{ k }}="{{ v }}" {% endfor %}>{{ value }}</textarea>
+</div>
+{% endmacro %}
