@@ -142,8 +142,8 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\RacesController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('index',  ''       , 'Application\Controllers\RacesController')->extras(['action' => 'index' ]);
+    $r->get('update', '/update', Web\Races\Updte\Controller::class)->allows(['POST']);
+    $r->get('index',  ''       , Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {
