@@ -23,6 +23,7 @@ class Controller extends \Web\Controller
 
         switch ($this->outputFormat) {
             case 'email':
+                return new MailMerge($data);
             break;
 
             case 'csv':
