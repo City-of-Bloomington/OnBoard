@@ -1,0 +1,28 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @see LiaisonTable::$dataFields
+ * @param array data
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h2>{{ _(['liaison', 'liaisons', 10]) }}</h2></header>
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+    <table>
+    {% for row in data %}
+    <tr><td><a href="{{ uri('committees.info') }}?committee_id={{ row.committee_id }}">{{ row.committee }}</a></td>
+        <td>{{ row.type }}</td>
+        <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+
+        {% if isAllowed('people', 'viewContactInfo') %}
+        <td>{{ row.email }}</td>
+        <td>{{ row.phone }}</td>
+        {% endif %}
+    {% endfor %}
+    </table>
+</section>
+
+{% endblock %}

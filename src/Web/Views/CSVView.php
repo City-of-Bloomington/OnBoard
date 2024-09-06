@@ -12,12 +12,13 @@ class CSVView extends \Web\View
 {
     public $data = [];
 
-    public function __construct(string $filename, array $data)
+    public function __construct(string $title, array $data)
     {
         // Do not call parent::__construct
         // This does not use Twig templating
 
         $this->outputFormat = 'csv';
+        $filename = APPLICATION_NAME."-{$title}-".date('Ymd');
 
         header("Content-Disposition: attachment; filename=\"$filename.csv\"");
         // Use the array keys as the first row for column names

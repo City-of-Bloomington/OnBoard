@@ -21,8 +21,7 @@ class Controller extends \Web\Controller
 
         switch ($this->outputFormat) {
             case 'csv':
-                $filename = APPLICATION_NAME.'-seats-'.date('Ymd');
-                return new \Web\Views\CSVView($filename, $data);
+                return new \Web\Views\CSVView('Seats', $data);
             break;
 
             default:

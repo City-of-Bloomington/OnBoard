@@ -111,7 +111,7 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 $map->attach('liaisons.', '/liaisons', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\LiaisonsController')->extras(['action' => 'update'])->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\LiaisonsController')->extras(['action' => 'delete']);
-    $r->get('index',  ''       , 'Application\Controllers\LiaisonsController')->extras(['action' => 'index' ]);
+    $r->get('index',  ''       , Web\Liaisons\List\Controller::class);
 });
 
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {

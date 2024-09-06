@@ -32,8 +32,7 @@ class Controller extends \Web\Controller
                         'role'       => $u->getRole()
                     ];
                 }
-                $filename = APPLICATION_NAME.'-users-'.date('Ymd');
-                return new \Web\Views\CSVView($filename, $data);
+                return new \Web\Views\CSVView('Users', $data);
             break;
 
             default:

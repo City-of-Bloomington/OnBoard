@@ -67,8 +67,7 @@ class Controller extends \Web\Controller
                 $files = [];
                 foreach ($list as $f) { $files[] = $f->getData(); }
 
-                $filename = APPLICATION_NAME.'-Meetings-'.date('Ymd');
-                return new \Web\Views\CSVView($filename, $files);
+                return new \Web\Views\CSVView('Meetings', $files);
             break;
 
             default:
