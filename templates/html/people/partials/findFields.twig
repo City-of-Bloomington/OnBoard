@@ -5,14 +5,17 @@
  * @param string lastname
  * @param string email
  #}
-<div><label  for="firstname" class="form-label">{{ _('firstname') }}</label>
+<div class="mb-3">
+     <label  for="firstname" class="form-label">{{ _('firstname') }}</label>
      <input name="firstname" id="firstname" value="{{ firstname }}" class="form-control" />
 </div>
-<div><label  for="lastname" class="form-label">{{ _('lastname') }}</label>
+<div class="mb-3">
+     <label  for="lastname" class="form-label">{{ _('lastname') }}</label>
      <input name="lastname" id="lastname" value="{{ lastname }}" class="form-control" />
 </div>
 {% if isAllowed('people', 'viewContactInfo') %}
-<div><label  for="email" class="form-label">{{ _('email') }}</label>
+<div class="mb-3">
+     <label  for="email" class="form-label">{{ _('email') }}</label>
      <input name="email" id="email" value="{{ email }}" class="form-control" />
 </div>
 {% endif %}
