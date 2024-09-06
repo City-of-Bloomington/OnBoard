@@ -12,12 +12,13 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
-<section>
+<section class="container">
     <header>
-        <h2>{{ _(['person', 'people', 100]) }}</h2>
+        <h1>{{ _(['person', 'people', 100]) }}</h1>
     </header>
     <form method="get">
         <fieldset>
+            <legend>Search Members By Name</legend>
             {{ include('html/people/partials/findFields.twig') }}
 
             <button type="submit" class="btn btn-primary">{{ _('search') }}</button>
