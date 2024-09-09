@@ -150,7 +150,7 @@ $map->attach('reports.', '/reports', function ($r) {
     $r->get('download', '/download', 'Application\Controllers\ReportsController')->extras(['action' => 'download']);
     $r->get('update',   '/update'  , 'Application\Controllers\ReportsController')->extras(['action' => 'update'  ])->allows(['POST']);
     $r->get('delete',   '/delete'  , 'Application\Controllers\ReportsController')->extras(['action' => 'delete'  ]);
-    $r->get('index',    ''         , 'Application\Controllers\ReportsController')->extras(['action' => 'index'   ]);
+    $r->get('index',    ''         , Web\Reports\List\Controller::class);
 });
 
 $map->attach('seats.', '/seats', function ($r) {
