@@ -1,3 +1,9 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array types
+ * @param array actionLinks (optional)
+ #}
 {% extends "html/layouts/default.twig" %}
 
 {% block content %}
@@ -18,9 +24,9 @@
         <tbody>
             {% for appointer in appointers %}
             <tr>
-                <td>{{ appointer.name }}</td>
+                <td>{{ appointer.getName() }}</td>
                 <td>
-                    <a href="{{ uri('appointers.update', {'appointer_id': appointer.id}) }}" class="btn btn-sm btn-secondary">Edit</a>
+                    <a href="{{ uri('appointers.update') }}?id={{ appointer.getId() }}" class="btn btn-sm btn-secondary">Edit</a>
                 </td>
             </tr>
             {% else %}

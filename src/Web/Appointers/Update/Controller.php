@@ -1,4 +1,8 @@
 <?php
+/**
+ * @copyright 2014-2023 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ */
 declare(strict_types=1);
 namespace Web\Appointers\Update;
 
@@ -8,26 +12,32 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        $appointer = null;
-        if (!empty($_REQUEST['appointer_id'])) {
-            try {
-                $appointer = new Appointer($_REQUEST['appointer_id']);
-            } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
-            }
-        } else {
-            $appointer = new Appointer();
+        $appointer_id = $_REQUEST['id'] ?? null;
+
+        if (!$appointer_id) {
+            $_SESSION['errorMessages'][] = 'No appointer specified';
+            header('Location: ' . \Web\View::generateUrl('appointers.index'));
+            exit();
         }
 
-        if (isset($_POST['name'])) {
+        try {
+            $appointer = new Appointer($appointer_id);
+        } catch (\Exception $e) {
+            $_SESSION['errorMessages'][] = $e->getMessage();
+            header('Location: ' . \Web\View::generateUrl('appointers.index'));
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
             $appointer->setName($_POST['name']);
             try {
                 $appointer->save();
+                $_SESSION['successMessages'][] = 'Appointer successfully updated';
                 $return_url = \Web\View::generateUrl('appointers.index');
                 header("Location: $return_url");
                 exit();
             } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e;
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 
