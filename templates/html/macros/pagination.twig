@@ -2,30 +2,31 @@
     {% set pageCount = (totalItemCount / itemsPerPage)|round(0, 'ceil') %}
     {% if pageRange > pageCount %}
         {% set pageRange = pageCount %}
-        {% set delta     = (pageRange / 2)|round(0, 'ceil') %}
+    {% endif %}
 
-        {% if (pageNumber - delta) > (pageCount - pageRange) %}
-            {% set lowerBound = pageCount - pageRange + 1 %}
-            {% set upperBound = pageCount %}
-        {% else %}
-            {% if (pageNumber - delta) < 0 %}
-                {% set delta = pageNumber %}
-            {% endif %}
+    {% set delta = (pageRange / 2)|round(0, 'ceil') %}
 
-            {% set lowerBound = (pageNumber - delta + 1) %}
-            {% set upperBound = (pageNumber - delta + pageRange) %}
+    {% if (pageNumber - delta) > (pageCount - pageRange) %}
+        {% set lowerBound = pageCount - pageRange + 1 %}
+        {% set upperBound = pageCount %}
+    {% else %}
+        {% if (pageNumber - delta) < 0 %}
+            {% set delta = pageNumber %}
         {% endif %}
 
-        <nav>
-        <ul class="pagination">
-        {% set url = current_url() %}
-        {% for i in lowerBound..upperBound %}
-            {% do url.__set('page', i) %}
-            <li class="page-item">
-                <a class="page-link {{ pageNumber==i ? 'active' : ''}}" href="{{ url }}">{{ i }}</a>
-            </li>
-        {% endfor %}
-        </ul>
-        </nav>
+        {% set lowerBound = (pageNumber - delta + 1) %}
+        {% set upperBound = (pageNumber - delta + pageRange) %}
     {% endif %}
+
+    <nav>
+    <ul class="pagination">
+    {% set url = current_url() %}
+    {% for i in lowerBound..upperBound %}
+        {% do url.__set('page', i) %}
+        <li class="page-item">
+            <a class="page-link {{ pageNumber==i ? 'active' : ''}}" href="{{ url }}">{{ i }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+    </nav>
 {% endmacro %}
