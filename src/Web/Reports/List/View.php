@@ -19,7 +19,8 @@ class View extends \Web\View
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
-            'committee'    => $committee
+            'committee'    => $committee,
+            'actionLinks'  => $this->actionLinks($committee)
         ];
     }
 
@@ -55,5 +56,17 @@ class View extends \Web\View
             $out[] = $data;
         }
         return $out;
+    }
+
+    private function actionLinks(?Committee $committee=null): array
+    {
+        if ($committee && parent::isAllowed('reports', 'update')) {
+            return [[
+                'url'   => parent::generateUri('reports.update').'?committee_id='.$committee->getId(),
+                'label' => $this->_('report_add'),
+                'class' => 'add'
+            ]];
+        }
+        return [];
     }
 }

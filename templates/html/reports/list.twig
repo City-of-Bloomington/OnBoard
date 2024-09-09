@@ -14,7 +14,7 @@
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
 
-{% if committee is defined %}
+{% if committee %}
 {{ include('html/committees/breadcrumbs.twig') }}
 <section>
     <header>
@@ -29,6 +29,9 @@
     <header><h2>{{ _(['report', 'reports', 10]) }}</h2></header>
 {% endif %}
 
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
 
     <table>
     {% for r in reports %}

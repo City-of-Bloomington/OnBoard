@@ -1,0 +1,50 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Report    report
+ * @param Committee committee
+ *
+ * Metadata
+ * @param string accept     Comma separated mime_types that are accepted
+ * @param int    maxBytes   Max upload size in bytes
+ * @param string maxSize    Max upload size, human readable
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <form method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>{{ report.getId() ? _('report_edit') : _('report_add') }}</legend>
+            <input name="report_id"    type="hidden" value="{{ report.getId() }}" />
+            <input name="committee_id" type="hidden" value="{{ report.getCommittee_id() }}" />
+
+            {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
+            {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
+
+            <div class="form-control">
+                <label for="reportFile">{{ _('report') }}</label>
+                {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
+                <input id ="reportFile" name="reportFile" type="file" aria-describedby="reportFile-help" />
+                <div id="reportFile-help">
+                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
+                    <div>{{ maxSize }}</div>
+                    <div>{{ accept  }}</div>
+                </div>
+            </div>
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('reports.index') ~ '?committee_id=' ~ report.getCommittee_id(), _('cancel'), 'cancel') }}
+
+        </fieldset>
+    </form>
+</section>
+{% endblock %}
