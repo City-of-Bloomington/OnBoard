@@ -147,7 +147,7 @@ $map->attach('races.', '/races', function ($r) {
 });
 
 $map->attach('reports.', '/reports', function ($r) {
-    $r->get('download', '/download', 'Application\Controllers\ReportsController')->extras(['action' => 'download']);
+    $r->get('download', '/download', Web\Reports\Download\Controller::class);
     $r->get('update',   '/update'  , 'Application\Controllers\ReportsController')->extras(['action' => 'update'  ])->allows(['POST']);
     $r->get('delete',   '/delete'  , 'Application\Controllers\ReportsController')->extras(['action' => 'delete'  ]);
     $r->get('index',    ''         , Web\Reports\List\Controller::class);
