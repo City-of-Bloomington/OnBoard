@@ -11,6 +11,7 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="container">
     <header>
@@ -19,9 +20,14 @@
     <form method="get">
         <fieldset>
             <legend>Search Members By Name</legend>
-            {{ include('html/people/partials/findFields.twig') }}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
+            {{ forms.field_text('lastname', 'lastname', _('lastname'), lastname) }}
 
-            <button type="submit" class="btn btn-primary">{{ _('search') }}</button>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            {{ forms.field_text('email', 'email', _('email'), email) }}
+            {% endif %}
+
+            {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>
     {% if firstname or lastname or email %}
