@@ -4,7 +4,7 @@
  * @param array data
  #}
 <nav id="nav1" class="container mb-2">
-<ul class="nav nav-underline">
+<ul class="nav nav-underline nav-justified flex-column flex-sm-row">
     {% if isAllowed('committees', 'index') %}
     <li class="nav-item">
         <a href="{{ uri('committees.index') }}" class="nav-link {{ ROUTE_NAME=='committees.index' ? 'active' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
