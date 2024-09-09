@@ -20,11 +20,11 @@
 
     <table class="table">
     {% for member in members %}
-    <tr><td><a href="{{ uri('people.view') }}?person_id={{ member.getPerson_id() }}">
-            {{ member.getPerson().getFullname() }}
+    <tr><td><a href="{{ uri('people.view') }}?person_id={{ member.person_id }}">
+            {{ member.name }}
             </a>
         </td>
-        <td>{{ member.getStartDate(DATE_FORMAT) }} - {{ member.getEndDate(DATE_FORMAT) }}</td>
+        <td>{{ member.startDate }} - {{ member.endDate }}</td>
         <td>{% if row.actionLinks is defined %}
             {% for a in row.actionLinks %}<a href="{{ a.url }}">{{ a.label }}</a>{% endfor %}
             {% endif %}

@@ -21,13 +21,9 @@ class OpenView extends View
                  ? parent::_(['current_member', 'current_members', count($members)])
                  : parent::_(['past_member',    'past_members',    count($members)]);
 
-        if (isset($_SESSION['USER'])) {
-            $this->createActionLinks($committee, $seat_data);
-        }
-
         $this->vars = [
             'committee' => $committee,
-            'members'   => $members,
+            'members'   => $this->member_data($committee, $members),
             'title'     => $title
         ];
     }
@@ -37,14 +33,15 @@ class OpenView extends View
         return $this->twig->render("{$this->outputFormat}/committees/open_members.twig", $this->vars);
     }
 
-    private function createActionLinks(Committee $committee, array &$members)
+    private function member_data(Committee $committee, array &$objects): array
     {
         $committee_id         = $committee->getId();
         $userCanEditOffices   = parent::isAllowed('offices', 'update');
         $userCanEditMembers   = parent::isAllowed('members', 'update');
         $userCanDeleteMembers = parent::isAllowed('members', 'delete');
 
-        foreach ($members as $i=>$m) {
+        $members = [];
+        foreach ($objects as $m) {
             $links   = [];
             $member_id = $m->getId();
             $person_id = $m->getPerson_id();
@@ -53,14 +50,16 @@ class OpenView extends View
             if ($userCanEditOffices) {
                 $links[] = [
                     'url'   => parent::generateUri('offices.update')."?committee_id=$committee_id;person_id=$person_id",
-                    'label' => $this->_('office_add')
+                    'label' => $this->_('office_add'),
+                    'class' => 'add'
                 ];
             }
             foreach ($offices as $o) {
                 if ($userCanEditOffices) {
                     $links[] = [
                         'url'   => parent::generateUri('offices.update')."?office_id={$o->getId()}",
-                        'label' => sprintf($this->_('office_edit', 'messages'), $o->getTitle())
+                        'label' => sprintf($this->_('office_edit', 'messages'), $o->getTitle()),
+                        'class' => 'edit'
                     ];
                 }
             }
@@ -68,17 +67,28 @@ class OpenView extends View
             if ($userCanEditMembers) {
                 $links[] = [
                     'url'   => parent::generateUri('members.update')."?member_id=$member_id",
-                    'label' => $this->_('member_edit')
+                    'label' => $this->_('member_edit'),
+                    'class' => 'edit'
                 ];
             }
             if ($userCanDeleteMembers) {
                 $links[] = [
                     'url'   => parent::generateUri('members.delete')."?member_id=$member_id",
-                    'label' => $this->_('member_delete')
+                    'label' => $this->_('member_delete'),
+                    'class' => 'delete'
                 ];
             }
 
-            $members[$i]['actionLinks'] = $links;
+            $members[] = [
+                'member_id'   => $member_id,
+                'person_id'   => $person_id,
+                'name'        => $m->getPerson()->getFullname(),
+                'offices'     => $offices,
+                'startDate'   => $m->getStartDate(),
+                'endDate'     => $m->getEndDate(),
+                'actionLinks' => $links
+            ];
         }
+        return $members;
     }
 }
