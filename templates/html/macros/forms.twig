@@ -18,8 +18,8 @@
 {% endmacro %}
 
 {% macro field_text(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="form-group">
-    <label for="{{ id }}">{{ label }}</label>
+<div class="mb-3">
+    <label for="{{ id }}" class="form-label">{{ label }}</label>
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" class="form-control"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
