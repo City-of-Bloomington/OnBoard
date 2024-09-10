@@ -1,0 +1,69 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param MeetingFile meetingFile
+ * @param Committee   committee
+ *
+ * Metadata
+ * @param array  types      Meeting file type options
+ * @param int    year       The year used for listing event choices
+ * @param array  events     The event options for the chosen year
+ * @param string accept     Comma separated mime_types that are accepted
+ * @param int    maxBytes   Max upload size in bytes
+ * @param string maxSize    Max upload size, human readable
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <form method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
+            <input name="meetingFile_id" type="hidden" value="{{ meetingFile.getId() }}" />
+            <input name="committee_id"   type="hidden" value="{{ meetingFile.getCommittee_id() }}" />
+
+            {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
+            {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
+
+            {% if committee.getCalendarId() %}
+            <div class="form-group">
+                <label for="eventId">{{ _('meeting') }}</label>
+                {% set url = current_url() %}
+                {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
+                <select id="eventId" name="eventId" required="true">
+                {% for e in events %}<option value="{{ e.value }}"{{ e.value==meetingFile.getEventId() ? ' selected="true"' : ''}}>{{ e.label }}</option>{% endfor %}
+                </select>
+                {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
+            </div>
+            {% else %}
+            {{ forms.field_date('meetingDate', 'meetingDate', _('meetingDate'), meetingFile.getMeetingDate() ? member.getMeetingDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
+            {% endif %}
+
+            <div class="form-group">
+                <label for="meetingFile">{{ _('meetingFile') }}</label>
+                {% if meetingFile.getFilename() -%}
+                <div><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ meetingFile.getId() }}">{{ meetingFile.getFilename() }}</a></div>
+                {%- endif %}
+                <input id ="meetingFile" name="meetingFile" type="file" aria-describedby="meetingFile-help" />
+                <div id="meetingFile-help">
+                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
+                    <div>{{ maxSize }}</div>
+                    <div>{{ accept  }}</div>
+                </div>
+            </div>
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('meetingFiles.index') ~ '?committee_id=' ~ committee.getId() , _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

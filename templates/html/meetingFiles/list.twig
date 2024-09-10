@@ -4,7 +4,9 @@
  * @param Committee committee
  * @param array     files
  * @param array     sort
+ * @param int       year   Current chosen year
  * @param array     years  Available years for the committee
+ * @param string    type   Current chosen type
  * @param array     types  Meeting file types
  * @param array     actionLinks
  * @param array     addLinks
@@ -19,6 +21,7 @@
 
 {% block content %}
 <section>
+    <form method="get">
     <header>
         {% if committee %}
         <h2>{{ committee.getName() }}
@@ -44,25 +47,22 @@
         </nav>
         {% endif %}
 
-        <form method="get">
-            <fieldset>
-                {% if committee %}
-                <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
-                {% endif %}
-                <div>
-                    <label for="year">{{ _('year') }}</label>
-                    <select name="year" id="year" onchange="this.form.submit();">
-                        <option value=""></option>
-                        {% for y in years %}
-                        <option>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </fieldset>
-        </form>
+        <fieldset>
+            {% if committee %}
+            <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
+            {% endif %}
+            <div>
+                <label for="year">{{ _('year') }}</label>
+                <select name="year" id="year" onchange="this.form.submit();">
+                    {% for y in years %}
+                    <option{{ y==year ? ' selected="true"' : ''}}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
     </header>
 
-    <table>
+    <table class="table">
     <thead>
         {% set url = current_url() %}
         <tr><th>{% do url.__set('sort', (sort.field=='title' and sort.direction=='desc') ? 'title asc' : 'title desc') %}
@@ -74,21 +74,19 @@
             <th>{% do url.__set('sort', (sort.field=='meetingDate' and sort.direction=='desc') ? 'meetingDate asc' : 'meetingDate desc') %}
                 <a href="{{ url }}">{{ _('meetingDate') }}</a>
             </th>
-            <th><form method="get">
-                    <fieldset>
-                        {% for k,v in url.parameters %}
-                        {% if k!='type' %}
-                        <input name="{{ k }}" type="hidden" value="{{ v }}" />
-                        {% endif %}
+            <th><fieldset>
+                    {% for k,v in url.parameters %}
+                    {% if k!='type' and k!='year' %}
+                    <input name="{{ k }}" type="hidden" value="{{ v }}" />
+                    {% endif %}
+                    {% endfor %}
+                    <select name="type" onchange="this.form.submit();">
+                        <option value="">{{ _('type') }}</option>
+                        {% for t in types %}
+                        <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
                         {% endfor %}
-                        <select name="type" onchange="this.form.submit();">
-                            <option value="">{{ _('type') }}</option>
-                            {% for t in types %}
-                            <option {{ t in url.parameters and url.parameters.type==t ? 'selected="true"' : '' }}>{{ t }}</option>
-                            {% endfor %}
-                        </select>
-                    </fieldset>
-                </form>
+                    </select>
+                </fieldset>
             </th>
             <th></th>
         </tr>
@@ -96,7 +94,7 @@
     <tbody>
         {% for f in files %}
         <tr><td>{{ f.title }}</td>
-            <td>{{ f.filename }}</td>
+            <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">{{ f.filename }}</a></td>
             <td>{{ f.meetingDate }}</td>
             <td>{{ f.type }}</td>
             <td>{% if f.actions %}
@@ -108,7 +106,9 @@
     </tbody>
     </table>
 
-    {% if total > itemsPerPage %}</section>
+    {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
     {% endif %}
+    </form>
+</section>
 {% endblock %}

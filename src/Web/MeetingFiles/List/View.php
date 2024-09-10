@@ -12,6 +12,7 @@ use Application\Models\MeetingFile;
 class View extends \Web\View
 {
     public function __construct(array $files,
+                                array $search,
                                 array $sort,
                                 array $years,
                                 int   $totalItemCount,
@@ -25,7 +26,9 @@ class View extends \Web\View
             'committee'    => $committee,
             'files'        => $this->createFileData($files),
             'sort'         => $sort,
+            'year'         => $search['year'] ?? null,
             'years'        => $years,
+            'type'         => $search['type'] ?? null,
             'types'        => MeetingFile::$types,
             'actionLinks'  => $this->createActionLinks(),
             'addLinks'     => $this->createAddLinks($committee),
@@ -44,7 +47,7 @@ class View extends \Web\View
     {
         $url = parent::current_url();
         $url->format = 'csv';
-        return [['url' => $url, 'label' => 'csv']];
+        return [['url' => $url, 'label' => 'csv', 'class'=>'download']];
     }
 
     private function createAddLinks($committee): array

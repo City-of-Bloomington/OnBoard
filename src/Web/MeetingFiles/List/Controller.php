@@ -59,9 +59,6 @@ class Controller extends \Web\Controller
             $totalItemCount = count($list);
         }
 
-        // The list of years we give the block should all years available
-        if (isset($search['year'])) { unset($search['year']); }
-
         switch ($this->outputFormat) {
             case 'csv':
                 $files = [];
@@ -75,13 +72,20 @@ class Controller extends \Web\Controller
                 foreach ($list as $f) { $files[] = $f; }
 
                 return new View($files,
+                                $search,
                                 $sort,
-                                array_keys($table->years($search)),
+                                $this->years($table, $search),
                                 $totalItemCount,
                                 $page,
                                 parent::ITEMS_PER_PAGE,
                                 $committee);
         }
 
+    }
+
+    private function years(MeetingFilesTable $table, array $search): array
+    {
+        if (isset($search['year'])) { unset($search['year']); }
+        return array_keys($table->years($search));
     }
 }
