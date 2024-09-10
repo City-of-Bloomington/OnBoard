@@ -1,0 +1,45 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Office    office
+ * @param Committee committee
+ * @param array     offices    Current offices in the committee
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+
+        <h3>{{ office.getId() ? _('office_edit') : _('office_add') }}</h3>
+    </header>
+
+    <table>
+        {% for o in offices %}
+        <tr><td>{{ o.getTitle() }}</td>
+            <td>{{ o.getPerson().getFullname() }}</td>
+            <td>{{ o.getStartDate(DATE_FORMAT) }} - {{ o.getEndDate(DATE_FORMAT) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <form method="post">
+        <fieldset>
+            <legend>{{ office.getPerson().getFullname() }}</legend>
+
+            {{ forms.field_text('title', 'title', _('title'), office.getTitle(), true ) }}
+            {{ forms.field_date('startDate', 'startDate', _('startDate'), office.getStartDate() ? office.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
+            {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), office.getEndDate('Y-m-d') )}}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.members') ~ '?committee_id=' ~ committee.getId() , _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

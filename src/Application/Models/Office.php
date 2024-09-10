@@ -61,18 +61,18 @@ class Office extends ActiveRecord
 	public function validate()
 	{
 		if (!$this->getCommittee_id() || !$this->getPerson_id()) {
-			throw new Exception('missingRequiredFields');
+			throw new \Exception('missingRequiredFields');
 		}
 
 		if (!$this->getTitle()) {
-			throw new Exception('offices/missingTitle');
+			throw new \Exception('offices/missingTitle');
 		}
 
 		// Make sure the end date falls after the start date
 		$start = $this->getStartDate('U');
 		$end   = $this->getEndDate  ('U');
 		if ($end && $end < $start) {
-			throw new Exception('invalidEndDateBeforeStart');
+			throw new \Exception('invalidEndDateBeforeStart');
 		}
 	}
 

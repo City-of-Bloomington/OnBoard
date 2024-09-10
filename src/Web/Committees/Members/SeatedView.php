@@ -112,6 +112,17 @@ class SeatedView extends View
                     'url'   => parent::generateUri('offices.update')."?committee_id={$committee->getId()};person_id=$row[member_person_id]",
                     'label' => $this->_('office_add')
                 ];
+
+                if ($row['offices']) {
+                    foreach (explode(',',$row['offices']) as $o) {
+                        list($office_id, $office_title) = explode('|', $o);
+                        $actions[] = [
+                            'url'   => parent::generateUri('offices.update')."?office_id=$office_id",
+                            'label' => "{$this->_('edit')} $office_title"
+                        ];
+                    }
+                }
+
             }
 
             $seat_data[$i]['actionLinks'] = $actions;
