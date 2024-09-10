@@ -1,0 +1,71 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array legislation
+ * @param Committee committee
+ *
+ * Search Form
+ * @param int    year
+ * @param int    status_id
+ * @param int    type_id
+ * @param string number
+ * @param array  committees
+ * @param array  years
+ * @param array  statuses
+ * @param array  types
+ *
+ * Pagination parameters
+ * @param int       total
+ * @param int       itemsPerPage
+ * @param int       currentPage
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        {% if committee %}
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+        {% endif %}
+    </header>
+
+    <form method="get">
+        <fieldset><legend>{{ _('legislation') }}</legend>
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee.getId(), committees, false, {onchange:'this.form.submit();'} ) }}
+            <div class="mb-3">
+                <label for="year">{{ _('year') }}</label>
+                <input  id="year" name="year" value="{{ year }}" type="number" class="form-control" />
+                <span class="form-text">
+                    <a href="{{ uri('legislation.years') ~ '?committee_id=' ~ committee.getId() }}">({{ years|last }} - {{ years|first }})</a>
+                </span>
+            </div>
+            {{ forms.field_select('status_id', 'status_id', _('legislationStatus'), status_id, statuses, false, {onchange:'this.form.submit();'} ) }}
+            {{ forms.field_select('type_id', 'type_id', _('type'), type_id, types, false, {onchange:'this.form.submit();'}  ) }}
+            {{ forms.field_text('number', 'number', _('number'), number ) }}
+
+            {{ forms.button('submit', _('search'), 'search') }}
+        </fieldset>
+    </form>
+
+    {% for l in legislation %}
+    <article>
+        <header>
+            <h2><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ l.getId() }}">{{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus().getName() }}</a>
+                {{ forms.actionLink(uri('legislationFiles.download') ~ '?legislation_id=' ~ l.getId(), _('download'), 'download') }}
+            </h2>
+            <h3>{{ l.getTitle() }}</h3>
+        </header>
+    </article>
+    {% endfor %}
+
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+{% endblock %}

@@ -70,4 +70,6 @@ class Status extends ActiveRecord
         $this->setName  ($post['name'  ]);
         $this->setActive($post['active'] ?? false);
 	}
+
+	public function __toString() { return parent::get('name'); }
 }
