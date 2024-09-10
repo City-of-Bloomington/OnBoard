@@ -1,0 +1,26 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array     years
+ * @param Committee committee
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        {% if committee %}
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+        {% endif %}
+    </header>
+
+    <ul>{% for year, count in years %}
+        <li>{{ year }} ({{ count }})</li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}
