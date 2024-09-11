@@ -12,7 +12,7 @@
 
     <table class="table">
         {% for a in applicants %}
-        <tr><td>{{ a.name  }}</td>
+        <tr><td><a href="{{ uri('applicants.view') ~ '?applicant_id=' ~ a.id }}">{{ a.name  }}</a></td>
             <td>{{ a.email }}</td>
             <td>{{ a.phone }}</td>
             <td>{% if a.actionLinks %}
