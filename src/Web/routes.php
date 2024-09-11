@@ -87,7 +87,7 @@ $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r)
 $map->attach('legislation.', '/legislation', function ($r) {
     $r->get('view',   '/view'  , Web\Legislation\Info\Controller::class);
     $r->get('update', '/update', Web\Legislation\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\LegislationController')->extras(['action' => 'delete']);
+    $r->get('delete', '/delete', Web\Legislation\Delete\Controller::class);
     $r->get('years',  '/years' , Web\Legislation\Years\Controller::class);
     $r->get('index',  ''       , Web\Legislation\Find\Controller::class);
 });

@@ -12,6 +12,8 @@ use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\StatusesTable;
 use Application\Models\Legislation\TypesTable;
 
+use Web\Url;
+
 class View extends \Web\View
 {
     public function __construct(array $legislation,
@@ -85,8 +87,12 @@ class View extends \Web\View
     {
         $links = [];
         if ($committee && parent::isAllowed('legislation', 'update')) {
+            $params = [
+                'committee_id' => $committee->getId(),
+                'return_url'   => Url::current_url(BASE_HOST)
+            ];
             $links[] = [
-                'url' => parent::generateUri('legislation.update').'?committee_id='.$committee->getId(),
+                'url' => parent::generateUri('legislation.update').'?'.http_build_query($params, '', ';'),
                 'label' => parent::_('legislation_add'),
                 'class' => 'add'
             ];
