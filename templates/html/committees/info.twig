@@ -12,10 +12,10 @@
 {% block content %}
 <section class="container">
     <header>
-        <h2>{{ committee.getName() }}
+        <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
+        </h1>
         {{ include('html/committees/partials/header.twig') }}
     </header>
     {% if actionLinks %}
