@@ -1,0 +1,85 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Legislation legislation
+ * @param Committee   committee
+ * @param array       actionLinks
+ * @param array       legislationActions
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header>
+        {% if committee %}
+        <h2>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h2>
+        {{ include('html/committees/partials/header.twig') }}
+        {% endif %}
+
+
+        {% if legislation.getParent_id() %}
+        {% set parent=legislation.getParent() %}
+        <h3>{{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}</h3>
+        <h3>{{ parent.getTitle() }}</h3>
+        {% endif %}
+
+        <h3>{{ legislation.getYear() }} {{ legislation.getType() }} {{ legislation.getNumber() }} {{ legislation.getStatus() }}</h3>
+        <h3>{{ legislation.getTitle() }}</h3>
+    </header>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+
+    <div>{{ legislation.getSynopsis()|markdown_to_html }}</div>
+    {% if legislation.getTags() %}
+    <ul>{% for t in legislation.getTags() -%}
+        <li>{{ t }}</li>
+        {%- endfor %}
+    </ul>
+    {% endif %}
+
+    <table>
+    <tr><th>{{ _('amendsCode') }}</th>
+        <td>{{ legislation.getAmendsCode() ? _('yes') : _('no') }}</td>
+    </tr>
+    </table>
+
+    {% set files = legislation.getFiles() %}
+    {% if  files %}
+    <ul>{% for f in files %}
+        <li><a href="{{ uri('legislationFiles.download') ~ '?legislation_id=' ~ legislation.getId() }}">{{ f.getFilename() }}</a>
+            {% if isAllowed('legislationFiles', 'update') %}
+            {{ forms.actionLink(uri('legislationFiles.update') ~ '?legislationFile_id=' ~ f.getId(), _('legislationFile_edit'), 'edit' ) }}
+            {% endif %}
+            {% if isAllowed('legislationFiles', 'delete') %}
+            {{ forms.actionLink(uri('legislationFiles.delete') ~ '?legislationFile_id=' ~ f.getId(), _('legislationFile_delete'), 'delete' ) }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        {% if isAllowed('legislationFiles', 'update') %}
+        {{ forms.actionLink(uri('legislationFiles.update'), _('legislationFile_add'), 'add' ) }}
+        {% endif %}
+    {% endif %}
+
+    <table>
+    {% for type, actions in legislationActions %}
+        {% for a in actions %}
+        <tr><th>{{ type      }}</th>
+            <td>{{ a.date    }}</td>
+            <td>{{ a.outcome }}</td>
+            <td>{{ a.vote    }}</td>
+            <td>{{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    </table>
+
+</section>
+
+{% endblock %}
