@@ -5,10 +5,9 @@
     <header>
         <h1 class="mb-4">{{ _('department_edit') }}</h1>
     </header>
-    <form method="post" action="{{ uri('departments.update', {'department_id': department.id}) }}">
+    <form method="post" action="{{ uri('departments.update') }}?department_id={{ department.id }}">
         <fieldset>
             <legend class="h5 mb-3">{{ department.name }}</legend>
-            <input name="department_id" type="hidden" value="{{ department.id }}" />
             <div class="form-group mb-3">
                 <label for="name" class="form-label">{{ _('name') }}</label>
                 <input name="name" id="name" value="{{ department.name }}" required="required" class="form-control" />

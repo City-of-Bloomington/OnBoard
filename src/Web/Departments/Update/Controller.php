@@ -26,11 +26,10 @@ class Controller extends \Web\Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
             try {
-                $department->handleUpdate($_POST);
+                $department->setName($_POST['name']);
                 $department->save();
                 $_SESSION['successMessages'][] = 'Department successfully updated';
-                $return_url = \Web\View::generateUrl('departments.info') . "?department_id={$department->getId()}";
-                header("Location: $return_url");
+                header('Location: ' . \Web\View::generateUrl('departments.index'));
                 exit();
             } catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e->getMessage();

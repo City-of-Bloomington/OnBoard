@@ -9,7 +9,6 @@
     </header>
     <h2 class="mb-4">{{ department.name }}</h2>
 
-
     <section class="mb-4">
         <header>
             <h3 class="mb-3">{{ _(['committee', 'committees', 10]) }}</h3>
@@ -34,7 +33,20 @@
     </section>
 
     {% if isAllowed('users', 'view') %}
-        {% include 'users/list.twig' with {'users': department.users} %}
+        <section class="mb-4">
+            <header>
+                <h3 class="mb-3">Users</h3>
+            </header>
+            {% if department.users|length > 0 %}
+                <ul>
+                {% for user in department.users %}
+                    <li>{{ user.name }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No users found for this department.</p>
+            {% endif %}
+        </section>
     {% endif %}
 </section>
 {% endblock %}
