@@ -20,18 +20,16 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu" aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="nav-menu">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse mb-1" id="nav-menu">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ BASE_URI }}/help">Help</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
                 </li>
-                <li class="nav-item">
-                    {{ include('html/layouts/partials/user_menu.twig') }}
-                </li>
             </ul>
+            {{ include('html/layouts/partials/user_menu.twig') }}
         </div>
     </div>
 </nav>
