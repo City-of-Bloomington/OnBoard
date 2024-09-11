@@ -18,7 +18,7 @@
                 {% for committee in department.committees %}
                     <tr>
                         <td>
-                            <a href="{{ uri('committees.info', {'committee_id': committee.id}) }}" class="text-decoration-none">
+                            <a href="{{ uri('committees.info') }}?committee_id={{ committee.id }}" class="text-decoration-none">
                                 {{ committee.name }}
                             </a>
                         </td>
@@ -31,5 +31,30 @@
             </tbody>
         </table>
     </section>
+
+    {% if isAllowed('users', 'view') %}
+        <section class="mb-4">
+            <header>
+                <h3 class="mb-3">Users</h3>
+            </header>
+            {% if department.users|length > 0 %}
+                <ul class="list-group">
+                {% for user in department.users %}
+                    <li class="list-group-item">
+                        {% if user.getFullname is defined %}
+                            {{ user.getFullname() }}
+                        {% elseif user.getUsername is defined %}
+                            {{ user.getUsername() }}
+                        {% else %}
+                            User ID: {{ user.getId() }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No users found for this department.</p>
+            {% endif %}
+        </section>
+    {% endif %}
 </section>
 {% endblock %}
