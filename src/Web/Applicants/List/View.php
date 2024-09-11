@@ -37,6 +37,7 @@ class View extends \Web\View
                 ];
             }
             $out[] = [
+                'id'          => $a->getId(),
                 'name'        => "{$a->getFirstname()} {$a->getLastname()}",
                 'email'       => $a->getEmail(),
                 'phone'       => $a->getPhone(),
