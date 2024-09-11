@@ -167,7 +167,7 @@ msgid "info_office"
 msgstr "Office Info"
 
 msgid "find_person"
-msgstr "Find someone"
+msgstr "Search someone by name"
 
 msgid "person_choose"
 msgstr "Choose Person"
