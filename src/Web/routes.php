@@ -67,9 +67,10 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 });
 
 $map->attach('departments.', '/departments', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\DepartmentsController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('view',   '/view',   'Application\Controllers\DepartmentsController')->extras(['action' => 'view'  ]);
-    $r->get('index',  ''       , 'Application\Controllers\DepartmentsController')->extras(['action' => 'index' ]);
+    $r->get('index',  '',        Web\Departments\List\Controller::class);
+    $r->get('add',    '/add',    Web\Departments\Add\Controller::class)->allows(['POST']);
+    $r->get('info',   '/info',   Web\Departments\Info\Controller::class);
+    $r->get('update', '/update', Web\Departments\Update\Controller::class)->allows(['POST']);
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {

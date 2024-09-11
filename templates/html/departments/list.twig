@@ -1,0 +1,41 @@
+{% extends "html/layouts/default.twig" %}
+
+{% block content %}
+<section class="container mt-4">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ _(['department', 'departments', departments|length]) }}</h2>
+        <div class="tools">
+        {% if isAllowed('departments', 'add') %}
+            <a href="{{ uri('departments.add') }}" class="btn btn-primary">{{ _('department_add') }}</a>
+        {% endif %}
+        </div>
+    </header>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{ _('name') }}</th>
+                <th>{{ _('actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in departments %}
+                <tr>
+                    <td>
+                        <a href="{{ uri('departments.info') }}?department_id={{ department.id }}" class="text-decoration-none">{{ department.name }}</a>
+                    </td>
+                    <td>
+                        {% if isAllowed('departments', 'update') %}
+                            <a href="{{ uri('departments.update') }}?department_id={{ department.id }}" class="btn btn-sm btn-secondary">{{ _('edit') }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">No departments found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

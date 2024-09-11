@@ -1,0 +1,40 @@
+{% extends "html/layouts/default.twig" %}
+
+{% block content %}
+<section class="container mt-4">
+    <header>
+        <h1 class="mb-4">
+            <a href="{{ uri('departments.index') }}" class="text-decoration-none">{{ _(['department', 'departments', 10]) }}</a>
+        </h1>
+    </header>
+    <h2 class="mb-4">{{ department.name }}</h2>
+
+
+    <section class="mb-4">
+        <header>
+            <h3 class="mb-3">{{ _(['committee', 'committees', 10]) }}</h3>
+        </header>
+        <table class="table table-striped">
+            <tbody>
+                {% for committee in department.committees %}
+                    <tr>
+                        <td>
+                            <a href="{{ uri('committees.info', {'committee_id': committee.id}) }}" class="text-decoration-none">
+                                {{ committee.name }}
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>No committees found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    {% if isAllowed('users', 'view') %}
+        {% include 'users/list.twig' with {'users': department.users} %}
+    {% endif %}
+</section>
+{% endblock %}
