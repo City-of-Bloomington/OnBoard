@@ -31,22 +31,5 @@
             </tbody>
         </table>
     </section>
-
-    {% if isAllowed('users', 'view') %}
-        <section class="mb-4">
-            <header>
-                <h3 class="mb-3">Users</h3>
-            </header>
-            {% if department.users|length > 0 %}
-                <ul>
-                {% for user in department.users %}
-                    <li>{{ user.name }}</li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p>No users found for this department.</p>
-            {% endif %}
-        </section>
-    {% endif %}
 </section>
 {% endblock %}
