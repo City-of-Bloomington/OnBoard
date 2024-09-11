@@ -10,8 +10,6 @@
 <section class="container">
     <header>
         <h2>{{ committee.getName() }}</h2>
-        {{ include('html/committees/partials/header.twig') }}
-
         <h3>{{ committee.getId() ? _('committee_edit') : _('committee_add') }}</h3>
     </header>
 
