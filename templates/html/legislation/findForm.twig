@@ -13,6 +13,7 @@
  * @param array  years
  * @param array  statuses
  * @param array  types
+ * @param array  actionLinks
  *
  * Pagination parameters
  * @param int       total
@@ -52,16 +53,11 @@
         </fieldset>
     </form>
 
-    {% for l in legislation %}
-    <article>
-        <header>
-            <h2><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ l.getId() }}">{{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus().getName() }}</a>
-                {{ forms.actionLink(uri('legislationFiles.download') ~ '?legislation_id=' ~ l.getId(), _('download'), 'download') }}
-            </h2>
-            <h3>{{ l.getTitle() }}</h3>
-        </header>
-    </article>
-    {% endfor %}
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    {{ include('html/legislation/partials/list.twig') }}
 
 
     {% if total > itemsPerPage %}

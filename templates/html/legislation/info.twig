@@ -4,6 +4,7 @@
  * @param Legislation legislation
  * @param Committee   committee
  * @param array       actionLinks
+ *
  * @param array       legislationActions
  #}
 {% extends "html/layouts/default.twig" %}
@@ -11,18 +12,19 @@
 {% block content %}
 <section>
     <header>
-        {% if committee %}
         <h2>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
         </h2>
         {{ include('html/committees/partials/header.twig') }}
-        {% endif %}
 
 
         {% if legislation.getParent_id() %}
         {% set parent=legislation.getParent() %}
-        <h3>{{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}</h3>
+        <h3><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ legislation.getParent_id() }}">
+            {{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}
+            </a>
+        </h3>
         <h3>{{ parent.getTitle() }}</h3>
         {% endif %}
 
@@ -79,6 +81,14 @@
         {% endfor %}
     {% endfor %}
     </table>
+
+    {% if childLinks %}
+    {{ include('html/partials/actionLinks.twig', {actionLinks:childLinks}, with_context=false) }}
+    {% endif %}
+    {% set children = legislation.getChildren() %}
+    {% if children %}
+    {{ include('html/legislation/partials/list.twig', {legislation:children}, with_context=false) }}
+    {% endif %}
 
 </section>
 

@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -23,7 +23,7 @@ class TagsTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'legislation_id':
-                        $select->join(['l'=>'legislation_tags'], 'tags.id=l.legislation_id', []);
+                        $select->join(['l'=>'legislation_tags'], 'tags.id=l.tag_id', []);
                         $select->where(['l.legislation_id'=>$value]);
                     break;
 

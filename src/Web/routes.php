@@ -86,10 +86,10 @@ $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r)
 
 $map->attach('legislation.', '/legislation', function ($r) {
     $r->get('view',   '/view'  , Web\Legislation\Info\Controller::class);
-    $r->get('update', '/update', 'Application\Controllers\LegislationController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\Legislation\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\LegislationController')->extras(['action' => 'delete']);
     $r->get('years',  '/years' , Web\Legislation\Years\Controller::class);
-    $r->get('index',  ''       , Web\Legislation\List\Controller::class);
+    $r->get('index',  ''       , Web\Legislation\Find\Controller::class);
 });
 
 $map->attach('legislationFiles.', '/legislationFiles', function ($r) {

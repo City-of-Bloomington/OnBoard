@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Legislation\List;
+namespace Web\Legislation\Find;
 
 use Application\Models\Committee;
 use Application\Models\CommitteeTable;
@@ -36,13 +36,14 @@ class View extends \Web\View
             'types'        => self::types(),
             'total'        => $totalItemCount,
             'itemsPerPage' => $itemsPerPage,
-            'currentPage'  => $currentPage
+            'currentPage'  => $currentPage,
+            'actionLinks'  => $this->actionLinks($committee)
         ];
     }
 
     public function render(): string
     {
-        return $this->twig->render('html/legislation/list.twig', $this->vars);
+        return $this->twig->render('html/legislation/findForm.twig', $this->vars);
     }
 
     private static function committees(): array
@@ -78,5 +79,18 @@ class View extends \Web\View
         $list    = $table->find(['subtype'=>false]);
         foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
         return $options;
+    }
+
+    private function actionLinks(?Committee $committee=null): array
+    {
+        $links = [];
+        if ($committee && parent::isAllowed('legislation', 'update')) {
+            $links[] = [
+                'url' => parent::generateUri('legislation.update').'?committee_id='.$committee->getId(),
+                'label' => parent::_('legislation_add'),
+                'class' => 'add'
+            ];
+        }
+        return $links;
     }
 }

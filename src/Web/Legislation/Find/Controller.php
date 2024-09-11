@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Legislation\List;
+namespace Web\Legislation\Find;
 
 use Application\Models\Legislation\LegislationTable;
 use Application\Models\Committee;

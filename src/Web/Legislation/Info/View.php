@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Legislation\Info;
 
 use Application\Models\Legislation\Legislation;
+use Application\Models\Legislation\TypesTable;
 
 class View extends \Web\View
 {
@@ -18,6 +19,7 @@ class View extends \Web\View
             'legislation'        => $legislation,
             'committee'          => $legislation->getCommittee(),
             'actionLinks'        => $this->actionLinks($legislation),
+            'childLinks'         => $this->childLinks($legislation),
             'legislationActions' => $this->action_data($legislation)
         ];
     }
@@ -36,6 +38,7 @@ class View extends \Web\View
                 'label' => parent::_('legislation_edit'),
                 'class' => 'edit'
             ];
+
         }
         if (parent::isAllowed('legislation', 'delete')) {
             $links[] = [
@@ -43,6 +46,24 @@ class View extends \Web\View
                 'label' => parent::_('legislation_delete'),
                 'class' => 'delete'
             ];
+        }
+        return $links;
+    }
+
+    private function childLinks(Legislation $legislation): array
+    {
+        $links = [];
+        if (!$legislation->getParent_id() && parent::isAllowed('legislation', 'update')) {
+            $add   = parent::generateUri('legislation.update');
+            $table = new TypesTable();
+            $list  = $table->find(['subtype'=>true]);
+            foreach ($list as $t) {
+                $links[] = [
+                    'url'   => $add."?type_id={$t->getId()};parent_id=".$legislation->getId(),
+                    'label' => sprintf($this->_('add_something', 'messages'), $t->getName()),
+                    'class' => 'add'
+                ];
+            }
         }
         return $links;
     }
