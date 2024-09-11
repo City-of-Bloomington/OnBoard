@@ -32,7 +32,7 @@ $map->attach('applicants.', '/applicants', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\ApplicantsController')->extras(['action' => 'update'])->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\ApplicantsController')->extras(['action' => 'delete']);
     $r->get('apply',  '/apply' , 'Application\Controllers\ApplicantsController')->extras(['action' => 'apply' ])->allows(['POST']);;
-    $r->get('index',  ''       , 'Application\Controllers\ApplicantsController')->extras(['action' => 'index' ]);
+    $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
 
 $map->attach('applications.', '/applications', function ($r) {

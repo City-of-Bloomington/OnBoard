@@ -1,0 +1,27 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array applicants
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _(['applicant', 'applicants', 10]) }}</h2>
+    </header>
+
+    <table class="table">
+        {% for a in applicants %}
+        <tr><td>{{ a.name  }}</td>
+            <td>{{ a.email }}</td>
+            <td>{{ a.phone }}</td>
+            <td>{% if a.actionLinks %}
+                {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+
+{% endblock %}
