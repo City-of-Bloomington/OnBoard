@@ -34,7 +34,7 @@
             {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
 
             {% if committee.getCalendarId() %}
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="eventId">{{ _('meeting') }}</label>
                 {% set url = current_url() %}
                 {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
@@ -47,7 +47,7 @@
             {{ forms.field_date('meetingDate', 'meetingDate', _('meetingDate'), meetingFile.getMeetingDate() ? member.getMeetingDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
             {% endif %}
 
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="meetingFile">{{ _('meetingFile') }}</label>
                 {% if meetingFile.getFilename() -%}
                 <div><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ meetingFile.getId() }}">{{ meetingFile.getFilename() }}</a></div>
