@@ -95,7 +95,7 @@ $map->attach('legislation.', '/legislation', function ($r) {
 $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
     $r->get('update',   '/update'  , Web\LegislationFiles\Update\Controller::class)->allows(['POST']);
     $r->get('delete',   '/delete'  , 'Application\Controllers\LegislationFilesController')->extras(['action' => 'delete'  ]);
-    $r->get('download', '/download', 'Application\Controllers\LegislationFilesController')->extras(['action' => 'download']);
+    $r->get('download', '/download', Web\LegislationFiles\Download\Controller::class);
 });
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {

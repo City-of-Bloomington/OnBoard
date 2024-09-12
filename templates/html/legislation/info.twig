@@ -53,7 +53,7 @@
     {% set files = legislation.getFiles() %}
     {% if  files|length>0 %}
     <ul>{% for f in files %}
-        <li><a href="{{ uri('legislationFiles.download') ~ '?legislation_id=' ~ legislation.getId() }}">{{ f.getFilename() }}</a>
+        <li><a href="{{ uri('legislationFiles.download') ~ '?legislationFile_id=' ~ f.getId() }}">{{ f.getFilename() }}</a>
             {% if isAllowed('legislationFiles', 'update') %}
             {{ forms.actionLink(uri('legislationFiles.update') ~ '?legislationFile_id=' ~ f.getId(), _('legislationFile_edit'), 'edit' ) }}
             {% endif %}
