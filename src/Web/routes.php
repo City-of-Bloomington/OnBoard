@@ -23,7 +23,7 @@ $map->attach('alternates.', '/alternates', function ($r) {
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
-    $r->get('download', '/download', 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'download']);
+    $r->get('download', '/download', Web\Applicants\Files\Download\Controller::class);
     $r->get('delete',   '/delete'  , 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'delete'  ]);
 });
 
