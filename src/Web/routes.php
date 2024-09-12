@@ -30,7 +30,7 @@ $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
 $map->attach('applicants.', '/applicants', function ($r) {
     $r->get('view',   '/view'  , Web\Applicants\Info\Controller::class);
     $r->get('update', '/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\ApplicantsController')->extras(['action' => 'delete']);
+    $r->get('delete', '/delete', Web\Applicants\Delete\Controller::class);
     $r->get('apply',  '/apply' , 'Application\Controllers\ApplicantsController')->extras(['action' => 'apply' ])->allows(['POST']);;
     $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
