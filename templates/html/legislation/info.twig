@@ -5,7 +5,8 @@
  * @param Committee   committee
  * @param array       actionLinks
  *
- * @param array       legislationActions
+ * @param array  legislationActions
+ * @param array  legislationActionLinks
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig"      as forms      %}
@@ -69,6 +70,9 @@
         {% endif %}
     {% endif %}
 
+    {% if legislationActionLinks %}
+    {{ include('html/partials/actionLinks.twig', {actionLinks:legislationActionLinks}, with_context=false) }}
+    {% endif %}
     <table>
     {% for type, actions in legislationActions %}
         {% for a in actions %}

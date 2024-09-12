@@ -74,15 +74,13 @@ $map->attach('departments.', '/departments', function ($r) {
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LegislationActionsController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\LegislationActions\Update\Controller::class)->allows(['POST']);
 });
-
 
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
     $r->get('update', '/update', Web\Legislation\Action\Update\Controller::class)->allows(['POST']);
     $r->get('index',  '',        Web\Legislation\Action\Info\Controller::class);
 });
-
 
 $map->attach('legislation.', '/legislation', function ($r) {
     $r->get('view',   '/view'  , Web\Legislation\Info\Controller::class);
