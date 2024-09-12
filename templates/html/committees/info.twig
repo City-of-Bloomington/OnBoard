@@ -12,17 +12,18 @@
 {% block content %}
 <section class="container my-3">
     <header class="mb-3">
-        <h1>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
+            <h1>{{ committee.getName() }}
+                {% set vacancies = committee.getVacancyCount() %}
+                {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+            </h1>
         {{ include('html/committees/partials/header.twig') }}
     </header>
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-
-    <h2>{{ _('committee_details') }}</h2>
+    <div class="d-flex">
+        <h2 class="me-3">{{ _('committee_info') }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </div>
     <dl class="row">
         {% if committee.getType()          %}<dt class="col-sm-3">{{ _('type'         ) }}</dt><dd class="col-sm-9">{{ committee.getType()               }}</dd>{% endif %}
         {% if committee.getYearFormed()    %}<dt class="col-sm-3">{{ _('yearFormed'   ) }}</dt><dd class="col-sm-9">{{ committee.getYearFormed()         }}</dd>{% endif %}
@@ -44,29 +45,46 @@
     {{ committee.getDescription()|markdown_to_html }}
 
     {% if committee.getMeetingSchedule() %}
-    <h2>{{ _('meetingSchedule') }}</h2>
+    <h3>{{ _('meetingSchedule') }}</h3>
     {{ committee.getMeetingSchedule()|markdown_to_html }}
     {% endif %}
 
-    <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
-    {% if isAllowed('liaisons', 'update') %}
-    {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
-    {% endif %}
-
+    <div class="d-flex">
+        <h3 class="me-3">{{ _(['liaison', 'liaisons', 10]) }}</h3>
+        {% if isAllowed('liaisons', 'update') %}
+        {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
+        {% endif %}
+    </div>
     {% if liaisons %}
-    <table class="table">
-    {% for row in liaisons %}
-    <tr><td>{{ _(row.type) }}</td>
-        <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
-        {% if isAllowed('people', 'viewContactInfo') %}
-        <td>{{ row.email }}</td>
-        <td>{{ row.phone }}</td>
-        {% endif %}
-
-        {% if row.actionLinks %}
-        <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
-        {% endif %}
-    {% endfor %}
+    <table class="table table-sm">
+      <thead>
+        <tr>
+            <th scope="col">{{ _('type') }}</th>
+            <th scope="col">{{ _('name') }}</th>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <th scope="col">{{ _(['email', 'emails', 1]) }}</th>
+            <th scope="col">{{ _('phone') }}</th>
+            {% endif %}
+            {% if isAllowed('liaisons', 'update') %}
+            <th scope="col">{{ _('liaison_edit') }}</th>
+            {% endif %}
+        </tr>
+      </thead>
+       <tbody>
+        {% for row in liaisons %}
+        <tr>
+            <th scope="row">{{ _(row.type) }}</th>
+            <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
+            <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>
+            {% endif %}
+            {% if row.actionLinks %}
+            <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
     </table>
     {% endif %}
 </section>

@@ -7,17 +7,26 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container">
-    <header>
-        <h2>{{ committee.getName() }}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
+        </h1>
         {{ include('html/committees/partials/header.twig') }}
     </header>
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
+    <div class="d-flex">
+        <h2 class="me-3">{{ _(['current_member', 'current_members', 10]) }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+        {% if isAllowed('seats', 'update') %}
+        <a class="btn btn-sm btn-primary align-self-center me-3" href="{{ uri('seats.update') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
+        {% endif %}
+        {% if committee.hasVacancy() %}
+        <a class="btn btn-sm btn-primary align-self-center" href="{{ uri('applicants.apply') }}?committee_id={{ committee.getId() }}">{{ _('apply') }}</a>
+        {% endif %}
+    </div>
 
     <table class="table">
         <thead>
@@ -62,13 +71,5 @@
         {% endfor %}
         </tbody>
     </table>
-
-    {% if isAllowed('seats', 'update') %}
-    <a class="btn btn-primary" href="{{ uri('seats.update') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
-    {% endif %}
-    {% if committee.hasVacancy() %}
-    <a class="btn btn-primary" href="{{ uri('applicants.apply') }}?committee_id={{ committee.getId() }}">{{ _('apply') }}</a>
-    {% endif %}
 </section>
-
 {% endblock %}

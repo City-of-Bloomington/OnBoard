@@ -1,11 +1,11 @@
 {% macro actionLink(url, label, class) %}
 {% set classmap={
  'add':    'btn-success',
- 'edit':   'btn-primary',
+ 'edit':   'btn-secondary',
  'delete': 'btn-danger',
  'cancel': 'btn-danger'
 } %}
-<a href="{{ url }}" class="btn {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center">{{ label }}</a>
+<a href="{{ url }}" class="btn btn-sm {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center me-3">{{ label }}</a>
 {% endmacro %}
 
 {% macro button(type, label, class) %}
