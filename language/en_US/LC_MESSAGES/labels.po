@@ -209,9 +209,6 @@ msgstr "Close Committee"
 msgid "committee_info"
 msgstr "Information"
 
-msgid "committee_details"
-msgstr "Details"
-
 msgid "committees_current"
 msgstr "Current Committees"
 
