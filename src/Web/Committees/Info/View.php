@@ -71,7 +71,7 @@ class View extends \Web\View
             $links[] = [
                 'url'    => parent::generateUri('committees.end').$param,
                 'label'  => parent::_('committee_end'),
-                'class'  => 'end'
+                'class'  => 'delete'
             ];
         }
         return $links;
