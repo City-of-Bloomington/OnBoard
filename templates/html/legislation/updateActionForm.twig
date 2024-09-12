@@ -1,0 +1,26 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param LegislationAction action
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+<section>
+    <header><h2>{{ action.getLegislation().getTitle() }}</h2></header>
+    <form method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>{{ action.getId() ? _('legislationAction_edit') : _('legislationAction_add') }}</legend>
+            <input name="legislationAction_id" type="hidden" value="{{ action.getId()             }}" />
+            <input name="legislation_id"       type="hidden" value="{{ action.getLegislation_id() }}" />
+            <input name="type_id"              type="hidden" value="{{ action.getType_id()        }}" />
+
+            {{ forms.field_date('actionDate', 'actionDate', _('date'), action.getActionDate() ? action.getActionDate('Y-m-d') : 'now'|date('Y-m-d'), true) }}
+            {{ forms.field_text('vote',       'vote',       _('vote'), action.getVote() ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('legislation.view') ~ '?legislation_id=' ~ action.getLegislation_id(), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

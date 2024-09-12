@@ -23,14 +23,14 @@ $map->attach('alternates.', '/alternates', function ($r) {
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
-    $r->get('download', '/download', 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'download']);
-    $r->get('delete',   '/delete'  , 'Application\Controllers\ApplicantFilesController')->extras(['action' => 'delete'  ]);
+    $r->get('download', '/download', Web\Applicants\Files\Download\Controller::class);
+    $r->get('delete',   '/delete'  , Web\Applicants\Files\Delete\Controller::class);
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {
     $r->get('view',   '/view'  , Web\Applicants\Info\Controller::class);
-    $r->get('update', '/update', 'Application\Controllers\ApplicantsController')->extras(['action' => 'update'])->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\ApplicantsController')->extras(['action' => 'delete']);
+    $r->get('update', '/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/delete', Web\Applicants\Delete\Controller::class);
     $r->get('apply',  '/apply' , 'Application\Controllers\ApplicantsController')->extras(['action' => 'apply' ])->allows(['POST']);;
     $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
@@ -74,15 +74,13 @@ $map->attach('departments.', '/departments', function ($r) {
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\LegislationActionsController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\LegislationActions\Update\Controller::class)->allows(['POST']);
 });
-
 
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
     $r->get('update', '/update', Web\Legislation\Action\Update\Controller::class)->allows(['POST']);
     $r->get('index',  '',        Web\Legislation\Action\Info\Controller::class);
 });
-
 
 $map->attach('legislation.', '/legislation', function ($r) {
     $r->get('view',   '/view'  , Web\Legislation\Info\Controller::class);
@@ -94,8 +92,8 @@ $map->attach('legislation.', '/legislation', function ($r) {
 
 $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
     $r->get('update',   '/update'  , Web\LegislationFiles\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/delete'  , 'Application\Controllers\LegislationFilesController')->extras(['action' => 'delete'  ]);
-    $r->get('download', '/download', 'Application\Controllers\LegislationFilesController')->extras(['action' => 'download']);
+    $r->get('delete',   '/delete'  , Web\LegislationFiles\Delete\Controller::class);
+    $r->get('download', '/download', Web\LegislationFiles\Download\Controller::class);
 });
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {

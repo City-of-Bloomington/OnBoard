@@ -5,17 +5,10 @@
  * @param string lastname
  * @param string email
  #}
-<div class="mb-3">
-     <label  for="firstname" class="form-label">{{ _('firstname') }}</label>
-     <input name="firstname" id="firstname" value="{{ firstname }}" class="form-control" />
-</div>
-<div class="mb-3">
-     <label  for="lastname" class="form-label">{{ _('lastname') }}</label>
-     <input name="lastname" id="lastname" value="{{ lastname }}" class="form-control" />
-</div>
+{% import  "html/macros/forms.twig" as forms %}
+{{ forms.field_text('firstname', 'firstname', _('firstname'), firstname ) }}
+{{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname  ) }}
+
 {% if isAllowed('people', 'viewContactInfo') %}
-<div class="mb-3">
-     <label  for="email" class="form-label">{{ _('email') }}</label>
-     <input name="email" id="email" value="{{ email }}" class="form-control" />
-</div>
+{{ forms.field_email('email',    'email',     _('email'    ), email ) }}
 {% endif %}

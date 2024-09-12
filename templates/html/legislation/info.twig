@@ -5,7 +5,8 @@
  * @param Committee   committee
  * @param array       actionLinks
  *
- * @param array       legislationActions
+ * @param array  legislationActions
+ * @param array  legislationActionLinks
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig"      as forms      %}
@@ -53,7 +54,7 @@
     {% set files = legislation.getFiles() %}
     {% if  files|length>0 %}
     <ul>{% for f in files %}
-        <li><a href="{{ uri('legislationFiles.download') ~ '?legislation_id=' ~ legislation.getId() }}">{{ f.getFilename() }}</a>
+        <li><a href="{{ uri('legislationFiles.download') ~ '?legislationFile_id=' ~ f.getId() }}">{{ f.getFilename() }}</a>
             {% if isAllowed('legislationFiles', 'update') %}
             {{ forms.actionLink(uri('legislationFiles.update') ~ '?legislationFile_id=' ~ f.getId(), _('legislationFile_edit'), 'edit' ) }}
             {% endif %}
@@ -69,6 +70,9 @@
         {% endif %}
     {% endif %}
 
+    {% if legislationActionLinks %}
+    {{ include('html/partials/actionLinks.twig', {actionLinks:legislationActionLinks}, with_context=false) }}
+    {% endif %}
     <table>
     {% for type, actions in legislationActions %}
         {% for a in actions %}

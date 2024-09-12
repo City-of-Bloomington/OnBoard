@@ -21,6 +21,7 @@
  * @param bool   callback   Whether this form is being rendered as a callback modal
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="container">
     <header><h2>{{ person_id ? _('person_edit') : _('person_add') }}</h2></header>
@@ -30,22 +31,11 @@
             {% if person_id %}
             <input name="person_id" type="hidden" value="{{ person_id }}" />
             {% endif %}
-            <div>
-                <label for="firstname" class="form-label">{{ _('firstname') }}</label>
-                <input name="firstname" id="firstname" value="{{ firstname }}" class="form-control" />
-            </div>
-            <div>
-                <label for="lastname" class="form-label">{{ _('lastname') }}</label>
-                <input name="lastname" id="lastname" value="{{ lastname }}" class="form-control" />
-            </div>
-            <div>
-                <label for="email" class="form-label">{{ _('email') }}</label>
-                <input name="email" id="email" value="{{ email }}" type="email" class="form-control" />
-            </div>
-            <div>
-                <label for="phone" class="form-label">{{ _('phone') }}</label>
-                <input name="phone" id="phone" value="{{ phone }}" type="tel" class="form-control" />
-            </div>
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
+            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail() ) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
+
             <div>
                 <label for="website" class="form-label">{{ _('website') }}</label>
                 <input name="website" id="website" value="{{ website }}" type="url" class="form-control" />

@@ -53,6 +53,7 @@ $ACL->allow('Appointer', 'people',         'viewContactInfo');
 
 $ACL->allow('Staff');
 $ACL->deny ('Staff', 'users', ['update', 'delete']);
+$ACL->deny ('Staff', 'applicantFiles', 'delete');
 
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',

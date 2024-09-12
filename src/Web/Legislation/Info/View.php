@@ -18,11 +18,12 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'legislation'        => $legislation,
-            'committee'          => $legislation->getCommittee(),
-            'actionLinks'        => $this->actionLinks($legislation),
-            'childLinks'         => $this->childLinks($legislation),
-            'legislationActions' => $this->action_data($legislation)
+            'legislation'            => $legislation,
+            'committee'              => $legislation->getCommittee(),
+            'actionLinks'            => $this->actionLinks($legislation),
+            'childLinks'             => $this->childLinks($legislation),
+            'legislationActions'     => $this->action_data($legislation),
+            'legislationActionLinks' => $this->legislationActionLinks($legislation)
         ];
     }
 
@@ -74,7 +75,26 @@ class View extends \Web\View
         return $links;
     }
 
-    private function action_data($legislation): array
+    private function legislationActionLinks(Legislation $l): array
+    {
+        $links = [];
+        if (parent::isAllowed('legislationActions', 'update')) {
+            foreach (Legislation::actionTypes() as $t) {
+                $params = http_build_query([
+                    'legislation_id' => $l->getId(),
+                    'type_id'        => $t->getId()
+                ], '', ';');
+                $links[] = [
+                    'url'   => parent::generateUri('legislationActions.update')."?$params",
+                    'label' => sprintf($this->_('add_something', 'messages'), $t->getName()),
+                    'class' => 'add'
+                ];
+            }
+        }
+        return $links;
+    }
+
+    private function action_data(Legislation $legislation): array
     {
         $data    = [];
         $canEdit = parent::isAllowed('legislationActions', 'update');

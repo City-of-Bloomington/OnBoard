@@ -5,6 +5,7 @@
  * @param array     actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
 <section>
     <header><h2>{{ applicant.getFirstname() }} {{ applicant.getLastname() }}</h2></header>
@@ -66,6 +67,9 @@
         <dt>{{ _('applicantFile') }}</dt>
         <dd>{% for f in applicant.getFiles() %}
             <a href="{{ uri('applicantFiles.download') ~ '?applicantFile_id=' ~ f.getId() }}">{{ f.getFilename() }}</a>
+            {% if isAllowed('applicantFiles', 'delete') %}
+            {{ forms.actionLink(uri('applicantFiles.delete') ~ '?applicantFile_id=' ~ f.getId(), _('delete'), 'delete') }}
+            {% endif %}
             {% endfor %}
         </dd>
         {% endif %}

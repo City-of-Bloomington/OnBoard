@@ -1,0 +1,29 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Applicant applicant
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ applicant.getId() ? _('applicant_edit') : _('applicant_add') }}</h2>
+    </header>
+
+    <form method="post">
+        <fieldset><legend>{{ _('info_person') }}</legend>
+            <input name="applicant_id" type="hidden" value="{{ applicant.getId() }}" />
+
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
+            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail() ) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('applicants.view') ~ '?applicant_id=' ~ applicant.getId(), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}
