@@ -1,0 +1,25 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Status status
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h1>{{ status.getId() ? _('legislationStatus_edit') : _('legislationStatus_add') }}</h1></header>
+
+    <form method="post">
+        <fieldset>
+            <input name="id" type="hidden" value="{{ status.getId() }}" />
+
+            {{ forms.field_text('name', 'name', _('name'), status.getName(), true ) }}
+            {{ forms.field_bool('active', 'active', _('active'), status.getActive() ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('legislationStatuses.index'), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}
