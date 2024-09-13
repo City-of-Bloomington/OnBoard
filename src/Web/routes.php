@@ -98,7 +98,7 @@ $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
     $r->get('update', '/update', Web\Legislation\Statuses\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', 'Application\Controllers\LegislationStatusesController')->extras(['action' => 'delete']);
+    $r->get('delete', '/delete', Web\Legislation\Statuses\Delete\Controller::class);
     $r->get('index',  ''       , Web\Legislation\Statuses\List\Controller::class);
 });
 
