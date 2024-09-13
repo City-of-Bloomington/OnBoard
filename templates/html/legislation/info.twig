@@ -37,7 +37,7 @@
     {% endif %}
 
 
-    <div>{{ legislation.getSynopsis()|markdown_to_html }}</div>
+    <div>{{ legislation.getSynopsis() ? legislation.getSynopsis()|markdown_to_html : '' }}</div>
     {% if legislation.getTags() %}
     <ul>{% for t in legislation.getTags() -%}
         <li>{{ t }}</li>

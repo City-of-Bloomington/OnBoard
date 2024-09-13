@@ -7,7 +7,7 @@
 {% for l in legislation %}
 <article>
     <header>
-        <h2><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ l.getId() }}">{{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus().getName() }}</a>
+        <h2><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ l.getId() }}">{{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus() ? l.getStatus().getName() : '' }}</a>
             {{ forms.actionLink(uri('legislationFiles.download') ~ '?legislation_id=' ~ l.getId(), _('download'), 'download') }}
         </h2>
         <h3>{{ l.getTitle() }}</h3>

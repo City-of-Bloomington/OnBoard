@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\LegislationActions\Update;
+namespace Web\Legislation\Actions\Update;
 
 use Application\Models\Legislation\Action;
 
@@ -22,7 +22,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render('html/legislation/updateActionForm.twig', $this->vars);
+        return $this->twig->render('html/legislation/actions/updateForm.twig', $this->vars);
     }
 
     private static function outcomes(): array

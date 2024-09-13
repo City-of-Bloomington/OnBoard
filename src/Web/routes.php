@@ -74,7 +74,7 @@ $map->attach('departments.', '/departments', function ($r) {
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
-    $r->get('update', '/update', Web\LegislationActions\Update\Controller::class)->allows(['POST']);
+    $r->get('update', '/update', Web\Legislation\Actions\Update\Controller::class)->allows(['POST']);
 });
 
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
