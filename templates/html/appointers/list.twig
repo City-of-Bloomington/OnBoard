@@ -1,40 +1,27 @@
 {#
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array types
- * @param array actionLinks (optional)
+ * @param array appointers
+ * @param array actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
-
 {% block content %}
 <section>
     <header>
-        <h1>Appointers</h1>
-        <div class="tools">
-            <a href="{{ uri('appointers.add') }}" class="btn btn-primary">Add Appointer</a>
-        </div>
+        <h1>{{ _(['appointer', 'appointers', 10]) }}</h1>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
     </header>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for appointer in appointers %}
-            <tr>
-                <td>{{ appointer.getName() }}</td>
-                <td>
-                    <a href="{{ uri('appointers.update') }}?id={{ appointer.getId() }}" class="btn btn-sm btn-secondary">Edit</a>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="2">No appointers found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <table class="table">
+        {% for a in appointers %}
+        <tr><td>{{ a.name }}</td>
+            <td>{% if a.actionLinks %}
+                {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
     </table>
 </section>
 {% endblock %}
