@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\LegislationFiles\Update;
+namespace Web\Legislation\Files\Update;
 
 use Application\Models\Legislation\LegislationFile;
 use Web\File;
