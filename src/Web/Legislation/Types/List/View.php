@@ -12,6 +12,44 @@ class View extends \Web\View
     {
         parent::__construct();
 
+
+        $this->vars = [
+            'types'       => $this->types_data($types),
+            'actionLinks' => $this->actionLinks()
+        ];
+    }
+
+    public function render(): string
+    {
+        return $this->twig->render($this->outputFormat.'/legislation/types/list.twig', $this->vars);
+    }
+
+    private function types_data($types): array
+    {
+        $out = [];
+        $canEdit = parent::isAllowed('legislationTypes', 'update');
+        foreach ($types as $t) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('legislationTypes.update').'?id='.$t->getId(),
+                    'label' => parent::_('legislationType_edit'),
+                    'class' => 'edit'
+                ];
+            }
+
+            $out[] = [
+                'name'    => $t->getName(),
+                'subtype' => $t->isSubtype(),
+                'actionLinks' => $links
+            ];
+        }
+
+        return $out;
+    }
+
+    private function actionLinks(): array
+    {
         $links = [];
         if (parent::isAllowed('legislationTypes', 'update')) {
             $links[] = [
@@ -20,15 +58,6 @@ class View extends \Web\View
                 'class' => 'add'
             ];
         }
-
-        $this->vars = [
-            'types'       => $types,
-            'actionLinks' => $links
-        ];
-    }
-
-    public function render(): string
-    {
-        return $this->twig->render($this->outputFormat.'/legislation/types/list.twig', $this->vars);
+        return $links;
     }
 }

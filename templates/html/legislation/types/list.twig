@@ -14,12 +14,12 @@
 
     <table class="table">
     {% for t in types %}
-    <tr><td><a href="{{ uri('legislationTypes.update') }}?id={{ t.getId() }}" class="btn btn-secondary">
-            {{ _('edit') }}
-            </a>
+    <tr><td>{% if t.actionLinks %}
+            {{ include('html/partials/actionLinks.twig', {actionLinks:t.actionLinks}, with_context=false) }}
+            {% endif %}
         </td>
-        <td>{{ t.getName() }}</td>
-        <td>{% if t.isSubtype() %}{{ _('subtype') }}{% endif %}</td>
+        <td>{{ t.name }}</td>
+        <td>{{ t.subtype ? _('subtype') : '' }}</td>
     </tr>
     {% endfor %}
     </table>
