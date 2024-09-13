@@ -78,8 +78,8 @@ $map->attach('legislationActions.', '/legislationActions', function ($r) {
 });
 
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
-    $r->get('update', '/update', Web\Legislation\Action\Update\Controller::class)->allows(['POST']);
-    $r->get('index',  '',        Web\Legislation\Action\Info\Controller::class);
+    $r->get('update', '/update', Web\Legislation\ActionTypes\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  '',        Web\Legislation\ActionTypes\List\Controller::class);
 });
 
 $map->attach('legislation.', '/legislation', function ($r) {

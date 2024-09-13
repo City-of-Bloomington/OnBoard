@@ -4,10 +4,9 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare(strict_types=1);
-namespace Web\Legislation\Action\Info;
+namespace Web\Legislation\ActionTypes\List;
 
 use Application\Models\Legislation\ActionTypesTable;
-use Web\Url;
 
 class Controller extends \Web\Controller
 {
