@@ -1,0 +1,37 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array statuses
+ * @param array actionLinks
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ _(['legislationStatus', 'legislationStatuses', 10]) }}</h1></header>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <table>
+    <thead>
+        <tr><th>{{ _('status') }}</th>
+            <th>{{ _('active') }}</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in statuses %}
+        <tr><td>{{ s.name }}</td>
+            <td>{{ s.active ? 1 : '' }}</td>
+            <td>{% if s.actionLinks %}
+                {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+</section>
+
+{% endblock %}

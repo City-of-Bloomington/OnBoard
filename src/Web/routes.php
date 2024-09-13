@@ -99,7 +99,7 @@ $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
     $r->get('update', '/update', 'Application\Controllers\LegislationStatusesController')->extras(['action' => 'update'])->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\LegislationStatusesController')->extras(['action' => 'delete']);
-    $r->get('index',  ''       , 'Application\Controllers\LegislationStatusesController')->extras(['action' => 'index' ]);
+    $r->get('index',  ''       , Web\Legislation\Statuses\List\Controller::class);
 });
 
 $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
