@@ -1,21 +1,23 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Department department
+#}
 {% extends "html/layouts/default.twig" %}
-
+{% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
-<section class="container mt-4">
+<section>
     <header>
-        <h1 class="mb-4">{{ _('department_edit') }}</h1>
+        <h1>{{ department.getId() ? _('department_edit') : _('department_add') }}</h1>
     </header>
-    <form method="post" action="{{ uri('departments.update') }}?department_id={{ department.id }}">
+    <form method="post">
         <fieldset>
-            <legend class="h5 mb-3">{{ department.name }}</legend>
-            <div class="form-group mb-3">
-                <label for="name" class="form-label">{{ _('name') }}</label>
-                <input name="name" id="name" value="{{ department.name }}" required="required" class="form-control" />
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary">{{ _('save') }}</button>
-                <a href="{{ uri('departments.index') }}" class="btn btn-secondary">{{ _('cancel') }}</a>
-            </div>
+            <input name="department_id" type="hidden" value="{{ department.getId() }}" />
+
+            {{ forms.field_text('name', 'name', _('name'), department.getName(), true ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('departments.index'), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

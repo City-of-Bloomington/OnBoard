@@ -67,7 +67,6 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 
 $map->attach('departments.', '/departments', function ($r) {
     $r->get('index',  '',        Web\Departments\List\Controller::class);
-    $r->get('add',    '/add',    Web\Departments\Add\Controller::class)->allows(['POST']);
     $r->get('info',   '/info',   Web\Departments\Info\Controller::class);
     $r->get('update', '/update', Web\Departments\Update\Controller::class)->allows(['POST']);
 });

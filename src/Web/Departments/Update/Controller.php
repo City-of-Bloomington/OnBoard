@@ -8,34 +8,27 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $department_id = $_GET['department_id'] ?? null;
-
-        if (!$department_id) {
-            $_SESSION['errorMessages'][] = 'No department specified';
-            header('Location: ' . \Web\View::generateUrl('departments.index'));
-            exit();
+        if (!empty($_REQUEST['department_id'])) {
+            try { $department = new Department($_REQUEST['department_id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        }
+        else {
+            $department = new Department();
         }
 
-        try {
-            $department = new Department($department_id);
-        } catch (\Exception $e) {
-            $_SESSION['errorMessages'][] = $e->getMessage();
-            header('Location: ' . \Web\View::generateUrl('departments.index'));
-            exit();
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
-            try {
-                $department->setName($_POST['name']);
-                $department->save();
-                $_SESSION['successMessages'][] = 'Department successfully updated';
-                header('Location: ' . \Web\View::generateUrl('departments.index'));
-                exit();
-            } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
+        if (isset($department)) {
+            if (isset($_POST['name'])) {
+                try {
+                    $department->handleUpdate($_POST);
+                    $department->save();
+                    $return_url = \Web\View::generateUrl('departments.index');
+                    header("Location: $return_url");
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
+            return new View($department);
         }
-
-        return new View($department);
+        return new \Web\Views\NotFoundView();
     }
 }
