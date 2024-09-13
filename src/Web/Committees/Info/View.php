@@ -96,7 +96,7 @@ class View extends \Web\View
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.delete').'?committeeStatute_id='.$s->getId(),
+                    'url'   => parent::generateUri('committeeStatutes.delete').'?id='.$s->getId(),
                     'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];
