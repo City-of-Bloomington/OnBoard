@@ -1,0 +1,14 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Applicant applicant
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _('thanks') }}</h2>
+    </header>
+    <p>{{ _('application_received', 'messages') }}</p>
+</section>
+{% endblock %}

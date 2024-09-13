@@ -1,0 +1,10 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string person        Full name of the applicant
+ * @param string committee     Name of the committee
+ * @param int    committee_id
+ #}
+{{ _('board_application_message', 'messages')|format(person, committee) }}
+
+{{ url('committees.applications') ~ '?committee_id=' ~ committee_id }}

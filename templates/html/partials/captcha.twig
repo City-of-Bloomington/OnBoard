@@ -1,0 +1,8 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string RECAPTCHA_SITE_KEY
+ #}
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
+<div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}" data-callback="validateCaptcha">
+</div>

@@ -1,0 +1,94 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Applicant applicant
+ * @param Committee committee (optional)
+ * @param string    help
+ * @param array     committee_options
+ * @param array     committees_chosen   Array of IDs for chosen committees
+ * @param array     citylimits_options
+ * @param array     referral_options
+ * @param string accept     Comma separated mime_types that are accepted
+ * @param int    maxBytes   Max upload size in bytes
+ * @param string maxSize    Max upload size, human readable
+ * @param string RECAPTCHA_SITE_KEY
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header>
+        <h2>{% if committee %}
+            {{ _('applyToCommittee', 'messages')|format(committee.getName()) }}
+            {% else %}
+            {{ _('apply') }}
+            {% endif %}
+        </h2>
+    </header>
+    <div>
+    {{ help|markdown_to_html }}
+    </div>
+
+    <form method="post" id="applyForm" enctype="multipart/form-data">
+        <fieldset><legend>{{ _('info_person') }}</legend>
+            {% if committee %}
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+            <input name="committees[]" type="hidden" value="{{ committee.getId() }}" />
+            {% endif %}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
+            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail(),     true) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
+
+            {{ forms.field_text('address', 'address', _('address'), applicant.getAddress() ) }}
+            {{ forms.field_text('city',    'city',    _('city'   ), applicant.getCity() ) }}
+            {{ forms.field_number('zip',   'zip',     _('zip'),     applicant.getZip(), false, {max:99999, placeholder:'XXXXX'} ) }}
+        </fieldset>
+
+        {% if not committee %}
+        <fieldset>
+            <legend>{{ _(['committee', 'committees', 10]) }}</legend>
+            {% for c in committee_options %}
+            <label>
+                <input name="committees[{{ c.value }}]" type="checkbox" value="{{ c.value }}"
+                    {{- c.value in committees_chosen ? 'checked="true"' : ''}} />
+                {{ c.label }}
+            </label>
+            {% endfor %}
+        </fieldset>
+        {% endif %}
+
+
+
+        <fieldset>
+            {{ forms.field_select('citylimits',       'citylimits',     _('citylimits'),     applicant.getCitylimits(), citylimits_options) }}
+            {{ forms.field_text(  'occupation',       'occupation',     _('occupation'),     applicant.getOccupation()  ) }}
+            {{ forms.field_select('referredFrom',     'referredFrom',   _('referredFrom'),   applicant.getReferredFrom(), referral_options ) }}
+            {{ forms.field_text('referredOther',      'referredOther',  _('referredOther'),  applicant.getReferredOther()  ) }}
+            {{ forms.field_textarea('interest',       'interest',       _('interest'),       applicant.getInterest() ) }}
+            {{ forms.field_textarea('qualifications', 'qualifications', _('qualifications'), applicant.getQualifications()  ) }}
+        </fieldset>
+
+
+
+        <fieldset><legend>{{ _('applicantFile') }}</legend>
+            <div class="mb-3">
+                <label for="applicantFile">{{ _('applicantFile') }}</label>
+                <input id ="applicantFile" name="applicantFile" type="file" aria-describedby="applicantFile-help" />
+                <div id="applicantFile-help">
+                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
+                    <div>{{ maxSize }}</div>
+                    <div>{{ accept  }}</div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            {{ include('html/partials/captcha.twig') }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(BASE_URI, _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+{% endblock %}
