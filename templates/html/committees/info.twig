@@ -3,7 +3,9 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     liaisons
- * @param array     actionLinks (optional)
+ * @param array     statutes
+ * @param array     statuteLinks
+ * @param array     actionLinks
  *
  * @see LiasonTable::$dataFields
  #}
@@ -48,6 +50,20 @@
     <h3>{{ _('meetingSchedule') }}</h3>
     {{ committee.getMeetingSchedule()|markdown_to_html }}
     {% endif %}
+
+    <h3>{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
+    {% if statuteLinks %}
+    {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
+    {% endif %}
+    {% for s in statutes %}
+    <article>
+        <header>
+            <h4><a href="{{ s.url }}">{{ s.citation }}</a></h4>
+            {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
+        </header>
+        <a href="{{ s.url }}">{{ s.url }}</a>
+    </article>
+    {% endfor %}
 
     <div class="d-flex">
         <h3 class="me-3">{{ _(['liaison', 'liaisons', 10]) }}</h3>

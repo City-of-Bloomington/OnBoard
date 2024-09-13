@@ -62,7 +62,7 @@ $map->attach('committees.', '/committees', function ($r) {
 });
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
-    $r->get('update', '/update', 'Application\Controllers\CommitteeStatutesController')->extras(['action' => 'update'])->allows(['POST']);
+    $r->get('update', '/update', Web\Committees\Statutes\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/delete', 'Application\Controllers\CommitteeStatutesController')->extras(['action' => 'delete']);
 });
 

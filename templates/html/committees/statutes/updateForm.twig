@@ -1,0 +1,35 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param CommitteeStatute statute
+ * @param Committee        committee
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  'html/macros/forms.twig' as forms %}
+{% block content %}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h1>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <form method="post">
+        <fieldset>
+            <legend>{{ statute.getId() ? _('committeeStatute_edit') : _('committeeStatute_add') }}</legend>
+            <input name="committeeStatute_id" type="hidden" value="{{ statute.getId() }}" />
+            <input name="committee_id"        type="hidden" value="{{ statute.getCommittee_id() }}" />
+
+            {{ forms.field_text('citation', 'citation', _('citation'), statute.getCitation() ) }}
+            {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.info') ~ '?committee_id=' ~ statute.getCommittee_id(), _('cancel'), 'cancel') }}
+        </fieldset>
+    </form>
+</section>
+
+
+{% endblock %}
