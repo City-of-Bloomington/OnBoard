@@ -12,33 +12,26 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        $appointer_id = $_REQUEST['id'] ?? null;
+        $return_url = View::generateUrl('appointers.index');
 
-        if (!$appointer_id) {
-            $_SESSION['errorMessages'][] = 'No appointer specified';
-            header('Location: ' . \Web\View::generateUrl('appointers.index'));
-            exit();
+        if (!empty($_REQUEST['appointer_id'])) {
+            try { $appointer = new Appointer($_REQUEST['appointer_id']); }
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = $e->getMessage();
+                header("Location: $return_url");
+                exit();
+            }
         }
+        else { $appointer = new Appointer(); }
 
-        try {
-            $appointer = new Appointer($appointer_id);
-        } catch (\Exception $e) {
-            $_SESSION['errorMessages'][] = $e->getMessage();
-            header('Location: ' . \Web\View::generateUrl('appointers.index'));
-            exit();
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['name'])) {
+        if (isset($_POST['name'])) {
             $appointer->setName($_POST['name']);
             try {
                 $appointer->save();
-                $_SESSION['successMessages'][] = 'Appointer successfully updated';
-                $return_url = \Web\View::generateUrl('appointers.index');
                 header("Location: $return_url");
                 exit();
-            } catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
             }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         return new View($appointer);

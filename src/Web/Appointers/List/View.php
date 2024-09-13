@@ -31,7 +31,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('appointers.update').'?id='.$a->getId(),
+                    'url'   => parent::generateUri('appointers.update').'?appointer_id='.$a->getId(),
                     'label' => parent::_('appointer_edit'),
                     'class' => 'edit'
                 ];
