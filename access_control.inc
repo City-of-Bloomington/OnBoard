@@ -58,7 +58,7 @@ $ACL->deny ('Staff', 'users', ['update', 'delete']);
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',
             ['meetingFiles', 'legislation', 'legislationFiles', 'legislationActions', 'reports'],
-            ['update', 'delete'],
+            ['update'],
             $requiresDepartmentAssociation);
 
 $ACL->allow('Liaison', 'committees', 'update', $requiresCommitteeAssociation);
