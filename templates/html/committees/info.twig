@@ -44,26 +44,30 @@
         {% endif %}
     </dl>
 
+    {% if committee.getDescription() %}
+    <h3>{{ _('committee_desc') }}</h3>
     {{ committee.getDescription()|markdown_to_html }}
+    {% endif %}
 
     {% if committee.getMeetingSchedule() %}
     <h3>{{ _('meetingSchedule') }}</h3>
     {{ committee.getMeetingSchedule()|markdown_to_html }}
     {% endif %}
 
-    <h3>{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
-    {% if statuteLinks %}
-    {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
-    {% endif %}
+    <div class="d-flex">
+        <h3 class="me-3">{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
+        {% if statuteLinks %}
+        {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
+        {% endif %}
+    </div>
+    <ul class="list-group list-group-flush row">
     {% for s in statutes %}
-    <article>
-        <header>
-            <h4><a href="{{ s.url }}">{{ s.citation }}</a></h4>
-            {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
-        </header>
-        <a href="{{ s.url }}">{{ s.url }}</a>
-    </article>
+            <li class="d-flex list-group-item">
+                <h4 class="me-3"><a href="{{ s.url }}">{{ s.citation }}</a></h4>
+                {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
+            </li>
     {% endfor %}
+    </ul>
 
     <div class="d-flex">
         <h3 class="me-3">{{ _(['liaison', 'liaisons', 10]) }}</h3>
