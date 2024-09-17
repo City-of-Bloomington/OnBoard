@@ -79,17 +79,22 @@ $SOLR = [
     ]
 ];
 
-/**
- * CAS authentication http://www.jasig.org/cas
- *
- * https://wiki.jasig.org/display/CASC/phpCAS
- *
- * phpCAS is a PHP library for handling the calls to the CAS service
- * It is the official library, part of the Jasig CAS project
- */
-$CAS = [
-    'server' => 'cas.somewhere.org',
-    'uri'    => 'cas'
+$AUTHENTICATION = [
+    'oidc' => [
+        'server'         => 'https://ad.example.org/adfs',
+        'client_id'      => '',
+        'client_secret'  => '',
+        'claims' => [
+            // OnBoard field => OIDC Claim
+            'username'    => 'adfs1upn',
+            'displayname' => 'commonname',
+            'firstname'   => 'given_name',
+            'lastname'    => 'family_name',
+            'email'       => 'upn',
+            'groups'      => 'group',
+            'groupmap'    => [ ]
+        ],
+    ]
 ];
 
 define('DATE_FORMAT', 'n/j/Y');

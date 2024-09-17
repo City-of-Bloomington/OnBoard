@@ -11,7 +11,6 @@
  * @param string email
  * @param int    department_id
  * @param string role
- * @param string authenticationMethod
  *
  * Pagination
  * @param int    total
@@ -23,7 +22,6 @@
  * Metadata
  * @param array  departments
  * @param array  roles
- * @param array  authenticationMethods
 #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
@@ -47,7 +45,6 @@
 
             {{ forms.field_select('department_id', 'department_id', _('department'), department_id, departments, false, {onchange:'this.form.submit();'} )}}
             {{ forms.field_select('role', 'role', _('role'), role, roles, false, {onchange:'this.form.submit();'} )}}
-            {{ forms.field_select('authenticationMethod', 'authenticationMethod', _('authenticationMethod'), authenticationMethod, authenticationMethods, false, {onchange:'this.form.submit();'} )}}
 
             {{ forms.button('submit', _('search'), 'search') }}
             {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
@@ -59,7 +56,6 @@
         <thead>
             <tr><th>{{ _('username'            ) }}</th>
                 <th>{{ _('name'                ) }}</th>
-                <th>{{ _('authenticationMethod') }}</th>
                 <th>{{ _('role'                ) }}</th>
             </tr>
         </thead>
@@ -68,7 +64,6 @@
             {% set link=uri('people.view') ~ '?person_id=' ~ u.id %}
             <tr><td><a href="{{ link }}">{{ u.username }}</a></td>
                 <td><a href="{{ link }}">{{ u.firstname }} {{ u.lastname }}</a></td>
-                <td><a href="{{ link }}">{{ u.authenticationMethod }}</a></td>
                 <td><a href="{{ link }}">{{ u.role }}</a></td>
                 <td>{% if isAllowed('users', 'update') %}
                     {{ forms.actionLink(uri('users.update') ~ '?user_id=' ~ u.id, _('edit_account'), 'edit') }}

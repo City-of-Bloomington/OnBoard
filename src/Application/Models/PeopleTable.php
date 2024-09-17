@@ -77,7 +77,6 @@ class PeopleTable extends TableGateway
 
                 case 'role':
                 case 'department_id':
-                case 'authenticationMethod':
                     if ($v) { $select->where([$k=>$v]); }
                 break;
 

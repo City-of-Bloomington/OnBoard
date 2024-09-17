@@ -12,9 +12,8 @@ $map->get('home.index',     '/',         Web\Committees\List\Controller::class);
 $map->get('callback.index', '/callback', 'Application\Controllers\CallbackController')->extras(['action'=>'index']);
 
 $map->attach('login.', '/login', function ($r) {
-    $r->get('login',  '/login' , 'Application\Controllers\LoginController')->extras(['action' => 'login' ]);
-    $r->get('logout', '/logout', 'Application\Controllers\LoginController')->extras(['action' => 'logout']);
-    $r->get('index',  ''       , 'Application\Controllers\LoginController')->extras(['action' => 'index' ]);
+    $r->get('logout', '/logout', Web\Auth\Logout\Controller::class);
+    $r->get('index',  ''       , Web\Auth\Oidc\Controller::class);
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {

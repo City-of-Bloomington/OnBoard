@@ -9,6 +9,7 @@
         "google/apiclient": "~2.0",
         "apereo/phpcas":                   "@stable",
         "graylog2/gelf-php":               "~1",
+        "jumbojett/openid-connect-php":    "@stable",
         "laminas/laminas-db":              "@stable",
         "laminas/laminas-log":             "@stable",
         "laminas/laminas-paginator":       "@stable",

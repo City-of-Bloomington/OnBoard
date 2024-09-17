@@ -60,7 +60,6 @@ class Person extends ActiveRecord
 		else {
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
-			$this->setAuthenticationMethod('local');
 		}
 	}
 
@@ -74,10 +73,6 @@ class Person extends ActiveRecord
 		if (!$this->getFirstname() || !$this->getLastname()) {
 			throw new \Exception('missingRequiredFields');
 		}
-
-		if ($this->getUsername() && !$this->getAuthenticationMethod()) {
-			$this->setAuthenticationMethod('local');
-		}
 	}
 
 	public function save() { parent::save(); }
@@ -89,7 +84,7 @@ class Person extends ActiveRecord
 	public function deleteUserAccount()
 	{
 		$userAccountFields = array(
-			'username', 'password', 'authenticationMethod', 'role'
+			'username', 'role'
 		);
 		foreach ($userAccountFields as $f) {
 			$this->data[$f] = null;
@@ -135,24 +130,14 @@ class Person extends ActiveRecord
 	}
 
 	public function getUsername()             { return parent::get('username'); }
-	public function getPassword()             { return parent::get('password'); } # Encrypted
 	public function getRole()                 { return parent::get('role');     }
-	public function getAuthenticationMethod() { return parent::get('authenticationMethod'); }
 	public function getDepartment_id(): ?int     { return !empty($this->data['department_id']) ? (int)$this->data['department_id'] : null; }
 	public function getDepartment(): ?Department { return parent::getForeignKeyObject(__namespace__.'\Department', 'department_id'); }
 
 	public function setUsername            ($s) { parent::set('username',             $s); }
 	public function setRole                ($s) { parent::set('role',                 $s); }
-	public function setAuthenticationMethod($s) { parent::set('authenticationMethod', $s); }
 	public function setDepartment_id        ($i) { parent::setForeignKeyField (__namespace__.'\Department', 'department_id', $i); }
 	public function setDepartment(Department $o) { parent::setForeignKeyObject(__namespace__.'\Department', 'department_id', $o); }
-
-	public function setPassword($s)
-	{
-		$s = trim($s);
-		if ($s) { $this->data['password'] = sha1($s); }
-		else    { $this->data['password'] = null;     }
-	}
 
 	/**
 	 * @param array $post
@@ -178,91 +163,13 @@ class Person extends ActiveRecord
 	{
         global $LDAP;
 
-		$fields = ['username', 'email', 'authenticationMethod', 'role', 'department_id'];
+		$fields = ['username', 'email', 'role', 'department_id'];
 		foreach ($fields as $f) {
 			if (isset($post[$f])) {
 				$set = 'set'.ucfirst($f);
 				$this->$set($post[$f]);
 			}
 		}
-
-        if (!empty($post['password'])) {
-            $this->setPassword($post['password']);
-        }
-
-		$method = $this->getAuthenticationMethod();
-		if ($this->getUsername() && $method && $method != 'local') {
-            $class = $LDAP[$method]['classname'];
-			$identity = new $class($this->getUsername());
-			$this->populateFromExternalIdentity($identity);
-		}
-	}
-
-	//----------------------------------------------------------------
-	// User Authentication
-	//----------------------------------------------------------------
-	/**
-	 * Should provide the list of methods supported
-	 *
-	 * There should always be at least one method, called "local"
-	 * Additional methods must match classes that implement External Identities
-	 * See: ExternalIdentity.php
-	 *
-	 * @return array
-	 */
-	public static function getAuthenticationMethods()
-	{
-		global $LDAP;
-		return array_merge(['local'], array_keys($LDAP));
-	}
-
-	/**
-	 * Determines which authentication scheme to use for the user and calls the appropriate method
-	 *
-	 * Local users will get authenticated against the database
-	 * Other authenticationMethods will need to write a class implementing ExternalIdentity
-	 * See: /libraries/framework/classes/ExternalIdentity.php
-	 *
-	 * @param string $password
-	 * @return boolean
-	 */
-	public function authenticate($password)
-	{
-        global $LDAP;
-
-		if ($this->getUsername()) {
-			switch($this->getAuthenticationMethod()) {
-				case "local":
-					return $this->getPassword()==sha1($password);
-				break;
-
-				default:
-					$method = $this->getAuthenticationMethod();
-					$class = $LDAP[$method]['classname'];
-					return $class::authenticate($this->getUsername(),$password);
-			}
-		}
-	}
-
-	public function getExternalIdentity(): ?ExternalIdentity
-	{
-		global $LDAP;
-
-		if ($this->getUsername()) {
-			switch($this->getAuthenticationMethod()) {
-				case "local":
-					return null;
-
-				default:
-					$method = $this->getAuthenticationMethod();
-					$class  = $LDAP[$method]['classname'];
-					try {
-						return new $class($this->getUsername());
-					}
-					catch (\Exception $e) { }
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -286,21 +193,6 @@ class Person extends ActiveRecord
 		return $ACL->isAllowed($role, $resource, $action);
 	}
 
-	/**
-	 * @param ExternalIdentity $identity An object implementing ExternalIdentity
-	 */
-	public function populateFromExternalIdentity(ExternalIdentity $identity)
-	{
-		if (!$this->getFirstname() && $identity->getFirstname()) {
-			$this->setFirstname($identity->getFirstname());
-		}
-		if (!$this->getLastname() && $identity->getLastname()) {
-			$this->setLastname($identity->getLastname());
-		}
-		if (!$this->getEmail() && $identity->getEmail()) {
-			$this->setEmail($identity->getEmail());
-		}
-	}
 	//----------------------------------------------------------------
 	// Custom Functions
 	//----------------------------------------------------------------

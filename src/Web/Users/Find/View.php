@@ -30,10 +30,8 @@ class View extends \Web\View
             'email'                 => $_GET['email'               ] ?? null,
             'department_id'         => $_GET['department_id'       ] ?? null,
             'role'                  => $_GET['role'                ] ?? null,
-            'authenticationMethod'  => $_GET['authenticationMethod'] ?? null,
             'departments'           => self::department_options(),
             'roles'                 => self::role_options(),
-            'authenticationMethods' => self::authentication_options(),
             'actionLinks' => [
                 ['url'   => parent::generateUri('users.update'),
                  'label' => parent::_('create_account'),
@@ -66,15 +64,6 @@ class View extends \Web\View
         $opts = [['value'=>'']];
         foreach ($ACL->getRoles() as $r) {
             $opts[] = ['value'=>$r];
-        }
-        return $opts;
-    }
-
-    private static function authentication_options(): array
-    {
-        $opts = [['value'=>'']];
-        foreach (Person::getAuthenticationMethods() as $m) {
-            $opts[] = ['value'=>$m];
         }
         return $opts;
     }

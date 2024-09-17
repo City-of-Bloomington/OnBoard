@@ -18,8 +18,7 @@ class View extends \Web\View
         $this->vars = [
             'user' => $user,
             'departments'           => self::department_options(),
-            'roles'                 => self::role_options(),
-            'authenticationMethods' => self::authentication_options(),
+            'roles'                 => self::role_options()
         ];
     }
 
@@ -44,15 +43,6 @@ class View extends \Web\View
         $opts = [['value'=>'']];
         foreach ($ACL->getRoles() as $r) {
             $opts[] = ['value'=>$r];
-        }
-        return $opts;
-    }
-
-    private static function authentication_options(): array
-    {
-        $opts = [['value'=>'']];
-        foreach (Person::getAuthenticationMethods() as $m) {
-            $opts[] = ['value'=>$m];
         }
         return $opts;
     }
