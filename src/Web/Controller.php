@@ -9,17 +9,10 @@ abstract class Controller
 {
 	protected const ITEMS_PER_PAGE = 20;
 	protected $outputFormat;
-	protected $template;
 
 	public function __construct()
 	{
-		// Twig system
         $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
-
-        // Create the legacy Template
-        $this->template = !empty($_REQUEST['format'])
-                        ? new Template('default', $_REQUEST['format'])
-                        : new Template('default');
 	}
 
 	/**

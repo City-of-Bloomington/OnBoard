@@ -17,10 +17,7 @@ use Twig\TwigTest;
 
 abstract class View
 {
-    protected $theme;
-    protected $theme_config = [];
 	protected $vars         = [];
-
     protected $twig;
     public    $outputFormat = 'html';
 
@@ -38,26 +35,11 @@ abstract class View
         if (defined('THEME')) {
             $dir = SITE_HOME.'/Themes/'.THEME;
 
-            // Old Templating
-            if (is_dir($dir)) {
-                $this->theme = $dir;
-                $config_file = $dir.'/theme_config.inc';
-
-                if (is_file($config_file)) { $this->theme_config = require $config_file; }
-            }
-
             // Twig Templates
             if (is_dir ( "$dir/templates")) {
                 $tpl[] = "$dir/templates";
             }
         }
-
-		// Old Templating
-		if ($vars) {
-			foreach ($vars as $name=>$value) {
-				$this->vars[$name] = $value;
-			}
-		}
 
 		// Twig Templates
 		$tpl[]      = APPLICATION_HOME.'/templates';
