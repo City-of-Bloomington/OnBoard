@@ -107,6 +107,9 @@ define('TERM_END_WARNING_DEFAULT', 60);
 define('APPLICATION_LIFETIME_DEFAULT', 90);
 define('ADMINISTRATOR_EMAIL', 'someone@localhost');
 
+define('SMTP_HOST', 'smtp.bloomington.in.gov');
+define('SMTP_PORT', 25);
+
 /**
  * Graylog is a centralized log manager
  *

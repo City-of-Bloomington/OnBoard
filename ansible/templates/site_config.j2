@@ -99,6 +99,10 @@ $CAS = [
 ];
 {% endif %}
 
+define('SMTP_HOST', "{{ onboard_smtp.host }}");
+define('SMTP_PORT', "{{ onboard_smtp.port }}");
+
+
 {% if onboard_graylog %}
 /**
  * Graylog is a centralized log manager

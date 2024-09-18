@@ -10,6 +10,7 @@ use Web\ActiveRecord;
 use Web\Database;
 use Web\View;
 use Web\Auth\ExternalIdentity;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Person extends ActiveRecord
 {
@@ -341,14 +342,19 @@ class Person extends ActiveRecord
             if (!$subject) {
                 $subject = APPLICATION_NAME.' Notification';
             }
-            $name = preg_replace('/[^a-zA-Z0-9]+/','_',APPLICATION_NAME);
-            $fromEmail    = "$name@".BASE_HOST;
-            $fromFullname = APPLICATION_NAME;
 
-            $message = mb_convert_encoding($message, 'ISO-8859-1', 'UTF-8');
-            $from    = "From: $fromFullname <$fromEmail>";
-            if ($replyTo) { $from.="\r\nReply-to: $replyTo"; }
-            mail($to, $subject, $message, $from, '-f'.ADMINISTRATOR_EMAIL);
+			$mail = new PHPMailer(true);
+			$mail->isHTML(false);
+			$mail->isSMTP();
+			$mail->Host        = SMTP_HOST;
+			$mail->Port        = SMTP_PORT;
+			$mail->SMTPSecure  = false;
+			$mail->SMTPAutoTLS = false;
+			$mail->Subject     = $subject;
+			$mail->Body        = $message;
+			$mail->setFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
+			$mail->addAddress($to);
+			$mail->send();
         }
 	}
 }

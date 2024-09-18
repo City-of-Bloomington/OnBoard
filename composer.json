@@ -15,6 +15,7 @@
         "laminas/laminas-paginator":       "@stable",
         "laminas/laminas-permissions-acl": "@stable",
         "michelf/php-markdown":            "@stable",
+        "phpmailer/phpmailer":             "@stable",
         "solarium/solarium":               "@stable",
         "symfony/event-dispatcher":        "@stable",
         "twig/twig":                       "@stable",

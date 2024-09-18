@@ -17,11 +17,7 @@
           - "libreoffice-common"
           - "libreoffice-writer"
           - "libreoffice-java-common"
-          - "postfix"
           - 'poppler-utils'
-
-    - name: "Postfix start at boot"
-      service: name=postfix state=started enabled=yes
 
     - name: Create mysql database
       mysql_db:
