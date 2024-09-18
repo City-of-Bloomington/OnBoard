@@ -84,20 +84,23 @@ $SOLR = [
     ]
 ];
 
-{% if onboard_cas %}
-/**
- * CAS authentication http://www.jasig.org/cas
- *
- * https://wiki.jasig.org/display/CASC/phpCAS
- *
- * phpCAS is a PHP library for handling the calls to the CAS service
- * It is the official library, part of the Jasig CAS project
- */
-$CAS = [
-    'server' => '{{ onboard_cas.host }}',
-    'uri'    => '{{ onboard_cas.uri  }}'
+$AUTHENTICATION = [
+    'oidc' => [
+        'server'         => '{{ onboard_oidc.server        }}',
+        'client_id'      => '{{ onboard_oidc.client_id     }}',
+        'client_secret'  => '{{ onboard_oidc.client_secret }}',
+        'claims' => [
+            // OnBoard field => OIDC Claim
+            'username'    => 'adfs1upn',
+            'displayname' => 'commonname',
+            'firstname'   => 'given_name',
+            'lastname'    => 'family_name',
+            'email'       => 'upn',
+            'groups'      => 'group',
+            'groupmap'    => []
+        ],
+    ]
 ];
-{% endif %}
 
 define('SMTP_HOST', "{{ onboard_smtp.host }}");
 define('SMTP_PORT', "{{ onboard_smtp.port }}");
