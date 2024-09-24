@@ -25,7 +25,6 @@ class DepartmentAssociation implements AssertionInterface
 {
     public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
     {
-        error_log("role: $role, resource: $resource, privilege: $privilege");
         if (isset($_SESSION['USER'])) {
             $did = $_SESSION['USER']->getDepartment_id();
             if (!empty($_REQUEST[        'committee_id'])) return        CommitteeTable::hasDepartment($did, (int)$_REQUEST[        'committee_id']);
