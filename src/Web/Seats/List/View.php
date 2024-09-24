@@ -13,9 +13,12 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'data'        => $data,
-            'actionLinks' => [['url' => parent::generateUri('seats.index').'?format=csv', 'label' => 'CSV']]
+            'data' => $data
         ];
+
+        if (parent::isAllowed('people', 'viewContactInfo')) {
+            $this->vars['actionLinks'] = [['url' => parent::generateUri('seats.index').'?format=csv', 'label' => 'CSV']];
+        }
     }
 
     public function render(): string

@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Seats\Vacancies;
 
 use Application\Models\SeatTable;
+use Web\Seats\List\Controller as ListController;
 
 class Controller extends \Web\Controller
 {
@@ -15,10 +16,7 @@ class Controller extends \Web\Controller
         $search = $this->parseQueryParameters();
         $search['vacant'] = true;
         $result = SeatTable::currentData($search);
-        $data   = [];
-        foreach ($result['results'] as $row) {
-            $data[] = $row;
-        }
+        $data   = ListController::filter_viewable($result['results']);
 
         switch ($this->outputFormat) {
             case 'csv':

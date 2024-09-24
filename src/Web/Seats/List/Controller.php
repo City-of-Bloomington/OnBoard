@@ -12,12 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $data   = [];
         $search = self::parseQueryParameters();
         $result = SeatTable::currentData($search);
-        foreach ($result['results'] as $row) {
-            $data[] = $row;
-        }
+        $data   = self::filter_viewable($result['results']);
 
         switch ($this->outputFormat) {
             case 'csv':
@@ -49,4 +46,25 @@ class Controller extends \Web\Controller
         return [];
     }
 
+    /**
+     * Filter the data results to only the fields that are permitted
+     */
+    public static function filter_viewable($results): array
+    {
+        $data    = [];
+        $fields  = ['email', 'address', 'city', 'state', 'zip'];
+        $canView = \Web\View::isAllowed('people', 'viewContactInfo');
+        foreach ($results as $row)
+        {
+            if (!$canView) {
+                foreach (['member', 'alternate'] as $p) {
+                    foreach ($fields as $f) {
+                        unset($row[$p.'_'.$f]);
+                    }
+                }
+            }
+            $data[] = $row;
+        }
+        return $data;
+    }
 }
