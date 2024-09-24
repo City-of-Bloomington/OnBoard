@@ -17,9 +17,8 @@ class Controller extends \Web\Controller
                 ? $_GET['type']
                 : Liaison::$types[0];
 
-        $data = [];
         $res  = LiaisonTable::data(['type'=>$type, 'current'=>true]);
-        foreach ($res['results'] as $row) { $data[] = $row; }
+        $data = self::liaison_data($res['results']);
 
         switch ($this->outputFormat) {
             case 'email':
@@ -30,8 +29,30 @@ class Controller extends \Web\Controller
                 return new \Web\Views\CSVView('Liaisons', $data);
             break;
 
+            case 'json':
+                return new \Web\Views\JSONView($data);
+            break;
+
             default:
                 return new View($data);
         }
+    }
+
+    /**
+     * Filters liaison data to only the fields that are permitted
+     */
+    private static function liaison_data($results): array
+    {
+        $canView = \Web\View::isAllowed('people', 'viewContactInfo');
+
+        $data = [];
+        foreach ($results as $row) {
+            if (!$canView) {
+                unset($row['email']);
+                unset($row['phone']);
+            }
+            $data[] = $row;
+        }
+        return $data;
     }
 }
