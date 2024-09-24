@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -55,8 +55,8 @@ class CommitteeStatutesController extends Controller
 
     public function delete(): View
     {
-        if (!empty($_GET['id'])) {
-            try { $statute = new CommitteeStatute($_GET['id']); }
+        if (!empty($_GET['committeeStatute_id'])) {
+            try { $statute = new CommitteeStatute($_GET['committeeStatute_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
 

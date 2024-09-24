@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Db\Result $this->statutes
  * @param Committee         $this->committee (optional)
@@ -42,7 +42,7 @@ use Application\Templates\Helpers\ButtonLink;
             }
             if ($userCanDelete) {
                 $deleteButton = $helper->buttonLink(
-                    parent::generateUri('committeeStatutes.delete').'?id='.$s->getId(),
+                    parent::generateUri('committeeStatutes.delete').'?committeeStatute_id='.$s->getId(),
                     $this->_('delete'),
                     'delete'
                 );
