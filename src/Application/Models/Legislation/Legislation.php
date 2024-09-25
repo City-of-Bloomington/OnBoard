@@ -129,12 +129,14 @@ class Legislation extends ActiveRecord
 	{
         $fields = [
             'number', 'title', 'synopsis', 'notes', 'year',
-            'committee_id', 'type_id', 'status_id', 'amendsCode'
+            'committee_id', 'type_id', 'status_id'
         ];
         foreach ($fields as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
+        $this->setAmendsCode(!empty($post['amendsCode']) ? true : false);
+
 
         $this->save();
 
