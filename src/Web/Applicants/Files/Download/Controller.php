@@ -6,7 +6,9 @@
 declare (strict_types=1);
 namespace Web\Applicants\Files\Download;
 
+use Application\Models\ApplicantTable;
 use Application\Models\ApplicantFile;
+use Application\Models\ApplicantFilesTable;
 
 class Controller extends \Web\Controller
 {
@@ -20,5 +22,21 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { }
         }
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        if (!empty($_GET['applicant_id'])) {
+            return ApplicantTable::hasDepartment($department_id, (int)$_GET['applicant_id']);
+        }
+        if (!empty($_GET['applicantFile_id'])) {
+            return ApplicantFilesTable::hasDepartment($department_id, (int)$_REQUEST['applicantFile_id']);
+        }
+        return false;
     }
 }

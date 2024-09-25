@@ -34,7 +34,7 @@ class Controller extends \Web\Controller
         }
 
 
-        if ($this->template->outputFormat == 'html') {
+        if ($this->outputFormat == 'html') {
             $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
             $list  = $table->find($_GET, 'year desc, number desc', true);
             $list->setCurrentPageNumber($page);

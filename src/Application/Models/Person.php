@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2020 City of Bloomington, Indiana
+ * @copyright 2009-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -9,7 +9,6 @@ namespace Application\Models;
 use Web\ActiveRecord;
 use Web\Database;
 use Web\View;
-use Web\Auth\ExternalIdentity;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Person extends ActiveRecord

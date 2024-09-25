@@ -7,7 +7,9 @@ declare (strict_types=1);
 namespace Web\Committees\Applications;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 use \Web\View;
+use \Web\Auth\RequiresDepartment;
 
 class Controller extends \Web\Controller
 {
@@ -39,5 +41,16 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        return !empty($_GET['committee_id'])
+            && CommitteeTable::hasDepartment($department_id, (int)$_GET['committee_id']);
     }
 }

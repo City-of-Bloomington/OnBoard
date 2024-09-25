@@ -7,7 +7,9 @@ declare (strict_types=1);
 namespace Web\Legislation\Files\Update;
 
 use Application\Models\Legislation\Legislation;
+use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\LegislationFile;
+use Application\Models\Legislation\LegislationFilesTable;
 
 class Controller extends \Web\Controller
 {
@@ -56,5 +58,21 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        if (!empty($_REQUEST['legislationFile_id'])) {
+            return LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislationFile_id']);
+        }
+        if (!empty($_REQUEST['legislation_id'])) {
+            return LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
+        }
+        return false;
     }
 }

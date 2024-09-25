@@ -7,7 +7,9 @@ declare (strict_types=1);
 namespace Web\MeetingFiles\Update;
 
 use Application\Models\MeetingFile;
+use Application\Models\MeetingFilesTable;
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
 {
@@ -71,5 +73,22 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        if (!empty($_GET['committee_id'])) {
+            return CommitteeTable::hasDepartment($department_id, (int)$_GET['committee_id']);
+        }
+        if (!empty($_REQUEST['meetingFile_id'])) {
+            return MeetingFilesTable::hasDepartment($department_id, (int)$_REQUEST['meetingFile_id']);
+        }
+
+        return false;
     }
 }

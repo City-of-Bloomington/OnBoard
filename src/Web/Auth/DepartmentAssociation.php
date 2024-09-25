@@ -1,5 +1,7 @@
 <?php
 /**
+ * Checks if a controller is loading a record associated with a given department
+ *
  * @copyright 2020 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
@@ -26,15 +28,13 @@ class DepartmentAssociation implements AssertionInterface
     {
         if (isset($_SESSION['USER'])) {
             $did = $_SESSION['USER']->getDepartment_id();
-            if (!empty($_REQUEST[        'committee_id'])) return        CommitteeTable::hasDepartment($did, (int)$_REQUEST[        'committee_id']);
-            if (!empty($_REQUEST[      'meetingFile_id'])) return     MeetingFilesTable::hasDepartment($did, (int)$_REQUEST[      'meetingFile_id']);
-            if (!empty($_REQUEST[      'legislation_id'])) return      LegislationTable::hasDepartment($did, (int)$_REQUEST[      'legislation_id']);
-            if (!empty($_REQUEST[  'legislationFile_id'])) return LegislationFilesTable::hasDepartment($did, (int)$_REQUEST[  'legislationFile_id']);
-            if (!empty($_REQUEST['legislationAction_id'])) return          ActionsTable::hasDepartment($did, (int)$_REQUEST['legislationAction_id']);
-            if (!empty($_REQUEST[           'report_id'])) return          ReportsTable::hasDepartment($did, (int)$_REQUEST[           'report_id']);
 
-            if (!empty($_REQUEST[        'applicant_id'])) return        ApplicantTable::hasDepartment($did, (int)$_REQUEST[        'applicant_id']);
-            if (!empty($_REQUEST[    'applicantFile_id'])) return   ApplicantFilesTable::hasDepartment($did, (int)$_REQUEST[    'applicantFile_id']);
+            global $ROUTES;
+            $r = $ROUTES->getMap()->getRoute("$resource.$privilege");
+            if ($r) {
+                $controller = $r->handler;
+                return $controller::hasDepartment($did);
+            }
        }
        return false;
     }

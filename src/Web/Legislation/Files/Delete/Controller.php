@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Legislation\Files\Delete;
 
 use Application\Models\Legislation\LegislationFile;
+use Application\Models\Legislation\LegislationFilesTable;
 
 class Controller extends \Web\Controller
 {
@@ -24,5 +25,16 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { }
         }
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        return !empty($_GET['legislationFile_id'])
+            && LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislationFile_id']);
     }
 }

@@ -7,6 +7,8 @@ declare (strict_types=1);
 namespace Web\Reports\Delete;
 
 use Application\Models\Reports\Report;
+use Application\Models\Reports\ReportsTable;
+use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
 {
@@ -27,5 +29,22 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * ACL will call this function when a role needs to check the Department Association
+     *
+     * @see Web\Auth\DepartmentAssociation
+     */
+    public static function hasDepartment(int $department_id): bool
+    {
+        if (!empty($_GET['committee_id'])) {
+            return CommitteeTable::hasDepartment($department_id, (int)$_GET['committee_id']);
+        }
+        if (!empty($_GET['report_id'])) {
+            return ReportsTable::hasDepartment($department_id, (int)$_GET['report_id']);
+        }
+
+        return false;
     }
 }

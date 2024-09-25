@@ -8,6 +8,7 @@ namespace Web\Applications\Report;
 
 use Application\Models\Application;
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 use Application\Models\Seat;
 
 class Controller extends \Web\Controller
@@ -43,5 +44,11 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    public static function hasDepartment(int $department_id): bool
+    {
+        return !empty($_REQUEST['committee_id'])
+            && CommitteeTable::hasDepartment($department_id, (int)$_REQUEST['committee_id']);
     }
 }
