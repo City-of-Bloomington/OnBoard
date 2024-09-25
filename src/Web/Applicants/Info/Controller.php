@@ -21,20 +21,6 @@ class Controller extends \Web\Controller
 
         if (isset($applicant)) {
             return new View($applicant);
-
-            $this->template->blocks[] = new Block('applicants/info.inc', ['applicant'=>$applicant]);
-            $this->template->blocks[] = new Block('applications/list.inc', [
-                'applicant'    => $applicant,
-                'applications' => $applicant->getApplications(['current'=>time()]),
-                'title'        => $this->template->_('applications_current'),
-                'type'         => 'current'
-            ]);
-            $this->template->blocks[] = new Block('applications/list.inc', [
-                'applicant'    => $applicant,
-                'applications' => $applicant->getApplications(['archived'=>time()]),
-                'title'        => $this->template->_('applications_archived'),
-                'type'         => 'archived'
-            ]);
         }
 
         return new \Web\Views\NotFoundView();

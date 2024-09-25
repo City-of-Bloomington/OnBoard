@@ -19,22 +19,14 @@ class Controller extends \Web\Controller
             try {
                 $committee             = new Committee($_GET['committee_id']);
                 $seats                 = [];
-                $applications_current  = [];
-                $applications_archived = [];
 
-                foreach ($committee->getApplications(['current' =>time()]) as $a) {
-                    $applications_current[] = $a;
-                }
-                foreach ($committee->getApplications(['archived'=>time()]) as $a) {
-                    $applications_archived[] = $a;
-                }
                 foreach ($committee->getSeats(['current'=>true]) as $a) {
                     $seats[] = $a;
                 }
 
                 return View::isAllowed('applications', 'report')
-                       ? new ReportView($committee, $applications_current, $applications_archived, $seats)
-                       : new   ListView($committee, $applications_current, $applications_archived);
+                       ? new ReportView($committee, $seats)
+                       : new   ListView($committee);
 
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

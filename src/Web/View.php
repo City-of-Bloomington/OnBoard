@@ -53,7 +53,7 @@ abstract class View
         $this->twig->addGlobal('BASE_URL',         BASE_URL);
         $this->twig->addGlobal('BASE_URI',         BASE_URI);
         $this->twig->addGlobal('REQUEST_URI',      $_SERVER['REQUEST_URI']);
-        $this->twig->addGlobal('ROUTE_NAME',       $route->name);
+        $this->twig->addGlobal('ROUTE_NAME',       $route ? $route->name : null);
         $this->twig->addGlobal('DATE_FORMAT',      DATE_FORMAT);
         $this->twig->addGlobal('TIME_FORMAT',      TIME_FORMAT);
         $this->twig->addGlobal('DATETIME_FORMAT',  DATETIME_FORMAT);

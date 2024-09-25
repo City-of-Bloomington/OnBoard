@@ -3,8 +3,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     seats
- * @param array     current_applications
- * @param array     archived_applications
+ * @param array     applications_current
+ * @param array     applications_archived
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
@@ -20,7 +20,7 @@
 
     <form method="post" action="{{ uri('applications.report') }}">
         <fieldset>
-            <legend>{{ _(['seat', 'seats', seats|length ]) }}</legend>
+            <legend>{{ _(['seat', 'seats', 10 ]) }}</legend>
             {% for s in seats %}
                 {% if s.takesApplications() %}
                 <div class="form-check {{ s.hasVacancy() ? ' vacant' : '' }}">
@@ -33,7 +33,7 @@
             {% endfor %}
         </fieldset>
         <fieldset>
-            <legend>{{ _(['applicant', 'applicants', current_applications|length ]) }}</legend>
+            <legend>{{ _(['applicant', 'applicants', 10 ]) }}</legend>
             <table class="table">
             <thead>
                 <tr><th></th>
@@ -44,36 +44,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% set userCanViewApplicant    = isAllowed('applicants',   'view')         %}
-                {% set userCanArchive          = isAllowed('applications', 'archive')      %}
-                {% set userCanUnArchive        = isAllowed('applications', 'unarchive')    %}
-                {% set userCanDelete           = isAllowed('applications', 'delete')       %}
+                {% set userCanViewApplicant = isAllowed('applicants', 'view') %}
 
-                {% for a in current_applications %}
-                {% set p = a.getApplicant() %}
-                <tr><td><input name="applications[]" type="checkbox" value="{{ a.getId() }}" /></td>
-                    <td>{{ a.getCreated(DATE_FORMAT) }}</td>
+                {% for a in applications_current %}
+                <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
+                    <td>{{ a.created|date('m/d/Y') }}</td>
                     <td>{% if userCanViewApplicant %}
-                        <a href="{{ uri('applicants.view') }}?applicant_id={{ a.getApplicant_id() }}">
-                            {{ p.getFirstname() }} {{ p.getLastname() }}
+                        <a href="{{ uri('applicants.view') }}?applicant_id={{ a.applicant_id }}">
+                            {{ a.applicant }}
                         </a>
                         {% else %}
-                        {{ p.getFirstname() }} {{ p.getLastname() }}
+                        {{ a.applicant }}
                         {% endif %}
                     </td>
-                    <td>{{ a.getExpires(DATE_FORMAT) }}</td>
-                    <td>{% if userCanArchive %}
-                        <a class="btn btn-primary"
-                           href="{{ uri('applications.archive') }}?application_id={{ a.getId() }}">
-                            {{ _('application_archive') }}
-                        </a>
-                        {% endif %}
-
-                        {% if userCanDelete %}
-                        <a class="btn btn-primary"
-                           href="{{ uri('applications.delete') }}?application_id={{ a.getId() }}">
-                            {{ _('application_delete') }}
-                        </a>
+                    <td>{{ a.expires|date('m/d/Y') }}</td>
+                    <td>{% if a.actionLinks %}
+                        {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
                         {% endif %}
                     </td>
                 </tr>

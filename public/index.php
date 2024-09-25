@@ -33,27 +33,19 @@ if ($route) {
         if (is_callable($c)) {
             $template = $c($route->attributes);
         }
-        // Legacy Templates and Blocks
-        elseif ($c) {
-            $action = $route->__get('extras')['action'];
-            if ($action && method_exists($c, $action)) {
-                $template = $c->$action();
-            }
-        }
     }
     else {
-        $template = new Template();
         header('HTTP/1.1 403 Forbidden', true, 403);
         $_SESSION['errorMessages'][] = $role == 'Anonymous'
-        ? new \Exception('notLoggedIn')
-        : new \Exception('noAccessAllowed');
+                                        ? 'notLoggedIn'
+                                        : 'noAccessAllowed';
+        $template = new \Web\Views\ForbiddenView();
     }
 }
 
 if (!isset($template)) {
     header('HTTP/1.1 404 Not Found', true, 404);
-    $template = new Template();
-    $template->blocks[] = new Block('404.inc');
+    $template = new \Web\Views\NotFoundView();
 }
 
 echo $template->render();
