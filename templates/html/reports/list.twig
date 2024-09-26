@@ -15,25 +15,24 @@
 {% block content %}
 
 {% if committee %}
-{{ include('html/committees/breadcrumbs.twig') }}
 <section class="container my-3">
-    <header>
-        <h2>{{ committee.getName() }}
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
+        </h1>
         {{ include('html/committees/partials/header.twig') }}
     </header>
-{% else %}
-<section>
-    <header><h2>{{ _(['report', 'reports', 10]) }}</h2></header>
-{% endif %}
+    {% else %}
+    <div class="d-flex">
+        <h2 class="me-3">{{ _(['report', 'reports', 10]) }}</h2>
+        {% endif %}
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </div>
 
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-
-    <table>
+    <table class="table">
     {% for r in reports %}
     <tr><td>{{ r.date }}</td>
         <td><a href="{{ uri('reports.download') }}?report_id={{ r.id }}">{{ r.title }}</a></td>
