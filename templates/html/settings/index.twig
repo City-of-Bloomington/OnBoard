@@ -1,0 +1,17 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array links
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ _('settings') }}</h1></header>
+
+    <ul>{% for l in links %}
+        <li><a href="{{ l.url }}">{{ l.label }}</a></li>
+        {% endfor %}
+    <ul>
+</section>
+
+{% endblock %}

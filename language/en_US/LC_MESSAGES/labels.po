@@ -30,6 +30,9 @@ msgstr "Edit"
 msgid "delete"
 msgstr "Delete"
 
+msgid "settings"
+msgstr "Settings"
+
 msgid "search"
 msgstr "Search"
 

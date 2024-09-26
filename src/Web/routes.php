@@ -159,6 +159,10 @@ $map->attach('seats.', '/seats', function ($r) {
     $r->get('index',     ''          , Web\Seats\List\Controller::class);
 });
 
+$map->attach('settings.', '/settings', function ($r) {
+    $r->get('index',     ''          , Web\Settings\Index\Controller::class);
+});
+
 $map->attach('site.', '/site', function ($r) {
     $r->get('updateContent', '/updateContent', Web\Site\Update\Controller::class)->allows(['POST']);
     $r->get('index',  ''                     , Web\Site\Content\Controller::class);
