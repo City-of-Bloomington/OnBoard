@@ -135,12 +135,6 @@ class Legislation extends ActiveRecord
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
-
-        $this->save();
-
-        isset($post['tags'])
-            ? $this->saveTags(array_keys($post['tags']))
-            : $this->saveTags([]);
 	}
 
 	//----------------------------------------------------------------
@@ -167,41 +161,6 @@ class Legislation extends ActiveRecord
 	{
         $table = new LegislationFilesTable();
         return $table->find(['legislation_id'=>$this->getId()]);
-	}
-
-	/**
-	 * @return array  An array of Tag objects, indexed by ID
-	 */
-	public function getTags()
-	{
-        if (!$this->tags) {
-            $table = new TagsTable();
-            $list  = $table->find(['legislation_id'=>$this->getId()]);
-            foreach ($list as $t) { $this->tags[$t->getId()] = $t; }
-        }
-        return $this->tags;
-	}
-
-	/**
-	 * Saves a set of tags directly to the database
-	 *
-	 * @param array $tag_ids  An array of ID numbers for the tags
-	 */
-	public function saveTags(array $tag_ids)
-	{
-        $id = $this->getId();
-        if ($id) {
-            $db = Database::getConnection();
-
-            $sql = 'delete from legislation_tags where legislation_id=?';
-            $db->query($sql)->execute([$id]);
-
-            $sql = 'insert into legislation_tags (legislation_id, tag_id) values(?, ?)';
-            $insert = $db->createStatement($sql);
-            foreach ($tag_ids as $tid) {
-                $insert->execute([$id, $tid]);
-            }
-        }
 	}
 
 	public function getChildren()
@@ -266,9 +225,6 @@ class Legislation extends ActiveRecord
             $db = Database::getConnection();
 
             $sql = 'delete from legislationActions where legislation_id=?';
-            $db->query($sql)->execute([$id]);
-
-            $sql = 'delete from legislation_tags where legislation_id=?';
             $db->query($sql)->execute([$id]);
 
             $sql = 'delete from legislation where id=?';

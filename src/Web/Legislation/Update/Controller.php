@@ -56,8 +56,8 @@ class Controller extends \Web\Controller
                     // Needed for the new Bootstrap boolean toggle
                     if (!isset($_POST['amendsCode'])) { $_POST['amendsCode'] = false; }
 
-                    # Legislation::handleUpdate calls save automatically
                     $legislation->handleUpdate($_POST);
+                    $legislation->save();
 
 
                     $return_url = $_SESSION['return_url'];

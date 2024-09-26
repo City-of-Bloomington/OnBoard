@@ -38,12 +38,6 @@
 
 
     <div>{{ legislation.getSynopsis() ? legislation.getSynopsis()|markdown_to_html : '' }}</div>
-    {% if legislation.getTags() %}
-    <ul>{% for t in legislation.getTags() -%}
-        <li>{{ t }}</li>
-        {%- endfor %}
-    </ul>
-    {% endif %}
 
     <table>
     <tr><th>{{ _('amendsCode') }}</th>

@@ -7,7 +7,6 @@
  * @param string      return_url
  * @param array       types
  * @param array       statuses
- * @param array       tags
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig"         as forms   %}
@@ -43,16 +42,6 @@
             {{ forms.field_textarea('synopsis', 'synopsis', _('synopsis'),   legislation.getSynopsis()   ) }}
             {{ forms.field_select('status_id', 'status_id', _('legislationStatus'), legislation.getStatus_id(), statuses ) }}
             {{ forms.field_textarea('notes', 'notes', _('notes'), legislation.getNotes() ) }}
-        </fieldset>
-
-        <fieldset><legend>{{ _(['tag', 'tags', 10]) }}</legend>
-            {% for t in tags %}
-            <label>
-                <input name="tags[{{ t.value }}]" type="checkbox" value="{{ t.value }}"
-                    {{- t.value in legislation.getTags()|keys ? 'checked="true"' : ''}} />
-                {{ t.label }}
-            </label>
-            {% endfor %}
         </fieldset>
 
         <fieldset><legend>{{ _('submit') }}</legend>

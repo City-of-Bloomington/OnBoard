@@ -290,18 +290,6 @@ create table legislationFiles (
 	foreign key (legislation_id) references legislation(id)
 );
 
-create table tags (
-    id   int unsigned not null primary key auto_increment,
-    name varchar(128) not null
-);
-
-create table legislation_tags (
-    legislation_id int unsigned not null,
-    tag_id         int unsigned not null,
-    foreign key (legislation_id) references legislation(id),
-    foreign key (tag_id        ) references tags       (id)
-);
-
 create table reports (
     id int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,

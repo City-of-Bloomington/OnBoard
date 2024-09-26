@@ -31,7 +31,6 @@ class View extends \Web\View
             'appointers' => 'appointer',
             'races'      => 'race',
             'users'      => 'user',
-            'tags'       => 'tag',
             'legislationTypes'       => 'legislationType',
             'legislationActionTypes' => 'legislationActionType',
             'legislationStatuses'    => 'legislationStatus'

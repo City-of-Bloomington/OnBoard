@@ -168,12 +168,6 @@ $map->attach('site.', '/site', function ($r) {
     $r->get('index',  ''                     , Web\Site\Content\Controller::class);
 });
 
-$map->attach('tags.', '/tags', function ($r) {
-    $r->get('index',  '',        Web\Tags\List\Controller::class);
-    $r->get('add',    '/add',    Web\Tags\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/update', Web\Tags\Update\Controller::class)->allows(['POST']);
-});
-
 $map->attach('terms.', '/terms', function ($r) {
     $r->get('update',   '/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
     $r->get('delete',   '/delete'  , Web\Terms\Delete\Controller::class);

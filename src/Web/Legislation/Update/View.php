@@ -17,16 +17,13 @@ class View extends \Web\View
     {
         parent::__construct();
 
-        $tags = $legislation->getTags();
-
         $this->vars = [
             'legislation' => $legislation,
             'committee'   => $legislation->getCommittee(),
             'return_url'  => $return_url,
-            'title'       => $this->title($legislation),
-            'types'       => self::types($legislation),
-            'statuses'    => self::statuses($legislation),
-            'tags'        => self::tags()
+            'title'       => $this->title  ($legislation),
+            'types'       => self::types   ($legislation),
+            'statuses'    => self::statuses($legislation)
         ];
     }
 
@@ -62,15 +59,6 @@ class View extends \Web\View
         $options = [];
         $table   = new TypesTable();
         $list    = $table->find(['subtype'=>$l->getParent_id() ? true : false]);
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
-        return $options;
-    }
-
-    private static function tags(): array
-    {
-        $options = [];
-        $table   = new TagsTable();
-        $list    = $table->find();
         foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
         return $options;
     }
