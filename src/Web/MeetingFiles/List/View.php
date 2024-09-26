@@ -47,7 +47,7 @@ class View extends \Web\View
     {
         $url = parent::current_url();
         $url->format = 'csv';
-        return [['url' => $url, 'label' => 'csv', 'class'=>'download']];
+        return [['url' => $url, 'label' => 'CSV Export', 'class'=>'download']];
     }
 
     private function createAddLinks($committee): array

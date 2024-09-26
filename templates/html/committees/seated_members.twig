@@ -6,6 +6,7 @@
  * @param array     actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="container my-3">
     <header class="mb-3">
@@ -17,11 +18,8 @@
     </header>
     <div class="d-flex">
         <h2 class="me-3">{{ _(['current_member', 'current_members', 10]) }}</h2>
-        {% if actionLinks %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
         {% if isAllowed('seats', 'update') %}
-        <a class="btn btn-sm btn-primary align-self-center me-3" href="{{ uri('seats.update') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
+        {{ forms.actionLink(uri('seats.update'), _('seat_add'), 'add') }}
         {% endif %}
         {% if committee.hasVacancy() %}
         <a class="btn btn-sm btn-primary align-self-center" href="{{ uri('applicants.apply') }}?committee_id={{ committee.getId() }}">{{ _('apply') }}</a>
@@ -71,5 +69,8 @@
         {% endfor %}
         </tbody>
     </table>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
 </section>
 {% endblock %}

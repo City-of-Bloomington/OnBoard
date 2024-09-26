@@ -24,16 +24,15 @@
     <form method="get">
     <header class="mb-3">
         {% if committee %}
-        <h1>{{ committee.getName() }}
+        <h2>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
+        </h2>
         {{ include('html/committees/partials/header.twig') }}
         {% endif %}
     </header>
     <div class="d-flex">
         <h2 class="me-3">{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
-        {{ include('html/partials/actionLinks.twig') }}
         {% if addLinks %}
         <nav class="dropdown align-self-center me-3">
             <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -104,10 +103,10 @@
         {% endfor %}
     </tbody>
     </table>
-
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
     {% endif %}
     </form>
+    {{ include('html/partials/actionLinks.twig') }}
 </section>
 {% endblock %}

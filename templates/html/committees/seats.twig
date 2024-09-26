@@ -5,6 +5,7 @@
  * @param array     seats
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="container my-3">
     <header class="mb-3">
@@ -17,7 +18,7 @@
     <div class="d-flex">
         <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
         {% if isAllowed('seats', 'add') %}
-        <a class="btn btn-sm btn-success align-self-center" href="{{ uri('seats.add') }}?committee_id={{ committee.getId() }}">{{ _('seat_add') }}</a>
+        {{ forms.actionLink(uri('seats.add'), _('seat_add'), 'add') }}
         {% endif %}
     </div>
     <table class="table">

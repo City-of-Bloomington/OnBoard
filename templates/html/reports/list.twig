@@ -16,7 +16,7 @@
 
 {% if committee %}
 {{ include('html/committees/breadcrumbs.twig') }}
-<section>
+<section class="container my-3">
     <header>
         <h2>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}

@@ -204,7 +204,7 @@ msgid "committee_edit"
 msgstr "Edit Committee"
 
 msgid "committee_end"
-msgstr "Close Committee"
+msgstr "Close"
 
 msgid "committee_info"
 msgstr "Information"
@@ -259,7 +259,7 @@ msgstr[0] "Seat"
 msgstr[1] "Seats"
 
 msgid "seat_add"
-msgstr "Add Seat"
+msgstr "Add"
 
 msgid "seat_edit"
 msgstr "Edit Seat"
@@ -405,7 +405,7 @@ msgid "past_terms"
 msgstr "Past Terms"
 
 msgid "seat_term"
-msgstr "Seat Term"
+msgstr "Term"
 
 msgid "alternate"
 msgid_plural "alternates"
@@ -480,13 +480,13 @@ msgstr[0] "Liaisonship"
 msgstr[1] "Liaisonships"
 
 msgid "liaison_add"
-msgstr "Add Liaison"
+msgstr "Add"
 
 msgid "liaison_edit"
-msgstr "Edit Liaison"
+msgstr "Edit"
 
 msgid "liaison_delete"
-msgstr "Remove Liaison"
+msgstr "Remove"
 
 msgid "departmental"
 msgstr "Departmental"
@@ -577,7 +577,7 @@ msgstr[0] "Statute Citation"
 msgstr[1] "Statute Citations"
 
 msgid "committeeStatute_add"
-msgstr "New Statute Citation"
+msgstr "Add"
 
 msgid "committeeStatute_edit"
 msgstr "Edit Statute Citation"
