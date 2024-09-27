@@ -13,9 +13,8 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-
-{% if committee %}
 <section class="container my-3">
+    {% if committee %}
     <header class="mb-3">
         <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
@@ -23,10 +22,9 @@
         </h1>
         {{ include('html/committees/partials/header.twig') }}
     </header>
-    {% else %}
+    {% endif %}
     <div class="d-flex">
         <h2 class="me-3">{{ _(['report', 'reports', 10]) }}</h2>
-        {% endif %}
         {% if actionLinks %}
         {{ include('html/partials/actionLinks.twig') }}
         {% endif %}
