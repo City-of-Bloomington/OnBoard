@@ -22,15 +22,15 @@
 {% block content %}
 <section class="container my-3">
     <form method="get">
+    {% if committee %}
     <header class="mb-3">
-        {% if committee %}
-        <h2>{{ committee.getName() }}
+        <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
+        </h1>
         {{ include('html/committees/partials/header.twig') }}
-        {% endif %}
     </header>
+    {% endif %}
     <div class="d-flex">
         <h2 class="me-3">{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
         {% if addLinks %}
