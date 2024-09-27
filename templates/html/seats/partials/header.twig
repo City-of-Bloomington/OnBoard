@@ -12,11 +12,11 @@
 #}
 {% set url     = current_url() %}
 {% set current = url.current is defined and url.current==0 ? false : true %}
-<ul class="nav nav-pills">
+<ul  class="nav nav-tabs">
     <li class="nav-item">
         <a href="{{ uri('seats.index') }}"
            class="nav-link {{ ROUTE_NAME=='seats.index' ? 'active' : '' }}">
-           {{ _(['seat', 'seats', 10]) }}
+           {{ _('all') }}
         </a>
     </li>
     <li class="nav-item">

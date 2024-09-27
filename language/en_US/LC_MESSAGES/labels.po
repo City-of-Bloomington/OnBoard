@@ -24,6 +24,9 @@ msgstr "Home"
 msgid "add"
 msgstr "Add"
 
+msgid "all"
+msgstr "All"
+
 msgid "edit"
 msgstr "Edit"
 
