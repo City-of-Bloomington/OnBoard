@@ -8,15 +8,16 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
-    <header>
-        <h2>{{ committee.getName() }}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
             {% set vacancies = committee.getVacancyCount() %}
             {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
+        </h1>
         {{ include('html/committees/partials/header.twig') }}
-        <h3>{{ _('applications_reportForm_title', 'messages') }}</h3>
     </header>
+
+    <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
 
     <form method="post" action="{{ uri('applications.report') }}">
         <fieldset>
@@ -40,7 +41,7 @@
                     <th>{{ _('created') }}</th>
                     <th>{{ _('name'   ) }}</th>
                     <th>{{ _('expires') }}</th>
-                    <th></th>
+                    <th>{{ _('actions') }}</th>
                 </tr>
             </thead>
             <tbody>
