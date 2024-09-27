@@ -86,7 +86,7 @@
             <th scope="col">{{ _('phone') }}</th>
             {% endif %}
             {% if isAllowed('liaisons', 'update') %}
-            <th scope="col">{{ _('liaison_edit') }}</th>
+            <th scope="col">{{ _('actions') }}</th>
             {% endif %}
         </tr>
       </thead>
@@ -107,5 +107,8 @@
         </tbody>
     </table>
     {% endif %}
+
+    
+
 </section>
 {% endblock %}
