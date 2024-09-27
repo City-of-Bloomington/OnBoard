@@ -6,12 +6,14 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
-    <header><h2>{{ _(['liaison', 'liaisons', 10]) }}</h2></header>
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ _(['liaison', 'liaisons', 10]) }}</h1>
+    </header>
     {% if actionLinks is defined %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
-    <table>
+    <table  class="table table-sm">
     {% for row in data %}
     <tr><td><a href="{{ uri('committees.info') }}?committee_id={{ row.committee_id }}">{{ row.committee }}</a></td>
         <td>{{ _(row.type) }}</td>
