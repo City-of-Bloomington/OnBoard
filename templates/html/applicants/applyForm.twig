@@ -16,14 +16,14 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
-    <header>
-        <h2>{% if committee %}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{% if committee %}
             {{ _('applyToCommittee', 'messages')|format(committee.getName()) }}
             {% else %}
             {{ _('apply') }}
             {% endif %}
-        </h2>
+        </h1>
     </header>
     <div>
     {{ help|markdown_to_html }}
