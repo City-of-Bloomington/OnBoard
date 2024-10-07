@@ -7,8 +7,8 @@
  * @param array     members
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-
 <section>
     <header>
         <h2>{{ committee.getName() }}
@@ -25,8 +25,8 @@
             </a>
         </td>
         <td>{{ member.startDate }} - {{ member.endDate }}</td>
-        <td>{% if row.actionLinks is defined %}
-            {% for a in row.actionLinks %}<a href="{{ a.url }}">{{ a.label }}</a>{% endfor %}
+        <td>{% if member.actionLinks is defined %}
+            {{ include('html/partials/moreLinks.twig', {actionLinks:member.actionLinks}, with_context:false) }}
             {% endif %}
         </td>
     </tr>
@@ -34,13 +34,13 @@
     </table>
 
     {% if     isAllowed('members', 'update' ) %}
-    <a class="btn btn-primary" href="{{ uri('members.update') }}?committee_id={{ committee.getId() }}">{{ _('member_add') }}</a>
+    {{ forms.actionLink(uri('members.update') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
     {% elseif isAllowed('members', 'appoint') %}
-    <a class="btn btn-primary" href="{{ uri('members.appoint') }}?committee_id={{ committee.getId() }}">{{ _('member_add') }}</a>
+    {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
     {% endif %}
 
     {% if committee.hasVacancy() %}
-    <a class="btn btn-primary" href="{{ uri('applicants.apply') }}?committee_id={{ committee.getId() }}">{{ _('apply') }}</a>
+    {{ forms.actionLink(uri('applicants.apply') ~ '?committee_id=' ~ committee.getId(), _('apply'), 'add' )}}
     {% endif %}
 </section>
 {% endblock %}

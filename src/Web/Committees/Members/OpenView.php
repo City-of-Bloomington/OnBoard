@@ -18,8 +18,8 @@ class OpenView extends View
         parent::__construct();
 
         $title = $current
-                 ? parent::_(['current_member', 'current_members', count($members)])
-                 : parent::_(['past_member',    'past_members',    count($members)]);
+                 ? parent::_(['current_member', 'current_members', 10])
+                 : parent::_(['past_member',    'past_members',    10]);
 
         $this->vars = [
             'committee' => $committee,
@@ -33,7 +33,7 @@ class OpenView extends View
         return $this->twig->render("{$this->outputFormat}/committees/open_members.twig", $this->vars);
     }
 
-    private function member_data(Committee $committee, array &$objects): array
+    private function member_data(Committee $committee, array &$member_data): array
     {
         $committee_id         = $committee->getId();
         $userCanEditOffices   = parent::isAllowed('offices', 'update');
@@ -41,11 +41,10 @@ class OpenView extends View
         $userCanDeleteMembers = parent::isAllowed('members', 'delete');
 
         $members = [];
-        foreach ($objects as $m) {
+        foreach ($member_data as $m) {
             $links   = [];
-            $member_id = $m->getId();
-            $person_id = $m->getPerson_id();
-            $offices   = $m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d'));
+            $member_id = $m['member_id'];
+            $person_id = $m['member_person_id'];
 
             if ($userCanEditOffices) {
                 $links[] = [
@@ -54,7 +53,7 @@ class OpenView extends View
                     'class' => 'add'
                 ];
             }
-            foreach ($offices as $o) {
+            foreach ($m['offices'] as $o) {
                 if ($userCanEditOffices) {
                     $links[] = [
                         'url'   => parent::generateUri('offices.update')."?office_id={$o->getId()}",
@@ -82,10 +81,10 @@ class OpenView extends View
             $members[] = [
                 'member_id'   => $member_id,
                 'person_id'   => $person_id,
-                'name'        => $m->getPerson()->getFullname(),
-                'offices'     => $offices,
-                'startDate'   => $m->getStartDate(),
-                'endDate'     => $m->getEndDate(),
+                'name'        => "$m[member_firstname] $m[member_lastname]",
+                'offices'     => $m['offices'],
+                'startDate'   => $m['member_startDate'],
+                'endDate'     => $m['member_endDate'],
                 'actionLinks' => $links
             ];
         }

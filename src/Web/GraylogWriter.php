@@ -18,8 +18,6 @@ class GraylogWriter extends AbstractWriter
 
     public function __construct(string $url, int $port)
     {
-        $this->url = $url;
-
         $transport = new UdpTransport($url, $port, UdpTransport::CHUNK_SIZE_LAN);
         $this->publisher = new Publisher();
         $this->publisher->addTransport($transport);
