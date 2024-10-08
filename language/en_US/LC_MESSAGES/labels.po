@@ -57,6 +57,9 @@ msgstr "More"
 msgid "confirm"
 msgstr "Confirm"
 
+msgid "sort_by"
+msgstr "Sort by:"
+
 msgid "yes"
 msgstr "Yes"
 
