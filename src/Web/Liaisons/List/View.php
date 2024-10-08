@@ -42,14 +42,14 @@ class View extends \Web\View
             $uri->format = 'csv';
             $out[] = [
                 'url'   => $uri->__toString(),
-                'label' => 'csv',
+                'label' => 'CSV Export',
                 'class' => 'download'
             ];
 
             $uri->format = 'email';
             $out[] = [
                 'url'   => $uri->__toString(),
-                'label' => 'email',
+                'label' => 'Liaison Email List',
                 'class' => 'download'
             ];
         }
