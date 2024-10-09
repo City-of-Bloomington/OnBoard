@@ -30,7 +30,33 @@
                         <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
                     </li>
                 </ul>
-
+                <ul class="navbar-nav d-sm-none">
+                    {% if isAllowed('committees', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('committees.index') }}" class="nav-link {{ ROUTE_NAME starts with 'committees.' ? 'active' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('people', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('people.index') }}" class="nav-link {{ ROUTE_NAME starts with 'people.' ? 'active' : '' }}">{{ _(['person', 'people', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('seats', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('seats.index') }}" class="nav-link {{ ROUTE_NAME starts with 'seats.' ? 'active' : '' }}">{{ _(['seat', 'seats', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('liaisons', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('liaisons.index') }}" class="nav-link {{ ROUTE_NAME starts with 'liaisons.index' ? 'active' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('applicants', 'apply') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('applicants.apply') }}" class="nav-link {{ ROUTE_NAME starts with 'applicants.' ? 'active' : '' }}">{{ _('apply') }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
                 <div class="align-self-end">
                     {{ include('html/layouts/partials/user_menu.twig') }}
                 </div>
