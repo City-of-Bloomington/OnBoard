@@ -54,6 +54,9 @@ msgstr "Done"
 msgid "more"
 msgstr "More"
 
+msgid "menu"
+msgstr "Menu"
+
 msgid "confirm"
 msgstr "Confirm"
 
