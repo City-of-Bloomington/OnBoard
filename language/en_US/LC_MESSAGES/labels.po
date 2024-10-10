@@ -54,8 +54,14 @@ msgstr "Done"
 msgid "more"
 msgstr "More"
 
+msgid "menu"
+msgstr "Menu"
+
 msgid "confirm"
 msgstr "Confirm"
+
+msgid "sort_by"
+msgstr "Sort by:"
 
 msgid "yes"
 msgstr "Yes"

@@ -3,8 +3,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-<nav id="nav1" class="container mb-2">
-<ul class="nav nav-underline nav-justified flex-column flex-sm-row">
+<nav id="nav1" class="container mb-2 d-none d-sm-block">
+<ul class="nav nav-underline nav-justified">
     {% if isAllowed('committees', 'index') %}
     <li class="nav-item">
         <a href="{{ uri('committees.index') }}" class="nav-link {{ ROUTE_NAME starts with 'committees.' ? 'active' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>

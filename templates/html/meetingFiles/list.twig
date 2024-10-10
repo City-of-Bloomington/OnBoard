@@ -31,38 +31,63 @@
         {{ include('html/committees/partials/header.twig') }}
     </header>
     {% endif %}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
-        {% if addLinks %}
-        <nav class="dropdown align-self-center me-3">
-            <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ _('add') }}
-            </button>
-            <ul class="dropdown-menu">
-                {% for link in addLinks %}
-                <li><a href="{{ link.url }}" class="dropdown-item">{{ link.label }}</a></li>
-                {% endfor %}
-            </ul>
-        </nav>
-        {% endif %}
-        <fieldset class="align-self-center me-3">
+    <div class="d-flex flex-sm-row flex-column">
+        <div class="flex-grow-1 flex-row mb-3">
+            <div class="d-flex">
+                <h2 class="me-3">{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+                {% if addLinks %}
+                <nav class="dropdown align-self-center me-3">
+                    <button class="btn btn-sm btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ _('add') }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for link in addLinks %}
+                        <li><a href="{{ link.url }}" class="dropdown-item">{{ link.label }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row me-3 flex-row mb-3">
             {% if committee %}
             <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
             {% endif %}
-            <div>
-                <label for="year">{{ _('year') }}</label>
-                <select name="year" id="year" onchange="this.form.submit();">
+            <div class="col-auto">
+                <label class="col-form-label" for="year">{{ _('year') }}:</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" name="year" id="year" onchange="this.form.submit();">
                     {% for y in years %}
                     <option{{ y==year ? ' selected="true"' : ''}}>{{ y }}</option>
                     {% endfor %}
                 </select>
             </div>
-        </fieldset>    
+        </div>
+
+        {% set url = current_url() %}
+        <div class="row flex-row">
+            {% for k,v in url.parameters %}
+            {% if k!='type' and k!='year' %}
+            <input name="{{ k }}" type="hidden" value="{{ v }}" />
+            {% endif %}
+            {% endfor %}
+            <div class="col-auto">
+                <label class="col-form-label" for="type">{{ _('sort_by') }}</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" name="type" onchange="this.form.submit();">
+                    <option value="">{{ _('type') }}</option>
+                    {% for t in types %}
+                    <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>    
     </div>
 
     <table class="table">
     <thead>
-        {% set url = current_url() %}
         <tr><th>{% do url.__set('sort', (sort.field=='title' and sort.direction=='desc') ? 'title asc' : 'title desc') %}
                 <a href="{{ url }}">{{ _('title') }}</a>
             </th>
@@ -72,20 +97,7 @@
             <th>{% do url.__set('sort', (sort.field=='meetingDate' and sort.direction=='desc') ? 'meetingDate asc' : 'meetingDate desc') %}
                 <a href="{{ url }}">{{ _('meetingDate') }}</a>
             </th>
-            <th><fieldset>
-                    {% for k,v in url.parameters %}
-                    {% if k!='type' and k!='year' %}
-                    <input name="{{ k }}" type="hidden" value="{{ v }}" />
-                    {% endif %}
-                    {% endfor %}
-                    <select name="type" onchange="this.form.submit();">
-                        <option value="">{{ _('type') }}</option>
-                        {% for t in types %}
-                        <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
-                        {% endfor %}
-                    </select>
-                </fieldset>
-            </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>

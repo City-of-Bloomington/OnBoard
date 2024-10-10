@@ -17,19 +17,50 @@
                 {{ APPLICATION_NAME }}
             </a>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu" aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler p-3" type="button" data-bs-toggle="collapse" data-bs-target="#nav-menu" aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">
+            {{ _('menu') }}
         </button>
-        <div class="collapse navbar-collapse mb-1" id="nav-menu">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ BASE_URI }}/help">Help</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
-                </li>
-            </ul>
-            {{ include('html/layouts/partials/user_menu.twig') }}
+        <div class="collapse navbar-collapse mb-1 justify-content-end" id="nav-menu">
+            <div class="d-flex align-items-end flex-sm-row flex-column">
+                <ul class="navbar-nav">
+                    <li class="nav-item align-self-end">
+                        <a class="nav-link" href="{{ BASE_URI }}/help">Help</a>
+                    </li>
+                    <li class="nav-item align-self-end">
+                        <a class="nav-link" href="https://bloomington.in.gov/ureport/miscellaneous/53">Feedback</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-sm-none">
+                    {% if isAllowed('committees', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('committees.index') }}" class="nav-link {{ ROUTE_NAME starts with 'committees.' ? 'active' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('people', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('people.index') }}" class="nav-link {{ ROUTE_NAME starts with 'people.' ? 'active' : '' }}">{{ _(['person', 'people', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('seats', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('seats.index') }}" class="nav-link {{ ROUTE_NAME starts with 'seats.' ? 'active' : '' }}">{{ _(['seat', 'seats', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('liaisons', 'index') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('liaisons.index') }}" class="nav-link {{ ROUTE_NAME starts with 'liaisons.index' ? 'active' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
+                    </li>
+                    {% endif %}
+                    {% if isAllowed('applicants', 'apply') %}
+                    <li class="nav-item align-self-end">
+                        <a href="{{ uri('applicants.apply') }}" class="nav-link {{ ROUTE_NAME starts with 'applicants.' ? 'active' : '' }}">{{ _('apply') }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="align-self-end">
+                    {{ include('html/layouts/partials/user_menu.twig') }}
+                </div>
+            </div>
         </div>
     </div>
 </nav>
