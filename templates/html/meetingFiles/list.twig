@@ -20,16 +20,10 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 
 {% block content %}
-<section class="container my-3">
+<section class="my-3">
     <form method="get">
     {% if committee %}
-    <header class="mb-3">
-        <h1>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
+    {{ include('html/committees/partials/header.twig') }}
     {% endif %}
     <div class="d-flex flex-sm-row flex-column">
         <div class="flex-grow-1 flex-row mb-3">
@@ -73,7 +67,7 @@
             {% endif %}
             {% endfor %}
             <div class="col-auto">
-                <label class="col-form-label" for="type">{{ _('sort_by') }}</label>
+                <label class="col-form-label" for="type">{{ _('filter_by') }}</label>
             </div>
             <div class="col-auto">
                 <select class="form-select" name="type" onchange="this.form.submit();">

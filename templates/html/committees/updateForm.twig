@@ -7,8 +7,8 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container">
-    <header>
+<section class="my-3">
+    <header class="mb-3">
         <h2>{{ committee.getName() }}</h2>
         <h3>{{ committee.getId() ? _('committee_edit') : _('committee_add') }}</h3>
     </header>
