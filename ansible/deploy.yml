@@ -85,8 +85,8 @@
         dest: "{{ item.dest }}"
         mode: "0755"
       loop:
-        - { src: 'backup.sh', dest: '/etc/cron.daily/backup.d/onboard' }
-        - { src: 'solr.sh',   dest: '/etc/cron.hourly/onboard' }
+        - { src: 'daily.sh', dest: '/etc/cron.daily/backup.d/onboard' }
+        - { src: 'hourly.sh',   dest: '/etc/cron.hourly/onboard' }
 
     - name: "Update directory ownership"
       command: "chown -R www-data:staff {{ item }}"
