@@ -51,6 +51,9 @@ msgstr "Cancel"
 msgid "done"
 msgstr "Done"
 
+msgid "download"
+msgstr "Download"
+
 msgid "more"
 msgstr "More"
 
@@ -235,6 +238,9 @@ msgstr "History"
 
 msgid "type"
 msgstr "Type"
+
+msgid "choose_type"
+msgstr "Choose Type"
 
 msgid "subtype"
 msgstr "Subtype"

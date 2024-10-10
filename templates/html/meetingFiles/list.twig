@@ -70,8 +70,8 @@
                 <label class="col-form-label" for="type">{{ _('filter_by') }}</label>
             </div>
             <div class="col-auto">
-                <select class="form-select" name="type" onchange="this.form.submit();">
-                    <option value="">{{ _('type') }}</option>
+                <select class="form-select" id="type" name="type" onchange="this.form.submit();">
+                    <option value="" aria-label="{{ _('choose_type') }}"></option>
                     {% for t in types %}
                     <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
                     {% endfor %}
@@ -80,7 +80,7 @@
         </div>    
     </div>
 
-    <table class="table">
+    {# <table class="table">
     <thead>
         <tr><th>{% do url.__set('sort', (sort.field=='title' and sort.direction=='desc') ? 'title asc' : 'title desc') %}
                 <a href="{{ url }}">{{ _('title') }}</a>
@@ -108,7 +108,31 @@
         </tr>
         {% endfor %}
     </tbody>
-    </table>
+    </table> #}
+
+    {% for f in files %}
+    <div class="card mb-3">
+        <div class="card-body row">
+            <div class="col">{{ f.title }}</div>
+            <div class="col">
+                <a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-label="{{ _('download') }}" class="bi bi-download" viewBox="0 0 16 16">
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="col">{{ f.meetingDate }}</div>
+            {% if f.actions %}
+            <div class="col">
+                {{ include('html/partials/moreLinks.twig', { actionLinks: f.actions }) }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
     {% endif %}
