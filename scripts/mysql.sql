@@ -204,9 +204,18 @@ create table siteContent (
     content text
 );
 
+create table meetings(
+    id               int unsigned not null primary key auto_increment,
+    committee_id     int unsigned not null,
+    start            datetime not null,
+    eventId          varchar(128),
+    foreign key (committee_id) references committees(id)
+);
+
 create table meetingFiles(
 	id               int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,
+    meeting_id       int unsigned not null,
     meetingDate      date         not null,
     eventId          varchar(128),
     type             varchar(16)  not null,
@@ -218,6 +227,7 @@ create table meetingFiles(
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 	indexed          timestamp
 	foreign key (committee_id) references committees(id)
+	foreign key (  meeting_id) references   meetings(id)
 );
 
 create table committeeHistory(
