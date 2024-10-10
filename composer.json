@@ -17,6 +17,12 @@
         "twig/twig":                       "@stable",
         "twig/markdown-extra":             "@stable"
     },
+    "scripts": {
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+        "google/apiclient-services": ["Calendar"]
+    },
     "require-dev": {
         "phpunit/phpunit": "~9.0"
     },
