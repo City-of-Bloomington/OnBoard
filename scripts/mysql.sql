@@ -208,7 +208,10 @@ create table meetings(
     id               int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,
     start            datetime not null,
+    end              datetime,
     eventId          varchar(128),
+    location         varchar(256),
+    htmlLink         varchar(256)
     foreign key (committee_id) references committees(id)
 );
 

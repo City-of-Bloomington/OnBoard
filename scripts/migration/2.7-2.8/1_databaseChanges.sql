@@ -8,8 +8,11 @@ create table meetings(
     id               int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,
     meetingDate      date         not null,
-    datetime         datetime,
+    start            datetime,
+    end              datetime,
     eventId          varchar(128),
+    location         varchar(256),
+    htmlLink         varchar(256),
     foreign key (committee_id) references committees(id)
 );
 
@@ -17,8 +20,6 @@ insert into meetings (committee_id, meetingDate, eventId)
 select f.committee_id, f.meetingDate, f.eventId
 from meetingFiles f
 group by f.committee_id, f.meetingDate, f.eventId;
-
-update meetings set eventId=null where datetime is null;
 
 alter table meetingFiles add meeting_id int unsigned not null after committee_id;
 
