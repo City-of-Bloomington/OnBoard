@@ -1,0 +1,38 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array     meetings
+ * @param Committee committee
+ *
+ * Meetings are a multi-dimension array by date and time.  For for
+ * day, there are several meetings.  These are indexed by meeting time.
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% block content %}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h1>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <table>
+    {% for date, t in meetings %}
+        {% for time, m in t %}
+        <tr><td>{{ m.start }} - {{ m.end }}</td>
+            <td>{{ m.location }}</td>
+            <td>{% if m.htmlLink -%}
+                <a href="{{ m.htmlLink }}">{{ m.htmlLink }}</a>
+                {%- endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+    </table>
+</section>
+
+{% endblock %}

@@ -37,9 +37,8 @@ class Controller extends \Web\Controller
                   ?  (int) $_GET['year']
                   :  (int) date('Y');
 
-            $start = new \DateTime("$year-01-01");
-            $end   = new \DateTime("$year-01-01");
-            $end->add(new \DateInterval('P1Y'));
+            $start = new \DateTime("$year-01-01 00:00:00");
+            $end   = new \DateTime("$year-12-31 23:59:59");
         }
 
         if (!isset($year) || !isset($start) || !isset($end)) {
@@ -50,16 +49,12 @@ class Controller extends \Web\Controller
             $meetings = $committee->getMeetings($start, $end);
 
             switch ($this->outputFormat) {
-                case 'html':
-                    header("Location: ".\Web\View::generateUrl('meetingFiles.index'));
-                    exit();
-                break;
-
                 case 'json':
                     return new \Web\Views\JSONView($meetings);
                 break;
 
                 default:
+                    return new View($meetings, $committee);
             }
         }
 

@@ -61,6 +61,12 @@
     </li>
     {% endif %}
     <li class="nav-item">
+        <a href="{{ uri('committees.meetings') }}?committee_id={{ committee.getId() }}"
+           class="nav-link {{ ROUTE_NAME=='committees.meetings' ? 'active' : '' }}">
+           {{ _(['meeting', 'meetings', 10]) }}
+        </a>
+    </li>
+    <li class="nav-item">
         <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
            class="nav-link {{ ROUTE_NAME=='meetingFiles.index' ? 'active' : '' }}">
            {{ _(['meetingFile', 'meetingFiles', 10]) }}

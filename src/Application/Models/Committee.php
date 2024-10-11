@@ -417,21 +417,45 @@ class Committee extends ActiveRecord
         return $result;
 	}
 
-	/**
-	 * Returns meeting information for a date range.
-	 *
-	 * Meetings are organizd by date and event_id.  For meetings without
-	 * a Google Calendar event, the event_id is zero.  This means, if
-	 * there are multiple meetings on the same day, that are not in a
-	 * Calendar, they will all be lumped together as a single meeting.
-	 *
-	 * $meetings[date][event_id][..]
-	 *
-	 * @return array  An array of meeting dates
-	 */
+    /**
+     * Returns meeting information for a date range.
+     *
+     * Meetings are a multi-dimension array by date and time.  For for
+     * day, there are several meetings.  These are indexed by meeting time.
+     *
+     * $meetings[date][time][..meeting data..]
+     *
+     * @return array  An array of meeting dates
+     */
 	public function getMeetings(\DateTime $start, \DateTime $end): array
 	{
         $meetings = [];
+
+        $search = ['committee_id'=>$this->getId()];
+        if ($start) { $search['start'] = $start; }
+        if ($end  ) { $search['end'  ] = $end;   }
+
+        $table = new MeetingTable();
+        $list  = $table->find($search);
+        foreach ($list as $m) {
+            $date  = $m->getStart('Y-m-d');
+            $time  = $m->getStart('H:i:s');
+
+            $files = [];
+            foreach ($m->getMeetingFiles() as $f) { $files[$f->getType()][] = $f->getData(); }
+
+            $meetings[$date][$time] = [
+                'event_id' => $m->getEventId(),
+                'location' => $m->getLocation(),
+                'start'    => $m->getStart('c'),
+                'end'      => $m->getEnd  ('c'),
+                'htmlLink' => $m->getHtmlLink(),
+                'files'    => $files
+            ];
+        }
+        ksort($meetings);
+        return $meetings;
+
 
         if ($this->getCalendarId()) {
             $events = GoogleGateway::events($this->getCalendarId(), $start, $end);
@@ -471,7 +495,7 @@ class Committee extends ActiveRecord
         ksort($meetings);
 
         return $meetings;
-	}
+    }
 
 	/**
 	 * @return array
