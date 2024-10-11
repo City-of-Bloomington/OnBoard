@@ -51,6 +51,9 @@ msgstr "Cancel"
 msgid "done"
 msgstr "Done"
 
+msgid "download"
+msgstr "Download"
+
 msgid "more"
 msgstr "More"
 
@@ -60,8 +63,8 @@ msgstr "Menu"
 msgid "confirm"
 msgstr "Confirm"
 
-msgid "sort_by"
-msgstr "Sort by:"
+msgid "filter_by"
+msgstr "Filter by:"
 
 msgid "yes"
 msgstr "Yes"
@@ -235,6 +238,9 @@ msgstr "History"
 
 msgid "type"
 msgstr "Type"
+
+msgid "choose_type"
+msgstr "Choose Type"
 
 msgid "subtype"
 msgstr "Subtype"
@@ -738,8 +744,8 @@ msgstr[1] "Meetings"
 
 msgid "meetingFile"
 msgid_plural "meetingFiles"
-msgstr[0] "Meeting"
-msgstr[1] "Meetings"
+msgstr[0] "File"
+msgstr[1] "Files"
 
 msgid "meetingFile_add"
 msgstr "Add Document"

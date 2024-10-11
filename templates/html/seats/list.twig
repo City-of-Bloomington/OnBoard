@@ -6,9 +6,11 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container my-3">
+<section class="my-3">
     <header class="mb-3">
-        <h1>{{ _(['seat', 'seats', 10]) }}</h1>
+        <div class="mb-3">
+            <h1>{{ _(['seat', 'seats', 10]) }}</h1>
+        </div>
         {{ include('html/seats/partials/header.twig') }}
     </header>
     <div class="d-flex">

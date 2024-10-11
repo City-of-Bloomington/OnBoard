@@ -8,24 +8,14 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="container my-3">
-    <header class="mb-3">
-        <h1>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
+<section class="my-3">
+    {{ include('html/committees/partials/header.twig') }}
     <div class="d-flex">
         <h2 class="me-3">{{ _(['current_member', 'current_members', 10]) }}</h2>
         {% if isAllowed('seats', 'update') %}
         {{ forms.actionLink(uri('seats.update'), _('seat_add'), 'add') }}
         {% endif %}
-        {% if committee.hasVacancy() %}
-        <a class="btn btn-sm btn-primary align-self-center" href="{{ uri('applicants.apply') }}?committee_id={{ committee.getId() }}">{{ _('apply') }}</a>
-        {% endif %}
     </div>
-
     <table class="table">
         <thead>
             <tr><th>{{ _('seat'        ) }}</th>

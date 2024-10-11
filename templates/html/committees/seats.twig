@@ -7,14 +7,8 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="container my-3">
-    <header class="mb-3">
-        <h1>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
+<section class="my-3">
+    {{ include('html/committees/partials/header.twig') }}
     <div class="d-flex">
         <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
         {% if isAllowed('seats', 'add') %}

@@ -6,12 +6,11 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container">
-    <header><h2>{{ person.getFullname() }}</h2></header>
+<section class="my-3">
+    <header><h1>{{ person.getFullname() }}</h1></header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
-
     {{ include('html/people/partials/info.twig') }}
 </section>
 

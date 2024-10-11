@@ -7,8 +7,8 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container my-3">
-    <header class="d-flex flex-wrap">
+<section class="my-3">
+    <header class="d-flex flex-wrap mb-3">
         <h1 class="me-3">{{ _(['committee', 'committees', 10]) }}</h1>
         {% if actionLinks %}
             {{ include('html/partials/actionLinks.twig') }}
