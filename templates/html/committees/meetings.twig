@@ -20,19 +20,31 @@
         {{ include('html/committees/partials/header.twig') }}
     </header>
 
-    <table>
     {% for date, t in meetings %}
         {% for time, m in t %}
-        <tr><td>{{ m.start }} - {{ m.end }}</td>
-            <td>{{ m.location }}</td>
-            <td>{% if m.htmlLink -%}
-                <a href="{{ m.htmlLink }}">{{ m.htmlLink }}</a>
+        <div class="card">
+            <div class="card-body">
+                <h3>{{ m.start }} - {{ m.end }}</h3>
+                <p>{{ m.location }}</p>
+                <table>
+                {% for type, t in m.files %}
+                    {% for f in t %}
+                    <tr><th>{{ f.type }}</th>
+                        <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                                {{ f.title ?? f.filename }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+                </table>
+                {% if m.htmlLink -%}
+                <a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
                 {%- endif %}
-            </td>
-        </tr>
+            </div>
+        </div>
         {% endfor %}
     {% endfor %}
-    </table>
 </section>
 
 {% endblock %}
