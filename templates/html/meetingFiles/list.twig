@@ -60,7 +60,7 @@
         </div>
 
         {% set url = current_url() %}
-        <div class="row flex-row">
+        <div class="row flex-row mb-3">
             {% for k,v in url.parameters %}
             {% if k!='type' and k!='year' %}
             <input name="{{ k }}" type="hidden" value="{{ v }}" />
@@ -113,16 +113,23 @@
     {% for f in files %}
     <div class="card mb-3">
         <div class="card-body row">
-            <div class="col">{{ f.title }}</div>
             <div class="col">
-                <a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                <h3 class="card-title fs-5">{{ f.title }}</h3>
+            </div>
+            <div class="col">
+                <small class="card-text"><b>{{ _('type') }}:</b> {{ f.type }}</small>
+            </div>
+            <div class="col">
+                <small class="card-text"><b>{{ _('meetingDate') }}:</b> {{ f.meetingDate }}</small>
+            </div>
+            <div class="col">
+                <a class="card-link icon-link" href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-label="{{ _('download') }}" class="bi bi-download" viewBox="0 0 16 16">
                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                         <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
                     </svg>
                 </a>
             </div>
-            <div class="col">{{ f.meetingDate }}</div>
             {% if f.actions %}
             <div class="col">
                 {{ include('html/partials/moreLinks.twig', { actionLinks: f.actions }) }}
