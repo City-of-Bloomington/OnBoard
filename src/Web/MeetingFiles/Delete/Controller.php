@@ -9,6 +9,7 @@ namespace Web\MeetingFiles\Delete;
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 use Application\Models\CommitteeTable;
+use Web\Search\Solr;
 
 class Controller extends \Web\Controller
 {

@@ -58,14 +58,21 @@
             </a>
         </li>
         {% endif %}
+
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="nav-item">
             <a href="{{ uri('committees.applications') }}?committee_id={{ committee.getId() }}"
-            class="nav-link {{ ROUTE_NAME=='committees.applications' ? 'active' : '' }}">
-            {{ _(['application', 'applications', 10]) }}
+               class="nav-link {{ ROUTE_NAME=='committees.applications' ? 'active' : '' }}">
+               {{ _(['application', 'applications', 10]) }}
             </a>
         </li>
         {% endif %}
+        <li class="nav-item">
+            <a href="{{ uri('committees.meetings') }}?committee_id={{ committee.getId() }}"
+            class="nav-link {{ ROUTE_NAME=='committees.meetings' ? 'active' : '' }}">
+            {{ _(['meeting', 'meetings', 10]) }}
+            </a>
+        </li>
         <li class="nav-item">
             <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
             class="nav-link {{ ROUTE_NAME=='meetingFiles.index' ? 'active' : '' }}">

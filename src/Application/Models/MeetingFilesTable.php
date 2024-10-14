@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2023 City of Bloomington, Indiana
+ * @copyright 2017-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -14,7 +14,7 @@ use Laminas\Db\Sql\Expression;
 class MeetingFilesTable extends TableGateway
 {
     const TABLE = 'meetingFiles';
-    public static $sortableFields = ['filename', 'meetingDate', 'created'];
+    public static $sortableFields = ['filename', 'start', 'created'];
 
 	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 
@@ -24,15 +24,15 @@ class MeetingFilesTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
                     case 'start':
-                        $select->where(['meetingDate >= ?'=> $value->format('Y-m-d')]);
+                        $select->where(['m.start >= ?'=> $value->format('Y-m-d')]);
                     break;
 
                     case 'end':
-                        $select->where(['meetingDate <= ?'=>$value->format('Y-m-d')]);
+                        $select->where(['m.start <= ?'=>$value->format('Y-m-d')]);
                     break;
 
                     case 'year':
-                        $select->where(['year(meetingDate)=?' => (int)$value]);
+                        $select->where(['year(start)=?' => (int)$value]);
                     break;
 
                     case 'indexed':
@@ -54,6 +54,7 @@ class MeetingFilesTable extends TableGateway
 	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
 	{
 		$select = new Select(self::TABLE);
+        $select->join(['m'=>'meetings'], 'm.id=meetingFiles.meeting_id', []);
 		$this->processFields($fields, $select);
 
 		return parent::performSelect($select, $order, $paginated, $limit);
@@ -64,8 +65,9 @@ class MeetingFilesTable extends TableGateway
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
                       ->from(self::TABLE)
+                      ->join(['m'=>'meetings'], 'm.id=meetingFiles.meeting_id', [])
                       ->columns([
-                            'year'  => new Expression('distinct(year(meetingDate))'),
+                            'year'  => new Expression('distinct(year(m.start))'),
                             'count' => new Expression('count(*)')
                         ])
                       ->group('year')
@@ -89,7 +91,8 @@ class MeetingFilesTable extends TableGateway
 	{
         $sql    = "select d.department_id
                    from meetingFiles          f
-                   join committee_departments d on f.committee_id=d.committee_id
+                   join meetings              m on m.id=f.meeting_id
+                   join committee_departments d on m.committee_id=d.committee_id
                    where d.department_id=? and f.id=?;";
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$department_id, $file_id]);

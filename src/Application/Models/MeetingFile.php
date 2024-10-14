@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2023 City of Bloomington, Indiana
+ * @copyright 2017-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -17,8 +17,7 @@ class MeetingFile extends File
     public $validation = self::VALIDATION_ALL;
 
     protected $tablename = 'meetingFiles';
-    protected $committee;
-    protected $event;
+    protected $meeting;
 
     public static $types = ['Agenda', 'Memorandum', 'Minutes', 'Packet'];
 
@@ -37,33 +36,13 @@ class MeetingFile extends File
 
     public function validateDatabaseInformation()
     {
-        $committee = $this->getCommittee();
-        if ($committee->getCalendarId()) {
-            $event = $this->getEvent();
-            if ($event) {
-                // Make sure the meetingDate matches the event date
-                $startDate = $event->start->dateTime
-                    ? new \DateTime($event->start->dateTime)
-                    : new \DateTime($event->start->date);
-                if ($this->getMeetingDate()) {
-                    if ($this->getMeetingDate('Y-m-d') != $startDate->format('Y-m-d')) {
-                        throw new \Exception('meetingFiles/dateMismatch');
-                    }
-                }
-                else {
-                    $this->setMeetingDate($startDate->format('Y-m-d'));
-                }
-            }
-        }
-
-        if (!$this->getType() || !$this->getCommittee_id() || !$this->getMeetingDate()) {
+        if (!$this->getType() || !$this->getMeeting_id()) {
             throw new \Exception('missingRequiredFields');
         }
 
         if (!in_array($this->getType(), self::$types)) {
             throw new \Exception('meetingFiles/invalidType');
         }
-
     }
 
     public function validate()
@@ -81,19 +60,15 @@ class MeetingFile extends File
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getType()         { return parent::get('type'        ); }
-    public function getTitle()        { return parent::get('title'       ); }
-    public function getEventId()      { return parent::get('eventId'     ); }
-    public function getCommittee_id() { return parent::get('committee_id'); }
-    public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-    public function getMeetingDate($f=null) { return parent::getDateData('meetingDate', $f); }
+    public function getType()       { return parent::get('type'        ); }
+    public function getTitle()      { return parent::get('title'       ); }
+    public function getMeeting_id() { return parent::get('meeting_id'); }
+    public function getMeeting()    { return parent::getForeignKeyObject(__namespace__.'\Meeting', 'meeting_id'); }
 
-    public function setType        ($s) { parent::set('type',    $s); }
-    public function setTitle       ($s) { parent::set('title',   $s); }
-    public function setEventId     ($s) { parent::set('eventId', $s); }
-    public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
-    public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
-    public function setMeetingDate (?string $date=null, ?string $format='Y-m-d') { parent::setDateData('meetingDate', $date, $format); }
+    public function setType      ($s) { parent::set('type',    $s); }
+    public function setTitle     ($s) { parent::set('title',   $s); }
+    public function setMeeting_id($i) { parent::setForeignKeyField (__namespace__.'\Meeting', 'meeting_id', $i); }
+    public function setMeeting   ($o) { parent::setForeignKeyObject(__namespace__.'\Meeting', 'meeting_id', $o); }
 
     public function setIndexed(\DateTime $d)    { $this->data['indexed'   ] = $d->format(ActiveRecord::MYSQL_DATETIME_FORMAT); }
     public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
@@ -102,27 +77,28 @@ class MeetingFile extends File
     //----------------------------------------------------------------
     // Custom Functions
     //----------------------------------------------------------------
-    /**
-     * @override
-     * @return string
-     */
-    public function getDisplayFilename()
+    public function getCommittee(): Committee
     {
-        $committee = $this->getCommittee();
-        $name = $committee->getCode()
-                ? $committee->getCode()
-                : $committee->getName();
-        $name = parent::createValidFilename($name);
-        return "$name-{$this->getMeetingDate('Ymd')}-{$this->getType()}.{$this->getExtension()}";
+        return $this->getMeeting()->getCommittee();
     }
 
-    /**
-     * @return array
-     */
-    public function getData() {
+    public function getDisplayFilename(): string
+    {
+        $m    = $this->getMeeting();
+        $c    = $m->getCommittee();
+        $name = $c->getCode() ? $c->getCode() : $c->getName();
+        $name = parent::createValidFilename($name);
+        return "$name-{$m->getStart('Ymd')}-{$this->getType()}.{$this->getExtension()}";
+    }
+
+    public function getData(): array
+    {
+        $m    = $this->getMeeting();
+        $c    = $m->getCommittee();
+
         $data = $this->data;
         $data['url'      ] = $this->getDownloadUrl();
-        $data['committee'] = $this->getCommittee()->getName();
+        $data['committee'] = $c->getName();
         return $data;
     }
 
@@ -133,30 +109,14 @@ class MeetingFile extends File
      * with their own custom scheme for the directory structure.
      * This implementation should be a good enough default that most
      * of the time, we won't need to override it.
-     *
-     * @return string
      */
-    public function getDirectory()
+    public function getDirectory(): string
     {
-        return $this->getMeetingDate('Y/m/d');
+        return $this->getMeeting()->getStart('Y/m/d');
     }
 
-    public function getEvent()
-    {
-        if (!$this->event && $this->getEventId()) {
-            $this->event = GoogleGateway::getEvent(
-                $this->getCommittee()->getCalendarId(),
-                $this->getEventId()
-            );
-        }
-        return $this->event;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDownloadUrl() { return  View::generateUrl('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
-    public function getDownloadUri() { return  View::generateUri('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
+    public function getDownloadUrl():string { return  View::generateUrl('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
+    public function getDownloadUri():string { return  View::generateUri('meetingFiles.download').'?meetingFile_id='.$this->getId(); }
 
     /**
      * Extracts plain text out of a PDF
@@ -168,15 +128,17 @@ class MeetingFile extends File
 
     public function getSolrFields(): array
     {
+        $m = $this->getMeeting();
+        $c = $m->getCommittee();
         return [
             'id'        => $this->getId(),
             'type'      => $this->getType(),
-            'title'     => $this->getTitle() ?: "{$this->getCommittee()->getName()} {$this->getMeetingDate()} {$this->getType()}",
+            'title'     => $this->getTitle() ?: "{$c->getName()} {$m->getStart('Y-m-d')} {$this->getType()}",
             'url'       => $this->getDownloadUrl(),
             'text'      => $this->extractText(),
-            'date'      => $this->getMeetingDate(),
+            'date'      => $this->getMeeting()->getStart(),
             'changed'   => $this->getUpdated(),
-            'committee' => $this->getCommittee()->getName()
+            'committee' => $c->getName()
         ];
     }
 }

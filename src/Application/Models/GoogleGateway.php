@@ -1,9 +1,12 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
+
+use Google\Client;
+use Google\Service\Calendar;
 
 class GoogleGateway
 {
@@ -12,9 +15,9 @@ class GoogleGateway
         static $client = null;
 
         if (!$client) {
-            $client = new \Google_Client();
+            $client = new Client();
             $client->setAuthConfig(GOOGLE_CREDENTIALS_FILE);
-            $client->setScopes([\Google_Service_Calendar::CALENDAR]);
+            $client->setScopes([Calendar::CALENDAR]);
             $client->setSubject(GOOGLE_USER_EMAIL);
         }
         return $client;
@@ -27,7 +30,7 @@ class GoogleGateway
      * @param  DateTime $end
      * @param  boolean  $singleEvents
      * @param  int      $maxResults
-     * @return Google_Service_Calendar_EventList
+     * @return EventList
      */
     public static function events($calendarId, \DateTime $start=null, \DateTime $end=null, $singleEvents=true, $maxResults=null)
     {
@@ -45,8 +48,8 @@ class GoogleGateway
         if ($start) { $opts['timeMin'] = $start->format(\DateTime::RFC3339); }
         if ($end  ) { $opts['timeMax'] = $end  ->format(\DateTime::RFC3339); }
 
-        $service = new \Google_Service_Calendar(self::getClient());
-        $events = $service->events->listEvents($calendarId, $opts);
+        $service = new Calendar(self::getClient());
+        $events  = $service->events->listEvents($calendarId, $opts);
         return $events;
     }
 
@@ -57,7 +60,7 @@ class GoogleGateway
      */
     public static function getEvent($calendarId, $eventId)
     {
-        $service = new \Google_Service_Calendar(self::getClient());
+        $service = new Calendar(self::getClient());
         return $service->events->get($calendarId, $eventId);
     }
 }

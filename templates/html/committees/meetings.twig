@@ -1,0 +1,50 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array     meetings
+ * @param Committee committee
+ *
+ * Meetings are a multi-dimension array by date and time.  For for
+ * day, there are several meetings.  These are indexed by meeting time.
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% block content %}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h1>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    {% for date, t in meetings %}
+        {% for time, m in t %}
+        <div class="card">
+            <div class="card-body">
+                <h3>{{ m.start }} - {{ m.end }}</h3>
+                <p>{{ m.location }}</p>
+                <table>
+                {% for type, t in m.files %}
+                    {% for f in t %}
+                    <tr><th>{{ f.type }}</th>
+                        <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                                {{ f.title ?? f.filename }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+                </table>
+                {% if m.htmlLink -%}
+                <a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
+                {%- endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+</section>
+
+{% endblock %}

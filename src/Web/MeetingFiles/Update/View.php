@@ -6,6 +6,7 @@
 declare (strict_types=1);
 namespace Web\MeetingFiles\Update;
 
+use Application\Models\MeetingTable;
 use Application\Models\MeetingFile;
 use Application\Models\Committee;
 use Web\File;
@@ -16,19 +17,22 @@ class View extends \Web\View
     {
         parent::__construct();
 
+        $meeting   = $file->getMeeting();
+        $committee = $meeting->getCommittee();
+
         list($maxSize, $maxBytes) = File::maxUpload();
 
         $year = null;
         if (!empty($_REQUEST['year'])) { $year = (int)$_REQUEST['year']; }
-        if (!$year) { $year = (int)$file->getMeetingDate('Y'); }
+        if (!$year) { $year = (int)$meeting->getStart('Y'); }
         if (!$year) { $year = (int)date('Y'); }
 
        $this->vars = [
             'meetingFile' => $file,
-            'committee'   => $file->getCommittee(),
+            'committee'   => $committee,
             'types'       => self::typeOptions(),
             'year'        => $year,
-            'events'      => self::eventOptions($file->getCommittee(), $year),
+            'meetings'    => self::meetingOptions($committee, $year),
             'accept'      => self::mime_types(),
             'maxBytes'    => $maxBytes,
             'maxSize'     => $maxSize
@@ -55,21 +59,22 @@ class View extends \Web\View
         return $options;
     }
 
-    private static function eventOptions(Committee $committee, int $year): array
+    private static function meetingOptions(Committee $committee, int $year): array
     {
         $start = new \DateTime("$year-01-01");
         $end   = new \DateTime("$year-01-01");
         $end->add(new \DateInterval('P1Y'));
 
-        $meetings = $committee->getMeetings($start, $end);
-        $options  = [['value'=>'', 'label'=>'']];
-        foreach ($meetings as $date=>$day) {
-            foreach ($day as $event_id=>$m) {
-                if (!empty($m['eventId'])) {
-                    $start = new \DateTime($m['start']);
-                    $options[] = ['value'=>$m['eventId'], 'label'=>$start->format('F j Y g:i a')];
-                }
-            }
+        $table = new MeetingTable();
+        $list  = $table->find([
+            'committee_id' => $committee->getId(),
+            'start'        => $start,
+            'end'          => $end
+        ]);
+
+        $options = [['value'=>'', 'label'=>'']];
+        foreach ($list as $m) {
+            $options[] = ['value'=>$m->getId(), 'label'=>$m->getStart('F j Y g:i a')];
         }
         return $options;
     }

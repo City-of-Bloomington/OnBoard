@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
 
 		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $sort = [
-            'field'     => 'meetingDate',
+            'field'     => 'start',
             'direction' => 'desc'
         ];
 		if (!empty($_GET['sort'])) {
