@@ -24,7 +24,7 @@
         {% for time, m in t %}
         <div class="card">
             <div class="card-body">
-                <h3>{{ m.start }} - {{ m.end }}</h3>
+                <h3><a href="{{ uri('meetings.view') ~ '?meeting_id=' ~ m.id }}">{{ m.start }} - {{ m.end }}</a></h3>
                 <p>{{ m.location }}</p>
                 <table>
                 {% for type, t in m.files %}

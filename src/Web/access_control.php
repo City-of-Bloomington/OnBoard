@@ -41,6 +41,7 @@ $ACL->allow(null,  'people',           'parameters');
 $ACL->allow(null,  'committees',      ['index','info', 'members', 'seats', 'report', 'meetings']);
 $ACL->allow(null,  'seats',           ['index','view', 'vacancies']);
 $ACL->allow(null,  'applicants',       'apply');
+$ACL->allow(null,  'meetings',        ['view']);
 $ACL->allow(null, ['callback', 'login']);
 $ACL->allow(null, ['people', 'legislation', 'liaisons'],           ['index', 'view',     'years']);
 $ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);

@@ -82,15 +82,6 @@ abstract class View
                 }
             }
         });
-
-
-        $locale = LOCALE.'.utf8';
-        putenv("LC_ALL=$locale");
-        setlocale(LC_ALL, $locale);
-        bindtextdomain('labels',   APPLICATION_HOME.'/language');
-        bindtextdomain('messages', APPLICATION_HOME.'/language');
-        bindtextdomain('errors',   APPLICATION_HOME.'/language');
-        textdomain('labels');
 	}
 
 	/**
@@ -183,7 +174,7 @@ abstract class View
      * @param string $domain Alternate domain
      * @return string
      */
-    public function translate($msgid, $domain=null)
+    public static function translate($msgid, $domain=null)
     {
         if (is_array($msgid)) {
             return $domain
@@ -200,9 +191,9 @@ abstract class View
     /**
      * Alias of $this->translate()
      */
-    public function _($msgid, $domain=null)
+    public static function _($msgid, $domain=null)
     {
-        return $this->translate($msgid, $domain);
+        return self::translate($msgid, $domain);
     }
 
     public static $supportedDateFormatStrings = [
