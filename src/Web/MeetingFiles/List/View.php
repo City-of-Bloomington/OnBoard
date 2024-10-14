@@ -78,7 +78,7 @@ class View extends \Web\View
                 'type'        => $f->getType(),
                 'filename'    => $f->getFilename(),
                 'title'       => $f->getTitle(),
-                'meetingDate' => $f->getMeetingDate(DATE_FORMAT),
+                'meetingDate' => $f->getMeeting()->getStart(DATE_FORMAT),
                 'actions'     => []
             ];
             if ($userCanEdit) {

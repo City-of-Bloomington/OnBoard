@@ -7,7 +7,7 @@
  * Metadata
  * @param array  types      Meeting file type options
  * @param int    year       The year used for listing event choices
- * @param array  events     The event options for the chosen year
+ * @param array  meetings   The meeting options for the chosen year
  * @param string accept     Comma separated mime_types that are accepted
  * @param int    maxBytes   Max upload size in bytes
  * @param string maxSize    Max upload size, human readable
@@ -28,24 +28,19 @@
         <fieldset>
             <legend>{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
             <input name="meetingFile_id" type="hidden" value="{{ meetingFile.getId() }}" />
-            <input name="committee_id"   type="hidden" value="{{ meetingFile.getCommittee_id() }}" />
 
             {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
             {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
 
-            {% if committee.getCalendarId() %}
             <div class="mb-3">
-                <label for="eventId">{{ _('meeting') }}</label>
+                <label for="meeting_id">{{ _('meeting') }}</label>
                 {% set url = current_url() %}
                 {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
-                <select id="eventId" name="eventId" required="true">
-                {% for e in events %}<option value="{{ e.value }}"{{ e.value==meetingFile.getEventId() ? ' selected="true"' : ''}}>{{ e.label }}</option>{% endfor %}
+                <select id="meeting_id" name="meeting_id" required="true">
+                {% for m in meetings %}<option value="{{ m.value }}"{{ m.value==meetingFile.getMeeting_id() ? ' selected="true"' : ''}}>{{ m.label }}</option>{% endfor %}
                 </select>
                 {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
             </div>
-            {% else %}
-            {{ forms.field_date('meetingDate', 'meetingDate', _('meetingDate'), meetingFile.getMeetingDate() ? member.getMeetingDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
-            {% endif %}
 
             <div class="mb-3">
                 <label for="meetingFile">{{ _('meetingFile') }}</label>
@@ -65,5 +60,4 @@
         </fieldset>
     </form>
 </section>
-
 {% endblock %}

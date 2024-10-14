@@ -445,7 +445,8 @@ class Committee extends ActiveRecord
             foreach ($m->getMeetingFiles() as $f) { $files[$f->getType()][] = $f->getData(); }
 
             $meetings[$date][$time] = [
-                'event_id' => $m->getEventId(),
+                'id'       => $m->getId(),
+                'eventId'  => $m->getEventId(),
                 'location' => $m->getLocation(),
                 'start'    => $m->getStart('c'),
                 'end'      => $m->getEnd  ('c'),

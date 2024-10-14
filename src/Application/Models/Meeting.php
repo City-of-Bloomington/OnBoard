@@ -12,6 +12,8 @@ use Web\Database;
 class Meeting extends ActiveRecord
 {
     protected $tablename = 'meetings';
+    protected $committee;
+
     /**
      * Populates the object with data
      *

@@ -217,10 +217,7 @@ create table meetings(
 
 create table meetingFiles(
 	id               int unsigned not null primary key auto_increment,
-    committee_id     int unsigned not null,
     meeting_id       int unsigned not null,
-    meetingDate      date         not null,
-    eventId          varchar(128),
     type             varchar(16)  not null,
 	title            varchar(32),
 	internalFilename varchar(128) not null,
