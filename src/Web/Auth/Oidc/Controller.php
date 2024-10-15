@@ -29,7 +29,10 @@ class Controller extends \Web\Controller
         $oidc->addScope(['openid', 'allatclaims', 'profile']);
         $oidc->setAllowImplicitFlow(true);
         $oidc->setRedirectURL(\Web\View::generateUrl('login.index'));
-        $success = $oidc->authenticate();
+
+        $success = null;
+        try { $success = $oidc->authenticate(); }
+        catch (\Exception $e) { }
         if (!$success) {
             $_SESSION['errorMessages'][] = 'invalidLogin';
         }
