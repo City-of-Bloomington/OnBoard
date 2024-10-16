@@ -47,6 +47,7 @@ create table committees (
 	yearFormed    year(4),
 	endDate       date,
 	calendarId    varchar(128),
+	syncToken     varchar(64),
 	website       varchar(128),
 	videoArchive  varchar(128),
 	email         varchar(128),
@@ -207,8 +208,10 @@ create table siteContent (
 create table meetings(
     id               int unsigned not null primary key auto_increment,
     committee_id     int unsigned not null,
-    start            datetime not null,
-    end              datetime,
+    start            datetime     not null,
+    end              datetime     not null,
+    created          datetime     not null default CURRENT_TIMESTAMP,
+    updated          datetime     not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     eventId          varchar(128),
     location         varchar(256),
     htmlLink         varchar(256)

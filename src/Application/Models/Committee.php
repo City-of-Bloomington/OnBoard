@@ -83,6 +83,7 @@ class Committee extends ActiveRecord
 	public function getStatutoryName()     { return parent::get('statutoryName');    }
 	public function getCode()              { return parent::get('code');             }
 	public function getCalendarId()        { return parent::get('calendarId');       }
+	public function getSyncToken()         { return parent::get('syncToken');        }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getVideoArchive()      { return parent::get('videoArchive');     }
 	public function getEmail()             { return parent::get('email');            }
@@ -107,6 +108,7 @@ class Committee extends ActiveRecord
 	public function setWebsite         ($s) { parent::set('website',          $s); }
 	public function setVideoArchive    ($s) { parent::set('videoArchive',     $s); }
 	public function setCalendarId      ($s) { parent::set('calendarId',       $s); }
+	public function setSyncToken       ($s) { parent::set('syncToken',        $s); }
     public function setEmail           ($s) { parent::set('email',            $s); }
     public function setPhone           ($s) { parent::set('phone',            $s); }
     public function setAddress         ($s) { parent::set('address',          $s); }
