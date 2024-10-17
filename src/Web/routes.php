@@ -7,6 +7,7 @@ declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
+$map->tokens(['id' => '\d+']);
 
 $map->get('home.index',     '/',         Web\Committees\List\Controller::class);
 $map->get('callback.index', '/callback', 'Application\Controllers\CallbackController')->extras(['action'=>'index']);
@@ -142,8 +143,9 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/update', Web\Races\Update\Controller::class)->allows(['POST']);
-    $r->get('index',  ''       , Web\Races\List\Controller::class);
+    $r->get('add',    '/add',         Web\Races\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  '',             Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {
