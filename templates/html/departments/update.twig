@@ -4,7 +4,7 @@
  * @param Department department
 #}
 {% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig"         as forms   %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
@@ -12,10 +12,9 @@
     </header>
     <form method="post">
         <fieldset>
-            <input name="department_id" type="hidden" value="{{ department.getId() }}" />
+            <input name="id" type="hidden" value="{{ department.getId() }}" />
 
             {{ forms.field_text('name', 'name', _('name'), department.getName(), true ) }}
-
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('departments.index'), _('cancel'), 'cancel') }}
         </fieldset>

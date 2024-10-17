@@ -66,9 +66,10 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 });
 
 $map->attach('departments.', '/departments', function ($r) {
-    $r->get('index',  '',        Web\Departments\List\Controller::class);
-    $r->get('info',   '/info',   Web\Departments\Info\Controller::class);
-    $r->get('update', '/update', Web\Departments\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  ''            , Web\Departments\List\Controller::class);
+    $r->get('info',   '/{id}/info'  , Web\Departments\Info\Controller::class);
+    $r->get('add',    '/add'        , Web\Departments\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Departments\Update\Controller::class)->allows(['POST']);
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
@@ -106,9 +107,9 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
-    $r->get('update', '/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', Web\Liaisons\Delete\Controller::class);
-    $r->get('index',  ''       , Web\Liaisons\List\Controller::class);
+    $r->get('update', '/{id}/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{id}/delete', Web\Liaisons\Delete\Controller::class);
+    $r->get('index',  ''            , Web\Liaisons\List\Controller::class);
 });
 
 $map->attach('meetings.', '/meetings', function ($r) {
@@ -143,9 +144,9 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('add',    '/add',         Web\Races\Add\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add'        , Web\Races\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
-    $r->get('index',  '',             Web\Races\List\Controller::class);
+    $r->get('index',  ''            , Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {
