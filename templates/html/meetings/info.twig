@@ -1,0 +1,47 @@
+{#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array     meetings
+ * @param Committee committee
+ * @param array     files
+ * @param array     actionLinks
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
+{% block content %}
+<section class="container my-3">
+    <header class="mb-3">
+        <h1>{{ committee.getName() }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
+        </h1>
+        {{ include('html/committees/partials/header.twig') }}
+    </header>
+
+    <h3>{{ meeting.getStart() }} - {{ meeting.getEnd() }}</h3>
+    <p>{{ meeting.getLocation() }}</p>
+
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+    <table>
+    {% for f in files %}
+    <tr><th>{{ f.type }}</th>
+        <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                {{ f.title ?? f.filename }}
+            </a>
+        </td>
+        <td>{% if f.actions %}
+            {{ include('html/partials/actionLinks.twig', {actionLinks:f.actions}, with_context=false ) }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% if meeting.getHtmlLink() -%}
+    <a href="{{ meeting.getHtmlLink() }}" class="card-link">Google Calendar</a>
+    {%- endif %}
+</section>
+
+{% endblock %}

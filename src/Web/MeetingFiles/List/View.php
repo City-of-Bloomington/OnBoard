@@ -67,7 +67,7 @@ class View extends \Web\View
         return $addLinks;
     }
 
-    private function createFileData(array $files): array
+    public static function createFileData(array $files): array
     {
         $filedata = [];
         $userCanEdit   = parent::isAllowed('meetingFiles', 'update');
@@ -84,14 +84,14 @@ class View extends \Web\View
             if ($userCanEdit) {
                 $d['actions'][] = [
                     'url'   => parent::generateUri('meetingFiles.update').'?meetingFile_id='.$f->getId(),
-                    'label' => $this->_('meetingFile_edit'),
+                    'label' => parent::_('meetingFile_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($userCanDelete) {
                 $d['actions'][] = [
                     'url'   => parent::generateUri('meetingFiles.delete').'?meetingFile_id='.$f->getId(),
-                    'label' => $this->_('meetingFile_delete'),
+                    'label' => parent::_('meetingFile_delete'),
                     'class' => 'delete'
                 ];
             }

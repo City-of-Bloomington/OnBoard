@@ -19,7 +19,7 @@ $pdo    = $db->getDriver()->getConnection()->getResource();
 $log    = fopen('./errors.csv', 'w');
 
 $sql    = "update meetings
-           set start=:start,end=:end,location=:location,htmlLink=:htmlLink
+           set start=:start,end=:end,created=:created,updated=:updated,location=:location,htmlLink=:htmlLink
            where id=:id";
 $update = $pdo->prepare($sql);
 
@@ -49,12 +49,16 @@ foreach ($result as $row) {
 
     $start    = new \DateTime($event->start->dateTime);
     $end      = new \DateTime($event->end  ->dateTime);
+    $created  = new \DateTime($event->created);
+    $updated  = new \DateTime($event->updated);
     $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
     try {
         $d = [
             'id'       => $row['id'],
-            'start'    => $start->format('Y-m-d H:i:s'),
-            'end'      => $end  ->format('Y-m-d H:i:s'),
+            'start'    => $start  ->format('Y-m-d H:i:s'),
+            'end'      => $end    ->format('Y-m-d H:i:s'),
+            'created'  => $created->format('Y-m-d H:i:s'),
+            'updated'  => $updated->format('Y-m-d H:i:s'),
             'location' => $location,
             'htmlLink' => $event->htmlLink
         ];
@@ -89,6 +93,7 @@ $schedule = [
     35 => ['start'=>'17:00:00', 'end'=>'19:00:00'],
     36 => ['start'=>'16:30:00', 'end'=>'17:30:00'],
     40 => ['start'=>'17:30:00', 'end'=>'19:00:00'],
+    45 => ['start'=>'18:30:00', 'end'=>'20:00:00'],
     46 => ['start'=>'13:30:00', 'end'=>'15:00:00'],
     47 => ['start'=>'10:00:00', 'end'=>'11:30:00'],
     49 => ['start'=>'00:00:00', 'end'=>'01:00:00'], // Sidewalk Committee meets at random times every meeting

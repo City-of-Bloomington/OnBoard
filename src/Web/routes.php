@@ -110,6 +110,10 @@ $map->attach('liaisons.', '/liaisons', function ($r) {
     $r->get('index',  ''       , Web\Liaisons\List\Controller::class);
 });
 
+$map->attach('meetings.', '/meetings', function ($r) {
+    $r->get('view', '/view', Web\Meetings\Info\Controller::class);
+});
+
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
     $r->get('download', '/download', Web\MeetingFiles\Download\Controller::class);
     $r->get('update',   '/update'  , Web\MeetingFiles\Update\Controller::class)->allows(['POST']);

@@ -10,6 +10,8 @@ create table meetings(
     meetingDate      date         not null,
     start            datetime,
     end              datetime,
+    created          datetime     not null default CURRENT_TIMESTAMP,
+    updated          datetime     not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     eventId          varchar(128),
     location         varchar(256),
     htmlLink         varchar(256),
@@ -32,3 +34,4 @@ join meetings       m on (f.committee_id=m.committee_id and f.meetingDate=m.meet
 set f.meeting_id=m.id;
 
 alter table meetingFiles add foreign key (meeting_id) references meetings(id);
+alter table committees add syncToken varchar(64) after calendarId;

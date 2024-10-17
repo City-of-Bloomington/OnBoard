@@ -63,4 +63,16 @@ class GoogleGateway
         $service = new Calendar(self::getClient());
         return $service->events->get($calendarId, $eventId);
     }
+
+    public static function sync(string $calendarId, ?string $nextSyncToken=null): \Google\Service\Calendar\Events
+    {
+        $opts = [
+            'singleEvents' => true,
+            'syncToken'    => $nextSyncToken
+        ];
+
+        $service = new Calendar(self::getClient());
+        $events  = $service->events->listEvents($calendarId, $opts);
+        return $events;
+    }
 }
