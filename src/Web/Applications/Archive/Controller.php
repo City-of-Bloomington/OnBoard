@@ -21,8 +21,8 @@ class Controller extends \Web\Controller
             try { $application->archive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('committees.applications').'?committee_id='.$application->getCommittee_id();
-            header("Location: $return_url");
+            $url = \Web\View::generateUrl('committees.applications', ['id'=>$application->getCommittee_id()]);
+            header("Location: $url");
             exit();
         }
 

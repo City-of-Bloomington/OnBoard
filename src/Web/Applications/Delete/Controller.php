@@ -21,8 +21,8 @@ class Controller extends \Web\Controller
             $committee_id = $application->getCommittee_id();
             $application->delete();
 
-            $return_url = \Web\View::generateUrl('committees.applications').'?committee_id='.$committee_id;
-            header("Location: $return_url");
+            $url = \Web\View::generateUrl('committees.applications', ['id'=>$committee_id]);
+            header("Location: $url");
             exit();
         }
 

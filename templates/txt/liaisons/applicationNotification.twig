@@ -7,4 +7,4 @@
  #}
 {{ _('board_application_message', 'messages')|format(person, committee) }}
 
-{{ url('committees.applications') ~ '?committee_id=' ~ committee_id }}
+{{ url('committees.applications', {id: committee_id}) }}
