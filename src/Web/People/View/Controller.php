@@ -11,9 +11,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['person_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $person = new Person($_REQUEST['person_id']);
+                $person = new Person($params['id']);
 
                 switch ($this->outputFormat) {
                     case 'json':

@@ -138,10 +138,11 @@ $map->attach('offices.', '/offices', function ($r) {
 });
 
 $map->attach('people.', '/people', function ($r) {
-    $r->get('view',       '/view'  , Web\People\View\Controller::class);
-    $r->get('update',     '/update', Web\People\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',     '/delete', Web\People\Delete\Controller::class);
-    $r->get('index',      ''       , Web\People\Find\Controller::class);
+    $r->get('update',     '/{id}/update', Web\People\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',     '/{id}/delete', Web\People\Delete\Controller::class);
+    $r->get('view',       '/{id}'       , Web\People\View\Controller::class);
+    $r->get('add',        '/add'        , Web\People\Add\Controller::class)->allows(['POST']);
+    $r->get('index',      ''            , Web\People\Find\Controller::class);
 });
 
 $map->attach('races.', '/races', function ($r) {

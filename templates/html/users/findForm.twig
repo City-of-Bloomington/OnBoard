@@ -61,7 +61,7 @@
         </thead>
         <tbody>
         {% for u in users %}
-            {% set link=uri('people.view') ~ '?person_id=' ~ u.id %}
+            {% set link=uri('people.view', {id: u.id}) %}
             <tr><td><a href="{{ link }}">{{ u.username }}</a></td>
                 <td><a href="{{ link }}">{{ u.firstname }} {{ u.lastname }}</a></td>
                 <td><a href="{{ link }}">{{ u.role }}</a></td>

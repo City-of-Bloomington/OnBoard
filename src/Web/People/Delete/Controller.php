@@ -12,10 +12,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['person_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $person = new Person($_REQUEST['person_id']);
-                $person->delete();
+                $p = new Person($params['id']);
+                $p->delete();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

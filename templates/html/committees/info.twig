@@ -88,7 +88,7 @@
         {% for row in liaisons %}
         <tr>
             <th scope="row">{{ _(row.type) }}</th>
-            <td><a href="{{ uri('people.view') }}?person_id={{ row.person_id }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+            <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
             {% if isAllowed('people', 'viewContactInfo') %}
             <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
             <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>

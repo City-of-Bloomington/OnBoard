@@ -31,10 +31,10 @@
             {% if person_id %}
             <input name="person_id" type="hidden" value="{{ person_id }}" />
             {% endif %}
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
-            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail() ) }}
-            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname, true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname,  true) }}
+            {{ forms.field_email('email',    'email',     _('email'    ), email ) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), phone ) }}
 
             <div>
                 <label for="website" class="form-label">{{ _('website') }}</label>

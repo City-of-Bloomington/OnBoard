@@ -6,7 +6,7 @@
 <section>
     <table>
     {% for m in members %}
-    <tr><td><a href="{{ uri('people.view') }}?person_id={{ m.getPerson_id() }}">{{ m.getPerson().getFullname() }}</a></td>
+    <tr><td><a href="{{ uri('people.view', {id: m.getPerson_id()}) }}">{{ m.getPerson().getFullname() }}</a></td>
         <td>{{ m.getStartDate(DATE_FORMAT) }} - {{ m.getEndDate(DATE_FORMAT) }}</td>
     </tr>
     {% endfor %}
