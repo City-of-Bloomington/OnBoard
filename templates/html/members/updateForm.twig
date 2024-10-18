@@ -9,8 +9,6 @@
 {% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
-
 <section>
     <header><h2>{{ member.getId() ? _('member_edit') : _('member_add') }}</h2></header>
 	<form method="post">

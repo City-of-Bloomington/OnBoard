@@ -8,7 +8,6 @@
 {% import  'html/macros/forms.twig' as forms %}
 {% import  'html/macros/personChooser.twig' as chooser %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
 
 <section>
     <header><h2>{{ liaison.getId() ? _('liaison_edit') : _('liaison_add') }}</h2></header>

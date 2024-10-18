@@ -9,7 +9,6 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
 <section>
     <header>
         <h2>{{ _('reappointToSeat', 'messages')|format(member.getPerson().getFullName(), committee.getName()) }}</h2>
