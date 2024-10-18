@@ -13,24 +13,24 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($param['id'])) {
-            try { $committee = new Committee($param['id']); }
+        if (!empty($params['id'])) {
+            try { $c = new Committee($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (isset($committee)) {
+        if (isset($c)) {
             if (isset($_POST['name'])) {
                 try {
-                    CommitteeTable::update($committee, $_POST);
-                    $url = \Web\View::generateUrl('committees.info', ['id'=>$committee->getId()]);
+                    CommitteeTable::update($c, $_POST);
+                    $url = \Web\View::generateUrl('committees.info', ['id'=>$c->getId()]);
                     header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
-            return new View($committee);
+            return new View($c);
         }
-
+        return new \Web\Views\NotFoundView();
     }
 }

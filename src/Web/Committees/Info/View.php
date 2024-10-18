@@ -61,17 +61,16 @@ class View extends \Web\View
     private function actionLinks(int $committee_id): array
     {
         $links = [];
-        $param = "?committee_id=$committee_id";
         if (parent::isAllowed('committees', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('committees.update').$param,
+                'url'   => parent::generateUri('committees.update', ['id'=>$committee_id]),
                 'label' => parent::_('edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('committees', 'end')) {
             $links[] = [
-                'url'    => parent::generateUri('committees.end').$param,
+                'url'    => parent::generateUri('committees.end', ['id'=>$committee_id]),
                 'label'  => parent::_('committee_end'),
                 'class'  => 'delete'
             ];

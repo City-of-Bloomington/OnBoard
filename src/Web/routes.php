@@ -50,12 +50,13 @@ $map->attach('appointers.', '/appointers', function ($r) {
 $map->attach('committees.', '/committees', function ($r) {
     $r->get('info',         '/{id}/info'        , Web\Committees\Info\Controller::class);
     $r->get('members',      '/{id}/members'     , Web\Committees\Members\Controller::class);
-    $r->get('update',       '/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
+    $r->get('update',       '/{id}/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/end'         , Web\Committees\End\Controller::class)->allows(['POST']);
     $r->get('seats',        '/seats'       , Web\Committees\Seats\Controller::class);
     $r->get('applications', '/applications', Web\Committees\Applications\Controller::class);
     $r->get('meetings',     '/meetings'    , Web\Committees\Meetings\Controller::class);
     $r->get('history',      '/history'     , Web\Committees\History\Controller::class);
+    $r->get('add',          '/add'              , Web\Committees\Add\Controller::class)->allows(['POST']);
     $r->get('report',       '/report'           , Web\Committees\Report\Controller::class);
     $r->get('index',        ''                  , Web\Committees\List\Controller::class);
 });
