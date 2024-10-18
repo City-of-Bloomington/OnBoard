@@ -14,9 +14,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['applicantFile_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file = new ApplicantFile($_GET['applicantFile_id']);
+                $file = new ApplicantFile($params['id']);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) { }
@@ -37,8 +37,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_GET['applicantFile_id'])) {
-            return ApplicantFilesTable::hasDepartment($department_id, (int)$_REQUEST['applicantFile_id']);
+        if (!empty($params['id'])) {
+            return ApplicantFilesTable::hasDepartment($department_id, (int)$param['id']);
         }
         return false;
     }
