@@ -41,26 +41,13 @@ class Controller extends \Web\Controller
 
                     $url = $member->getSeat_id()
                            ? View::generateUrl('seats.view').'?seat_id='.$member->getSeat_id()
-                           : View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
+                           : View::generateUrl('committees.members', ['id'=>$member->getCommittee_id()]);
                     header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
             return new View($member);
-
-            $this->template->setFilename('contextInfo');
-            $committee = $member->getCommittee();
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            $this->template->blocks[] = new Block('members/updateForm.inc', ['member'=>$member]);
-            $seat = $member->getSeat();
-            if ($seat) {
-                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
-                $this->template->blocks[] = new Block('members/list.inc', [
-                    'members'        => $seat->getMembers(),
-                    'disableButtons' => true
-                ]);
-            }
         }
         return new \Web\Views\NotFoundView();
     }

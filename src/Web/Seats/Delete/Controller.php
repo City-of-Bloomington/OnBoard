@@ -15,11 +15,11 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
-                $seat         = new Seat($_REQUEST['seat_id']);
-                $committee_id = $seat->getCommittee_id();
-                SeatTable::delete($seat);
-                $return_url = \Web\View::generateUrl('committees.members')."?committee_id=$committee_id";
-                header("Location: $return_url");
+                $s   = new Seat($_REQUEST['seat_id']);
+                $url = \Web\View::generateUrl('committees.members', ['id'=>$s->getCommittee_id()]);
+
+                SeatTable::delete($s);
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

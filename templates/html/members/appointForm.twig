@@ -10,8 +10,8 @@
  * @param array     recentMembers
  * @param array     termOptions     Array of term objects
  #}
-{% import 'html/macros/personChooser.twig' as chooser %}
-
+{% import  'html/macros/personChooser.twig' as chooser %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
 <form method="post">
@@ -72,11 +72,8 @@
 
         </section>
 
-        <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-        <a class="btn btn-danger"
-            href="{{ uri('committees.members') }}?committee_id={{ newMember.getCommittee_id() }}">
-            {{ _('cancel') }}
-        </a>
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('committees.members', {id: newMember.getCommittee_id()}), _('cancel'), 'cancel') }}
     </fieldset>
 
 </form>

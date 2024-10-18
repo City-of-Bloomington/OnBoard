@@ -47,7 +47,7 @@ class Controller extends \Web\Controller
 
                 MemberTable::appoint($newMember, $endDate);
 
-                $return_url = \Web\View::generateUrl('committees.members')."?committee_id={$newMember->getCommittee_id()}";
+                $return_url = \Web\View::generateUrl('committees.members', ['id'=>$newMember->getCommittee_id()]);
                 header("Location: $return_url");
                 exit();
             }

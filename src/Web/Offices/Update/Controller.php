@@ -46,8 +46,8 @@ class Controller extends \Web\Controller
                 }
 
                 $office->save();
-                $return_url = \Web\View::generateUrl('committees.members').'?committee_id='.$office->getCommittee_id();
-                header("Location: $return_url");
+                $url = \Web\View::generateUrl('committees.members', ['id'=>$office->getCommittee_id()]);
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

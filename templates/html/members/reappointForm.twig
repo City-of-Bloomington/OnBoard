@@ -8,6 +8,7 @@
  * @param array     recentMembers
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
 <section>
     <header>
@@ -31,11 +32,8 @@
                 <input name="member_id" type="hidden" value="{{ member.getId() }}" />
                 <input name="confirm"   type="hidden" value="yes" />
 
-                <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-                <a class="btn btn-danger"
-                    href="{{ uri('committees.members') }}?committee_id={{ member.getCommittee_id() }}">
-                    {{ _('cancel') }}
-                </a>
+                {{ forms.button('submit', _('save'), 'save') }}
+                {{ forms.actionLink(uri('committees.members', {id: member.getCommittee_id()}), _('cancel'), 'cancel') }}
             </fieldset>
         </form>
     </div>

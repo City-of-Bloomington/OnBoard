@@ -22,7 +22,7 @@ class Controller extends \Web\Controller
             if (!empty($_POST['endDate'])) {
                 try {
                     $endDate    = new \DateTime($_POST['endDate']);
-                    $return_url = \Web\View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
+                    $return_url = \Web\View::generateUrl('committees.members', ['id'=>$member->getCommittee_id()]);
 
                     MemberTable::resign($member, $endDate);
 

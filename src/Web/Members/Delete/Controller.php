@@ -15,14 +15,14 @@ class Controller extends \Web\Controller
     {
         try {
             if (!empty($_REQUEST['member_id'])) {
-                $member  = new Member($_REQUEST['member_id']);
+                $m  = new Member($_REQUEST['member_id']);
 
-                $return_url = $member->getSeat_id()
-                            ? \Web\View::generateUrl('seats.view')."?seat_id={$member->getSeat_id()}"
-                            : \Web\View::generateUrl('committees.members')."?committee_id={$member->getCommittee_id()}";
+                $url = $m->getSeat_id()
+                        ? \Web\View::generateUrl('seats.view')."?seat_id={$m->getSeat_id()}"
+                        : \Web\View::generateUrl('committees.members', ['id'=>$m->getCommittee_id()]);
 
-                MemberTable::delete($member);
-                header("Location: $return_url");
+                MemberTable::delete($m);
+                header("Location: $url");
                 exit();
             }
         }

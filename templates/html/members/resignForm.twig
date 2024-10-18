@@ -5,6 +5,7 @@
  * @param Committee committee
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
 <section>
     <header><h2>{{ _('member_end') }}</h2></header>
@@ -20,11 +21,8 @@
                     value="{{ member.getEndDate() ? member.getEndDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
             </div>
 
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger"
-                href="{{ uri('committees.members') }}?committee_id={{ member.getCommittee_id() }}">
-                {{ _('cancel') }}
-            </a>
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.members', {id: member.getCommittee_id()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

@@ -42,7 +42,7 @@ class Controller extends \Web\Controller
 
                     $url = $alternate->getSeat_id()
                             ? \Web\View::generateUrl('seats.view').'?seat_id='.$alternate->getSeat_id()
-                            : \Web\View::generateUrl('committees.members').'?committee_id='.$alternate->getCommittee_id();
+                            : \Web\View::generateUrl('committees.members', ['id'=>$alternate->getCommittee_id()]);
 
                     header("Location: $url");
                     exit();

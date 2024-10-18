@@ -25,7 +25,7 @@ class Controller extends \Web\Controller
                 if (!empty($_POST['confirm']) && $_POST['confirm']=='yes') {
                     try {
                         MemberTable::reappoint($member);
-                        $return_url = \Web\View::generateUrl('committees.members').'?committee_id='.$member->getCommittee_id();
+                        $return_url = \Web\View::generateUrl('committees.members', ['id'=>$member->getCommittee_id()]);
                         header('Location: '.$return_url);
                         exit();
                     }

@@ -5,6 +5,7 @@
  * @param Committee committee
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
 <section>
     <header><h2>{{ _('seat_edit') }}</h2></header>
@@ -14,11 +15,9 @@
 
         <fieldset>
             <input name="committee_id" type="hidden" value="{{ seat.getCommittee_id() }}" />
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger"
-                href="{{ uri('committees.members') }}?committee_id={{ seat.getCommittee_id() }}">
-               {{ _('cancel') }}
-            </a>
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.members', {id: seat.getCommittee_id()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>
