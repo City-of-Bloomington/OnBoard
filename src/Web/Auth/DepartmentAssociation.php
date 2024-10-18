@@ -2,7 +2,7 @@
 /**
  * Checks if a controller is loading a record associated with a given department
  *
- * @copyright 2020 City of Bloomington, Indiana
+ * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -29,11 +29,11 @@ class DepartmentAssociation implements AssertionInterface
         if (isset($_SESSION['USER'])) {
             $did = $_SESSION['USER']->getDepartment_id();
 
-            global $ROUTES;
+            global $ROUTES, $ROUTE;
             $r = $ROUTES->getMap()->getRoute("$resource.$privilege");
             if ($r) {
                 $controller = $r->handler;
-                return $controller::hasDepartment($did);
+                return $controller::hasDepartment($did, $ROUTE->attributes);
             }
        }
        return false;

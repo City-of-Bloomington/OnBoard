@@ -19,19 +19,19 @@ session_start();
 // Check for routes
 $request = ServerRequest::fromGlobals();
 $matcher = $ROUTES->getMatcher();
-$route   = $matcher->match($request);
+$ROUTE   = $matcher->match($request);
 
-if ($route) {
-    list($resource, $permission) = explode('.', $route->name);
+if ($ROUTE) {
+    list($resource, $permission) = explode('.', $ROUTE->name);
     $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
     if (   $ACL->hasResource($resource)
         && $ACL->isAllowed($role, $resource, $permission)) {
 
-        $controller = $route->handler;
+        $controller = $ROUTE->handler;
         $c = new $controller();
         // Modern twig controllers returning a View
         if (is_callable($c)) {
-            $template = $c($route->attributes);
+            $template = $c($ROUTE->attributes);
         }
     }
     else {
