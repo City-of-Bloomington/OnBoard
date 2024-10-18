@@ -4,22 +4,21 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Terms\Update;
-
-use Application\Models\Seat;
-use Application\Models\Term;
-use Application\Models\TermTable;
+namespace Web\Terms\Add;
 
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $term = new Term($params['id']); }
+        if (!empty($_REQUEST['seat_id'])) {
+            try {
+                $seat = new Seat($_REQUEST['seat_id']);
+                $term = new Term();
+                $term->setSeat($seat);
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        // Handling the POST
         if (isset($term)) {
             if (isset($_POST['seat_id'])) {
                 try {
@@ -34,7 +33,7 @@ class Controller extends \Web\Controller
             }
 
             $seat = $term->getSeat();
-            return new View($seat, $term);
+            return new \Web\Terms\Update\View($seat, $term);
         }
 
         return new \Web\Views\NotFoundView();

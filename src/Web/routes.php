@@ -177,9 +177,9 @@ $map->attach('site.', '/site', function ($r) {
 });
 
 $map->attach('terms.', '/terms', function ($r) {
-    $r->get('update',   '/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/delete'  , Web\Terms\Delete\Controller::class);
-    $r->get('generate', '/generate', Web\Terms\Generate\Controller::class);
+    $r->get('update',   '/{id}/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{id}/delete'  , Web\Terms\Delete\Controller::class);
+    $r->get('generate', '/{id}/generate', Web\Terms\Generate\Controller::class);
 });
 
 $map->attach('users.', '/users', function ($r) {

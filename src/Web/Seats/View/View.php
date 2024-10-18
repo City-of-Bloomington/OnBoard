@@ -32,20 +32,22 @@ class View extends \Web\View
             $this->vars['terms'] = $this->term_data($seat);
             if (parent::isAllowed('terms', 'generate')) {
                 if (isset($this->vars['terms'][0])) {
+                    $generate = parent::generateUri('terms.generate', ['id'=>$this->vars['terms'][0]['term_id']]);
+
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
+                        'url'   => "$generate?direction=next",
                         'label' => parent::_('term_add_next'),
                         'class' => 'add'
                     ];
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.generate').'?direction=pervious;term_id='.$this->vars['terms'][array_key_last($this->vars['terms'])]['term_id'],
+                        'url'   => "$generate?direction=pervious",
                         'label' => parent::_('term_add_previous'),
                         'class' => 'add'
                     ];
                 }
                 else {
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.update')."?seat_id={$seat->getId()}",
+                        'url'   => parent::generateUri('terms.add')."?seat_id={$seat->getId()}",
                         'label' => parent::_('term_add'),
                         'class' => 'add'
                     ];
@@ -112,7 +114,7 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('terms.update')."?term_id=$term_id",
+                'url'   => parent::generateUri('terms.update', ['id'=>$term_id]),
                 'label' => parent::_('term_edit'),
                 'class' => 'edit'
             ];
@@ -120,7 +122,7 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('terms.delete')."?term_id=$term_id",
+                'url'   => parent::generateUri('terms.delete', ['id'=>$term_id]),
                 'label' => parent::_('term_delete'),
                 'class' => 'delete'
             ];
