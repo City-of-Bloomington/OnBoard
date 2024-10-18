@@ -15,7 +15,7 @@ class View extends \Web\View
         parent::__construct();
 
         $url = $a->getSeat_id()
-                ? parent::generateUri('seats.view').'?seat_id='.$a->getSeat_id()
+                ? parent::generateUri(     'seats.view',    ['id'=>$a->getSeat_id()])
                 : parent::generateUri('committees.members', ['id'=>$a->getCommittee_id()]);
 
         $this->vars = [

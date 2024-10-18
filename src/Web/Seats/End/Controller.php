@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['seat_id'])) {
-            try { $seat = new Seat($_REQUEST['seat_id']); }
+        if (!empty($params['id'])) {
+            try { $seat = new Seat($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -22,8 +22,8 @@ class Controller extends \Web\Controller
             if (isset($_POST['endDate'])) {
                 try {
                     SeatTable::end($seat, new \DateTime($_POST['endDate']));
-                    $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$seat->getId();
-                    header("Location: $return_url");
+                    $url = \Web\View::generateUrl('seats.view', ['id'=>$seat->getId()]);
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

@@ -14,13 +14,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['seat_id'])) {
-            try { $seat = new Seat($_REQUEST['seat_id']); }
+        if (!empty($params['id'])) {
+            try { $seat = new Seat($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
         if (isset($seat)) {
-            if (isset($_POST['seat_id'])) {
+            if (isset($_POST['name'])) {
                 try {
                     $seat->setCode             ($_POST['code'             ]);
                     $seat->setName             ($_POST['name'             ]);
@@ -34,8 +34,8 @@ class Controller extends \Web\Controller
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
                     SeatTable::update($seat);
-                    $return_url = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
-                    header("Location: $return_url");
+                    $url = View::generateUrl('seats.view', ['id'=>$seat->getId()]);
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

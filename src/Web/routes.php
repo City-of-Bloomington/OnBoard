@@ -43,12 +43,11 @@ $map->attach('applications.', '/applications', function ($r) {
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {
-    $r->get('index',  '',        Web\Appointers\List\Controller::class);
     $r->get('update', '/update', Web\Appointers\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  '',        Web\Appointers\List\Controller::class);
 });
 
 $map->attach('committees.', '/committees', function ($r) {
-    $r->get('info',         '/{id}/info'        , Web\Committees\Info\Controller::class);
     $r->get('members',      '/{id}/members'     , Web\Committees\Members\Controller::class);
     $r->get('update',       '/{id}/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/{id}/end'         , Web\Committees\End\Controller::class)->allows(['POST']);
@@ -56,6 +55,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('applications', '/{id}/applications', Web\Committees\Applications\Controller::class);
     $r->get('meetings',     '/{id}/meetings'    , Web\Committees\Meetings\Controller::class);
     $r->get('history',      '/{id}/history'     , Web\Committees\History\Controller::class);
+    $r->get('info',         '/{id}'             , Web\Committees\Info\Controller::class);
     $r->get('add',          '/add'              , Web\Committees\Add\Controller::class)->allows(['POST']);
     $r->get('report',       '/report'           , Web\Committees\Report\Controller::class);
     $r->get('index',        ''                  , Web\Committees\List\Controller::class);
@@ -158,13 +158,13 @@ $map->attach('reports.', '/reports', function ($r) {
 });
 
 $map->attach('seats.', '/seats', function ($r) {
-    $r->get('vacancies', '/vacancies', Web\Seats\Vacancies\Controller::class);
-    $r->get('view',      '/view'     , Web\Seats\View\Controller::class);
-    $r->get('add',       '/add'      , Web\Seats\Add\Controller::class)->allows(['POST']);
-    $r->get('update',    '/update'   , Web\Seats\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',    '/delete'   , Web\Seats\Delete\Controller::class);
-    $r->get('end',       '/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
-    $r->get('index',     ''          , Web\Seats\List\Controller::class);
+    $r->get('update',    '/{id}/update'   , Web\Seats\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',    '/{id}/delete'   , Web\Seats\Delete\Controller::class);
+    $r->get('end',       '/{id}/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
+    $r->get('view',      '/{id}'          , Web\Seats\View\Controller::class);
+    $r->get('add',       '/add'           , Web\Seats\Add\Controller::class)->allows(['POST']);
+    $r->get('vacancies', '/vacancies'     , Web\Seats\Vacancies\Controller::class);
+    $r->get('index',     ''               , Web\Seats\List\Controller::class);
 });
 
 $map->attach('settings.', '/settings', function ($r) {
@@ -180,6 +180,7 @@ $map->attach('terms.', '/terms', function ($r) {
     $r->get('update',   '/{id}/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
     $r->get('delete',   '/{id}/delete'  , Web\Terms\Delete\Controller::class);
     $r->get('generate', '/{id}/generate', Web\Terms\Generate\Controller::class);
+    $r->get('add',      '/add'          , Web\Terms\Add\Controller::class)->allows(['POST']);
 });
 
 $map->attach('users.', '/users', function ($r) {

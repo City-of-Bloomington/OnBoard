@@ -4,6 +4,7 @@
  * @param array data
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header><h2>{{ _('seat_end') }}</h2></header>
@@ -19,11 +20,8 @@
                     value="{{ 'now'|date('Y-m-d') }}" />
             </div>
 
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger"
-                href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">
-               {{ _('cancel') }}
-            </a>
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

@@ -11,6 +11,7 @@
  * @param array termModifiers
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header><h2>{{ _('seat_edit') }}</h2></header>
@@ -19,12 +20,14 @@
         {{ include('html/seats/partials/formFields.twig') }}
 
         <fieldset>
-            <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger"
-                href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">
-               {{ _('cancel') }}
-            </a>
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {% if seat.getId() %}
+            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
+            {% else %}
+            {{ forms.actionLink(uri('committees.seats', {id: committee.getId()}), _('cancel'), 'cancel') }}
+            {% endif %}
         </fieldset>
     </form>
 </section>

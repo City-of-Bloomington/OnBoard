@@ -25,8 +25,8 @@ class Controller extends \Web\Controller
             try { $newTerm->save(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
-            header("Location: $return_url");
+            $url = \Web\View::generateUrl('seats.view', ['id'=>$term->getSeat_id()]);
+            header("Location: $url");
             exit();
         }
 

@@ -18,7 +18,7 @@ class Controller extends \Web\Controller
                 $m  = new Member($_REQUEST['member_id']);
 
                 $url = $m->getSeat_id()
-                        ? \Web\View::generateUrl('seats.view')."?seat_id={$m->getSeat_id()}"
+                        ? \Web\View::generateUrl(     'seats.view'   , ['id'=>$m->getSeat_id()     ])
                         : \Web\View::generateUrl('committees.members', ['id'=>$m->getCommittee_id()]);
 
                 MemberTable::delete($m);

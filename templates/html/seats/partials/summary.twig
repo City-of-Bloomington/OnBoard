@@ -5,7 +5,7 @@
  #}
 <section>
     <header>
-        <h3><a href="{{ uri('seats.view') }}?seat_id={{ seat.getId() }}">{{ seat.getName() }}</a></h3>
+        <h3><a href="{{ uri('seats.view', {id: seat.getId()}) }}">{{ seat.getName() }}</a></h3>
     </header>
 
     <dl><dt>{{ _('appointed_by') }}</dt>

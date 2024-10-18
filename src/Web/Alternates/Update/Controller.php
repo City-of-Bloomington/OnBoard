@@ -41,7 +41,7 @@ class Controller extends \Web\Controller
                     AlternateTable::update($alternate);
 
                     $url = $alternate->getSeat_id()
-                            ? \Web\View::generateUrl('seats.view').'?seat_id='.$alternate->getSeat_id()
+                            ? \Web\View::generateUrl(     'seats.view',    ['id'=>$alternate->getSeat_id()])
                             : \Web\View::generateUrl('committees.members', ['id'=>$alternate->getCommittee_id()]);
 
                     header("Location: $url");
@@ -51,19 +51,6 @@ class Controller extends \Web\Controller
             }
 
             return new View($alternate);
-
-            $this->template->setFilename('contextInfo');
-            $committee = $alternate->getCommittee();
-            $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-            $this->template->blocks[] = new Block('alternates/updateForm.inc',  ['alternate' => $alternate]);
-            $seat = $alternate->getSeat();
-            if ($seat) {
-                $this->template->blocks['contextInfo'][] = new Block('seats/summary.inc', ['seat' => $seat]);
-                $this->template->blocks[] = new Block('alternates/list.inc', [
-                    'alternates'     => $seat->getAlternates(),
-                                                      'disableButtons' => true
-                ]);
-            }
         }
 
         return new \Web\Views\NotFoundView();

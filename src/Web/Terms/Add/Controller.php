@@ -6,6 +6,10 @@
 declare (strict_types=1);
 namespace Web\Terms\Add;
 
+use Application\Models\Seat;
+use Application\Models\Term;
+use Application\Models\TermTable;
+
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
@@ -25,8 +29,8 @@ class Controller extends \Web\Controller
                     $term->setStartDate($_POST['startDate'], 'Y-m-d');
                     $term->setEndDate  ($_POST['endDate'  ], 'Y-m-d');
                     TermTable::update($term);
-                    $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
-                    header("Location: $return_url");
+                    $url = \Web\View::generateUrl('seats.view', ['id'=>$term->getSeat_id()]);
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

@@ -17,7 +17,7 @@ class Controller extends \Web\Controller
             try {
                 $term = new Term($params['id']);
                 $seat = $term->getSeat();
-                $url  = \Web\View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
+                $url  = \Web\View::generateUrl('seats.view', ['id'=>$seat->getId()]);
 
                 TermTable::delete($term);
                 header("Location: $url");

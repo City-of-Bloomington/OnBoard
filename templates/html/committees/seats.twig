@@ -12,7 +12,7 @@
     <div class="d-flex">
         <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
         {% if isAllowed('seats', 'add') %}
-        {{ forms.actionLink(uri('seats.add'), _('seat_add'), 'add') }}
+        {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
         {% endif %}
     </div>
     <table class="table">
@@ -32,13 +32,13 @@
         {% for s in seats %}
         <tr>
             <td>{{ s.getCode() }}</td>
-            <td><a href="{{ uri('seats.view') }}?seat_id={{ s.getId() }}">{{ s.getName() }}</a></td>
+            <td><a href="{{ uri('seats.view', {id: s.getId()}) }}">{{ s.getName() }}</a></td>
             <td>{{ s.getAppointer() }}</td>
             <td>{{ s.getType() }}</td>
             <td>{{ s.getStartDate(DATE_FORMAT) }}</td>
             <td>{{ s.getEndDate  (DATE_FORMAT) }}</td>
             <td>{% if userCanEdit %}
-                <a class="btn btn-sm btn-secondary" href="{{ uri('seats.update') }}?seat_id={{ s.getId() }}">{{ _('edit') }}</a>
+                {{ forms.actionLink(uri('seats.update', {id: s.getId()}), _('edit'), 'edit') }}
                 {% endif %}
             </td>
         </tr>

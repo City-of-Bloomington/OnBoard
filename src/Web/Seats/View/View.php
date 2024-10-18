@@ -85,14 +85,14 @@ class View extends \Web\View
         $seat_id = $seat->getId();
         if (parent::isAllowed('seats', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('seats.update')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.update', ['id'=>$seat_id]),
                 'label' => parent::_('seat_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('seats', 'delete') && $seat->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('seats.delete')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.delete', ['id'=>$seat_id]),
                 'label' => parent::_('seat_delete'),
                 'class' => 'delete'
             ];
@@ -100,7 +100,7 @@ class View extends \Web\View
         $endDate = $seat->getEndDate('U');
         if (parent::isAllowed('seats', 'end') && (!$endDate || $endDate > time())) {
             $links[] = [
-                'url'   => parent::generateUri('seats.end')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.end', ['id'=>$seat_id]),
                 'label' => parent::_('seat_end')
             ];
         }

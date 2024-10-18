@@ -209,7 +209,7 @@ class SeatTable extends TableGateway
 	//
 	// These are functions that match the actions defined in the route
 	//----------------------------------------------------------------
-	public static function update(Seat $seat)
+	public static function update(Seat $seat): int
 	{
         if ($seat->getId()) {
             $action   = 'edit';
@@ -230,6 +230,7 @@ class SeatTable extends TableGateway
             'action'       => $action,
             'changes'      => $changes
         ]);
+        return (int)$seat->getId();
 	}
 
 	public static function delete(Seat $seat)
