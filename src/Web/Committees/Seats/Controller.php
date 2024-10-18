@@ -10,11 +10,11 @@ use Application\Models\Committee;
 
 class Controller extends \Web\Controller
 {
-    public function __invoke(array $params): \Web\View
+    public function __invoke(array $p): \Web\View
     {
-        if (!empty($_GET['committee_id'])) {
+        if (!empty($p['id'])) {
             try {
-                $committee = new Committee($_GET['committee_id']);
+                $committee = new Committee($p['id']);
                 $seats     = [];
                 foreach ($committee->getSeats() as $s) {
                     $seats[] = $s;
