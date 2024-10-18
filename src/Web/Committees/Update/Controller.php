@@ -13,30 +13,24 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['committee_id'])) {
-            try { $committee = new Committee($_REQUEST['committee_id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                return new \Web\Views\NotFoundView();
-            }
-        }
-        else { $committee = new Committee(); }
-
-        if (isset($_POST['name'])) {
-            try {
-                CommitteeTable::update($committee, $_POST);
-                $url = \Web\View::generateUrl('committees.info').'?committee_id='.$committee->getId();
-                header("Location: $url");
-                exit();
-            }
+        if (!empty($param['id'])) {
+            try { $committee = new Committee($param['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($committee);
+        if (isset($committee)) {
+            if (isset($_POST['name'])) {
+                try {
+                    CommitteeTable::update($committee, $_POST);
+                    $url = \Web\View::generateUrl('committees.info', ['id'=>$committee->getId()]);
+                    header("Location: $url");
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+            }
 
-        $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-        $this->template->blocks[] = new Block('committees/updateForm.inc',  ['committee' => $committee]);
-        return $this->template;
+            return new View($committee);
+        }
+
     }
 }

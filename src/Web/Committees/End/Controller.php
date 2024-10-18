@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
             try {
                 CommitteeTable::end($committee, new \DateTime($_POST['endDate']));
 
-                $url = \Web\View::generateUrl('committees.info').'?committee_id='.$committee->getId();
+                $url = \Web\View::generateUrl('committees.info', ['id'=>$committee->getId()]);
                 header("Location: $url");
                 exit();
             }

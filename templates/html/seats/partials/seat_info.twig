@@ -19,7 +19,7 @@
         <td>{{ seat.getAppointer() }}</td>
     </tr>
     <tr><th>{{ _('committee') }}</th>
-        <td><a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}">
+        <td><a href="{{ uri('committees.info', {id: committee.getId()}) }}">
                 {{ committee.getName() }}
             </a>
         </td>

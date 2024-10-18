@@ -155,7 +155,7 @@
         <fieldset><legend>{{ _('submit') }}</legend>
             <button type="submit" class="btn btn-success">{{ _('save') }}</button>
             <a class="btn btn-danger"
-               href="{{ committee.getId() ? uri('committees.info') ~ '?committee_id=' ~ committee.getId() : uri('committees.index') }}">
+               href="{{ committee.getId() ? uri('committees.info', {id: committee.getId()}) : uri('committees.index') }}">
                {{ _('cancel') }}
             </a>
         </fieldset>

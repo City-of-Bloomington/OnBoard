@@ -12,10 +12,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['committee_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $committee = new Committee($_GET['committee_id']);
-                return new View($committee);
+                $c = new Committee($params['id']);
+                return new View($c);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

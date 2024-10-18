@@ -26,7 +26,7 @@
         </thead>
         <tbody>
         {% for c in committees %}
-            <tr><td><a href="{{ uri('committees.info') }}?committee_id={{ c.id }}">{{ c.name }}</a></td>
+            <tr><td><a href="{{ uri('committees.info', {id: c.id}) }}">{{ c.name }}</a></td>
                 <td>{{ c.seats    ==0 ? '' : c.seats     }}</td>
                 <td>{{ c.vacancies==0 ? '' : c.vacancies }}</td>
                 {% if isAllowed('committees', 'applications') %}

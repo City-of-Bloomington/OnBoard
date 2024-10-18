@@ -21,13 +21,13 @@
     {% set current = url.current is defined and url.current==0 ? false : true %}
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.info', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.info' ? 'active' : '' }}">
             {{ _('committee_info') }}
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.members', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.members' and current ? 'active' : '' }}">
             {{ _(['current_member', 'current_members', 10]) }}
             </a>
@@ -35,14 +35,14 @@
 
         {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
         <li class="nav-item">
-            <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.seats', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.seats' and current ? 'active' : '' }}">
             {{ _(['seat', 'seats', 10]) }}
             </a>
         </li>
             {% if committee.hasPastSeats() %}
             <li class="nav-item">
-                <a href="{{ uri('committees.seats') }}?committee_id={{ committee.getId() }};current=0"
+                <a href="{{ uri('committees.seats', {id: committee.getId()}) }}?current=0"
                 class="nav-link {{ ROUTE_NAME=='committees.seats' and not current ? 'active' : '' }}">
                 {{ _('seats_past') }}
                 </a>
@@ -52,7 +52,7 @@
 
         {% if committee.getType()=='open' and committee.hasPastMembers() %}
         <li class="nav-item">
-            <a href="{{ uri('committees.members') }}?committee_id={{ committee.getId() }};current=0"
+            <a href="{{ uri('committees.members', {id: committee.getId()}) }}?current=0"
             class="nav-link {{ ROUTE_NAME=='committees.members' and not current ? 'active' : '' }}">
             {{ _(['past_member', 'past_members', 10]) }}
             </a>
@@ -61,14 +61,14 @@
 
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="nav-item">
-            <a href="{{ uri('committees.applications') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.applications', {id: committee.getId()}) }}"
                class="nav-link {{ ROUTE_NAME=='committees.applications' ? 'active' : '' }}">
                {{ _(['application', 'applications', 10]) }}
             </a>
         </li>
         {% endif %}
         <li class="nav-item">
-            <a href="{{ uri('committees.meetings') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.meetings', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.meetings' ? 'active' : '' }}">
             {{ _(['meeting', 'meetings', 10]) }}
             </a>
@@ -95,7 +95,7 @@
         </li>
         {% if isAllowed('committees', 'history') %}
         <li class="nav-item">
-            <a href="{{ uri('committees.history') }}?committee_id={{ committee.getId() }}"
+            <a href="{{ uri('committees.history', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.history' ? 'active' : '' }}">
             {{ _('committeeHistory') }}
             </a>
