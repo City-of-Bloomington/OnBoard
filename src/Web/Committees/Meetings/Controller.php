@@ -12,9 +12,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['committee_id'])) {
-            try { $committee = new Committee($_GET['committee_id']); }
+        if (!empty($params['id'])) {
+            try { $committee = new Committee($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        }
+
+        if (!isset($committee)) {
+            return \Web\Views\NotFoundView();
         }
 
         if (!empty($_GET['start'])) {
@@ -34,8 +38,8 @@ class Controller extends \Web\Controller
         }
         else {
             $year = !empty($_GET['year'])
-                  ?  (int) $_GET['year']
-                  :  (int) date('Y');
+                ?  (int) $_GET['year']
+                :  (int) date('Y');
 
             $start = new \DateTime("$year-01-01 00:00:00");
             $end   = new \DateTime("$year-12-31 23:59:59");
@@ -45,19 +49,15 @@ class Controller extends \Web\Controller
             return new \Web\Views\BadRequestView();
         }
 
-        if (isset($committee)) {
-            $meetings = $committee->getMeetings($start, $end);
+        $meetings = $committee->getMeetings($start, $end);
 
-            switch ($this->outputFormat) {
-                case 'json':
-                    return new \Web\Views\JSONView($meetings);
-                break;
+        switch ($this->outputFormat) {
+            case 'json':
+                return new \Web\Views\JSONView($meetings);
+            break;
 
-                default:
-                    return new View($meetings, $committee);
-            }
+            default:
+                return new View($meetings, $committee);
         }
-
-        return \Web\Views\NotFoundView();
     }
 }
