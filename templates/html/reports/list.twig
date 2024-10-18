@@ -27,7 +27,7 @@
     <table class="table">
     {% for r in reports %}
     <tr><td>{{ r.date }}</td>
-        <td><a href="{{ uri('reports.download') }}?report_id={{ r.id }}">{{ r.title }}</a></td>
+        <td><a href="{{ uri('reports.download', {id: r.id}) }}">{{ r.title }}</a></td>
         <td>{% if r.actionLinks %}
             {{ include('html/partials/moreLinks.twig', {actionLinks:r.actionLinks}, with_context=false) }}
             {% endif %}

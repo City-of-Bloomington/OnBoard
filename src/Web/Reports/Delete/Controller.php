@@ -14,9 +14,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['report_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file         = new Report($_GET['report_id']);
+                $file         = new Report($params['id']);
                 $committee_id = $file->getCommittee_id();
                 $return_url   = \Web\View::generateUrl('reports.index').'?committee_id='.$committee_id;
 
@@ -44,11 +44,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_GET['committee_id'])) {
-            return CommitteeTable::hasDepartment($department_id, (int)$_GET['committee_id']);
-        }
-        if (!empty($_GET['report_id'])) {
-            return ReportsTable::hasDepartment($department_id, (int)$_GET['report_id']);
+        if (!empty($params['id'])) {
+            return ReportsTable::hasDepartment($department_id, (int)$params['id']);
         }
 
         return false;

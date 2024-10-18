@@ -145,16 +145,17 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('add',    '/add'        , Web\Races\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add'        , Web\Races\Add\Controller::class)->allows(['POST']);
     $r->get('index',  ''            , Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {
-    $r->get('download', '/download', Web\Reports\Download\Controller::class);
-    $r->get('update',   '/update'  , Web\Reports\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/delete'  , Web\Reports\Delete\Controller::class);
-    $r->get('index',    ''         , Web\Reports\List\Controller::class);
+    $r->get('download', '/{id}/download', Web\Reports\Download\Controller::class);
+    $r->get('update',   '/{id}/update'  , Web\Reports\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{id}/delete'  , Web\Reports\Delete\Controller::class);
+    $r->get('add',      '/add'          , Web\Reports\Add\Controller::class)->allows(['POST']);
+    $r->get('index',    ''              , Web\Reports\List\Controller::class);
 });
 
 $map->attach('seats.', '/seats', function ($r) {

@@ -24,7 +24,6 @@
     <form method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>{{ report.getId() ? _('report_edit') : _('report_add') }}</legend>
-            <input name="report_id"    type="hidden" value="{{ report.getId() }}" />
             <input name="committee_id" type="hidden" value="{{ report.getCommittee_id() }}" />
 
             {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
