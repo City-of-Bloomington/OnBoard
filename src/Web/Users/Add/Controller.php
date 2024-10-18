@@ -4,23 +4,15 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Users\Update;
+namespace Web\Users\Add;
 
 use Application\Models\Person;
-use Application\Models\DepartmentTable;
 
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $person = new Person($params['id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-
-        if (!isset($person)) {
-            return new \Web\Views\NotFoundView();
-        }
+        $person = new Person();
 
         if (isset($_POST['username'])) {
             try {
@@ -49,6 +41,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        return new View($person);
+        return new \Web\Users\Update\View($person);
     }
 }

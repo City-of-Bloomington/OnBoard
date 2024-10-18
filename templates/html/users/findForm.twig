@@ -54,9 +54,9 @@
     {% if users %}
     <table class="table">
         <thead>
-            <tr><th>{{ _('username'            ) }}</th>
-                <th>{{ _('name'                ) }}</th>
-                <th>{{ _('role'                ) }}</th>
+            <tr><th>{{ _('username') }}</th>
+                <th>{{ _('name'    ) }}</th>
+                <th>{{ _('role'    ) }}</th>
             </tr>
         </thead>
         <tbody>
@@ -66,10 +66,10 @@
                 <td><a href="{{ link }}">{{ u.firstname }} {{ u.lastname }}</a></td>
                 <td><a href="{{ link }}">{{ u.role }}</a></td>
                 <td>{% if isAllowed('users', 'update') %}
-                    {{ forms.actionLink(uri('users.update') ~ '?user_id=' ~ u.id, _('edit_account'), 'edit') }}
+                    {{ forms.actionLink(uri('users.update', {id: u.id}), _('edit_account'), 'edit') }}
                     {% endif %}
                     {% if isAllowed('users', 'delete') %}
-                    {{ forms.actionLink(uri('users.delete') ~ '?user_id=' ~ u.id, _('delete_account'), 'delete') }}
+                    {{ forms.actionLink(uri('users.delete', {id: u.id}), _('delete_account'), 'delete') }}
                     {% endif %}
                 </td>
             </tr>

@@ -15,7 +15,7 @@ class Controller extends \Web\Controller
         $return_url = $_REQUEST['return_url'] ?? \Web\View::generateUrl('users.index');
 
         try {
-            $person = new Person($_REQUEST['user_id']);
+            $person = new Person($params['id']);
             $person->deleteUserAccount();
             $person->save();
         }

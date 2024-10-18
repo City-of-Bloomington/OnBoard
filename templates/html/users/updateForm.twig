@@ -6,7 +6,6 @@
  * Metadata
  * @param array  departments
  * @param array  roles
- * @
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
@@ -16,7 +15,6 @@
 
     <form method="post">
         <fieldset>
-            <input name="user_id" type="hidden" value="{{ user.id }}" />
             {{ forms.field_text('username', 'username', _('username'), user.username, true )}}
             {{ forms.field_email('email', 'email', _('email'), user.email )}}
 
