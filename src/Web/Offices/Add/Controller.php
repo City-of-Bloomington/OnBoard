@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Offices\Update;
+namespace Web\Offices\Add;
 
 use Application\Models\Office;
 
@@ -12,17 +12,16 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $office = new Office($params['id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                header('Location: '.\Web\View::generateUrl('committees.index'));
-                exit();
-            }
-        }
+        $office = new Office();
 
-        if (!isset($office)) {
-            return new \Web\Views\NotFoundView();
+        if (!empty($_REQUEST['committee_id']) && !empty($_REQUEST['person_id'])) {
+            $office->setCommittee_id($_REQUEST['committee_id']);
+            $office->setPerson_id($_REQUEST['person_id']);
+        }
+        else {
+            $_SESSION['errorMessages'][] = 'offices/missingCommittee';
+            header('Location: '.\Web\View::generateUrl('committees.index'));
+            exit();
         }
 
         if (isset($_POST['title'])) {
@@ -44,6 +43,6 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($office);
+        return new \Web\Offices\Update\View($office);
     }
 }

@@ -134,7 +134,8 @@ $map->attach('members.', '/members', function ($r) {
 });
 
 $map->attach('offices.', '/offices', function ($r) {
-    $r->get('update', '/update', Web\Offices\Update\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Offices\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add'        , Web\Offices\Add\Controller::class)->allows(['POST']);
 });
 
 $map->attach('people.', '/people', function ($r) {

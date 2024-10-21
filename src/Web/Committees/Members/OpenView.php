@@ -48,7 +48,7 @@ class OpenView extends View
 
             if ($userCanEditOffices) {
                 $links[] = [
-                    'url'   => parent::generateUri('offices.update')."?committee_id=$committee_id;person_id=$person_id",
+                    'url'   => parent::generateUri('offices.add')."?committee_id=$committee_id;person_id=$person_id",
                     'label' => $this->_('office_add'),
                     'class' => 'add'
                 ];
@@ -56,7 +56,7 @@ class OpenView extends View
             foreach ($m['offices'] as $o) {
                 if ($userCanEditOffices) {
                     $links[] = [
-                        'url'   => parent::generateUri('offices.update')."?office_id={$o->getId()}",
+                        'url'   => parent::generateUri('offices.update', ['id'=>$o->getId()]),
                         'label' => sprintf($this->_('office_edit', 'messages'), $o->getTitle()),
                         'class' => 'edit'
                     ];

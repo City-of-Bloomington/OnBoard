@@ -165,13 +165,13 @@ class View extends \Web\View
         }
         if (parent::isAllowed('offices', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('offices.update')."?committee_id={$m->getCommittee_id()};person_id={$m->getPerson_id()}",
+                'url'   => parent::generateUri('offices.add')."?committee_id={$m->getCommittee_id()};person_id={$m->getPerson_id()}",
                 'label' => $this->_('office_add'),
-                'class' => 'delete'
+                'class' => 'add'
             ];
             foreach ($m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
                 $links[] = [
-                    'url'   => parent::generateUri('offices.update')."?office_id={$office->getId()}",
+                    'url'   => parent::generateUri('offices.update', ['id'=>$office->getId()]),
                     'label' => sprintf($this->_('office_edit', 'messages'), $office->getTitle()),
                     'class' => 'edit'
                 ];
