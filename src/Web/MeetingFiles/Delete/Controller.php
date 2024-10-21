@@ -15,11 +15,11 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['meetingFile_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file       = new MeetingFile($_GET['meetingFile_id']);
+                $file       = new MeetingFile($params['id']);
                 $committee  = $file->getCommittee();
-                $return_url = \Web\View::generateUrl('meetingFiles.index').'?committee_id='.$committee->getId();
+                $return_url = \Web\View::generateUrl('meetings.view', ['id'=>$file->getMeeting_id()]);
 
                 global $SOLR;
                 $solr = new Solr($SOLR['onboard']);
@@ -50,8 +50,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_REQUEST['meetingFile_id'])) {
-            return MeetingFilesTable::hasDepartment($department_id, (int)$_REQUEST['meetingFile_id']);
+        if (!empty($params['id'])) {
+            return MeetingFilesTable::hasDepartment($department_id, (int)$params['id']);
         }
         return false;
     }

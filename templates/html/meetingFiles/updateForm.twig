@@ -27,10 +27,6 @@
     <form method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
-            <input name="meetingFile_id" type="hidden" value="{{ meetingFile.getId() }}" />
-
-            {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
-            {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
 
             <div class="mb-3">
                 <label for="meeting_id">{{ _('meeting') }}</label>
@@ -42,10 +38,13 @@
                 {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
             </div>
 
+            {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
+            {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
+
             <div class="mb-3">
                 <label for="meetingFile">{{ _('meetingFile') }}</label>
                 {% if meetingFile.getFilename() -%}
-                <div><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ meetingFile.getId() }}">{{ meetingFile.getFilename() }}</a></div>
+                <div><a href="{{ uri('meetingFiles.download', {id: meetingFile.getId()}) }}">{{ meetingFile.getFilename() }}</a></div>
                 {%- endif %}
                 <input id ="meetingFile" name="meetingFile" type="file" aria-describedby="meetingFile-help" />
                 <div id="meetingFile-help">
@@ -56,7 +55,7 @@
             </div>
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('meetingFiles.index') ~ '?committee_id=' ~ committee.getId() , _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('meetings.view', {id: meetingFile.getMeeting_id()}) , _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

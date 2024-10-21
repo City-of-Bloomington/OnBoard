@@ -114,15 +114,16 @@ $map->attach('liaisons.', '/liaisons', function ($r) {
 });
 
 $map->attach('meetings.', '/meetings', function ($r) {
-    $r->get('view', '/view', Web\Meetings\Info\Controller::class);
+    $r->get('view', '/{id}', Web\Meetings\Info\Controller::class);
 });
 
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
-    $r->get('download', '/download', Web\MeetingFiles\Download\Controller::class);
-    $r->get('update',   '/update'  , Web\MeetingFiles\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/delete'  , Web\MeetingFiles\Delete\Controller::class);
-    $r->get('years',    '/years'   , Web\MeetingFiles\Years\Controller::class);
-    $r->get('index',    ''         , Web\MeetingFiles\List\Controller::class);
+    $r->get('download', '/{id}/download', Web\MeetingFiles\Download\Controller::class);
+    $r->get('update',   '/{id}/update'  , Web\MeetingFiles\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{id}/delete'  , Web\MeetingFiles\Delete\Controller::class);
+    $r->get('add',      '/add'          , Web\MeetingFiles\Add\Controller::class)->allows(['POST']);
+    $r->get('years',    '/years'        , Web\MeetingFiles\Years\Controller::class);
+    $r->get('index',    ''              , Web\MeetingFiles\List\Controller::class);
 });
 
 $map->attach('members.', '/members', function ($r) {

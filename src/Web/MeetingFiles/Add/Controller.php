@@ -4,25 +4,30 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\MeetingFiles\Update;
+namespace Web\MeetingFiles\Add;
 
 use Application\Models\Meeting;
 use Application\Models\MeetingFile;
-use Application\Models\MeetingFilesTable;
-use Application\Models\Committee;
-use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $file = new MeetingFile($params['id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-        else { $file = new MeetingFile(); }
+        $file = new MeetingFile();
 
-        if (!isset($file)) {
+        if (!$file->getMeeting_id()) {
+            if (!empty($_REQUEST['meeting_id'])) {
+                try {
+                    $m = new Meeting($_REQUEST['meeting_id']);
+                    $file->setMeeting($m);
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+            }
+        }
+
+        if (!empty($_REQUEST['type'])) { $file->setType($_REQUEST['type']); }
+
+        if (!$file->getMeeting_id()) {
             return new \Web\Views\NotFoundView();
         }
 
@@ -47,32 +52,13 @@ class Controller extends \Web\Controller
                 $url = !empty($_POST['return_url'])
                             ? $_POST['return_url']
                             : \Web\View::generateUrl('meetingFiles.index')."?committee_id={$committee->getId()}";
-                header("Location: $return_url");
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($file, $committee);
-    }
+        return new \Web\MeetingFiles\Update\View($file, $committee);
 
-    /**
-     * ACL will call this function before invoking the Controller
-     *
-     * When a role needs to check the Department Association, the ACL will
-     * be checked before invoking the Controller.  This function must be called
-     * statically.  The current route parameters will be passed.  These parameters
-     * will be the same as would be passed to __invoke().
-     *
-     * @see Web\Auth\DepartmentAssociation
-     * @see access_control.php
-     */
-    public static function hasDepartment(int $department_id, array $params): bool
-    {
-        if (!empty($params['id'])) {
-            return MeetingFilesTable::hasDepartment($department_id, (int)$params['id']);
-        }
-
-        return false;
     }
 }

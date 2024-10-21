@@ -21,7 +21,7 @@ class View extends \Web\View
         $this->vars = [
             'meeting'     => $meeting,
             'committee'   => $meeting->getCommittee(),
-            'files'       => MeetingFileView::createFileData($files),
+            'files'       => self::createFileData($files),
             'actionLinks' => self::actionLinks($meeting)
         ];
     }
@@ -33,13 +33,46 @@ class View extends \Web\View
 
     private static function actionLinks(Meeting $meeting): array
     {
-        if (parent::isAllowed('meetingFiles', 'update')) {
+        if (parent::isAllowed('meetingFiles', 'add')) {
             return [[
-                'url'   => parent::generateUri('meetingFiles.update').'?meeting_id='.$meeting->getId(),
+                'url'   => parent::generateUri('meetingFiles.add').'?meeting_id='.$meeting->getId(),
                 'label' => parent::_('meetingFile_add'),
                 'class' => 'add'
             ]];
         }
         return [];
+    }
+
+    private static function createFileData(array $files): array
+    {
+        $filedata  = [];
+        $canEdit   = parent::isAllowed('meetingFiles', 'update');
+        $canDelete = parent::isAllowed('meetingFiles', 'delete');
+        foreach ($files as $f) {
+            $d = [
+                'id'          => $f->getId(),
+                'type'        => $f->getType(),
+                'filename'    => $f->getFilename(),
+                'title'       => $f->getTitle(),
+                'meeting_id'  => $f->getMeeting_id(),
+                'meetingDate' => $f->getMeeting()->getStart(DATE_FORMAT)
+            ];
+            if ($canEdit) {
+                $d['actions'][] = [
+                    'url'   => parent::generateUri('meetingFiles.update', ['id'=>$f->getId()]),
+                    'label' => parent::_('meetingFile_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            if ($canDelete) {
+                $d['actions'][] = [
+                    'url'   => parent::generateUri('meetingFiles.delete', ['id'=>$f->getId()]),
+                    'label' => parent::_('meetingFile_delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $filedata[] = $d;
+        }
+        return $filedata;
     }
 }
