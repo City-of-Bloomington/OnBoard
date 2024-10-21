@@ -44,7 +44,7 @@
                         {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
                     </td>
                     <td>{% if canEditMembers %}
-                        {{ forms.actionLink(uri('members.update') ~ '?term_id=' ~ t.term_id, _('member_add'), 'add') }}
+                        {{ forms.actionLink(uri('members.appoint') ~ '?term_id=' ~ t.term_id, _('member_add'), 'add') }}
                         {% endif %}
                         <table>
                         {% for m in t.members %}

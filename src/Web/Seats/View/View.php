@@ -57,14 +57,7 @@ class View extends \Web\View
         else {
             $this->vars['members'] = $this->member_data($seat);
 
-            if (parent::isAllowed('members', 'update')) {
-                $this->vars['memberActions'] = [[
-                    'url'   => parent::generateUri('members.update')."?seat_id={$seat->getId()}",
-                    'label' => parent::_('member_add'),
-                    'class' => 'add'
-                ]];
-            }
-            elseif (parent::isAllowed('members', 'appoint')) {
+            if (parent::isAllowed('members', 'appoint')) {
                 $this->vars['memberActions'] = [[
                     'url'   => parent::generateUri('members.appoint')."?seat_id={$seat->getId()}",
                     'label' => parent::_('member_add'),
@@ -127,9 +120,9 @@ class View extends \Web\View
                 'class' => 'delete'
             ];
         }
-        if (parent::isAllowed('members', 'update')) {
+        if (parent::isAllowed('members', 'appoint')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update')."?term_id=$term_id",
+                'url'   => parent::generateUri('members.appoint')."?term_id=$term_id",
                 'label' => parent::_('member_add'),
                 'class' => 'add'
             ];
@@ -151,14 +144,14 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('members', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update').'?member_id='.$m->getId(),
+                'url'   => parent::generateUri('members.update', ['id'=>$m->getId()]),
                 'label' => $this->_('member_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('members.delete').'?member_id='.$m->getId(),
+                'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
                 'label' => $this->_('member_delete'),
                 'class' => 'delete'
             ];

@@ -12,8 +12,6 @@
 
     <form method="post">
         <fieldset><legend>{{ member.getPerson().getFullname() }}</legend>
-            <input name="member_id" type="hidden" value="{{ member.getId() }}" />
-
             <div class="form-group">
                 <label for="endDate">{{ _('endDate') }}</label>
                 <input  id="endDate" class="form-control"

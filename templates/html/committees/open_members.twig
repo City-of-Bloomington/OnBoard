@@ -26,9 +26,7 @@
     {% endfor %}
     </table>
 
-    {% if     isAllowed('members', 'update' ) %}
-    {{ forms.actionLink(uri('members.update') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
-    {% elseif isAllowed('members', 'appoint') %}
+    {% if isAllowed('members', 'appoint') %}
     {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
     {% endif %}
 

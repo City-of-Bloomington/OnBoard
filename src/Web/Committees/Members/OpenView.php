@@ -65,14 +65,14 @@ class OpenView extends View
 
             if ($userCanEditMembers) {
                 $links[] = [
-                    'url'   => parent::generateUri('members.update')."?member_id=$member_id",
+                    'url'   => parent::generateUri('members.update', ['id'=>$member_id]),
                     'label' => $this->_('member_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($userCanDeleteMembers) {
                 $links[] = [
-                    'url'   => parent::generateUri('members.delete')."?member_id=$member_id",
+                    'url'   => parent::generateUri('members.delete', ['id'=>$member_id]),
                     'label' => $this->_('member_delete'),
                     'class' => 'delete'
                 ];

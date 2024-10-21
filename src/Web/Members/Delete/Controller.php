@@ -14,9 +14,8 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         try {
-            if (!empty($_REQUEST['member_id'])) {
-                $m  = new Member($_REQUEST['member_id']);
-
+            if (!empty($params['id'])) {
+                $m   = new Member($params['id']);
                 $url = $m->getSeat_id()
                         ? \Web\View::generateUrl(     'seats.view'   , ['id'=>$m->getSeat_id()     ])
                         : \Web\View::generateUrl('committees.members', ['id'=>$m->getCommittee_id()]);

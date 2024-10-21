@@ -29,7 +29,6 @@
 
         <form method="post">
             <fieldset>
-                <input name="member_id" type="hidden" value="{{ member.getId() }}" />
                 <input name="confirm"   type="hidden" value="yes" />
 
                 {{ forms.button('submit', _('save'), 'save') }}

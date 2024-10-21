@@ -37,7 +37,7 @@ var PERSON_CHOOSER = {
 	},
 	setPerson: function (person_id) {
         ONBOARD.ajax(
-            BASE_URL + '/people/view?format=json;person_id=' + person_id,
+            BASE_URL + '/people/' + person_id + '?format=json',
             function (request) {
                 const id     = PERSON_CHOOSER.fieldId,
                       name   = PERSON_CHOOSER.fieldId + '-name',
