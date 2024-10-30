@@ -12,11 +12,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $type = new Type($_REQUEST['id']); }
+        if (!empty($params['id'])) {
+            try { $type = new Type($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        else { $type = new Type(); }
 
         if (isset($type)) {
             if (isset($_POST['name'])) {

@@ -97,13 +97,15 @@ $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
 });
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
-    $r->get('update', '/update', Web\Legislation\Statuses\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', Web\Legislation\Statuses\Delete\Controller::class);
-    $r->get('index',  ''       , Web\Legislation\Statuses\List\Controller::class);
+    $r->get('update', '/{id}/update', Web\Legislation\Statuses\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{id}/delete', Web\Legislation\Statuses\Delete\Controller::class);
+    $r->get('add'   , '/add'        , Web\Legislation\Statuses\Add\Controller::class)->allows(['POST']);
+    $r->get('index' , ''            , Web\Legislation\Statuses\List\Controller::class);
 });
 
 $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
-    $r->get('update', '/update', Web\Legislation\Types\Update\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Legislation\Types\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add'        , Web\Legislation\Types\Add\Controller::class)->allows(['POST']);
     $r->get('index',  '',        Web\Legislation\Types\List\Controller::class);
 });
 
