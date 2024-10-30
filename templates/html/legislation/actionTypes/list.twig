@@ -16,7 +16,7 @@
     <table class="table">
         {% set canEdit = isAllowed('legislationActionTypes', 'update') %}
         {% for t in types %}
-        <tr><td>{{ forms.actionLink(uri('legislationActionTypes.update') ~ '?id=' ~ t.getId(), _('legislationActionType_edit'), 'edit') }}</td>
+        <tr><td>{{ forms.actionLink(uri('legislationActionTypes.update', {id: t.getId()}), _('legislationActionType_edit'), 'edit') }}</td>
             <td>{{ t.name     }}</td>
             <td>{{ t.ordering }}</td>
         </tr>
