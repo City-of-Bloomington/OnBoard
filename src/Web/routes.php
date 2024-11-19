@@ -43,8 +43,9 @@ $map->attach('applications.', '/applications', function ($r) {
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {
-    $r->get('update', '/update', Web\Appointers\Update\Controller::class)->allows(['POST']);
-    $r->get('index',  '',        Web\Appointers\List\Controller::class);
+    $r->get('add',    '/add'        , Web\Appointers\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Appointers\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  ''            , Web\Appointers\List\Controller::class);
 });
 
 $map->attach('committees.', '/committees', function ($r) {

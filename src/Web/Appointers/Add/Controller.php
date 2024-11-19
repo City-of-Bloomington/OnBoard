@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2014-2024 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-declare(strict_types=1);
-namespace Web\Appointers\Update;
+declare (strict_types=1);
+namespace Web\Appointers\Add;
 
 use Application\Models\Appointer;
 
@@ -12,16 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
+        $appointer  = new Appointer();
         $return_url = \Web\View::generateUrl('appointers.index');
-
-        if (!empty($params['id'])) {
-            try { $appointer = new Appointer($params['id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                header("Location: $return_url");
-                exit();
-            }
-        }
 
         if (isset($_POST['name'])) {
             $appointer->setName($_POST['name']);
@@ -33,6 +25,6 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($appointer);
+        return new \Web\Appointers\Update\View($appointer);
     }
 }

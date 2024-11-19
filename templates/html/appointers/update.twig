@@ -12,8 +12,6 @@
     </header>
     <form method="post">
         <fieldset>
-            <input name="appointer_id" type="hidden" value="{{ appointer.getId() }}" />
-
             {{ forms.field_text('name', 'name', _('name'), appointer.getName(), true ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
