@@ -16,8 +16,8 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): View
     {
         try {
-            if (!empty($_REQUEST['alternate_id'])) {
-                $a  = new Alternate($_REQUEST['alternate_id']);
+            if (!empty($params['id'])) {
+                $a  = new Alternate($params['id']);
 
                 $url = $a->getSeat_id()
                         ? View::generateUrl('seats.view',         ['id'=>$a->getSeat_id()])

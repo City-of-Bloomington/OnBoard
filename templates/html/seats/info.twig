@@ -37,8 +37,8 @@
                     <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
             </thead>
             <tbody>
-                {% set canEditMembers    = isAllowed('members',    'update') %}
-                {% set canEditAlternates = isAllowed('alternates', 'update') %}
+                {% set canEditMembers   = isAllowed('members',    'update') %}
+                {% set canAddAlternates = isAllowed('alternates', 'add') %}
                 {% for t in terms %}
                 <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
                         {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
@@ -55,8 +55,8 @@
                         {% endfor %}
                         </table>
                     </td>
-                    <td>{% if canEditAlternates %}
-                        {{ forms.actionLink(uri('alternates.update') ~ '?term_id=' ~ t.term_id, _('alternate_add'), 'add') }}
+                    <td>{% if canAddAlternates %}
+                        {{ forms.actionLink(uri('alternates.add') ~ '?term_id=' ~ t.term_id, _('alternate_add'), 'add') }}
                         {% endif %}
                         <table>
                         {% for a in t.alternates %}

@@ -127,11 +127,11 @@ class View extends \Web\View
                 'class' => 'add'
             ];
         }
-        if (parent::isAllowed('alternates', 'update')) {
+        if (parent::isAllowed('alternates', 'add')) {
             $p = ['term_id'=>$term_id, 'return_url'=>Url::current_url(BASE_HOST)];
 
             $links[] = [
-                'url'   => parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.add').'?'.http_build_query($p, '', ';'),
                 'label' => parent::_('alternate_add'),
                 'class' => 'add'
             ];
@@ -179,10 +179,8 @@ class View extends \Web\View
         $links = [];
         $p     = ['return_url' => Url::current_url(BASE_HOST)];
         if (parent::isAllowed('alternates', 'update')) {
-            $p['alternate_id'] = $a->getId();
-
             $links[] = [
-                'url'   => parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.update', ['id'=>$a->getId()]),
                 'label' => parent::_('alternate_edit'),
                 'class' => 'edit'
             ];
@@ -191,7 +189,7 @@ class View extends \Web\View
             $p['alternate_id'] = $a->getId();
 
             $links[] = [
-                'url'   => parent::generateUri('alternates.delete').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.delete', ['id'=>$a->getId()]),
                 'label' => parent::_('alternate_delete'),
                 'class' => 'delete'
             ];

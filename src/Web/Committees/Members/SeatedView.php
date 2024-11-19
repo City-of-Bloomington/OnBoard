@@ -69,14 +69,14 @@ class SeatedView extends View
             if ($alternates && $userCanEditAlternates) {
                 if ($row['alternate_person_id']) {
                     $actions[] = [
-                        'url'   => parent::generateUri('alternates.update')."?alternate_id=$row[alternate_id]",
+                        'url'   => parent::generateUri('alternates.update', ['id'=>$row['alternate_id']]),
                         'label' => $this->_('alternate_edit'),
                         'class' => 'edit'
                     ];
                 }
                 else {
                     $actions[] = [
-                        'url'   => parent::generateUri('alternates.update'),
+                        'url'   => parent::generateUri('alternates.add'),
                         'label' => $this->_('alternate_add'),
                         'class' => 'add'
                     ];

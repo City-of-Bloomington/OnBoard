@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Alternates\Update;
+namespace Web\Alternates\Add;
 
 use Application\Models\Alternate;
 use Application\Models\AlternateTable;
@@ -12,19 +12,21 @@ use Application\Models\Term;
 use Application\Models\Seat;
 use Application\Models\Committee;
 
-
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try {
-                $alternate = new Alternate($params['id']);
-                if (!empty($_REQUEST['person_id'])) { $alternate->setPerson_id($_REQUEST['person_id']); }
-                if (!empty($_REQUEST['startDate'])) { $alternate->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
-            }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        try {
+            if     (!empty($_REQUEST['term_id'     ])) { $o = new Term($_REQUEST['term_id']); }
+            elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat($_REQUEST['seat_id']); }
+            elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
+            $alternate = $o->newAlternate();
+
+            if (!empty($_REQUEST['person_id'])) { $alternate->setPerson_id($_REQUEST['person_id']); }
+            if (!empty($_REQUEST['startDate'])) { $alternate->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
         }
+        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+
 
         if (isset($alternate)) {
             if (!empty($_POST['committee_id'])) {
@@ -46,7 +48,7 @@ class Controller extends \Web\Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
-            return new View($alternate);
+            return new \Web\Alternates\Update\View($alternate);
         }
 
         return new \Web\Views\NotFoundView();

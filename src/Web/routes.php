@@ -18,8 +18,9 @@ $map->attach('login.', '/login', function ($r) {
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {
-    $r->get('update', '/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', Web\Alternates\Delete\Controller::class);
+    $r->get('add',    '/add'        , Web\Alternates\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{id}/delete', Web\Alternates\Delete\Controller::class);
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
