@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['application_id'])) {
-            try { $application = new Application($_REQUEST['application_id']); }
+        if (!empty($params['id'])) {
+            try { $application = new Application($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 

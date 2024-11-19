@@ -37,10 +37,10 @@ $map->attach('applicants.', '/applicants', function ($r) {
 });
 
 $map->attach('applications.', '/applications', function ($r) {
-    $r->get('archive',   '/archive'  , Web\Applications\Archive\Controller::class);
-    $r->get('unarchive', '/unarchive', Web\Applications\Unarchive\Controller::class);
+    $r->get('archive',   '/{id}/archive'  , Web\Applications\Archive\Controller::class);
+    $r->get('unarchive', '/{id}/unarchive', Web\Applications\Unarchive\Controller::class);
+    $r->get('delete',    '/{id}/delete'   , Web\Applications\Delete\Controller::class);
     $r->get('report',    '/report'   , Web\Applications\Report\Controller::class)->allows(['POST']);
-    $r->get('delete',    '/delete'   , Web\Applications\Delete\Controller::class);
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {
