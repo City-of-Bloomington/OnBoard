@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANG }}" lang="{{ LANG }}">
 {{ include('html/layouts/partials/head.twig') }}
 
-<body class="min-vh-100 vstack">
+<body>
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     <div class="usa-overlay"></div>
     {{ include('html/layouts/partials/header.twig') }}
-    <main class="container-lg p-2 flex-grow-1">
+    <main id="main-content">
         {# {{ include('html/layouts/partials/nav1.twig') }} #}
         
         {% if ERROR_MESSAGES is defined %}
