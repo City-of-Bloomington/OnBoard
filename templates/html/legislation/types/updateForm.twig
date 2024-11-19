@@ -11,8 +11,6 @@
 
     <form method="post">
         <fieldset>
-            <input name="id" type="hidden" value="{{ type.getId() }}" />
-
             {{ forms.field_text('name', 'name', _('name'), type.getName(), true ) }}
             {{ forms.field_bool('subtype', 'subtype', _('subtype'), type.getSubtype() ) }}
 

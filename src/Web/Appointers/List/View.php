@@ -31,7 +31,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('appointers.update').'?appointer_id='.$a->getId(),
+                    'url'   => parent::generateUri('appointers.update', ['id'=>$a->getId()]),
                     'label' => parent::_('appointer_edit'),
                     'class' => 'edit'
                 ];
@@ -46,9 +46,9 @@ class View extends \Web\View
 
     private function actionLinks(): array
     {
-        if (parent::isAllowed('appointers', 'update')) {
+        if (parent::isAllowed('appointers', 'add')) {
             return [[
-                'url'   => parent::generateUri('appointers.update'),
+                'url'   => parent::generateUri('appointers.add'),
                 'label' => parent::_('appointer_add'),
                 'class' => 'add'
             ]];

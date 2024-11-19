@@ -13,11 +13,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        if (!empty($_REQUEST['id'])) {
-            try { $type = new ActionType($_REQUEST['id']); }
+        if (!empty($params['id'])) {
+            try { $type = new ActionType($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        else { $type = new ActionType(); }
 
         if (isset($type)) {
             if (isset($_POST['name'])) {
@@ -33,10 +32,7 @@ class Controller extends \Web\Controller
 
             return new View($type);
         }
-        else {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            $this->template->blocks[] = new Block('404.inc');
-        }
-        return $this->template;
+
+        return new \Web\Views\NotFoundView();
     }
 }

@@ -67,7 +67,10 @@ class CommitteeTable extends TableGateway
 	//
 	// These are functions that match the actions defined in the route
 	//----------------------------------------------------------------
-	public static function update(Committee $committee, array $post)
+	/**
+     * @return int   committee_id
+     */
+	public static function update(Committee $committee, array $post): int
 	{
         $action = $committee->getId() ? 'edit' : 'add';
         $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()] : [];
@@ -82,6 +85,8 @@ class CommitteeTable extends TableGateway
             'action'      => $action,
             'changes'     => [$change]
         ]);
+
+        return (int)$committee->getId();
 	}
 
 	public static function end(Committee $committee, \DateTime $endDate)

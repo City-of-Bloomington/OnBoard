@@ -14,12 +14,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['legislation_id'])) {
-            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
+        if (!empty($params['id'])) {
+            try { $legislation = new Legislation($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
         }
-        else { $legislation = new Legislation(); }
-
 
         if (isset($legislation)) {
             if (!$legislation->getCommittee_id()) {
@@ -48,7 +46,7 @@ class Controller extends \Web\Controller
             $_SESSION['return_url'] =    !empty($_REQUEST['return_url'])
                                     ? urldecode($_REQUEST['return_url'])
                                     : ($legislation->getId()
-                                        ? \Web\View::generateUrl('legislation.view').'?legislation_id='.$legislation->getId()
+                                        ? \Web\View::generateUrl('legislation.view', ['id'=>$legislation->getId()])
                                         : \Web\View::generateUrl('legislation.index'));
 
             if (isset($_POST['number'])) {
@@ -76,17 +74,23 @@ class Controller extends \Web\Controller
     }
 
     /**
-     * ACL will call this function when a role needs to check the Department Association
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
      *
      * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
      */
-    public static function hasDepartment(int $department_id): bool
+    public static function hasDepartment(int $department_id, array $params): bool
     {
         if (!empty($_REQUEST['committee_id'])) {
             return CommitteeTable::hasDepartment($department_id, (int)$_GET['committee_id']);
         }
-        if (!empty($_REQUEST['legislation_id'])) {
-            return LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
+        if (!empty($params['id'])) {
+            return LegislationTable::hasDepartment($department_id, (int)$params['id']);
         }
         return false;
     }

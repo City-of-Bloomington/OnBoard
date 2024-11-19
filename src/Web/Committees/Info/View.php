@@ -61,17 +61,16 @@ class View extends \Web\View
     private function actionLinks(int $committee_id): array
     {
         $links = [];
-        $param = "?committee_id=$committee_id";
         if (parent::isAllowed('committees', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('committees.update').$param,
+                'url'   => parent::generateUri('committees.update', ['id'=>$committee_id]),
                 'label' => parent::_('edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('committees', 'end')) {
             $links[] = [
-                'url'    => parent::generateUri('committees.end').$param,
+                'url'    => parent::generateUri('committees.end', ['id'=>$committee_id]),
                 'label'  => parent::_('committee_end'),
                 'class'  => 'delete'
             ];
@@ -89,14 +88,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.update').'?committeeStatute_id='.$s->getId(),
+                    'url'   => parent::generateUri('committeeStatutes.update', ['id'=>$s->getId()]),
                     'label' => $this->_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.delete').'?id='.$s->getId(),
+                    'url'   => parent::generateUri('committeeStatutes.delete', ['id'=>$s->getId()]),
                     'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];
@@ -114,7 +113,7 @@ class View extends \Web\View
     {
         if (parent::isAllowed('committeeStatutes', 'update')) {
             return [[
-                'url'   => parent::generateUri('committeeStatutes.update')."?committee_id=$committee_id",
+                'url'   => parent::generateUri('committeeStatutes.add')."?committee_id=$committee_id",
                 'label' => $this->_('committeeStatute_add'),
                 'class' => 'add'
             ]];

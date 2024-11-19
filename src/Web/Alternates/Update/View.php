@@ -10,20 +10,20 @@ use Application\Models\Alternate;
 
 class View extends \Web\View
 {
-    public function __construct(Alternate $alternate)
+    public function __construct(Alternate $a)
     {
         parent::__construct();
 
-        $return_url = $alternate->getSeat_id()
-                    ? parent::generateUri('seats.view').'?seat_id='.$alternate->getSeat_id()
-                    : parent::generateUri('committees.members').'?committee_id='.$alternate->getCommittee_id();
+        $url = $a->getSeat_id()
+                ? parent::generateUri(     'seats.view',    ['id'=>$a->getSeat_id()])
+                : parent::generateUri('committees.members', ['id'=>$a->getCommittee_id()]);
 
         $this->vars = [
-            'alternate'  => $alternate,
-            'committee'  => $alternate->getCommittee(),
-            'seat'       => $alternate->getSeat(),
-            'term'       => $alternate->getTerm(),
-            'return_url' => $return_url
+            'alternate'  => $a,
+            'committee'  => $a->getCommittee(),
+            'seat'       => $a->getSeat(),
+            'term'       => $a->getTerm(),
+            'return_url' => $url
         ];
     }
 

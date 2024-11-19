@@ -24,9 +24,9 @@ class View extends \Web\View
 
     private function actionLinks(): array
     {
-        if (parent::isAllowed('legislationActionTypes', 'update')) {
+        if (parent::isAllowed('legislationActionTypes', 'add')) {
             return [[
-                'url'   => parent::generateUri('legislationActionTypes.update'),
+                'url'   => parent::generateUri('legislationActionTypes.add'),
                 'label' => $this->_('legislationActionType_add'),
                 'class' => 'add'
             ]];

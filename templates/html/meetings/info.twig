@@ -10,13 +10,7 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
 <section class="container my-3">
-    <header class="mb-3">
-        <h1>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h1>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
+    {{ include('html/committees/partials/header.twig') }}
 
     <h3>{{ meeting.getStart() }} - {{ meeting.getEnd() }}</h3>
     <p>{{ meeting.getLocation() }}</p>
@@ -27,7 +21,7 @@
     <table>
     {% for f in files %}
     <tr><th>{{ f.type }}</th>
-        <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
                 {{ f.title ?? f.filename }}
             </a>
         </td>

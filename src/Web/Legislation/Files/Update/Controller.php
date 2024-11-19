@@ -15,60 +15,66 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['legislationFile_id'])) {
-            try { $file = new LegislationFile((int)$_REQUEST['legislationFile_id']); }
+        if (!empty($params['id'])) {
+            try { $file = new LegislationFile((int)$params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        else { $file = new LegislationFile(); }
 
-        if (!$file->getLegislation_id()) {
-            if (!empty($_REQUEST['legislation_id'])) {
-                try {
-                    $l = new Legislation((int)$_REQUEST['legislation_id']);
-                    $file->setLegislation($l);
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-            }
-        }
-
-        $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
-                                ? $_REQUEST['return_url']
-                                : ($file->getLegislation_id()
-                                    ? \Web\View::generateUrl('legislation.view').'?legislation_id='.$file->getLegislation_id()
-                                    : \Web\View::generateUrl('legislation.index'));
-
-
-        if (isset($file) && $file->getLegislation_id()) {
-            if (isset($_POST['legislation_id'])) {
-                if (isset($_FILES['legislationFile']) && $_FILES['legislationFile']['error'] != UPLOAD_ERR_NO_FILE) {
+        if (isset($file)) {
+            if (!$file->getLegislation_id()) {
+                if (!empty($_REQUEST['legislation_id'])) {
                     try {
-                        $file->setFile($_FILES['legislationFile']);
-                        $file->save();
-
-                        $return_url = $_SESSION['return_url'];
-                        unset($_SESSION['return_url']);
-                        header("Location: $return_url");
-                        exit();
+                        $l = new Legislation((int)$_REQUEST['legislation_id']);
+                        $file->setLegislation($l);
                     }
                     catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
                 }
             }
 
-            return new View($file, $_SESSION['return_url']);
+            $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
+                                    ? $_REQUEST['return_url']
+                                    : ($file->getLegislation_id()
+                                        ? \Web\View::generateUrl('legislation.view', ['id'=>$file->getLegislation_id()])
+                                        : \Web\View::generateUrl('legislation.index'));
+
+            if ($file->getLegislation_id()) {
+                if (isset($_POST['legislation_id'])) {
+                    if (isset($_FILES['legislationFile']) && $_FILES['legislationFile']['error'] != UPLOAD_ERR_NO_FILE) {
+                        try {
+                            $file->setFile($_FILES['legislationFile']);
+                            $file->save();
+
+                            $return_url = $_SESSION['return_url'];
+                            unset($_SESSION['return_url']);
+                            header("Location: $return_url");
+                            exit();
+                        }
+                        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+                    }
+                }
+
+                return new View($file, $_SESSION['return_url']);
+            }
         }
 
         return new \Web\Views\NotFoundView();
     }
 
     /**
-     * ACL will call this function when a role needs to check the Department Association
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
      *
      * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
      */
-    public static function hasDepartment(int $department_id): bool
+    public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_REQUEST['legislationFile_id'])) {
-            return LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislationFile_id']);
+        if (!empty($params['id'])) {
+            return LegislationFilesTable::hasDepartment($department_id, (int)$params['id']);
         }
         if (!empty($_REQUEST['legislation_id'])) {
             return LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);

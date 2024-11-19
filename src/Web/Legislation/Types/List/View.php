@@ -32,7 +32,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('legislationTypes.update').'?id='.$t->getId(),
+                    'url'   => parent::generateUri('legislationTypes.update', ['id'=>$t->getId()]),
                     'label' => parent::_('legislationType_edit'),
                     'class' => 'edit'
                 ];
@@ -51,9 +51,9 @@ class View extends \Web\View
     private function actionLinks(): array
     {
         $links = [];
-        if (parent::isAllowed('legislationTypes', 'update')) {
+        if (parent::isAllowed('legislationTypes', 'add')) {
             $links[] = [
-                'url'   => parent::generateUri('legislationTypes.update'),
+                'url'   => parent::generateUri('legislationTypes.add'),
                 'label' => parent::_('legislationType_add'),
                 'class' => 'add'
             ];

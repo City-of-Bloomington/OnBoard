@@ -21,7 +21,6 @@ class Controller extends \Web\Controller
                 $users = $people->search($_GET);
                 $data  = [];
                 foreach ($users as $u) {
-                    $columns = ['id', 'username', 'firstname','lastname', 'email', 'department', 'role'];
                     $data[] = [
                         'id'         => $u->getId(),
                         'username'   => $u->getUsername(),

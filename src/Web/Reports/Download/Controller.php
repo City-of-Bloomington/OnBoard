@@ -12,9 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['report_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file = new Report($_GET['report_id']);
+                $file = new Report($params['id']);
                 $file->sendToBrowser();
             }
             catch (\Exception $e) { }

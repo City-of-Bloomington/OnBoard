@@ -11,8 +11,6 @@
 
     <form method="post">
         <fieldset>
-            <input name="race_id" type="hidden" value="{{ race.getId() }}" />
-
             {{ forms.field_text('name', 'name', _('name'), race.getName(), true )}}
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('races.index'), _('cancel'), 'cancel') }}

@@ -13,57 +13,42 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['user_id'])) {
-            try { $person = new Person($_REQUEST['user_id']); }
+        if (!empty($params['id'])) {
+            try { $person = new Person($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        else {
-            $person = new Person();
+
+        if (!isset($person)) {
+            return new \Web\Views\NotFoundView();
         }
 
-        if (isset($person)) {
-            if (isset($_POST['username'])) {
-                try {
-                    $person->handleUpdateUserAccount($_POST);
-                    // We might have populated this person's information from LDAP
-                    // We need to do a new lookup in the system, to see if a person
-                    // with their email address already exists.
-                    // If they already exist, we should add the account info to that
-                    // person record.
-                    if (!$person->getId() && $person->getEmail()) {
-                        try {
-                            $existingPerson = new Person($person->getEmail());
-                            $existingPerson->handleUpdateUserAccount($_POST);
-                        }
-                        catch (\Exception $e) { }
+        if (isset($_POST['username'])) {
+            try {
+                $person->handleUpdateUserAccount($_POST);
+                // We might have populated this person's information from LDAP
+                // We need to do a new lookup in the system, to see if a person
+                // with their email address already exists.
+                // If they already exist, we should add the account info to that
+                // person record.
+                if (!$person->getId() && $person->getEmail()) {
+                    try {
+                        $existingPerson = new Person($person->getEmail());
+                        $existingPerson->handleUpdateUserAccount($_POST);
                     }
-
-                    if (isset($existingPerson)) { $existingPerson->save(); }
-                    else { $person->save(); }
-
-                    header('Location: '.\Web\View::generateUrl('users.index'));
-                    exit();
+                    catch (\Exception $e) { }
                 }
-                catch (\Exception $e) {
-                    $_SESSION['errorMessages'][] = $e->getMessage();
-                }
+
+                if (isset($existingPerson)) { $existingPerson->save(); }
+                else { $person->save(); }
+
+                header('Location: '.\Web\View::generateUrl('users.index'));
+                exit();
             }
-
-            return new View($person);
-
-            $departments = new DepartmentTable();
-            $this->template->blocks[] = new Block('users/updateForm.inc', [
-                'user'        => $person,
-                'departments' => $departments->find()
-            ]);
-            if ($person->getId()) {
-                $this->template->blocks[] = new Block('people/info.inc', [
-                    'person'         => $person,
-                    'disableButtons' => true
-                ]);
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }
 
-        return new \Web\Views\NotFoundView();
+        return new View($person);
     }
 }

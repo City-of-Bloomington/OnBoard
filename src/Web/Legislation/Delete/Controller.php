@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\Vew
     {
-        if (!empty($_REQUEST['legislation_id'])) {
-            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
+        if (!empty($params['id'])) {
+            try { $legislation = new Legislation($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
         }
 
@@ -33,13 +33,19 @@ class Controller extends \Web\Controller
     }
 
     /**
-     * ACL will call this function when a role needs to check the Department Association
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
      *
      * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
      */
-    public static function hasDepartment(int $department_id): bool
+    public static function hasDepartment(int $department_id, array $params): bool
     {
-        return !empty($_REQUEST['legislation_id'])
-            && LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
+        return !empty($params['id'])
+            && LegislationTable::hasDepartment($department_id, (int)$params['id']);
     }
 }

@@ -14,22 +14,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['legislationAction_id'])) {
-            try { $action = new Action($_REQUEST['legislationAction_id']); }
+        if (!empty($params['id'])) {
+            try { $action = new Action($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-        else {
-            if (!empty($_REQUEST['legislation_id']) && !empty($_REQUEST['type_id'])) {
-                try {
-                    $action = new Action();
-                    $action->setLegislation_id($_REQUEST['legislation_id']);
-                    $action->setType_id       ($_REQUEST['type_id'       ]);
-                }
-                catch (\Exception $e) {
-                    unset($action);
-                    $_SESSION['errorMessages'][] = $e->getMessage();
-                }
-            }
         }
 
         if (isset($action)) {
@@ -42,7 +29,7 @@ class Controller extends \Web\Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    $return_url = \Web\View::generateUrl('legislation.view').'?legislation_id='.$action->getLegislation_id();
+                    $return_url = \Web\View::generateUrl('legislation.view', ['id'=>$action->getLegislation_id()]);
                     header("Location: $return_url");
                     exit();
                 }
@@ -56,14 +43,20 @@ class Controller extends \Web\Controller
     }
 
     /**
-     * ACL will call this function when a role needs to check the Department Association
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
      *
      * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
      */
-    public static function hasDepartment(int $department_id): bool
+    public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_REQUEST['legislationAction_id'])) {
-            return ActionsTable::hasDepartment($department_id, (int)$_REQUEST['legislationAction_id']);
+        if (!empty($params['id'])) {
+            return ActionsTable::hasDepartment($department_id, (int)$params['id']);
         }
 
         if (!empty($_REQUEST['legislation_id'])) {

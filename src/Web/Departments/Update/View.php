@@ -13,7 +13,10 @@ class View extends \Web\View
     public function __construct(Department $department)
     {
         parent::__construct();
-        $this->vars['department'] = $department;
+        
+        $this->vars = [
+            'department' => $department
+        ];
     }
 
     public function render(): string

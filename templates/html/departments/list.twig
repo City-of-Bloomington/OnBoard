@@ -15,7 +15,7 @@
 
     <table class="table table-striped">
     {% for d in departments %}
-    <tr><td><a href="{{ uri('departments.info') }}?department_id={{ d.id }}">{{ d.name }}</a></td>
+    <tr><td><a href="{{ uri('departments.info', {id: d.id}) }}">{{ d.name }}</a></td>
         <td>{% if d.actionLinks %}
             {{ include('html/partials/actionLinks.twig', {actionLinks:d.actionLinks}, with_context=false) }}
             {% endif %}

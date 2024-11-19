@@ -11,22 +11,23 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
-<section class="my-3">
+<section class="container my-3">
     {{ include('html/committees/partials/header.twig') }}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['meeting', 'meetings', 10]) }}</h2>
-    </div>
+
     {% for date, t in meetings %}
         {% for time, m in t %}
         <div class="card">
             <div class="card-body">
-                <h3><a href="{{ uri('meetings.view') ~ '?meeting_id=' ~ m.id }}">{{ m.start }} - {{ m.end }}</a></h3>
+                <h3><a href="{{ uri('meetings.view', {id: m.id}) }}">
+                        {{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}
+                    </a>
+                </h3>
                 <p>{{ m.location }}</p>
                 <table>
                 {% for type, t in m.files %}
                     {% for f in t %}
                     <tr><th>{{ f.type }}</th>
-                        <td><a href="{{ uri('meetingFiles.download') ~ '?meetingFile_id=' ~ f.id }}">
+                        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
                                 {{ f.title ?? f.filename }}
                             </a>
                         </td>

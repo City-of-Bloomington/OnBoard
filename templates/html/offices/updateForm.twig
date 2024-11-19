@@ -37,7 +37,7 @@
             {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), office.getEndDate('Y-m-d') )}}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('committees.members') ~ '?committee_id=' ~ committee.getId() , _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('committees.members', {id: committee.getId()}) , _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

@@ -16,9 +16,9 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'user' => $user,
-            'departments'           => self::department_options(),
-            'roles'                 => self::role_options()
+            'user'        => $user,
+            'departments' => self::department_options(),
+            'roles'       => self::role_options()
         ];
     }
 

@@ -13,13 +13,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['seat_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $seat         = new Seat($_REQUEST['seat_id']);
-                $committee_id = $seat->getCommittee_id();
-                SeatTable::delete($seat);
-                $return_url = \Web\View::generateUrl('committees.members')."?committee_id=$committee_id";
-                header("Location: $return_url");
+                $s   = new Seat($params['id']);
+                $url = \Web\View::generateUrl('committees.members', ['id'=>$s->getCommittee_id()]);
+
+                SeatTable::delete($s);
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

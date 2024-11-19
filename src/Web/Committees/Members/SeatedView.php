@@ -61,21 +61,24 @@ class SeatedView extends View
 
             if ($userCanEditSeats) {
                 $actions[] = [
-                    'url'   => parent::generateUri('seats.update')."?seat_id=$row[seat_id]",
-                    'label' => $this->_('seat_edit')
+                    'url'   => parent::generateUri('seats.update', ['id'=>$row['seat_id']]),
+                    'label' => $this->_('seat_edit'),
+                    'class' => 'edit'
                 ];
             }
             if ($alternates && $userCanEditAlternates) {
                 if ($row['alternate_person_id']) {
                     $actions[] = [
-                        'url'   => parent::generateUri('alternates.update')."?alternate_id=$row[alternate_id]",
-                        'label' => $this->_('alternate_edit')
+                        'url'   => parent::generateUri('alternates.update', ['id'=>$row['alternate_id']]),
+                        'label' => $this->_('alternate_edit'),
+                        'class' => 'edit'
                     ];
                 }
                 else {
                     $actions[] = [
-                        'url'   => parent::generateUri('alternates.update'),
-                        'label' => $this->_('alternate_add')
+                        'url'   => parent::generateUri('alternates.add'),
+                        'label' => $this->_('alternate_add'),
+                        'class' => 'add'
                     ];
                 }
             }
@@ -91,12 +94,12 @@ class SeatedView extends View
                         $n = $t->getNextTerm();
 
                         if ($n->isVacant()) {
-                            $uri = parent::generateUri('members.reappoint')."?member_id=$row[member_id]";
+                            $uri = parent::generateUri('members.reappoint', ['id'=>$row['member_id']]);
                             $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                         }
                     }
                     if (!$row['member_endDate'] || strtotime($row['member_endDate']) > time()) {
-                        $uri = parent::generateUri('members.resign')."?member_id=$row[member_id]";
+                        $uri = parent::generateUri('members.resign', ['id'=>$row['member_id']]);
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
                 }
@@ -109,16 +112,18 @@ class SeatedView extends View
             }
             if ($userCanEditOffices && $row['member_person_id']) {
                 $actions[] = [
-                    'url'   => parent::generateUri('offices.update')."?committee_id={$committee->getId()};person_id=$row[member_person_id]",
-                    'label' => $this->_('office_add')
+                    'url'   => parent::generateUri('offices.add')."?committee_id={$committee->getId()};person_id=$row[member_person_id]",
+                    'label' => $this->_('office_add'),
+                    'class' => 'add'
                 ];
 
                 if ($row['offices']) {
                     foreach (explode(',',$row['offices']) as $o) {
                         list($office_id, $office_title) = explode('|', $o);
                         $actions[] = [
-                            'url'   => parent::generateUri('offices.update')."?office_id=$office_id",
-                            'label' => "{$this->_('edit')} $office_title"
+                            'url'   => parent::generateUri('offices.update', ['id'=>$office_id]),
+                            'label' => "{$this->_('edit')} $office_title",
+                            'class' => 'add'
                         ];
                     }
                 }

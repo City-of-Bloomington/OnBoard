@@ -11,8 +11,6 @@
 
     <form method="post">
         <fieldset>
-            <input name="id" type="hidden" value="{{ status.getId() }}" />
-
             {{ forms.field_text('name', 'name', _('name'), status.getName(), true ) }}
             {{ forms.field_bool('active', 'active', _('active'), status.getActive() ) }}
 
@@ -21,5 +19,4 @@
         </fieldset>
     </form>
 </section>
-
 {% endblock %}

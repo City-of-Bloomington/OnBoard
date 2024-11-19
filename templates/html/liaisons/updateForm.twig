@@ -8,7 +8,6 @@
 {% import  'html/macros/forms.twig' as forms %}
 {% import  'html/macros/personChooser.twig' as chooser %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
 
 <section>
     <header><h2>{{ liaison.getId() ? _('liaison_edit') : _('liaison_add') }}</h2></header>
@@ -26,7 +25,7 @@
             </div>
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('committees.info') ~ '?committee_id=' ~ committee.getId(), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

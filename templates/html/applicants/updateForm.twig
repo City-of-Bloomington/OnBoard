@@ -13,7 +13,6 @@
 
     <form method="post">
         <fieldset><legend>{{ _('info_person') }}</legend>
-            <input name="applicant_id" type="hidden" value="{{ applicant.getId() }}" />
 
             {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
             {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
@@ -21,7 +20,7 @@
             {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('applicants.view') ~ '?applicant_id=' ~ applicant.getId(), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('applicants.view', {id: applicant.getId()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

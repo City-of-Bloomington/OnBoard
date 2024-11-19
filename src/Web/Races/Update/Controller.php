@@ -12,31 +12,26 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $return_url = View::generateUrl('races.index');
-        if (!empty($_REQUEST['race_id'])) {
-            try { $race = new Race($_REQUEST['race_id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                header("Location: $return_url");
-                exit();
-            }
-        }
-        else {
-            $race = new Race();
+        if (!empty($params['id'])) {
+            try { $race = new Race($params['id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (isset($_POST['name'])) {
-            $race->setName($_POST['name']);
-            try {
-                $race->save();
-                header("Location: $return_url");
-                exit();
+        if (isset($race)) {
+            if (isset($_POST['name'])) {
+                $race->setName($_POST['name']);
+                try {
+                    $race->save();
+                    header('Location: '.\Web\View::generateUrl('races.index'));
+                    exit();
+                }
+                catch (\Exception $e) {
+                    $_SESSION['errorMessages'][] = $e->getMessage();
+                }
             }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-            }
+            return new View($race);
         }
 
-        return new View($race);
+        return new \Web\Views\NotFoundView();
     }
 }

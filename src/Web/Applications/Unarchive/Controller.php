@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['application_id'])) {
-            try { $application = new Application($_REQUEST['application_id']); }
+        if (!empty($params['id'])) {
+            try { $application = new Application($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -21,8 +21,8 @@ class Controller extends \Web\Controller
             try { $application->unarchive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('committees.applications').'?committee_id='.$application->getCommittee_id();
-            header("Location: $return_url");
+            $url = \Web\View::generateUrl('committees.applications', ['id'=>$application->getCommittee_id()]);
+            header("Location: $url");
             exit();
         }
 

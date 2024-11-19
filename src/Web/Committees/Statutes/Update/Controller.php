@@ -13,19 +13,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['committeeStatute_id'])) {
-            try { $statute = new CommitteeStatute($_REQUEST['committeeStatute_id']); }
+        if (!empty($params['id'])) {
+            try { $statute = new CommitteeStatute($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-        else {
-            if (!empty($_REQUEST['committee_id'])) {
-                try {
-                    $committee = new Committee($_REQUEST['committee_id']);
-                    $statute   = new CommitteeStatute();
-                    $statute->setCommittee($committee);
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-            }
         }
 
         if (isset($statute)) {
@@ -33,7 +23,7 @@ class Controller extends \Web\Controller
                 try {
                     $statute->handleUpdate($_POST);
                     $statute->save();
-                    $return_url = \Web\View::generateUrl('committees.info').'?committee_id='.$statute->getCommittee_id();
+                    $return_url = \Web\View::generateUrl('committees.info', ['id'=>$statute->getCommittee_id()]);
                     header("Location: $return_url");
                     exit();
                 }

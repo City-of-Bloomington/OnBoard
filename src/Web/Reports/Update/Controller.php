@@ -15,20 +15,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['report_id'])) {
-            try { $report = new Report($_REQUEST['report_id']); }
+        if (!empty($params['id'])) {
+            try { $report = new Report($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-        else { $report = new Report(); }
-
-        if (!$report->getCommittee_id()) {
-            if (!empty($_REQUEST['committee_id'])) {
-                try {
-                    $c = new Committee($_REQUEST['committee_id']);
-                    $report->setCommittee($c);
-                }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-            }
         }
 
         if (isset($report) && $report->getCommittee_id()) {
@@ -47,7 +36,7 @@ class Controller extends \Web\Controller
                     if ($file) { $report->setFile($file); }
 
                     $report->save();
-                    $return_url = View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
+                    $return_url = \Web\View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
                     header("Location: $return_url");
                     exit();
                 }
@@ -61,18 +50,20 @@ class Controller extends \Web\Controller
     }
 
     /**
-     * ACL will call this function when a role needs to check the Department Association
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
      *
      * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
      */
-    public static function hasDepartment(int $department_id): bool
+    public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_REQUEST['report_id'])) {
-            return ReportsTable::hasDepartment($department_id, (int)$_REQUEST['report_id']);
-        }
-
-        if (!empty($_REQUEST['committee_id'])) {
-            return CommitteeTable::hasDepartment($department_id, (int)$_REQUEST['committee_id']);
+        if (!empty($params['id'])) {
+            return ReportsTable::hasDepartment($department_id, (int)$params['id']);
         }
 
         return false;

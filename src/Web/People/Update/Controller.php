@@ -15,17 +15,13 @@ class Controller extends \Web\Controller
     {
         $errorURL = $_REQUEST['return_url'] ?? \Web\View::generateUrl('people.index');
 
-        if (isset($_REQUEST['person_id']) && $_REQUEST['person_id']) {
-            try {
-                $person = new Person($_REQUEST['person_id']);
-            }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                return new \Web\Views\NotFoundView();
-            }
+        if (!empty($params['id'])) {
+            try { $person = new Person($params['id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        else {
-            $person = new Person();
+
+        if (!isset($person)) {
+            return new \Web\Views\NotFoundView();
         }
 
         if (isset($_POST['firstname'])) {
@@ -36,11 +32,6 @@ class Controller extends \Web\Controller
                 if (isset($_REQUEST['return_url'])) {
                     $return_url = new Url($_REQUEST['return_url']);
                     $return_url->person_id = $person->getId();
-                }
-                elseif (isset($_REQUEST['callback'])) {
-                    $return_url = new Url(\Web\View::generateUrl('callback.index'));
-                    $return_url->callback = $_REQUEST['callback'];
-                    $return_url->data = "{$person->getId()}";
                 }
                 else {
                     $return_url = $person->getUrl();

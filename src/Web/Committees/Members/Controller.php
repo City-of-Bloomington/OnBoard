@@ -16,8 +16,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        if (!empty($_GET['committee_id'])) {
-            try { $committee = new Committee($_GET['committee_id']); }
+        if (!empty($params['id'])) {
+            try { $committee = new Committee($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -51,7 +51,7 @@ class Controller extends \Web\Controller
                 return new OpenView($committee, $members, $search['current']);
             }
         }
-        return new \Web\View\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 
     private static function member_data($results): array

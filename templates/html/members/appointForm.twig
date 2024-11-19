@@ -10,12 +10,10 @@
  * @param array     recentMembers
  * @param array     termOptions     Array of term objects
  #}
-{% import 'html/macros/personChooser.twig' as chooser %}
-
+{% import  'html/macros/personChooser.twig' as chooser %}
+{% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-{{ include('html/committees/breadcrumbs.twig') }}
-
 <form method="post">
     {% if currentMember %}
     <fieldset>
@@ -74,11 +72,8 @@
 
         </section>
 
-        <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-        <a class="btn btn-danger"
-            href="{{ uri('committees.members') }}?committee_id={{ newMember.getCommittee_id() }}">
-            {{ _('cancel') }}
-        </a>
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('committees.members', {id: newMember.getCommittee_id()}), _('cancel'), 'cancel') }}
     </fieldset>
 
 </form>
@@ -87,7 +82,7 @@
 <section>
     <header><h3>{{ _(['recent_member', 'recent_members', 10]) }}</h3></header>
     {% for t in recentMembers %}
-    <div>{{ t.members }} {{ t.startDate }} - {{ t.endDate }}<div>
+    <div>{{ t.members }} {{ t.startDate }} - {{ t.endDate }}</div>
     {% endfor %}
 </section>
 {% endif %}

@@ -30,7 +30,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('departments.update').'?department_id='.$d->getId(),
+                    'url'   => parent::generateUri('departments.update', ['id=' => $d->getId()]),
                     'label' => parent::_('department_edit'),
                     'class' => 'edit'
                 ];

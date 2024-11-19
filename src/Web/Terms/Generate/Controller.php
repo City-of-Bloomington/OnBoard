@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['term_id'])) {
-            try { $term = new Term($_REQUEST['term_id']); }
+        if (!empty($params['id'])) {
+            try { $term = new Term($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -25,8 +25,8 @@ class Controller extends \Web\Controller
             try { $newTerm->save(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
-            header("Location: $return_url");
+            $url = \Web\View::generateUrl('seats.view', ['id'=>$term->getSeat_id()]);
+            header("Location: $url");
             exit();
         }
 

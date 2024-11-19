@@ -2,24 +2,18 @@
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array races
+ * @param array actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header><h2>{{ _(['race', 'races', 10]) }}</h2></header>
-    {% set canEdit = isAllowed('races', 'update') %}
-    {% if canEdit %}
-    {{ forms.actionLink(uri('races.update'), _('race_add'), 'add') }}
-    {% endif %}
+    {{ include('html/partials/actionLinks.twig') }}
 
     <table>
     {% for r in races %}
-    <tr><td>{% if canEdit %}
-            {{ forms.actionLink(uri('races.update') ~ '?race_id=' ~ r.getId(), _('race_edit'), 'add') }}
-            {% endif %}
-        </td>
-        <td>{{ r }}</td>
+    <tr><td>{{ include('html/partials/actionLinks.twig', {actionLinks:r.links}, with_context=false) }}</td>
+        <td>{{ r.name }}</td>
     </tr>
     {% endfor %}
     </table>

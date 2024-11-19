@@ -6,6 +6,7 @@
  * @param array     departments       Options for departments
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="my-3">
     <header class="mb-3">
@@ -15,7 +16,6 @@
 
     <form method="post">
         <fieldset><legend>{{ _('committee_info') }}</legend>
-            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
 
             <div>
                 <label for="type" class="form-label">{{ _('type') }}</label>
@@ -153,11 +153,12 @@
         </fieldset>
 
         <fieldset><legend>{{ _('submit') }}</legend>
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger"
-               href="{{ committee.getId() ? uri('committees.info') ~ '?committee_id=' ~ committee.getId() : uri('committees.index') }}">
-               {{ _('cancel') }}
-            </a>
+            {{ forms.button('submit', _('save'), 'save') }}
+            {% if committee.getId() %}
+            {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel'), 'cancel'  ) }}
+            {% else %}
+            {{ forms.actionLink(uri('committees.index'), _('cancel'), 'cancel') }}
+            {% endif %}
         </fieldset>
     </form>
 

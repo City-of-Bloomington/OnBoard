@@ -11,28 +11,30 @@ use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
 {
-    public function __invoke(array $params): \Web\View
+    public function __invoke(array $p): \Web\View
     {
-        if (!empty($_REQUEST['committee_id'])) {
-            try { $committee = new Committee($_REQUEST['committee_id']); }
+        if (!empty($p['id'])) {
+            try { $committee = new Committee($p['id']); }
             catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e->getMessage();
                 return new \Web\Views\NotFoundView();
             }
         }
-        else { $committee = new Committee(); }
 
-        if (isset($_POST['endDate'])) {
-            try {
-                CommitteeTable::end($committee, new \DateTime($_POST['endDate']));
+        if (isset($committee)) {
+            if (isset($_POST['endDate'])) {
+                try {
+                    CommitteeTable::end($committee, new \DateTime($_POST['endDate']));
 
-                $url = \Web\View::generateUrl('committees.info').'?committee_id='.$committee->getId();
-                header("Location: $url");
-                exit();
+                    $url = \Web\View::generateUrl('committees.info', ['id'=>$committee->getId()]);
+                    header("Location: $url");
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
 
-        return new View($committee);
+            return new View($committee);
+        }
+        return new \Web\Views\NotFoundView();
     }
 }

@@ -18,7 +18,7 @@
                 {% for committee in department.committees %}
                     <tr>
                         <td>
-                            <a href="{{ uri('committees.info') }}?committee_id={{ committee.id }}" class="text-decoration-none">
+                            <a href="{{ uri('committees.info', {id: committee.id}) }}" class="text-decoration-none">
                                 {{ committee.name }}
                             </a>
                         </td>

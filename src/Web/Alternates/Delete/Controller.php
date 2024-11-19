@@ -9,26 +9,28 @@ namespace Web\Alternates\Delete;
 use Application\Models\Alternate;
 use Application\Models\AlternateTable;
 
+use Web\View;
+
 class Controller extends \Web\Controller
 {
-    public function __invoke(array $params): \Web\View
+    public function __invoke(array $params): View
     {
         try {
-            if (!empty($_REQUEST['alternate_id'])) {
-                $alternate  = new Alternate($_REQUEST['alternate_id']);
+            if (!empty($params['id'])) {
+                $a  = new Alternate($params['id']);
 
-                $return_url = $alternate->getSeat_id()
-                            ? \Web\View::generateUrl('seats.view')."?seat_id={$alternate->getSeat_id()}"
-                            : \Web\View::generateUrl('committees.members')."?committee_id={$alternate->getCommittee_id()}";
+                $url = $a->getSeat_id()
+                        ? View::generateUrl('seats.view',         ['id'=>$a->getSeat_id()])
+                        : View::generateUrl('committees.members', ['id'=>$a->getCommittee_id()]);
 
-                AlternateTable::delete($alternate);
-                header("Location: $return_url");
+                AlternateTable::delete($a);
+                header("Location: $url");
                 exit();
             }
         }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-        header('Location: '.\Web\View::generateUrl('committees.index'));
+        header('Location: '.View::generateUrl('committees.index'));
         exit();
     }
 }

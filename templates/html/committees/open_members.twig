@@ -13,7 +13,7 @@
     {{ include('html/committees/partials/header.twig') }}
     <table class="table">
     {% for member in members %}
-    <tr><td><a href="{{ uri('people.view') }}?person_id={{ member.person_id }}">
+    <tr><td><a href="{{ uri('people.view', {id: member.person_id}) }}">
             {{ member.name }}
             </a>
         </td>
@@ -26,9 +26,7 @@
     {% endfor %}
     </table>
 
-    {% if     isAllowed('members', 'update' ) %}
-    {{ forms.actionLink(uri('members.update') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
-    {% elseif isAllowed('members', 'appoint') %}
+    {% if isAllowed('members', 'appoint') %}
     {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
     {% endif %}
 

@@ -39,14 +39,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('reports.update').'?report_id='.$r->getId(),
+                    'url'   => parent::generateUri('reports.update', ['id'=>$r->getId()]),
                     'label' => $this->_('report_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('reports.delete').'?report_id='.$r->getId(),
+                    'url'   => parent::generateUri('reports.delete', ['id'=>$r->getId()]),
                     'label' => $this->_('report_delete'),
                     'class' => 'delete'
                 ];
@@ -60,9 +60,9 @@ class View extends \Web\View
 
     private function actionLinks(?Committee $committee=null): array
     {
-        if ($committee && parent::isAllowed('reports', 'update')) {
+        if ($committee && parent::isAllowed('reports', 'add')) {
             return [[
-                'url'   => parent::generateUri('reports.update').'?committee_id='.$committee->getId(),
+                'url'   => parent::generateUri('reports.add').'?committee_id='.$committee->getId(),
                 'label' => $this->_('report_add'),
                 'class' => 'add'
             ]];

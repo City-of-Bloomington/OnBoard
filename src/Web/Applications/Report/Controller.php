@@ -46,7 +46,18 @@ class Controller extends \Web\Controller
         return new \Web\Views\NotFoundView();
     }
 
-    public static function hasDepartment(int $department_id): bool
+    /**
+     * ACL will call this function before invoking the Controller
+     *
+     * When a role needs to check the Department Association, the ACL will
+     * be checked before invoking the Controller.  This function must be called
+     * statically.  The current route parameters will be passed.  These parameters
+     * will be the same as would be passed to __invoke().
+     *
+     * @see Web\Auth\DepartmentAssociation
+     * @see access_control.php
+     */
+    public static function hasDepartment(int $department_id, array $params): bool
     {
         return !empty($_REQUEST['committee_id'])
             && CommitteeTable::hasDepartment($department_id, (int)$_REQUEST['committee_id']);

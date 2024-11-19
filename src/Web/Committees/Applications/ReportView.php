@@ -39,14 +39,14 @@ class ReportView extends View
             $links  = [];
             if ($canArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.archive').'?application_id='.$a->getId(),
+                    'url'   => parent::generateUri('applications.archive', ['id'=>$a->getId()]),
                     'label' => $this->_('application_archive'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete').'?application_id='.$a->getId(),
+                    'url'   => parent::generateUri('applications.delete', ['id'=>$a->getId()]),
                     'label' => $this->_('application_delete'),
                     'class' => 'delete'
                 ];
@@ -75,14 +75,14 @@ class ReportView extends View
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.unarchive').'?application_id='.$a->getId(),
+                    'url'   => parent::generateUri('applications.unarchive', ['id'=>$a->getId()]),
                     'label' => $this->_('application_unarchive'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete').'?application_id='.$a->getId(),
+                    'url'   => parent::generateUri('applications.delete', ['id'=>$a->getId()]),
                     'label' => $this->_('application_delete'),
                     'class' => 'delete'
                 ];

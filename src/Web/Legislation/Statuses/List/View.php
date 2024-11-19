@@ -32,14 +32,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('legislationStatuses.update').'?id='.$s->getId(),
+                    'url'   => parent::generateUri('legislationStatuses.update', ['id'=>$s->getId()]),
                     'label' => parent::_('legislationStatus_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDel) {
                 $links[] = [
-                    'url'   => parent::generateUri('legislationStatuses.delete').'?id='.$s->getId(),
+                    'url'   => parent::generateUri('legislationStatuses.delete', ['id'=>$s->getId()]),
                     'label' => parent::_('legislationStatus_delete'),
                     'class' => 'delete'
                 ];
@@ -56,9 +56,9 @@ class View extends \Web\View
 
     private function actionLinks(): array
     {
-        if (parent::isAllowed('legislationStatuses', 'update')) {
+        if (parent::isAllowed('legislationStatuses', 'add')) {
             return [[
-                'url'   => parent::generateUri('legislationStatuses.update'),
+                'url'   => parent::generateUri('legislationStatuses.add'),
                 'label' => parent::_('legislationStatus_add'),
                 'class' => 'add'
             ]];

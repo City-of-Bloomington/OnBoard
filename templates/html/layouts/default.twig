@@ -3,9 +3,10 @@
 {{ include('html/layouts/partials/head.twig') }}
 
 <body class="min-vh-100 vstack">
+    <div class="usa-overlay"></div>
     {{ include('html/layouts/partials/header.twig') }}
-    <main class="container p-2 flex-grow-1">
-        {{ include('html/layouts/partials/nav1.twig') }}
+    <main class="container-lg p-2 flex-grow-1">
+        {# {{ include('html/layouts/partials/nav1.twig') }} #}
         
         {% if ERROR_MESSAGES is defined %}
         {{ include('html/layouts/partials/errorMessages.twig') }}
@@ -15,5 +16,6 @@
         {% endblock %}
 	</main>
     {{ include('html/layouts/partials/footer.twig') }}
+    <script src="https://bloomington.in.gov/static/uswds/dist/js/uswds.min.js"></script>
 </body>
 </html>

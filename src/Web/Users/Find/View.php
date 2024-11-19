@@ -18,22 +18,21 @@ class View extends \Web\View
         $csv = parent::current_url();
         $csv->format = 'csv';
 
-
         $this->vars = [
             'users'                 => $users,
             'total'                 => $total,
             'itemsPerPage'          => $itemsPerPage,
             'currentPage'           => $currentPage,
-            'firstname'             => $_GET['firstname'           ] ?? null,
-            'lastname'              => $_GET['lastname'            ] ?? null,
-            'username'              => $_GET['username'            ] ?? null,
-            'email'                 => $_GET['email'               ] ?? null,
-            'department_id'         => $_GET['department_id'       ] ?? null,
-            'role'                  => $_GET['role'                ] ?? null,
+            'firstname'             => $_GET['firstname'    ] ?? null,
+            'lastname'              => $_GET['lastname'     ] ?? null,
+            'username'              => $_GET['username'     ] ?? null,
+            'email'                 => $_GET['email'        ] ?? null,
+            'department_id'         => $_GET['department_id'] ?? null,
+            'role'                  => $_GET['role'         ] ?? null,
             'departments'           => self::department_options(),
             'roles'                 => self::role_options(),
             'actionLinks' => [
-                ['url'   => parent::generateUri('users.update'),
+                ['url'   => parent::generateUri('users.add'),
                  'label' => parent::_('create_account'),
                  'class' => 'add'],
                 ['url'   => $csv->__toString(),

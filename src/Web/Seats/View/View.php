@@ -32,20 +32,22 @@ class View extends \Web\View
             $this->vars['terms'] = $this->term_data($seat);
             if (parent::isAllowed('terms', 'generate')) {
                 if (isset($this->vars['terms'][0])) {
+                    $generate = parent::generateUri('terms.generate', ['id'=>$this->vars['terms'][0]['term_id']]);
+
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.generate').'?direction=next;term_id='.$this->vars['terms'][0]['term_id'],
+                        'url'   => "$generate?direction=next",
                         'label' => parent::_('term_add_next'),
                         'class' => 'add'
                     ];
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.generate').'?direction=pervious;term_id='.$this->vars['terms'][array_key_last($this->vars['terms'])]['term_id'],
+                        'url'   => "$generate?direction=pervious",
                         'label' => parent::_('term_add_previous'),
                         'class' => 'add'
                     ];
                 }
                 else {
                     $this->vars['termActions'][] = [
-                        'url'   => parent::generateUri('terms.update')."?seat_id={$seat->getId()}",
+                        'url'   => parent::generateUri('terms.add')."?seat_id={$seat->getId()}",
                         'label' => parent::_('term_add'),
                         'class' => 'add'
                     ];
@@ -55,14 +57,7 @@ class View extends \Web\View
         else {
             $this->vars['members'] = $this->member_data($seat);
 
-            if (parent::isAllowed('members', 'update')) {
-                $this->vars['memberActions'] = [[
-                    'url'   => parent::generateUri('members.update')."?seat_id={$seat->getId()}",
-                    'label' => parent::_('member_add'),
-                    'class' => 'add'
-                ]];
-            }
-            elseif (parent::isAllowed('members', 'appoint')) {
+            if (parent::isAllowed('members', 'appoint')) {
                 $this->vars['memberActions'] = [[
                     'url'   => parent::generateUri('members.appoint')."?seat_id={$seat->getId()}",
                     'label' => parent::_('member_add'),
@@ -83,14 +78,14 @@ class View extends \Web\View
         $seat_id = $seat->getId();
         if (parent::isAllowed('seats', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('seats.update')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.update', ['id'=>$seat_id]),
                 'label' => parent::_('seat_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('seats', 'delete') && $seat->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('seats.delete')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.delete', ['id'=>$seat_id]),
                 'label' => parent::_('seat_delete'),
                 'class' => 'delete'
             ];
@@ -98,7 +93,7 @@ class View extends \Web\View
         $endDate = $seat->getEndDate('U');
         if (parent::isAllowed('seats', 'end') && (!$endDate || $endDate > time())) {
             $links[] = [
-                'url'   => parent::generateUri('seats.end')."?seat_id=$seat_id",
+                'url'   => parent::generateUri('seats.end', ['id'=>$seat_id]),
                 'label' => parent::_('seat_end')
             ];
         }
@@ -112,7 +107,7 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('terms.update')."?term_id=$term_id",
+                'url'   => parent::generateUri('terms.update', ['id'=>$term_id]),
                 'label' => parent::_('term_edit'),
                 'class' => 'edit'
             ];
@@ -120,23 +115,23 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('terms.delete')."?term_id=$term_id",
+                'url'   => parent::generateUri('terms.delete', ['id'=>$term_id]),
                 'label' => parent::_('term_delete'),
                 'class' => 'delete'
             ];
         }
-        if (parent::isAllowed('members', 'update')) {
+        if (parent::isAllowed('members', 'appoint')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update')."?term_id=$term_id",
+                'url'   => parent::generateUri('members.appoint')."?term_id=$term_id",
                 'label' => parent::_('member_add'),
                 'class' => 'add'
             ];
         }
-        if (parent::isAllowed('alternates', 'update')) {
+        if (parent::isAllowed('alternates', 'add')) {
             $p = ['term_id'=>$term_id, 'return_url'=>Url::current_url(BASE_HOST)];
 
             $links[] = [
-                'url'   => parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.add').'?'.http_build_query($p, '', ';'),
                 'label' => parent::_('alternate_add'),
                 'class' => 'add'
             ];
@@ -149,27 +144,27 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('members', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update').'?member_id='.$m->getId(),
+                'url'   => parent::generateUri('members.update', ['id'=>$m->getId()]),
                 'label' => $this->_('member_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('members.delete').'?member_id='.$m->getId(),
+                'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
                 'label' => $this->_('member_delete'),
                 'class' => 'delete'
             ];
         }
         if (parent::isAllowed('offices', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('offices.update')."?committee_id={$m->getCommittee_id()};person_id={$m->getPerson_id()}",
+                'url'   => parent::generateUri('offices.add')."?committee_id={$m->getCommittee_id()};person_id={$m->getPerson_id()}",
                 'label' => $this->_('office_add'),
-                'class' => 'delete'
+                'class' => 'add'
             ];
             foreach ($m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
                 $links[] = [
-                    'url'   => parent::generateUri('offices.update')."?office_id={$office->getId()}",
+                    'url'   => parent::generateUri('offices.update', ['id'=>$office->getId()]),
                     'label' => sprintf($this->_('office_edit', 'messages'), $office->getTitle()),
                     'class' => 'edit'
                 ];
@@ -184,10 +179,8 @@ class View extends \Web\View
         $links = [];
         $p     = ['return_url' => Url::current_url(BASE_HOST)];
         if (parent::isAllowed('alternates', 'update')) {
-            $p['alternate_id'] = $a->getId();
-
             $links[] = [
-                'url'   => parent::generateUri('alternates.update').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.update', ['id'=>$a->getId()]),
                 'label' => parent::_('alternate_edit'),
                 'class' => 'edit'
             ];
@@ -196,7 +189,7 @@ class View extends \Web\View
             $p['alternate_id'] = $a->getId();
 
             $links[] = [
-                'url'   => parent::generateUri('alternates.delete').'?'.http_build_query($p, '', ';'),
+                'url'   => parent::generateUri('alternates.delete', ['id'=>$a->getId()]),
                 'label' => parent::_('alternate_delete'),
                 'class' => 'delete'
             ];

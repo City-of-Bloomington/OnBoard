@@ -14,16 +14,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['term_id'])) {
-            try { $term = new Term($_REQUEST['term_id']); }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-        elseif (!empty($_REQUEST['seat_id'])) {
-            try {
-                $seat = new Seat($_REQUEST['seat_id']);
-                $term = new Term();
-                $term->setSeat($seat);
-            }
+        if (!empty($params['id'])) {
+            try { $term = new Term($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -34,8 +26,8 @@ class Controller extends \Web\Controller
                     $term->setStartDate($_POST['startDate'], 'Y-m-d');
                     $term->setEndDate  ($_POST['endDate'  ], 'Y-m-d');
                     TermTable::update($term);
-                    $return_url = \Web\View::generateUrl('seats.view').'?seat_id='.$term->getSeat_id();
-                    header("Location: $return_url");
+                    $url = \Web\View::generateUrl('seats.view', ['id'=>$term->getSeat_id()]);
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

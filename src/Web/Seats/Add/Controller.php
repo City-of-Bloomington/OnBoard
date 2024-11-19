@@ -38,12 +38,18 @@ class Controller extends \Web\Controller
                     $seat->setVoting           ($_POST['voting'           ] ?? false);
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
-                    SeatTable::update($seat);
-                    $return_url = View::generateUrl('seats.view')."?seat_id={$seat->getId()}";
-                    header("Location: $return_url");
+                    $id  = SeatTable::update($seat);
+                    echo "Saved new seat: $id\n";
+                    exit();
+                    $url = View::generateUrl('seats.view', ['id'=>$id]);
+                    header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+                catch (\Exception $e) {
+                    $_SESSION['errorMessages'][] = $e->getMessage();
+                    print_r($e);
+                    exit();
+                }
             }
 
             $appointers = [];
@@ -51,7 +57,7 @@ class Controller extends \Web\Controller
             $list       = $table->find();
             foreach ($list as $a) { $appointers[] = ['id'=>$a->getId(), 'name'=>$a->getName()]; }
 
-            return new View($seat, $appointers);
+            return new \Web\Seats\Update\View($seat, $appointers);
 
         }
         return new \Web\Views\NotFoundView();

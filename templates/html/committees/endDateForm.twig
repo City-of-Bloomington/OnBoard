@@ -24,7 +24,7 @@
             </div>
 
             <button type="submit" class="btn btn-success">Save</button>
-            <a class="btn btn-danger" href="{{ uri('committees.info') }}?committee_id={{ committee.getId() }}">{{ _('cancel') }}</a>
+            <a class="btn btn-danger" href="{{ uri('committees.info', {id: committee.getId()}) }}">{{ _('cancel') }}</a>
         </fieldset>
     </form>
 </section>

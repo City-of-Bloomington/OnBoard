@@ -12,13 +12,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['applicantFile_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file       = new ApplicantFile($_GET['applicantFile_id']);
-                $return_url = \Web\View::generateUrl('applicants.view').'?applicant_id='.$file->getApplicant_id();
+                $file = new ApplicantFile($params['id']);
+                $url  = \Web\View::generateUrl('applicants.view', ['id'=>$file->getApplicant_id()]);
 
                 $file->delete();
-                header("Location: $return_url");
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { }
