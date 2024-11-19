@@ -1,18 +1,17 @@
 {% if USER is defined %}
-<li class="usa-nav__primary-item">
-    <button class="usa-accordion__button usa-nav__link" type="button" aria-controls="user-nav" aria-expanded="false">
-        <span>Logged In</span>
-    </button>
-    <ul id="user-nav" class="usa-nav__submenu">
-        <li class="usa-nav__submenu-item">{{ USER.getFullname() }}</li>
-
-        {% if isAllowed('settings', 'index') %}
-        <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
-        {% endif %}
-        
-        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
-    </ul>
-</li>
+    <li class="usa-nav__primary-item">
+        <button class="usa-accordion__button usa-nav__link border" type="button" aria-controls="user-nav" aria-expanded="false">
+            <span>{{ USER.getFullname() }}</span>
+        </button>
+        <ul id="user-nav" class="usa-nav__submenu">
+            {% if isAllowed('settings', 'index') %}
+            <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
+            {% endif %}
+            <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
+        </ul>
+    </li>
+</ul>
 {% else %}
+    </ul>
     <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
 {% endif %}
