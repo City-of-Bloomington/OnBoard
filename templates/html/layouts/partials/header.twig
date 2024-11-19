@@ -1,4 +1,4 @@
-<header>
+{# <header>
 <nav class="navbar navbar-expand-sm shadow-sm">
     <div class="container">
         <div class="navbar-brand d-md-none">
@@ -64,4 +64,53 @@
         </div>
     </div>
 </nav>
+</header> #}
+
+
+
+<header class="usa-header usa-header--basic">
+    <div class="usa-nav-container">
+        <div class="usa-navbar">
+            <div class="usa-logo">
+                <a class="grid-row" href="{{ BASE_URI }}" title="City of Bloomington, Indiana>">
+                    <img src="https://bloomington.in.gov/static/snowflake-blue.svg" alt="City of Bloomington Logo" class="grid-col-auto maxh-5 margin-right-105">
+                    <em class="usa-logo__text font-sans-lg grid-col-auto margin-y-auto">{{ APPLICATION_NAME }}</em>
+                </a>
+            </div>
+            <button type="button" class="usa-menu-btn">Menu</button>
+        </div>
+        <nav aria-label="Primary navigation" class="usa-nav">
+            <button type="button" class="usa-nav__close">
+                <img src="https://bloomington.in.gov/static/uswds/dist/img/usa-icons/close.svg" role="img" alt="Close" />
+            </button>
+            <ul class="usa-nav__primary usa-accordion">
+                {% if isAllowed('committees', 'index') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('committees.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'committees.' ? 'usa-current' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
+                </li>
+                {% endif %}
+                {% if isAllowed('people', 'index') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('people.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'people.' ? 'usa-current' : '' }}">{{ _(['person', 'people', 10]) }}</a>
+                </li>
+                {% endif %}
+                {% if isAllowed('seats', 'index') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('seats.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'seats.' ? 'usa-current' : '' }}">{{ _(['seat', 'seats', 10]) }}</a>
+                </li>
+                {% endif %}
+                {% if isAllowed('liaisons', 'index') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('liaisons.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'liaisons.index' ? 'usa-current' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
+                </li>
+                {% endif %}
+                {% if isAllowed('applicants', 'apply') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('applicants.apply') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applicants.' ? 'usa-current' : '' }}">{{ _('apply') }}</a>
+                </li>
+                {% endif %}
+                {{ include('html/layouts/partials/user_menu.twig') }}
+            </ul>
+        </nav>
+    </div>
 </header>
