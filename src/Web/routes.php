@@ -62,8 +62,9 @@ $map->attach('committees.', '/committees', function ($r) {
 });
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
-    $r->get('update', '/update', Web\Committees\Statutes\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', Web\Committees\Statutes\Delete\Controller::class);
+    $r->get('add',    '/add'        , Web\Committees\Statutes\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{id}/update', Web\Committees\Statutes\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{id}/delete', Web\Committees\Statutes\Delete\Controller::class);
 });
 
 $map->attach('departments.', '/departments', function ($r) {

@@ -88,14 +88,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.update').'?committeeStatute_id='.$s->getId(),
+                    'url'   => parent::generateUri('committeeStatutes.update', ['id'=>$s->getId()]),
                     'label' => $this->_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.delete').'?id='.$s->getId(),
+                    'url'   => parent::generateUri('committeeStatutes.delete', ['id'=>$s->getId()]),
                     'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];
@@ -113,7 +113,7 @@ class View extends \Web\View
     {
         if (parent::isAllowed('committeeStatutes', 'update')) {
             return [[
-                'url'   => parent::generateUri('committeeStatutes.update')."?committee_id=$committee_id",
+                'url'   => parent::generateUri('committeeStatutes.add')."?committee_id=$committee_id",
                 'label' => $this->_('committeeStatute_add'),
                 'class' => 'add'
             ]];
