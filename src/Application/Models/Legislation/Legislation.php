@@ -189,10 +189,9 @@ class Legislation extends ActiveRecord
         }
 
         $files = [];
-        $url   = View::generateUrl('legislationFiles.download');
         foreach ($this->getFiles() as $f) {
             $files[] = [
-                'url' => $url.'?legislationFile_id='.$f->getId()
+                'url' => View::generateUrl('legislationFiles.download', ['id'=>$f->getId()])
             ];
         }
 

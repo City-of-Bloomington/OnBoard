@@ -4,7 +4,7 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Legislation\Update;
+namespace Web\Legislation\Add;
 
 use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\LegislationTable;
@@ -14,10 +14,7 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $legislation = new Legislation($params['id']); }
-            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
-        }
+        $legislation = new Legislation();
 
         if (isset($legislation)) {
             if (!$legislation->getCommittee_id()) {
@@ -43,11 +40,11 @@ class Controller extends \Web\Controller
         }
 
         if (isset($legislation) && $legislation->getCommittee_id()) {
-            $_SESSION['return_url'] =    !empty($_REQUEST['return_url'])
-                                    ? urldecode($_REQUEST['return_url'])
-                                    : ($legislation->getId()
-                                        ? \Web\View::generateUrl('legislation.view', ['id'=>$legislation->getId()])
-                                        : \Web\View::generateUrl('legislation.index'));
+            $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
+                                 ? urldecode($_REQUEST['return_url'])
+                                 : ($legislation->getId()
+                                     ? \Web\View::generateUrl('legislation.view', ['id'=>$legislation->getId()])
+                                     : \Web\View::generateUrl('legislation.index'));
 
             if (isset($_POST['number'])) {
                 try {
@@ -56,7 +53,6 @@ class Controller extends \Web\Controller
 
                     $legislation->handleUpdate($_POST);
                     $legislation->save();
-
 
                     $return_url = $_SESSION['return_url'];
                     unset($_SESSION['return_url']);
@@ -67,7 +63,7 @@ class Controller extends \Web\Controller
                 catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
             }
 
-            return new View($legislation, $_SESSION['return_url']);
+            return new \Web\Legislation\Update\View($legislation, $_SESSION['return_url']);
         }
 
         return new \Web\Views\NotFoundView();

@@ -21,7 +21,7 @@
 
         {% if legislation.getParent_id() %}
         {% set parent=legislation.getParent() %}
-        <h3><a href="{{ uri('legislation.view') ~ '?legislation_id=' ~ legislation.getParent_id() }}">
+        <h3><a href="{{ uri('legislation.view', {id: legislation.getParent_id()}) }}">
             {{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}
             </a>
         </h3>
@@ -30,7 +30,6 @@
 
     <form method="post">
         <fieldset><legend>{{ title }}</legend>
-            <input name="legislation_id" type="hidden" value="{{ legislation.getId()           }}" />
             <input name="committee_id"   type="hidden" value="{{ legislation.getCommittee_id() }}" />
             <input name="parent_id"      type="hidden" value="{{ legislation.getParent_id()    }}" />
 

@@ -12,9 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['legislationFile_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $id   = (int)$_GET['legislationFile_id'];
+                $id   = (int)$params['id'];
                 if (!$id) { throw new \Exception('files/unknownFile'); }
                 $file = new LegislationFile($id);
                 $file->sendToBrowser();

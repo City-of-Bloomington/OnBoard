@@ -37,11 +37,10 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('legislation', 'update')) {
             $params = [
-                'legislation_id' => $legislation->getId(),
-                'return_url'     => Url::current_url(BASE_HOST)
+                'return_url' => Url::current_url(BASE_HOST)
             ];
             $links[] = [
-                'url'   => parent::generateUri('legislation.update').'?'.http_build_query($params, '', ';'),
+                'url'   => parent::generateUri('legislation.update', ['id'=>$legislation->getId()]).'?'.http_build_query($params, '', ';'),
                 'label' => parent::_('legislation_edit'),
                 'class' => 'edit'
             ];
@@ -49,7 +48,7 @@ class View extends \Web\View
         }
         if (parent::isAllowed('legislation', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('legislation.delete').'?legislation_id='.$legislation->getId(),
+                'url'   => parent::generateUri('legislation.delete', ['id'=>$legislation->getId()]),
                 'label' => parent::_('legislation_delete'),
                 'class' => 'delete'
             ];
@@ -61,7 +60,7 @@ class View extends \Web\View
     {
         $links = [];
         if (!$legislation->getParent_id() && parent::isAllowed('legislation', 'update')) {
-            $add   = parent::generateUri('legislation.update');
+            $add   = parent::generateUri('legislation.add');
             $table = new TypesTable();
             $list  = $table->find(['subtype'=>true]);
             foreach ($list as $t) {
@@ -85,7 +84,7 @@ class View extends \Web\View
                     'type_id'        => $t->getId()
                 ], '', ';');
                 $links[] = [
-                    'url'   => parent::generateUri('legislationActions.update')."?$params",
+                    'url'   => parent::generateUri('legislationActions.add')."?$params",
                     'label' => sprintf($this->_('add_something', 'messages'), $t->getName()),
                     'class' => 'add'
                 ];
@@ -107,7 +106,7 @@ class View extends \Web\View
                 $links = [];
                 if ($canEdit) {
                     $links[] = [
-                        'url'   => parent::generateUri('legislationActions.update').'?legislationAction_id='.$action->getId(),
+                        'url'   => parent::generateUri('legislationActions.update', ['id'=>$action->getId()]),
                         'label' => $this->_('legislationAction_edit'),
                         'class' => 'edit'
                     ];

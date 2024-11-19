@@ -13,13 +13,14 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_GET['legislationFile_id'])) {
+        if (!empty($params['id'])) {
             try {
-                $file = new LegislationFile((int)$_GET['legislationFile_id']);
-                $legislation_id = $file->getLegislation_id();
+                $file = new LegislationFile((int)$params['id']);
+                $lid  = $file->getLegislation_id();
+                $url  = \Web\View::generateUrl('legislation.view', ['id'=>$lid]);
+
                 $file->delete();
-                $return_url = \Web\View::generateUrl('legislation.view')."?legislation_id=$legislation_id";
-                header("Location: $return_url");
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { }
@@ -40,7 +41,7 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        return !empty($_GET['legislationFile_id'])
-            && LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislationFile_id']);
+        return !empty($params['id'])
+            && LegislationFilesTable::hasDepartment($department_id, (int)$params['id']);
     }
 }
