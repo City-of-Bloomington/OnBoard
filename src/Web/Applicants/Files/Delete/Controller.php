@@ -14,11 +14,11 @@ class Controller extends \Web\Controller
     {
         if (!empty($params['id'])) {
             try {
-                $file       = new ApplicantFile($params['id']);
-                $return_url = \Web\View::generateUrl('applicants.view').'?applicant_id='.$file->getApplicant_id();
+                $file = new ApplicantFile($params['id']);
+                $url  = \Web\View::generateUrl('applicants.view', ['id'=>$file->getApplicant_id()]);
 
                 $file->delete();
-                header("Location: $return_url");
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) { }

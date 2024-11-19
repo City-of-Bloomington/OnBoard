@@ -14,8 +14,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($_REQUEST['applicant_id'])) {
-            try { $applicant = new Applicant($_REQUEST['applicant_id']); }
+        if (!empty($params['id'])) {
+            try { $applicant = new Applicant($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -39,8 +39,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($_REQUEST['applicant_id'])) {
-            return ApplicantTable::hasDepartment($department_id, (int)$_REQUEST['applicant_id']);
+        if (!empty($params['id'])) {
+            return ApplicantTable::hasDepartment($department_id, (int)$params['id']);
         }
         return false;
     }

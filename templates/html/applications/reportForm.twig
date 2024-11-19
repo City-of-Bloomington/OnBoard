@@ -43,7 +43,7 @@
                 <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
                     <td>{{ a.created|date('m/d/Y') }}</td>
                     <td>{% if userCanViewApplicant %}
-                        <a href="{{ uri('applicants.view') }}?applicant_id={{ a.applicant_id }}">
+                        <a href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
                             {{ a.applicant }}
                         </a>
                         {% else %}

@@ -32,7 +32,7 @@ class View extends \Web\View
         $out = [];
         if (parent::isAllowed('applicants', 'update')) {
             $out[] = [
-                'url'   => parent::generateUri('applicants.update').'?applicant_id='.$applicant->getId(),
+                'url'   => parent::generateUri('applicants.update', ['id'=>$applicant->getId()]),
                 'label' => _('applicant_edit'),
                 'class' => 'edit'
             ];

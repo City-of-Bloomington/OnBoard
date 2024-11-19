@@ -29,9 +29,9 @@ $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {
-    $r->get('view',   '/view'  , Web\Applicants\Info\Controller::class);
-    $r->get('update', '/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/delete', Web\Applicants\Delete\Controller::class);
+    $r->get('update', '/{id}/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{id}/delete', Web\Applicants\Delete\Controller::class);
+    $r->get('view',   '/{id}'       , Web\Applicants\Info\Controller::class);
     $r->get('apply',  '/apply' , Web\Applicants\Apply\Controller::class)->allows(['POST']);;
     $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
