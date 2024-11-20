@@ -1,19 +1,19 @@
 {% macro actionLink(url, label, class) %}
 {% set classmap={
- 'add':    'btn-success',
- 'edit':   'btn-secondary',
- 'delete': 'btn-danger',
- 'cancel': 'btn-danger'
+ 'add':    'usa-button',
+ 'edit':   'usa-button usa-button--base',
+ 'delete': 'usa-button usa-button--secondary',
+ 'cancel': 'usa-button usa-button--outline'
 } %}
-<a href="{{ url }}" class="btn btn-sm {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center me-3">{{ label }}</a>
+<a href="{{ url }}" class="{{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center me-3">{{ label }}</a>
 {% endmacro %}
 
 {% macro button(type, label, class) %}
 {% set classmap={
- 'search': 'btn-primary',
+ 'search': 'usa-button',
  'save':   'btn-success'
 } %}
-<button type="{{ type }}" class="btn {{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }}">{{ label }}</button>
+<button type="{{ type }}" class="usa-button {{ class and classmap[class] is defined ? classmap[class] : 'usa-button--outline' }}">{{ label }}</button>
 
 {% endmacro %}
 
