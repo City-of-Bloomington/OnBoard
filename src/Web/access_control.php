@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2023 City of Bloomington, Indiana
+ * @copyright 2014-2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Laminas\Permissions\Acl\Acl;
@@ -36,15 +36,15 @@ foreach ($ROUTES->getMap()->getRoutes() as $r) {
  * Assign permissions to the resources
  */
 // Permissions for unauthenticated browsing
-$ACL->allow(null,  'home',             'index');
-$ACL->allow(null,  'people',           'parameters');
-$ACL->allow(null,  'committees',      ['index','info', 'members', 'seats', 'report', 'meetings']);
-$ACL->allow(null,  'seats',           ['index','view', 'vacancies']);
-$ACL->allow(null,  'applicants',       'apply');
-$ACL->allow(null,  'meetings',        ['view']);
-$ACL->allow(null, ['callback', 'login']);
-$ACL->allow(null, ['people', 'legislation', 'liaisons'],           ['index', 'view',     'years']);
-$ACL->allow(null, ['meetingFiles', 'legislationFiles', 'reports'], ['index', 'download', 'years']);
+$ACL->allow(null,  'home',        'index');
+$ACL->allow(null,  'people',      'parameters');
+$ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'report', 'meetings']);
+$ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
+$ACL->allow(null,  'applicants',  'apply');
+$ACL->allow(null,  'login');
+$ACL->allow(null,
+            ['people', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
+            ['index', 'view', 'years', 'download', 'callback']);
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);

@@ -29,7 +29,7 @@ var PERSON_CHOOSER = {
 
 		PERSON_CHOOSER.fieldId = fieldId;
 		PERSON_CHOOSER.popup = window.open(
-			BASE_URL + '/people?callback=1;return_url=' + document.location.href,
+			BASE_URL + '/people?callback=1,
 			'popup',
 			'menubar=no,location=no,status=no,toolbar=no,width=800,height=600,resizeable=yes,scrollbars=yes'
 		);

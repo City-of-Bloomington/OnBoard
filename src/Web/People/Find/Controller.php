@@ -15,7 +15,6 @@ class Controller extends \Web\Controller
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $people = null;
 
-
         if (isset($_GET['firstname'])) {
             $table = new PeopleTable();
             $people = $table->search($_GET, 'lastname', true);

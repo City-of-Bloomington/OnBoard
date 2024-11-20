@@ -35,5 +35,8 @@
 </table>
 
 {% if isAllowed('people', 'add') %}
-<a href="{{ uri('people.add') }}?return_url={{ REQUEST_URI }}" class="btn btn-primary">{{ _('person_add') }}</a>
+<a class="btn btn-primary"
+    href="{{ uri('people.add') }}{{ callback ? '?callback=1' : ''}}">
+    {{ _('person_add') }}
+</a>
 {% endif %}

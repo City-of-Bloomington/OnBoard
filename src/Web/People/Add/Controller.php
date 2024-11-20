@@ -25,9 +25,8 @@ class Controller extends \Web\Controller
                     $return_url->person_id = $person->getId();
                 }
                 elseif (isset($_REQUEST['callback'])) {
-                    $return_url = new Url(\Web\View::generateUrl('callback.index'));
-                    $return_url->callback = $_REQUEST['callback'];
-                    $return_url->data = "{$person->getId()}";
+                    $return_url = new Url(\Web\View::generateUrl('people.callback'));
+                    $return_url->person_id = $person->getId();
                 }
                 else {
                     $return_url = $person->getUrl();
