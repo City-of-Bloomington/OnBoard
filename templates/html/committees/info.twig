@@ -12,94 +12,100 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _('committee_info') }}</h2>
-        {% if actionLinks %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <div class="d-flex">
+                <h2 class="me-3">{{ _('committee_info') }}</h2>
+                {% if actionLinks %}
+                {{ include('html/partials/actionLinks.twig') }}
+                {% endif %}
+            </div>
+            <dl class="row">
+                {% if committee.getType()          %}<dt class="col-sm-2">{{ _('type'         ) }}</dt><dd class="col-sm-10">{{ committee.getType()               }}</dd>{% endif %}
+                {% if committee.getYearFormed()    %}<dt class="col-sm-2">{{ _('yearFormed'   ) }}</dt><dd class="col-sm-10">{{ committee.getYearFormed()         }}</dd>{% endif %}
+                {% if committee.getEndDate()       %}<dt class="col-sm-2">{{ _('endDate'      ) }}</dt><dd class="col-sm-10">{{ committee.getEndDate(DATE_FORMAT) }}</dd>{% endif %}
+                {% if committee.getStatutoryName() %}<dt class="col-sm-2">{{ _('statutoryName') }}</dt><dd class="col-sm-10">{{ committee.getStatutoryName()      }}</dd>{% endif %}
+                {% if committee.getCode()          %}<dt class="col-sm-2">{{ _('code'         ) }}</dt><dd class="col-sm-10">{{ committee.getCode()               }}</dd>{% endif %}
+                {% if committee.getWebsite()       %}<dt class="col-sm-2">{{ _('website'      ) }}</dt><dd class="col-sm-10"><a href="{{ committee.getWebsite() }}">{{ committee.getWebsite() }}</a></dd>{% endif %}
+                {% if committee.getVideoArchive()  %}<dt class="col-sm-2">{{ _('videoArchive' ) }}</dt><dd class="col-sm-10">{{ committee.getVideoArchive()       }}</dd>{% endif %}
+                {% if committee.getEmail()         %}<dt class="col-sm-2">{{ _('email'        ) }}</dt><dd class="col-sm-10">{{ committee.getEmail()              }}</dd>{% endif %}
+                {% if committee.getPhone()         %}<dt class="col-sm-2">{{ _('phone'        ) }}</dt><dd class="col-sm-10">{{ committee.getPhone()              }}</dd>{% endif %}
+                {% if committee.getAddress()       %}<dt class="col-sm-2">{{ _('address'      ) }}</dt><dd class="col-sm-10">{{ committee.getAddress()            }}</dd>{% endif %}
+                {% if committee.getCalendarId()    %}<dt class="col-sm-2">{{ _('calendarId'   ) }}</dt><dd class="col-sm-10"><a href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd>{% endif %}
+                {% if isAllowed('committees', 'update') %}
+                <dt class="col-sm-2">{{ _('termEndWarningDays' ) }}</dt><dd class="col-sm-10">{{ committee.getTermEndWarningDays()  }}</dd>
+                <dt class="col-sm-2">{{ _('applicationLifetime') }}</dt><dd class="col-sm-10">{{ committee.getApplicationLifetime() }}</dd>
+                {% endif %}
+            </dl>
+
+            {% if committee.getDescription() %}
+            <h3>{{ _('committee_desc') }}</h3>
+            {{ committee.getDescription()|markdown_to_html }}
+            {% endif %}
+
+            {% if committee.getMeetingSchedule() %}
+            <h3>{{ _('meetingSchedule') }}</h3>
+            {{ committee.getMeetingSchedule()|markdown_to_html }}
+            {% endif %}
+
+            <div class="d-flex">
+                <h3 class="me-3">{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
+                {% if statuteLinks %}
+                {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
+                {% endif %}
+            </div>
+            <ul class="list-group list-group-flush row">
+            {% for s in statutes %}
+                    <li class="d-flex list-group-item">
+                        <h4 class="me-3"><a href="{{ s.url }}">{{ s.citation }}</a></h4>
+                        {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
+                    </li>
+            {% endfor %}
+            </ul>
+
+            <div class="d-flex">
+                <h3 class="me-3">{{ _(['liaison', 'liaisons', 10]) }}</h3>
+                {% if isAllowed('liaisons', 'update') %}
+                {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
+                {% endif %}
+            </div>
+            {% if liaisons %}
+            <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">{{ _('type') }}</th>
+                    <th scope="col">{{ _('name') }}</th>
+                    {% if isAllowed('people', 'viewContactInfo') %}
+                    <th scope="col">{{ _(['email', 'emails', 1]) }}</th>
+                    <th scope="col">{{ _('phone') }}</th>
+                    {% endif %}
+                    {% if isAllowed('liaisons', 'update') %}
+                    <th scope="col">{{ _('actions') }}</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in liaisons %}
+                <tr>
+                    <th scope="row">{{ _(row.type) }}</th>
+                    <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+                    {% if isAllowed('people', 'viewContactInfo') %}
+                    <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
+                    <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>
+                    {% endif %}
+                    {% if row.actionLinks %}
+                    <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+
+        </section>
     </div>
-    <dl class="row">
-        {% if committee.getType()          %}<dt class="col-sm-2">{{ _('type'         ) }}</dt><dd class="col-sm-10">{{ committee.getType()               }}</dd>{% endif %}
-        {% if committee.getYearFormed()    %}<dt class="col-sm-2">{{ _('yearFormed'   ) }}</dt><dd class="col-sm-10">{{ committee.getYearFormed()         }}</dd>{% endif %}
-        {% if committee.getEndDate()       %}<dt class="col-sm-2">{{ _('endDate'      ) }}</dt><dd class="col-sm-10">{{ committee.getEndDate(DATE_FORMAT) }}</dd>{% endif %}
-        {% if committee.getStatutoryName() %}<dt class="col-sm-2">{{ _('statutoryName') }}</dt><dd class="col-sm-10">{{ committee.getStatutoryName()      }}</dd>{% endif %}
-        {% if committee.getCode()          %}<dt class="col-sm-2">{{ _('code'         ) }}</dt><dd class="col-sm-10">{{ committee.getCode()               }}</dd>{% endif %}
-        {% if committee.getWebsite()       %}<dt class="col-sm-2">{{ _('website'      ) }}</dt><dd class="col-sm-10"><a href="{{ committee.getWebsite() }}">{{ committee.getWebsite() }}</a></dd>{% endif %}
-        {% if committee.getVideoArchive()  %}<dt class="col-sm-2">{{ _('videoArchive' ) }}</dt><dd class="col-sm-10">{{ committee.getVideoArchive()       }}</dd>{% endif %}
-        {% if committee.getEmail()         %}<dt class="col-sm-2">{{ _('email'        ) }}</dt><dd class="col-sm-10">{{ committee.getEmail()              }}</dd>{% endif %}
-        {% if committee.getPhone()         %}<dt class="col-sm-2">{{ _('phone'        ) }}</dt><dd class="col-sm-10">{{ committee.getPhone()              }}</dd>{% endif %}
-        {% if committee.getAddress()       %}<dt class="col-sm-2">{{ _('address'      ) }}</dt><dd class="col-sm-10">{{ committee.getAddress()            }}</dd>{% endif %}
-        {% if committee.getCalendarId()    %}<dt class="col-sm-2">{{ _('calendarId'   ) }}</dt><dd class="col-sm-10"><a href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd>{% endif %}
-        {% if isAllowed('committees', 'update') %}
-        <dt class="col-sm-2">{{ _('termEndWarningDays' ) }}</dt><dd class="col-sm-10">{{ committee.getTermEndWarningDays()  }}</dd>
-        <dt class="col-sm-2">{{ _('applicationLifetime') }}</dt><dd class="col-sm-10">{{ committee.getApplicationLifetime() }}</dd>
-        {% endif %}
-    </dl>
-
-    {% if committee.getDescription() %}
-    <h3>{{ _('committee_desc') }}</h3>
-    {{ committee.getDescription()|markdown_to_html }}
-    {% endif %}
-
-    {% if committee.getMeetingSchedule() %}
-    <h3>{{ _('meetingSchedule') }}</h3>
-    {{ committee.getMeetingSchedule()|markdown_to_html }}
-    {% endif %}
-
-    <div class="d-flex">
-        <h3 class="me-3">{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
-        {% if statuteLinks %}
-        {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
-        {% endif %}
-    </div>
-    <ul class="list-group list-group-flush row">
-    {% for s in statutes %}
-            <li class="d-flex list-group-item">
-                <h4 class="me-3"><a href="{{ s.url }}">{{ s.citation }}</a></h4>
-                {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
-            </li>
-    {% endfor %}
-    </ul>
-
-    <div class="d-flex">
-        <h3 class="me-3">{{ _(['liaison', 'liaisons', 10]) }}</h3>
-        {% if isAllowed('liaisons', 'update') %}
-        {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
-        {% endif %}
-    </div>
-    {% if liaisons %}
-    <table class="table table-sm">
-      <thead>
-        <tr>
-            <th scope="col">{{ _('type') }}</th>
-            <th scope="col">{{ _('name') }}</th>
-            {% if isAllowed('people', 'viewContactInfo') %}
-            <th scope="col">{{ _(['email', 'emails', 1]) }}</th>
-            <th scope="col">{{ _('phone') }}</th>
-            {% endif %}
-            {% if isAllowed('liaisons', 'update') %}
-            <th scope="col">{{ _('actions') }}</th>
-            {% endif %}
-        </tr>
-      </thead>
-       <tbody>
-        {% for row in liaisons %}
-        <tr>
-            <th scope="row">{{ _(row.type) }}</th>
-            <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
-            {% if isAllowed('people', 'viewContactInfo') %}
-            <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
-            <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>
-            {% endif %}
-            {% if row.actionLinks %}
-            <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-</section>
+</div>
 {% endblock %}

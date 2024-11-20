@@ -19,7 +19,10 @@
     </div>
     {% set url     = current_url() %}
     {% set current = url.current is defined and url.current==0 ? false : true %}
-    <ul class="nav nav-tabs">
+    
+</header>
+
+{# <ul class="nav nav-tabs">
         <li class="nav-item">
             <a href="{{ uri('committees.info', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.info' ? 'active' : '' }}">
@@ -67,6 +70,7 @@
             </a>
         </li>
         {% endif %}
+        
         <li class="nav-item">
             <a href="{{ uri('committees.meetings', {id: committee.getId()}) }}"
             class="nav-link {{ ROUTE_NAME=='committees.meetings' ? 'active' : '' }}">
@@ -101,5 +105,4 @@
             </a>
         </li>
         {% endif %}
-    </ul>
-</header>
+    </ul> #}
