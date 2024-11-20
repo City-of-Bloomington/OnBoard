@@ -10,7 +10,6 @@ $map    = $ROUTES->getMap();
 $map->tokens(['id' => '\d+']);
 
 $map->get('home.index',     '/',         Web\Committees\List\Controller::class);
-$map->get('callback.index', '/callback', 'Application\Controllers\CallbackController')->extras(['action'=>'index']);
 
 $map->attach('login.', '/login', function ($r) {
     $r->get('logout', '/logout', Web\Auth\Logout\Controller::class);
@@ -153,6 +152,7 @@ $map->attach('people.', '/people', function ($r) {
     $r->get('delete',     '/{id}/delete', Web\People\Delete\Controller::class);
     $r->get('view',       '/{id}'       , Web\People\View\Controller::class);
     $r->get('add',        '/add'        , Web\People\Add\Controller::class)->allows(['POST']);
+    $r->get('callback',   '/callback'   , Web\People\Callback\Controller::class);
     $r->get('index',      ''            , Web\People\Find\Controller::class);
 });
 

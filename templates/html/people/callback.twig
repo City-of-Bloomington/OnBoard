@@ -1,0 +1,18 @@
+{#
+ * Execute javascript to update a parent window with a chosen person_id
+ *
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param int    person_id  The chosen person
+ #}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<script type="text/javascript">
+        self.opener.PERSON_CHOOSER.setPerson({{ person_id }});
+	</script>
+</head>
+<body>
+</body>
+</html>
