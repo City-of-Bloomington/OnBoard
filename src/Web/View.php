@@ -47,13 +47,13 @@ abstract class View
         $this->twig = new Environment($loader, ['cache'            => false,
                                                 'strict_variables' => true,
                                                 'debug'            => true]);
-        global $route;
+        global $ROUTE;
         $this->twig->addGlobal('APPLICATION_NAME', APPLICATION_NAME);
         $this->twig->addGlobal('VERSION',          VERSION);
         $this->twig->addGlobal('BASE_URL',         BASE_URL);
         $this->twig->addGlobal('BASE_URI',         BASE_URI);
         $this->twig->addGlobal('REQUEST_URI',      $_SERVER['REQUEST_URI']);
-        $this->twig->addGlobal('ROUTE_NAME',       $route ? $route->name : null);
+        $this->twig->addGlobal('ROUTE_NAME',       $ROUTE ? $ROUTE->name : null);
         $this->twig->addGlobal('DATE_FORMAT',      DATE_FORMAT);
         $this->twig->addGlobal('TIME_FORMAT',      TIME_FORMAT);
         $this->twig->addGlobal('DATETIME_FORMAT',  DATETIME_FORMAT);
