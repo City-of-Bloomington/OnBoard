@@ -16,7 +16,7 @@
             <ul class="usa-nav__primary usa-accordion">
                 {% if isAllowed('committees', 'index') %}
                 <li class="usa-nav__primary-item">
-                    <a href="{{ uri('committees.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'committees.' ? 'usa-current' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
+                    <a href="{{ uri('committees.index') }}" class="usa-nav-link {{ (ROUTE_NAME in ['committees.index', 'home.index']) ? 'usa-current' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
                 </li>
                 {% endif %}
                 {% if isAllowed('people', 'index') %}
