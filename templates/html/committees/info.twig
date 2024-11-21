@@ -49,8 +49,8 @@
             {{ committee.getMeetingSchedule()|markdown_to_html }}
             {% endif %}
 
-            <div>
-                <h3>{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h3>
+            {# <div>
+                <h2>{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h2>
                 {% if statuteLinks %}
                 {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
                 {% endif %}
@@ -58,14 +58,14 @@
             <ul>
             {% for s in statutes %}
                     <li>
-                        <h4><a href="{{ s.url }}">{{ s.citation }}</a></h4>
+                        <a href="{{ s.url }}">{{ s.citation }}</a>
                         {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
                     </li>
             {% endfor %}
-            </ul>
+            </ul> #}
 
             <div>
-                <h3>{{ _(['liaison', 'liaisons', 10]) }}</h3>
+                <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
                 {% if isAllowed('liaisons', 'update') %}
                 {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
                 {% endif %}

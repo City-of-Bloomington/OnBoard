@@ -1,0 +1,32 @@
+ {#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     statutes
+ * @param array     statuteData
+ * @param array     statuteLinks
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _(['committeeStatute', 'committeeStatutes', 10]) }}</h2>
+            {% if statuteLinks %}
+            {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
+            {% endif %}
+            <ul>
+            {% for s in statuteData %}
+                <li>
+                    <a href="{{ s.url }}">{{ s.citation }}</a>
+                    {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }} 
+                </li>
+            {% endfor %}
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}

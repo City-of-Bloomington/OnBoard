@@ -24,6 +24,12 @@
                 </a>
             </li>
             <li class="usa-sidenav__item">
+                <a href="{{ uri('committees.statutes', {id: committee.getId()}) }}"
+                class="{{ ROUTE_NAME=='committees.statutes' ? 'usa-current' : '' }}">
+                {{ _(['committeeStatute', 'committeeStatutes', 10]) }}
+                </a>
+            </li>
+            <li class="usa-sidenav__item">
                 <a href="{{ uri('committees.members', {id: committee.getId()}) }}"
                 class="{{ ROUTE_NAME=='committees.members' and current ? 'usa-current' : '' }}">
                 {{ _(['current_member', 'current_members', 10]) }}
