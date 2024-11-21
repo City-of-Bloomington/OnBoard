@@ -11,9 +11,9 @@
    "Past" routes will have a current=0 parameter in the URL.
    "Current" routes will not have the parameter at all
 #}
-<header class="mb-3">
+<header>
     <div class="d-flex flex-wrap mb-3">
-        <h1 class="me-3">{{ committee.getName() }}</h1>
+        <h1>{{ committee.getName() }}</h1>
         {% set vacancies = committee.getVacancyCount() %}
         {% if vacancies %}<span class="align-self-center">({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }})</span>{% endif %}
     </div>
