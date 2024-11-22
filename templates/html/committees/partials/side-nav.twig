@@ -12,7 +12,7 @@
    "Current" routes will not have the parameter at all
 #}
 
-<div class="usa-layout-docs__sidenav display-none desktop:display-block desktop:grid-col-3 margin-top-3">
+<aside class="usa-layout-docs-sidenav desktop:grid-col-3 margin-top-3">
     <nav aria-label="Secondary navigation">
         {% set url     = current_url() %}
         {% set current = url.current is defined and url.current==0 ? false : true %}
@@ -113,4 +113,4 @@
             {% endif %}
         </ul>
     </nav>
-</div>
+</aside>
