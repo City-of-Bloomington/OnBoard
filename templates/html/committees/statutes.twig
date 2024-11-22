@@ -18,11 +18,19 @@
             {% if statuteLinks %}
             {{ include('html/partials/actionLinks.twig', {actionLinks:statuteLinks}, with_context=false) }}
             {% endif %}
-            <ul>
+            <ul class="usa-card-group margin-top-1">
             {% for s in statuteData %}
-                <li>
-                    <a href="{{ s.url }}">{{ s.citation }}</a>
-                    {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }} 
+                <li class="usa-card flex-1">
+                    <div class="usa-card__container">
+                        <div class="usa-card__body grid-row flex-row">
+                            <div class="grid-col flex-1">
+                                <a href="{{ s.url }}">{{ s.citation }}</a>
+                            </div>
+                            <div class="grid-col-auto">
+                                {{ include('html/partials/actionLinks.twig', {actionLinks:s.actionLinks}, with_context=false) }}
+                            </div>
+                        </div> 
+                    </div>
                 </li>
             {% endfor %}
             </ul>
