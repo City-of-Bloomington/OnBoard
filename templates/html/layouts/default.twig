@@ -2,14 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANG }}" lang="{{ LANG }}">
 {{ include('html/layouts/partials/head.twig') }}
 
-<body>
+<body class="display-flex flex-column minh-viewport">
     <a class="usa-skipnav" href="#main-content">Skip to main content</a>
     {{ include('html/layouts/partials/gov-banner.twig') }}
     <div class="usa-overlay"></div>
     {{ include('html/layouts/partials/header.twig') }}
-    <main id="main-content">
-        {# {{ include('html/layouts/partials/nav1.twig') }} #}
-        
+    <main id="main-content" class="flex-1 tablet:padding-bottom-10">
         {% if ERROR_MESSAGES is defined %}
         {{ include('html/layouts/partials/errorMessages.twig') }}
         {% endif %}
