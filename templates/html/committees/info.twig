@@ -2,9 +2,6 @@
  * @copyright 2024 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param array     liaisons
- * @param array     statutes
- * @param array     statuteLinks
  * @param array     actionLinks
  *
  * @see LiasonTable::$dataFields
@@ -27,12 +24,12 @@
                 {% if committee.getEndDate()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('endDate'      ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getEndDate(DATE_FORMAT)                             }}    </dd></div>{% endif %}
                 {% if committee.getStatutoryName() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('statutoryName') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getStatutoryName()                                  }}    </dd></div>{% endif %}
                 {% if committee.getCode()          %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('code'         ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getCode()                                           }}    </dd></div>{% endif %}
-                {% if committee.getWebsite()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('website'      ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a href="{{ committee.getWebsite() }}">{{ committee.getWebsite() }}</a></dd></div>{% endif %}
+                {% if committee.getWebsite()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('website'      ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="{{ committee.getWebsite() }}">{{ committee.getWebsite() }}</a></dd></div>{% endif %}
                 {% if committee.getVideoArchive()  %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('videoArchive' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getVideoArchive()                                   }}    </dd></div>{% endif %}
                 {% if committee.getEmail()         %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('email'        ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getEmail()                                          }}    </dd></div>{% endif %}
                 {% if committee.getPhone()         %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('phone'        ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getPhone()                                          }}    </dd></div>{% endif %}
                 {% if committee.getAddress()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('address'      ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getAddress()                                        }}    </dd></div>{% endif %}
-                {% if committee.getCalendarId()    %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('calendarId'   ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd></div>{% endif %}
+                {% if committee.getCalendarId()    %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('calendarId'   ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd></div>{% endif %}
                 {% if isAllowed('committees', 'update') %}
                 <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('termEndWarningDays' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getTermEndWarningDays()  }}</dd></div>
                 <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('applicationLifetime') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getApplicationLifetime() }}</dd></div>
@@ -48,44 +45,6 @@
             <h3>{{ _('meetingSchedule') }}</h3>
             {{ committee.getMeetingSchedule()|markdown_to_html }}
             {% endif %}
-
-            <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
-            {% if isAllowed('liaisons', 'update') %}
-            {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
-            {% endif %}
-            {% if liaisons %}
-            <table class="usa-table">
-            <thead>
-                <tr>
-                    <th scope="col">{{ _('type') }}</th>
-                    <th scope="col">{{ _('name') }}</th>
-                    {% if isAllowed('people', 'viewContactInfo') %}
-                    <th scope="col">{{ _(['email', 'emails', 1]) }}</th>
-                    <th scope="col">{{ _('phone') }}</th>
-                    {% endif %}
-                    {% if isAllowed('liaisons', 'update') %}
-                    <th scope="col">{{ _('actions') }}</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in liaisons %}
-                <tr>
-                    <th scope="row">{{ _(row.type) }}</th>
-                    <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
-                    {% if isAllowed('people', 'viewContactInfo') %}
-                    <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
-                    <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>
-                    {% endif %}
-                    {% if row.actionLinks %}
-                    <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {% endif %}
-
         </section>
     </div>
 </div>
