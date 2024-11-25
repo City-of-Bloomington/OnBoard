@@ -1,0 +1,55 @@
+ {#
+ * @copyright 2024 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     liaisonData
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
+            {% if isAllowed('liaisons', 'update') %}
+            {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
+            {% endif %}
+
+            {% if liaisons %}
+            <table class="usa-table">
+            <thead>
+                <tr>
+                    <th scope="col">{{ _('type') }}</th>
+                    <th scope="col">{{ _('name') }}</th>
+                    {% if isAllowed('people', 'viewContactInfo') %}
+                    <th scope="col">{{ _(['email', 'emails', 1]) }}</th>
+                    <th scope="col">{{ _('phone') }}</th>
+                    {% endif %}
+                    {% if isAllowed('liaisons', 'update') %}
+                    <th scope="col">{{ _('actions') }}</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in liaisons %}
+                <tr>
+                    <th scope="row">{{ _(row.type) }}</th>
+                    <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+                    {% if isAllowed('people', 'viewContactInfo') %}
+                    <td><a href="mailto:{{ row.email }}">{{ row.email }}</a></td>
+                    <td><a href="tel:{{ row.phone }}">{{ row.phone }}</a></td>
+                    {% endif %}
+                    {% if row.actionLinks %}
+                    <td>{{ include('html/partials/moreLinks.twig', {actionLinks: row.actionLinks}, with_context=false) }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}
