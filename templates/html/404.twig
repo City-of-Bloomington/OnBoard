@@ -1,9 +1,36 @@
 {% extends "html/layouts/default.twig" %}
+{% set title = '404' %}
+
 {% block content %}
-<h2>404 Not Found</h2>
-<pre>
-You step in the stream,
-But the water has moved on.
-This page is not here.
-</pre>
+<div class="usa-section">
+<section class="grid-container">
+<div class="usa-prose">
+    <h1>Page not found</h1>
+    <p class="usa-intro">We’re sorry, we can’t find the page you're looking for. The site administrator may have removed it, changed its location, or made it otherwise unavailable.</p>
+    <p>If you typed the URL directly, check your spelling and capitalization. Our URLs look like this: <strong>bloomington.in.gov/welcome</strong></p>
+    <p>Visit our homepage for helpful tools and resources, or contact us and we’ll point you in the right direction.</p>
+    <div class="margin-y-5">
+        <ul class="usa-button-group">
+            <li class="usa-button-group__item">
+            <a href="https://bloomington.in.gov/" class="usa-button">
+                Visit homepage
+            </a>
+            </li>
+            <li class="usa-button-group__item">
+            <a href="https://bloomington.in.gov/contact" class="usa-button usa-button--outline" type="button">
+                Contact Us
+            </a>
+            </li>
+        </ul>
+    </div>
+    <p>For immediate assistance:</p>
+    <ul>
+        <li>
+            Call <a href="tel:+1-812-349-3400" class="usa-link">812-349-3400</a>
+        </li>
+    </ul>
+    <p class="text-base"><strong>Error code:</strong> 404</p>
+</div>
+</section>
+</div>
 {% endblock %}
