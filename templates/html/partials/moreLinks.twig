@@ -3,13 +3,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array actionLinks
  #}
-<nav class="dropdown">
-    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        {{ _('more') }}
-    </button>
-    <ul class="dropdown-menu">
-        {% for link in actionLinks %}
-        <li><a href="{{ link.url }}" class="dropdown-item {{ link.class ?? '' }}">{{ link.label }}</a></li>
-        {% endfor %}
-    </ul>
-</nav>
+<ul class="usa-list usa-list--unstyled text-right">
+    {% for link in actionLinks %}
+    <li><a href="{{ link.url }}" class="{{ link.class ?? '' }}">{{ link.label }}</a></li>
+    {% endfor %}
+</ul>
