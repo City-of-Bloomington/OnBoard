@@ -63,6 +63,9 @@ msgstr "Menu"
 msgid "confirm"
 msgstr "Confirm"
 
+msgid "view"
+msgstr "View"
+
 msgid "filter_by"
 msgstr "Filter by:"
 
