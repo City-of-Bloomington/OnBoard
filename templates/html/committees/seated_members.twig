@@ -8,56 +8,70 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['current_member', 'current_members', 10]) }}</h2>
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _(['current_member', 'current_members', 10]) }}</h2>
+            
+            <ul class="usa-card-group grid-row margin-top-3">
+            {% for row in seat_data %}
+                <li class="grid-col-12 margin-bottom-2">
+                    <div class="usa-card__container">
+                        <div class="usa-card__body grid-row flex-row">
+                            <div class="grid-col flex-1 display-flex flex-align-center">
+                                <span class="text-bold">{{ row.seat_code }} {{ row.seat_name }}</span>
+                            </div>
+                            <div class="grid-col-auto display-flex flex-align-center">
+                                <a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ _('view') }}</a>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer grid-row">
+                            <div class="grid-col flex-1">
+                                <p><strong>{{ _('seat_term'   ) }}:</strong> 
+                                    {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
+                                </p>
+                                <p><strong>{{ _('appointed_by') }}:</strong> 
+                                    {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
+                                </p>
+                                <p>
+                                    <strong>{{ _('name') }}:</strong>  
+                                    {% if row.member_person_id %}
+                                    {{ row.member_firstname }} {{ row.member_lastname }}
+                                    {% else %}
+                                    {{ _('vacant') }}
+                                    {% endif %}
+                                    {% if row.offices %}
+                                    {% for office in row.offices|split(',') %}
+                                        {% set o=office|split('|') %}
+                                        {{ o[1] }}
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% if committee.allowsAlternates() %}
+                                        {% if row.alternate_person_id %}
+                                        {{ row.alternate_firstname }} {{ row.alternate_lastname }}
+                                        {% else %}
+                                        {{ _('alternate_vacant') }}
+                                        {% endif %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            {% if row.actionLinks is defined %}
+                            <div class="grid-col-auto display-flex flex-align-center">
+                                {{ include('html/partials/moreLinks.twig', { actionLinks: row.actionLinks }) }}
+                            </div>
+                            {% endif %}
+                        </div> 
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+
+            {% if actionLinks %}
+            {{ include('html/partials/actionLinks.twig') }}
+            {% endif %}
+        </section>
     </div>
-    <table class="table">
-        <thead>
-            <tr><th>{{ _('seat'        ) }}</th>
-                <th>{{ _('seat_term'   ) }}</th>
-                <th>{{ _('appointed_by') }}</th>
-                <th>{{ _('name'        ) }}</th>
-                <th>{{ _('actions'        ) }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for row in seat_data %}
-            <tr><td><a href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ row.seat_code }} {{ row.seat_name }}</a></td>
-                <td>{{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}</td>
-                <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}</td>
-                <td>{% if row.member_person_id %}
-                    {{ row.member_firstname }} {{ row.member_lastname }}
-                    {% else %}
-                    {{ _('vacant') }}
-                    {% endif %}
-
-                    {% if row.offices %}
-                    {% for office in row.offices|split(',') %}
-                        {% set o=office|split('|') %}
-                        {{ o[1] }}
-                    {% endfor %}
-                    {% endif %}
-
-                    {% if committee.allowsAlternates() %}
-                        {% if row.alternate_person_id %}
-                        {{ row.alternate_firstname }} {{ row.alternate_lastname }}
-                        {% else %}
-                        {{ _('alternate_vacant') }}
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td>{% if row.actionLinks is defined %}
-                    {{ include('html/partials/moreLinks.twig', { actionLinks: row.actionLinks }) }}
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-</section>
+</div>
 {% endblock %}
