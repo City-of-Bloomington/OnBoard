@@ -38,14 +38,14 @@ class View extends \Web\View
             if ($canEdit) {
                 $links[] = [
                     'url'   => parent::generateUri('liaisons.update')."?liaison_id=$row[liaison_id]",
-                    'label' => _('liaison_edit'),
+                    'label' => _('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDel) {
                 $links[] = [
                     'url'   => parent::generateUri('liaisons.delete')."?liaison_id=$row[liaison_id]",
-                    'label' => _('liaison_delete'),
+                    'label' => _('delete'),
                     'class' => 'delete'
                 ];
             }
