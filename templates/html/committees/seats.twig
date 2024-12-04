@@ -7,28 +7,56 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
-        {% if isAllowed('seats', 'add') %}
-        {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
-        {% endif %}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
+            {% if isAllowed('seats', 'add') %}
+            {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
+            {% endif %}
+
+            <ul class="usa-card-group grid-row margin-top-3">
+            {% set userCanEdit=isAllowed('seats', 'update') %}
+            {% for s in seats %}
+                <li class="grid-col-12 margin-bottom-2">
+                    <div class="usa-card__container">
+                        <div class="usa-card__body grid-row flex-row">
+                            <div class="grid-col flex-1 display-flex flex-align-center">
+                                <span class="text-bold">{{ s.getCode() }} {{ s.getName() }}</span>
+                            </div>
+                            <div class="grid-col-auto display-flex flex-align-center">
+                                <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ _('view') }}</a>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer grid-row">
+                            <div class="grid-col flex-1">
+                                <p><strong>{{ _('appointed_by') }}:</strong> 
+                                    {{ s.getAppointer() }}
+                                </p>
+                                <p><strong>{{ _('type') }}:</strong> 
+                                    {{ s.getType() }}
+                                </p>
+                                <p><strong>{{ _('startDate') }}:</strong> 
+                                    {{ s.getStartDate(DATE_FORMAT) }}
+                                </p>
+                                <p><strong>{{ _('endDate')   }}:</strong> 
+                                    {{ s.getEndDate  (DATE_FORMAT) }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </section>
     </div>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>{{ _('code')      }}</th>
-            <th>{{ _('name')      }}</th>
-            <th>{{ _(['appointer', 'appointers', 1]) }}</th>
-            <th>{{ _('type')      }}</th>
-            <th>{{ _('startDate') }}</th>
-            <th>{{ _('endDate')   }}</th>
-            <th>{{ _('seat_edit') }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% set userCanEdit=isAllowed('seats', 'update') %}
+</div>
+{% endblock %}
+
+
+        {# {% set userCanEdit=isAllowed('seats', 'update') %}
         {% for s in seats %}
         <tr>
             <td>{{ s.getCode() }}</td>
@@ -42,8 +70,4 @@
                 {% endif %}
             </td>
         </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-</section>
-{% endblock %}
+        {% endfor %} #}
