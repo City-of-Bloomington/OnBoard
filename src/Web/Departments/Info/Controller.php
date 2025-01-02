@@ -1,4 +1,8 @@
 <?php
+/**
+ * @copyright 2024-2025 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ */
 declare(strict_types=1);
 namespace Web\Departments\Info;
 
@@ -8,22 +12,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $department_id = $_GET['department_id'] ?? null;
-
-        if (!$department_id) {
-            $_SESSION['errorMessages'][] = 'No department specified';
-            header('Location: ' . \Web\View::generateUrl('departments.index'));
-            exit();
+        if (!empty($params['id'])) {
+            try {
+                $department = new Department($params['id']);
+                return new View($department);
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-
-        try {
-            $department = new Department($department_id);
-            return new View($department);
-        }
-        catch (\Exception $e) {
-            $_SESSION['errorMessages'][] = $e->getMessage();
-            header('Location: ' . \Web\View::generateUrl('departments.index'));
-            exit();
-        }
+        return new \Web\Views\NotFoundView();
     }
 }
