@@ -7,6 +7,8 @@ namespace Application\Models;
 
 use Google\Client;
 use Google\Service\Calendar;
+use Google\Service\Calendar\Channel;
+use Google\Service\Calendar\Events;
 
 class GoogleGateway
 {
@@ -64,7 +66,7 @@ class GoogleGateway
         return $service->events->get($calendarId, $eventId);
     }
 
-    public static function sync(string $calendarId, ?string $nextSyncToken=null): \Google\Service\Calendar\Events
+    public static function sync(string $calendarId, ?string $nextSyncToken=null): Events
     {
         $opts = [
             'singleEvents' => true,
@@ -74,5 +76,21 @@ class GoogleGateway
         $service = new Calendar(self::getClient());
         $events  = $service->events->listEvents($calendarId, $opts);
         return $events;
+    }
+
+    public static function watch(string $calendarId, string $watch_id): Channel
+    {
+        $opts  = [
+            'id'      => $watch_id,
+            'type'    => 'web_hook',
+            'address' => BASE_URL.'/notifications',
+            'expiration' => strtotime('+10 minute').'000',
+            'eventTypes' => 'default'
+        ];
+        print_r($opts);
+        $watch = new Channel($opts);
+        print_r($watch);
+        $service = new Calendar(self::getClient());
+        return $service->events->watch($calendarId, $watch);
     }
 }

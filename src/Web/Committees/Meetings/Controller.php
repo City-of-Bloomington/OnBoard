@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Committees\Meetings;
 
 use Application\Models\Committee;
+use Application\Models\MeetingTable;
 
 class Controller extends \Web\Controller
 {
@@ -38,8 +39,8 @@ class Controller extends \Web\Controller
         }
         else {
             $year = !empty($_GET['year'])
-                ?  (int) $_GET['year']
-                :  (int) date('Y');
+                  ?  (int) $_GET['year']
+                  :  (int) date('Y');
 
             $start = new \DateTime("$year-01-01 00:00:00");
             $end   = new \DateTime("$year-12-31 23:59:59");
@@ -57,7 +58,14 @@ class Controller extends \Web\Controller
             break;
 
             default:
-                return new View($meetings, $committee);
+                return new View($meetings, $committee, self::years($committee),
+                                $year, $start, $end);
         }
+    }
+
+    private static function years(Committee $c)
+    {
+        $table = new MeetingTable();
+        return array_keys($table->years(['committee_id'=>$c->getId()]));
     }
 }

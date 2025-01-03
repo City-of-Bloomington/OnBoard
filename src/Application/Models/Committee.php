@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2022 City of Bloomington, Indiana
+ * @copyright 2009-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -84,6 +84,7 @@ class Committee extends ActiveRecord
 	public function getCode()              { return parent::get('code');             }
 	public function getCalendarId()        { return parent::get('calendarId');       }
 	public function getSyncToken()         { return parent::get('syncToken');        }
+	public function getSynced($f=null)     { return parent::getDateData('synced', $f); }
 	public function getWebsite()           { return parent::get('website');          }
 	public function getVideoArchive()      { return parent::get('videoArchive');     }
 	public function getEmail()             { return parent::get('email');            }
@@ -498,6 +499,82 @@ class Committee extends ActiveRecord
         ksort($meetings);
 
         return $meetings;
+    }
+
+    public function syncGoogleCalendar()
+    {
+        $debug = fopen(SITE_HOME.'/debug.log', 'a');
+
+        if (!$this->getCalendarId()) { return; }
+
+        $events        = GoogleGateway::sync($this->getCalendarId(), $this->getSyncToken());
+        $nextSyncToken = $events->nextSyncToken;
+        $meetingTable  = new MeetingTable();
+        fwrite($debug, "syncToken: $nextSyncToken\n");
+
+        try {
+            foreach ($events as $event) {
+
+                $eventId  = $event->id;
+                $list     = $meetingTable->find(['eventId'=>$event->id]);
+
+                if ($event->status == 'cancelled') {
+                    // Remove the Google Event Information but preserve the meeting
+                    foreach ($list as $meeting)  {
+                        $meeting->setEventId(null);
+                        $meeting->setHtmlLink(null);
+                        $meeting->save();
+                    }
+                    continue;
+                }
+
+                // Calendar events without start and end times are either
+                // all day events, or they have been cancelled (deleted).
+                if (empty($event->start->dateTime) || empty($event->end->dateTime)) {
+                    fwrite($debug, "No event time: ".print_r($event, true)."\n");
+                    $start = new \DateTime($event->start->date);
+                    $end   = new \DateTime($event->end  ->date);
+                }
+                else {
+                    $start    = new \DateTime($event->start->dateTime);
+                    $end      = new \DateTime($event->end  ->dateTime);
+                }
+                $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
+                fwrite($debug, "Event: $eventId\n");
+
+                if ($list->count()) {
+                    foreach ($list as $meeting) {
+                        fwrite($debug, "Updating meeting\n");
+                        $meeting->setStart   ($start  ->format('Y-m-d H:i:s'));
+                        $meeting->setEnd     ($end    ->format('Y-m-d H:i:s'));
+                        $meeting->setLocation($location);
+                        $meeting->setHtmlLink($event->htmlLink);
+                        $meeting->save();
+                    }
+                }
+                else {
+                    $meeting = new Meeting([
+                        'committee_id' => $this->getId(),
+                        'eventId'      => $eventId,
+                        'start'        => $start  ->format('Y-m-d H:i:s'),
+                        'end'          => $end    ->format('Y-m-d H:i:s'),
+                        'location'     => $location,
+                        'htmlLink'     => $event->htmlLink
+                    ]);
+                    $meeting->save();
+                }
+            }
+
+            fwrite($debug, "Updating committee token: $nextSyncToken {$this->getId()}\n");
+            $db  = Database::getConnection();
+            $sql = 'update committees set syncToken=?, synced=now() where id=?';
+            $db->createStatement($sql)->execute([$nextSyncToken, $this->getId()]);
+        }
+        catch (\Exception $e) {
+            fwrite($debug, print_r($e,     true));
+            fwrite($debug, print_r($event, true));
+            exit();
+        }
     }
 
 	/**

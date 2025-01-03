@@ -4,7 +4,13 @@
  * @param array     meetings
  * @param Committee committee
  *
- * Meetings are a multi-dimension array by date and time.  For for
+ * Search Form Parameters
+ * @param array     years   Available years to choose from
+ * @param int       year
+ * @param DateTime  start
+ * @param DateTime  end
+ *
+ * Meetings are a multi-dimension array by date and time.  For each
  * day, there are several meetings.  These are indexed by meeting time.
  #}
 {% extends "html/layouts/default.twig" %}
@@ -13,6 +19,18 @@
 {% block content %}
 <section class="container my-3">
     {{ include('html/committees/partials/header.twig') }}
+    <header>
+        <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
+        <p>Last Sync: {{ committee.getSynced('c') }}</p>
+        {% if isAllowed('committees', 'meetingsync') %}
+        {{ forms.actionLink(uri('committees.meetingsync', {id: committee.getId()}), 'sync') }}
+        {% endif %}
+        <form method="get">
+            <fieldset>
+                {{ forms.field_select('year', 'year', _('year'), year, years, false, {onchange:'this.form.submit()'}) }}
+            </fieldset>
+        </form>
+    </header>
 
     {% for date, t in meetings %}
         {% for time, m in t %}

@@ -35,3 +35,4 @@ set f.meeting_id=m.id;
 
 alter table meetingFiles add foreign key (meeting_id) references meetings(id);
 alter table committees add syncToken varchar(64) after calendarId;
+alter table committees add synced    datetime    after syncToken;

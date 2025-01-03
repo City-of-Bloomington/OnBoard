@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -73,6 +73,8 @@ class Meeting extends ActiveRecord
     public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
     public function getStart($f=null) { return parent::getDateData('start', $f); }
     public function getEnd  ($f=null) { return parent::getDateData('end',   $f); }
+    public function getCreated($f=null) { return parent::getDateData('start', $f); }
+    public function getUpdated($f=null) { return parent::getDateData('end',   $f); }
 
     public function setEventId     ($s) { parent::set('eventId',  $s); }
     public function setLocation    ($s) { parent::set('location', $s); }

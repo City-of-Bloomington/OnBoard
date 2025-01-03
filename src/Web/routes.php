@@ -9,7 +9,10 @@ $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
 $map->tokens(['id' => '\d+']);
 
-$map->get('home.index',     '/',         Web\Committees\List\Controller::class);
+$map->attach('home.', '/', function ($r) {
+    $r->get('calendarhook', 'notifications', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
+    $r->get ('index', '', Web\Committees\List\Controller::class);
+});
 
 $map->attach('login.', '/login', function ($r) {
     $r->get('logout', '/logout', Web\Auth\Logout\Controller::class);
@@ -57,6 +60,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('liaisons',     '/{id}/liaisons'    , Web\Committees\Liaisons\Info\Controller::class);
     $r->get('applications', '/{id}/applications', Web\Committees\Applications\Controller::class);
     $r->get('meetings',     '/{id}/meetings'    , Web\Committees\Meetings\Controller::class);
+    $r->get('meetingsync',  '/{id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
     $r->get('history',      '/{id}/history'     , Web\Committees\History\Controller::class);
     $r->get('info',         '/{id}'             , Web\Committees\Info\Controller::class);
     $r->get('add',          '/add'              , Web\Committees\Add\Controller::class)->allows(['POST']);
@@ -71,10 +75,10 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 });
 
 $map->attach('departments.', '/departments', function ($r) {
-    $r->get('index',  ''            , Web\Departments\List\Controller::class);
     $r->get('info',   '/{id}/info'  , Web\Departments\Info\Controller::class);
-    $r->get('add',    '/add'        , Web\Departments\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update', Web\Departments\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add'        , Web\Departments\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  ''            , Web\Departments\List\Controller::class);
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
