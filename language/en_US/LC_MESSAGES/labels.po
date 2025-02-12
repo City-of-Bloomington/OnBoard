@@ -98,16 +98,25 @@ msgid "name"
 msgstr "Name"
 
 msgid "firstname"
-msgstr "First Name"
+msgstr "First or given name"
+
+msgid "firstname_help"
+msgstr "For example, Jose, Darren, or Mai"
 
 msgid "middlename"
 msgstr "Middle Name"
 
 msgid "lastname"
-msgstr "Last Name"
+msgstr "Last or family name"
+
+msgid "lastname_help"
+msgstr "For example, Martinez Gonzalez, Gu, or Smith"
 
 msgid "address"
 msgstr "Address"
+
+msgid "streetaddress"
+msgstr "Street address"
 
 msgid "city"
 msgstr "City"
@@ -116,7 +125,7 @@ msgid "state"
 msgstr "State"
 
 msgid "zip"
-msgstr "Zip"
+msgstr "ZIP code"
 
 msgid "gender"
 msgstr "Gender"
@@ -143,6 +152,9 @@ msgstr[1] "Email Addresses"
 
 msgid "phone"
 msgstr "Phone Number"
+
+msgid "phone_help"
+msgstr "10-digit, U.S. only, for example 999-999-9999"
 
 msgid "person"
 msgid_plural "people"
@@ -846,3 +858,6 @@ msgstr "Edit"
 
 msgid "legislationStatus_delete"
 msgstr "Delete"
+
+msgid "optional_label"
+msgstr "(optional)"

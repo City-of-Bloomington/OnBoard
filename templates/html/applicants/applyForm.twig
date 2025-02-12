@@ -16,8 +16,8 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="container my-3">
-    <header class="mb-3">
+<section class="grid-container">
+    <header>
         <h1>{% if committee %}
             {{ _('applyToCommittee', 'messages')|format(committee.getName()) }}
             {% else %}
@@ -25,11 +25,83 @@
             {% endif %}
         </h1>
     </header>
-    <div>
+    
     {{ help|markdown_to_html }}
-    </div>
+    
+    <form class="usa-form usa-form--large" method="post" id="applyForm" enctype="multipart/form-data">
 
-    <form method="post" id="applyForm" enctype="multipart/form-data">
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Full Name</legend>
+            {% if committee %}
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+            <input name="committees[]" type="hidden" value="{{ committee.getId() }}" />
+            {% endif %}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true, {}, _('firstname_help') ) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true, {}, _('lastname_help' ) ) }}
+        </fieldset>
+
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Contact</legend>
+            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail(), true, {autocapitalize:'off', autocorrect:'off'} ) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone(), false, {}, _('phone_help' )  ) }}
+        </fieldset>
+
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Mailing Address</legend>
+            {{ forms.field_text('address', 'address', _('streetaddress'), applicant.getAddress() ) }}
+            {{ forms.field_text('city',    'city',    _('city'   ), applicant.getCity() ) }}
+            {{ forms.field_number('zip',   'zip',     _('zip'),     applicant.getZip(), false, {pattern:'[\d]{5}(-[\d]{4})?'} ) }}
+        </fieldset>
+
+
+        {% if not committee %}
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _(['committee', 'committees', 10]) }}</legend>
+            {% for c in committee_options %}
+                <div class="usa-checkbox">
+                    <input class="usa-checkbox__input" name="committees[{{ c.value }}]" type="checkbox" value="{{ c.value }}" id="check-{{ c.value }}"
+                        {{- c.value in committees_chosen ? 'checked="true"' : ''}} />
+                    <label class="usa-checkbox__label" for="check-{{ c.value }}">
+                        {{ c.label }}
+                    </label>
+                </div>
+            {% endfor %}
+        </fieldset>
+        {% endif %}
+
+        <fieldset>
+            {{ forms.field_select('citylimits',       'citylimits',     _('citylimits'),     applicant.getCitylimits(), citylimits_options) }}
+            {{ forms.field_text(  'occupation',       'occupation',     _('occupation'),     applicant.getOccupation()  ) }}
+            {{ forms.field_select('referredFrom',     'referredFrom',   _('referredFrom'),   applicant.getReferredFrom(), referral_options ) }}
+            {{ forms.field_text('referredOther',      'referredOther',  _('referredOther'),  applicant.getReferredOther()  ) }}
+            {{ forms.field_textarea('interest',       'interest',       _('interest'),       applicant.getInterest() ) }}
+            {{ forms.field_textarea('qualifications', 'qualifications', _('qualifications'), applicant.getQualifications()  ) }}
+        </fieldset>
+
+        <fieldset><legend>{{ _('applicantFile') }}</legend>
+            <div class="mb-3">
+                <label for="applicantFile">{{ _('applicantFile') }}</label>
+                <input id ="applicantFile" name="applicantFile" type="file" aria-describedby="applicantFile-help" />
+                <div id="applicantFile-help">
+                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
+                    <div>{{ maxSize }}</div>
+                    <div>{{ accept  }}</div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            {{ include('html/partials/captcha.twig') }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(BASE_URI, _('cancel'), 'cancel') }}
+        </fieldset>
+
+    </form>
+</section>
+{% endblock %}
+
+    {# <form method="post" id="applyForm" enctype="multipart/form-data">
         <fieldset><legend>{{ _('info_person') }}</legend>
             {% if committee %}
             <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
@@ -58,8 +130,6 @@
         </fieldset>
         {% endif %}
 
-
-
         <fieldset>
             {{ forms.field_select('citylimits',       'citylimits',     _('citylimits'),     applicant.getCitylimits(), citylimits_options) }}
             {{ forms.field_text(  'occupation',       'occupation',     _('occupation'),     applicant.getOccupation()  ) }}
@@ -68,8 +138,6 @@
             {{ forms.field_textarea('interest',       'interest',       _('interest'),       applicant.getInterest() ) }}
             {{ forms.field_textarea('qualifications', 'qualifications', _('qualifications'), applicant.getQualifications()  ) }}
         </fieldset>
-
-
 
         <fieldset><legend>{{ _('applicantFile') }}</legend>
             <div class="mb-3">
@@ -89,6 +157,4 @@
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(BASE_URI, _('cancel'), 'cancel') }}
         </fieldset>
-    </form>
-</section>
-{% endblock %}
+    </form> #}
