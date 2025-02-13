@@ -26,10 +26,20 @@
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
 {% endmacro %}
 
+{% macro field_radio(id, name, label, value, options, required=false, attr={}, help=null) %}
+    {% for o in options %}
+    <div class="usa-radio">
+            <input class="usa-radio__input" id="{{ o.label }}" name="{{ id }}" type="radio" value="{{ o.value }}" />
+            <label class="usa-radio__label" for="{{ o.label }}">{{ o.label ?? o.value }}</label>
+        {% if help %}<span class="usa-checkbox__label-description" id="{{ id }}-help">{{ help }}</span>{% endif %}
+    </div>
+    {% endfor %}
+{% endmacro %}
+
 {% macro field_select(id, name, label, value, options, required=false, attr={}, help=null) %}
-<div class="mb-3">
-    <label for="{{ id }}">{{ label }}</label>
-    <select id="{{ id }}" name="{{ name }}" class="form-control"
+    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+        {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    <select id="{{ id }}" name="{{ name }}" class="usa-select"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>
@@ -37,8 +47,6 @@
     <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.label ?? o.value }}</option>
     {% endfor %}
     </select>
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help }}</span>{% endif %}
-</div>
 {% endmacro %}
 
 {% macro field_password(id, name, label, value, required=false, attr={}, help=null) %}

@@ -66,9 +66,8 @@ class View extends \Web\View
     private function citylimits_options(): array
     {
         return [
-            ['value'=>''],
-            ['value'=>0, 'label'=>$this->_('no' )],
             ['value'=>1, 'label'=>$this->_('yes')],
+            ['value'=>0, 'label'=>$this->_('no' )],
         ];
     }
 

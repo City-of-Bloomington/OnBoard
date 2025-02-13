@@ -57,6 +57,11 @@
         {% if not committee %}
         <fieldset class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">{{ _(['committee', 'committees', 10]) }}</legend>
+            <div class="usa-alert usa-alert--info usa-alert--slim margin-bottom-3">
+                <div class="usa-alert__body">
+                    <p class="usa-alert__text">You may apply to more than one board or commission.</p>
+                </div>
+            </div>
             {% for c in committee_options %}
                 <div class="usa-checkbox">
                     <input class="usa-checkbox__input" name="committees[{{ c.value }}]" type="checkbox" value="{{ c.value }}" id="check-{{ c.value }}"
@@ -69,9 +74,18 @@
         </fieldset>
         {% endif %}
 
-        <fieldset>
-            {{ forms.field_select('citylimits',       'citylimits',     _('citylimits'),     applicant.getCitylimits(), citylimits_options) }}
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('citylimits') }}</legend>
+            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'),     applicant.getCitylimits(), citylimits_options) }}
+        </fieldset>
+
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('occupation') }}</legend>
             {{ forms.field_text(  'occupation',       'occupation',     _('occupation'),     applicant.getOccupation()  ) }}
+        </fieldset>
+
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Placeholder Text</legend>
             {{ forms.field_select('referredFrom',     'referredFrom',   _('referredFrom'),   applicant.getReferredFrom(), referral_options ) }}
             {{ forms.field_text('referredOther',      'referredOther',  _('referredOther'),  applicant.getReferredOther()  ) }}
             {{ forms.field_textarea('interest',       'interest',       _('interest'),       applicant.getInterest() ) }}
