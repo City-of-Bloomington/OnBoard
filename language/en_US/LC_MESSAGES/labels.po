@@ -711,14 +711,23 @@ msgstr "Occupation"
 msgid "occupation_help"
 msgstr "If applicable, please describe your occupation."
 
+msgid "referral"
+msgstr "Referral"
+
 msgid "referredFrom"
 msgstr "How did you hear of this opening?"
 
 msgid "referredOther"
 msgstr "If other, please describe:"
 
+msgid "interest_label"
+msgstr "Interest"
+
 msgid "interest"
 msgstr "Please explain your interest"
+
+msgid "qualifications_label"
+msgstr "Qualifications"
 
 msgid "qualifications"
 msgstr "Please describe your qualifications"
@@ -739,6 +748,9 @@ msgstr "View Report"
 
 msgid "report_delete"
 msgstr "Delete Report"
+
+msgid "applicantFile_label"
+msgstr "Resume"
 
 msgid "applicantFile"
 msgstr "Include a resume (optional)"
