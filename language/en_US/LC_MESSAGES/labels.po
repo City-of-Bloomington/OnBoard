@@ -708,6 +708,9 @@ msgstr "Do you live in the city limits?"
 msgid "occupation"
 msgstr "Occupation"
 
+msgid "occupation_help"
+msgstr "If applicable, please describe your occupation."
+
 msgid "referredFrom"
 msgstr "How did you hear of this opening?"
 
