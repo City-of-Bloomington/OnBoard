@@ -19,24 +19,9 @@
             {% for row in seat_data %}
                 <li class="grid-col-12 margin-bottom-2">
                     <div class="usa-card__container">
-                        <div class="usa-card__body grid-row flex-row">
+                        <div class="usa-card__header grid-row flex-row">
                             <div class="grid-col flex-1 display-flex flex-align-center">
-                                <span class="text-bold">{{ row.seat_code }} {{ row.seat_name }}</span>
-                            </div>
-                            <div class="grid-col-auto display-flex flex-align-center">
-                                <a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ _('view') }}</a>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer grid-row">
-                            <div class="grid-col flex-1">
-                                <p><strong>{{ _('seat_term'   ) }}:</strong> 
-                                    {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
-                                </p>
-                                <p><strong>{{ _('appointed_by') }}:</strong> 
-                                    {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
-                                </p>
-                                <p>
-                                    <strong>{{ _('name') }}:</strong>  
+                                <h3 class="usa-card__heading">
                                     {% if row.member_person_id %}
                                     {{ row.member_firstname }} {{ row.member_lastname }}
                                     {% else %}
@@ -55,7 +40,23 @@
                                         {{ _('alternate_vacant') }}
                                         {% endif %}
                                     {% endif %}
-                                </p>
+                                </h3>
+                            </div>
+                            <div class="grid-col-auto display-flex flex-align-center">
+                                <a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ _('view') }}</a>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer grid-row">
+                            <div class="grid-col flex-1">
+                                <div>
+                                    <strong>{{ _('seat') }}:</strong> {{ row.seat_code }} {{ row.seat_name }}
+                                </div>
+                                <div>
+                                    <strong>{{ _('seat_term'   ) }}:</strong> {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
+                                </div>
+                                <div>
+                                    <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
+                                </div>
                             </div>
                             {% if row.actionLinks is defined %}
                             <div class="grid-col-auto display-flex flex-align-center">
