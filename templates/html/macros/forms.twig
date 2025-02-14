@@ -44,7 +44,7 @@
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>
     {% for o in options %}
-    <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.value==value ? '- Select -' }}{{ o.value ?? o.value }}</option>
+    <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.value ?? o.value }}</option>
     {% endfor %}
     </select>
 {% endmacro %}
