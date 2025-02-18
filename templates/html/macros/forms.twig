@@ -49,6 +49,21 @@
     </select>
 {% endmacro %}
 
+{% macro field_combo(id, name, label, value, options, required=false, attr={}, help=null) %}
+    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+        {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    <div class="usa-combo-box">
+        <select id="{{ id }}" name="{{ name }}" class="usa-select"
+            {{- required ? ' required="true"' : '' }}
+            {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
+            {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>
+        {% for o in options %}
+        <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.value ?? o.value }}</option>
+        {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
+
 {% macro field_password(id, name, label, value, required=false, attr={}, help=null) %}
 <div class="mb-3">
     <label for="{{ id }}">{{ label }}</label>

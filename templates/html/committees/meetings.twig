@@ -17,49 +17,87 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
-<section class="container my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <header>
-        <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
-        <p>Last Sync: {{ committee.getSynced('c') }}</p>
-        {% if isAllowed('committees', 'meetingsync') %}
-        {{ forms.actionLink(uri('committees.meetingsync', {id: committee.getId()}), 'sync') }}
-        {% endif %}
-        <form method="get">
-            <fieldset>
-                {{ forms.field_select('year', 'year', _('year'), year, years, false, {onchange:'this.form.submit()'}) }}
-            </fieldset>
-        </form>
-    </header>
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
+            <div>Last Sync: {{ committee.getSynced('c') }}</div>
+            {% if isAllowed('committees', 'meetingsync') %}
+            {{ forms.actionLink(uri('committees.meetingsync', {id: committee.getId()}), 'sync') }}
+            {% endif %}
+            <form class="usa-form" method="get">
+                <fieldset class="usa-fieldset">
+                    {{ forms.field_combo('year', 'year', _('selectYear'), year, years, false ) }}
 
-    {% for date, t in meetings %}
-        {% for time, m in t %}
-        <div class="card">
-            <div class="card-body">
-                <h3><a href="{{ uri('meetings.view', {id: m.id}) }}">
-                        {{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}
-                    </a>
-                </h3>
-                <p>{{ m.location }}</p>
-                <table>
-                {% for type, t in m.files %}
-                    {% for f in t %}
-                    <tr><th>{{ f.type }}</th>
-                        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                                {{ f.title ?? f.filename }}
-                            </a>
-                        </td>
-                    </tr>
+                    {{ forms.button('submit', _('filter'), 'search') }}
+                </fieldset>
+            </form>
+
+            <ul class="usa-card-group grid-row margin-top-3">
+            {% for date, t in meetings %}
+                {% for time, m in t %}
+                <li class="grid-col-12 margin-bottom-2">
+                    <div class="usa-card__container">
+                        <div class="usa-card__header grid-row flex-row">
+                            <div class="grid-col flex-1 display-flex flex-align-center">
+                                <h3 class="usa-card__heading">
+                                    <a href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a>
+                                </h3>
+                            </div>    
+                        </div>
+                        <div class="usa-card__footer grid-row">
+                            <div class="grid-col flex-1">
+                                <div>
+                                    {{ m.location }}
+                                </div>
+                                {% for type, t in m.files %}
+                                    {% for f in t %}
+                                    <div>
+                                        <strong>{{ f.type }}:</strong> <a href="{{ uri('meetingFiles.download', {id: f.id}) }}"> {{ f.title ?? f.filename }}</a>
+                                    </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                
+                                {% if m.htmlLink -%}
+                                    <div>
+                                        <a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
+                                    </div>
+                                {%- endif %}
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
                 {% endfor %}
-                </table>
-                {% if m.htmlLink -%}
-                <a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
-                {%- endif %}
-            </div>
-        </div>
-        {% endfor %}
-    {% endfor %}
-</section>
-
+                </ul>
+        </section>
+    </div>
+</div>
 {% endblock %}
+
+
+{# <h3><a href="{{ uri('meetings.view', {id: m.id}) }}">
+        {{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}
+    </a>
+</h3>
+<p>{{ m.location }}</p>
+<table>
+{% for type, t in m.files %}
+    {% for f in t %}
+    <tr><th>{{ f.type }}</th>
+        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                {{ f.title ?? f.filename }}
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+{% endfor %}
+</table>
+{% if m.htmlLink -%}
+<a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
+{%- endif %}
+</div>
+</div>
+{% endfor %}
+{% endfor %} #}

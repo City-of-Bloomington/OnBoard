@@ -66,6 +66,9 @@ msgstr "Confirm"
 msgid "view"
 msgstr "View"
 
+msgid "filter"
+msgstr "Filter"
+
 msgid "filter_by"
 msgstr "Filter by:"
 
@@ -553,6 +556,9 @@ msgid "year"
 msgid_plural "years"
 msgstr[0] "Year"
 msgstr[1] "Years"
+
+msgid "selectYear"
+msgstr "Select a year:"
 
 msgid "day"
 msgid_plural "days"
