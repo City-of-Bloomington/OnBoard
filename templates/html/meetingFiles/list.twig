@@ -17,6 +17,7 @@
  * @param int       currentPage
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 
 {% block content %}
@@ -34,16 +35,17 @@
                 {% if committee %}
                 <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
                 {% endif %}
-                <div class="col-auto">
-                    <label class="col-form-label" for="year">{{ _('year') }}:</label>
-                </div>
-                <div class="col-auto">
-                    <select class="form-select" name="year" id="year" onchange="this.form.submit();">
+        
+
+                <label class="usa-label" for="year">{{ _('year') }}:</label>
+                <div class="usa-combo-box" data-placeholder={{ year }}>
+                    <select id="year" name="year" class="usa-select">
                         {% for y in years %}
-                        <option{{ y==year ? ' selected="true"' : ''}}>{{ y }}</option>
+                        <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
                         {% endfor %}
                     </select>
                 </div>
+
                 {% set url = current_url() %}
                 <div class="row flex-row mb-3">
                     {% for k,v in url.parameters %}
