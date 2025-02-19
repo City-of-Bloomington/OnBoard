@@ -13,8 +13,6 @@
 #}
 <header>
         <h1>{{ committee.getName() }}</h1>
-        {% set vacancies = committee.getVacancyCount() %}
-        {% if vacancies %}<span class="usa-tag">{{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}</span>{% endif %}
     {% set url     = current_url() %}
     {% set current = url.current is defined and url.current==0 ? false : true %}
     

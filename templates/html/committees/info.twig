@@ -14,6 +14,9 @@
         {{ include('html/committees/partials/side-nav.twig') }}
         <section class="desktop:grid-col-9">
             {{ include('html/committees/partials/header.twig') }}
+            {% set vacancies = committee.getVacancyCount() %}
+            {% if vacancies %}<span class="usa-tag">{{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}</span>{% endif %}
+
                 <h2>{{ _('committee_info') }}</h2>
                 {% if actionLinks %}
                 {{ include('html/partials/actionLinks.twig') }}
