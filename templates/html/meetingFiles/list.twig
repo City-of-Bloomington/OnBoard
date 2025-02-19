@@ -65,20 +65,23 @@
                 </div>
             </fieldset>
         </form>
-        <ul class="usa-card-group grid-row margin-top-3">
+
+
+        <ul class="usa-collection usa-collection--condensed margin-top-3">
         {% for f in files %}
-        <li class="grid-col-12 margin-bottom-2">
-            <div class="usa-card__container">
+        <li class="usa-collection__item">
+            <div class="usa-collection__body">
                 <div class="usa-card__header grid-row flex-row">
                     <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3 class="usa-card__heading">{{ f.title }}</h3>
+                        <h3 class="usa-collection__heading">
+                        {{ f.title }} 
+                        </h3>
                     </div>
                     <div class="grid-col-auto display-flex flex-align-center">
-                        <a class="card-link icon-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-label="{{ _('download') }}" class="bi bi-download" viewBox="0 0 16 16">
-                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
-                            </svg>
+                    <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                            <use href="https://{{ BASE_HOST }}/static/uswds/dist/img/sprite.svg#file_download"></use>
+                        </svg>
                         </a>
                     </div>
                 </div>
@@ -97,7 +100,7 @@
         {% endfor %}
         </ul>
 
-
+        
         {% if total > itemsPerPage %}
             {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
         {% endif %}
