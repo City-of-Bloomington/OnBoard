@@ -20,86 +20,88 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 
 {% block content %}
-<section class="my-3">
-    <form method="get">
-    {% if committee %}
-    {{ include('html/committees/partials/header.twig') }}
-    {% endif %}
-    <div class="d-flex flex-sm-row flex-column">
-        <div class="flex-grow-1 flex-row mb-3">
-            <div class="d-flex">
-                <h2 class="me-3">{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
-            </div>
-        </div>
-        <div class="row me-3 flex-row mb-3">
-            {% if committee %}
-            <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
-            {% endif %}
-            <div class="col-auto">
-                <label class="col-form-label" for="year">{{ _('year') }}:</label>
-            </div>
-            <div class="col-auto">
-                <select class="form-select" name="year" id="year" onchange="this.form.submit();">
-                    {% for y in years %}
-                    <option{{ y==year ? ' selected="true"' : ''}}>{{ y }}</option>
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+    <section class="desktop:grid-col-9">
+        {% if committee %}
+            {{ include('html/committees/partials/header.twig') }}
+        {% endif %}
+        <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+
+        <form class="usa-form" method="get">
+            <fieldset class="usa-fieldset">
+                {% if committee %}
+                <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
+                {% endif %}
+                <div class="col-auto">
+                    <label class="col-form-label" for="year">{{ _('year') }}:</label>
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" name="year" id="year" onchange="this.form.submit();">
+                        {% for y in years %}
+                        <option{{ y==year ? ' selected="true"' : ''}}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% set url = current_url() %}
+                <div class="row flex-row mb-3">
+                    {% for k,v in url.parameters %}
+                    {% if k!='type' and k!='year' %}
+                    <input name="{{ k }}" type="hidden" value="{{ v }}" />
+                    {% endif %}
                     {% endfor %}
-                </select>
+                    <div class="col-auto">
+                        <label class="col-form-label" for="type">{{ _('filter_by') }}</label>
+                    </div>
+                    <div class="col-auto">
+                        <select class="form-select" id="type" name="type" onchange="this.form.submit();">
+                            <option value="" aria-label="{{ _('choose_type') }}"></option>
+                            {% for t in types %}
+                            <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <ul class="usa-card-group grid-row margin-top-3">
+        {% for f in files %}
+        <li class="grid-col-12 margin-bottom-2">
+            <div class="usa-card__container">
+                <div class="usa-card__header grid-row flex-row">
+                    <div class="grid-col flex-1 display-flex flex-align-center">
+                        <h3 class="usa-card__heading">{{ f.title }}</h3>
+                    </div>
+                    <div class="grid-col-auto display-flex flex-align-center">
+                        <a class="card-link icon-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-label="{{ _('download') }}" class="bi bi-download" viewBox="0 0 16 16">
+                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="usa-card__footer grid-row">
+                    <div class="grid-col flex-1">
+                        <div>
+                            <strong>{{ _('type') }}:</strong> {{ f.type }}
+                        </div>
+                        <div>
+                            <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        {% set url = current_url() %}
-        <div class="row flex-row mb-3">
-            {% for k,v in url.parameters %}
-            {% if k!='type' and k!='year' %}
-            <input name="{{ k }}" type="hidden" value="{{ v }}" />
-            {% endif %}
-            {% endfor %}
-            <div class="col-auto">
-                <label class="col-form-label" for="type">{{ _('filter_by') }}</label>
-            </div>
-            <div class="col-auto">
-                <select class="form-select" id="type" name="type" onchange="this.form.submit();">
-                    <option value="" aria-label="{{ _('choose_type') }}"></option>
-                    {% for t in types %}
-                    <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-    </div>
-
-    {% for f in files %}
-    <div class="card mb-3">
-        <div class="card-body row">
-            <div class="col">
-                <h3 class="card-title fs-5">{{ f.title }}</h3>
-            </div>
-            <div class="col">
-                <small class="card-text"><b>{{ _('type') }}:</b> {{ f.type }}</small>
-            </div>
-            <div class="col">
-                <small class="card-text">
-                    <b>{{ _('meetingDate') }}:</b>
-                    <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
-                </small>
-            </div>
-            <div class="col">
-                <a class="card-link icon-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" aria-label="{{ _('download') }}" class="bi bi-download" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+        </li>
+        {% endfor %}
+        </ul>
 
 
-    {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
-    {% endif %}
-    </form>
-    {{ include('html/partials/actionLinks.twig') }}
-</section>
+        {% if total > itemsPerPage %}
+            {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {% endif %}
+
+        {{ include('html/partials/actionLinks.twig') }}
+    </section>
 {% endblock %}
