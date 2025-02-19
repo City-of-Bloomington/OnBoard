@@ -75,29 +75,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-{# <h3><a href="{{ uri('meetings.view', {id: m.id}) }}">
-        {{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}
-    </a>
-</h3>
-<p>{{ m.location }}</p>
-<table>
-{% for type, t in m.files %}
-    {% for f in t %}
-    <tr><th>{{ f.type }}</th>
-        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                {{ f.title ?? f.filename }}
-            </a>
-        </td>
-    </tr>
-    {% endfor %}
-{% endfor %}
-</table>
-{% if m.htmlLink -%}
-<a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
-{%- endif %}
-</div>
-</div>
-{% endfor %}
-{% endfor %} #}
