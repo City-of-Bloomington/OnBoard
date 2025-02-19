@@ -4,10 +4,9 @@
     <title>{{ title is defined ? title : APPLICATION_NAME }}</title>
     <script>
         var BASE_URL  = '{{ BASE_URL  }}',
-            BASE_URI  = '{{ BASE_URI  }}',
-            BASE_HOST = '{{ BASE_HOST }}';
+            BASE_URI  = '{{ BASE_URI  }}';
     </script>
     <script type="text/javascript" src="{{ BASE_URI }}/js/onboard-{{ VERSION }}.js"></script>
-    <link rel="stylesheet" href="https://{{ BASE_HOST }}/static/uswds/dist/css/uswds.min.css">
-    <script src="https://{{ BASE_HOST }}/static/uswds/dist/js/uswds-init.min.js"></script>
+    <link rel="stylesheet" href="/static/uswds/dist/css/uswds.min.css">
+    <script src="/static/uswds/dist/js/uswds-init.min.js"></script>
 </head>
