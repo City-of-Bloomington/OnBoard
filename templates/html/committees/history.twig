@@ -7,38 +7,79 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _('committeeHistory') }}</h2>
-    </div>
-    {% for h in history %}
-    <details>
-        <summary>
-            {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
-        </summary>
-        {% for change in h.changes %}
-        <table class="table table-hover table-bordered">
-        <thead>
-            <tr><th></th>
-                {% for s in states %}
-                <th>{{ s }}</th>
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _('committeeHistory') }}</h2>
+
+            {% for h in history %}
+            <div class="usa-accordion usa-accordion--bordered">
+                <h3 class="usa-accordion__heading">
+                    <button
+                    type="button"
+                    class="usa-accordion__button"
+                    aria-expanded="false"
+                    aria-controls="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}"
+                    >
+                        {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
+                    </button>
+                </h3>
+                <div class="usa-accordion__content" id="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}">
+                    {% for change in h.changes %}
+                        {% for s in states %}
+                        <h4>{{ s }}</h4>
+                        <ul class="usa-list usa-list--unstyled">
+                            {% for k, c in change %}
+                                <li>
+                                    <div>{{ k }}</div>
+                                    {% if c[s] is defined %}
+                                    <small>
+                                        {{ c[s] }}
+                                    </small>
+                                    {% endif %}
+                                </li>
+                            
+                            {% endfor %}
+                        </ul>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+
+
+
+            {% for h in history %}
+            <details>
+                <summary>
+                    {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
+                </summary>
+                {% for change in h.changes %}
+                <table>
+                    <thead>
+                        <tr><th></th>
+                            {% for s in states %}
+                            <th>{{ s }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for k, c in change %}
+                        <tr><th>{{ k }}</th>
+                            {% for s in states %}
+                            <td>{% if c[s] is defined %}{{ c[s] }}{% endif %}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for k, c in change %}
-            <tr><th>{{ k }}</th>
-                {% for s in states %}
-                <td>{% if c[s] is defined %}{{ c[s] }}{% endif %}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-        {% endfor %}
-    </details>
-    {% endfor %}
+            </details>
+            {% endfor %}
+
+        </section>
     </div>
-</section>
+</div>
 {% endblock %}
