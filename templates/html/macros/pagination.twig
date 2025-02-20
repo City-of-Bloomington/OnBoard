@@ -18,15 +18,15 @@
         {% set upperBound = (pageNumber - delta + pageRange) %}
     {% endif %}
 
-    <nav>
-    <ul class="pagination">
-    {% set url = current_url() %}
-    {% for i in lowerBound..upperBound %}
-        {% do url.__set('page', i) %}
-        <li class="page-item">
-            <a class="page-link {{ pageNumber==i ? 'active' : ''}}" href="{{ url }}">{{ i }}</a>
-        </li>
-    {% endfor %}
-    </ul>
+    <nav aria-label="Pagination" class="usa-pagination">
+        <ul class="usa-pagination__list">
+        {% set url = current_url() %}
+        {% for i in lowerBound..upperBound %}
+            {% do url.__set('page', i) %}
+            <li class="usa-pagination__item usa-pagination__page-no">
+                <a class="usa-pagination__button {{ pageNumber==i ? 'usa-current' : ''}}" aria-label="{{ _('page') }} {{ i }}" href="{{ url }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+        </ul>
     </nav>
 {% endmacro %}

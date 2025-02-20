@@ -885,3 +885,6 @@ msgstr "Delete"
 
 msgid "optional_label"
 msgstr "(optional)"
+
+msgid "page"
+msgstr "Page"
