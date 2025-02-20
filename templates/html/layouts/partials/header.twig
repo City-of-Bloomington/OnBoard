@@ -3,7 +3,7 @@
         <div class="usa-navbar">
             <div class="usa-logo">
                 <a class="grid-row" href="{{ BASE_URI }}" title="City of Bloomington, Indiana>">
-                    <img src="https://bloomington.in.gov/static/snowflake-blue.svg" alt="City of Bloomington Logo" class="grid-col-auto maxh-5 margin-right-105">
+                    <img src="/static/snowflake-blue.svg" alt="City of Bloomington Logo" class="grid-col-auto maxh-5 margin-right-105">
                     <em class="usa-logo__text font-sans-lg grid-col-auto margin-y-auto">{{ APPLICATION_NAME }}</em>
                 </a>
             </div>
@@ -11,7 +11,7 @@
         </div>
         <nav aria-label="Primary navigation" class="usa-nav">
             <button type="button" class="usa-nav__close">
-                <img src="https://bloomington.in.gov/static/uswds/dist/img/usa-icons/close.svg" role="img" alt="Close" />
+                <img src="/static/uswds/dist/img/usa-icons/close.svg" role="img" alt="Close" />
             </button>
             <ul class="usa-nav__primary usa-accordion">
                 {% if isAllowed('committees', 'index') %}
