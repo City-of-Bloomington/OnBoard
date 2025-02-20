@@ -13,31 +13,36 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-<section class="my-3">
-    {% if committee %}
-    {{ include('html/committees/partials/header.twig') }}
-    {% endif %}
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['report', 'reports', 10]) }}</h2>
-        {% if actionLinks %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
-    </div>
-
-    <table class="table">
-    {% for r in reports %}
-    <tr><td>{{ r.date }}</td>
-        <td><a href="{{ uri('reports.download', {id: r.id}) }}">{{ r.title }}</a></td>
-        <td>{% if r.actionLinks %}
-            {{ include('html/partials/moreLinks.twig', {actionLinks:r.actionLinks}, with_context=false) }}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {% if committee %}
+                {{ include('html/committees/partials/header.twig') }}
             {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-    </table>
+            <h2>{{ _(['report', 'reports', 10]) }}</h2>
+            {% if actionLinks %}
+                {{ include('html/partials/actionLinks.twig') }}
+            {% endif %}
 
-    {% if total > itemsPerPage %}
-    {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
-    {% endif %}
-</section>
+            {% if reports %}
+            <table class="usa-table">
+            {% for r in reports %}
+            <tr><td>{{ r.date }}</td>
+                <td><a href="{{ uri('reports.download', {id: r.id}) }}">{{ r.title }}</a></td>
+                <td>{% if r.actionLinks %}
+                    {{ include('html/partials/moreLinks.twig', {actionLinks:r.actionLinks}, with_context=false) }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+            {% endif %}
+
+            {% if total > itemsPerPage %}
+                {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+            {% endif %}
+        </section>
+    </div>
+</div>
 {% endblock %}
