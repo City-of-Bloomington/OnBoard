@@ -36,13 +36,6 @@
                     <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
                     {% endif %}
 
-                    <label class="usa-label margin-top-0" for="year">{{ _('year') }}:</label>
-                    <select class="usa-select" id="year" name="year">
-                        {% for y in years %}
-                        <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-
                     {% set url = current_url() %}
                     {% for k,v in url.parameters %}
                     {% if k!='type' and k!='year' %}
@@ -50,11 +43,19 @@
                     {% endif %}
                     {% endfor %}
 
-                    <label class="usa-label" for="type">{{ _('type') }}:</label>
+                    <label class="usa-label margin-top-0" for="year">{{ _('year') }}</label>
+                    <select class="usa-select" id="year" name="year">
+                        <option value="" aria-label="{{ _('selectYear') }}">{{ _('all') }}</option>
+                        {% for y in years %}
+                        <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label class="usa-label" for="type">{{ _('type') }}</label>
                     <select class="usa-select" id="type" name="type">
                         <option value="" aria-label="{{ _('choose_type') }}">{{ _('all') }}</option>
                         {% for t in types %}
-                        <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
+                        <option value="{{ t }}" {{ t==type ? 'selected="true"' : '' }}>{{ t }}</option>
                         {% endfor %}
                     </select>
 
@@ -80,7 +81,7 @@
                             <strong>{{ _('type') }}:</strong> {{ f.type }}
                         </li>
                         <li class="usa-collection__meta-item position-relative">
-                            <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
+                            <strong>{{ _('meetingDate') }}:</strong> <a class="usa-link" href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
                         </li>
                     </ul>
                 </div>
