@@ -36,7 +36,7 @@
                 <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
                 {% endif %}
 
-                <label class="usa-label" for="year">{{ _('year') }}:</label>
+                <label class="usa-label margin-top-0" for="year">{{ _('year') }}:</label>
                 <select class="usa-select" id="year" name="year">
                     {% for y in years %}
                     <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
