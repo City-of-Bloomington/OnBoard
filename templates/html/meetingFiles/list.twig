@@ -24,75 +24,77 @@
 <div class="grid-container">
     <div class="grid-row grid-gap">
         {{ include('html/committees/partials/side-nav.twig') }}
-    <section class="desktop:grid-col-9">
-        {% if committee %}
-            {{ include('html/committees/partials/header.twig') }}
-        {% endif %}
-        <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+        <section class="desktop:grid-col-9">
+            {% if committee %}
+                {{ include('html/committees/partials/header.twig') }}
+            {% endif %}
+            <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
 
-        <form class="usa-form" method="get">
-            <fieldset class="usa-fieldset">
-                {% if committee %}
-                <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
-                {% endif %}
+            <form class="usa-form" method="get">
+                <fieldset class="usa-fieldset">
+                    {% if committee %}
+                    <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
+                    {% endif %}
 
-                <label class="usa-label margin-top-0" for="year">{{ _('year') }}:</label>
-                <select class="usa-select" id="year" name="year">
-                    {% for y in years %}
-                    <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
+                    <label class="usa-label margin-top-0" for="year">{{ _('year') }}:</label>
+                    <select class="usa-select" id="year" name="year">
+                        {% for y in years %}
+                        <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+
+                    {% set url = current_url() %}
+                    {% for k,v in url.parameters %}
+                    {% if k!='type' and k!='year' %}
+                    <input name="{{ k }}" type="hidden" value="{{ v }}" />
+                    {% endif %}
                     {% endfor %}
-                </select>
 
-                {% set url = current_url() %}
-                {% for k,v in url.parameters %}
-                {% if k!='type' and k!='year' %}
-                <input name="{{ k }}" type="hidden" value="{{ v }}" />
-                {% endif %}
-                {% endfor %}
+                    <label class="usa-label" for="type">{{ _('type') }}:</label>
+                    <select class="usa-select" id="type" name="type">
+                        <option value="" aria-label="{{ _('choose_type') }}">{{ _('all') }}</option>
+                        {% for t in types %}
+                        <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
+                        {% endfor %}
+                    </select>
 
-                <label class="usa-label" for="type">{{ _('type') }}:</label>
-                <select class="usa-select" id="type" name="type">
-                    <option value="" aria-label="{{ _('choose_type') }}">{{ _('all') }}</option>
-                    {% for t in types %}
-                    <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
-                    {% endfor %}
-                </select>
-
-                {{ forms.button('submit', _('filter'), 'search') }}
-            </fieldset>
-        </form>
+                    {{ forms.button('submit', _('filter'), 'search') }}
+                </fieldset>
+            </form>
 
 
-        <ul class="usa-collection usa-collection--condensed margin-top-3">
-        {% for f in files %}
-        <li class="usa-collection__item">
-            <div class="usa-collection__body">
-                <h3 class="usa-collection__heading">
-                <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                    {{ f.title ?? _('noTitle') }}
-                    <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-                        <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
-                    </svg>
-                </a>
-                </h3>
-                <ul class="usa-collection__meta" aria-label="More information">
-                    <li class="usa-collection__meta-item position-relative">
-                        <strong>{{ _('type') }}:</strong> {{ f.type }}
-                    </li>
-                    <li class="usa-collection__meta-item position-relative">
-                        <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        {% endfor %}
-        </ul>
+            <ul class="usa-collection usa-collection--condensed margin-top-3">
+            {% for f in files %}
+            <li class="usa-collection__item">
+                <div class="usa-collection__body">
+                    <h3 class="usa-collection__heading">
+                        <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                            {{ f.title ?? _('noTitle') }}
+                            <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                                <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                            </svg>
+                        </a>
+                    </h3>
+                    <ul class="usa-collection__meta" aria-label="More information">
+                        <li class="usa-collection__meta-item position-relative">
+                            <strong>{{ _('type') }}:</strong> {{ f.type }}
+                        </li>
+                        <li class="usa-collection__meta-item position-relative">
+                            <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            {% endfor %}
+            </ul>
 
-        
-        {% if total > itemsPerPage %}
-            {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
-        {% endif %}
+            
+            {% if total > itemsPerPage %}
+                {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+            {% endif %}
 
-        {{ include('html/partials/actionLinks.twig') }}
-    </section>
+            {{ include('html/partials/actionLinks.twig') }}
+        </section>
+    </div>
+</div>
 {% endblock %}
