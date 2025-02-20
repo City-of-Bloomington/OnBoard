@@ -12,7 +12,7 @@
         {{ include('html/committees/partials/side-nav.twig') }}
         <section class="desktop:grid-col-9">
             {{ include('html/committees/partials/header.twig') }}
-            <h2 class="me-3">{{ _(['seat', 'seats', 10]) }}</h2>
+            <h2>{{ _(['seat', 'seats', 10]) }}</h2>
             {% if isAllowed('seats', 'add') %}
             {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
             {% endif %}
@@ -22,9 +22,9 @@
             {% for s in seats %}
                 <li class="grid-col-12 margin-bottom-2">
                     <div class="usa-card__container">
-                        <div class="usa-card__body grid-row flex-row">
+                        <div class="usa-card__header grid-row flex-row">
                             <div class="grid-col flex-1 display-flex flex-align-center">
-                                <span class="text-bold">{{ s.getCode() }} {{ s.getName() }}</span>
+                                <h3 class="usa-card__heading">{{ s.getCode() }} {{ s.getName() }}</h3>
                             </div>
                             <div class="grid-col-auto display-flex flex-align-center">
                                 <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ _('view') }}</a>
@@ -32,18 +32,18 @@
                         </div>
                         <div class="usa-card__footer grid-row">
                             <div class="grid-col flex-1">
-                                <p><strong>{{ _('appointed_by') }}:</strong> 
-                                    {{ s.getAppointer() }}
-                                </p>
-                                <p><strong>{{ _('type') }}:</strong> 
-                                    {{ s.getType() }}
-                                </p>
-                                <p><strong>{{ _('startDate') }}:</strong> 
-                                    {{ s.getStartDate(DATE_FORMAT) }}
-                                </p>
-                                <p><strong>{{ _('endDate')   }}:</strong> 
-                                    {{ s.getEndDate  (DATE_FORMAT) }}
-                                </p>
+                                <div>
+                                    <strong>{{ _('appointed_by') }}:</strong> {{ s.getAppointer() }}
+                                </div>
+                                <div>
+                                    <strong>{{ _('type') }}:</strong> {{ s.getType() }}
+                                </div>
+                                <div>
+                                    <strong>{{ _('startDate') }}:</strong> {{ s.getStartDate(DATE_FORMAT) }}
+                                </div>
+                                <div>
+                                    <strong>{{ _('endDate')   }}:</strong> {{ s.getEndDate  (DATE_FORMAT) }}
+                                </div>
                             </div>
                         </div>
                     </div>
