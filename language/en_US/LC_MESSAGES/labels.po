@@ -636,6 +636,9 @@ msgstr "Video Archive"
 msgid "title"
 msgstr "Title"
 
+msgid "noTitle"
+msgstr "No Title"
+
 msgid "actions"
 msgstr "Actions"
 

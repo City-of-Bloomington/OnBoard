@@ -35,36 +35,30 @@
                 {% if committee %}
                 <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
                 {% endif %}
-        
 
                 <label class="usa-label" for="year">{{ _('year') }}:</label>
-                <div class="usa-combo-box" data-placeholder={{ year }}>
-                    <select id="year" name="year" class="usa-select">
-                        {% for y in years %}
-                        <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+                <select class="usa-select" id="year" name="year">
+                    {% for y in years %}
+                    <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
+                    {% endfor %}
+                </select>
 
                 {% set url = current_url() %}
-                <div class="row flex-row mb-3">
-                    {% for k,v in url.parameters %}
-                    {% if k!='type' and k!='year' %}
-                    <input name="{{ k }}" type="hidden" value="{{ v }}" />
-                    {% endif %}
+                {% for k,v in url.parameters %}
+                {% if k!='type' and k!='year' %}
+                <input name="{{ k }}" type="hidden" value="{{ v }}" />
+                {% endif %}
+                {% endfor %}
+
+                <label class="usa-label" for="type">{{ _('type') }}:</label>
+                <select class="usa-select" id="type" name="type">
+                    <option value="" aria-label="{{ _('choose_type') }}">{{ _('all') }}</option>
+                    {% for t in types %}
+                    <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
                     {% endfor %}
-                    <div class="col-auto">
-                        <label class="col-form-label" for="type">{{ _('filter_by') }}</label>
-                    </div>
-                    <div class="col-auto">
-                        <select class="form-select" id="type" name="type" onchange="this.form.submit();">
-                            <option value="" aria-label="{{ _('choose_type') }}"></option>
-                            {% for t in types %}
-                            <option{{ t==type ? ' selected="true"' : '' }}>{{ t }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
+                </select>
+
+                {{ forms.button('submit', _('filter'), 'search') }}
             </fieldset>
         </form>
 
@@ -73,30 +67,22 @@
         {% for f in files %}
         <li class="usa-collection__item">
             <div class="usa-collection__body">
-                <div class="usa-card__header grid-row flex-row">
-                    <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3 class="usa-collection__heading">
-                        {{ f.title }} 
-                        </h3>
-                    </div>
-                    <div class="grid-col-auto display-flex flex-align-center">
-                    <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-                            <use href="/static/uswds/dist/img/sprite.svg#file_download"></use>
-                        </svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="usa-card__footer grid-row">
-                    <div class="grid-col flex-1">
-                        <div>
-                            <strong>{{ _('type') }}:</strong> {{ f.type }}
-                        </div>
-                        <div>
-                            <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
-                        </div>
-                    </div>
-                </div>
+                <h3 class="usa-collection__heading">
+                <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                    {{ f.title ?? _('noTitle') }}
+                    <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                        <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                    </svg>
+                </a>
+                </h3>
+                <ul class="usa-collection__meta" aria-label="More information">
+                    <li class="usa-collection__meta-item position-relative">
+                        <strong>{{ _('type') }}:</strong> {{ f.type }}
+                    </li>
+                    <li class="usa-collection__meta-item position-relative">
+                        <strong>{{ _('meetingDate') }}:</strong> <a href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
+                    </li>
+                </ul>
             </div>
         </li>
         {% endfor %}
