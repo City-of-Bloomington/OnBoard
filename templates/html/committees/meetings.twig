@@ -17,7 +17,7 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
-<div class="grid-container">
+<div class="grid-container"> 
     <div class="grid-row grid-gap">
         {{ include('html/committees/partials/side-nav.twig') }}
         <section class="desktop:grid-col-9">
@@ -29,7 +29,7 @@
             {% endif %}
             <form class="usa-form" method="get">
                 <fieldset class="usa-fieldset">
-                    {{ forms.field_combo('year', 'year', _('selectYear'), year, years, false ) }}
+                    {{ forms.field_combo('year', 'year', _('year'), year, years, false ) }}
 
                     {{ forms.button('submit', _('filter'), 'search') }}
                 </fieldset>
@@ -43,7 +43,7 @@
                         <div class="usa-card__header grid-row flex-row">
                             <div class="grid-col flex-1 display-flex flex-align-center">
                                 <h3 class="usa-card__heading">
-                                    <a href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a>
+                                    <a class="usa-link" href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a>
                                 </h3>
                             </div>    
                         </div>
@@ -55,14 +55,14 @@
                                 {% for type, t in m.files %}
                                     {% for f in t %}
                                     <div>
-                                        <strong>{{ f.type }}:</strong> <a href="{{ uri('meetingFiles.download', {id: f.id}) }}"> {{ f.title ?? f.filename }}</a>
+                                        <strong>{{ f.type }}:</strong> <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}"> {{ f.title ?? f.filename }}</a>
                                     </div>
                                     {% endfor %}
                                 {% endfor %}
                                 
                                 {% if m.htmlLink -%}
                                     <div>
-                                        <a href="{{ m.htmlLink }}" class="card-link">Google Calendar</a>
+                                        <a class="usa-link" href="{{ m.htmlLink }}">Google Calendar</a>
                                     </div>
                                 {%- endif %}
                             </div>
