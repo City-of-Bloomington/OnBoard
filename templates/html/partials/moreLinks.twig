@@ -5,6 +5,6 @@
  #}
 <ul class="usa-list usa-list--unstyled text-right">
     {% for link in actionLinks %}
-    <li><a href="{{ link.url }}" class="{{ link.class ?? '' }}">{{ link.label }}</a></li>
+    <li><a href="{{ link.url }}" class="usa-link {{ link.class ?? '' }}">{{ link.label }}</a></li>
     {% endfor %}
 </ul>

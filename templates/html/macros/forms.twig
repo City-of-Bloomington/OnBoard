@@ -5,7 +5,7 @@
  'delete': 'usa-button usa-button--secondary',
  'cancel': 'usa-button usa-button--outline'
 } %}
-<a href="{{ url }}" class="{{ class and classmap[class] is defined ? classmap[class] : 'btn-secondary' }} align-self-center me-3">{{ label }}</a>
+<a href="{{ url }}" class="{{ class and classmap[class] is defined ? classmap[class] : 'usa-link' }}">{{ label }}</a>
 {% endmacro %}
 
 {% macro button(type, label, class) %}
