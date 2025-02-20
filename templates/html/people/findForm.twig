@@ -13,13 +13,13 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="my-3">
-    <header class="mb-3">
+<section class="grid-container">
+    <header>
         <h1>{{ _(['person', 'people', 100]) }}</h1>
     </header>
-    <form method="get">
-        <fieldset>
-            <legend>{{ _('find_person') }}</legend>
+    <form class="usa-form usa-form--large" method="get">
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('find_person') }}</legend>
             {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
             {{ forms.field_text('lastname', 'lastname', _('lastname'), lastname) }}
 
