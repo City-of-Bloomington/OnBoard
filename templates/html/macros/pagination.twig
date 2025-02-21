@@ -20,13 +20,80 @@
 
     <nav aria-label="Pagination" class="usa-pagination">
         <ul class="usa-pagination__list">
-        {% set url = current_url() %}
-        {% for i in lowerBound..upperBound %}
+            {% set url = current_url() %}
+
+            {% if pageNumber > 1 %}
+            <li class="usa-pagination__item usa-pagination__arrow">
+                {{ url.__set('page', pageNumber - 1) }}
+                <a
+                    href="{{ url }}"
+                    class="usa-pagination__link usa-pagination__previous-page"
+                    aria-label="Previous page">   
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use href="/static/uswds/dist/img/sprite.svg#navigate_before"></use>
+                    </svg>
+                    <span class="usa-pagination__link-text">Previous</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if pageNumber >= 6 %}
+            <li class="usa-pagination__item usa-pagination__page-no">
+                {{ url.__set('page', 1) }}
+                <a
+                    href="{{ url }}"
+                    class="usa-pagination__button"
+                    aria-label="Page 1">
+                    1
+                </a>
+            </li>
+            <li
+                class="usa-pagination__item usa-pagination__overflow"
+                aria-label="ellipsis indicating non-visible pages">
+                <span>…</span>
+            </li>
+            {% endif %}
+
+            {% for i in lowerBound..upperBound %}
             {% do url.__set('page', i) %}
             <li class="usa-pagination__item usa-pagination__page-no">
                 <a class="usa-pagination__button {{ pageNumber==i ? 'usa-current' : ''}}" aria-label="{{ _('page') }} {{ i }}" href="{{ url }}">{{ i }}</a>
             </li>
-        {% endfor %}
+            {% endfor %}
+
+
+            {% if pageNumber <= (pageCount - 6) %}
+            {{ url.__set('page', pageCount) }}
+            <li
+                class="usa-pagination__item usa-pagination__overflow"
+                aria-label="ellipsis indicating non-visible pages">
+                <span>…</span>
+            </li>
+            <li class="usa-pagination__item usa-pagination__page-no">
+                <a
+                    href="{{ url }}"
+                    class="usa-pagination__button"
+                    aria-label="Last page, page {{ pageCount }}">
+                    {{ pageCount }}
+                </a>
+            </li>
+            {% endif %}
+
+
+            {% if pageNumber != upperBound %}
+            <li class="usa-pagination__item usa-pagination__arrow">
+            {{ url.__set('page', pageNumber + 1) }}
+                <a
+                    href="{{ url }}"
+                    class="usa-pagination__link usa-pagination__next-page"
+                    aria-label="Next page">
+                    <span class="usa-pagination__link-text">Next </span>
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use href="/static/uswds/dist/img/sprite.svg#navigate_next"></use>
+                    </svg>
+                </a>
+            </li>
+            {% endif %}
         </ul>
     </nav>
 {% endmacro %}
