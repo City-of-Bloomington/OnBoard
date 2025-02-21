@@ -200,7 +200,7 @@ msgid "info_office"
 msgstr "Office Info"
 
 msgid "find_person"
-msgstr "Search someone by name"
+msgstr "Find someone"
 
 msgid "person_choose"
 msgstr "Choose Person"
