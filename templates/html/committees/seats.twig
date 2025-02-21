@@ -54,20 +54,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-        {# {% set userCanEdit=isAllowed('seats', 'update') %}
-        {% for s in seats %}
-        <tr>
-            <td>{{ s.getCode() }}</td>
-            <td><a href="{{ uri('seats.view', {id: s.getId()}) }}">{{ s.getName() }}</a></td>
-            <td>{{ s.getAppointer() }}</td>
-            <td>{{ s.getType() }}</td>
-            <td>{{ s.getStartDate(DATE_FORMAT) }}</td>
-            <td>{{ s.getEndDate  (DATE_FORMAT) }}</td>
-            <td>{% if userCanEdit %}
-                {{ forms.actionLink(uri('seats.update', {id: s.getId()}), _('edit'), 'edit') }}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %} #}
