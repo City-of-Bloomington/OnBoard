@@ -30,7 +30,7 @@
                 </fieldset>
                 <fieldset>
                     <legend>{{ _(['applicant', 'applicants', 10 ]) }}</legend>
-                    <table class="table">
+                    <table class="usa-table">
                     <thead>
                         <tr><th></th>
                             <th>{{ _('created') }}</th>
@@ -46,7 +46,7 @@
                         <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
                             <td>{{ a.created|date('m/d/Y') }}</td>
                             <td>{% if userCanViewApplicant %}
-                                <a href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
+                                <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
                                     {{ a.applicant }}
                                 </a>
                                 {% else %}

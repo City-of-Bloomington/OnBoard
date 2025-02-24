@@ -8,7 +8,7 @@
         <h2>{{ _('applications_archived') }}</h2>
     </header>
 
-    <table class="table">
+    <table class="usa-table">
         <thead>
             <tr><th>{{ _('created' ) }}</th>
                 <th>{{ _('name'    ) }}</th>
@@ -20,7 +20,7 @@
             {% for a in applications_archived %}
             <tr><td>{{ a.created|date('m/d/Y') }}</td>
                 <td>{% if userCanViewApplicant %}
-                    <a href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
+                    <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
                         {{ a.applicant }}
                     </a>
                     {% else %}
