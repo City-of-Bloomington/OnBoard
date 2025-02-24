@@ -19,7 +19,7 @@
         <ul class="usa-sidenav">
             <li class="usa-sidenav__item">
                 <a href="{{ uri('committees.info', {id: committee.getId()}) }}"
-                class="{{ ROUTE_NAME=='committees.info' ? 'usa-current' : '' }}">
+                class="{{ ROUTE_NAME==('committees.info' or 'committees.update') ? 'usa-current' : '' }}">
                 {{ _('committee_info') }}
                 </a>
             </li>
