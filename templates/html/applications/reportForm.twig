@@ -15,8 +15,8 @@
             {{ include('html/committees/partials/header.twig') }}
             <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
             <form method="post" action="{{ uri('applications.report') }}">
-                <fieldset>
-                    <legend>{{ _(['seat', 'seats', 10 ]) }}</legend>
+                <fieldset class="usa-fieldset margin-bottom-2">
+                    <legend class="usa-legend">{{ _(['seat', 'seats', 10 ]) }}</legend>
                     {% for s in seats %}
                         {% if s.takesApplications() %}
                         <div class="form-check {{ s.hasVacancy() ? ' vacant' : '' }}">
@@ -28,9 +28,9 @@
                         {% endif %}
                     {% endfor %}
                 </fieldset>
-                <fieldset>
-                    <legend>{{ _(['applicant', 'applicants', 10 ]) }}</legend>
-                    <table class="usa-table">
+                <fieldset class="usa-fieldset">
+                    <legend class="usa-legend">{{ _(['applicant', 'applicants', 10 ]) }}</legend>
+                    <table class="usa-table margin-top-1">
                     <thead>
                         <tr><th></th>
                             <th>{{ _('created') }}</th>
@@ -63,9 +63,9 @@
                     </tbody>
                     </table>
                 </fieldset>
-                <fieldset>
+                <fieldset class="usa-fieldset">
                     <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
-                    <button type="submit" class="btn btn-success">{{ _('report_view') }}</button>
+                    <button type="submit" class="usa-button">{{ _('report_view') }}</button>
                 </fieldset>
             </form>
             {{ include('html/applications/partials/archived_applications.twig') }}
