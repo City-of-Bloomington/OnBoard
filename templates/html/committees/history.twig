@@ -13,7 +13,6 @@
         <section class="desktop:grid-col-9">
             {{ include('html/committees/partials/header.twig') }}
             <h2>{{ _('committeeHistory') }}</h2>
-
             {% for h in history %}
             <div class="usa-accordion usa-accordion--bordered">
                 <h3 class="usa-accordion__heading">
@@ -48,37 +47,6 @@
                 </div>
             </div>
             {% endfor %}
-
-
-
-            {% for h in history %}
-            <details>
-                <summary>
-                    {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
-                </summary>
-                {% for change in h.changes %}
-                <table>
-                    <thead>
-                        <tr><th></th>
-                            {% for s in states %}
-                            <th>{{ s }}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for k, c in change %}
-                        <tr><th>{{ k }}</th>
-                            {% for s in states %}
-                            <td>{% if c[s] is defined %}{{ c[s] }}{% endif %}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endfor %}
-            </details>
-            {% endfor %}
-
         </section>
     </div>
 </div>
