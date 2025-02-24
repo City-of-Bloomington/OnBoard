@@ -1,11 +1,11 @@
 {% macro actionLink(url, label, class) %}
 {% set classmap={
- 'add':    'usa-button',
- 'edit':   'usa-button usa-button--base',
- 'delete': 'usa-button usa-button--secondary',
- 'cancel': 'usa-button usa-button--outline'
+ 'archive':   'save_alt',
+ 'unarchive': 'undo'
 } %}
-<a href="{{ url }}" class="{{ class and classmap[class] is defined ? classmap[class] : 'usa-link' }}">{{ label }}</a>
+<a href="{{ url }}" class="usa-link margin-right-05">
+    {{ label }}{% if class %}<svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img"><use href="/static/uswds/dist/img/sprite.svg#{{ class and classmap[class] is defined ? classmap[class] : class }}"></use></svg>{% endif %}
+</a>
 {% endmacro %}
 
 {% macro button(type, label, class) %}
@@ -14,7 +14,6 @@
  'save':   'btn-success'
 } %}
 <button type="{{ type }}" class="usa-button {{ class and classmap[class] is defined ? classmap[class] : 'usa-button--outline' }}">{{ label }}</button>
-
 {% endmacro %}
 
 {% macro field_text(id, name, label, value, required=false, attr={}, help=null) %}
