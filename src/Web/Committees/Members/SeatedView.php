@@ -23,7 +23,8 @@ class SeatedView extends View
         $links = [
             'download' => [
                 'url'   => $url,
-                'label' => 'CSV Export'
+                'label' => 'CSV Export',
+                'class' => 'download'
             ]
         ];
 

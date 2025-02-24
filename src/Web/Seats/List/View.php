@@ -17,7 +17,7 @@ class View extends \Web\View
         ];
 
         if (parent::isAllowed('people', 'viewContactInfo')) {
-            $this->vars['actionLinks'] = [['url' => parent::generateUri('seats.index').'?format=csv', 'label' => 'CSV Export']];
+            $this->vars['actionLinks'] = [['url' => parent::generateUri('seats.index').'?format=csv', 'label' => 'CSV Export', 'class' => 'download']];
         }
     }
 
