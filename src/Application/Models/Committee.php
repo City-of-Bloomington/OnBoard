@@ -462,7 +462,8 @@ class Committee extends ActiveRecord
 
 
         if ($this->getCalendarId()) {
-            $events = GoogleGateway::events($this->getCalendarId(), $start, $end);
+            $res    = GoogleGateway::events($this->getCalendarId(), $start, $end);
+            $events = $res['events'];
             foreach ($events as $e) {
                 if ($e->start->dateTime) {
                     $allDay = false;
@@ -504,77 +505,81 @@ class Committee extends ActiveRecord
     public function syncGoogleCalendar()
     {
         $debug = fopen(SITE_HOME.'/debug.log', 'a');
+        fwrite($debug, "syncGoogleCalendar: ".$this->getName()."\n");
 
         if (!$this->getCalendarId()) { return; }
 
-        $events        = GoogleGateway::sync($this->getCalendarId(), $this->getSyncToken());
-        $nextSyncToken = $events->nextSyncToken;
+        $res = GoogleGateway::sync($this->getCalendarId(), $this->getSyncToken());
+        if (!$res['nextSyncToken']) {
+            fwrite($debug, print_r($res, true)."\n");
+            exit();
+        }
+
         $meetingTable  = new MeetingTable();
-        fwrite($debug, "syncToken: $nextSyncToken\n");
+        fwrite($debug, "syncToken: $res[nextSyncToken]\n");
 
-        try {
-            foreach ($events as $event) {
+        $year = new \DateTime('+1 year');
+        foreach ($res['events'] as $event) {
 
-                $eventId  = $event->id;
-                $list     = $meetingTable->find(['eventId'=>$event->id]);
+            $eventId  = $event->id;
+            $list     = $meetingTable->find(['eventId'=>$event->id]);
+            fwrite($debug, "Event: $eventId\n");
 
-                if ($event->status == 'cancelled') {
-                    // Remove the Google Event Information but preserve the meeting
-                    foreach ($list as $meeting)  {
-                        $meeting->setEventId(null);
-                        $meeting->setHtmlLink(null);
-                        $meeting->save();
-                    }
-                    continue;
+            if ($event->status == 'cancelled') {
+                // Remove the Google Event Information but preserve the meeting
+                foreach ($list as $meeting)  {
+                    $meeting->setEventId(null);
+                    $meeting->setHtmlLink(null);
+                    $meeting->save();
                 }
+                continue;
+            }
 
-                // Calendar events without start and end times are either
-                // all day events, or they have been cancelled (deleted).
-                if (empty($event->start->dateTime) || empty($event->end->dateTime)) {
-                    fwrite($debug, "No event time: ".print_r($event, true)."\n");
-                    $start = new \DateTime($event->start->date);
-                    $end   = new \DateTime($event->end  ->date);
-                }
-                else {
-                    $start    = new \DateTime($event->start->dateTime);
-                    $end      = new \DateTime($event->end  ->dateTime);
-                }
-                $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
-                fwrite($debug, "Event: $eventId\n");
+            // Calendar events without start and end times are either
+            // all day events, or they have been cancelled (deleted).
+            if (empty($event->start->dateTime) || empty($event->end->dateTime)) {
+                fwrite($debug, "No event time\n");
+                $start = new \DateTime($event->start->date);
+                $end   = new \DateTime($event->end  ->date);
+            }
+            else {
+                $start    = new \DateTime($event->start->dateTime);
+                $end      = new \DateTime($event->end  ->dateTime);
+            }
 
-                if ($list->count()) {
-                    foreach ($list as $meeting) {
-                        fwrite($debug, "Updating meeting\n");
-                        $meeting->setStart   ($start  ->format('Y-m-d H:i:s'));
-                        $meeting->setEnd     ($end    ->format('Y-m-d H:i:s'));
-                        $meeting->setLocation($location);
-                        $meeting->setHtmlLink($event->htmlLink);
-                        $meeting->save();
-                    }
-                }
-                else {
-                    $meeting = new Meeting([
-                        'committee_id' => $this->getId(),
-                        'eventId'      => $eventId,
-                        'start'        => $start  ->format('Y-m-d H:i:s'),
-                        'end'          => $end    ->format('Y-m-d H:i:s'),
-                        'location'     => $location,
-                        'htmlLink'     => $event->htmlLink
-                    ]);
+            // Recurring events can be infinite.
+            // Only save one year's worth of future events in the database
+            if ($start > $year) { continue; }
+
+            $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
+
+            if ($list->count()) {
+                foreach ($list as $meeting) {
+                    fwrite($debug, "Updating meeting\n");
+                    $meeting->setStart   ($start  ->format('Y-m-d H:i:s'));
+                    $meeting->setEnd     ($end    ->format('Y-m-d H:i:s'));
+                    $meeting->setLocation($location);
+                    $meeting->setHtmlLink($event->htmlLink);
                     $meeting->save();
                 }
             }
+            else {
+                $meeting = new Meeting([
+                    'committee_id' => $this->getId(),
+                    'eventId'      => $eventId,
+                    'start'        => $start  ->format('Y-m-d H:i:s'),
+                    'end'          => $end    ->format('Y-m-d H:i:s'),
+                    'location'     => $location,
+                    'htmlLink'     => $event->htmlLink
+                ]);
+                $meeting->save();
+            }
+        }
 
-            fwrite($debug, "Updating committee token: $nextSyncToken {$this->getId()}\n");
-            $db  = Database::getConnection();
-            $sql = 'update committees set syncToken=?, synced=now() where id=?';
-            $db->createStatement($sql)->execute([$nextSyncToken, $this->getId()]);
-        }
-        catch (\Exception $e) {
-            fwrite($debug, print_r($e,     true));
-            fwrite($debug, print_r($event, true));
-            exit();
-        }
+        fwrite($debug, "Updating committee token: $res[nextSyncToken] {$this->getId()}\n");
+        $db  = Database::getConnection();
+        $sql = 'update committees set syncToken=?, synced=now() where id=?';
+        $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
     }
 
 	/**

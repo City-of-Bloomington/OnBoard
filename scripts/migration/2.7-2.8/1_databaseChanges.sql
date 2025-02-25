@@ -12,9 +12,9 @@ create table meetings(
     end              datetime,
     created          datetime     not null default CURRENT_TIMESTAMP,
     updated          datetime     not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    eventId          varchar(128),
+    eventId          varchar(1024),
     location         varchar(256),
-    htmlLink         varchar(256),
+    htmlLink         varchar(1024),
     foreign key (committee_id) references committees(id)
 );
 

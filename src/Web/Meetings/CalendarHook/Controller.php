@@ -31,16 +31,13 @@ class Controller
     {
         $committees  = new CommitteeTable();
         $meetings    = new MeetingTable();
-        $debug       = fopen(SITE_HOME.'/debug.log', 'a');
-
-        #error_log(print_r($_SERVER, true));
-
-        $event_id    = $_SERVER['HTTP_X_GOOG_RESOURCE_ID'];
         $calendar_id = self::parseCalendarId($_SERVER['HTTP_X_GOOG_RESOURCE_URI']);
-        $event       = GoogleGateway::getEvent($calendar_id, $event_id);
-        fwrite($debug, print_r($event, true)."\n");
-
         $list        = $committees->find(['calendarId'=>$calendar_id]);
+
+        $debug       = fopen(SITE_HOME.'/debug.log', 'a');
+        // if (isset($_SERVER)) { fwrite($debug, print_r($_SERVER, true)."\n"); }
+        fwrite($debug, "home.calendarhook\nCalendar: $calendar_id\n");
+
         if ($list->count()) {
             $committee = $list->current();
             fwrite($debug, "Committee: ".$committee->getName()."\n");
