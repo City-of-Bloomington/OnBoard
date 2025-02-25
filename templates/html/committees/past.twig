@@ -5,19 +5,22 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-
-<section class="">
-    <header class="d-flex flex-wrap">
+<section class="grid-container">
+    <header>
         <h1>{{ _('committees_past') }}</h1>
     </header>
-    <table class="table table-hover table-bordered">
+    <table class="usa-table">
+        <thead>
+            <tr><th>Name</th>
+                <th>{{ _('endDate') }}</th>
+            </tr>
+        </thead>
     {% for c in committees %}
-    <tr><td><a href="{{ uri('committees.info', {id: c.id}) }}">{{ c.name }}</a></td>
+    <tr><td><a class="usa-link" href="{{ uri('committees.info', {id: c.id}) }}">{{ c.name }}</a></td>
         <td>{{ c.endDate }}</td>
     </tr>
     {% endfor %}
     </table>
-    <a class="btn btn-primary" href="{{ BASE_URI }}">{{ _('committees_current') }}</a>
+    <a class="usa-link" href="{{ BASE_URI }}">{{ _('committees_current') }}</a>
 </section>
-
 {% endblock %}
