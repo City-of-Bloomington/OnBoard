@@ -27,15 +27,16 @@ class GoogleGateway
 
     /**
      * @see https://developers.google.com/google-apps/calendar/v3/reference/events/list
-     * @param  string   $calendarId
-     * @param  DateTime $start
-     * @param  DateTime $end
-     * @param  boolean  $singleEvents
-     * @param  int      $maxResults
-     * @return EventList
+     * @throws Exception
+     * @return array [nextSyncToken=>'', events=>[]]
      */
-    public static function events($calendarId, \DateTime $start=null, \DateTime $end=null, $singleEvents=true, $maxResults=null)
+    public static function events(string $calendarId,
+                              ?\DateTime $start=null,
+                              ?\DateTime $end=null,
+                                   ?bool $singleEvents=true,
+                                    ?int $maxResults=null): array
     {
+        $events = [];
         $FIELDS = 'description,end,endTimeUnspecified,htmlLink,id,location,'
                 . 'originalStartTime,recurrence,recurringEventId,sequence,'
                 . 'start,summary,attendees,organizer';
@@ -50,9 +51,51 @@ class GoogleGateway
         if ($start) { $opts['timeMin'] = $start->format(\DateTime::RFC3339); }
         if ($end  ) { $opts['timeMax'] = $end  ->format(\DateTime::RFC3339); }
 
+        return self::gatherPaginatedResults($calendarId, $opts);
+    }
+
+    /**
+     * @throws Exception
+     * @return array [nextSyncToken=>'', events=>[]]
+     */
+    public static function sync(string $calendarId, ?string $nextSyncToken=null): array
+    {
+        $opts = [
+            'singleEvents' => true,
+            'syncToken'    => $nextSyncToken
+        ];
+
+        return self::gatherPaginatedResults($calendarId, $opts);
+    }
+
+    /**
+     * @throws Exception
+     * @return array [nextSyncToken=>'', events=>[]]
+     */
+    private static function gatherPaginatedResults(string $calendarId, array $opts): array
+    {
         $service = new Calendar(self::getClient());
-        $events  = $service->events->listEvents($calendarId, $opts);
-        return $events;
+        $events  = [];
+        $hasMore = true;
+        while ($hasMore) {
+            try {
+                $res     = $service->events->listEvents($calendarId, $opts);
+                $events  = array_merge($events, $res->getItems());
+                $hasMore = $res->getNextPageToken() ? true : false;
+                if ($hasMore) { $opts['pageToken'] = $res->getNextPageToken(); }
+            }
+            catch (\Google\Service\Exception $e) {
+                if ($e->getCode() == 410) {
+                    unset($opts['syncToken']);
+                    return self::gatherPaginatedResults($calendarId, $opts);
+                }
+                throw $e;
+            }
+        }
+        return [
+            'nextSyncToken' => $res->getNextSyncToken(),
+            'events'        => $events
+        ];
     }
 
     /**
@@ -60,23 +103,12 @@ class GoogleGateway
      * @param string $eventId
      * @return Event
      */
-    public static function getEvent($calendarId, $eventId)
+    public static function getEvent(string $calendarId, string $eventId)
     {
         $service = new Calendar(self::getClient());
         return $service->events->get($calendarId, $eventId);
     }
 
-    public static function sync(string $calendarId, ?string $nextSyncToken=null): Events
-    {
-        $opts = [
-            'singleEvents' => true,
-            'syncToken'    => $nextSyncToken
-        ];
-
-        $service = new Calendar(self::getClient());
-        $events  = $service->events->listEvents($calendarId, $opts);
-        return $events;
-    }
 
     public static function watch(string $calendarId, string $watch_id): Channel
     {
