@@ -4,28 +4,34 @@
  * @param array data
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="container">
-    <header>
-        <h2>{{ committee.getName() }}</h2>
-        {{ include('html/committees/partials/header.twig') }}
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <h2>{{ _('committee_end') }}</h2>
+            <form class="usa-form" method="post">
+                <fieldset class="usa-fieldset usa-fieldset--large">
+                    <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+                    <label for="endDate" class="form-label">{{ _('endDate') }}</label>
+                    <div class="usa-date-picker">
+                        <input name="endDate" id="endDate" value="{{ 'now'|date('Y-m-d') }}" type="date" class="usa-input" />
+                    </div>
+                </fieldset>
 
-        <h3>{{ _('committee_end') }}</h3>
-    </header>
+                {{ forms.button('submit', _('save'), 'save') }}
 
-    <form method="post">
-        <fieldset>
-            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+                {% if committee.getId() %}
+                {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel') ) }}
+                {% else %}
+                {{ forms.actionLink(uri('committees.index'), _('cancel') ) }}
+                {% endif %}
 
-            <div>
-                <label for="endDate" class="form-label">{{ _('endDate') }}</label>
-                <input name="endDate" id="endDate" value="{{ 'now'|date('Y-m-d') }}"
-                       type="date" class="form-control" />
-            </div>
-
-            <button type="submit" class="btn btn-success">Save</button>
-            <a class="btn btn-danger" href="{{ uri('committees.info', {id: committee.getId()}) }}">{{ _('cancel') }}</a>
-        </fieldset>
-    </form>
-</section>
+                {# <a class="btn btn-danger" href="{{ uri('committees.info', {id: committee.getId()}) }}">{{ _('cancel') }}</a> #}
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}
