@@ -91,14 +91,12 @@
 {% endmacro %}
 
 {% macro field_url(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="mb-3">
-    <label for="{{ id }}">{{ label }}</label>
-    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="url" class="form-control"
+    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="url" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help }}</span>{% endif %}
-</div>
 {% endmacro %}
 
 {% macro field_date(id, name, label, value, required=false, attr={}, help=null) %}

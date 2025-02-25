@@ -64,7 +64,7 @@ class View extends \Web\View
         if (parent::isAllowed('committeeStatutes', 'update')) {
             return [[
                 'url'   => parent::generateUri('committeeStatutes.add')."?committee_id=$committee_id",
-                'label' => $this->_('committeeStatute_add'),
+                'label' => $this->_('add'),
                 'class' => 'add'
             ]];
         }
