@@ -616,7 +616,7 @@ msgstr[0] "Statute Citation"
 msgstr[1] "Statute Citations"
 
 msgid "committeeStatute_add"
-msgstr "Add"
+msgstr "Add Statute Citation"
 
 msgid "committeeStatute_edit"
 msgstr "Edit Statute Citation"

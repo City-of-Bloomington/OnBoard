@@ -7,20 +7,26 @@
 {% extends "html/layouts/default.twig" %}
 {% import  'html/macros/forms.twig' as forms %}
 {% block content %}
-<section class="my-3">
-    {{ include('html/committees/partials/header.twig') }}
-    <form method="post">
-        <fieldset>
-            <legend>{{ statute.getId() ? _('committeeStatute_edit') : _('committeeStatute_add') }}</legend>
-            <input name="committeeStatute_id" type="hidden" value="{{ statute.getId() }}" />
-            <input name="committee_id"        type="hidden" value="{{ statute.getCommittee_id() }}" />
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <form class="usa-form" method="post">
+                <fieldset class="usa-fieldset">
+                    <legend class="usa-legend usa-legend--large">{{ statute.getId() ? _('committeeStatute_edit') : _('committeeStatute_add') }}</legend>
 
-            {{ forms.field_text('citation', 'citation', _('citation'), statute.getCitation() ) }}
-            {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
+                    <input name="committeeStatute_id" type="hidden" value="{{ statute.getId() }}" />
+                    <input name="committee_id"        type="hidden" value="{{ statute.getCommittee_id() }}" />
 
-            {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('committees.info', {id: statute.getCommittee_id()}), _('cancel'), 'cancel') }}
-        </fieldset>
-    </form>
-</section>
+                    {{ forms.field_text('citation', 'citation', _('citation'), statute.getCitation() ) }}
+                    {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
+
+                    {{ forms.button('submit', _('save'), 'save') }}
+                    {{ forms.actionLink(uri('committees.info', {id: statute.getCommittee_id()}), _('cancel') ) }}
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</div>
 {% endblock %}
