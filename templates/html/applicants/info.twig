@@ -21,56 +21,56 @@
 
     <dl>
         {% if applicant.getEmail() %}
-        <dt><strong>{{ _('email') }}</strong></dt>
+        <dt class="text-bold">{{ _('email') }}</dt>
         <dd>{{ applicant.getEmail() }}</dd>
         {% endif %}
         {% if applicant.getPhone() %}
-        <dt><strong>{{ _('phone') }}</strong></dt>
+        <dt class="text-bold">{{ _('phone') }}</dt>
         <dd>{{ applicant.getPhone() }}</dd>
         {% endif %}
         {% if applicant.getAddress() %}
-        <dt><strong>{{ _('address') }}</strong></dt>
+        <dt class="text-bold">{{ _('address') }}</dt>
         <dd>{{ applicant.getAddress() }}</dd>
         {% endif %}
         {% if applicant.getCity() %}
-        <dt><strong>{{ _('city') }}</strong></dt>
+        <dt class="text-bold">{{ _('city') }}</dt>
         <dd>{{ applicant.getCity() }}</dd>
         {% endif %}
         {% if applicant.getZip() %}
-        <dt><strong>{{ _('zip') }}</strong></dt>
+        <dt class="text-bold">{{ _('zip') }}</dt>
         <dd>{{ applicant.getZip() }}</dd>
         {% endif %}
         {% if applicant.getCitylimits() %}
-        <dt><strong>{{ _('citylimits') }}</strong></dt>
+        <dt class="text-bold">{{ _('citylimits') }}</dt>
         <dd>{{ applicant.getEmail() ? _('yes') : _('no') }}</dd>
         {% endif %}
         {% if applicant.getOccupation() %}
-        <dt><strong>{{ _('occupation') }}</strong></dt>
+        <dt class="text-bold">{{ _('occupation') }}</dt>
         <dd>{{ applicant.getOccupation() }}</dd>
         {% endif %}
         {% if applicant.getReferredFrom() %}
-        <dt><strong>{{ _('referredFrom') }}</strong></dt>
+        <dt class="text-bold">{{ _('referredFrom') }}</dt>
         <dd>{{ applicant.getReferredFrom() }}</dd>
         {% endif %}
         {% if applicant.getEmail() %}
-        <dt><strong>{{ _('email') }}</strong></dt>
+        <dt class="text-bold">{{ _('email') }}</dt>
         <dd>{{ applicant.getEmail() }}</dd>
         {% endif %}
         {% if applicant.getReferredOther() %}
-        <dt><strong>{{ _('referredOther') }}</strong></dt>
+        <dt class="text-bold">{{ _('referredOther') }}</dt>
         <dd>{{ applicant.getReferredOther() }}</dd>
         {% endif %}
         {% if applicant.getInterest() %}
-        <dt><strong>{{ _('interest') }}</strong></dt>
+        <dt class="text-bold">{{ _('interest') }}</dt>
         <dd>{{ applicant.getInterest() }}</dd>
         {% endif %}
         {% if applicant.getQualifications() %}
-        <dt><strong>{{ _('qualifications') }}</strong></dt>
+        <dt class="text-bold">{{ _('qualifications') }}</dt>
         <dd>{{ applicant.getQualifications() }}</dd>
         {% endif %}
 
         {% if applicant.getFiles() and isAllowed('applicantFiles', 'download') %}
-        <dt><strong>{{ _('applicantFile') }}<strong></strong></dt>
+        <dt class="text-bold">{{ _('applicantFile') }}<strong></dt>
         <dd>{% for f in applicant.getFiles() %}
             <a href="{{ uri('applicantFiles.download', {id: f.getId()}) }}">{{ f.getFilename() }}</a>
             {% if isAllowed('applicantFiles', 'delete') %}
