@@ -664,6 +664,9 @@ msgstr[1] "Applicants"
 msgid "applicant_edit"
 msgstr "Edit Applicant"
 
+msgid "applicant_info"
+msgstr "Applicant Information"
+
 msgid "applicant_delete"
 msgstr "Delete Applicant"
 

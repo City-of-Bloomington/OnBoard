@@ -9,64 +9,68 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
-<section>
-    <header><h2>{{ applicant.getFirstname() }} {{ applicant.getLastname() }}</h2></header>
+<section class="grid-container">
+    <header>
+        <h1>{{ _('applicant_info') }}</h1>
+    </header>
+
+    <h2>{{ applicant.getFirstname() }} {{ applicant.getLastname() }}</h2>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
 
     <dl>
         {% if applicant.getEmail() %}
-        <dt>{{ _('email') }}</dt>
+        <dt><strong>{{ _('email') }}</strong></dt>
         <dd>{{ applicant.getEmail() }}</dd>
         {% endif %}
         {% if applicant.getPhone() %}
-        <dt>{{ _('phone') }}</dt>
+        <dt><strong>{{ _('phone') }}</strong></dt>
         <dd>{{ applicant.getPhone() }}</dd>
         {% endif %}
         {% if applicant.getAddress() %}
-        <dt>{{ _('address') }}</dt>
+        <dt><strong>{{ _('address') }}</strong></dt>
         <dd>{{ applicant.getAddress() }}</dd>
         {% endif %}
         {% if applicant.getCity() %}
-        <dt>{{ _('city') }}</dt>
+        <dt><strong>{{ _('city') }}</strong></dt>
         <dd>{{ applicant.getCity() }}</dd>
         {% endif %}
         {% if applicant.getZip() %}
-        <dt>{{ _('zip') }}</dt>
+        <dt><strong>{{ _('zip') }}</strong></dt>
         <dd>{{ applicant.getZip() }}</dd>
         {% endif %}
         {% if applicant.getCitylimits() %}
-        <dt>{{ _('citylimits') }}</dt>
+        <dt><strong>{{ _('citylimits') }}</strong></dt>
         <dd>{{ applicant.getEmail() ? _('yes') : _('no') }}</dd>
         {% endif %}
         {% if applicant.getOccupation() %}
-        <dt>{{ _('occupation') }}</dt>
+        <dt><strong>{{ _('occupation') }}</strong></dt>
         <dd>{{ applicant.getOccupation() }}</dd>
         {% endif %}
         {% if applicant.getReferredFrom() %}
-        <dt>{{ _('referredFrom') }}</dt>
+        <dt><strong>{{ _('referredFrom') }}</strong></dt>
         <dd>{{ applicant.getReferredFrom() }}</dd>
         {% endif %}
         {% if applicant.getEmail() %}
-        <dt>{{ _('email') }}</dt>
+        <dt><strong>{{ _('email') }}</strong></dt>
         <dd>{{ applicant.getEmail() }}</dd>
         {% endif %}
         {% if applicant.getReferredOther() %}
-        <dt>{{ _('referredOther') }}</dt>
+        <dt><strong>{{ _('referredOther') }}</strong></dt>
         <dd>{{ applicant.getReferredOther() }}</dd>
         {% endif %}
         {% if applicant.getInterest() %}
-        <dt>{{ _('interest') }}</dt>
+        <dt><strong>{{ _('interest') }}</strong></dt>
         <dd>{{ applicant.getInterest() }}</dd>
         {% endif %}
         {% if applicant.getQualifications() %}
-        <dt>{{ _('qualifications') }}</dt>
+        <dt><strong>{{ _('qualifications') }}</strong></dt>
         <dd>{{ applicant.getQualifications() }}</dd>
         {% endif %}
 
         {% if applicant.getFiles() and isAllowed('applicantFiles', 'download') %}
-        <dt>{{ _('applicantFile') }}</dt>
+        <dt><strong>{{ _('applicantFile') }}<strong></strong></dt>
         <dd>{% for f in applicant.getFiles() %}
             <a href="{{ uri('applicantFiles.download', {id: f.getId()}) }}">{{ f.getFilename() }}</a>
             {% if isAllowed('applicantFiles', 'delete') %}
@@ -76,8 +80,7 @@
         </dd>
         {% endif %}
     </dl>
-</section>
 
 {{ include('html/applications/partials/list.twig') }}
-
+</section>
 {% endblock %}
