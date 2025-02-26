@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Member    member
  * @param Committee committee
@@ -9,32 +9,38 @@
 {% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
-    <header><h2>{{ member.getId() ? _('member_edit') : _('member_add') }}</h2></header>
-	<form method="post">
-        <fieldset>
-            <input name="committee_id" type="hidden" value="{{ member.getCommittee_id()  }}" />
-            <input name="term_id"      type="hidden" value="{{ member.getTerm_id() ?? '' }}" />
-            <input name="seat_id"      type="hidden" value="{{ member.getSeat_id() ?? '' }}" />
+<div class="grid-container">
+    <div class="grid-row grid-gap">
+        {{ include('html/committees/partials/side-nav.twig') }}
+        <section class="desktop:grid-col-9">
+            {{ include('html/committees/partials/header.twig') }}
+            <header><h2>{{ member.getId() ? _('member_edit') : _('member_add') }}</h2></header>
+            <form method="post">
+                <fieldset>
+                    <input name="committee_id" type="hidden" value="{{ member.getCommittee_id()  }}" />
+                    <input name="term_id"      type="hidden" value="{{ member.getTerm_id() ?? '' }}" />
+                    <input name="seat_id"      type="hidden" value="{{ member.getSeat_id() ?? '' }}" />
 
-            {{ forms.field_date('startDate', 'startDate', _('startDate'), member.getStartDate() ? member.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
-            {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), member.getEndDate('Y-m-d') )}}
+                    {{ forms.field_date('startDate', 'startDate', _('startDate'), member.getStartDate() ? member.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}
+                    {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), member.getEndDate('Y-m-d') )}}
 
-            <div clas="form-group">
-                <input type="hidden" name="person_id" id="person_id" value="{{ person.getId() }}" />
-                {{ chooser.personChooser('person_id', 'person_id', person) }}
-            </div>
+                    <div clas="form-group">
+                        <input type="hidden" name="person_id" id="person_id" value="{{ person.getId() }}" />
+                        {{ chooser.personChooser('person_id', 'person_id', person) }}
+                    </div>
 
-            {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(return_url, _('cancel'), 'cancel') }}
-        </fieldset>
-	</form>
-</section>
+                    {{ forms.button('submit', _('save'), 'save') }}
+                    {{ forms.actionLink(return_url, _('cancel'), 'cancel') }}
+                </fieldset>
+            </form>
+        </section>
+
+        {% if member.getSeat_id() %}
+        {{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
+        {{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
+        {% endif %}
+    </div>
+</div>
 <script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
-
-{% if member.getSeat_id() %}
-{{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
-{{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
-{% endif %}
 
 {% endblock %}

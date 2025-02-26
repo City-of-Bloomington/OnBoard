@@ -4,9 +4,8 @@
  #}
 {% macro personChooser(fieldname, fieldid, person) %}
 <span id="{{ fieldid }}-name">{{ person ? person.getFullname() : '' }}</span>
-<a class="button person"
-    href="{{ BASE_URI }}/people?callback=1;return_url={{ current_url() }}"
+<button class="person"
     onclick="PERSON_CHOOSER.open(event, '{{ fieldid }}');">
     {{ _('person_change') }}
-</a>
+</button>
 {% endmacro %}

@@ -16,18 +16,10 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        try {
-            if (!empty($_REQUEST['member_id'])) { $member = new Member($_REQUEST['member_id']); }
-            else {
-                if     (!empty($_REQUEST['term_id'     ])) { $o = new Term($_REQUEST['term_id']); }
-                elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat($_REQUEST['seat_id']); }
-                elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
-                $member = $o->newMember();
-            }
-            if (!empty($_REQUEST['person_id'])) { $member->setPerson_id($_REQUEST['person_id']); }
-            if (!empty($_REQUEST['startDate'])) { $member->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
+        if (!empty($params['id'])) {
+            try { $member = new Member($params['id']); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
         if (isset($member)) {
             if (!empty($_POST['committee_id'])) {
