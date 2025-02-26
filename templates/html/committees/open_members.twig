@@ -1,80 +1,74 @@
 {#
  * Lists members for committees that do not have seats and terms.
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     members
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <h2>{{ _(['member', 'members', 10]) }}</h2>
+<section>
+    <h2>{{ _(['member', 'members', 10]) }}</h2>
 
-            {% if isAllowed('members', 'appoint') %}
-            {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
-            {% endif %}
+    {% if isAllowed('members', 'appoint') %}
+    {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}
+    {% endif %}
 
-            {% if committee.hasVacancy() %}
-            {{ forms.actionLink(uri('applicants.apply') ~ '?committee_id=' ~ committee.getId(), _('apply'), 'add' )}}
-            {% endif %}
+    {% if committee.hasVacancy() %}
+    {{ forms.actionLink(uri('applicants.apply') ~ '?committee_id=' ~ committee.getId(), _('apply'), 'add' )}}
+    {% endif %}
 
 
-            <ul class="usa-card-group grid-row margin-top-3">
-            {% for member in members %}
-                <li class="grid-col-12 margin-bottom-2">
-                    <div class="usa-card__container">
-                        <div class="usa-card__header grid-row flex-row">
-                            <div class="grid-col flex-1 display-flex flex-align-center">
-                                <h3 class="usa-card__heading">
-                                    {{ member.name }}
-                                </h3>
-                            </div>
-                            <div class="grid-col-auto display-flex flex-align-center">
-                                <a class="usa-link" href="{{ uri('people.view', {id: member.person_id}) }}">{{ _('view') }}</a>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer grid-row">
-                            <div class="grid-col flex-1">
-                                <div>
-                                    <strong>{{ _('startDate'   ) }}:</strong> {{ member.startDate }}
-                                </div>
-                                                                <div>
-                                    <strong>{{ _('endDate'   ) }}:</strong> {{ member.endDate }}
-                                </div>
-                            </div>
-                            {% if member.actionLinks is defined %}
-                            <div class="grid-col-auto display-flex flex-align-center">
-                                {{ include('html/partials/moreLinks.twig', {actionLinks:member.actionLinks}, with_context:false) }}
-                            </div>
-                            {% endif %}
-                        </div> 
+    <ul class="usa-card-group grid-row margin-top-3">
+    {% for member in members %}
+        <li class="grid-col-12 margin-bottom-2">
+            <div class="usa-card__container">
+                <div class="usa-card__header grid-row flex-row">
+                    <div class="grid-col flex-1 display-flex flex-align-center">
+                        <h3 class="usa-card__heading">
+                            {{ member.name }}
+                        </h3>
                     </div>
-                </li>
-            {% endfor %}
-            </ul>
-
-            {# <table class="usa-table">
-                {% for member in members %}
-                <tr><td><a href="{{ uri('people.view', {id: member.person_id}) }}">
-                        {{ member.name }}
-                        </a>
-                    </td>
-                    <td>{{ member.startDate }} - {{ member.endDate }}</td>
-                    <td>{% if member.actionLinks is defined %}
+                    <div class="grid-col-auto display-flex flex-align-center">
+                        <a class="usa-link" href="{{ uri('people.view', {id: member.person_id}) }}">{{ _('view') }}</a>
+                    </div>
+                </div>
+                <div class="usa-card__footer grid-row">
+                    <div class="grid-col flex-1">
+                        <div>
+                            <strong>{{ _('startDate'   ) }}:</strong> {{ member.startDate }}
+                        </div>
+                                                        <div>
+                            <strong>{{ _('endDate'   ) }}:</strong> {{ member.endDate }}
+                        </div>
+                    </div>
+                    {% if member.actionLinks is defined %}
+                    <div class="grid-col-auto display-flex flex-align-center">
                         {{ include('html/partials/moreLinks.twig', {actionLinks:member.actionLinks}, with_context:false) }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table> #}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
 
-        </section>
-    </div>
-</div>
+    {# <table class="usa-table">
+        {% for member in members %}
+        <tr><td><a href="{{ uri('people.view', {id: member.person_id}) }}">
+                {{ member.name }}
+                </a>
+            </td>
+            <td>{{ member.startDate }} - {{ member.endDate }}</td>
+            <td>{% if member.actionLinks is defined %}
+                {{ include('html/partials/moreLinks.twig', {actionLinks:member.actionLinks}, with_context:false) }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table> #}
+
+</section>
 {% endblock %}

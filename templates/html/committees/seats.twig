@@ -1,56 +1,50 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     seats
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <h2>{{ _(['seat', 'seats', 10]) }}</h2>
-            {% if isAllowed('seats', 'add') %}
-            {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
-            {% endif %}
+<section>
+    <h2>{{ _(['seat', 'seats', 10]) }}</h2>
+    {% if isAllowed('seats', 'add') %}
+    {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
+    {% endif %}
 
-            <ul class="usa-card-group grid-row margin-top-3">
-            {% set userCanEdit=isAllowed('seats', 'update') %}
-            {% for s in seats %}
-                <li class="grid-col-12 margin-bottom-2">
-                    <div class="usa-card__container">
-                        <div class="usa-card__header grid-row flex-row">
-                            <div class="grid-col flex-1 display-flex flex-align-center">
-                                <h3 class="usa-card__heading">{{ s.getCode() }} {{ s.getName() }}</h3>
-                            </div>
-                            <div class="grid-col-auto display-flex flex-align-center">
-                                <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ _('view') }}</a>
-                            </div>
+    <ul class="usa-card-group grid-row margin-top-3">
+    {% set userCanEdit=isAllowed('seats', 'update') %}
+    {% for s in seats %}
+        <li class="grid-col-12 margin-bottom-2">
+            <div class="usa-card__container">
+                <div class="usa-card__header grid-row flex-row">
+                    <div class="grid-col flex-1 display-flex flex-align-center">
+                        <h3 class="usa-card__heading">{{ s.getCode() }} {{ s.getName() }}</h3>
+                    </div>
+                    <div class="grid-col-auto display-flex flex-align-center">
+                        <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ _('view') }}</a>
+                    </div>
+                </div>
+                <div class="usa-card__footer grid-row">
+                    <div class="grid-col flex-1">
+                        <div>
+                            <strong>{{ _('appointed_by') }}:</strong> {{ s.getAppointer() }}
                         </div>
-                        <div class="usa-card__footer grid-row">
-                            <div class="grid-col flex-1">
-                                <div>
-                                    <strong>{{ _('appointed_by') }}:</strong> {{ s.getAppointer() }}
-                                </div>
-                                <div>
-                                    <strong>{{ _('type') }}:</strong> {{ s.getType() }}
-                                </div>
-                                <div>
-                                    <strong>{{ _('startDate') }}:</strong> {{ s.getStartDate(DATE_FORMAT) }}
-                                </div>
-                                <div>
-                                    <strong>{{ _('endDate')   }}:</strong> {{ s.getEndDate  (DATE_FORMAT) }}
-                                </div>
-                            </div>
+                        <div>
+                            <strong>{{ _('type') }}:</strong> {{ s.getType() }}
+                        </div>
+                        <div>
+                            <strong>{{ _('startDate') }}:</strong> {{ s.getStartDate(DATE_FORMAT) }}
+                        </div>
+                        <div>
+                            <strong>{{ _('endDate')   }}:</strong> {{ s.getEndDate  (DATE_FORMAT) }}
                         </div>
                     </div>
-                </li>
-            {% endfor %}
-            </ul>
-        </section>
-    </div>
-</div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</section>
 {% endblock %}

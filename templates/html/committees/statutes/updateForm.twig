@@ -1,32 +1,26 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param CommitteeStatute statute
  * @param Committee        committee
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  'html/macros/forms.twig' as forms %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <form class="usa-form" method="post">
-                <fieldset class="usa-fieldset">
-                    <legend class="usa-legend usa-legend--large">{{ statute.getId() ? _('committeeStatute_edit') : _('committeeStatute_add') }}</legend>
+<section>
+    <form class="usa-form" method="post">
+        <fieldset class="usa-fieldset">
+            <legend class="usa-legend usa-legend--large">{{ statute.getId() ? _('committeeStatute_edit') : _('committeeStatute_add') }}</legend>
 
-                    <input name="committeeStatute_id" type="hidden" value="{{ statute.getId() }}" />
-                    <input name="committee_id"        type="hidden" value="{{ statute.getCommittee_id() }}" />
+            <input name="committeeStatute_id" type="hidden" value="{{ statute.getId() }}" />
+            <input name="committee_id"        type="hidden" value="{{ statute.getCommittee_id() }}" />
 
-                    {{ forms.field_text('citation', 'citation', _('citation'), statute.getCitation() ) }}
-                    {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
+            {{ forms.field_text('citation', 'citation', _('citation'), statute.getCitation() ) }}
+            {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
 
-                    {{ forms.button('submit', _('save'), 'save') }}
-                    {{ forms.actionLink(uri('committees.info', {id: statute.getCommittee_id()}), _('cancel') ) }}
-                </fieldset>
-            </form>
-        </section>
-    </div>
-</div>
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.info', {id: statute.getCommittee_id()}), _('cancel') ) }}
+        </fieldset>
+    </form>
+</section>
 {% endblock %}

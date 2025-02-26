@@ -6,70 +6,64 @@
  * @param array     applications_current
  * @param array     applications_archived
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
-            <form method="post" action="{{ uri('applications.report') }}">
-                <fieldset class="usa-fieldset margin-bottom-2">
-                    <legend class="usa-legend">{{ _(['seat', 'seats', 10 ]) }}</legend>
-                    {% for s in seats %}
-                        {% if s.takesApplications() %}
-                        <div class="form-check {{ s.hasVacancy() ? ' vacant' : '' }}">
-                            <label>
-                                <input name="seats[]" type="checkbox" value="{{ s.getId() }}" class="form-check-input" />
-                                {{ s.getCode() }}: {{ s.getName() }}
-                            </label>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </fieldset>
-                <fieldset class="usa-fieldset">
-                    <legend class="usa-legend">{{ _(['applicant', 'applicants', 10 ]) }}</legend>
-                    <table class="usa-table margin-top-1">
-                    <thead>
-                        <tr><th></th>
-                            <th>{{ _('created') }}</th>
-                            <th>{{ _('name'   ) }}</th>
-                            <th>{{ _('expires') }}</th>
-                            <th>{{ _('actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% set userCanViewApplicant = isAllowed('applicants', 'view') %}
+<section>
+    <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
+    <form method="post" action="{{ uri('applications.report') }}">
+        <fieldset class="usa-fieldset margin-bottom-2">
+            <legend class="usa-legend">{{ _(['seat', 'seats', 10 ]) }}</legend>
+            {% for s in seats %}
+                {% if s.takesApplications() %}
+                <div class="form-check {{ s.hasVacancy() ? ' vacant' : '' }}">
+                    <label>
+                        <input name="seats[]" type="checkbox" value="{{ s.getId() }}" class="form-check-input" />
+                        {{ s.getCode() }}: {{ s.getName() }}
+                    </label>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+        <fieldset class="usa-fieldset">
+            <legend class="usa-legend">{{ _(['applicant', 'applicants', 10 ]) }}</legend>
+            <table class="usa-table margin-top-1">
+            <thead>
+                <tr><th></th>
+                    <th>{{ _('created') }}</th>
+                    <th>{{ _('name'   ) }}</th>
+                    <th>{{ _('expires') }}</th>
+                    <th>{{ _('actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set userCanViewApplicant = isAllowed('applicants', 'view') %}
 
-                        {% for a in applications_current %}
-                        <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
-                            <td>{{ a.created|date('m/d/Y') }}</td>
-                            <td>{% if userCanViewApplicant %}
-                                <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
-                                    {{ a.applicant }}
-                                </a>
-                                {% else %}
-                                {{ a.applicant }}
-                                {% endif %}
-                            </td>
-                            <td>{{ a.expires|date('m/d/Y') }}</td>
-                            <td>{% if a.actionLinks %}
-                                {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    </table>
-                </fieldset>
-                <fieldset class="usa-fieldset">
-                    <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
-                    <button type="submit" class="usa-button">{{ _('report_view') }}</button>
-                </fieldset>
-            </form>
-            {{ include('html/applications/partials/archived_applications.twig') }}
-        </section>
-    </div>
-</div>
+                {% for a in applications_current %}
+                <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
+                    <td>{{ a.created|date('m/d/Y') }}</td>
+                    <td>{% if userCanViewApplicant %}
+                        <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
+                            {{ a.applicant }}
+                        </a>
+                        {% else %}
+                        {{ a.applicant }}
+                        {% endif %}
+                    </td>
+                    <td>{{ a.expires|date('m/d/Y') }}</td>
+                    <td>{% if a.actionLinks %}
+                        {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </fieldset>
+        <fieldset class="usa-fieldset">
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+            <button type="submit" class="usa-button">{{ _('report_view') }}</button>
+        </fieldset>
+    </form>
+    {{ include('html/applications/partials/archived_applications.twig') }}
+</section>
 {% endblock %}

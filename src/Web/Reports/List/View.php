@@ -26,7 +26,8 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render('html/reports/list.twig', $this->vars);
+        $template = $this->vars['committee'] ? 'list_committee' : 'list_global';
+        return $this->twig->render("html/reports/$template.twig", $this->vars);
     }
 
     private function report_data($reports): array

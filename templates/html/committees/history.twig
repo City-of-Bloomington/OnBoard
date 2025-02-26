@@ -1,53 +1,47 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     history    An array of CommitteeHistory objects
  * @param array     states     An array of possible states a history object can have
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <h2>{{ _('committeeHistory') }}</h2>
-            {% for h in history %}
-            <div class="usa-accordion usa-accordion--bordered">
-                <h3 class="usa-accordion__heading">
-                    <button
-                    type="button"
-                    class="usa-accordion__button"
-                    aria-expanded="false"
-                    aria-controls="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}"
-                    >
-                        {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
-                    </button>
-                </h3>
-                <div class="usa-accordion__content" id="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}">
-                    {% for change in h.changes %}
-                        {% for s in states %}
-                        <h4>{{ s }}</h4>
-                        <ul class="usa-list usa-list--unstyled">
-                            {% for k, c in change %}
-                                <li>
-                                    <div>{{ k }}</div>
-                                    {% if c[s] is defined %}
-                                    <small>
-                                        {{ c[s] }}
-                                    </small>
-                                    {% endif %}
-                                </li>
-                            
-                            {% endfor %}
-                        </ul>
-                        {% endfor %}
+<section>
+    <h2>{{ _('committeeHistory') }}</h2>
+    {% for h in history %}
+    <div class="usa-accordion usa-accordion--bordered">
+        <h3 class="usa-accordion__heading">
+            <button
+            type="button"
+            class="usa-accordion__button"
+            aria-expanded="false"
+            aria-controls="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}"
+            >
+                {{ h.date }}: {{ h.person }} {{ h.tablename }}:{{ h.action }}
+            </button>
+        </h3>
+        <div class="usa-accordion__content" id="{{ h.date }}-{{ h.person }}-{{ h.tablename }}-{{ h.action }}">
+            {% for change in h.changes %}
+                {% for s in states %}
+                <h4>{{ s }}</h4>
+                <ul class="usa-list usa-list--unstyled">
+                    {% for k, c in change %}
+                        <li>
+                            <div>{{ k }}</div>
+                            {% if c[s] is defined %}
+                            <small>
+                                {{ c[s] }}
+                            </small>
+                            {% endif %}
+                        </li>
+
                     {% endfor %}
-                </div>
-            </div>
+                </ul>
+                {% endfor %}
             {% endfor %}
-        </section>
+        </div>
     </div>
-</div>
+    {% endfor %}
+</section>
 {% endblock %}

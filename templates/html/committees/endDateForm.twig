@@ -1,37 +1,31 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<div class="grid-container">
-    <div class="grid-row grid-gap">
-        {{ include('html/committees/partials/side-nav.twig') }}
-        <section class="desktop:grid-col-9">
-            {{ include('html/committees/partials/header.twig') }}
-            <h2>{{ _('committee_end') }}</h2>
-            <form class="usa-form" method="post">
-                <fieldset class="usa-fieldset usa-fieldset--large">
-                    <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
-                    <label for="endDate" class="form-label">{{ _('endDate') }}</label>
-                    <div class="usa-date-picker">
-                        <input name="endDate" id="endDate" value="{{ 'now'|date('Y-m-d') }}" type="date" class="usa-input" />
-                    </div>
-                </fieldset>
+<section>
+    <h2>{{ _('committee_end') }}</h2>
+    <form class="usa-form" method="post">
+        <fieldset class="usa-fieldset usa-fieldset--large">
+            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
+            <label for="endDate" class="form-label">{{ _('endDate') }}</label>
+            <div class="usa-date-picker">
+                <input name="endDate" id="endDate" value="{{ 'now'|date('Y-m-d') }}" type="date" class="usa-input" />
+            </div>
+        </fieldset>
 
-                {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.button('submit', _('save'), 'save') }}
 
-                {% if committee.getId() %}
-                {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel') ) }}
-                {% else %}
-                {{ forms.actionLink(uri('committees.index'), _('cancel') ) }}
-                {% endif %}
+        {% if committee.getId() %}
+        {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel') ) }}
+        {% else %}
+        {{ forms.actionLink(uri('committees.index'), _('cancel') ) }}
+        {% endif %}
 
-                {# <a class="btn btn-danger" href="{{ uri('committees.info', {id: committee.getId()}) }}">{{ _('cancel') }}</a> #}
-            </form>
-        </section>
-    </div>
-</div>
+        {# <a class="btn btn-danger" href="{{ uri('committees.info', {id: committee.getId()}) }}">{{ _('cancel') }}</a> #}
+    </form>
+</section>
 {% endblock %}

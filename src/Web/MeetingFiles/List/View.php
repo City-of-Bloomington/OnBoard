@@ -39,7 +39,8 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/meetingFiles/list.twig', $this->vars);
+        $template = $this->vars['committee'] ? 'list_committee' : 'list_global';
+        return $this->twig->render($this->outputFormat."/meetingFiles/$template.twig", $this->vars);
     }
 
     private function createActionLinks(): array
