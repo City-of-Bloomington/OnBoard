@@ -23,73 +23,83 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="container">
-    <header><h2>{{ person_id ? _('person_edit') : _('person_add') }}</h2></header>
+<section class="grid-container">
+    <header>
+        <h1>{{ person_id ? _('person_edit') : _('person_add') }}</h1>
+    </header>
 
-    <form method="post">
-        <fieldset><legend>{{ _('person_info') }}</legend>
+    <form class="usa-form usa-form--large" method="post">
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Full Name</legend>
             {% if person_id %}
             <input name="person_id" type="hidden" value="{{ person_id }}" />
             {% endif %}
             {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname, true) }}
             {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname,  true) }}
+        </fieldset>
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">Contact</legend>
             {{ forms.field_email('email',    'email',     _('email'    ), email ) }}
             {{ forms.field_phone('phone',    'phone',     _('phone'    ), phone ) }}
+            <label class="usa-label" for="website">{{ _('website') }}<span> (optional)</span></label>
+            <input class="usa-input" name="website" id="website" value="{{ website }}" type="url" />
+        </fieldset>
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('mail_address') }}</legend>
+            {{ forms.field_text('address', 'address', _('streetaddress'), address ) }}
+            {{ forms.field_text('city',    'city',    _('city'   ), city  ) }}
+            <label for="state" class="usa-label">{{ _('state') }}</label>
+            <select name="state" id="state" class="usa-select">
+                {% for s in states %}
+                <option {{ s==state ? 'selected="true"' : '' }}>{{ s }}</option>
+                {% endfor %}
+            </select>
+            {{ forms.field_number('zip', 'zip', _('zip'), zip, false, {pattern:'[\d]{5}(-[\d]{4})?'} ) }}
+        </fieldset>
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('gender') }}</legend>
+            <div class="usa-radio">
+                <input
+                    class="usa-radio__input"
+                    id="male"
+                    type="radio"
+                    name={{ _('gender') }}
+                    value="male"
+                    {{ gender=='male' ? 'checked="checked"' : '' }}
+                />
+                <label class="usa-radio__label" for="male">M</label>
+            </div>
 
-            <div>
-                <label for="website" class="form-label">{{ _('website') }}</label>
-                <input name="website" id="website" value="{{ website }}" type="url" class="form-control" />
-            </div>
-            <div>
-                <label for="gender" class="form-label">{{ _('gender') }}</label>
-                <select name="gender" id="gender" class="form-select">
-                    <option></option>
-                    <option value=  "male" {{ gender==  'male' ? 'selected="true"' : '' }}>M</option>
-                    <option value="female" {{ gender=='female' ? 'selected="true"' : '' }}>F</option>
-                </select>
-            </div>
-            <div>
-                <label for="race_id" class="form-label">{{ _('race') }}</label>
-                <select name="race_id" id="race_id" class="form-select" >
-                    <option></option>
-                    {% for r in races %}
-                    <option value="{{ r.getId() }}" {{ race_id==r.getId() ? 'selected="true"' : '' }}>{{ r.getName() }}</option>
-                    {% endfor %}
-                </select>
+            <div class="usa-radio">
+                <input
+                    class="usa-radio__input"
+                    id="female"
+                    type="radio"
+                    name={{ _('gender') }}
+                    value="female"
+                    {{ gender=='female' ? 'checked="checked"' : '' }}
+                />
+                <label class="usa-radio__label" for="female">F</label>
             </div>
         </fieldset>
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('race') }}</legend>
+            <label for="race_id" class="usa-label">{{ _('race') }}<span> (optional)</span></label>
+            <select name="race_id" id="race_id" class="usa-select" >
+                <option></option>
+                {% for r in races %}
+                <option value="{{ r.getId() }}" {{ race_id==r.getId() ? 'selected="true"' : '' }}>{{ r.getName() }}</option>
+                {% endfor %}
+            </select>
 
-        <fieldset><legend>{{ _('address') }}</legend>
-            <div>
-                <label for="address" class="form-label">{{ _('address') }}</label>
-                <textarea class="form-control">{{ address }}</textarea>
-            </div>
-            <div>
-                <label for="city" class="form-label">{{ _('city') }}</label>
-                <input name="city" id="city" value="{{ city }}" class="form-control" />
-            </div>
-            <div>
-                <label for="state" class="form-label">{{ _('state') }}</label>
-                <select name="state" id="state" class="form-control">
-                    {% for s in states %}
-                    <option {{ s==state ? 'selected="true"' : '' }}>{{ s }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div>
-                <label for="zip" class="form-label">{{ _('zip') }}</label>
-                <input name="zip" id="zip" value="{{ zip }}" type="number" class="form-control" />
-            </div>
-        </fieldset>
+         </fieldset>
 
-        <fieldset>
-            {% for k, v in additional_params %}
-            <input name="{{ k }}" type="hidden" value="{{ v }}" />
-            {% endfor %}
+        {% for k, v in additional_params %}
+        <input name="{{ k }}" type="hidden" value="{{ v }}" />
+        {% endfor %}
 
-            <button type="submit" class="btn btn-success">{{ _('save') }}</button>
-            <a class="btn btn-danger" href="{{ return_url }}" {{ callback ? 'onclick="self.close();"' : '' }}>{{ _('cancel') }}</a>
-        </fieldset>
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(return_url, _('cancel') ) }}
     </form>
 </section>
 
