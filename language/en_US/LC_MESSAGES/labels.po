@@ -118,6 +118,9 @@ msgstr "For example, Martinez Gonzalez, Gu, or Smith"
 msgid "address"
 msgstr "Address"
 
+msgid "mail_address"
+msgstr "Mailing Address"
+
 msgid "streetaddress"
 msgstr "Street address"
 

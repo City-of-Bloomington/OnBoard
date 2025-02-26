@@ -47,7 +47,7 @@
         </fieldset>
 
         <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">Mailing Address</legend>
+            <legend class="usa-legend usa-legend--large">{{ _('mail_address') }}</legend>
             {{ forms.field_text('address', 'address', _('streetaddress'), applicant.getAddress() ) }}
             {{ forms.field_text('city',    'city',    _('city'   ), applicant.getCity() ) }}
             {{ forms.field_number('zip',   'zip',     _('zip'),     applicant.getZip(), false, {pattern:'[\d]{5}(-[\d]{4})?'} ) }}
