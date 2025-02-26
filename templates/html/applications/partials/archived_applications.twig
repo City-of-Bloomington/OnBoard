@@ -12,6 +12,7 @@
         <thead>
             <tr><th>{{ _('created' ) }}</th>
                 <th>{{ _('name'    ) }}</th>
+                <th>{{ _('committee'   ) }}</th>
                 <th>{{ _('archived') }}</th>
                 <th>{{ _('actions') }}</th>
             </tr>
@@ -27,6 +28,7 @@
                     {{ a.applicant }}
                     {% endif %}
                 </td>
+                <td></td>
                 <td>{{ a.archived|date('m/d/Y') }}</td>
                 <td>{% if a.actionLinks %}
                     {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}

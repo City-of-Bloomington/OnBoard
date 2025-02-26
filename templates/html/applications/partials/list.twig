@@ -10,10 +10,11 @@
         <h2>{{ _(['application', 'applications', 10 ]) }}
     </header>
 
-    <table class="table">
+    <table class="usa-table">
     <thead>
         <tr><th>{{ _('created') }}</th>
             <th>{{ _('name'   ) }}</th>
+            <th>{{ _('committee'   ) }}</th>
             <th>{{ _('expires') }}</th>
             <th>{{ _('actions') }}</th>
         </tr>
@@ -31,6 +32,7 @@
                 {{ a.applicant }}
                 {% endif %}
             </td>
+            <td></td>
             <td>{{ a.expires|date('m/d/Y') }}</td>
             <td>{% if a.actionLinks %}
                 {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
