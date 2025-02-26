@@ -3,14 +3,13 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-<table class="table">
+<table class="usa-table">
     <thead>
         <tr><th>{{ _('committee'   ) }}</th>
             <th>{{ _('seat'        ) }}</th>
             <th>{{ _('seat_term'   ) }}</th>
             <th>{{ _('appointed_by') }}</th>
             <th>{{ _('name'        ) }}</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +25,6 @@
             {{ row.offices }}
             {{ row.alternate_firstname }} {{ row.alternate_lastname }}
         </td>
-        <td></td>
     </tr>
     {% endfor %}
     </tbody>
