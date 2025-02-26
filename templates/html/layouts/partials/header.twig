@@ -36,7 +36,7 @@
                 {% endif %}
                 {% if isAllowed('applicants', 'apply') %}
                 <li class="usa-nav__primary-item">
-                    <a href="{{ uri('applicants.apply') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applicants.' ? 'usa-current' : '' }}">{{ _('apply') }}</a>
+                    <a href="{{ uri('applicants.apply') }}" class="usa-nav-link {{ ROUTE_NAME == 'applicants.apply' ? 'usa-current' : '' }}">{{ _('apply') }}</a>
                 </li>
                 {% endif %}
 
