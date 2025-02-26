@@ -14,9 +14,12 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty(($params['id']))) { // ($params['id']
+
+        if (!empty($_REQUEST['committee_id'])) {
             try {
-                $liaison = new Liaison(($params['id']));
+                $committee = new Committee($_REQUEST['committee_id']);
+                $liaison   = new Liaison();
+                $liaison->setCommittee($committee);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
@@ -37,6 +40,7 @@ class Controller extends \Web\Controller
 
             return new View($liaison);
         }
+
         return new \Web\Views\NotFoundView();
     }
 }

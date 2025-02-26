@@ -18,7 +18,8 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'     => $committee,
-            'liaisons'     => $this->liaisonData ($committee_id)
+            'liaisons'     => $this->liaisonData ($committee_id),
+            'actionLinks'  => $this->actionLinks ($committee_id)
         ];
     }
 
@@ -37,14 +38,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('liaisons.update')."?liaison_id=$row[liaison_id]",
+                    'url'   => parent::generateUri('liaisons.update', ['id' => $row['liaison_id']]),
                     'label' => _('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDel) {
                 $links[] = [
-                    'url'   => parent::generateUri('liaisons.delete')."?liaison_id=$row[liaison_id]",
+                    'url'   => parent::generateUri('liaisons.delete', ['id' => $row['liaison_id']]),
                     'label' => _('delete'),
                     'class' => 'delete'
                 ];
@@ -53,6 +54,18 @@ class View extends \Web\View
             $data[] = $row;
         }
         return $data;
+    }
+
+    private function actionLinks(int $committee_id): array
+    {
+        if (parent::isAllowed('liaisons', 'add')) {
+            return [[
+                'url'   => parent::generateUri('liaisons.add').'?committee_id='.$committee_id,
+                'label' => _('liaison_add'),
+                'class' => 'add'
+            ]];
+        }
+        return [];
     }
 
 }

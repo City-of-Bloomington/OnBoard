@@ -122,6 +122,7 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
+    $r->get('add', '/add'           , Web\Liaisons\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/{id}/delete', Web\Liaisons\Delete\Controller::class);
     $r->get('index',  ''            , Web\Liaisons\List\Controller::class);

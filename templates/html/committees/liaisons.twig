@@ -3,14 +3,15 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     liaisonData
+ * @param array     actionLinks
  #}
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <h2>{{ _(['liaison', 'liaisons', 10]) }}</h2>
-    {% if isAllowed('liaisons', 'update') %}
-    {{ forms.actionLink(uri('liaisons.update'), _('liaison_add'), 'add') }}
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
     {% if liaisons %}
     <ul class="usa-card-group grid-row margin-top-3">
