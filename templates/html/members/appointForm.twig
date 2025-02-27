@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param Member    newMember
@@ -12,7 +12,7 @@
  #}
 {% import  'html/macros/personChooser.twig' as chooser %}
 {% import  "html/macros/forms.twig"         as forms   %}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% block content %}
 <form method="post">
     {% if currentMember %}
@@ -44,7 +44,7 @@
 
         <section>
             <h2>{{ _('new_member') }}</h2>
-            <div clas="form-group">
+            <div class="form-group">
                 <input id="newMember[person_id]" type="hidden" required="true"
                      name="newMember[person_id]" value="{{ newMember.getPerson_id() }}" />
                 {{ chooser.personChooser('newMember[person_id]', 'newMember[person_id]', newMember.getPerson() ) }}
