@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Web\Liaisons\Update;
+namespace Web\Liaisons\Add;
 
 use Application\Models\Committee;
 use Application\Models\Liaison;
@@ -38,7 +38,7 @@ class Controller extends \Web\Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
-            return new View($liaison);
+            return new \Web\Liaisons\Update\View($liaison);
         }
 
         return new \Web\Views\NotFoundView();

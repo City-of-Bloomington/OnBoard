@@ -519,10 +519,10 @@ msgstr[0] "Liaisonship"
 msgstr[1] "Liaisonships"
 
 msgid "liaison_add"
-msgstr "Add"
+msgstr "Add Liaison"
 
 msgid "liaison_edit"
-msgstr "Edit"
+msgstr "Edit Liaison"
 
 msgid "liaison_delete"
 msgstr "Remove"
