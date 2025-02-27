@@ -21,9 +21,9 @@ class View extends \Web\View
             'committee'     => $newMember->getCommittee(),
             'newMember'     => $newMember,
             'currentMember' => $currentMember,
-            'requirements'  => $seat ? $seat->getRequirements() : null,
-            'recentMembers' => self::recentMembers($seat),
-            'termOptions'   => self::termOptions($seat)
+            'requirements'  => $seat ? $seat->getRequirements()   : null,
+            'recentMembers' => $seat ? self::recentMembers($seat) : null,
+            'termOptions'   => $seat ? self::termOptions  ($seat) : null
         ];
     }
 
