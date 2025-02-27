@@ -64,6 +64,39 @@
             <button type="submit" class="usa-button">{{ _('report_view') }}</button>
         </fieldset>
     </form>
-    {{ include('html/applications/partials/archived_applications.twig') }}
+    <section>
+    <header>
+        <h2>{{ _('applications_archived') }}</h2>
+    </header>
+
+    <table class="usa-table">
+        <thead>
+            <tr><th>{{ _('created' ) }}</th>
+                <th>{{ _('name'    ) }}</th>
+                <th>{{ _('archived') }}</th>
+                <th>{{ _('actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for a in applications_archived %}
+            <tr><td>{{ a.created|date('m/d/Y') }}</td>
+                <td>{% if userCanViewApplicant %}
+                    <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
+                        {{ a.applicant }}
+                    </a>
+                    {% else %}
+                    {{ a.applicant }}
+                    {% endif %}
+                </td>
+                <td>{{ a.archived|date('m/d/Y') }}</td>
+                <td>{% if a.actionLinks %}
+                    {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </section>
 {% endblock %}

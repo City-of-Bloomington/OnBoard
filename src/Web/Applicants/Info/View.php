@@ -52,7 +52,7 @@ class View extends \Web\View
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['id'=>$a->getId()]),
                     'label' => $this->_('application_archive'),
-                    'class' => 'edit'
+                    'class' => 'archive'
                 ];
             }
             if ($canDelete) {
@@ -64,10 +64,12 @@ class View extends \Web\View
             }
 
             $p      = $a->getApplicant();
+            $c      = $a->getCommittee();
             $data[] = [
                 'id'           => $a->getId(),
                 'applicant_id' => $a->getApplicant_id(),
                 'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
+                'committee'    => $c->getName(),   
                 'created'      => $a->getCreated(),
                 'expires'      => $a->getExpires(),
                 'actionLinks'  => $links
@@ -88,7 +90,7 @@ class View extends \Web\View
                 $links[] = [
                     'url'   => parent::generateUri('applications.unarchive', ['id'=>$a->getId()]),
                     'label' => $this->_('application_unarchive'),
-                    'class' => 'edit'
+                    'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
@@ -100,10 +102,12 @@ class View extends \Web\View
             }
 
             $p      = $a->getApplicant();
+            $c      = $a->getCommittee();
             $data[] = [
                 'id'           => $a->getId(),
                 'applicant_id' => $a->getApplicant_id(),
                 'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
+                'committee'    => $c->getName(), 
                 'created'      => $a->getCreated(),
                 'archived'     => $a->getArchived(),
                 'actionLinks'  => $links
