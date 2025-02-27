@@ -1,13 +1,13 @@
 ---
-- hosts: onboard
-  become: yes
+- hosts: 'onboard'
+  become: 'yes'
   roles:
-    - City-of-Bloomington.mysql
-    - City-of-Bloomington.php
+    - 'City-of-Bloomington.mysql'
+    - 'City-of-Bloomington.php'
 
   tasks:
     - name: "Install dependencies"
-      apt:
+      ansible.builtin.apt:
         name: "{{ packages }}"
         state: "present"
       vars:
@@ -19,27 +19,21 @@
           - "libreoffice-java-common"
           - 'poppler-utils'
 
-    - name: Create mysql database
-      mysql_db:
+    - name: 'Create mysql database'
+      community.mysql.mysql_db:
         config_file: "{{ mysql_defaults_extra_file }}"
         name: "{{ onboard_db.name }}"
-        state: present
+        state: 'present'
       no_log: True
 
-    - name: Create mysql user for site
-      mysql_user:
+    - name: 'Create mysql user for site'
+      community.mysql.mysql_user:
         name:     "{{ onboard_db.user }}"
         password: "{{ onboard_db.pass }}"
         priv:     "{{ onboard_db.name }}.*:ALL"
-        state: present
+        state: 'present'
         config_file: "{{ mysql_defaults_extra_file }}"
       no_log: True
-
-    - name: Extract release
-      unarchive:
-        src: "{{ onboard_archive_path }}"
-        dest: /usr/local/src
-      register: release
 
     - name: "Create directories"
       ansible.builtin.file:
@@ -53,34 +47,32 @@
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
 
-    - name: Install release
-      command: "rsync -rl /usr/local/src/onboard/ {{ onboard_install_path }}/"
-      when: release.changed
+    - name: "Extract release"
+      ansible.builtin.unarchive:
+        src:  "{{ onboard_archive_path }}"
+        dest: "{{ onboard_install_path }}"
+        owner: 'www-data'
+        group: 'staff'
 
-    - name: Update site_home
-      command: "rsync -rl /usr/local/src/onboard/data/ {{ onboard_site_home }}/"
-      when: release.changed
+    - name: 'Apache configuration'
+      ansible.builtin.template:
+        src: 'onboard.conf'
+        dest: '/etc/apache2/sites-enabled/conf.d/onboard.conf'
+      notify: 'apache_restart'
 
-    - name: Update apache configuration
-      template:
-        src: onboard.conf
-        dest: /etc/apache2/sites-enabled/conf.d/onboard.conf
-        owner: root
-        group: root
-        mode: 0644
-      notify: apache_restart
-
-    - name: Update site_config
-      template: src=site_config.j2 dest={{ onboard_site_home }}/site_config.inc
+    - name: 'Update site_config'
+      ansible.builtin.template:
+        src:  'site_config.j2'
+        dest: "{{ onboard_site_home }}/site_config.php"
 
 #    - name: Install Google credentials
-#      copy:
+#      ansible.builtin.copy:
 #        content: "{{ onboard_google.credentials }}"
 #        dest:    "{{ onboard_site_home }}/credentials.json"
 #        mode:    "0640"
 
     - name: "Install CRON scripts"
-      template:
+      ansible.builtin.template:
         src:  "{{ item.src  }}"
         dest: "{{ item.dest }}"
         mode: "0755"
@@ -88,20 +80,13 @@
         - { src: 'daily.sh', dest: '/etc/cron.daily/backup.d/onboard' }
         - { src: 'hourly.sh',   dest: '/etc/cron.hourly/onboard' }
 
-    - name: "Update directory ownership"
-      command: "chown -R www-data:staff {{ item }}"
-      args:
-        warn: "no"
-      with_items:
-        - "{{ onboard_install_path }}"
-        - "{{ onboard_backup_path  }}"
-        - "{{ onboard_site_home    }}"
-        - "/var/www" # Needed to avoid dconf errors when running libreoffce as www-data
-
-    - name: "Update directory permission"
-      command: "chmod -R u=rwX,g=rwX,o=rX {{ item }}"
-      args:
-        warn: "no"
+    - name: 'Update directory permissions'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        recurse: 'yes'
+        mode:  'u=rwX,g=rwX,o=rX'
+        owner: 'www-data'
+        group: 'staff'
       with_items:
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
