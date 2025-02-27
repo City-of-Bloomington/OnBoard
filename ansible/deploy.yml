@@ -46,17 +46,18 @@
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
+        - "{{ onboard_site_home    }}/sessions"
 
     - name: "Extract release"
       ansible.builtin.unarchive:
         src:  "{{ onboard_archive_path }}"
-        dest: "{{ onboard_install_path }}"
+        dest: "{{ onboard_install_path | dirname }}"
         owner: 'www-data'
         group: 'staff'
 
     - name: 'Apache configuration'
       ansible.builtin.template:
-        src: 'onboard.conf'
+        src: 'apache.conf'
         dest: '/etc/apache2/sites-enabled/conf.d/onboard.conf'
       notify: 'apache_restart'
 
