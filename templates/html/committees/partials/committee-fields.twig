@@ -1,0 +1,124 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     committee_types   Options for committee_type
+ * @param array     departments       Options for departments
+ #}
+<fieldset class="usa-fieldset margin-bottom-3">
+    <legend class="usa-legend usa-legend--large">{{ _('committee_info') }}</legend>
+
+    <p>{{ _('type') }}</p>
+    {% for t in committee_types %}
+    <div class="usa-radio">
+            <input
+                class="usa-radio__input"
+                id="{{ t }}"
+                type="radio"
+                name="{{ _('type') }}"
+                value="{{ _(t) }}"
+                {{ committee.getType()==t ? 'checked="checked"' : '' }}
+            />
+            <label class="usa-radio__label" for="{{ t }}">
+                {{ _(t) }}
+            </label>
+    </div>
+    {% endfor %}
+
+    <label for="name" class="usa-label">{{ _('name') }}</label>
+    <input name="name" id="name" value="{{ committee.getName() }}" required="true" class="usa-input" />
+
+    <div class="margin-top-3">
+        <div class="usa-checkbox">
+            <input name="legislative" id="legislative"
+                type="checkbox" value="1" {{ committee.getLegislative() ? 'checked="true"': '' }}
+                class="usa-checkbox__input"  role="switch" />
+            <label for="legislative" class="usa-checkbox__label">{{ _('legislative') }}</label>
+        </div>
+
+        <div class="usa-checkbox">
+            <input name="alternates" id="alternates"
+                type="checkbox" value="1" {{ committee.getAlternates() ? 'checked="true"': '' }}
+                class="usa-checkbox__input"  role="switch" />
+            <label for="alternates" class="usa-checkbox__label">{{ _('alternates') }}</label>
+        </div>
+    </div>
+
+    <label for="yearFormed" class="usa-label">{{ _('yearFormed') }}</label>
+    <input name="yearFormed" id="yearFormed" value="{{ committee.getYearFormed() }}"
+        type="number" class="usa-input usa-input--medium" size="4" />
+
+    <label for="statutoryName" class="usa-label">{{ _('statutoryName') }}</label>
+    <input name="statutoryName" id="statutoryName" value="{{ committee.getStatutoryName() }}" class="usa-input" />
+
+    <label for="code" class="usa-label">{{ _('code') }}</label>
+    <input name="code" id="code" value="{{ committee.getCode() }}"
+        class="usa-input usa-input--medium" size="5" />
+
+    <label for="calendarId" class="usa-label">{{ _('calendarId') }}</label>
+    <input name="calendarId" id="calendarId" value="{{ committee.getCalendarId() }}"
+        type="email" class="usa-input" />
+
+    <label for="website" class="usa-label">{{ _('website') }}</label>
+    <input name="website" id="website" value="{{ committee.getWebsite() }}"
+        type="url" class="usa-input" />
+
+    <label for="videoArchive" class="usa-label">{{ _('videoArchive') }}</label>
+    <input name="videoArchive" id="videoArchive" value="{{ committee.getVideoArchive() }}"
+        type="url" class="usa-input" />
+
+    <label for="termEndWarningDays" class="usa-label">{{ _('termEndWarningDays') }}</label>
+    <input name="termEndWarningDays" id="termEndWarningDays" value="{{ committee.getTermEndWarningDays() }}"
+        type="number" class="usa-input usa-input--small" size="4" />
+
+    <label for="applicationLifetime" class="usa-label">{{ _('applicationLifetime') }}</label>
+    <input name="applicationLifetime" id="applicationLifetime" value="{{ committee.getApplicationLifetime() }}"
+        type="number" class="usa-input usa-input--small" size="4" />
+
+
+    <label for="description" class="usa-label">{{ _('description') }}</label>
+    <textarea name="description" id="description" class="usa-textarea">{{ committee.getDescription() }}</textarea>
+
+    <label for="meetingSchedule" class="usa-label">{{ _('meetingSchedule') }}</label>
+    <textarea name="meetingSchedule" id="meetingSchedule" class="usa-textarea">{{ committee.getMeetingSchedule() }}</textarea>
+
+</fieldset>
+
+<fieldset class="usa-fieldset margin-bottom-3">
+    <legend class="usa-legend usa-legend--large">{{ _(['department', 'departments', 2]) }}</legend>
+        {% for d in departments %}
+        <div class="usa-checkbox">
+            <input
+                class="usa-checkbox__input"
+                id="departments-{{ d.getId() }}"
+                type="checkbox"
+                name="departments[]"
+                value="{{ d.getId() }}"
+                {{ committee.hasDepartment(d) ? 'checked="true"' : '' }}
+                />
+                <label class="usa-checkbox__label" for="departments-{{ d.getId() }}">{{ d.getName() }}</label>
+        </div>
+        {% endfor %}
+</fieldset>
+
+<fieldset class="usa-fieldset margin-bottom-3">
+    <legend class="usa-legend usa-legend--large">{{ _('contactInfo') }}</legend>
+
+    <label for="address" class="usa-label">{{ _('address') }}</label>
+    <input name="address" id="address" class="usa-input" value="{{ committee.getAddress() }}" />
+
+    <label for="city" class="usa-label">{{ _('city') }}</label>
+    <input name="city" id="city" value="{{ committee.getCity() }}" class="usa-input" />
+
+    <label for="state" class="usa-label">{{ _('state') }}</label>
+    <input disabled name="state" id="state" class="usa-input usa-input--small" value="IN" />
+
+    <label for="zip" class="usa-label">{{ _('zip') }}</label>
+    <input name="zip" id="zip" value="{{ committee.getZip() }}" class="usa-input usa-input--medium" size="5" />
+
+    <label for="email" class="usa-label">{{ _('email') }}</label>
+    <input name="email" id="email" value="{{ committee.getEmail() }}" type="email" class="usa-input" />
+
+    <label for="phone" class="usa-label">{{ _('phone') }}</label>
+    <input name="phone" id="phone" value="{{ committee.getPhone() }}"type="tel" class="usa-input" />
+</fieldset>

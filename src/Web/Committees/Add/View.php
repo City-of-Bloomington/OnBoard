@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -26,6 +26,6 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render('html/committees/updateForm.twig', $this->vars);
+        return $this->twig->render('html/committees/addForm.twig', $this->vars);
     }
 }

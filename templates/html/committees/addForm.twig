@@ -1,20 +1,20 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     committee_types   Options for committee_type
  * @param array     departments       Options for departments
  #}
-{% extends "html/layouts/committee.twig" %}
+{% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <h2>{{ _('committee_edit') }}</h2>
+    <h2>{{ _('committee_add') }}</h2>
     <form class="usa-form usa-form--large" method="post">
         {{ include('html/committees/partials/committee-fields.twig') }}
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel'), 'cancel' ) }}
+        {{ forms.actionLink(uri('committees.index'), _('cancel'), 'cancel') }}
     </form>
 </section>
 {% endblock %}
