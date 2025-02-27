@@ -6,19 +6,17 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="my-3">
-    <header class="mb-3">
-        <div class="mb-3">
-            <h1>{{ _(['seat', 'seats', 10]) }}</h1>
-        </div>
+<section class="grid-container">
+    <header>
+        <h1>{{ _(['seat', 'seats', 10]) }}</h1>
         {{ include('html/seats/partials/header.twig') }}
     </header>
-    <div class="d-flex">
-        <h2 class="me-3">{{ _('all') }}</h2>
+    
+        <h2>{{ _('all') }}</h2>
         {% if actionLinks is defined %}
         {{ include('html/partials/actionLinks.twig') }}
         {% endif %}
-    </div>
+
     {{ include('html/seats/partials/table.twig') }}
 </section>
 {% endblock %}

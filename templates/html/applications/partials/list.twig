@@ -13,7 +13,6 @@
     <table class="usa-table">
     <thead>
         <tr><th>{{ _('created') }}</th>
-            <th>{{ _('name'   ) }}</th>
             <th>{{ _('committee'   ) }}</th>
             <th>{{ _('expires') }}</th>
             <th>{{ _('actions') }}</th>
@@ -24,15 +23,7 @@
 
         {% for a in applications_current %}
         <tr><td>{{ a.created|date('m/d/Y') }}</td>
-            <td>{% if userCanViewApplicant %}
-                <a href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
-                    {{ a.applicant }}
-                </a>
-                {% else %}
-                {{ a.applicant }}
-                {% endif %}
-            </td>
-            <td></td>
+            <td>{{ a.committee }} </td>
             <td>{{ a.expires|date('m/d/Y') }}</td>
             <td>{% if a.actionLinks %}
                 {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}

@@ -13,7 +13,7 @@
 
     <form class="usa-form" method="post">
         <fieldset class="usa-fieldset">
-            <legend class="usa-legend">{{ _('info_person') }}</legend>
+            <legend class="usa-legend usa-legend--large">{{ _('info_person') }}</legend>
 
             {{ forms.field_text('firstname', 'firstname', _('firstname'), applicant.getFirstname(), true) }}
             {{ forms.field_text('lastname',  'lastname',  _('lastname' ), applicant.getLastname(),  true) }}
