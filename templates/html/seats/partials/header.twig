@@ -12,17 +12,9 @@
 #}
 {% set url     = current_url() %}
 {% set current = url.current is defined and url.current==0 ? false : true %}
-<ul  class="nav nav-tabs">
-    <li class="nav-item">
-        <a href="{{ uri('seats.index') }}"
-           class="nav-link {{ ROUTE_NAME=='seats.index' ? 'active' : '' }}">
-           {{ _('all') }}
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ uri('seats.vacancies') }}"
-           class="nav-link {{ ROUTE_NAME=='seats.vacancies' ? 'active' : '' }}">
-           {{ _(['vacancy', 'vacancies', 10]) }}
-        </a>
-    </li>
-</ul>
+<a href="{{ uri('seats.index') }}"
+    class="usa-link margin-right-05">{{ _('all') }}</a>
+
+<a href="{{ uri('seats.vacancies') }}"
+    class="usa-link margin-right-05">{{ _(['vacancy', 'vacancies', 10]) }}<svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img"><use href="/static/uswds/dist/img/sprite.svg#filter_list"></use></svg>
+</a>

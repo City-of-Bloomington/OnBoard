@@ -3,23 +3,25 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-<table class="usa-table">
+<table class="usa-table usa-table--borderless">
     <thead>
         <tr><th>{{ _('committee'   ) }}</th>
             <th>{{ _('seat'        ) }}</th>
             <th>{{ _('seat_term'   ) }}</th>
+            <th>{{ _('seat_status'   ) }}</th>
             <th>{{ _('appointed_by') }}</th>
             <th>{{ _('name'        ) }}</th>
         </tr>
     </thead>
     <tbody>
     {% for row in data %}
-    {% set class = (row.termEndsSoon or row.carryOver) ? 'table-warning' : '' %}
-    {% set class = (not row.member_id)                 ? 'table-danger'  : class %}
-    <tr class="{{ class }}">
+    {% set class = (row.termEndsSoon or row.carryOver) ? '<span class="font-mono-2xs bg-gold padding-x-05 radius-sm display-inline-block">expiring</span>' : '<span class="font-mono-2xs bg-gray-10 padding-x-05 radius-sm display-inline-block">filled</span>' %}
+    {% set class = (not row.member_id)                 ? '<span class="font-mono-2xs text-white bg-secondary-dark padding-x-05 radius-sm display-inline-block">vacant</span>'  : class %}
+    <tr>
         <td>{{ row.committee_name }}</td>
         <td>{{ row.seat_name }}</td>
-        <td>{{ row.term_startDate }} - {{ row.term_endDate }}</td>
+        <td class="font-mono-3xs">{{ row.term_startDate|date('m/d/Y') }} - {{ row.term_endDate|date('m/d/Y') }}</td>
+        <td>{{ class|raw }}</td>
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
         <td>{{ row.member_firstname }} {{ row.member_lastname }}
             {{ row.offices }}

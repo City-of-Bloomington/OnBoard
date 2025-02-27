@@ -883,6 +883,9 @@ msgstr[1] "Legislation Statuses"
 msgid "legislationStatus_add"
 msgstr "New Status"
 
+msgid "seat_status"
+msgstr "Status"
+
 msgid "legislationStatus_edit"
 msgstr "Edit"
 

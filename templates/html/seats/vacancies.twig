@@ -11,12 +11,12 @@
         <h1>{{ _(['seat', 'seats', 10]) }}</h1>
         {{ include('html/seats/partials/header.twig') }}
     </header>
-    <div class="d-flex">
-        <h2 class="me-3">{{ _(['vacancy', 'vacancies', 10]) }}</h2>
-        {% if actionLinks is defined %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
-    </div>
+
+    <h2>{{ _(['vacancy', 'vacancies', 10]) }}</h2>
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
     {{ include('html/seats/partials/table.twig') }}
 </section>
 {% endblock %}
