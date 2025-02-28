@@ -6,24 +6,52 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="container my-3">
-    <header class="mb-3">
+<section class="grid-container">
+    <header>
         <h1>{{ _(['liaison', 'liaisons', 10]) }}</h1>
+
+        <a href="{{ uri('liaisons.index') }}"
+            class="usa-link margin-right-05">{{ _('departmental') }}</a>
+
+        <a href="{{ uri('liaisons.index') }}?type=legal"
+            class="usa-link margin-right-05">{{ _('legal') }}<svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img"><use href="/static/uswds/dist/img/sprite.svg#filter_list"></use></svg>
+        </a>
     </header>
+
+    {% set url = current_url() %}
+    {% set legal = url('liaisons.index') ~ '?type=legal' %}
+    {% if url == legal %}
+        <h2>{{ _('legal') }}</h2>
+        {% else %}
+        <h2>{{ _('departmental') }}</h2>
+    {% endif %}
+    
+
     {% if actionLinks is defined %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
-    <table  class="table table-sm">
-    {% for row in data %}
-    <tr><td><a href="{{ uri('committees.info', {id: row.committee_id}) }}">{{ row.committee }}</a></td>
-        <td>{{ _(row.type) }}</td>
-        <td><a href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
 
-        {% if isAllowed('people', 'viewContactInfo') %}
-        <td>{{ row.email }}</td>
-        <td>{{ row.phone }}</td>
-        {% endif %}
-    {% endfor %}
+    <table  class="usa-table usa-table--borderless">
+        <thead>
+            <tr>
+                <th>{{ _('committee'   ) }}</th>
+                <th>{{ _('name'   ) }}</th>
+                {% if isAllowed('people', 'viewContactInfo') %}
+                <th>{{ _('email'   ) }}</th>
+                <th>{{ _('phone'   ) }}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr><td><a class="usa-link" href="{{ uri('committees.info', {id: row.committee_id}) }}">{{ row.committee }}</a></td>
+                <td><a class="usa-link" href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+                {% if isAllowed('people', 'viewContactInfo') %}
+                <td>{{ row.email }}</td>
+                <td>{{ row.phone }}</td>
+                {% endif %}
+            {% endfor %}
+        </tbody>
     </table>
 </section>
 

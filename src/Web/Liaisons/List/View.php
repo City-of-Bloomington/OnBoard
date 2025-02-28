@@ -29,14 +29,6 @@ class View extends \Web\View
     private function actionLinks(): array
     {
         $out = [];
-
-        foreach (Liaison::$types as $t) {
-            $out[] = [
-                'url'   => parent::generateUri('liaisons.index')."?type=$t",
-                'label' => _($t)
-            ];
-        }
-
         if (parent::isAllowed('people', 'viewContactInfo')) {
             $uri = new Url(Url::current_url(BASE_HOST));
             $uri->format = 'csv';
@@ -50,7 +42,7 @@ class View extends \Web\View
             $out[] = [
                 'url'   => $uri->__toString(),
                 'label' => 'Liaison Email List',
-                'class' => 'download'
+                'class' => 'mail'
             ];
         }
 
