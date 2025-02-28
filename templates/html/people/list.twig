@@ -17,7 +17,7 @@
  * The only chooser we have ever needed was for personChooser.
  * For now, in a callback context, we can always call the setPerson() javascript function
  #}
-<table class="usa-table">
+<table class="usa-table usa-table--borderless">
   <thead>
     <tr>
       <th scope="col">{{ _('name') }}</th>
@@ -30,9 +30,9 @@
   <tbody>
   {% for p in people %}
   <tr><td>{% if not callback %}
-          <a href="{{ uri('people.view', {id: p.getId()}) }}">{{ p.getFullName() }}</a>
+          <a class="usa-link" href="{{ uri('people.view', {id: p.getId()}) }}">{{ p.getFullName() }}</a>
           {% else %}
-          <a href="{{ return_url }};person_id={{ p.getId() }}"
+          <a class="usa-link" href="{{ return_url }};person_id={{ p.getId() }}"
             onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.getId() }})">{{ p.getFullName() }}</a>
           {% endif %}
       </td>
