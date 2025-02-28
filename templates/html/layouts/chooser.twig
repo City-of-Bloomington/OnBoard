@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANG }}" lang="{{ LANG }}">
 {{ include('html/layouts/partials/head.twig') }}
 
-<body class="min-vh-100 vstack">
-    <main class="container p-2 flex-grow-1">
+<body class="display-flex flex-column minh-viewport">
+    <main class="flex-1 tablet:padding-bottom-10">
         <div>
             {% if ERROR_MESSAGES is defined %}
             {{ include('html/layouts/partials/errorMessages.twig') }}
