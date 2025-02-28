@@ -16,7 +16,9 @@ class Controller extends \Web\Controller
             try {
                 $committee = new Committee($p['id']);
                 $seats     = [];
-                foreach ($committee->getSeats() as $s) {
+                $current   = isset($_GET['current']) ? (bool)$_GET['current'] : true;
+
+                foreach ($committee->getSeats(['current'=>$current]) as $s) {
                     $seats[] = $s;
                 }
                 return new View($committee, $seats);
