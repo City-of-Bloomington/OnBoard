@@ -6,36 +6,41 @@
  * @param array     files
  * @param array     actionLinks
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
-<section class="container my-3">
-    {{ include('html/committees/partials/header.twig') }}
+<h3>{{ meeting.getStart() }} - {{ meeting.getEnd() }}</h3>
+<p>{{ meeting.getLocation() }}</p>
 
-    <h3>{{ meeting.getStart() }} - {{ meeting.getEnd() }}</h3>
-    <p>{{ meeting.getLocation() }}</p>
+{% if actionLinks %}
+{{ include('html/partials/actionLinks.twig') }}
+{% endif %}
 
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-    <table>
+<ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for f in files %}
-    <tr><th>{{ f.type }}</th>
-        <td><a href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                {{ f.title ?? f.filename }}
-            </a>
-        </td>
-        <td>{% if f.actions %}
+    <li class="usa-collection__item">
+            <div class="usa-collection__body">
+                <h3 class="usa-collection__heading">
+                    <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                        {{ f.title ?? _('noTitle') }}
+                        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                            <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                        </svg>
+                    </a>
+                </h3>
+                <ul class="usa-collection__meta" aria-label="More information">
+                <li class="usa-collection__meta-item position-relative">
+                    <strong>{{ _('type') }}:</strong> {{ f.type }}
+                </li>
+            </ul>
+            {% if f.actions %}
             {{ include('html/partials/actionLinks.twig', {actionLinks:f.actions}, with_context=false ) }}
             {% endif %}
-        </td>
-    </tr>
     {% endfor %}
-    </table>
+</ul>
 
-    {% if meeting.getHtmlLink() -%}
-    <a href="{{ meeting.getHtmlLink() }}" class="card-link">Google Calendar</a>
-    {%- endif %}
-</section>
+{% if meeting.getHtmlLink() -%}
+<a href="{{ meeting.getHtmlLink() }}" class="card-link">Google Calendar</a>
+{%- endif %}
 
 {% endblock %}
