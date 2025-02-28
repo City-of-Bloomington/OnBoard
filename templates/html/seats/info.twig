@@ -16,7 +16,7 @@
 {% block content %}
 <section class="grid-container">
     <header>
-        <h2>{{ seat.name }}</h2>
+        <h1>{{ seat.name }}</h1>
     </header>
     {% if seatActions is defined %}
     {{ include('html/partials/actionLinks.twig', {actionLinks: seatActions}, with_context=false) }}
@@ -26,11 +26,11 @@
 
     {% if seat.getType() == 'termed' %}
     <section>
-        <header><h3>{{ _(['term', 'terms', 10]) }}</h3></header>
+        <header><h2>{{ _(['term', 'terms', 10]) }}</h2></header>
         {% if termActions %}
         {{ include('html/partials/actionLinks.twig', {actionLinks: termActions}, with_context=false) }}
         {% endif %}
-        <table class="table">
+        <table class="usa-table">
             <thead>
                 <tr><th>{{ _('term') }}</th>
                     <th>{{ _(['member', 'members', 10]) }}</th>
