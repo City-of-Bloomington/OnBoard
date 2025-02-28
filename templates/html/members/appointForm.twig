@@ -14,46 +14,50 @@
 {% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/committee.twig" %}
 {% block content %}
-<form method="post">
+<form class="usa-form usa-form--large" method="post">
+
     {% if currentMember %}
-    <fieldset>
-        <legend>{{ _('retirePrevious') }}</legend>
-        <div>
-            <p>{{ _('endServiceHelpText', 'messages')|format(currentMember.getPerson().getFullname(), currentMember.getPerson().getFullname())|raw }}</p>
-            <input name="currentMember[member_id]" type="hidden" value="{{ currentMember.getId() }}" />
-            <div class="form-group">
-                <label for="currentMember-endDate">{{ _('endDate') }}</label>
-                <input  id="currentMember-endDate" class="form-control"
-                      name="currentMember[endDate]" type="date"
+    <fieldset class="usa-fieldset margin-bottom-3">
+        <legend class="usa-legend usa-legend--large">{{ _('retirePrevious') }}</legend>
+        <p>{{ _('endServiceHelpText', 'messages')|format(currentMember.getPerson().getFullname(), currentMember.getPerson().getFullname())|raw }}</p>
+
+        <input name="currentMember[member_id]" type="hidden" value="{{ currentMember.getId() }}" />
+
+        <div class="usa-form-group">
+            <label class="usa-label" for="currentMember-endDate">{{ _('endDate') }}</label>
+            <div class="usa-date-picker">
+                <input  id="currentMember-endDate" class="usa-input"
+                    name="currentMember[endDate]" type="date"
                     value="{{ currentMember.getTerm() ? currentMember.getTerm().getEndDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
             </div>
         </div>
     </fieldset>
     {% endif %}
 
-    <fieldset>
-        <legend>{{ _('appointToSeat', 'messages')|format(newMember.getCommittee().getName()) }}</legend>
+    <fieldset class="usa-fieldset margin-bottom-3">
+        <legend class="usa-legend usa-legend--large">{{ _('new_member') }}</legend>
         <input name="newMember[committee_id]" type="hidden" value="{{ newMember.getCommittee_id() }}" />
         <input name="newMember[seat_id]"      type="hidden" value="{{ newMember.getSeat_id()      }}" />
 
+        <p>{{ _('appointToSeat', 'messages')|format(newMember.getCommittee().getName()) }}</p>
+
         {% if requirements %}
+        <h2>{{ _(['requirement', 'requirements', 10]) }}</h2>
         <div>{{ requirements | markdown_to_html }}</div>
         {% endif %}
 
-
-
         <section>
             <h2>{{ _('new_member') }}</h2>
-            <div class="form-group">
+            <div class="usa-form-group">
                 <input id="newMember[person_id]" type="hidden" required="true"
                      name="newMember[person_id]" value="{{ newMember.getPerson_id() }}" />
                 {{ chooser.personChooser('newMember[person_id]', 'newMember[person_id]', newMember.getPerson() ) }}
             </div>
 
             {% if termOptions %}
-            <div class="form-group">
-                <label for="newMember-term_id">{{ _('term') }}</label>
-                <select id="newMember-term_id" name="newMember[term_id]" class="form-select" required="true">
+            <div class="usa-form-group">
+                <label class="usa-label" for="newMember-term_id">{{ _('term') }}</label>
+                <select id="newMember-term_id" name="newMember[term_id]" class="usa-select" required="true">
                     {% for t in termOptions %}
                     <option value="{{ t.getId() }}" {{ newMember.getTerm_id()==t.getId() ? 'selected="true"' : '' }}>
                         {{ t.getStartDate(DATE_FORMAT) }} - {{ t.getEndDate(DATE_FORMAT) }}
@@ -63,17 +67,19 @@
             </div>
             {% endif %}
 
-            <div class="form-group">
-                <label for="newMember-startDate">{{ _('startDate') }}</label>
-                <input  id="newMember-startDate" class="form-control"
-                      name="newMember[startDate]" type="date" required="true"
-                    value="{{ newMember.getStartDate() ? newMember.getStartDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
+            <div class="usa-form-group">
+                <label class="usa-label" for="newMember-startDate">{{ _('startDate') }}</label>
+                <div class="usa-date-picker">
+                    <input  id="newMember-startDate" class="usa-input"
+                        name="newMember[startDate]" type="date" required="true"
+                        value="{{ newMember.getStartDate() ? newMember.getStartDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
+                </div>
             </div>
 
         </section>
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('committees.members', {id: newMember.getCommittee_id()}), _('cancel'), 'cancel') }}
+        {{ forms.actionLink(uri('committees.members', {id: newMember.getCommittee_id()}), _('cancel') ) }}
     </fieldset>
 
 </form>
@@ -81,9 +87,23 @@
 {% if recentMembers %}
 <section>
     <header><h3>{{ _(['recent_member', 'recent_members', 10]) }}</h3></header>
-    {% for t in recentMembers %}
-    <div>{{ t.members }} {{ t.startDate }} - {{ t.endDate }}</div>
-    {% endfor %}
+    <table class="usa-table usa-table--borderless">
+        <thead>
+            <tr>
+                <th>{{ _('name') }}</th>
+                <th>{{ _('startDate') }}</th>
+                <th>{{ _('endDate') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in recentMembers %}
+        <tr>
+        <td>{{ t.members }}</td>
+         <td class="font-mono-3xs">{{ t.startDate|date('m/d/Y') }}</td>
+         <td class="font-mono-3xs">{{ t.endDate|date('m/d/Y') }}</td>
+        {% endfor %}
+        </tbody>
+    </table>
 </section>
 {% endif %}
 
