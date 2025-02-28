@@ -21,33 +21,21 @@
         {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
         {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
 
-            <div class="usa-form-group">
-                <label class="usa-label" for="applicantFile">{{ _('report') }}<span> *</span></label>
-                <span class="usa-hint" id="reportFile-help">{{ accept }} - {{ maxSize }}</span>
-                {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
-                <input class="usa-file-input" 
-                       id ="reportFile" 
-                       name="reportFile" 
-                       type="file"
-                       required="true" 
-                       aria-describedby="reportFile-help"
-                       accepts="{{ accept }}"
-                       size="{{ maxBytes }}"
-                       data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
-                       />
-            </div>
-
-        {# <div class="form-control">
-            <label for="reportFile">{{ _('report') }}</label>
+        <div class="usa-form-group">
+            <label class="usa-label" for="applicantFile">{{ _('report') }}<span> *</span></label>
+            <span class="usa-hint" id="reportFile-help">{{ accept }} - {{ maxSize }}</span>
             {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
-            <input id ="reportFile" name="reportFile" type="file" aria-describedby="reportFile-help" />
-            <div id="reportFile-help">
-                <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
-                <div>{{ maxSize }}</div>
-                <div>{{ accept  }}</div>
-            </div>
-        </div> #}
-
+            <input class="usa-file-input" 
+                    id ="reportFile" 
+                    name="reportFile" 
+                    type="file"
+                    required="true" 
+                    aria-describedby="reportFile-help"
+                    accepts="{{ accept }}"
+                    size="{{ maxBytes }}"
+                    data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
+                    />
+        </div>
         {{ forms.button('submit', _('save'), 'save') }}
         {{ forms.actionLink(uri('reports.index') ~ '?committee_id=' ~ report.getCommittee_id(), _('cancel') ) }}
 
