@@ -61,7 +61,7 @@ class View extends \Web\View
         if (parent::isAllowed('liaisons', 'add')) {
             return [[
                 'url'   => parent::generateUri('liaisons.add').'?committee_id='.$committee_id,
-                'label' => _('liaison_add'),
+                'label' => _('add'),
                 'class' => 'add'
             ]];
         }
