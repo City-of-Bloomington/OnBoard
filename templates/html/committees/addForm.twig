@@ -8,13 +8,15 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
-    <h2>{{ _('committee_add') }}</h2>
+<section class="grid-container">
+    <header>
+        <h1>{{ _('committee_add') }}</h1>
+    </header>
     <form class="usa-form usa-form--large" method="post">
         {{ include('html/committees/partials/committee-fields.twig') }}
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('committees.index'), _('cancel'), 'cancel') }}
+        {{ forms.actionLink(uri('committees.index'), _('cancel') ) }}
     </form>
 </section>
 {% endblock %}
