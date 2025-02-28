@@ -9,41 +9,48 @@
  * @param int    maxBytes   Max upload size in bytes
  * @param string maxSize    Max upload size, human readable
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-<section>
-    <header>
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
 
-    <form method="post" enctype="multipart/form-data">
-        <fieldset>
-            <legend>{{ report.getId() ? _('report_edit') : _('report_add') }}</legend>
-            <input name="committee_id" type="hidden" value="{{ report.getCommittee_id() }}" />
+<form class="usa-form" method="post" enctype="multipart/form-data">
+    <fieldset class="usa-fieldset">
+        <legend class="usa-legend usa-legend--large">{{ report.getId() ? _('report_edit') : _('report_add') }}</legend>
+        <input name="committee_id" type="hidden" value="{{ report.getCommittee_id() }}" />
 
-            {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
-            {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
+        {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
+        {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
 
-            <div class="form-control">
-                <label for="reportFile">{{ _('report') }}</label>
+            <div class="usa-form-group">
+                <label class="usa-label" for="applicantFile">{{ _('report') }}<span> *</span></label>
+                <span class="usa-hint" id="reportFile-help">{{ accept }} - {{ maxSize }}</span>
                 {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
-                <input id ="reportFile" name="reportFile" type="file" aria-describedby="reportFile-help" />
-                <div id="reportFile-help">
-                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
-                    <div>{{ maxSize }}</div>
-                    <div>{{ accept  }}</div>
-                </div>
+                <input class="usa-file-input" 
+                       id ="reportFile" 
+                       name="reportFile" 
+                       type="file"
+                       required="true" 
+                       aria-describedby="reportFile-help"
+                       accepts="{{ accept }}"
+                       size="{{ maxBytes }}"
+                       data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
+                       />
             </div>
 
-            {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('reports.index') ~ '?committee_id=' ~ report.getCommittee_id(), _('cancel'), 'cancel') }}
+        {# <div class="form-control">
+            <label for="reportFile">{{ _('report') }}</label>
+            {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
+            <input id ="reportFile" name="reportFile" type="file" aria-describedby="reportFile-help" />
+            <div id="reportFile-help">
+                <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
+                <div>{{ maxSize }}</div>
+                <div>{{ accept  }}</div>
+            </div>
+        </div> #}
 
-        </fieldset>
-    </form>
-</section>
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('reports.index') ~ '?committee_id=' ~ report.getCommittee_id(), _('cancel') ) }}
+
+    </fieldset>
+</form>
 {% endblock %}
