@@ -13,28 +13,40 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-<section>
     <h2>{{ _(['report', 'reports', 10]) }}</h2>
     {% if actionLinks %}
         {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
 
     {% if reports %}
-    <table class="usa-table">
+    <ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for r in reports %}
-    <tr><td>{{ r.date }}</td>
-        <td><a href="{{ uri('reports.download', {id: r.id}) }}">{{ r.title }}</a></td>
-        <td>{% if r.actionLinks %}
-            {{ include('html/partials/moreLinks.twig', {actionLinks:r.actionLinks}, with_context=false) }}
+    <li class="usa-collection__item">
+        <div class="usa-collection__body">
+            <h3 class="usa-collection__heading">
+                <a class="usa-link" href="{{ uri('reports.download', {id: r.id}) }}">
+                    {{ r.title ?? _('noTitle') }}
+                    <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                        <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                    </svg>
+                </a>
+            </h3>
+            <ul class="usa-collection__meta" aria-label="More information">
+                <li class="usa-collection__meta-item position-relative">
+                    <strong>{{ _('date') }}:</strong> {{ r.date }}
+                </li>
+            </ul>
+            {% if r.actionLinks %}
+            {{ include('html/partials/actionLinks.twig', {actionLinks:r.actionLinks}, with_context=false) }}
             {% endif %}
-        </td>
-    </tr>
+        </div>
+    </li>
     {% endfor %}
-    </table>
+    </ul>
     {% endif %}
 
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
     {% endif %}
-</section>
+    
 {% endblock %}
