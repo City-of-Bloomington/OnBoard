@@ -4,7 +4,7 @@
  #}
 {% macro personChooser(fieldname, fieldid, person) %}
 <span id="{{ fieldid }}-name">{{ person ? person.getFullname() : '' }}</span>
-<button class="person"
+<button class="person usa-button usa-button--unstyled"
     onclick="PERSON_CHOOSER.open(event, '{{ fieldid }}');">
     {{ _('person_change') }}
 </button>
