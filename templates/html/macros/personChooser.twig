@@ -3,9 +3,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  #}
 {% macro personChooser(fieldname, fieldid, person) %}
-<span id="{{ fieldid }}-name">{{ person ? person.getFullname() : '' }}</span>
-<button class="person usa-button usa-button--unstyled"
-    onclick="PERSON_CHOOSER.open(event, '{{ fieldid }}');">
-    {{ _('person_change') }}
-</button>
+<div class="text-bold margin-top-3 margin-bottom-neg-2" id="{{ fieldid }}-name"> {{ person ? person.getFullname() : '' }}</div>
+<button type="button" class="person usa-button usa-button--unstyled margin-top-0"
+    onclick="PERSON_CHOOSER.open(event, '{{ fieldid }}');">{{ person ? _('person_change') : _('person_choose') }}</button>
 {% endmacro %}
