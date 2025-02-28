@@ -16,7 +16,8 @@ use Web\Database;
 
 $db     = Database::getConnection();
 $pdo    = $db->getDriver()->getConnection()->getResource();
-$log    = fopen('./errors.csv', 'w');
+$unknownEvents = fopen('./unknownEvents.csv', 'w');
+$missingTimes  = fopen('./missingTimes.csv', 'w');
 
 $sql    = "update meetings
            set start=:start,end=:end,created=:created,updated=:updated,location=:location,htmlLink=:htmlLink
@@ -39,11 +40,12 @@ foreach ($result as $row) {
     try {
         $event = GoogleGateway::getEvent($row['calendarId'], $row['eventId']);
         if (!$event->start->dateTime || !$event->end->dateTime) {
-            throw new \Exception('missingDateTime');
+            fputcsv($missingTime, $row);
+            continue;
         }
     }
     catch (\Exception $e) {
-        fputcsv($log, $row);
+        fputcsv($unknownEvents, $row);
         continue;
     }
 
