@@ -13,23 +13,23 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header><h2>{{ _('seat_edit') }}</h2></header>
 
-    <form method="post">
+    <form class="usa-form usa-form--large" method="post">
         {{ include('html/seats/partials/formFields.twig') }}
-
-        <fieldset>
+        <fieldset class="usa-fieldset margin-bottom-3">
             <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
 
             {{ forms.button('submit', _('save'), 'save') }}
             {% if seat.getId() %}
-            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), ) }}
             {% else %}
-            {{ forms.actionLink(uri('committees.seats', {id: committee.getId()}), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('committees.seats', {id: committee.getId()}), _('cancel') ) }}
             {% endif %}
         </fieldset>
     </form>
+
+    {{ include('html/seats/partials/summary.twig') }}
 </section>
-{{ include('html/seats/partials/summary.twig') }}
 {% endblock %}
