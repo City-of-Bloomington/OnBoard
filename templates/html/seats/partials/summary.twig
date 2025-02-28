@@ -3,17 +3,14 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat seat
  #}
-<section>
-    <header>
-        <h3><a href="{{ uri('seats.view', {id: seat.getId()}) }}">{{ seat.getName() }}</a></h3>
-    </header>
 
-    <dl><dt>{{ _('appointed_by') }}</dt>
-        <dd>{{ seat.getAppointer() }}</dd>
+<a class="usa-link" href="{{ uri('seats.view', {id: seat.getId()}) }}">{{ seat.getName() }}</a>
 
-        {% if seat.getRequirements() %}
-        <dt>{{ _(['requirement', 'requirements', 10]) }}</dt>
-        <dd>{{ seat.getRequirements()|markdown_to_html }}</dd>
-        {% endif %}
-    </dl>
-</section>
+<dl><dt class="text-bold">{{ _('appointed_by') }}</dt>
+    <dd>{{ seat.getAppointer() }}</dd>
+
+    {% if seat.getRequirements() %}
+    <dt class="text-bold">{{ _(['requirement', 'requirements', 10]) }}</dt>
+    <dd>{{ seat.getRequirements()|markdown_to_html }}</dd>
+    {% endif %}
+</dl>
