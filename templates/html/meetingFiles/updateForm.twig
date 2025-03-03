@@ -12,51 +12,47 @@
  * @param int    maxBytes   Max upload size in bytes
  * @param string maxSize    Max upload size, human readable
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-<section>
-    <header>
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-    </header>
 
-    <form method="post" enctype="multipart/form-data">
-        <fieldset>
-            <legend>{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
+<form class="usa-form"  method="post" enctype="multipart/form-data">
+    <fieldset class="usa-fieldset">
+        <legend class="usa-legend usa-legend--large">{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
 
-            <div class="mb-3">
-                <label for="meeting_id">{{ _('meeting') }}</label>
-                {% set url = current_url() %}
-                {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
-                <select id="meeting_id" name="meeting_id" required="true">
+        
+            <label class="usa-label" for="meeting_id">{{ _('meeting') }}</label>
+            {% set url = current_url() %}
+            {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
+            <div class="usa-combo-boz">
+                <select class="usa-select"  id="meeting_id" name="meeting_id" required="true">
                 {% for m in meetings %}<option value="{{ m.value }}"{{ m.value==meetingFile.getMeeting_id() ? ' selected="true"' : ''}}>{{ m.label }}</option>{% endfor %}
                 </select>
-                {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
             </div>
+            {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
 
-            {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
-            {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
+        {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
+        {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
 
-            <div class="mb-3">
-                <label for="meetingFile">{{ _('meetingFile') }}</label>
-                {% if meetingFile.getFilename() -%}
-                <div><a href="{{ uri('meetingFiles.download', {id: meetingFile.getId()}) }}">{{ meetingFile.getFilename() }}</a></div>
-                {%- endif %}
-                <input id ="meetingFile" name="meetingFile" type="file" aria-describedby="meetingFile-help" />
-                <div id="meetingFile-help">
-                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
-                    <div>{{ maxSize }}</div>
-                    <div>{{ accept  }}</div>
-                </div>
-            </div>
+        <div class="usa-form-group">
+            <label class="usa-label" for="meetingFile">{{ _('meetingFile') }}</label>
+            <span class="usa-hint" id="meetingFile-help">{{ accept }} - {{ maxSize }}</span>
+            {% if meetingFile.getFilename() -%}
+            <div><a href="{{ uri('meetingFiles.download', {id: meetingFile.getId()}) }}">{{ meetingFile.getFilename() }}</a></div>
+            {%- endif %}
+            <input class="usa-file-input"
+                    id ="meetingFile" 
+                    name="meetingFile" 
+                    type="file" 
+                    aria-describedby="meetingFile-help"
+                    accepts="{{ accept }}"
+                    size="{{ maxBytes }}"
+                    data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}." 
+                    />
+        </div>
 
-            {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('meetings.view', {id: meetingFile.getMeeting_id()}) , _('cancel'), 'cancel') }}
-        </fieldset>
-    </form>
-</section>
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('meetings.view', {id: meetingFile.getMeeting_id()}) , _('cancel') ) }}
+    </fieldset>
+</form>
 {% endblock %}
