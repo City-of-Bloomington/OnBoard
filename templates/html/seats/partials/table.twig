@@ -7,7 +7,8 @@
     <thead>
         <tr><th>{{ _('committee'   ) }}</th>
             <th>{{ _('seat'        ) }}</th>
-            <th>{{ _('seat_term'   ) }}</th>
+            <th>{{ _('start'       ) }}</th>
+            <th>{{ _('end'         ) }}</th>
             <th>{{ _('seat_status'   ) }}</th>
             <th>{{ _('appointed_by') }}</th>
             <th>{{ _('name'        ) }}</th>
@@ -20,7 +21,8 @@
     <tr>
         <td>{{ row.committee_name }}</td>
         <td>{{ row.seat_name }}</td>
-        <td class="font-mono-3xs">{{ row.term_startDate|date('m/d/Y') }} - {{ row.term_endDate|date('m/d/Y') }}</td>
+        <td class="font-mono-3xs">{{ row.term_startDate|date('m/d/Y') }}</td>
+        <td class="font-mono-3xs">{{ row.term_endDate|date('m/d/Y') }}</td>
         <td>{{ class|raw }}</td>
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
         <td>{{ row.member_firstname }} {{ row.member_lastname }}

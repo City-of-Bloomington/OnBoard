@@ -574,8 +574,11 @@ msgstr "Date"
 msgid "startDate"
 msgstr "Start Date"
 
-msgid "endDate"
-msgstr "End Date"
+msgid "start"
+msgstr "Start"
+
+msgid "end"
+msgstr "End"
 
 msgid "carryover"
 msgstr "Carry Over"
