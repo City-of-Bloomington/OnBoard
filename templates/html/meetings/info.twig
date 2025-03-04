@@ -9,7 +9,7 @@
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
-<h3>{{ meeting.getStart() }} - {{ meeting.getEnd() }}</h3
+<h2>{{ meeting.getStart()|date("F j, Y") }}  {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}</h2>
 <p>{{ meeting.getLocation() }}</p>
 
 {% if actionLinks %}
