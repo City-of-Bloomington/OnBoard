@@ -48,9 +48,8 @@ textdomain('labels');
  */
 if (defined('GRAYLOG_DOMAIN') && defined('GRAYLOG_PORT')) {
     $graylog = new Web\GraylogWriter(GRAYLOG_DOMAIN, GRAYLOG_PORT);
-    $logger  = new Laminas\Log\Logger();
-    $logger->addWriter($graylog);
-    Laminas\Log\Logger::registerErrorHandler($logger);
-    Laminas\Log\Logger::registerExceptionHandler($logger);
-    Laminas\Log\Logger::registerFatalErrorShutdownFunction($logger);
+             set_error_handler('Web\GraylogWriter::error');
+         set_exception_handler('Web\GraylogWriter::exception');
+    register_shutdown_function('Web\GraylogWriter::shutdown');
+
 }
