@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     meetings
  * @param Committee committee
@@ -33,7 +33,7 @@
                     <strong>{{ _('type') }}:</strong> {{ f.type }}
                 </li>
             </ul>
-            {% if f.actions %}
+            {% if f.actions is defined %}
             {{ include('html/partials/actionLinks.twig', {actionLinks:f.actions}, with_context=false ) }}
             {% endif %}
     {% endfor %}
