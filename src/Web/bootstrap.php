@@ -47,9 +47,7 @@ textdomain('labels');
  * @see https://graylog.org
  */
 if (defined('GRAYLOG_DOMAIN') && defined('GRAYLOG_PORT')) {
-    $graylog = new Web\GraylogWriter(GRAYLOG_DOMAIN, GRAYLOG_PORT);
              set_error_handler('Web\GraylogWriter::error');
          set_exception_handler('Web\GraylogWriter::exception');
     register_shutdown_function('Web\GraylogWriter::shutdown');
-
 }
