@@ -2,7 +2,8 @@
     "require": {
         "php": ">=8.1",
         "aura/router":                     "@stable",
-        "google/apiclient": "~2.0",
+        "google/apiclient":                "~2.0",
+        "google/recaptcha":                "@stable",
         "apereo/phpcas":                   "@stable",
         "graylog2/gelf-php":               "~1",
         "jumbojett/openid-connect-php":    "@stable",

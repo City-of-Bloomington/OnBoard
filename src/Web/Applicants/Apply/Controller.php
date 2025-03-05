@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -12,6 +12,7 @@ use Application\Models\Captcha;
 use Application\Models\Committee;
 use Web\Database;
 
+use ReCaptcha\ReCaptcha;
 
 class Controller extends \Web\Controller
 {
@@ -19,32 +20,36 @@ class Controller extends \Web\Controller
     {
         $applicant = new Applicant();
 
-        if (isset($_POST['firstname']) && Captcha::verify()) {
-            $db = Database::getConnection();
-            $db->getDriver()->getConnection()->beginTransaction();
-            try {
+        if (isset($_POST['firstname']) && !empty($_POST['g-recaptcha-response'])) {
+            $rc  = new ReCaptcha(RECAPTCHA_SERVER_KEY);
+            $r   = $rc->setExpectedHostname(BASE_HOST)->verify($_POST['g-recaptcha-response']);
+            if ($r->isSuccess()) {
+                $db = Database::getConnection();
+                $db->getDriver()->getConnection()->beginTransaction();
+                try {
 
-                $applicant->handleUpdate($_POST);
-                $applicant->save();
-                if (isset($_POST['committees'])) {
-                    $applicant->saveCommittees($_POST['committees']);
-                }
+                    $applicant->handleUpdate($_POST);
+                    $applicant->save();
+                    if (isset($_POST['committees'])) {
+                        $applicant->saveCommittees($_POST['committees']);
+                    }
 
-                if (isset($_FILES['applicantFile'])
-                    &&    $_FILES['applicantFile']['error'] === UPLOAD_ERR_OK) {
-                    $file = new ApplicantFile();
+                    if (isset($_FILES['applicantFile'])
+                        &&    $_FILES['applicantFile']['error'] === UPLOAD_ERR_OK) {
+                        $file = new ApplicantFile();
                     $file->setApplicant_id($applicant->getId());
                     $file->setFile($_FILES['applicantFile']);
                     $file->save();
-                }
-                $db->getDriver()->getConnection()->commit();
+                        }
+                        $db->getDriver()->getConnection()->commit();
 
-                $this->notifyLiaisons($applicant);
-                return new Success($applicant);
-            }
-            catch (\Exception $e) {
-                $db->getDriver()->getConnection()->rollback();
-                $_SESSION['errorMessages'][] = $e->getMessage();
+                        $this->notifyLiaisons($applicant);
+                        return new Success($applicant);
+                }
+                catch (\Exception $e) {
+                    $db->getDriver()->getConnection()->rollback();
+                    $_SESSION['errorMessages'][] = $e->getMessage();
+                }
             }
         }
 

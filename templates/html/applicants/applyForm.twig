@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant applicant
  * @param Committee committee (optional)
@@ -25,9 +25,9 @@
             {% endif %}
         </h1>
     </header>
-    
+
     {{ help|markdown_to_html }}
-    
+
     <form class="usa-form usa-form--large" method="post" id="applyForm" enctype="multipart/form-data">
 
         <fieldset class="usa-fieldset margin-bottom-3">
@@ -105,10 +105,10 @@
             <div class="usa-form-group">
                 <label class="usa-label" for="applicantFile">{{ _('applicantFile') }}</label>
                 <span class="usa-hint" id="applicantFile-help">{{ accept }} - {{ maxSize }}</span>
-                <input class="usa-file-input" 
-                       id ="applicantFile" 
-                       name="applicantFile" 
-                       type="file" 
+                <input class="usa-file-input"
+                       id ="applicantFile"
+                       name="applicantFile"
+                       type="file"
                        aria-describedby="applicantFile-help"
                        accepts="{{ accept }}"
                        size="{{ maxBytes }}"
@@ -117,9 +117,18 @@
             </div>
         </fieldset>
 
-        {{ include('html/partials/captcha.twig') }}
-
-        {{ forms.button('submit', _('save'), 'save') }}
+        <fieldset>
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+            <script>
+               function recaptcha(token) { document.getElementById('applyForm').submit(); }
+            </script>
+            <button type="submit" class="save g-recaptcha"
+                data-sitekey="{{ RECAPTCHA_SITE_KEY }}"
+                data-callback='recaptcha'
+                data-action='submit'>
+                {{ _('save') }}
+            </button>
+        </fieldset>
     </form>
 </section>
 {% endblock %}
