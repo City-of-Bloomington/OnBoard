@@ -785,6 +785,9 @@ msgstr "Edit Content"
 msgid "applyForm_help"
 msgstr "Apply Form Help"
 
+msgid "attendance"
+msgstr "Attendance"
+
 msgid "meeting"
 msgid_plural "meetings"
 msgstr[0] "Meeting"
@@ -900,3 +903,7 @@ msgstr "(optional)"
 
 msgid "page"
 msgstr "Page"
+
+msgid "calendar"
+msgstr "Google Calendar"
+

@@ -1,9 +1,10 @@
 {#
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array     meetings
+ * @param Meeting   meeting
  * @param Committee committee
  * @param array     files
+ * @param array     attendance  (RAW Data)
  * @param array     actionLinks
  #}
 {% extends "html/layouts/committee.twig" %}
@@ -22,17 +23,17 @@
 
 <ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for f in files %}
-    <li class="usa-collection__item">
-            <div class="usa-collection__body">
-                <h3 class="usa-collection__heading">
-                    <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
-                        {{ f.title ?? _('noTitle') }}
-                        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-                            <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
-                        </svg>
-                    </a>
-                </h3>
-                <ul class="usa-collection__meta" aria-label="More information">
+    <li         class="usa-collection__item">
+        <div    class="usa-collection__body">
+            <h3 class="usa-collection__heading">
+                <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                    {{ f.title ?? _('noTitle') }}
+                    <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                        <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                    </svg>
+                </a>
+            </h3>
+            <ul     class="usa-collection__meta" aria-label="More information">
                 <li class="usa-collection__meta-item position-relative">
                     <strong>{{ _('type') }}:</strong> {{ f.type }}
                 </li>
@@ -40,7 +41,26 @@
             {% if f.actions is defined %}
             {{ include('html/partials/actionLinks.twig', {actionLinks:f.actions}, with_context=false ) }}
             {% endif %}
+        </div>
+    </li>
     {% endfor %}
 </ul>
+
+{% if meeting.getHtmlLink() -%}
+<a href="{{ meeting.getHtmlLink() }}" class="card-link">{{ _('calendar') }}</a>
+{%- endif %}
+
+{% if attendance %}
+<section>
+    <header><h2>{{ _('attendance') }}</h2></header>
+    <table>
+        {% for m in attendance %}
+        <tr><th>{{ m.firstname }} {{ m.lastname }}</th>
+            <td>{{ m.attendance }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endif %}
 
 {% endblock %}

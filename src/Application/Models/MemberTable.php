@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2022 City of Bloomington, Indiana
+ * @copyright 2016-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -22,7 +22,12 @@ class MemberTable extends TableGateway
 			foreach ($fields as $key=>$value) {
 				switch ($key) {
 					case 'current':
-                        if ($value) {
+                        if (is_object($value) && get_class($value)=='DateTime') {
+                            $d = $value->format('Y-m-d');
+                            $select->where("startDate <= '$d'");
+                            $select->where("(endDate is null or endDate >= '$d')");
+                        }
+                        elseif ($value) {
                             $select->where("startDate <= now()");
                             $select->where("(endDate is null or endDate >= now())");
                         }

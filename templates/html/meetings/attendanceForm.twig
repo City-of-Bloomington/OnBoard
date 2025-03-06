@@ -1,0 +1,40 @@
+{#
+ * @copyright 2024-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Meeting   meeting
+ * @param Committee committee
+ * @param array     attendance         (RAW Data)
+ * @param array     attendance_options Array of strings
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
+{% block content %}
+<h2>{{ meeting.getStart()|date("F j, Y") }}  {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}</h2>
+<p>{{ meeting.getLocation() }}</p>
+
+{% if meeting.getHtmlLink() -%}
+<a href="{{ meeting.getHtmlLink() }}" class="card-link">{{ _('calendar') }}</a>
+{%- endif %}
+
+<form method="post">
+    <fieldset><legend>{{ _('attendance') }}</legend>
+        <table>
+            {% for m in attendance %}
+            <tr><th>{{ m.firstname }} {{ m.lastname }}</th>
+                <td><select name="members[{{ m.member_id }}]">
+                        <option value=""></option>
+                        {% for o in attendance_options %}
+                        <option {{ o==m.attendance ? 'selected="true"' : '' }}>{{ o }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('meetings.view', {id: meeting.getId()}), _('cancel') ) }}
+    </fieldset>
+</form>
+
+{% endblock %}

@@ -92,4 +92,48 @@ class Meeting extends ActiveRecord
         $table = new MeetingFilesTable();
         return $table->find(['meeting_id'=>$this->getId()]);
     }
+
+    public function hasAttendance(): bool
+    {
+        $sql = 'select count(*) from meeting_attendance where meeting_id=?';
+        $db  = Database::getConnection();
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        $c   = $res->getResource()->fetchColumn();
+        return $c ? true : false;
+    }
+
+    public function getAttendance(): array
+    {
+        $sql = "select x.id     as meeting_id,
+                       a.status as attendance,
+                       m.id     as member_id,
+                       m.committee_id,
+                       m.seat_id,
+                       m.term_id,
+                       m.person_id,
+                       m.startDate,
+                       m.endDate,
+                       p.firstname,
+                       p.lastname
+                from meetings x
+                join members  m on x.committee_id=m.committee_id and m.startDate<x.start and (m.endDate is null or m.endDate>x.start)
+                join people   p on p.id=m.person_id
+                left join meeting_attendance a on a.meeting_id=x.id and a.member_id=m.id
+                where x.id=?";
+        $db  = Database::getConnection();
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        return $res->getResource()->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function saveAttendance(array $data)
+    {
+        $db  = Database::getConnection();
+        $sql = 'delete from meeting_attendance where meeting_id=?';
+        $db->createStatement($sql)->execute([$this->getId()]);
+
+        $sql    = 'insert meeting_attendance values(:meeting_id, :member_id, :status)';
+        $insert = $db->createStatement($sql);
+
+        foreach ($data as $row) { $insert->execute($row); }
+    }
 }

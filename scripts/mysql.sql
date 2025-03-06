@@ -233,6 +233,14 @@ create table meetingFiles(
 	foreign key (  meeting_id) references   meetings(id)
 );
 
+create table meeting_attendance (
+    meeting_id int unsigned not null,
+    member_id  int unsigned not null,
+    status     varchar(16)  not null,
+    foreign key (meeting_id) references meetings(id),
+    foreign key ( member_id) references  members(id)
+);
+
 create table committeeHistory(
     id           int unsigned not null primary key auto_increment,
     committee_id int unsigned not null,

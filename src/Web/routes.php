@@ -129,7 +129,8 @@ $map->attach('liaisons.', '/liaisons', function ($r) {
 });
 
 $map->attach('meetings.', '/meetings', function ($r) {
-    $r->get('view', '/{id}', Web\Meetings\Info\Controller::class);
+    $r->get('attendance', '/{id}/attendance', Web\Meetings\Attendance\Controller::class)->allows(['POST']);
+    $r->get('view',       '/{id}',            Web\Meetings\Info\Controller::class);
 });
 
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
