@@ -41,14 +41,14 @@ class View extends \Web\View
             if ($canEdit) {
                 $links[] = [
                     'url'   => parent::generateUri('reports.update', ['id'=>$r->getId()]),
-                    'label' => $this->_('report_edit'),
+                    'label' => $this->_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('reports.delete', ['id'=>$r->getId()]),
-                    'label' => $this->_('report_delete'),
+                    'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];
             }
