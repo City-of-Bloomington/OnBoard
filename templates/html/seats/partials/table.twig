@@ -3,15 +3,15 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  #}
-<table class="usa-table usa-table--borderless">
+<table class="usa-table usa-table--borderless usa-table--stacked">
     <thead>
-        <tr><th>{{ _('committee'   ) }}</th>
-            <th>{{ _('seat'        ) }}</th>
-            <th>{{ _('start'       ) }}</th>
-            <th>{{ _('end'         ) }}</th>
-            <th>{{ _('seat_status'   ) }}</th>
-            <th>{{ _('appointed_by') }}</th>
-            <th>{{ _('name'        ) }}</th>
+        <tr><th scope="col">{{ _('committee'     ) }}</th>
+            <th scope="col">{{ _('seat'          ) }}</th>
+            <th scope="col">{{ _('start'         ) }}</th>
+            <th scope="col">{{ _('end'           ) }}</th>
+            <th scope="col">{{ _('seat_status'   ) }}</th>
+            <th scope="col">{{ _('appointed_by'  ) }}</th>
+            <th scope="col">{{ _('name'          ) }}</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +21,8 @@
     <tr>
         <td>{{ row.committee_name }}</td>
         <td>{{ row.seat_name }}</td>
-        <td class="font-mono-3xs">{{ row.term_startDate|date('m/d/Y') }}</td>
-        <td class="font-mono-3xs">{{ row.term_endDate|date('m/d/Y') }}</td>
+        <td class="font-mono-2xs">{{ row.term_startDate|date('m/d/Y') }}</td>
+        <td class="font-mono-2xs">{{ row.term_endDate|date('m/d/Y') }}</td>
         <td>{{ class|raw }}</td>
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
         <td>{{ row.member_firstname }} {{ row.member_lastname }}
