@@ -5,22 +5,29 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
+<section  class="grid-container">
     <header>
-        <h2>{{ _(['applicant', 'applicants', 10]) }}</h2>
+        <h1>{{ _(['applicant', 'applicants', 10]) }}</h1>
     </header>
 
-    <table class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>{{ _('name') }}</th>
+                <th>{{ _('email') }}</th>
+                <th>{{ _('phone') }}</th>
+                <th>{{ _('actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for a in applicants %}
-        <tr><td><a href="{{ uri('applicants.view', {id: a.id}) }}">{{ a.name  }}</a></td>
+        <tr><td><a class="usa-link" href="{{ uri('applicants.view', {id: a.id}) }}">{{ a.name  }}</a></td>
             <td>{{ a.email }}</td>
             <td>{{ a.phone }}</td>
-            <td>{% if a.actionLinks %}
-                {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
-                {% endif %}
-            </td>
+            <td>{% if a.actionLinks %}{{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}{% endif %}</td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
 </section>
 

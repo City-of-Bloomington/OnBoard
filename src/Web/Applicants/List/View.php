@@ -32,7 +32,7 @@ class View extends \Web\View
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applicants.delete', ['id'=>$a->getId()]),
-                    'label' => $this->_('applicant_delete'),
+                    'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];
             }
