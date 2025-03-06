@@ -10,17 +10,25 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
 <h2>{{ meeting.getStart()|date("F j, Y") }}  {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}</h2>
-<p>{{ meeting.getLocation() }}</p>
+<p>{{ meeting.getLocation() }}
+    {% if meeting.getHtmlLink() -%}
+    <div><a href="{{ meeting.getHtmlLink() }}" class="usa-link">Google Calendar</a><div>
+    {%- endif %}
+</p>
 
-{% if meeting.getHtmlLink() -%}
-<a href="{{ meeting.getHtmlLink() }}" class="card-link">{{ _('calendar') }}</a>
-{%- endif %}
-
-<form method="post">
-    <fieldset><legend>{{ _('attendance') }}</legend>
-        <table>
+<form class="usa-form" method="post">
+    <fieldset class="usa-fieldset">
+        <legend><h3>{{ _('edit_attendance') }}</h3></legend>
+        <table class="usa-table usa-table--borderless usa-table--compact">
+            <thead>
+                <tr>
+                    <th scope="col">{{ _('name') }}</th>
+                    <th scope="col">{{ _('attendance_status') }}</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for m in attendance %}
-            <tr><th>{{ m.firstname }} {{ m.lastname }}</th>
+            <tr><th scope="row">{{ m.firstname }} {{ m.lastname }}</th>
                 <td><select name="members[{{ m.member_id }}]">
                         <option value=""></option>
                         {% for o in attendance_options %}
@@ -30,6 +38,7 @@
                 </td>
             </tr>
             {% endfor %}
+            </tbody>
         </table>
 
         {{ forms.button('submit', _('save'), 'save') }}

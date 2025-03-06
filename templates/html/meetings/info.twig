@@ -17,10 +17,34 @@
     {%- endif %}
 </p>
 
-{% if actionLinks %}
-{{ include('html/partials/actionLinks.twig') }}
+<h3>{{ _('attendance') }}</h3>
+{% if isAllowed('meetings', 'attendance') %}
+    {{ forms.actionLink(uri('meetings.attendance', {id: meeting.getId()} ), _('edit'), 'edit' ) }}
+{% endif %}
+{% if attendance %}
+<table class="usa-table usa-table--borderless usa-table--compact">
+    <thead>
+        <tr>
+            <th scope="col">{{ _('name') }}</th>
+            <th scope="col">{{ _('attendance_status') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for m in attendance %}
+    <tr>
+        <th scope="row">{{ m.firstname }} {{ m.lastname }}</th>
+        <td>{{ m.attendance }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endif %}
 
+<h3>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h3>
+
+{% if isAllowed('meetingFiles', 'add') %}
+    {{ forms.actionLink(uri('meetingFiles.add') ~ '?meeting_id=' ~ meeting.getId(), _('add'), 'add' )}}
+{% endif %}
 <ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for f in files %}
     <li         class="usa-collection__item">
@@ -45,22 +69,5 @@
     </li>
     {% endfor %}
 </ul>
-
-{% if meeting.getHtmlLink() -%}
-<a href="{{ meeting.getHtmlLink() }}" class="card-link">{{ _('calendar') }}</a>
-{%- endif %}
-
-{% if attendance %}
-<section>
-    <header><h2>{{ _('attendance') }}</h2></header>
-    <table>
-        {% for m in attendance %}
-        <tr><th>{{ m.firstname }} {{ m.lastname }}</th>
-            <td>{{ m.attendance }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-</section>
-{% endif %}
 
 {% endblock %}

@@ -788,6 +788,9 @@ msgstr "Apply Form Help"
 msgid "attendance"
 msgstr "Attendance"
 
+msgid "edit_attendance"
+msgstr "Edit Attendance"
+
 msgid "meeting"
 msgid_plural "meetings"
 msgstr[0] "Meeting"
@@ -890,6 +893,9 @@ msgid "legislationStatus_add"
 msgstr "New Status"
 
 msgid "seat_status"
+msgstr "Status"
+
+msgid "attendance_status"
 msgstr "Status"
 
 msgid "legislationStatus_edit"
