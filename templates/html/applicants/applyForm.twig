@@ -117,12 +117,12 @@
             </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="usa-fieldset">
             <script src="https://www.google.com/recaptcha/api.js"></script>
             <script>
                function recaptcha(token) { document.getElementById('applyForm').submit(); }
             </script>
-            <button type="submit" class="save g-recaptcha"
+            <button type="submit" class="usa-button save g-recaptcha"
                 data-sitekey="{{ RECAPTCHA_SITE_KEY }}"
                 data-callback='recaptcha'
                 data-action='submit'>
