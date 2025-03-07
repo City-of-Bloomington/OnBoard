@@ -120,19 +120,20 @@ class Meeting extends ActiveRecord
                 join people   p on p.id=m.person_id
                 left join meeting_attendance a on a.meeting_id=x.id and a.member_id=m.id
                 where x.id=?";
-        $db  = Database::getConnection();
-        $res = $db->createStatement($sql)->execute([$this->getId()]);
-        return $res->getResource()->fetchAll(\PDO::FETCH_ASSOC);
+        $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
+        $q   = $pdo->prepare($sql);
+        $q->execute([$this->getId()]);
+        return $q->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function saveAttendance(array $data)
     {
-        $db  = Database::getConnection();
+        $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
         $sql = 'delete from meeting_attendance where meeting_id=?';
-        $db->createStatement($sql)->execute([$this->getId()]);
+        $pdo->prepare($sql)->execute([$this->getId()]);
 
         $sql    = 'insert meeting_attendance values(:meeting_id, :member_id, :status)';
-        $insert = $db->createStatement($sql);
+        $insert = $pdo->prepare($sql);
 
         foreach ($data as $row) { $insert->execute($row); }
     }
