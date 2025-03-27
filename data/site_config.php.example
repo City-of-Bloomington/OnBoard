@@ -86,11 +86,11 @@ $AUTHENTICATION = [
         'client_secret'  => '',
         'claims' => [
             // OnBoard field => OIDC Claim
-            'username'    => 'adfs1upn',
+            'username'    => 'preferred_username',
             'displayname' => 'commonname',
             'firstname'   => 'given_name',
             'lastname'    => 'family_name',
-            'email'       => 'upn',
+            'email'       => 'email',
             'groups'      => 'group',
             'groupmap'    => [ ]
         ],
