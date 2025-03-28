@@ -45,6 +45,13 @@ $DATABASES = [
         'username' => 'onboard',
         'password' => 'something secret',
         'options'  => []
+    ],
+    'warehouse' => [
+        'driver'   => 'Pdo_Pgsql',
+        'dsn'      => 'pgsql:dbname=warehouse;host=localhost',
+        'username' => 'onboard',
+        'password' => 'something secret',
+        'options'  => []
     ]
 ];
 

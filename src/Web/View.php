@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2024 City of Bloomington, Indiana
+ * @copyright 2006-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
@@ -32,10 +32,12 @@ abstract class View
         $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
         $tpl = [];
 
-        if (defined('THEME')) {
-            $dir = SITE_HOME.'/Themes/'.THEME;
+        if (is_dir(  SITE_HOME.'/templates')) {
+            $tpl[] = SITE_HOME.'/templates';
+        }
 
-            // Twig Templates
+       if (defined('THEME')) {
+            $dir = SITE_HOME.'/Themes/'.THEME;
             if (is_dir ( "$dir/templates")) {
                 $tpl[] = "$dir/templates";
             }

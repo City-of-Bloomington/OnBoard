@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Meetings\Info;
 
 use Application\Models\Meeting;
+use Site\Classes\WarehouseService;
 use Web\MeetingFiles\List\View as MeetingFileView;
 
 class View extends \Web\View
@@ -23,7 +24,8 @@ class View extends \Web\View
             'committee'   => $m->getCommittee(),
             'files'       => self::createFileData($files),
             'attendance'  => $m->hasAttendance() ? $m->getAttendance() : null,
-            'actionLinks' => self::actionLinks($m)
+            'actionLinks' => self::actionLinks($m),
+            'warehouse'   => self::warehouse_data($m)
         ];
     }
 
@@ -82,5 +84,13 @@ class View extends \Web\View
             $filedata[] = $d;
         }
         return $filedata;
+    }
+
+    private static function warehouse_data(Meeting $m): array
+    {
+        if (class_exists(WarehouseService::class)) {
+            return WarehouseService::meeting_info((int)$m->getCommittee_id(), new \DateTime($m->getStart()));
+        }
+        return [];
     }
 }

@@ -13,6 +13,7 @@
       vars:
         packages:
           - "php-mysql"
+          - "php-pgsql"
           - "default-jre"
           - "libreoffice-common"
           - "libreoffice-writer"
@@ -54,6 +55,16 @@
         dest: "{{ onboard_install_path | dirname }}"
         owner: 'www-data'
         group: 'staff'
+      register: 'release'
+
+    - name: 'Site Home SymLinks'
+      ansible.builtin.file:
+        state: 'link'
+        src:   "{{ onboard_install_path }}/data/{{ item }}"
+        dest:  "{{ onboard_site_home }}/{{ item }}"
+      loop:
+        - 'Classes'
+        - 'templates'
 
     - name: 'Apache configuration'
       ansible.builtin.template:

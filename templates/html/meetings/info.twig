@@ -6,6 +6,7 @@
  * @param array     files
  * @param array     attendance  (RAW Data)
  * @param array     actionLinks
+ * @param array     warehouse
  #}
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms %}
@@ -69,5 +70,9 @@
     </li>
     {% endfor %}
 </ul>
+
+{% if warehouse %}
+{{ include('html/warehouse/meetings/info.twig') }}
+{% endif %}
 
 {% endblock %}

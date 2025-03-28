@@ -37,6 +37,13 @@ $DATABASES = [
         'username' => '{{ onboard_db.user }}',
         'password' => '{{ onboard_db.pass }}',
         'options'  => []
+    ],
+    'warehouse' => [
+        'driver'   => 'Pdo_Pgsql',
+        'dsn'      => 'pgsql:dbname=warehouse;host=warehouse.bloomington.in.gov',
+        'username' => '{{ onboard_db.user }}',
+        'password' => '{{ onboard_db.pass }}',
+        'options'  => []
     ]
 ];
 
