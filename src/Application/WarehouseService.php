@@ -4,13 +4,12 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-namespace Site\Classes;
+namespace Application;
 
-use Application\WarehouseInterface;
 use Application\Models\Committee;
 use Web\Database;
 
-class WarehouseService implements WarehouseInterface
+class WarehouseService
 {
     public static $board_hearing_types = [
         // OnBoard board ID => EPL Hearing Type ID

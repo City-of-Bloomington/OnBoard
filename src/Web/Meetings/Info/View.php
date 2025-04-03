@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Web\Meetings\Info;
 
 use Application\Models\Meeting;
-use Site\Classes\WarehouseService;
+use Application\WarehouseService;
 use Web\MeetingFiles\List\View as MeetingFileView;
 
 class View extends \Web\View
