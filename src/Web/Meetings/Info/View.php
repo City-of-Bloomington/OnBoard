@@ -88,9 +88,33 @@ class View extends \Web\View
 
     private static function warehouse_data(Meeting $m): array
     {
+        $info = [];
         if (class_exists(WarehouseService::class)) {
-            return WarehouseService::meeting_info((int)$m->getCommittee_id(), new \DateTime($m->getStart()));
+            $staff = false;
+            if (isset($_SESSION['USER'])) {
+                $res   = WarehouseService::permitting_staff($_SESSION['USER']->getEmail());
+                $staff = $res ? true : false;
+            }
+
+            $plans   = $staff
+                     ? 'https://energov.bloomington.in.gov/energov_prod/manageplan/#/plan'
+                     : 'https://energov.bloomington.in.gov/energov_prod/selfservice#/plan';
+            $permits = $staff
+                     ? 'https://energov.bloomington.in.gov/energov_prod/managepermit/#/permit'
+                     : 'https://energov.bloomington.in.gov/energov_prod/selfservice#/permit';
+
+            $info = WarehouseService::meeting_info((int)$m->getCommittee_id(), new \DateTime($m->getStart()));
+            if (isset($info['permits'])) {
+                foreach ($info['permits'] as $i=>$p) {
+                    $info['permits'][$i]['url'] = $permits."/$p[permit_id]";
+                }
+            }
+            if (isset($info['plans'])) {
+                foreach ($info['plans'] as $i=>$p) {
+                    $info['plans'][$i]['url'] = $plans."/$p[plan_id]";
+                }
+            }
         }
-        return [];
+        return $info;
     }
 }

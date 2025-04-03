@@ -64,4 +64,17 @@ class WarehouseService
         }
         return $out;
     }
+
+    public static function permitting_staff(string $email): array
+    {
+        $db      = Database::getConnection('warehouse');
+        $sql = 'select * from epl.staff where username=?';
+        $res = $db->createStatement($sql)->execute([$email]);
+        if (count($res)) {
+            $out = [];
+            foreach ($res as $r) { $out[] = $r; }
+            return $out;
+        }
+        return [];
+    }
 }
