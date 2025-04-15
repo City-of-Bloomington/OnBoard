@@ -52,7 +52,7 @@ class Controller extends \Web\Controller
     public static function filter_viewable($results): array
     {
         $data    = [];
-        $fields  = ['email', 'address', 'city', 'state', 'zip'];
+        $fields  = ['email', 'phone', 'address', 'city', 'state', 'zip'];
         $canView = \Web\View::isAllowed('people', 'viewContactInfo');
         foreach ($results as $row)
         {
