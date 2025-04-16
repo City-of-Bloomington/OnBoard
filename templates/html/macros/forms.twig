@@ -29,9 +29,9 @@
     <div class="usa-radio">
         <input class="usa-radio__input"  id="{{ name }}_{{ o.value }}" name="{{ name }}" type="radio" value="{{ o.value }}" {{ value==o.value ? 'checked="checked"' : '' }} />
         <label class="usa-radio__label" for="{{ name }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
-        {% if help %}<span class="usa-checkbox__label-description">{{ help }}</span>{% endif %}
     </div>
     {% endfor %}
+    {% if help %}<p>{{ help }}</p>{% endif %}
 </div>
 {% endmacro %}
 

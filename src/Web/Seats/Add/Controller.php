@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -39,17 +39,11 @@ class Controller extends \Web\Controller
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
                     $id  = SeatTable::update($seat);
-                    echo "Saved new seat: $id\n";
-                    exit();
                     $url = View::generateUrl('seats.view', ['id'=>$id]);
                     header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) {
-                    $_SESSION['errorMessages'][] = $e->getMessage();
-                    print_r($e);
-                    exit();
-                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
             $appointers = [];

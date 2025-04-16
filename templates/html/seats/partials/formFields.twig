@@ -71,9 +71,9 @@
         </select>
     </div>
     <div class="usa-form-group">
-        <label  class="usa-label"  for="termModifer">{{ _('termModifer') }}</label>
-        <select name="termModifer" class="usa-select"
-                  id="termModifer">
+        <label  class="usa-label"  for="termModifier">{{ _('termModifier') }}</label>
+        <select name="termModifier" class="usa-select"
+                  id="termModifier">
         {% for modifier, label in termModifiers %}
         <option value="{{ modifier }}" {{ modifier==seat.getTermModifier() ? 'selected="true"' : '' }}>{{ label }}</option>
         {% endfor %}
