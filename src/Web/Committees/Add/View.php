@@ -19,7 +19,7 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'       => $c,
-            'committee_types' => Committee::$types,
+            'committee_types' => self::committee_types(),
             'departments'     => $d->find()
         ];
     }
@@ -27,5 +27,12 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/committees/addForm.twig', $this->vars);
+    }
+
+    private static function committee_types(): array
+    {
+        $out = [];
+        foreach (Committee::$types as $t) { $out[] = ['value'=>$t]; }
+        return $out;
     }
 }

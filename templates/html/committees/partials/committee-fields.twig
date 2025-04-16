@@ -5,25 +5,11 @@
  * @param array     committee_types   Options for committee_type
  * @param array     departments       Options for departments
  #}
+{% import  "html/macros/forms.twig" as forms %}
 <fieldset class="usa-fieldset margin-bottom-3">
     <legend class="usa-legend usa-legend--large">{{ _('committee_info') }}</legend>
 
-    <p>{{ _('type') }}</p>
-    {% for t in committee_types %}
-    <div class="usa-radio">
-            <input
-                class="usa-radio__input"
-                id="{{ t }}"
-                type="radio"
-                name="{{ _('type') }}"
-                value="{{ _(t) }}"
-                {{ committee.getType()==t ? 'checked="checked"' : '' }}
-            />
-            <label class="usa-radio__label" for="{{ t }}">
-                {{ _(t) }}
-            </label>
-    </div>
-    {% endfor %}
+    {{ forms.field_radio('type', 'type', _('type'), committee.getType(), committee_types, true) }}
 
     <label for="name" class="usa-label">{{ _('name') }}</label>
     <input name="name" id="name" value="{{ committee.getName() }}" required="true" class="usa-input" />

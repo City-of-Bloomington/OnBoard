@@ -24,13 +24,15 @@
 {% endmacro %}
 
 {% macro field_radio(id, name, label, value, options, required=false, attr={}, help=null) %}
+<div><p>{{ label }}</p>
     {% for o in options %}
     <div class="usa-radio">
-            <input class="usa-radio__input" id="{{ o.label }}" name="{{ id }}" type="radio" value="{{ o.value }}" />
-            <label class="usa-radio__label" for="{{ o.label }}">{{ o.label ?? o.value }}</label>
-        {% if help %}<span class="usa-checkbox__label-description" id="{{ id }}-help">{{ help }}</span>{% endif %}
+        <input class="usa-radio__input"  id="{{ name }}_{{ o.value }}" name="{{ name }}" type="radio" value="{{ o.value }}" {{ value==o.value ? 'checked="checked"' : '' }} />
+        <label class="usa-radio__label" for="{{ name }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
+        {% if help %}<span class="usa-checkbox__label-description">{{ help }}</span>{% endif %}
     </div>
     {% endfor %}
+</div>
 {% endmacro %}
 
 {% macro field_select(id, name, label, value, options, required=false, attr={}, help=null) %}

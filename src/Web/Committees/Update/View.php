@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -19,7 +19,7 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'       => $committee,
-            'committee_types' => Committee::$types,
+            'committee_types' => self::committee_types(),
             'departments'     => $departments->find()
         ];
     }
@@ -27,5 +27,12 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render("{$this->outputFormat}/committees/updateForm.twig", $this->vars);
+    }
+
+    private static function committee_types(): array
+    {
+        $out = [];
+        foreach (Committee::$types as $t) { $out[] = ['value'=>$t]; }
+        return $out;
     }
 }
