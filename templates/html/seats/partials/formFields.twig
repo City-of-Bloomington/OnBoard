@@ -72,11 +72,11 @@
     </div>
     <div class="usa-form-group">
         <label  class="usa-label"  for="termModifier">{{ _('termModifier') }}</label>
-        <select name="termModifier" class="usa-select"
-                  id="termModifier">
-        {% for modifier, label in termModifiers %}
-        <option value="{{ modifier }}" {{ modifier==seat.getTermModifier() ? 'selected="true"' : '' }}>{{ label }}</option>
-        {% endfor %}
+        <select name="termModifier" id="termModifier" class="usa-select">
+            <option value=""></option>
+            {% for modifier, label in termModifiers %}
+            <option value="{{ modifier }}" {{ modifier==seat.getTermModifier() ? 'selected="true"' : '' }}>{{ label }}</option>
+            {% endfor %}
         </select>
     </div>
 </fieldset>

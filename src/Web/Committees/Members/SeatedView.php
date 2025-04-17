@@ -85,30 +85,35 @@ class SeatedView extends View
             }
             if ($userCanAppointMembers) {
                 if ($row['member_person_id']) {
-                    $uri = $row['seat_type'] === 'termed'
-                            ? parent::generateUri('members.appoint')."?term_id=$row[term_id]"
-                            : parent::generateUri('members.appoint')."?seat_id=$row[seat_id]";
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                    if (!empty($row['term_id'])) {
+                        $uri = $row['seat_type'] === 'termed'
+                                ? parent::generateUri('members.appoint')."?term_id=$row[term_id]"
+                                : parent::generateUri('members.appoint')."?seat_id=$row[seat_id]";
+                        $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
 
-                    if ($row['seat_type'] == 'termed') {
-                        $t = new Term($row['term_id']);
-                        $n = $t->getNextTerm();
+                        if ($row['seat_type'] == 'termed') {
+                            $t = new Term($row['term_id']);
+                            $n = $t->getNextTerm();
 
-                        if ($n->isVacant()) {
-                            $uri = parent::generateUri('members.reappoint', ['id'=>$row['member_id']]);
-                            $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                            if ($n->isVacant()) {
+                                $uri = parent::generateUri('members.reappoint', ['id'=>$row['member_id']]);
+                                $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
+                            }
                         }
                     }
+
                     if (!$row['member_endDate'] || strtotime($row['member_endDate']) > time()) {
                         $uri = parent::generateUri('members.resign', ['id'=>$row['member_id']]);
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
                 }
                 else {
-                    $uri = $row['seat_type'] === 'termed'
-                            ? parent::generateUri('members.appoint')."?term_id=$row[term_id]"
-                            : parent::generateUri('members.appoint')."?seat_id=$row[seat_id]";
-                    $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                    if (!empty($row['term_id'])) {
+                        $uri = $row['seat_type'] === 'termed'
+                                ? parent::generateUri('members.appoint')."?term_id=$row[term_id]"
+                                : parent::generateUri('members.appoint')."?seat_id=$row[seat_id]";
+                        $actions[] = ['url'=>$uri, 'label'=>$this->_('member_add')];
+                    }
                 }
             }
             if ($userCanEditOffices && $row['member_person_id']) {
