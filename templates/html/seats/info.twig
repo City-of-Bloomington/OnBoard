@@ -75,7 +75,7 @@
     {% elseif members is defined %}
     <section>
         <header><h3>{{ _(['member', 'members', 10]) }}</h3>
-        <table>
+        <table class="usa-table">
         {% for m in members %}
         <tr><td>{{ m.name }}</td>
             <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
