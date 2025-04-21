@@ -15,7 +15,7 @@
 {% endmacro %}
 
 {% macro field_text(id, name, label, value, required=false, attr={}, help=null) %}
-    <label for="{{ id }}" class="usa-label">{{ label }} {{- required ? '<span> *</span>' : '' }}</label>
+    <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" class="usa-input"
         {{- required ? ' required="true"' : '' }}
@@ -24,7 +24,7 @@
 {% endmacro %}
 
 {% macro field_radio(id, name, label, value, options, required=false, attr={}, help=null) %}
-<div><p>{{ label }}</p>
+<div><p>{{ label }}{{ required ? ' <span>*</span>' : '' }}</p>
     {% for o in options %}
     <div class="usa-radio">
         <input class="usa-radio__input"  id="{{ name }}_{{ o.value }}" name="{{ name }}" type="radio" value="{{ o.value }}" {{ value==o.value ? 'checked="checked"' : '' }} />
@@ -36,20 +36,20 @@
 {% endmacro %}
 
 {% macro field_select(id, name, label, value, options, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <select id="{{ id }}" name="{{ name }}" class="usa-select"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>
         {% for o in options %}
-        <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.value ?? o.value }}</option>
+        <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.label ?? o.value }}</option>
         {% endfor %}
     </select>
 {% endmacro %}
 
 {% macro field_combo(id, name, label, value, options, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <div class="usa-combo-box" data-placeholder={{ value }}>
         <select id="{{ id }}" name="{{ name }}" class="usa-select"
@@ -57,25 +57,23 @@
             {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
             {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>
             {% for o in options %}
-            <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.value ?? o.value }}</option>
+            <option value="{{ o.value }}" {{ o.value==value ? 'selected="true"' : '' }}>{{ o.label ?? o.value }}</option>
             {% endfor %}
         </select>
     </div>
 {% endmacro %}
 
 {% macro field_password(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="mb-3">
-    <label for="{{ id }}">{{ label }}</label>
-    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="password" class="form-control"
+    <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="password" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help }}</span>{% endif %}
-</div>
 {% endmacro %}
 
 {% macro field_email(id, name, label, value, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }} {{- required ? '<span> *</span>' : '' }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="email" class="usa-input"
         {{- required ? ' required="true"' : '' }}
@@ -84,7 +82,7 @@
 {% endmacro %}
 
 {% macro field_phone(id, name, label, value, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }} {{- required ? '<span> *</span>' : '<span> (optional)</span>' }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : ' <span>(optional)</span>' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="tel" class="usa-input"
         {{- required ? ' required="true"' : '' }}
@@ -93,7 +91,7 @@
 {% endmacro %}
 
 {% macro field_url(id, name, label, value, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="url" class="usa-input"
         {{- required ? ' required="true"' : '' }}
@@ -102,20 +100,19 @@
 {% endmacro %}
 
 {% macro field_date(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="usa-form-group">
-    <label class="usa-label" for="{{ id }}">{{ label }}{{- required ? '<span> *</span>' : '<span> (optional)</span>' }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : ' <span>(optional)</span>' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <div class="usa-date-picker">
-    <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="date" class="usa-input"
+    <input id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="date"
+         class="usa-input usa-input--sm"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
     </div>
-</div>
 {% endmacro %}
 
 {% macro field_textarea(id, name, label, value, required=false, attr={}, help=null) %}
-    <label class="usa-label" for="{{ id }}">{{ label }}</label>
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <textarea id="{{ id }}" name="{{ name }}" class="usa-textarea"
         {{- required ? ' required="true"' : '' }}
@@ -125,7 +122,7 @@
 
 {% macro field_file(id, name, label, value, required=false, attr={}, help=null) %}
 <div class="mb-3">
-    <label for="{{ id }}">{{ label }}</label>
+    <label for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if value %}<div>{{ value }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}" type="file" class="form-control"
         {{- required ? ' required="true"' : '' }}
@@ -136,19 +133,19 @@
 {% endmacro %}
 
 {% macro field_number(id, name, label, value, required=false, attr={}, help=null) %}
-    <label for="{{ id }}" class="usa-label">{{ label }}</label>
+    <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="number" class="usa-input usa-input--medium"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help }}</span>{% endif %}
 {% endmacro %}
 
 {% macro field_bool(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="form-check form-switch">
+<div class="usa-checkbox">
     <input name="{{ name }}" id="{{ id }}"
             type="checkbox" value="1" {{ value ? 'checked="true"': '' }}
-            class="form-check-input"  role="switch" />
-    <label for="{{ id }}" class="form-check-label">{{ label }}</label>
+            class="usa-checkbox__input" />
+    <label for="{{ id }}" class="usa-checkbox__label">{{ label }}</label>
 </div>
 {% endmacro %}
