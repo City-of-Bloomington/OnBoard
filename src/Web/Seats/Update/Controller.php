@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -41,12 +41,7 @@ class Controller extends \Web\Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
-            $appointers = [];
-            $table      = new AppointerTable();
-            $list       = $table->find();
-            foreach ($list as $a) { $appointers[] = ['id'=>$a->getId(), 'name'=>$a->getName()]; }
-
-            return new View($seat, $appointers);
+            return new View($seat);
 
         }
         return new \Web\Views\NotFoundView();

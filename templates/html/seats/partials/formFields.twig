@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat      seat          Seat Object
  *
@@ -9,78 +9,25 @@
  * @param array termIntervals
  * @param array termModifiers
  #}
+{% import  "html/macros/forms.twig" as forms %}
 <fieldset class="usa-fieldset margin-bottom-3"><legend class="usa-legend usa-legend--large">{{ _('info_seat') }}</legend>
-    <div class="usa-form-group">
-        <label  for="code">{{ _('code') }}</label>
-        <input name="code" class="form-control"
-                 id="code" required="true"
-               value="{{ seat.getCode() }}" />
-    </div>
-    <div class="usa-form-group">
-        <label  for="name">{{ _('name') }}</label>
-        <input name="name" class="form-control"
-                 id="name" required="true"
-              value="{{ seat.getName() }}"  />
-    </div>
-    <div class="usa-form-group">
-        <label   for="appointer_id">{{ _('appointer') }}</label>
-        <select name="appointer_id" class="form-control"
-                  id="appointer_id">
-        {% for a in appointers %}
-        <option value="{{ a.id }}" {{ a.id==seat.getAppointer_id() ? 'selected="true"' : '' }}>{{ a.name }}</option>
-        {% endfor %}
-        </select>
-    </div>
-    <div class="usa-form-group">
-        <label  for="startDate">{{ _('startDate') }}</label>
-        <input name="startDate" class="form-control"
-                 id="startDate" type="date"
-              value="{{ seat.getStartDate('Y-m-d') }}" />
-    </div>
-    <div class="form-check form-switch">
-        <label  for="voting" class="form-check-label">{{ _('voting') }}</label>
-        <input name="voting" class="form-check-input"
-                 id="voting" type="checkbox" role="switch"
-              value="1" {{ seat.getVoting() ? 'checked="true"' : '' }} />
-    </div>
-    <div class="form-check form-switch">
-        <label  for="takesApplications" class="form-check-label">{{ _('takesApplications') }}</label>
-        <input name="takesApplications" class="form-check-input"
-                 id="takesApplications" type="checkbox" role="switch"
-              value="1" {{ seat.getTakesApplications() ? 'checked="true"' : '' }} />
-    </div>
+    {{ forms.field_text  ('code',         'code',         _('code'),      seat.getCode(),                     true) }}
+    {{ forms.field_text  ('name',         'name',         _('name'),      seat.getName(),                     true) }}
+    {{ forms.field_select('appointer_id', 'appointer_id', _('appointer'), seat.getAppointer_id(), appointers, true) }}
+    {{ forms.field_date  ('startDate',    'startDate',    _('startDate'), seat.getStartDate('Y-m-d')) }}
+    {{ forms.field_bool  ('voting',       'voting',       _('voting'),    seat.getVoting() ) }}
+    {{ forms.field_bool  ('takesApplications', 'takesApplications', _('takesApplications'), seat.getTakesApplications() ) }}
 </fieldset>
 
-<fieldset class="usa-fieldset margin-bottom-3"><legend class="usa-legend usa-legend--large">{{ _('info_term') }}</legend>
-    <div class="usa-form-group">
-        <label   class="usa-label" for="type">{{ _('type') }}</label>
-        <select name="type" class="fusa-select"
-                  id="type">
-        {% for t in types %}
-        <option value="{{ t }}" {{ t==seat.getType() ? 'selected="true"' : '' }}>{{ _(t) }}</option>
-        {% endfor %}
-        </select>
-    </div>
-    <div class="usa-form-group">
-        <label class="usa-label"   for="termLength">{{ _('termLength') }}</label>
-        <select name="termLength" class="usa-select"
-                  id="termLength">
-        {% for interval, label in termIntervals %}
-        <option value="{{ interval }}" {{ interval==seat.getTermLength() ? 'selected="true"' : '' }}>{{ label }}</option>
-        {% endfor %}
-        </select>
-    </div>
-    <div class="usa-form-group">
-        <label  class="usa-label"  for="termModifier">{{ _('termModifier') }}</label>
-        <select name="termModifier" id="termModifier" class="usa-select">
-            <option value=""></option>
-            {% for modifier, label in termModifiers %}
-            <option value="{{ modifier }}" {{ modifier==seat.getTermModifier() ? 'selected="true"' : '' }}>{{ label }}</option>
-            {% endfor %}
-        </select>
-    </div>
+<fieldset class="usa-fieldset margin-bottom-3">
+    <legend class="usa-legend usa-legend--large">{{ _('info_term') }}</legend>
+
+    {{ forms.field_select('type',         'type',         _('type'),         seat.getType(),         types, true ) }}
+    {{ forms.field_select('termLength',   'termLength',   _('termLength'),   seat.getTermLength(),   termIntervals) }}
+    {{ forms.field_select('termModifier', 'termModifier', _('termModifier'), seat.getTermModifier(), termModifiers) }}
 </fieldset>
 
-<fieldset class="usa-fieldset margin-bottom-3"><legend class="usa-legend usa-legend--large">{{ _(['requirement', 'requirements', 10]) }}</legend>
+<fieldset class="usa-fieldset margin-bottom-3">
+    <legend class="usa-legend usa-legend--large">{{ _(['requirement', 'requirements', 10]) }}</legend>
     <textarea name="requirements" class="usa-textarea">{{ seat.getRequirements() }}</textarea>
 </fieldset>
