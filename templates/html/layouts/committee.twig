@@ -18,13 +18,14 @@
         {% endif %}
 
         <div class="grid-container">
+            {{ include('html/committees/partials/header.twig') }}
+
             <div class="grid-row grid-gap">
                 <aside class="usa-layout-docs-sidenav desktop:grid-col-3 margin-top-3">
                 {{ include('html/committees/partials/side-nav.twig') }}
                 </aside>
 
                 <div class="desktop:grid-col-9">
-                {{ include('html/committees/partials/header.twig') }}
                 {% block content %}
                 {% endblock %}
                 </div>

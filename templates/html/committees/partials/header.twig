@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param string    ROUTE_NAME   Global
@@ -12,8 +12,7 @@
    "Current" routes will not have the parameter at all
 #}
 <header>
-        <h1>{{ committee.getName() }}</h1>
+    <h1>{{ committee.getName() }}</h1>
     {% set url     = current_url() %}
     {% set current = url.current is defined and url.current==0 ? false : true %}
-    
 </header>
