@@ -16,7 +16,7 @@
 
 {% macro field_text(id, name, label, value, required=false, attr={}, help=null) %}
     <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -31,7 +31,7 @@
         <label class="usa-radio__label" for="{{ id }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
     </div>
     {% endfor %}
-    {% if help %}<p>{{ help }}</p>{% endif %}
+    {% if help %}<p class="usa-hint" id="{{ id }}-help">{{ help|raw }}</p>{% endif %}
 </div>
 {% endmacro %}
 
@@ -43,13 +43,13 @@
         <label class="usa-checkbox__label" for="{{ id }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
     </div>
     {% endfor %}
-    {% if help %}<p>{{ help }}</p>{% endif %}
+    {% if help %}<p class="usa-hint">{{ help|raw }}</p>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro field_select(id, name, label, value, options, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <select id="{{ id }}" name="{{ name }}" class="usa-select"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -62,7 +62,7 @@
 
 {% macro field_combo(id, name, label, value, options, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <div class="usa-combo-box" data-placeholder={{ value }}>
         <select id="{{ id }}" name="{{ name }}" class="usa-select"
             {{- required ? ' required="true"' : '' }}
@@ -77,7 +77,7 @@
 
 {% macro field_password(id, name, label, value, required=false, attr={}, help=null) %}
     <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="password" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -86,7 +86,7 @@
 
 {% macro field_email(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="email" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -95,7 +95,7 @@
 
 {% macro field_phone(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : ' <span>(optional)</span>' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="tel" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -104,7 +104,7 @@
 
 {% macro field_url(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="url" class="usa-input"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -113,7 +113,7 @@
 
 {% macro field_date(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : ' <span>(optional)</span>' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <div class="usa-date-picker">
     <input id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="date"
          class="usa-input usa-input--sm"
@@ -125,7 +125,7 @@
 
 {% macro field_textarea(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <textarea id="{{ id }}" name="{{ name }}" class="usa-textarea"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -140,13 +140,13 @@
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help }}</span>{% endif %}
+    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help|raw }}</span>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro field_number(id, name, label, value, required=false, attr={}, help=null) %}
     <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help }}</div>{% endif %}
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
     <input  id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="number" class="usa-input usa-input--medium"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -157,7 +157,9 @@
 <div class="usa-checkbox">
     <input name="{{ name }}" id="{{ id }}"
             type="checkbox" value="1" {{ value ? 'checked="true"': '' }}
+            {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
             class="usa-checkbox__input" />
     <label for="{{ id }}" class="usa-checkbox__label">{{ label }}</label>
+    {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
 </div>
 {% endmacro %}
