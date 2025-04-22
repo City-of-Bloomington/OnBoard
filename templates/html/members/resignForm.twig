@@ -1,23 +1,19 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Member    member
  * @param Committee committee
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"         as forms   %}
 {% block content %}
 <section>
     <header><h2>{{ _('member_end') }}</h2></header>
 
     <form class="usa-form" method="post">
-        <fieldset><legend>{{ member.getPerson().getFullname() }}</legend>
-            <div class="form-group">
-                <label for="endDate">{{ _('endDate') }}</label>
-                <input  id="endDate" class="form-control"
-                      name="endDate" type="date"
-                    value="{{ member.getEndDate() ? member.getEndDate('Y-m-d') : 'now'|date('Y-m-d') }}" />
-            </div>
+        <fieldset class="usa-fieldset">
+            <legend class="usa-legend">{{ member.getPerson().getFullname() }}</legend>
+            {{ forms.field_date('endDate', 'endDate', _('endDate'), member.getEndDate() ? member.getEndDate('Y-m-d') : 'now'|date('Y-m-d'), true  ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('committees.members', {id: member.getCommittee_id()}), _('cancel'), 'cancel') }}
@@ -26,8 +22,14 @@
 </section>
 
 {% if member.getSeat_id() %}
-{{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
-{{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
+<section>
+    <h2>{{ _('info_seat') }}</h2>
+    {{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
+</section>
+<section>
+    <h2>{{ _(['past_member', 'past_members', 10]) }}</h2>
+    {{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
+</section>
 {% endif %}
 
 {% endblock %}

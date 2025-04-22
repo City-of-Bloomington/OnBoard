@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -19,12 +19,9 @@ class View extends \Web\View
                 ? parent::generateUri(     'seats.view'   , ['id'=>$m->getSeat_id()      ])
                 : parent::generateUri('committees.members', ['id'=>$m->getCommittee_id() ]);
 
-        $person = $m->getPerson() ?? new Person();
-
         $this->vars = [
             'member'     => $m,
             'committee'  => $m->getCommittee(),
-            'person'     => $person,
             'return_url' => $url
         ];
     }

@@ -161,3 +161,18 @@
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
 </div>
 {% endmacro %}
+
+{#
+ # Person Chooser Field
+ #
+ # The value passed in must be a Person object
+ # @see Application\Models\Person
+#}
+{% macro field_person(id, name, label, person, required=false, attr={}, help=null) %}
+    <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
+    <span   id="{{ id }}-name"> {{ person ? person.getFullname() : '' }}</span>
+    <input  id="{{ id }}" name="{{ name }}" value="{{ person ? person.getId() : '' }}" type="hidden"
+        {{- required ? ' required="true"' : '' }} />
+    <button type="button" class="person usa-button usa-button--unstyled margin-top-0"
+        onclick="PERSON_CHOOSER.open(event, '{{ id }}');">{{ person ? _('person_change') : _('person_choose') }}</button>
+{%endmacro %}

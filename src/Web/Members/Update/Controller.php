@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -23,12 +23,11 @@ class Controller extends \Web\Controller
 
         if (isset($member)) {
             if (!empty($_POST['committee_id'])) {
-                try {
-                    if (!empty($_POST['endDate'])) {
-                           $member->setEndDate($_POST['endDate'], 'Y-m-d');
-                    }
-                    else { $member->setEndDate(null); }
+                $member->setPerson_id($_POST['person_id']);
+                $member->setStartDate($_POST['startDate']);
+                $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
 
+                try {
                     MemberTable::update($member);
 
                     $url = $member->getSeat_id()

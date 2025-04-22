@@ -68,6 +68,11 @@ class View extends \Web\View
         return $out;
     }
 
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
     private static function termOptions(Seat $seat): array
     {
         if ($seat->getType() != 'termed') { return []; }
@@ -77,21 +82,27 @@ class View extends \Web\View
 
         $currentTerm = $seat->getTerm(time());
         if ($currentTerm) {
-            if ($currentTerm->isVacant()) { $out[] = $currentTerm; }
-
-            $defaultTermId = $currentTerm->getId();
+            if ($currentTerm->isVacant()) {
+                $out[] = ['value'=>$currentTerm->getId(),
+                          'label'=>$currentTerm->getStartDate(DATE_FORMAT).' - '.$currentTerm->getEndDate(DATE_FORMAT)];
+            }
 
             $d = new \DateTime('now');
             $d->add($termLength);
             $nextTerm = $seat->getTerm((int)$d->format('U'));
-            if ($nextTerm->isVacant()) { $out[] = $nextTerm; }
-
-            $list = [$nextTerm, $currentTerm];
+            if ($nextTerm->isVacant()) {
+                $out[] = ['value'=>$nextTerm->getId(),
+                          'label'=>$nextTerm->getStartDate(DATE_FORMAT).' - '.$nextTerm->getEndDate(DATE_FORMAT)];
+            }
 
             $d = new \DateTime('now');
             $d->sub($termLength);
             $previousTerm = $seat->getTerm((int)$d->format('U'));
-            if ($previousTerm && $previousTerm->isVacant()) { $out[] = $previousTerm; }
+            if ($previousTerm && $previousTerm->isVacant()) {
+                $out[] = ['value'=>$previousTerm->getId(),
+                          'label'=>$previousTerm->getStartDate(DATE_FORMAT).' - '.$previousTerm->getEndDate(DATE_FORMAT)];
+
+            }
         }
         return $out;
     }
