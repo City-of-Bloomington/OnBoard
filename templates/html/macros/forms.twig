@@ -114,13 +114,11 @@
 {% macro field_date(id, name, label, value, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : ' <span>(optional)</span>' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
-    <div class="usa-date-picker">
-    <input id="{{ id }}" name="{{ name }}"  value="{{ value }}" type="date"
-         class="usa-input usa-input--sm"
+    <input id="{{ id }}" name="{{ name }}" value="{{ value }}" type="date"
+        class="usa-input usa-input--medium"
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    </div>
 {% endmacro %}
 
 {% macro field_textarea(id, name, label, value, required=false, attr={}, help=null) %}
