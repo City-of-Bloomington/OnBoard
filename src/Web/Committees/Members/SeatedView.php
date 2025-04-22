@@ -51,7 +51,6 @@ class SeatedView extends View
      */
     private function createActionLinks(Committee $committee, array &$seat_data)
     {
-        $userCanEditSeats      = parent::isAllowed('seats',      'update');
         $userCanEditAlternates = parent::isAllowed('alternates', 'update');
         $userCanAppointMembers = parent::isAllowed('members',    'appoint');
         $userCanEditOffices    = parent::isAllowed('offices',    'update');
@@ -60,13 +59,6 @@ class SeatedView extends View
         foreach ($seat_data as $i=>$row) {
             $actions = [];
 
-            if ($userCanEditSeats) {
-                $actions[] = [
-                    'url'   => parent::generateUri('seats.update', ['id'=>$row['seat_id']]),
-                    'label' => $this->_('seat_edit'),
-                    'class' => 'edit'
-                ];
-            }
             if ($alternates && $userCanEditAlternates) {
                 if ($row['alternate_person_id']) {
                     $actions[] = [
