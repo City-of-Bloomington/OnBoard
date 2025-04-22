@@ -40,8 +40,8 @@ class Committee extends ActiveRecord
 			// This is where the code goes to generate a new, empty instance.
 			// Set any default values for properties that need it here
 			$this->setType('seated');
-			$this->setTermEndWarningDays(TERM_END_WARNING_DEFAULT);
-			$this->setApplicationLifetime(APPLICATION_LIFETIME_DEFAULT);
+			$this->setTermEndWarningDays (DEFAULT_TERM_END_WARNING);
+			$this->setApplicationLifetime(DEFAULT_APPLICATION_LIFETIME);
 		}
 	}
 

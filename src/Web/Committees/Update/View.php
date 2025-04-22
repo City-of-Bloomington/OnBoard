@@ -15,24 +15,42 @@ class View extends \Web\View
     {
         parent::__construct();
 
-        $departments = new DepartmentTable();
 
         $this->vars = [
-            'committee'       => $committee,
-            'committee_types' => self::committee_types(),
-            'departments'     => $departments->find()
+            'committee'         => $committee,
+            'committee_types'   => self::committee_types(),
+            'departments'       => self::departments()
         ];
     }
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/committees/updateForm.twig", $this->vars);
+        $form = $this->vars['committee']->getId() ? 'updateForm' : 'addForm';
+        return $this->twig->render("{$this->outputFormat}/committees/$form.twig", $this->vars);
     }
 
-    private static function committee_types(): array
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    public static function committee_types(): array
     {
         $out = [];
         foreach (Committee::$types as $t) { $out[] = ['value'=>$t]; }
+        return $out;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    public static function departments(): array
+    {
+        $out = [];
+        $t   = new DepartmentTable();
+        foreach ($t->find() as $d) { $out[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
         return $out;
     }
 }

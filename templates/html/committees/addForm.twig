@@ -9,9 +9,7 @@
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="grid-container">
-    <header>
-        <h1>{{ _('committee_add') }}</h1>
-    </header>
+    <header><h2>{{ _('committee_add') }}</h2></header>
     <form class="usa-form usa-form--large" method="post">
         {{ include('html/committees/partials/committee-fields.twig') }}
 

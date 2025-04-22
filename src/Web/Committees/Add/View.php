@@ -8,6 +8,7 @@ namespace Web\Committees\Add;
 
 use Application\Models\Committee;
 use Application\Models\DepartmentTable;
+use Web\Committees\Update\View as UpdateView;
 
 class View extends \Web\View
 {
@@ -19,20 +20,13 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'       => $c,
-            'committee_types' => self::committee_types(),
-            'departments'     => $d->find()
+            'committee_types' => UpdateView::committee_types(),
+            'departments'     => UpdateView::departments()
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/committees/addForm.twig', $this->vars);
-    }
-
-    private static function committee_types(): array
-    {
-        $out = [];
-        foreach (Committee::$types as $t) { $out[] = ['value'=>$t]; }
-        return $out;
     }
 }

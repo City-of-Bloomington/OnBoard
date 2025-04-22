@@ -103,8 +103,11 @@ define('DATETIME_FORMAT', 'n/j/Y H:i:s');
 
 define('LOCALE', 'en_US');
 
-define('TERM_END_WARNING_DEFAULT', 60);
-define('APPLICATION_LIFETIME_DEFAULT', 90);
+define('DEFAULT_CITY',                'Bloomington');
+define('DEFAULT_STATE',               'IN');
+define('DEFAULT_TERM_END_WARNING',     60);
+define('DEFAULT_APPLICATION_LIFETIME', 90);
+
 define('ADMINISTRATOR_EMAIL', 'someone@localhost');
 
 define('SMTP_HOST', 'smtp.bloomington.in.gov');
