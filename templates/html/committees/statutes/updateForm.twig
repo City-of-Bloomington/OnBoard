@@ -19,7 +19,7 @@
             {{ forms.field_url( 'url',      'url',      _('url'),      statute.getUrl()      ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('committees.info', {id: statute.getCommittee_id()}), _('cancel') ) }}
+            {{ forms.actionLink(uri('committees.statutes', {id: statute.getCommittee_id()}), _('cancel') ) }}
         </fieldset>
     </form>
 </section>
