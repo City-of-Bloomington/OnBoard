@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param MeetingFile meetingFile
  * @param Committee   committee
@@ -20,35 +20,21 @@
     <fieldset class="usa-fieldset">
         <legend class="usa-legend usa-legend--large">{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
 
-        
-            <label class="usa-label" for="meeting_id">{{ _('meeting') }}</label>
-            {% set url = current_url() %}
-            {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
-            <div class="usa-combo-boz">
-                <select class="usa-select"  id="meeting_id" name="meeting_id" required="true">
-                {% for m in meetings %}<option value="{{ m.value }}"{{ m.value==meetingFile.getMeeting_id() ? ' selected="true"' : ''}}>{{ m.label }}</option>{% endfor %}
-                </select>
-            </div>
-            {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
+        {% set url = current_url() %}
+        {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
+        {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.getMeeting_id(), meetings, true ) }}
+        {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
 
         {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
         {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
 
         <div class="usa-form-group">
-            <label class="usa-label" for="meetingFile">{{ _('meetingFile') }}</label>
-            <span class="usa-hint" id="meetingFile-help">{{ accept }} - {{ maxSize }}</span>
             {% if meetingFile.getFilename() -%}
             <div><a href="{{ uri('meetingFiles.download', {id: meetingFile.getId()}) }}">{{ meetingFile.getFilename() }}</a></div>
             {%- endif %}
-            <input class="usa-file-input"
-                    id ="meetingFile" 
-                    name="meetingFile" 
-                    type="file" 
-                    aria-describedby="meetingFile-help"
-                    accepts="{{ accept }}"
-                    size="{{ maxBytes }}"
-                    data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}." 
-                    />
+            {{ forms.field_file('meetingFile', 'meetingFile', _('meetingFile'), meetingFile,
+                                accept, maxSize, maxBytes, false, {},
+                                accept ~ ' - ' ~ maxSize) }}
         </div>
 
         {{ forms.button('submit', _('save'), 'save') }}

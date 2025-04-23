@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -9,7 +9,7 @@ namespace Web\MeetingFiles\Update;
 use Application\Models\MeetingTable;
 use Application\Models\MeetingFile;
 use Application\Models\Committee;
-use Web\File;
+use Application\Models\File;
 
 class View extends \Web\View
 {
@@ -27,17 +27,17 @@ class View extends \Web\View
         if (!$year) { $year = (int)$meeting->getStart('Y'); }
         if (!$year) { $year = (int)date('Y'); }
 
-       $this->vars = [
-            'meetingFile' => $file,
-            'committee'   => $committee,
-            'types'       => self::typeOptions(),
-            'year'        => $year,
-            'meetings'    => self::meetingOptions($committee, $year),
-            'accept'      => self::mime_types(),
-            'maxBytes'    => $maxBytes,
-            'maxSize'     => $maxSize
 
-        ];
+        $this->vars = [
+             'meetingFile' => $file,
+             'committee'   => $committee,
+             'types'       => self::typeOptions(),
+             'year'        => $year,
+             'meetings'    => self::meetingOptions($committee, $year),
+             'accept'      => self::mime_types(),
+             'maxBytes'    => $maxBytes,
+             'maxSize'     => $maxSize
+         ];
     }
 
     public function render(): string

@@ -63,7 +63,7 @@
 {% macro field_combo(id, name, label, value, options, required=false, attr={}, help=null) %}
     <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
     {% if help %}<div class="usa-hint" id="{{ id }}-help">{{ help|raw }}</div>{% endif %}
-    <div class="usa-combo-box" data-placeholder={{ value }}>
+    <div class="usa-combo-box" data-default-value={{ value }}>
         <select id="{{ id }}" name="{{ name }}" class="usa-select"
             {{- required ? ' required="true"' : '' }}
             {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
@@ -130,17 +130,21 @@
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %}>{{ value }}</textarea>
 {% endmacro %}
 
-{% macro field_file(id, name, label, value, required=false, attr={}, help=null) %}
-<div class="mb-3">
-    <label for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
-    {% if value %}<div>{{ value }}</div>{% endif %}
-    <input  id="{{ id }}" name="{{ name }}" type="file" class="form-control"
+{#
+ # The value passed in must be a File object
+ # @see Application\Models\File
+ #}
+{% macro field_file(id, name, label, file, accept, maxSize, maxBytes, required=false, attr={}, help=null) %}
+    <label class="usa-label" for="{{ id }}">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
+    {% if help %}<span class="usa-hint" id="{{ id }}-help">{{ help|raw }}</span>{% endif %}
+    <input class="usa-file-input" id="{{ id }}" name="{{ name }}" type="file"
+        accepts="{{ accept }}" size="{{ maxBytes }}"
+        data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
         {{- required ? ' required="true"' : '' }}
         {%- if help %} aria-describedby="{{ id  }}-help"{% endif %}
         {%- for k,v in attr %} {{ k }}="{{ v }}" {% endfor %} />
-    {% if help %}<span class="form-text" id="{{ id }}-help">{{ help|raw }}</span>{% endif %}
-</div>
 {% endmacro %}
+
 
 {% macro field_number(id, name, label, value, required=false, attr={}, help=null) %}
     <label for="{{ id }}" class="usa-label">{{ label }}{{ required ? ' <span>*</span>' : '' }}</label>
