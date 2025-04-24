@@ -11,13 +11,13 @@
 <section>
     <h2>{{ _(['current_member', 'current_members', 10]) }}</h2>
 
-    <ul class="usa-card-group grid-row margin-top-3">
+    <ul class="add-list-reset grid-row margin-bottom-3">
     {% for row in seat_data %}
-        <li class="grid-col-12 margin-bottom-2">
-            <div class="usa-card__container">
-                <div class="usa-card__header grid-row flex-row">
+        <li class="grid-col-12">
+            <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
+                <div class="grid-row flex-row">
                     <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3 class="usa-card__heading">
+                        <h3><a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">
                             {% if row.member_person_id %}
                             {{ row.member_firstname }} {{ row.member_lastname }}
                             {% else %}
@@ -36,29 +36,19 @@
                                 {{ _('alternate_vacant') }}
                                 {% endif %}
                             {% endif %}
-                        </h3>
-                    </div>
-                    <div class="grid-col-auto display-flex flex-align-center">
-                        <a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ _('view') }}</a>
+                        </a></h3>
                     </div>
                 </div>
-                <div class="usa-card__footer grid-row">
-                    <div class="grid-col flex-1">
-                        <div>
-                            <strong>{{ _('seat') }}:</strong> {{ row.seat_code }} {{ row.seat_name }}
-                        </div>
-                        <div>
-                            <strong>{{ _('seat_term'   ) }}:</strong> {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
-                        </div>
-                        <div>
-                            <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
-                        </div>
+                <div class="grid-row flex-1">
+                    <div class="grid-col">
+                        <strong>{{ _('seat') }}:</strong> {{ row.seat_code }}
                     </div>
-                    {% if row.actionLinks is defined %}
-                    <div class="grid-col-auto display-flex flex-align-center">
-                        {{ include('html/partials/moreLinks.twig', { actionLinks: row.actionLinks }) }}
+                    <div class="grid-col">
+                        <strong>{{ _('seat_term'   ) }}:</strong> {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
                     </div>
-                    {% endif %}
+                    <div class="grid-col">
+                        <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
+                    </div>
                 </div>
             </div>
         </li>
