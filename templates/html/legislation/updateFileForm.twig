@@ -1,39 +1,34 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param LegislationFile file
+ * param  Committee       committee
  * @param string          return_url
  *
  * @param string accept     Comma separated mime_types that are accepted
  * @param int    maxBytes   Max upload size in bytes
  * @param string maxSize    Max upload size, human readable
  #}
-{% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig"      as forms      %}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header><h2>{{ file.getLegislation().getTitle() }}</h2></header>
-    <form method="post" enctype="multipart/form-data">
-        <fieldset>
-            <legend>{{ file.getId() ? _('legislationFile_edit') : _('legislationFile_add') }}</legend>
-            <input type="hidden" name="legislationFile_id" value="{{ file.getId() }}" />
-            <input type="hidden" name="legislation_id"     value="{{ file.getLegislation_id() }}" />
+    <form method="post" class="usa-form" enctype="multipart/form-data" >
+        <fieldset       class="usa-fieldset">
+            <legend     class="usa-legend">{{ file.getId() ? _('legislationFile_edit') : _('legislationFile_add') }}</legend>
+            <input type="hidden" name="legislation_id" value="{{ file.getLegislation_id() }}" />
 
-            <div class="mb-3">
-                <label for="legislationFile">{{ _('legislationFile') }}</label>
-                {% if file.getFilename() -%}
-                <div><a href="{{ uri('legislationFiles.download') ~ '?legislationFile_id=' ~ file.getId() }}">{{ file.getFilename() }}</a></div>
-                {%- endif %}
-                <input id ="legislationFile" name="legislationFile" type="file" aria-describedby="legislationFile-help" />
-                <div id="legislationFile-help">
-                    <input name="MAX_FILE_SIZE" type="hidden" value="{{ maxBytes }}" />
-                    <div>{{ maxSize }}</div>
-                    <div>{{ accept  }}</div>
-                </div>
-            </div>
+            {% if file.getFilename() -%}
+            <div><a href="{{ uri('legislationFiles.download', {'id':file.getId()}) }}">{{ file.getFilename() }}</a></div>
+            {%- endif %}
+            {{ forms.field_file('legislationFile', 'legislationFile', _('legislationFile'), file,
+                                accept, maxSize, maxBytes, false, {},
+                                accept ~ ' - ' ~ maxSize) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(return_url , _('cancel'), 'cancel') }}
+            {{ forms.actionLink(url('legislation.view', {'id':file.getLegislation_id(), 'committee_id':file.getLegislation().getCommittee_id()    }) ,
+                                _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,7 +13,12 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $_GET['parent_id'] = null;
+        try { $committee = new Committee($params['committee_id']); }
+        catch (\Exception $e) { return new \Web\Views\NotFoundView(); }
+
+        $_GET['committee_id'] = $committee->getId();
+        $_GET[   'parent_id'] = null;
+
         foreach (['type', 'status'] as $f) {
             if (!empty($_GET[$f]) && empty($_GET["{$f}_id"])) {
                 try {
@@ -27,12 +32,6 @@ class Controller extends \Web\Controller
         }
 
         $table = new LegislationTable();
-
-        if (!empty($_GET['committee_id'])) {
-            try { $committee = new Committee($_GET['committee_id']); }
-            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
-        }
-
 
         if ($this->outputFormat == 'html') {
             $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -49,7 +48,7 @@ class Controller extends \Web\Controller
                             $list->getTotalItemCount(),
                             $page,
                             $list->getItemCountPerPage(),
-                            $committee ?? null);
+                            $committee);
 
         }
         else {

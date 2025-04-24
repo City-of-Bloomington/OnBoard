@@ -94,8 +94,8 @@
 
         {% if committee.isLegislative() %}
         <li class="usa-sidenav__item">
-            <a href="{{ uri('legislation.index') }}?committee_id={{ committee.getId() }};year={{ 'now'|date('Y') }}"
-            class="{{ ROUTE_NAME=='legislation.index' ? 'usa-current' : '' }}">
+            <a href="{{ uri('legislation.index', {'committee_id':committee.getId()}) }}?year={{ 'now'|date('Y') }}"
+               class="{{ ROUTE_NAME in ['legislation.index','legislation.add','legislation.update','legislation.view'] ? 'usa-current' : '' }}">
             {{ _(['legislation', 'legislations', 10]) }}
             </a>
         </li>

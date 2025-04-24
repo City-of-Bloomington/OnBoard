@@ -11,7 +11,7 @@ use Application\Models\File;
 
 class View extends \Web\View
 {
-    public function __construct(LegislationFile $file, string $return_url)
+    public function __construct(LegislationFile $file)
     {
         parent::__construct();
 
@@ -19,7 +19,7 @@ class View extends \Web\View
 
         $this->vars = [
             'file'        => $file,
-            'return_url'  => $return_url,
+            'committee'   => $file->getLegislation()->getCommittee(),
             'accept'      => self::mime_types(),
             'maxBytes'    => $maxBytes,
             'maxSize'     => $maxSize

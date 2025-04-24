@@ -1,18 +1,25 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array legislation
  #}
 {% import "html/macros/forms.twig" as forms %}
 {% for l in legislation %}
-<article>
-    <header>
-        <h2><a href="{{ uri('legislation.view', {id: l.getId()}) }}">{{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus() ? l.getStatus().getName() : '' }}</a>
-            {% for f in l.getFiles() %}
-                {{ forms.actionLink(uri('legislationFiles.download', {id: f.getId()}), _('download'), 'download') }}
-            {% endfor %}
+<article    class="usa-card">
+    <header class="usa-card__header">
+        <h2 class="usa-card__heading">
+            <a href="{{ uri('legislation.view', {'id': l.getId(), 'committee_id': l.getCommittee_id() }) }}">
+                {{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus() ? l.getStatus().getName() : '' }}
+            </a>
         </h2>
-        <h3>{{ l.getTitle() }}</h3>
     </header>
+    <div class="usa-card__body">
+        <p>{{ l.getTitle() }}</p>
+        <div>
+            {% for f in l.getFiles() -%}
+            {{- forms.actionLink(uri('legislationFiles.download', {id: f.getId()}), f.filename, 'download') -}}
+            {%- endfor %}
+        </div>
+    </div>
 </article>
 {% endfor %}

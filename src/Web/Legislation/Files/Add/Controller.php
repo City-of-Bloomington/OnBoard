@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -27,12 +27,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
-                                ? $_REQUEST['return_url']
-                                : ($file->getLegislation_id()
-                                    ? \Web\View::generateUrl('legislation.view', ['id'=>$file->getLegislation_id()])
-                                    : \Web\View::generateUrl('legislation.index'));
-
         if ($file->getLegislation_id()) {
             if (isset($_POST['legislation_id'])) {
                 if (isset($_FILES['legislationFile']) && $_FILES['legislationFile']['error'] != UPLOAD_ERR_NO_FILE) {
@@ -40,9 +34,10 @@ class Controller extends \Web\Controller
                         $file->setFile($_FILES['legislationFile']);
                         $file->save();
 
-                        $return_url = $_SESSION['return_url'];
-                        unset($_SESSION['return_url']);
-                        header("Location: $return_url");
+                        header('Location: ').\Web\View::generateUrl('legislation.view', [
+                            'id'           => $file->getLegislation_id(),
+                            'committee_id' => $file->getLegislation()->getCommittee_id()
+                        ]);
                         exit();
                     }
                     catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

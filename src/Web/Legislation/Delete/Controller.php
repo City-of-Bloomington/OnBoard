@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
         if (isset($legislation)) {
             $committee_id = $legislation->getCommittee_id();
             $year         = $legislation->getYear();
-            $return_url   = \Web\View::generateUrl('legislation.index')."?committee_id=$committee_id;year=$year";
+            $return_url   = \Web\View::generateUrl('legislation.index', ['committee_id'=>$committee_id])."?year=$year";
 
             $legislation->delete();
 

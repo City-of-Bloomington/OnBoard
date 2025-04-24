@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -16,11 +16,11 @@ class Controller extends \Web\Controller
         if (!empty($params['id'])) {
             try {
                 $file = new LegislationFile((int)$params['id']);
-                $lid  = $file->getLegislation_id();
-                $url  = \Web\View::generateUrl('legislation.view', ['id'=>$lid]);
-
                 $file->delete();
-                header("Location: $url");
+                header('Location: '.\Web\View::generateUrl('legislation.view', [
+                    'id'           => $file->getLegislation_id(),
+                    'committee_id' => $file->getLegislation()->getCommittee_id()
+                ]));
                 exit();
             }
             catch (\Exception $e) { }

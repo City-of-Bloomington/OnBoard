@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -21,7 +21,7 @@ class View extends \Web\View
                                 int   $totalItemCount,
                                 int   $currentPage,
                                 int   $itemsPerPage,
-                                ?Committee $committee=null)
+                                Committee $committee)
     {
         parent::__construct();
 
@@ -58,11 +58,18 @@ class View extends \Web\View
         return $options;
     }
 
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
     private static function years(): array
     {
+        $out   = [];
         $table = new LegislationTable();
         $data  = $table->years();
-        return array_keys($data);
+        foreach (array_keys($data) as $y) { $out[] = ['value'=>$y]; }
+        return $out;
     }
 
     private static function statuses(): array
@@ -83,16 +90,12 @@ class View extends \Web\View
         return $options;
     }
 
-    private function actionLinks(?Committee $committee=null): array
+    private function actionLinks(Committee $c): array
     {
         $links = [];
-        if ($committee && parent::isAllowed('legislation', 'update')) {
-            $params = [
-                'committee_id' => $committee->getId(),
-                'return_url'   => Url::current_url(BASE_HOST)
-            ];
+        if (parent::isAllowed('legislation', 'add')) {
             $links[] = [
-                'url' => parent::generateUri('legislation.add').'?'.http_build_query($params, '', ';'),
+                'url'   => parent::generateUri('legislation.add', ['committee_id'=>$c->getId()]),
                 'label' => parent::_('legislation_add'),
                 'class' => 'add'
             ];

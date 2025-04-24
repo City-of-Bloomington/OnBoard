@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -29,8 +29,10 @@ class Controller extends \Web\Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    $return_url = \Web\View::generateUrl('legislation.view', ['id'=>$action->getLegislation_id()]);
-                    header("Location: $return_url");
+                    header('Location: ').\Web\View::generateUrl('legislation.view', [
+                        'id'       => $action->getLegislation_id(),
+                        'committe' => $action->getLegislation()->getCommittee_id()
+                    ]);
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

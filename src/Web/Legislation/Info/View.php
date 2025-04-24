@@ -34,13 +34,11 @@ class View extends \Web\View
 
     private function actionLinks(Legislation $legislation): array
     {
-        $links = [];
+        $links  = [];
+        $params = ['id'=>$legislation->getId(), 'committee_id'=>$legislation->getCommittee()->getId()];
         if (parent::isAllowed('legislation', 'update')) {
-            $params = [
-                'return_url' => Url::current_url(BASE_HOST)
-            ];
             $links[] = [
-                'url'   => parent::generateUri('legislation.update', ['id'=>$legislation->getId()]).'?'.http_build_query($params, '', ';'),
+                'url'   => parent::generateUri('legislation.update', $params),
                 'label' => parent::_('legislation_edit'),
                 'class' => 'edit'
             ];
@@ -48,7 +46,7 @@ class View extends \Web\View
         }
         if (parent::isAllowed('legislation', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('legislation.delete', ['id'=>$legislation->getId()]),
+                'url'   => parent::generateUri('legislation.delete', $params),
                 'label' => parent::_('legislation_delete'),
                 'class' => 'delete'
             ];
@@ -59,8 +57,8 @@ class View extends \Web\View
     private function childLinks(Legislation $legislation): array
     {
         $links = [];
-        if (!$legislation->getParent_id() && parent::isAllowed('legislation', 'update')) {
-            $add   = parent::generateUri('legislation.add');
+        if (!$legislation->getParent_id() && parent::isAllowed('legislation', 'add')) {
+            $add   = parent::generateUri('legislation.add', ['committee_id'=>$legislation->getCommittee_id()]);
             $table = new TypesTable();
             $list  = $table->find(['subtype'=>true]);
             foreach ($list as $t) {

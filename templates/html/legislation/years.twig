@@ -17,9 +17,9 @@
         {% endif %}
     </header>
 
-    {% set uri = uri('legislation.index') ~ '?committee_id=' ~ committee.getId() %}
+    {% set uri = uri('legislation.index', {'committee_id': committee.getId()}) %}
     <ul>{% for year, count in years %}
-        <li><a href="{{ uri ~ ';year=' ~ year }}">{{ year }} ({{ count }})</a></li>
+        <li><a href="{{ uri ~ '?year=' ~ year }}">{{ year }} ({{ count }})</a></li>
         {% endfor %}
     </ul>
 </section>

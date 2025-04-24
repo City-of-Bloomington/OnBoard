@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array legislation
  * @param Committee committee
@@ -20,34 +20,19 @@
  * @param int       itemsPerPage
  * @param int       currentPage
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
 <section>
-    <header>
-        {% if committee %}
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-        {% endif %}
-    </header>
-
-    <form method="get">
-        <fieldset><legend>{{ _('legislation') }}</legend>
-            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee.getId(), committees, false, {onchange:'this.form.submit();'} ) }}
-            <div class="mb-3">
-                <label for="year">{{ _('year') }}</label>
-                <input  id="year" name="year" value="{{ year }}" type="number" class="form-control" />
-                <span class="form-text">
-                    <a href="{{ uri('legislation.years') ~ '?committee_id=' ~ committee.getId() }}">({{ years|last }} - {{ years|first }})</a>
-                </span>
-            </div>
+    <form method="get" class="usa-form">
+        <fieldset      class="usa-fieldset">
+            <legend    class="usa-legend usa-legend--large">{{ _('legislation') }}</legend>
+            <input name="committee_id" type="hidden" value="{{ committee.id }}" />
+            {{ forms.field_combo ('year',      'year',      _('year'),              year,      years ) }}
             {{ forms.field_select('status_id', 'status_id', _('legislationStatus'), status_id, statuses, false, {onchange:'this.form.submit();'} ) }}
-            {{ forms.field_select('type_id', 'type_id', _('type'), type_id, types, false, {onchange:'this.form.submit();'}  ) }}
-            {{ forms.field_text('number', 'number', _('number'), number ) }}
+            {{ forms.field_select('type_id',   'type_id',   _('type'),              type_id,   types,    false, {onchange:'this.form.submit();'} ) }}
+            {{ forms.field_text  ('number',    'number',    _('number'),            number ) }}
 
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>

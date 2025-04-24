@@ -1,10 +1,10 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param LegislationAction action
  #}
 {% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig"      as forms      %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header><h2>{{ action.getLegislation().getTitle() }}</h2></header>
@@ -18,7 +18,8 @@
             {{ forms.field_text('vote',       'vote',       _('vote'), action.getVote() ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('legislation.view', {id: action.getLegislation_id()}), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('legislation.view', { 'id': action.getLegislation_id(), 'committee_id': action.getLegislation().getCommittee_id() }),
+                                _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

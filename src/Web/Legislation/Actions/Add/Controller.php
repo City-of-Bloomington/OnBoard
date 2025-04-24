@@ -36,8 +36,10 @@ class Controller extends \Web\Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    $return_url = \Web\View::generateUrl('legislation.view', ['id'=>$action->getLegislation_id()]);
-                    header("Location: $return_url");
+                    header('Location: ').\Web\View::generateUrl('legislation.view', [
+                        'id'       => $action->getLegislation_id(),
+                        'committe' => $action->getLegislation()->getCommittee_id()
+                    ]);
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright 2020-2024 City of Bloomington, Indiana
+ * @copyright 2020-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
-$map->tokens(['id' => '\d+']);
+$map->tokens(['id'=>'\d+', 'committee_id'=>'\d+']);
 
 $map->attach('home.', '/', function ($r) {
     $r->get('calendarhook', 'notifications', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
@@ -52,20 +52,20 @@ $map->attach('appointers.', '/appointers', function ($r) {
 });
 
 $map->attach('committees.', '/committees', function ($r) {
-    $r->get('members',      '/{id}/members'     , Web\Committees\Members\Controller::class);
-    $r->get('update',       '/{id}/update'      , Web\Committees\Update\Controller::class)->allows(['POST']);
-    $r->get('end',          '/{id}/end'         , Web\Committees\End\Controller::class)->allows(['POST']);
-    $r->get('seats',        '/{id}/seats'       , Web\Committees\Seats\Controller::class);
-    $r->get('statutes',     '/{id}/statutes'    , Web\Committees\Statutes\Info\Controller::class);
-    $r->get('liaisons',     '/{id}/liaisons'    , Web\Committees\Liaisons\Info\Controller::class);
-    $r->get('applications', '/{id}/applications', Web\Committees\Applications\Controller::class);
-    $r->get('meetings',     '/{id}/meetings'    , Web\Committees\Meetings\Controller::class);
+    $r->get('members',      '/{id}/members'      , Web\Committees\Members\Controller::class);
+    $r->get('update',       '/{id}/update'       , Web\Committees\Update\Controller::class)->allows(['POST']);
+    $r->get('end',          '/{id}/end'          , Web\Committees\End\Controller::class)->allows(['POST']);
+    $r->get('seats',        '/{id}/seats'        , Web\Committees\Seats\Controller::class);
+    $r->get('statutes',     '/{id}/statutes'     , Web\Committees\Statutes\Info\Controller::class);
+    $r->get('liaisons',     '/{id}/liaisons'     , Web\Committees\Liaisons\Info\Controller::class);
+    $r->get('applications', '/{id}/applications' , Web\Committees\Applications\Controller::class);
+    $r->get('meetings',     '/{id}/meetings'     , Web\Committees\Meetings\Controller::class);
     $r->get('meetingsync',  '/{id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
-    $r->get('history',      '/{id}/history'     , Web\Committees\History\Controller::class);
-    $r->get('info',         '/{id}'             , Web\Committees\Info\Controller::class);
-    $r->get('add',          '/add'              , Web\Committees\Add\Controller::class)->allows(['POST']);
-    $r->get('report',       '/report'           , Web\Committees\Report\Controller::class);
-    $r->get('index',        ''                  , Web\Committees\List\Controller::class);
+    $r->get('history',      '/{id}/history'      , Web\Committees\History\Controller::class);
+    $r->get('info',         '/{id}'              , Web\Committees\Info\Controller::class);
+    $r->get('add',          '/add'               , Web\Committees\Add\Controller::class)->allows(['POST']);
+    $r->get('report',       '/report'            , Web\Committees\Report\Controller::class);
+    $r->get('index',        ''                   , Web\Committees\List\Controller::class);
 });
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
@@ -92,7 +92,7 @@ $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r)
     $r->get('index',  ''            , Web\Legislation\ActionTypes\List\Controller::class);
 });
 
-$map->attach('legislation.', '/legislation', function ($r) {
+$map->attach('legislation.', '/committees/{committee_id}/legislation', function ($r) {
     $r->get('add',    '/add'         , Web\Legislation\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update' , Web\Legislation\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/{id}/delete' , Web\Legislation\Delete\Controller::class);

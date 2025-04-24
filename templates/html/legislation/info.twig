@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation legislation
  * @param Committee   committee
@@ -8,29 +8,22 @@
  * @param array  legislationActions
  * @param array  legislationActionLinks
  #}
-{% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig"      as forms      %}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-
-
         {% if legislation.getParent_id() %}
         {% set parent=legislation.getParent() %}
-        <h3><a href="{{ uri('legislation.view', {id: legislation.getParent_id()}) }}">
+        <h2><a href="{{ uri('legislation.view', { 'id': legislation.getParent_id(), 'committee_id': committee.getId() }) }}">
             {{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}
             </a>
-        </h3>
-        <h3>{{ parent.getTitle() }}</h3>
+        </h2>
+        <h2>{{ parent.getTitle() }}</h2>
         {% endif %}
 
-        <h3>{{ legislation.getYear() }} {{ legislation.getType() }} {{ legislation.getNumber() }} {{ legislation.getStatus() }}</h3>
-        <h3>{{ legislation.getTitle() }}</h3>
+        <h2>{{ legislation.getYear() }} {{ legislation.getType() }} {{ legislation.getNumber() }} {{ legislation.getStatus() }}</h3>
+        <h2>{{ legislation.getTitle() }}</h2>
     </header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
