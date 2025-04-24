@@ -37,16 +37,11 @@
                     <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
             </thead>
             <tbody>
-                {% set canEditMembers   = isAllowed('members',    'update') %}
-                {% set canAddAlternates = isAllowed('alternates', 'add') %}
                 {% for t in terms %}
                 <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
                         {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
                     </td>
-                    <td>{% if canEditMembers %}
-                        {{ forms.actionLink(uri('members.appoint') ~ '?term_id=' ~ t.term_id, _('member_add'), 'add') }}
-                        {% endif %}
-                        <table>
+                    <td><table>
                         {% for m in t.members %}
                         <tr><th>{{ m.name }}</th>
                             <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
@@ -55,10 +50,7 @@
                         {% endfor %}
                         </table>
                     </td>
-                    <td>{% if canAddAlternates %}
-                        {{ forms.actionLink(uri('alternates.add') ~ '?term_id=' ~ t.term_id, _('alternate_add'), 'add') }}
-                        {% endif %}
-                        <table>
+                    <td><table>
                         {% for a in t.alternates %}
                         <tr><th>{{ a.name }}</th>
                             <td>{{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}</td>
