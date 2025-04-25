@@ -1,36 +1,44 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Reports\List;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 
 class View extends \Web\View
 {
-    public function __construct($reports, int $total, int $itemsPerPage, int $currentPage, ?Committee $committee=null)
+    public function __construct($reports,
+                                string $sort,
+                                int    $total,
+                                int    $itemsPerPage,
+                                int    $currentPage,
+                                ?Committee $committee=null)
     {
         parent::__construct();
 
         $this->vars = [
-            'reports'      => $this->report_data($reports),
+            'reports'      => self::report_data($reports),
+            'committee'    => $committee,
+            'committees'   => self::committees(),
+            'sort'         => $sort,
+            'sorts'        => self::sorts(),
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
-            'committee'    => $committee,
-            'actionLinks'  => $this->actionLinks($committee)
+            'actionLinks'  => self::actionLinks($committee)
         ];
     }
 
     public function render(): string
     {
-        $template = $this->vars['committee'] ? 'list_committee' : 'list_global';
-        return $this->twig->render("html/reports/$template.twig", $this->vars);
+        return $this->twig->render("html/reports/list.twig", $this->vars);
     }
 
-    private function report_data($reports): array
+    private static function report_data($reports): array
     {
         $canEdit   = parent::isAllowed('reports', 'update');
         $canDelete = parent::isAllowed('reports', 'delete');
@@ -41,14 +49,14 @@ class View extends \Web\View
             if ($canEdit) {
                 $links[] = [
                     'url'   => parent::generateUri('reports.update', ['id'=>$r->getId()]),
-                    'label' => $this->_('edit'),
+                    'label' => parent::_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('reports.delete', ['id'=>$r->getId()]),
-                    'label' => $this->_('delete'),
+                    'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
             }
@@ -59,15 +67,31 @@ class View extends \Web\View
         return $out;
     }
 
-    private function actionLinks(?Committee $committee=null): array
+    private static function actionLinks(?Committee $committee=null): array
     {
         if ($committee && parent::isAllowed('reports', 'add')) {
             return [[
                 'url'   => parent::generateUri('reports.add').'?committee_id='.$committee->getId(),
-                'label' => $this->_('report_add'),
+                'label' => parent::_('report_add'),
                 'class' => 'add'
             ]];
         }
         return [];
+    }
+
+    private static function committees(): array
+    {
+        $o = [['value'=>'']];
+        $t = new CommitteeTable();
+        foreach ($t->find() as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
+    }
+
+    private static function sorts(): array
+    {
+        return [
+            ['value'=>'asc',  'label'=>parent::translate('sort_date_asc' )],
+            ['value'=>'desc', 'label'=>parent::translate('sort_date_desc')]
+        ];
     }
 }

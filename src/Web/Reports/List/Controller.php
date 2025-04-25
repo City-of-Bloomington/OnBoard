@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,13 +15,11 @@ class Controller extends \Web\Controller
     {
         if (!empty($_GET['committee_id'])) {
             try { $committee = new Committee($_GET['committee_id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMesssages'][] = $e->getMessage();
-                unset($_GET['committee_id']);
-            }
+            catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
         }
 
         $table = new ReportsTable();
+        $search = isset($committee) ? ['committee_id'=>$committee->getId()] : [];
 
         switch ($this->outputFormat) {
             case 'json':
@@ -29,32 +27,23 @@ class Controller extends \Web\Controller
 
             default:
                 $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-                $list  = $table->find($_GET, 'reportDate desc', true);
+
+                $sort = 'desc';
+                if ( !empty($_GET['sort'])) {
+                    $sort = $_GET['sort']=='asc' ? 'asc' : 'desc';
+                }
+
+
+                $list  = $table->find($search, "reportDate $sort", true);
                 $list->setCurrentPageNumber($page);
                 $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
 
                 return new View($list,
+                                $sort,
                                 $list->getTotalItemCount(),
                                 parent::ITEMS_PER_PAGE,
                                 $page,
                                 $committee ?? null);
         }
-        if ($this->template->outputFormat == 'html') {
-
-            if (isset($committee)) {
-                $this->template->title = $committee->getName();
-                $this->template->blocks[] = new Block('committees/breadcrumbs.inc', ['committee' => $committee]);
-                $this->template->blocks[] = new Block('committees/header.inc',      ['committee' => $committee]);
-                $vars['committee'] = $committee;
-            }
-            $this->template->blocks[] = new Block('reports/list.inc',   $vars);
-            $this->template->blocks[] = new Block('pageNavigation.inc', ['paginator' => $list]);
-        }
-        else {
-            $this->template->blocks[] = new Block('reports/list.inc', [
-                'list' => $table->find($_GET, 'reportDate desc')
-            ]);
-        }
-        return $this->template;
     }
 }

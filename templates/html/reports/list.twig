@@ -4,19 +4,36 @@
  * @param array     reports
  * @param Committee committee
  *
+ * @param array     committees
+ * @param array     sorts
+ *
  * Pagination
+ * @param string sort
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
  #}
-{% extends "html/layouts/committee.twig" %}
+{% set t = committee ? 'html/layouts/committee.twig' : 'html/layouts/default.twig' %}
+{% extends t %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
-    <h2>{{ _(['report', 'reports', 10]) }}</h2>
-    {% if actionLinks %}
+<section>
+    <header>
+        <h2>{{ _(['report', 'reports', 10]) }}</h2>
+        {% if actionLinks %}
         {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
+        {% endif %}
+    </header>
+
+    <form method="get" class="usa-form">
+        <fieldset      class="usa-fieldset">
+            <input name="page" value="{{ currentPage }}" type="hidden" />
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('sort', 'sort', _('sort'), sort, sorts, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.button('submit', _('filter'), 'search') }}
+        </fieldset>
+    </form>
 
     {% if reports %}
     <ul class="usa-collection usa-collection--condensed margin-top-3">
@@ -48,5 +65,5 @@
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
     {% endif %}
-    
+</section>
 {% endblock %}
