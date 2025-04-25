@@ -1,20 +1,10 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param int    person_id
- * @param string firstname
- * @param string lastname
- * @param string email
- * @param string phone
- * @param string website
- * @param string gender
- * @param string race_id
- * @param string address
- * @param string city
- * @param string state
- * @param string zip
- * @param array  races      Options for race_id
- * @param array  states     Options for state
+ * @param Person person
+ * @param array  races
+ * @param array  states
+ * @param array  genders
  *
  * @param string return_url
  * @param array  additional_params
@@ -25,81 +15,39 @@
 {% block content %}
 <section class="grid-container">
     <header>
-        <h1>{{ person_id ? _('person_edit') : _('person_add') }}</h1>
+        <h1>{{ person.getId() ? _('person_edit') : _('person_add') }}</h1>
     </header>
 
-    <form class="usa-form usa-form--large" method="post">
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">Full Name</legend>
-            {% if person_id %}
-            <input name="person_id" type="hidden" value="{{ person_id }}" />
-            {% endif %}
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname, true) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname,  true) }}
+    <form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
+            <legend     class="usa-legend">Full Name</legend>
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), person.getFirstname(), true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), person.getLastname(),  true) }}
         </fieldset>
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">Contact</legend>
-            {{ forms.field_email('email',    'email',     _('email'    ), email ) }}
-            {{ forms.field_phone('phone',    'phone',     _('phone'    ), phone ) }}
-            <label class="usa-label" for="website">{{ _('website') }}<span> (optional)</span></label>
-            <input class="usa-input" name="website" id="website" value="{{ website }}" type="url" />
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">Contact</legend>
+            {{ forms.field_email('email',   'email',   _('email'  ), person.getEmail()   ) }}
+            {{ forms.field_phone('phone',   'phone',   _('phone'  ), person.getPhone()   ) }}
+            {{ forms.field_url  ('website', 'website', _('website'), person.getWebsite() ) }}
         </fieldset>
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('mail_address') }}</legend>
-            {{ forms.field_text('address', 'address', _('streetaddress'), address ) }}
-            {{ forms.field_text('city',    'city',    _('city'   ), city  ) }}
-            <label for="state" class="usa-label">{{ _('state') }}</label>
-            <select name="state" id="state" class="usa-select">
-                {% for s in states %}
-                <option {{ s==state ? 'selected="true"' : '' }}>{{ s }}</option>
-                {% endfor %}
-            </select>
-            {{ forms.field_number('zip', 'zip', _('zip'), zip, false, {pattern:'[\d]{5}(-[\d]{4})?'} ) }}
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">{{ _('mail_address') }}</legend>
+            {{ forms.field_text  ('address', 'address', _('streetaddress'), person.getAddress() ) }}
+            {{ forms.field_text  ('city',    'city',    _('city'),          person.getCity()    ) }}
+            {{ forms.field_select('state',   'state',   _('state'),         person.getState(), states ) }}
+            {{ forms.field_number('zip',     'zip',     _('zip'),           person.getZip(), false, { pattern:'[\d]{5}(-[\d]{4})?' } ) }}
         </fieldset>
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('gender') }}</legend>
-            <div class="usa-radio">
-                <input
-                    class="usa-radio__input"
-                    id="male"
-                    type="radio"
-                    name={{ _('gender') }}
-                    value="male"
-                    {{ gender=='male' ? 'checked="checked"' : '' }}
-                />
-                <label class="usa-radio__label" for="male">M</label>
-            </div>
+        <fieldset   class="usa-fieldset">
+            {{ forms.field_radio ('gender',  'gender',  _('gender'), person.getGender(),  genders ) }}
+            {{ forms.field_select('race_id', 'race_id', _('race'),   person.getRace_id(), races   ) }}
 
-            <div class="usa-radio">
-                <input
-                    class="usa-radio__input"
-                    id="female"
-                    type="radio"
-                    name={{ _('gender') }}
-                    value="female"
-                    {{ gender=='female' ? 'checked="checked"' : '' }}
-                />
-                <label class="usa-radio__label" for="female">F</label>
-            </div>
+            {% for k, v in additional_params %}
+            <input name="{{ k }}" type="hidden" value="{{ v }}" />
+            {% endfor %}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel') ) }}
         </fieldset>
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('race') }}</legend>
-            <label for="race_id" class="usa-label">{{ _('race') }}<span> (optional)</span></label>
-            <select name="race_id" id="race_id" class="usa-select" >
-                <option></option>
-                {% for r in races %}
-                <option value="{{ r.getId() }}" {{ race_id==r.getId() ? 'selected="true"' : '' }}>{{ r.getName() }}</option>
-                {% endfor %}
-            </select>
-
-         </fieldset>
-
-        {% for k, v in additional_params %}
-        <input name="{{ k }}" type="hidden" value="{{ v }}" />
-        {% endfor %}
-
-        {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(return_url, _('cancel') ) }}
     </form>
 </section>
 

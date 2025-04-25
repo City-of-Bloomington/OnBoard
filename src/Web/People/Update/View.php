@@ -11,44 +11,68 @@ use Application\Models\RaceTable;
 
 class View extends \Web\View
 {
-    public function __construct(Person $person)
+    public function __construct(Person $person, string $return_url)
     {
         parent::__construct();
 
         $this->vars = [
-            'person_id' => $person->getId(),
-            'firstname' => $person->getFirstname(),
-            'lastname'  => $person->getLastname(),
-            'email'     => $person->getEmail(),
-            'phone'     => $person->getPhone(),
-            'website'   => $person->getWebsite(),
-            'gender'    => $person->getGender(),
-            'race_id'   => $person->getRace_id(),
-            'address'   => $person->getAddress(),
-            'city'      => $person->getCity(),
-            'state'     => $person->getState(),
-            'zip'       => $person->getZip()
+            'person'     => $person,
+            'races'      => self::races(),
+            'states'     => self::states(),
+            'genders'    => self::genders(),
+            'callback'   => isset($_REQUEST['callback']),
+            'return_url' => $return_url
         ];
+
         // Preserve any extra parameters passed in
         $params = [];
         foreach ($_REQUEST as $key=>$value) {
             if (!in_array($key, array_keys($this->vars))) { $params[$key] = $value; }
         }
         $this->vars['additional_params'] = $params;
-        $this->vars['callback'         ] = isset($_REQUEST['callback']);
-
-        $table = new RaceTable();
-        $this->vars['races' ] = $table->find();
-        $this->vars['states'] = Person::$STATES;
-
-        if (!empty($_REQUEST['return_url'])) { $return_url = $_REQUEST['return_url']; }
-        elseif ($person->getId())            { $return_url = $person->getUrl(); }
-        else                                 { $return_url = parent::generateUrl('people.index'); }
-        $this->vars['return_url'] = $return_url;
     }
 
     public function render(): string
     {
         return $this->twig->render("{$this->outputFormat}/people/updateForm.twig", $this->vars);
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function states(): array
+    {
+        $o = [['value'=>'']];
+        foreach (Person::$STATES as $s) { $o[] = ['value'=>$s]; }
+        return $o;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    public static function races(): array
+    {
+        $o = [['value'=>'']];
+        $t = new RaceTable();
+        foreach ($t->find() as $r) { $o[] = ['value'=>$r->getId(), 'label'=>$r->getName()]; }
+        return $o;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    public static function genders(): array
+    {
+        return [
+            ['value' => ''],
+            ['value' => 'male'  ],
+            ['value' => 'female']
+        ];
     }
 }

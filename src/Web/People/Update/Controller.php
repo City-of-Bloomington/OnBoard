@@ -13,8 +13,6 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $errorURL = $_REQUEST['return_url'] ?? \Web\View::generateUrl('people.index');
-
         if (!empty($params['id'])) {
             try { $person = new Person($params['id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
@@ -24,18 +22,13 @@ class Controller extends \Web\Controller
             return new \Web\Views\NotFoundView();
         }
 
+        $return_url = $_REQUEST['return_url'] ?? \Web\View::generateUrl('people.view', ['id'=>$person->getId()]);
+
         if (isset($_POST['firstname'])) {
             $person->handleUpdate($_POST);
             try {
                 $person->save();
 
-                if (isset($_REQUEST['return_url'])) {
-                    $return_url = new Url($_REQUEST['return_url']);
-                    $return_url->person_id = $person->getId();
-                }
-                else {
-                    $return_url = $person->getUrl();
-                }
                 header("Location: $return_url");
                 exit();
             }
@@ -44,6 +37,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        return new View($person);
+        return new View($person, $return_url);
     }
 }

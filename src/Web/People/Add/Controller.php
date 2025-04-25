@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,7 +13,17 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $person = new Person();
+        $person     = new Person();
+
+        if (isset($_REQUEST['return_url'])) {
+            $return_url = new Url($_REQUEST['return_url']);
+        }
+        elseif (isset($_REQUEST['callback'])) {
+            $return_url = new Url(\Web\View::generateUrl('people.callback'));
+        }
+        else {
+            $return_url = new Url(\Web\View::generateUrl('people.index'));
+        }
 
         if (isset($_POST['firstname'])) {
             $person->handleUpdate($_POST);
@@ -21,16 +31,15 @@ class Controller extends \Web\Controller
                 $person->save();
 
                 if (isset($_REQUEST['return_url'])) {
-                    $return_url = new Url($_REQUEST['return_url']);
                     $return_url->person_id = $person->getId();
                 }
                 elseif (isset($_REQUEST['callback'])) {
-                    $return_url = new Url(\Web\View::generateUrl('people.callback'));
                     $return_url->person_id = $person->getId();
                 }
                 else {
-                    $return_url = $person->getUrl();
+                    $return_url = new Url(\Web\View::generateUrl('people.view', ['id'=>$person->getId()]));
                 }
+
                 header("Location: $return_url");
                 exit();
             }
@@ -39,6 +48,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        return new \Web\People\Update\View($person);
+        return new \Web\People\Update\View($person, (string)$return_url);
     }
 }
