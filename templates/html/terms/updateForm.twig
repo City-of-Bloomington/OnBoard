@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat      seat
  * @param Committee committee
@@ -9,7 +9,7 @@
  * @param array termIntervals  Human readable termIntervals lookup
  * @param array termModifiers  Human readable termModifiers lookup
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
@@ -20,22 +20,12 @@
 <section>
     <header><h2>{{ term.getId() ? _('term_edit') : _('term_add') }}</h2></header>
 
-    <form method="post">
-        <fieldset>
+    <form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
             <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
 
-            <div class="form-group">
-                <label  for="startDate">{{ _('startDate') }}</label>
-                <input name="startDate" class="form-control"
-                         id="startDate" type="date" required="true"
-                    value="{{ term.getStartDate('Y-m-d') }}" />
-            </div>
-            <div class="form-group">
-                <label  for="endDate">{{ _('endDate') }}</label>
-                <input name="endDate" class="form-control"
-                         id="endDate" type="date" required="true"
-                      value="{{ term.getStartDate('Y-m-d') }}" />
-            </div>
+            {{ forms.field_date('startDate', 'startDate', _('startDate'), term.getStartDate('Y-m-d'), true  ) }}
+            {{ forms.field_date(  'endDate',   'endDate', _(  'endDate'), term.getEndDate('Y-m-d'),   true  ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
