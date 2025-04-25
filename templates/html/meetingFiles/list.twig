@@ -1,61 +1,47 @@
 {#
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee (optional)
  * @param array     files
  * @param array     sort
- * @param int       year   Current chosen year
- * @param array     years  Available years for the committee
- * @param string    type   Current chosen type
- * @param array     types  Meeting file types
+ * @param int       year      Current chosen year
+ * @param string    type      Current chosen type
  * @param array     actionLinks
- * @param array     addLinks
+ *
+ * Drop Down Options
+ * @param array     years      Available years for the committee
+ * @param array     types      Meeting file types
+ * @param array     committees
  *
  * Pagination parameters
+ * @param string    sort
  * @param int       total
  * @param int       itemsPerPage
  * @param int       currentPage
  #}
-{% extends "html/layouts/default.twig" %}
+{% set t = committee ? 'html/layouts/committee.twig' : 'html/layouts/default.twig' %}
+{% extends t %}
 {% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 
 {% block content %}
 <section>
-    <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+    <header>
+        <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
+    </header>
 
-    <form class="usa-form" method="get">
-        <fieldset class="usa-fieldset">
-            {% if committee %}
-            <input type="hidden" name="committee_id" value="{{ committee.getId() }}" />
-            {% endif %}
+    <form method="get" class="usa-form">
+        <fieldset      class="usa-fieldset">
+            <input name="page" value="{{ currentPage }}" type="hidden" />
 
-            {% set url = current_url() %}
-            {% for k,v in url.parameters %}
-            {% if k!='type' and k!='year' %}
-            <input name="{{ k }}" type="hidden" value="{{ v }}" />
-            {% endif %}
-            {% endfor %}
-
-            <label class="usa-label margin-top-0" for="year">{{ _('year') }}</label>
-            <select class="usa-select" id="year" name="year">
-                <option value="" aria-label="{{ _('selectYear') }}">{{ _('all') }}</option>
-                {% for y in years %}
-                <option value="{{ y }}" {{ y==year ? 'selected="true"' : '' }}>{{ y }}</option>
-                {% endfor %}
-            </select>
-
-            <label class="usa-label" for="type">{{ _('type') }}</label>
-            <select class="usa-select" id="type" name="type">
-                <option value="" aria-label="{{ _('choose_type') }}">{{ _('all') }}</option>
-                {% for t in types %}
-                <option value="{{ t }}" {{ t==type ? 'selected="true"' : '' }}>{{ t }}</option>
-                {% endfor %}
-            </select>
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('year', 'year', _('year'), year, years, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('type', 'type', _('type'), type, types, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('sort', 'sort', _('sort'), sort, sorts, false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('filter'), 'search') }}
         </fieldset>
     </form>
-
 
     <ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for f in files %}
@@ -81,7 +67,6 @@
     </li>
     {% endfor %}
     </ul>
-
 
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}

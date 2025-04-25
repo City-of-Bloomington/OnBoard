@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\MeetingFiles\List;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeTable;
 use Application\Models\MeetingFile;
 
 class View extends \Web\View
@@ -25,12 +26,14 @@ class View extends \Web\View
         $this->vars = [
             'committee'    => $committee,
             'files'        => $this->createFileData($files),
-            'sort'         => $sort,
             'year'         => $search['year'] ?? null,
-            'years'        => $years,
             'type'         => $search['type'] ?? null,
-            'types'        => MeetingFile::$types,
+            'years'        => self::years($years),
+            'types'        => self::types(),
+            'committees'   => self::committees(),
+            'sorts'        => self::sorts(),
             'actionLinks'  => $this->createActionLinks(),
+            'sort'         => implode(' ', $sort),
             'total'        => $totalItemCount,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage
@@ -39,8 +42,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        $template = $this->vars['committee'] ? 'list_committee' : 'list_global';
-        return $this->twig->render($this->outputFormat."/meetingFiles/$template.twig", $this->vars);
+        return $this->twig->render($this->outputFormat."/meetingFiles/list.twig", $this->vars);
     }
 
     private function createActionLinks(): array
@@ -67,5 +69,56 @@ class View extends \Web\View
             $filedata[] = $d;
         }
         return $filedata;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function committees(): array
+    {
+        $o = [['value'=>'']];
+        $t = new CommitteeTable();
+        $l = $t->find();
+        foreach ($l as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function years(array $years): array
+    {
+        $o = [['value'=>'']];
+        foreach ($years as $y) { $o[] = ['value'=>$y]; }
+        return $o;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function types(): array
+    {
+        $o = [['value'=>'']];
+        foreach (MeetingFile::$types as $t) { $o[] = ['value'=>$t]; }
+        return $o;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function sorts(): array
+    {
+        return [
+            ['value'=>'start asc',  'label'=>parent::translate('sort_date_asc' )],
+            ['value'=>'start desc', 'label'=>parent::translate('sort_date_desc')]
+        ];
     }
 }
