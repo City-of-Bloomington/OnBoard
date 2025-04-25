@@ -43,7 +43,7 @@ $ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
 $ACL->allow(null,  'applicants',  'apply');
 $ACL->allow(null,  'login');
 $ACL->allow(null,
-            ['people', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
+            ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
             ['index', 'view', 'years', 'download', 'callback']);
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);

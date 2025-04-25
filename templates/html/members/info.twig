@@ -1,0 +1,19 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Member    member
+ * @param Committee committee
+ * @param array     actionLinks
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ member.getPerson().getFirstname() }} {{ member.getPerson().getLastname() }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </header>
+</section>
+
+{% endblock %}

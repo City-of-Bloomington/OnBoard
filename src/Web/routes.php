@@ -23,6 +23,7 @@ $map->attach('alternates.', '/alternates', function ($r) {
     $r->get('add',    '/add'        , Web\Alternates\Add\Controller::class)->allows(['POST']);
     $r->get('update', '/{id}/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/{id}/delete', Web\Alternates\Delete\Controller::class);
+    $r->get('view',   '/{id}'       , Web\Alternates\Info\Controller::class);
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
@@ -148,6 +149,7 @@ $map->attach('members.', '/members', function ($r) {
     $r->get('update',    '/{id}/update'   , Web\Members\Update\Controller::class   )->allows(['POST']);
     $r->get('resign',    '/{id}/resign'   , Web\Members\Resign\Controller::class   )->allows(['POST']);
     $r->get('delete',    '/{id}/delete'   , Web\Members\Delete\Controller::class);
+    $r->get('view',      '/{id}'          , Web\Members\Info\Controller::class);
 });
 
 $map->attach('offices.', '/offices', function ($r) {
