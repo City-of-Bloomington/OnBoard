@@ -27,10 +27,45 @@
     {% if seat.getType() == 'termed' %}
     <section>
         <header><h2>{{ _(['term', 'terms', 10]) }}</h2></header>
+
         {% if termActions %}
         {{ include('html/partials/actionLinks.twig', {actionLinks: termActions}, with_context=false) }}
         {% endif %}
-        <table class="usa-table">
+        <ul class="add-list-reset grid-row margin-y-3">
+            {% for t in terms %}
+            <li class="grid-col-12">
+                <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
+                    <div class="grid-row flex-row">
+                        <div class="grid-col flex-1 display-flex flex-align-center">
+                            <h3>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}</h3>
+                        </div>
+                    </div>
+                    <div class="grid-row margin-bottom-1">
+                        {% for m in t.members %}
+                            <div class="grid-col"><strong>Member:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.member_id}) }}">{{ m.name }}</a></div>
+                            <div class="grid-col"><strong>Start:</strong> {{ m.startDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>End:</strong> {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="grid-row margin-bottom-1">
+                        {% for a in t.alternates %}
+                            <div class="grid-col"><strong>Alternate:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.alternate_id}) }}">{{ a.name }}</a></div>
+                            <div class="grid-col"><strong>Start:</strong> {{ a.startDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>End:</strong> {{ a.endDate|date('m/d/Y') }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="grid-row flex-1 margin-top-2">
+                        <div class="grid-col">
+                        {% if t.actionLinks %}{{ include('html/partials/actionLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+        {# <table class="usa-table">
             <thead>
                 <tr><th>{{ _('term') }}</th>
                     <th>{{ _(['member', 'members', 10]) }}</th>
@@ -62,8 +97,8 @@
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
-    </section>
+        </table> #}
+
     {% elseif members is defined %}
     <section>
         <header><h3>{{ _(['member', 'members', 10]) }}</h3>
