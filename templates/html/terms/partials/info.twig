@@ -1,0 +1,28 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Term term
+ #}
+<div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
+    <div class="grid-row flex-row">
+        <div class="grid-col flex-1 display-flex flex-align-center">
+            <h3>{{ term.getStartDate('m/d/Y') }} - {{ term.getEndDate('m/d/Y') }}</h3>
+        </div>
+    </div>
+    <div class="flex-row margin-bottom-1">
+        {% for m in term.getMembers() %}
+        <div class="grid-row margin-bottom-1">
+            <div class="grid-col"><strong>{{ _(['member', 'members', 0]) }}:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.getId()}) }}">{{ m.getPerson().getFullname() }}</a></div>
+            <div class="grid-col"><strong>{{ _('start'                 ) }}:</strong> {{ m.getStartDate('m/d/Y') }}</div>
+            <div class="grid-col"><strong>{{ _('end'                   ) }}:</strong> {{ m.getEndDate() ? m.getEndDate('m/d/Y') : '' }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="grid-row margin-bottom-1">
+        {% for a in term.getAlternates() %}
+            <div class="grid-col"><strong>{{ _(['alternate', 'alternates', 0]) }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.getId()}) }}">{{ a.getPerson().getFullname() }}</a></div>
+            <div class="grid-col"><strong>{{ _('start'                       ) }}:</strong> {{ a.getStartDate('m/d/Y') }}</div>
+            <div class="grid-col"><strong>{{ _('end'                         ) }}:</strong> {{ a.getEndDate('m/d/Y') }}</div>
+        {% endfor %}
+    </div>
+</div>

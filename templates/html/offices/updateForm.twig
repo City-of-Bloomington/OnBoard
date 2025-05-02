@@ -1,22 +1,16 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Office    office
  * @param Committee committee
  * @param array     offices    Current offices in the committee
  #}
-{% extends "html/layouts/default.twig" %}
-{% import  "html/macros/forms.twig"      as forms      %}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-
-        <h3>{{ office.getId() ? _('office_edit') : _('office_add') }}</h3>
+        <h2>{{ office.getId() ? _('office_edit') : _('office_add') }}</h2>
     </header>
 
     <table>
@@ -28,9 +22,9 @@
         {% endfor %}
     </table>
 
-    <form method="post">
-        <fieldset>
-            <legend>{{ office.getPerson().getFullname() }}</legend>
+    <form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
+            <legend     class="usa-legend">{{ office.getPerson().getFullname() }}</legend>
 
             {{ forms.field_text('title', 'title', _('title'), office.getTitle(), true ) }}
             {{ forms.field_date('startDate', 'startDate', _('startDate'), office.getStartDate() ? office.getStartDate('Y-m-d') : 'now'|date('Y-m-d'), true)}}

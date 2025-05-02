@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Members\Info;
 
 use Application\Models\Member;
+use Application\Models\Seat;
 
 class View extends \Web\View
 {
@@ -15,9 +16,13 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'member'      => $member,
-            'committee'   => $member->getCommittee(),
-            'actionLinks' => $this->actionLinks($member)
+            'member'        => $member,
+            'committee'     => $member->getCommittee(),
+            'seat'          => $member->getSeat(),
+            'term'          => $member->getTerm(),
+            'actionLinks'   => self::actionLinks($member),
+            'termIntervals' => Seat::$termIntervals,
+            'termModifiers' => Seat::$termModifiers
         ];
     }
 
@@ -26,33 +31,33 @@ class View extends \Web\View
         return $this->twig->render('html/members/info.twig', $this->vars);
     }
 
-    private function actionLinks(Member $m): array
+    private static function actionLinks(Member $m): array
     {
         $links = [];
         if (parent::isAllowed('members', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('members.update', ['id'=>$m->getId()]),
-                'label' => $this->_('member_edit'),
+                'label' => parent::_('member_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
                 'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
-                'label' => $this->_('member_delete'),
+                'label' => parent::_('member_delete'),
                 'class' => 'delete'
             ];
         }
         if (parent::isAllowed('offices', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('offices.add')."?committee_id={$m->getCommittee_id()};person_id={$m->getPerson_id()}",
-                'label' => $this->_('office_add'),
+                'label' => parent::_('office_add'),
                 'class' => 'add'
             ];
             foreach ($m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
                 $links[] = [
-                    'url'   => parent::generateUri('offices.update', ['id'=>$office->getId()]),
-                    'label' => sprintf($this->_('office_edit', 'messages'), $office->getTitle()),
+                    'url'   => parent::generateUri('offices.update', ['id' => $office->getId()]),
+                    'label' => sprintf(parent::_('office_edit', 'messages'),  $office->getTitle()),
                     'class' => 'edit'
                 ];
             }
