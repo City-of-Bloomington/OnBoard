@@ -25,7 +25,7 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
         <h2>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h2>
     </header>
@@ -56,6 +56,9 @@
                 </a>
             </h3>
             <ul class="usa-collection__meta" aria-label="More information">
+                {% if not committee %}
+                <li><strong>{{ f.committee }} </strong></li>
+                {% endif %}
                 <li class="usa-collection__meta-item position-relative">
                     <strong>{{ _('type') }}:</strong> {{ f.type }}
                 </li>

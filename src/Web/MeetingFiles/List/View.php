@@ -64,7 +64,8 @@ class View extends \Web\View
                 'filename'    => $f->getFilename(),
                 'title'       => $f->getTitle(),
                 'meeting_id'  => $f->getMeeting_id(),
-                'meetingDate' => $f->getMeeting()->getStart(DATE_FORMAT)
+                'meetingDate' => $f->getMeeting()->getStart(DATE_FORMAT),
+                'committee'   => isset($committee) ? $committee->getName() : $f->getCommittee()->getName()
             ];
             $filedata[] = $d;
         }
