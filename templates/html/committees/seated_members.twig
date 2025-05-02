@@ -19,24 +19,24 @@
                     <div class="grid-col flex-1 display-flex flex-align-center">
                         <h3><a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">
                             {% if row.member_person_id %}
-                            {{ row.member_firstname }} {{ row.member_lastname }}
+                            {{ row.member_firstname }} {{ row.member_lastname }}</a></h3>
                             {% else %}
-                            {{ _('vacant') }}
+                            {{ _('vacant') }}</a></h3>
                             {% endif %}
                             {% if row.offices %}
                             {% for office in row.offices|split(',') %}
                                 {% set o=office|split('|') %}
-                                {{ o[1] }}
+                                <span class="usa-tag margin-left-1">{{ o[1] }}</span>
                             {% endfor %}
                             {% endif %}
                             {% if committee.allowsAlternates() %}
                                 {% if row.alternate_person_id %}
-                                {{ row.alternate_firstname }} {{ row.alternate_lastname }}
+                                {{ row.alternate_firstname }} {{ row.alternate_lastname }}</a></h3>
                                 {% else %}
-                                {{ _('alternate_vacant') }}
+                                {{ _('alternate_vacant') }}</a></h3>
                                 {% endif %}
                             {% endif %}
-                        </a></h3>
+                        
                     </div>
                 </div>
                 <div class="grid-row flex-1">
