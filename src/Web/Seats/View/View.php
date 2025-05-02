@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -127,7 +127,7 @@ class View extends \Web\View
                 'class' => 'add'
             ];
         }
-        if (parent::isAllowed('alternates', 'add')) {
+        if (parent::isAllowed('alternates', 'add') && $this->vars['committee']->allowsAlternates()) {
             $p = ['term_id'=>$term_id, 'return_url'=>Url::current_url(BASE_HOST)];
 
             $links[] = [
