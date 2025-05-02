@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Report    report
  * @param Committee committee
@@ -21,21 +21,13 @@
         {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
         {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
 
-        <div class="usa-form-group">
-            <label class="usa-label" for="applicantFile">{{ _('report') }}<span> *</span></label>
-            <span class="usa-hint" id="reportFile-help">{{ accept }} - {{ maxSize }}</span>
-            {% if report.getFilename() %}<div>{{ report.getFilename() }}</div>{% endif %}
-            <input class="usa-file-input" 
-                    id ="reportFile" 
-                    name="reportFile" 
-                    type="file"
-                    required="true" 
-                    aria-describedby="reportFile-help"
-                    accepts="{{ accept }}"
-                    size="{{ maxBytes }}"
-                    data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
-                    />
-        </div>
+        {% if report.getFilename() -%}
+        <div><a href="{{ uri('reports.download', {id: report.getId()}) }}">{{ report.getFilename() }}</a></div>
+        {%- endif %}
+        {{ forms.field_file('reportFile', 'reportFile', _('report'), report,
+                            accept, maxSize, maxBytes, false, {},
+                            accept ~ ' - ' ~ maxSize) }}
+
         {{ forms.button('submit', _('save'), 'save') }}
         {{ forms.actionLink(uri('reports.index') ~ '?committee_id=' ~ report.getCommittee_id(), _('cancel') ) }}
 

@@ -1,24 +1,18 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array data
+ * @param Seat      seat
+ * @param Committee committee
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header><h2>{{ _('seat_end') }}</h2></header>
 
-    <form method="post">
-        <fieldset>
-            <input name="seat_id" type="hidden" value="{{ seat.getId() }}" />
-
-            <div class="form-group">
-                <label  for="endDate">{{ _('endDate') }}</label>
-                <input name="endDate" class="form-control"
-                         id="endDate" type="date"
-                    value="{{ 'now'|date('Y-m-d') }}" />
-            </div>
+    <form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
+            {{ forms.field_date('endDate', 'endDate', _('endDate'), 'now'|date('Y-m-d'), true) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
