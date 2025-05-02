@@ -16,7 +16,7 @@
 {% block content %}
 <section class="grid-container">
     <header>
-        <h1>{{ seat.name }}</h1>
+        <h2>{{ seat.name }}</h2>
     </header>
     {% if seatActions is defined %}
     {{ include('html/partials/actionLinks.twig', {actionLinks: seatActions}, with_context=false) }}
@@ -26,7 +26,7 @@
 
     {% if seat.getType() == 'termed' %}
     <section>
-        <header><h2>{{ _(['term', 'terms', 10]) }}</h2></header>
+        <header><h3>{{ _(['term', 'terms', 10]) }}</h3></header>
 
         {% if termActions %}
         {{ include('html/partials/actionLinks.twig', {actionLinks: termActions}, with_context=false) }}
@@ -41,19 +41,21 @@
                         </div>
                     </div>
                     <div class="flex-row margin-bottom-1">
+                        {% set label = _(['member', 'members', 10]) %}
                         {% for m in t.members %}
                         <div class="grid-row margin-bottom-1">
-                            <div class="grid-col"><strong>{{ _(['member', 'members', 0]) }}:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.member_id}) }}">{{ m.name }}</a></div>
-                            <div class="grid-col"><strong>{{ _('start'                 ) }}:</strong> {{ m.startDate|date('m/d/Y') }}</div>
-                            <div class="grid-col"><strong>{{ _('end'                   ) }}:</strong> {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</div>
+                            <div class="grid-col"><strong>{{ label }}:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.member_id}) }}">{{ m.name }}</a></div>
+                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ m.startDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</div>
                         </div>
                         {% endfor %}
                     </div>
                     <div class="grid-row margin-bottom-1">
+                        {% set label = _(['alternate', 'alternates', 10]) %}
                         {% for a in t.alternates %}
-                            <div class="grid-col"><strong>{{ _(['alternate', 'alternates', 0]) }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.alternate_id}) }}">{{ a.name }}</a></div>
-                            <div class="grid-col"><strong>{{ _('start'                       ) }}:</strong> {{ a.startDate|date('m/d/Y') }}</div>
-                            <div class="grid-col"><strong>{{ _('end'                         ) }}:</strong> {{ a.endDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>{{ label }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.alternate_id}) }}">{{ a.name }}</a></div>
+                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ a.startDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ a.endDate|date('m/d/Y') }}</div>
                         {% endfor %}
                     </div>
                     <div class="grid-row flex-1 margin-top-2">
@@ -66,40 +68,6 @@
             {% endfor %}
         </ul>
     </section>
-
-        {# <table class="usa-table">
-            <thead>
-                <tr><th>{{ _('term') }}</th>
-                    <th>{{ _(['member', 'members', 10]) }}</th>
-                    <th>{{ _(['alternate', 'alternates', 10]) }}</th></tr>
-            </thead>
-            <tbody>
-                {% for t in terms %}
-                <tr><td>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}
-                        {% if t.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: t.actionLinks}, with_context=false) }}{% endif %}
-                    </td>
-                    <td><table>
-                        {% for m in t.members %}
-                        <tr><th><a href="{{ uri('members.view', {'id':m.member_id}) }}">{{ m.name }}</a></th>
-                            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
-                            <td>{% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}</td>
-                        </tr>
-                        {% endfor %}
-                        </table>
-                    </td>
-                    <td><table>
-                        {% for a in t.alternates %}
-                        <tr><th><a href="{{ uri('alternates.view', {'id':a.alternate_id}) }}">{{ a.name }}</a></th>
-                            <td>{{ a.startDate|date('m/d/Y') }} - {{ a.endDate|date('m/d/Y') }}</td>
-                            <td>{% if a.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: a.actionLinks}, with_context=false) }}{% endif %}</td>
-                        </tr>
-                        {% endfor %}
-                        </table>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table> #}
 
     {% elseif members is defined %}
     <section>
