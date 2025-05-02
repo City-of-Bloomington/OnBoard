@@ -7,7 +7,7 @@
  * @param Term      term
  * @param strin     return_url
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"         as forms   %}
 {% import  'html/macros/personChooser.twig' as chooser %}
 {% block content %}
@@ -17,8 +17,8 @@
         {% if term %}<h3>{{ term.getStartDate(DATE_FORMAT) }} - {{ term.getEndDate(DATE_FORMAT) }}</h3>{% endif %}
     </header>
 
-	<form method="post">
-        <fieldset>
+	<form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
             <input name="alternate_id" type="hidden" value="{{ alternate.getId()           }}" />
             <input name="term_id"      type="hidden" value="{{ alternate.getTerm_id()      }}" />
             <input name="seat_id"      type="hidden" value="{{ alternate.getSeat_id()      }}" />

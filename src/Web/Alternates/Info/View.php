@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Alternates\Info;
 
 use Application\Models\Alternate;
+use Application\Models\Seat;
 use Web\Url;
 
 class View extends \Web\View
@@ -16,9 +17,13 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'alternate'   => $a,
-            'committee'   => $a->getCommittee(),
-            'actionLinks' => $this->actionLinks($a)
+            'alternate'     => $a,
+            'committee'     => $a->getCommittee(),
+            'seat'          => $a->getSeat(),
+            'term'          => $a->getTerm(),
+            'actionLinks'   => $this->actionLinks($a),
+            'termIntervals' => Seat::$termIntervals,
+            'termModifiers' => Seat::$termModifiers
         ];
     }
 

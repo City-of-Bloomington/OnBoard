@@ -4,6 +4,8 @@
  * @param Alternate alternate
  * @param Committee committee
  * @param array     actionLinks
+ * @param Seat      seat      (optional)
+ * @param Term      term      (optional)
  #}
 {% extends "html/layouts/committee.twig" %}
 {% block content %}
@@ -14,6 +16,13 @@
         {{ include('html/partials/actionLinks.twig') }}
         {% endif %}
     </header>
+    {% if term %}
+    {{ include('html/terms/partials/info.twig') }}
+    {% endif %}
+
+    {% if seat %}
+    {{ include('html/seats/partials/seat_info.twig') }}
+    {% endif %}
 </section>
 
 {% endblock %}

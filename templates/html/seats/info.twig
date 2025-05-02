@@ -55,7 +55,7 @@
                         {% for a in t.alternates %}
                             <div class="grid-col"><strong>{{ label }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.alternate_id}) }}">{{ a.name }}</a></div>
                             <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ a.startDate|date('m/d/Y') }}</div>
-                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ a.endDate|date('m/d/Y') }}</div>
+                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ a.endDate ? a.endDate|date('m/d/Y') : '' }}</div>
                         {% endfor %}
                     </div>
                     <div class="grid-row flex-1 margin-top-2">
