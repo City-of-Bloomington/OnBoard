@@ -28,6 +28,7 @@ class Controller extends \Web\Controller
 
         $meeting   = $file->getMeeting();
         $committee = $meeting->getCommittee();
+
         if (isset($_POST['type'])) {
             try {
                 $file->setType      ($_POST['type'      ]);
@@ -44,9 +45,7 @@ class Controller extends \Web\Controller
 
                 $file->save();
 
-                $url = !empty($_POST['return_url'])
-                            ? $_POST['return_url']
-                            : \Web\View::generateUrl('meetingFiles.index')."?committee_id={$committee->getId()}";
+                $return_url = \Web\View::generateUrl('meetings.view', ['id'=>$file->getMeeting_id()]);
                 header("Location: $return_url");
                 exit();
             }
