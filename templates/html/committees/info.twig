@@ -34,6 +34,8 @@
         <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('termEndWarningDays' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getTermEndWarningDays()  }}</dd></div>
         <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('applicationLifetime') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getApplicationLifetime() }}</dd></div>
         {% endif %}
+        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('legislative') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.isLegislative()    ? _('yes') : _('no') }}</dd></div>
+        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('alternates' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.allowsAlternates() ? _('yes') : _('no') }}</dd></div>
     </dl>
 
     {% if committee.getDescription() %}
