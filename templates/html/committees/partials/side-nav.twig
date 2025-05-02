@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param string    ROUTE_NAME   Global
@@ -17,42 +17,42 @@
     <ul class="usa-sidenav">
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.info', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.info' ? 'usa-current' : '' }}">
-            {{ _('committee_info') }}
+                class="{{ ROUTE_NAME in ['committees.info', 'committees.update'] ? 'usa-current' : '' }}">
+                {{ _('committee_info') }}
             </a>
         </li>
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.statutes', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.statutes' ? 'usa-current' : '' }}">
-            {{ _(['committeeStatute', 'committeeStatutes', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.statutes', 'committees.add', 'committees.update'] ? 'usa-current' : '' }}">
+                {{ _(['committeeStatute', 'committeeStatutes', 10]) }}
             </a>
         </li>
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.liaisons', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.liaisons' ? 'usa-current' : '' }}">
-            {{ _(['liaison', 'liaisons', 10]) }}
+                class="{{ ROUTE_NAME=='committees.liaisons' ? 'usa-current' : '' }}">
+                {{ _(['liaison', 'liaisons', 10]) }}
             </a>
         </li>
 
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.members', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.members' and current ? 'usa-current' : '' }}">
-            {{ _(['current_member', 'current_members', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and current ? 'usa-current' : '' }}">
+                {{ _(['current_member', 'current_members', 10]) }}
             </a>
         </li>
 
         {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.seats', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.seats' and current ? 'usa-current' : '' }}">
-            {{ _(['seat', 'seats', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.seats', 'seats.view', 'seats.add', 'seats.update', 'seats.end', 'terms.update'] and current ? 'usa-current' : '' }}">
+                {{ _(['seat', 'seats', 10]) }}
             </a>
             {% if committee.hasPastSeats() %}
             <ul class="usa-sidenav__sublist">
                 <li class="nav-item">
                     <a href="{{ uri('committees.seats', {id: committee.getId()}) }}?current=0"
-                    class="{{ ROUTE_NAME=='committees.seats' and not current ? 'usa-current' : '' }}">
-                    {{ _('seats_past') }}
+                        class="{{ ROUTE_NAME=='committees.seats' and not current ? 'usa-current' : '' }}">
+                        {{ _('seats_past') }}
                     </a>
                 </li>
             </ul>
@@ -63,8 +63,8 @@
         {% if committee.getType()=='open' and committee.hasPastMembers() %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.members', {id: committee.getId()}) }}?current=0"
-            class="{{ ROUTE_NAME=='committees.members' and not current ? 'usa-current' : '' }}">
-            {{ _(['past_member', 'past_members', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and not current ? 'usa-current' : '' }}">
+                {{ _(['past_member', 'past_members', 10]) }}
             </a>
         </li>
         {% endif %}
@@ -72,47 +72,47 @@
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.applications', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.applications' ? 'usa-current' : '' }}">
-            {{ _(['application', 'applications', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.applications', 'applications.report'] ? 'usa-current' : '' }}">
+                {{ _(['application', 'applications', 10]) }}
             </a>
         </li>
         {% endif %}
 
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.meetings', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.meetings' ? 'usa-current' : '' }}">
-            {{ _(['meeting', 'meetings', 10]) }}
+                class="{{ ROUTE_NAME in ['committees.meetings', 'meetings.view', 'meetings.attendance'] ? 'usa-current' : '' }}">
+                {{ _(['meeting', 'meetings', 10]) }}
             </a>
         </li>
 
         <li class="usa-sidenav__item">
             <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
-            class="{{ ROUTE_NAME=='meetingFiles.index' ? 'usa-current' : '' }}">
-            {{ _(['meetingFile', 'meetingFiles', 10]) }}
+                class="{{ ROUTE_NAME in ['meetingFiles.index', 'meetingFiles.add', 'meetingFiles.update'] ? 'usa-current' : '' }}">
+                {{ _(['meetingFile', 'meetingFiles', 10]) }}
             </a>
         </li>
 
         {% if committee.isLegislative() %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('legislation.index', {'committee_id':committee.getId()}) }}?year={{ 'now'|date('Y') }}"
-               class="{{ ROUTE_NAME in ['legislation.index','legislation.add','legislation.update','legislation.view'] ? 'usa-current' : '' }}">
-            {{ _(['legislation', 'legislations', 10]) }}
+                class="{{ ROUTE_NAME in ['legislation.index','legislation.add','legislation.update','legislation.view'] ? 'usa-current' : '' }}">
+                {{ _(['legislation', 'legislations', 10]) }}
             </a>
         </li>
         {% endif %}
 
         <li class="usa-sidenav__item">
             <a href="{{ uri('reports.index') }}?committee_id={{ committee.getId() }}"
-            class="{{ ROUTE_NAME=='reports.index' ? 'usa-current' : '' }}">
-            {{ _(['report', 'reports', 10]) }}
+                class="{{ ROUTE_NAME in ['reports.index', 'reports.add', 'reports.update'] ? 'usa-current' : '' }}">
+                {{ _(['report', 'reports', 10]) }}
             </a>
         </li>
 
         {% if isAllowed('committees', 'history') %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.history', {id: committee.getId()}) }}"
-            class="{{ ROUTE_NAME=='committees.history' ? 'usa-current' : '' }}">
-            {{ _('committeeHistory') }}
+                class="{{ ROUTE_NAME=='committees.history' ? 'usa-current' : '' }}">
+                {{ _('committeeHistory') }}
             </a>
         </li>
         {% endif %}
