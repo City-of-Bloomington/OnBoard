@@ -2,7 +2,7 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     reports
- * @param Committee committee
+ * @param Committee committee (optional)
  *
  * @param array     committees
  * @param array     sorts
@@ -38,8 +38,8 @@
     {% if reports %}
     <ul class="usa-collection usa-collection--condensed margin-top-3">
     {% for r in reports %}
-    <li class="usa-collection__item">
-        <div class="usa-collection__body">
+    <li         class="usa-collection__item">
+        <div    class="usa-collection__body">
             <h3 class="usa-collection__heading">
                 <a class="usa-link" href="{{ uri('reports.download', {id: r.id}) }}">
                     {{ r.title ?? _('noTitle') }}
@@ -48,7 +48,7 @@
                     </svg>
                 </a>
             </h3>
-            <ul class="usa-collection__meta" aria-label="More information">
+            <ul     class="usa-collection__meta" aria-label="More information">
                 <li class="usa-collection__meta-item position-relative">
                     <strong>{{ _('date') }}:</strong> {{ r.date }}
                 </li>
