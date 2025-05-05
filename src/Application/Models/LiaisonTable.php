@@ -22,6 +22,7 @@ class LiaisonTable extends TableGateway
         'committee'    => 'c.name',
         'type'         => 'l.type',
         'person_id'    => 'p.id',
+        'username'     => 'p.username',
         'firstname'    => 'p.firstname',
         'lastname'     => 'p.lastname',
         'email'        => 'p.email',

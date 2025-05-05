@@ -70,7 +70,7 @@
                 <td><a href="{{ link }}">{{ u.firstname }} {{ u.lastname }}</a></td>
                 <td><a href="{{ link }}">{{ u.role }}</a></td>
                 <td><a href="{{ link }}">{{ u.department }}</a></td>
-                <td>{{ ad ? 'Current' : 'Missing' }}</td>
+                <td>{{ ad ? 'Staff' : 'Non-staff' }}</td>
                 <td>{% if isAllowed('users', 'update') %}
                     {{ forms.actionLink(uri('users.update', {id: u.id}), _('edit_account'), 'edit') }}
                     {% endif %}
