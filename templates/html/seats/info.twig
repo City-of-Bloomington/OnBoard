@@ -76,7 +76,7 @@
         {% for m in members %}
         <tr><td>{{ m.name }}</td>
             <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
-            <td>{% if m.actionLinks %}{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}{% endif %}</td>
+            {% if m.actionLinks %}<td>{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}</td>{% endif %}
         </tr>
         {% endfor %}
         </table>
