@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2024 City of Bloomington, Indiana
+ * @copyright 2009-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -172,7 +172,16 @@ class Person extends ActiveRecord
 		}
 	}
 
-	/**
+	public function getExternalIdentity(): ?\Web\Auth\ExternalIdentity
+    {
+        if ($this->getUsername()) {
+            try { return new \Web\Ldap($this->getUsername());; }
+            catch (\Exception $e) { }
+        }
+        return null;
+    }
+
+    /**
 	 * Checks if the user is supposed to have acces to the resource
 	 *
 	 * This is implemented by checking against a Laminas ACL object

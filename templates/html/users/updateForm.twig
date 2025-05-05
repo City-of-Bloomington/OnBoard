@@ -10,11 +10,11 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header><h2>{{ user.getId() ? _('edit_account') : _('create_account') }}</h2></header>
 
-    <form method="post">
-        <fieldset>
+    <form method="post" class="usa-form">
+        <fieldset       class="usa-fieldset">
             {{ forms.field_text('username', 'username', _('username'), user.username, true )}}
             {{ forms.field_email('email', 'email', _('email'), user.email )}}
 
