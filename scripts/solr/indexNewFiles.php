@@ -2,7 +2,7 @@
 /**
  * Update the SOLR index with new documents that have not been indexed
  *
- * @copyright 2023 City of Bloomington, Indiana
+ * @copyright 2023-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -12,7 +12,7 @@ use Web\Search\Solr;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
 
-include '../../bootstrap.php';
+include '../../src/Web/bootstrap.php';
 
 $solr   = new Solr($SOLR['onboard']);
 $table  = new MeetingFilesTable();
