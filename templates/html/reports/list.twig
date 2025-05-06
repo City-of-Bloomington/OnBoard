@@ -44,7 +44,7 @@
                 <a class="usa-link" href="{{ uri('reports.download', {id: r.id}) }}">
                     {{ r.title ?? _('noTitle') }}
                     <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
-                        <use href="/static/uswds/dist/img/sprite.svg#file_present"></use>
+                        <use href="{{ USWDS_URL }}/img/sprite.svg#file_present"></use>
                     </svg>
                 </a>
             </h3>

@@ -1,12 +1,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://bloomington.in.gov/static/citylogo-64.png" />
+    <link rel="icon" href="//bloomington.in.gov/static/citylogo-64.png" />
     <title>{{ title is defined ? title : APPLICATION_NAME }}</title>
     <script>
         var BASE_URL  = '{{ BASE_URL  }}',
             BASE_URI  = '{{ BASE_URI  }}';
     </script>
     <script type="text/javascript" src="{{ BASE_URI }}/js/onboard-{{ VERSION }}.js"></script>
-    <link rel="stylesheet" href="/static/uswds/dist/css/uswds.min.css">
-    <script src="/static/uswds/dist/js/uswds-init.min.js"></script>
+    <link rel="stylesheet" href="{{ USWDS_URL }}/css/uswds.min.css">
+    <script src="{{ USWDS_URL }}/js/uswds-init.min.js"></script>
 </head>

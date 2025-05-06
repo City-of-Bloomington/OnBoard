@@ -18,6 +18,7 @@ define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
                         : '{{ ansible_host }}');
 {% endif %}
 define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
+define('USWDS_URL',   '{{ onboard_uswds_url }}');
 
 define('RECAPTCHA_SITE_KEY',   '{{ onboard_recaptcha.site_key   }}');
 define('RECAPTCHA_SERVER_KEY', '{{ onboard_recaptcha.server_key }}');
@@ -113,6 +114,8 @@ define('DATETIME_FORMAT', 'n/j/Y H:i:s');
 
 define('LOCALE', 'en_US');
 
-define('TERM_END_WARNING_DEFAULT', 60);
-define('APPLICATION_LIFETIME_DEFAULT', 90);
+define('DEFAULT_CITY',                'Bloomington');
+define('DEFAULT_STATE',               'IN');
+define('DEFAULT_TERM_END_WARNING',     60);
+define('DEFAULT_APPLICATION_LIFETIME', 90);
 define('ADMINISTRATOR_EMAIL', '{{ onboard_admin_email }}');

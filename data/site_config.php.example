@@ -16,6 +16,8 @@ define('BASE_URI' , '/onboard');
 define('BASE_HOST', $_SERVER['SERVER_NAME']);
 define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
 
+define('USWDS_URL', '/static/uswds/dist');
+
 define('RECAPTCHA_SITE_KEY',   '');
 define('RECAPTCHA_SERVER_KEY', '');
 define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');

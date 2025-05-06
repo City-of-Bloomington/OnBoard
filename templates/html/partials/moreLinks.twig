@@ -1,12 +1,18 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array actionLinks
  #}
 <ul class="usa-list usa-list--unstyled text-right">
     {% for link in actionLinks %}
-    <li>
-        <a href="{{ link.url }}" class="usa-link">{{- link.label }}{% if link.class is defined and link.class is not null %}<svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img"><use href="/static/uswds/dist/img/sprite.svg#{{ link.class }}"></use></svg>{% endif %}</a>
+    <li><a href="{{ link.url }}" class="usa-link">
+            {{- link.label }}
+            {% if link.class is defined and link.class is not null %}
+            <svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img">
+                <use href="{{ USWDS_URL }}/img/sprite.svg#{{ link.class }}"></use>
+            </svg>
+            {% endif %}
+        </a>
     </li>
     {% endfor %}
 </ul>

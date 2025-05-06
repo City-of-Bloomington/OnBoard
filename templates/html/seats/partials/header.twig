@@ -1,20 +1,15 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param string    ROUTE_NAME   Global
  #}
+<a href="{{ uri('seats.index') }}" class="usa-link margin-right-05">
+    {{ _('all') }}
+</a>
 
-{#
-   Several of the routes use a current=0 parameter to designate "past" listings
-   To determine which route is the current route, we often need to check for this parameter.
-   "Past" routes will have a current=0 parameter in the URL.
-   "Current" routes will not have the parameter at all
-#}
-{% set url     = current_url() %}
-{% set current = url.current is defined and url.current==0 ? false : true %}
-<a href="{{ uri('seats.index') }}"
-    class="usa-link margin-right-05">{{ _('all') }}</a>
-
-<a href="{{ uri('seats.vacancies') }}"
-    class="usa-link margin-right-05">{{ _(['vacancy', 'vacancies', 10]) }}<svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img"><use href="/static/uswds/dist/img/sprite.svg#filter_list"></use></svg>
+<a href="{{ uri('seats.vacancies') }}" class="usa-link margin-right-05">
+    {{ _(['vacancy', 'vacancies', 10]) }}
+    <svg class="usa-icon margin-left-2px" aria-hidden="true" focusable="false" role="img">
+        <use href="{{ USWDS_URL }}/img/sprite.svg#filter_list"></use>
+    </svg>
 </a>
