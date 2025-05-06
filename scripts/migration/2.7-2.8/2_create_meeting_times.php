@@ -40,7 +40,7 @@ foreach ($result as $row) {
     try {
         $event = GoogleGateway::getEvent($row['calendarId'], $row['eventId']);
         if (!$event->start->dateTime || !$event->end->dateTime) {
-            fputcsv($missingTime, $row);
+            fputcsv($missingTimes, $row);
             continue;
         }
     }
