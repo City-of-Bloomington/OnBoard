@@ -51,3 +51,10 @@ if (defined('GRAYLOG_DOMAIN') && defined('GRAYLOG_PORT')) {
          set_exception_handler('Web\GraylogWriter::exception');
     register_shutdown_function('Web\GraylogWriter::shutdown');
 }
+
+
+$f = SITE_HOME.'/debug/'.date('Y-m-d').'.log';
+if (!is_dir(dirname($f))) {
+    mkdir(dirname($f), 0770);
+}
+define('DEBUG_LOG', $f);

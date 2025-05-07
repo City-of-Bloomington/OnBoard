@@ -504,7 +504,7 @@ class Committee extends ActiveRecord
 
     public function syncGoogleCalendar()
     {
-        $debug = fopen(SITE_HOME.'/debug.log', 'a');
+        $debug = fopen(DEBUG_LOG, 'a');
         fwrite($debug, "syncGoogleCalendar: ".$this->getName()."\n");
 
         if (!$this->getCalendarId()) { return; }

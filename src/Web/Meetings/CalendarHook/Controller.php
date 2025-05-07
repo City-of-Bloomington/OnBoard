@@ -11,7 +11,7 @@
  * [HTTP_X_GOOG_RESOURCE_ID]        => zDkcEeu4J4fYNUkBtRqbAQ9aA6Y
  * [HTTP_X_GOOG_RESOURCE_URI]       => https://www.googleapis.com/calendar/v3/calendars/inghamn%40bloomington.in.gov/events?alt=json
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @see https://developers.google.com/calendar/api/guides/push
  */
@@ -25,8 +25,6 @@ use Application\Models\MeetingTable;
 
 class Controller
 {
-    const DEBUG = SITE_HOME.'/debug.log';
-
     public function __invoke(array $params): \Web\View
     {
         $committees  = new CommitteeTable();
@@ -34,7 +32,7 @@ class Controller
         $calendar_id = self::parseCalendarId($_SERVER['HTTP_X_GOOG_RESOURCE_URI']);
         $list        = $committees->find(['calendarId'=>$calendar_id]);
 
-        $debug       = fopen(SITE_HOME.'/debug.log', 'a');
+        $debug       = fopen(DEBUG_LOG, 'a');
         // if (isset($_SERVER)) { fwrite($debug, print_r($_SERVER, true)."\n"); }
         fwrite($debug, "home.calendarhook\nCalendar: $calendar_id\n");
 
