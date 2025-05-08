@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2024 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -32,15 +32,15 @@ class MeetingFilesTable extends TableGateway
                     break;
 
                     case 'year':
-                        $select->where(['year(start)=?' => (int)$value]);
+                        $select->where(['year(m.start)=?' => (int)$value]);
                     break;
 
                     case 'indexed':
                         if ($value) {
-                            $select->where(['indexed>updated']);
+                            $select->where(['f.indexed>f.updated']);
                         }
                         else {
-                            $select->where(['indexed is null or updated>indexed']);
+                            $select->where(['f.indexed is null or f.updated>f.indexed']);
                         }
                     break;
 
@@ -51,10 +51,10 @@ class MeetingFilesTable extends TableGateway
 		}
 	}
 
-	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
+	public function find($fields=null, $order='f.updated desc', $paginated=false, $limit=null)
 	{
-		$select = new Select(self::TABLE);
-        $select->join(['m'=>'meetings'], 'm.id=meetingFiles.meeting_id', []);
+		$select = new Select(['f' => self::TABLE]);
+        $select->join(['m'=>'meetings'], 'm.id=f.meeting_id', []);
 		$this->processFields($fields, $select);
 
 		return parent::performSelect($select, $order, $paginated, $limit);
@@ -64,8 +64,8 @@ class MeetingFilesTable extends TableGateway
 	{
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
-                      ->from(self::TABLE)
-                      ->join(['m'=>'meetings'], 'm.id=meetingFiles.meeting_id', [])
+                      ->from(['f'=>self::TABLE])
+                      ->join(['m'=>'meetings'], 'm.id=f.meeting_id', [])
                       ->columns([
                             'year'  => new Expression('distinct(year(m.start))'),
                             'count' => new Expression('count(*)')
