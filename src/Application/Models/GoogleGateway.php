@@ -110,18 +110,23 @@ class GoogleGateway
     }
 
 
-    public static function watch(string $calendarId, string $watch_id): Channel
+    /**
+     * @see https://developers.google.com/workspace/calendar/api/guides/push
+     * @param string $calendarId
+     * @param string $watch_id    Unique identifier for Google watch channel
+     * @param int    $expiration  Unix timestamp
+     * @return Channel
+     */
+    public static function watch(string $calendarId, string $watch_id, int $expiration): Channel
     {
         $opts  = [
-            'id'      => $watch_id,
-            'type'    => 'web_hook',
-            'address' => BASE_URL.'/notifications',
-            'expiration' => strtotime('+10 minute').'000',
+            'id'         => $watch_id,
+            'type'       => 'web_hook',
+            'address'    => BASE_URL.'/notifications',
+            'expiration' => $expiration.'000',
             'eventTypes' => 'default'
         ];
-        print_r($opts);
-        $watch = new Channel($opts);
-        print_r($watch);
+        $watch   = new Channel($opts);
         $service = new Calendar(self::getClient());
         return $service->events->watch($calendarId, $watch);
     }
