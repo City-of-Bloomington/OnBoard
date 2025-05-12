@@ -97,6 +97,13 @@ class View extends \Web\View
                 'label' => parent::_('seat_end')
             ];
         }
+        $url = parent::current_url();
+        $url->format = 'csv';
+        $links[] = [
+            'url'   => $url,
+            'label' => 'CSV',
+            'class' => 'download'
+        ];
         return $links;
     }
 
