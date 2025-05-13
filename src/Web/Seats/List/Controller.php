@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Seats\List;
 
+use Application\Models\Appointer;
+use Application\Models\Committee;
 use Application\Models\SeatTable;
 
 class Controller extends \Web\Controller
@@ -22,28 +24,41 @@ class Controller extends \Web\Controller
             break;
 
             default:
-                return new View($data);
+                return new View($data, $search);
         }
 
 
     }
 
     /**
-     * Creates a valid date from the request parameters
-     *
-     * In the future, we can expand this to accomodate safe parsing for
-     * more parameters.
+     * Creates valid request parameters
      */
     private static function parseQueryParameters(): array
     {
+        $search = [];
         if (!empty($_GET['current'])) {
             try {
                 $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
-                return ['current'=>$c];
+                $search['current'] = $c;
             }
             catch (\Exception $e) { }
         }
-        return [];
+        if (!empty($_GET['committee_id'])) {
+            try {
+                $committee = new Committee($_GET['committee_id']);
+                $search['committee_id'] = $committee->getId();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        }
+
+        if (!empty($_GET['appointer_id'])) {
+            try {
+                $appointer = new Appointer($_GET['appointer_id']);
+                $search['appointer_id'] = $appointer->getId();
+            }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        }
+        return $search;
     }
 
     /**

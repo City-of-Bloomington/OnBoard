@@ -1,21 +1,38 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  * @param array actionLinks
+ *
+ * Search Parameters
+ * @param int committee_id
+ * @param int appointer_id
+ *
+ * Search Options
+ * @param array committees
+ * @param array appointers
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="grid-container">
     <header>
         <h1>{{ _(['seat', 'seats', 10]) }}</h1>
         {{ include('html/seats/partials/header.twig') }}
     </header>
-    
-        <h2>{{ _('all') }}</h2>
-        {% if actionLinks is defined %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
+
+    <h2>{{ _('all') }}</h2>
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <form         class="usa-form" method="get">
+        <fieldset class="usa-fieldset">
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('appointer_id', 'appointer_id', _('appointer'), appointer_id, appointers, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.button('submit', _('search'), 'search') }}
+        </fieldset>
+    </form>
 
     {{ include('html/seats/partials/table.twig') }}
 </section>

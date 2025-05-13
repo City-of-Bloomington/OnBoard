@@ -70,6 +70,7 @@ class SeatTable extends TableGateway
         'seat_type'              => 's.type',
         'seat_voting'            => 's.voting',
         'seat_takesApplications' => 's.takesApplications',
+        'appointer_id'           => 's.appointer_id',
         'appointer_name'         => 'a.name',
         'member_id'              => 'm.id',
         'member_person_id'       => 'm.person_id',
