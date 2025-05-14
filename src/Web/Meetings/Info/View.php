@@ -88,8 +88,10 @@ class View extends \Web\View
 
     private static function warehouse_data(Meeting $m): array
     {
+        global $DATABASES;
+
         $info = [];
-        if (class_exists(WarehouseService::class)) {
+        if (array_key_exists('warehouse', $DATABASES)) {
             $staff = false;
             if (isset($_SESSION['USER'])) {
                 $res   = WarehouseService::permitting_staff($_SESSION['USER']->getEmail());
