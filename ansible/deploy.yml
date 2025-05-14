@@ -13,6 +13,7 @@
       vars:
         packages:
           - "php-mysql"
+          - "php-pgsql"
           - "default-jre"
           - "libreoffice-common"
           - "libreoffice-writer"

@@ -1,0 +1,20 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array warehouse
+ #}
+<section>
+    <header><h2>EPL Permits/Plan</h2></header>
+    <ul>{% if warehouse.permits is defined %}
+        {% for p in warehouse.permits %}
+        <li><a href="{{ p.url }}">{{ p.permit_num }}</a></li>
+        {% endfor %}
+        {% endif %}
+
+        {% if warehouse.plans is defined %}
+        {% for p in warehouse.plans %}
+        <li><a href="{{ p.url }}">{{ p.plan_num }}</a></li>
+        {% endfor %}
+        {% endif %}
+    </ul>
+</section>

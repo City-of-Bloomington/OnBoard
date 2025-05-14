@@ -31,8 +31,7 @@
             "Application\\": "src/Application",
             "Domain\\":      "src/Domain",
             "Test\\":        "src/Test",
-            "Web\\":         "src/Web",
-            "Site\\":        "data"
+            "Web\\":         "src/Web"
         }
     }
 }
