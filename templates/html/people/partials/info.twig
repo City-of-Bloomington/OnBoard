@@ -1,19 +1,19 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  #}
-<dl>
-    <dt class="text-bold">{{ _('username') }}</dt><dd>{{ person.getUsername() }}</dd>
-    <dt class="text-bold">{{ _('gender'  ) }}</dt><dd>{{ person.getGender()   }}</dd>
-    <dt class="text-bold">{{ _('race'    ) }}</dt><dd>{{ person.getRace()     }}</dd>
-    <dt class="text-bold">{{ _('website' ) }}</dt><dd><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></dd>
+<table>
+    <tr><th>{{ _('username') }}</th><td>{{ person.getUsername() }}</td></tr>
+    <tr><th>{{ _('gender'  ) }}</th><td>{{ person.getGender()   }}</td></tr>
+    <tr><th>{{ _('race'    ) }}</th><td>{{ person.getRace()     }}</td></tr>
+    <tr><th>{{ _('website' ) }}</th><td><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></td></tr>
     {% if isAllowed('people', 'viewContactInfo') %}
-    <dt class="text-bold">{{ _('email')   }}</dt><dd>{{ person.getEmail()   }}</dd>
-    <dt class="text-bold">{{ _('phone')   }}</dt><dd>{{ person.getPhone()   }}</dd>
-    <dt class="text-bold">{{ _('address') }}</dt><dd>{{ person.getAddress() }}</dd>
-    <dt class="text-bold">{{ _('city')    }}</dt><dd>{{ person.getCity()    }}</dd>
-    <dt class="text-bold">{{ _('state')   }}</dt><dd>{{ person.getState()   }}</dd>
-    <dt class="text-bold">{{ _('zip')     }}</dt><dd>{{ person.getZip()     }}</dd>
+    <tr><th>{{ _('email')   }}</th><td>{{ person.getEmail()   }}</td></tr>
+    <tr><th>{{ _('phone')   }}</th><td>{{ person.getPhone()   }}</td></tr>
+    <tr><th>{{ _('address') }}</th><td>{{ person.getAddress() }}</td></tr>
+    <tr><th>{{ _('city')    }}</th><td>{{ person.getCity()    }}</td></tr>
+    <tr><th>{{ _('state')   }}</th><td>{{ person.getState()   }}</td></tr>
+    <tr><th>{{ _('zip')     }}</th><td>{{ person.getZip()     }}</td></tr>
     {% endif %}
-</dl>
+</table>
