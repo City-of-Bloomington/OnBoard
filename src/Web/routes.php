@@ -15,8 +15,9 @@ $map->attach('home.', '/', function ($r) {
 });
 
 $map->attach('login.', '/login', function ($r) {
-    $r->get('logout', '/logout', Web\Auth\Logout\Controller::class);
-    $r->get('index',  ''       , Web\Auth\Oidc\Controller::class);
+    $r->get('logout',   '/logout'  , Web\Auth\Logout\Controller::class);
+    $r->get('accessin', '/accessin', Web\Auth\AccessIndiana\Controller::class)->allows(['POST']);
+    $r->get('index',    ''         , Web\Auth\Oidc\Controller::class);
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {

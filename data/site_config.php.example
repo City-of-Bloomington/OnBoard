@@ -103,6 +103,11 @@ $AUTHENTICATION = [
             'groups'      => 'group',
             'groupmap'    => [ ]
         ],
+    ],
+    'accessin' => [
+        'server'         => 'https://ad.example.org/adfs',
+        'client_id'      => '',
+        'client_secret'  => ''
     ]
 ];
 

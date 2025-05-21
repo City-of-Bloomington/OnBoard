@@ -44,3 +44,5 @@ create table meeting_attendance (
     foreign key (meeting_id) references meetings(id),
     foreign key ( member_id) references  members(id)
 );
+
+alter table people modify username varchar(128);

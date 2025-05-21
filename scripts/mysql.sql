@@ -29,7 +29,7 @@ create table people (
 	website   varchar(128),
 	gender    enum('male','female'),
 	race_id   int unsigned,
-	username             varchar(40) unique,
+	username             varchar(128) unique,
 	password             varchar(40),
 	authenticationMethod varchar(40),
 	role                 varchar(30),
