@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -25,19 +25,24 @@ class MeetingTable extends TableGateway
             foreach ($fields as $key=>$value) {
                 switch ($key) {
                     case 'start':
-                        $select->where(['start >= ?'=> $value->format('Y-m-d H:i:s')]);
+                        $select->where(['m.start >= ?'=> $value->format('Y-m-d H:i:s')]);
                         break;
 
                     case 'end':
-                        $select->where(['end <= ?'=>$value->format('Y-m-d H:i:s')]);
+                        $select->where(['m.end <= ?'=>$value->format('Y-m-d H:i:s')]);
                         break;
 
                     case 'year':
-                        $select->where(['year(start)=?' => (int)$value]);
+                        $select->where(['year(m.start)=?' => (int)$value]);
+                        break;
+
+                    case 'fileType':
+                        $select->join(['f'=>'meetingFiles'], 'm.id=f.meeting_id', []);
+                        $select->where(['f.type'=>$value]);
                         break;
 
                     default:
-                        $select->where([$key=>$value]);
+                        $select->where(["m.$key"=>$value]);
                 }
             }
         }
@@ -45,7 +50,7 @@ class MeetingTable extends TableGateway
 
     public function find($fields=null, $order='start', $paginated=false, $limit=null)
     {
-        $select = new Select(self::TABLE);
+        $select = new Select(['m' => self::TABLE]);
         $this->processFields($fields, $select);
 
         return parent::performSelect($select, $order, $paginated, $limit);
@@ -55,9 +60,9 @@ class MeetingTable extends TableGateway
     {
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
-                      ->from(self::TABLE)
+                      ->from(['m' => self::TABLE])
                       ->columns([
-                          'year'  => new Expression('distinct(year(start))'),
+                          'year'  => new Expression('distinct(year(m.start))'),
                           'count' => new Expression('count(*)')
                       ])
                       ->group('year')

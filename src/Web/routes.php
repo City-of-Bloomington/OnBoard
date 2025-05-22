@@ -61,7 +61,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('statutes',     '/{id}/statutes'     , Web\Committees\Statutes\Info\Controller::class);
     $r->get('liaisons',     '/{id}/liaisons'     , Web\Committees\Liaisons\Info\Controller::class);
     $r->get('applications', '/{id}/applications' , Web\Committees\Applications\Controller::class);
-    $r->get('meetings',     '/{id}/meetings'     , Web\Committees\Meetings\Controller::class);
+    $r->get('meetings',     '/{id}/meetings'     , Web\Meetings\List\Controller::class);
     $r->get('meetingsync',  '/{id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
     $r->get('history',      '/{id}/history'      , Web\Committees\History\Controller::class);
     $r->get('info',         '/{id}'              , Web\Committees\Info\Controller::class);
@@ -133,6 +133,7 @@ $map->attach('liaisons.', '/liaisons', function ($r) {
 $map->attach('meetings.', '/meetings', function ($r) {
     $r->get('attendance', '/{id}/attendance', Web\Meetings\Attendance\Controller::class)->allows(['POST']);
     $r->get('view',       '/{id}',            Web\Meetings\Info\Controller::class);
+    $r->get('index',      '',                 Web\Meetings\List\Controller::class);
 });
 
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
