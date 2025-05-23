@@ -27,11 +27,12 @@ class WarehouseService
 
     public static function meeting_info(int $committee_id, \DateTime $date): array
     {
-        $db      = Database::getConnection('warehouse');
-        $out     = [];
-        $type_id = self::$board_hearing_types[$committee_id];
-        $d       = $date->format('Y-m-d');
+        $out = [];
         if (array_key_exists($committee_id, self::$board_hearing_types)) {
+            $db      = Database::getConnection('warehouse');
+            $type_id = self::$board_hearing_types[$committee_id];
+            $d       = $date->format('Y-m-d');
+
             $sql = "select h.hearing_id,
                            h.status,
                            h.start_date,

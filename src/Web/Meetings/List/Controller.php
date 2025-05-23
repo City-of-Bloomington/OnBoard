@@ -56,6 +56,7 @@ class Controller extends \Web\Controller
 
             $meetings[$date][$time] = [
                 'id'       => $m->getId(),
+                'title'    => $m->getTitle(),
                 'eventId'  => $m->getEventId(),
                 'location' => $m->getLocation(),
                 'start'    => $m->getStart('c'),

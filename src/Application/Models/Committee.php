@@ -438,7 +438,7 @@ class Committee extends ActiveRecord
 
         $year = new \DateTime('+1 year');
         foreach ($res['events'] as $event) {
-
+			$title    = $event->summary;
             $eventId  = $event->id;
             $list     = $meetingTable->find(['eventId'=>$event->id]);
             fwrite($debug, "Event: $eventId\n");
@@ -484,6 +484,7 @@ class Committee extends ActiveRecord
             else {
                 $meeting = new Meeting([
                     'committee_id' => $this->getId(),
+					'title'        => $title,
                     'eventId'      => $eventId,
                     'start'        => $start  ->format('Y-m-d H:i:s'),
                     'end'          => $end    ->format('Y-m-d H:i:s'),

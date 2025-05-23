@@ -49,6 +49,7 @@
                     <h3 class="usa-card__heading">
                         <a class="usa-link" href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a>
                     </h3>
+                    <h3 class="usa-card__heading">{{ m.title }}</h3>
                 </div>
                 <div class="usa-card__footer">
                     <div>{{ m.location }}</div>

@@ -20,7 +20,7 @@ $unknownEvents = fopen('./unknownEvents.csv', 'w');
 $missingTimes  = fopen('./missingTimes.csv', 'w');
 
 $sql    = "update meetings
-           set start=:start,end=:end,created=:created,updated=:updated,location=:location,htmlLink=:htmlLink
+           set start=:start,end=:end,created=:created,updated=:updated,title=:title,location=:location,htmlLink=:htmlLink
            where id=:id";
 $update = $pdo->prepare($sql);
 
@@ -62,6 +62,7 @@ foreach ($result as $row) {
             'created'  => $created->format('Y-m-d H:i:s'),
             'updated'  => $updated->format('Y-m-d H:i:s'),
             'location' => $location,
+            'title'    => $event->summary,
             'htmlLink' => $event->htmlLink
         ];
         $update->execute($d);

@@ -66,6 +66,7 @@ class Meeting extends ActiveRecord
     // Generic Getters & Setters
     //----------------------------------------------------------------
     public function getId()           { return parent::get('id'          ); }
+    public function getTitle()        { return parent::get('title'       ); }
     public function getEventId()      { return parent::get('eventId'     ); }
     public function getLocation()     { return parent::get('location'    ); }
     public function getHtmlLink()     { return parent::get('htmlLink'    ); }
@@ -76,6 +77,7 @@ class Meeting extends ActiveRecord
     public function getCreated($f=null) { return parent::getDateData('start', $f); }
     public function getUpdated($f=null) { return parent::getDateData('end',   $f); }
 
+    public function setTitle       ($s) { parent::set('title',    $s); }
     public function setEventId     ($s) { parent::set('eventId',  $s); }
     public function setLocation    ($s) { parent::set('location', $s); }
     public function setHtmlLink    ($s) { parent::set('htmlLink', $s); }

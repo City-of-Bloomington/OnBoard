@@ -17,7 +17,6 @@ clean:
 	rm -Rf build/${APPNAME}*
 
 	rm -Rf public/css/.sass-cache
-	for f in $(shell find data/Themes -name 'screen-*.css*'); do rm $$f; done
 	for f in $(shell find public/css  -name 'screen-*.css*'); do rm $$f; done
 	for f in $(shell find public/js   -name '*-*.js'       ); do rm $$f; done
 
