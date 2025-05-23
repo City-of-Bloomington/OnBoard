@@ -85,13 +85,6 @@
             </a>
         </li>
 
-        <li class="usa-sidenav__item">
-            <a href="{{ uri('meetingFiles.index') }}?committee_id={{ committee.getId() }}"
-                class="{{ ROUTE_NAME in ['meetingFiles.index', 'meetingFiles.add', 'meetingFiles.update'] ? 'usa-current' : '' }}">
-                {{ _(['meetingFile', 'meetingFiles', 10]) }}
-            </a>
-        </li>
-
         {% if committee.isLegislative() %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('legislation.index', {'committee_id':committee.getId()}) }}?year={{ 'now'|date('Y') }}"

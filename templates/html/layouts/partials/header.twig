@@ -19,6 +19,14 @@
                     <a href="{{ uri('committees.index') }}" class="usa-nav-link {{ (ROUTE_NAME in ['committees.index', 'home.index']) ? 'usa-current' : '' }}">{{ _(['committee', 'committees', 10]) }}</a>
                 </li>
                 {% endif %}
+                {% if isAllowed('meetingFiles', 'index') %}
+                <li class="usa-nav__primary-item">
+                    <a href="{{ uri('meetingFiles.index') }}"
+                       class="usa-nav-link {{ ROUTE_NAME in ['meetingFiles.index', 'meetingFiles.add', 'meetingFiles.update'] ? 'usa-current' : '' }}">
+                        {{ _(['meetingFile', 'meetingFiles', 10]) }}
+                    </a>
+                </li>
+                {% endif %}
                 {% if isAllowed('people', 'index') %}
                 <li class="usa-nav__primary-item">
                     <a href="{{ uri('people.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'people.' ? 'usa-current' : '' }}">{{ _(['person', 'people', 10]) }}</a>
