@@ -17,7 +17,7 @@
             <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
                 <div class="grid-row flex-row">
                     <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3><a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">
+                        <h3><a class="usa-link" href="{{ uri('members.view', {id: row.member_id}) }}">
                                 {% if row.member_person_id %}
                                 {{ row.member_firstname }} {{ row.member_lastname }}
                                 {% else %}
@@ -42,7 +42,12 @@
                 </div>
                 <div class="grid-row flex-1">
                     <div class="grid-col">
-                        <strong>{{ _('seat') }}:</strong> {{ row.seat_code }}
+                        <strong>{{ _('seat') }}:</strong>
+                        {% if isAllowed('seats', 'view') %}
+                        <a href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ row.seat_code }}</a>
+                        {% else %}
+                        {{ row.seat_code }}
+                        {% endif %}
                     </div>
                     <div class="grid-col">
                         <strong>{{ _('seat_term'   ) }}:</strong> {{ row.term_startDate|date(DATE_FORMAT) }} - {{ row.term_endDate|date(DATE_FORMAT) }}
