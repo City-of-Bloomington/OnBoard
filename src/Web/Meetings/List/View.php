@@ -57,7 +57,7 @@ class View extends \Web\View
         $table = new MeetingTable();
         $years = array_keys($table->years($q));
 
-        if (!in_array($search['year'], $years)) { array_unshift($years, $seach['year']); }
+        if (!in_array($search['year'], $years)) { array_unshift($years, $search['year']); }
 
         $options = [];
         foreach ($years as $v) { $options[] = ['value' => $v]; }
