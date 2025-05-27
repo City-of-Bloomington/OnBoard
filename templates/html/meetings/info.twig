@@ -5,6 +5,7 @@
  * @param Committee committee
  * @param array     files
  * @param array     attendance  (RAW Data)
+ * @param string    attendanceNotes
  * @param array     actionLinks
  * @param array     warehouse
  #}
@@ -40,6 +41,9 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
+{% if attendanceNotes %}
+<p>{{ attendanceNotes }}</p>
 {% endif %}
 
 <h3>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h3>

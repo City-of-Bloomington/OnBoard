@@ -215,7 +215,8 @@ create table meetings(
     title            varchar(256),
     eventId          varchar(1024),
     location         varchar(256),
-    htmlLink         varchar(1024)
+    htmlLink         varchar(1024),
+    attendanceNotes  varchar(256),
     foreign key (committee_id) references committees(id)
 );
 
@@ -229,8 +230,8 @@ create table meetingFiles(
 	mime_type        varchar(128) not null,
 	created          timestamp    not null default CURRENT_TIMESTAMP,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	indexed          timestamp
-	foreign key (committee_id) references committees(id)
+	indexed          timestamp,
+	foreign key (committee_id) references committees(id),
 	foreign key (  meeting_id) references   meetings(id)
 );
 
@@ -309,6 +310,7 @@ create table legislationFiles (
 	mime_type        varchar(128) not null,
 	created          datetime     not null default CURRENT_TIMESTAMP,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	indexed          timestamp,
 	foreign key (legislation_id) references legislation(id)
 );
 
@@ -322,5 +324,6 @@ create table reports (
 	mime_type        varchar(128) not null,
 	created          datetime     not null default CURRENT_TIMESTAMP,
 	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+	indexed          timestamp,
 	foreign key (committee_id) references committees(id)
 );

@@ -20,12 +20,13 @@ class View extends \Web\View
         foreach ($m->getMeetingFiles() as $f) { $files[] = $f; }
 
         $this->vars = [
-            'meeting'     => $m,
-            'committee'   => $m->getCommittee(),
-            'files'       => self::createFileData($files),
-            'attendance'  => $m->hasAttendance() ? $m->getAttendance() : null,
-            'actionLinks' => self::actionLinks($m),
-            'warehouse'   => self::warehouse_data($m)
+            'meeting'         => $m,
+            'committee'       => $m->getCommittee(),
+            'files'           => self::createFileData($files),
+            'attendance'      => $m->hasAttendance() ? $m->getAttendance() : null,
+            'attendanceNotes' => self::attendanceNotes($m),
+            'actionLinks'     => self::actionLinks($m),
+            'warehouse'       => self::warehouse_data($m)
         ];
     }
 
@@ -118,5 +119,12 @@ class View extends \Web\View
             }
         }
         return $info;
+    }
+
+    private static function attendanceNotes(Meeting $m): string
+    {
+        return parent::isAllowed('meetings', 'attendance')
+                ? $m->getAttendanceNotes()
+                : '';
     }
 }

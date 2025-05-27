@@ -18,7 +18,8 @@ class Controller extends \Web\Controller
         }
 
         if (isset($_POST['members'])) {
-            $data = [];
+            $notes = $_POST['attendanceNotes'] ?? null;
+            $data  = [];
             foreach ($_POST['members'] as $member_id=>$status) {
                 $data[] = [
                     'meeting_id' => (int)$meeting->getId(),
@@ -27,7 +28,7 @@ class Controller extends \Web\Controller
                 ];
             }
             try {
-                $meeting->saveAttendance($data);
+                $meeting->saveAttendance($data, $notes);
                 header('Location: '.\Web\View::generateUrl('meetings.view', ['id'=>$meeting->getId()]));
                 exit();
             }

@@ -16,6 +16,7 @@ create table meetings(
     eventId          varchar(1024),
     location         varchar(256),
     htmlLink         varchar(1024),
+    attendanceNotes  varchar(256),
     foreign key (committee_id) references committees(id)
 );
 
@@ -47,3 +48,6 @@ create table meeting_attendance (
 );
 
 alter table people modify username varchar(128);
+
+alter table legislationFiles add indexed timestamp;
+alter table reports          add indexed timestamp;

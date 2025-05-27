@@ -65,22 +65,24 @@ class Meeting extends ActiveRecord
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getId()           { return parent::get('id'          ); }
-    public function getTitle()        { return parent::get('title'       ); }
-    public function getEventId()      { return parent::get('eventId'     ); }
-    public function getLocation()     { return parent::get('location'    ); }
-    public function getHtmlLink()     { return parent::get('htmlLink'    ); }
-    public function getCommittee_id() { return parent::get('committee_id'); }
-    public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-    public function getStart($f=null) { return parent::getDateData('start', $f); }
-    public function getEnd  ($f=null) { return parent::getDateData('end',   $f); }
-    public function getCreated($f=null) { return parent::getDateData('start', $f); }
-    public function getUpdated($f=null) { return parent::getDateData('end',   $f); }
+    public function getId()              { return parent::get('id'             ); }
+    public function getTitle()           { return parent::get('title'          ); }
+    public function getEventId()         { return parent::get('eventId'        ); }
+    public function getLocation()        { return parent::get('location'       ); }
+    public function getHtmlLink()        { return parent::get('htmlLink'       ); }
+    public function getAttendanceNotes() { return parent::get('attendanceNotes'); }
+    public function getCommittee_id()    { return parent::get('committee_id'   ); }
+    public function getCommittee()       { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+    public function getStart  ($f=null)  { return parent::getDateData('start', $f); }
+    public function getEnd    ($f=null)  { return parent::getDateData('end',   $f); }
+    public function getCreated($f=null)  { return parent::getDateData('start', $f); }
+    public function getUpdated($f=null)  { return parent::getDateData('end',   $f); }
 
-    public function setTitle       ($s) { parent::set('title',    $s); }
-    public function setEventId     ($s) { parent::set('eventId',  $s); }
-    public function setLocation    ($s) { parent::set('location', $s); }
-    public function setHtmlLink    ($s) { parent::set('htmlLink', $s); }
+    public function setTitle          ($s) { parent::set('title',           $s); }
+    public function setEventId        ($s) { parent::set('eventId',         $s); }
+    public function setLocation       ($s) { parent::set('location',        $s); }
+    public function setHtmlLink       ($s) { parent::set('htmlLink',        $s); }
+    public function setAttendanceNotes($s) { parent::set('attendanceNotes', $s); }
     public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
     public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
     public function setStart(?string $dt=null, ?string $format='Y-m-d H:i:s') { parent::setDateData('start', $dt, $format); }
@@ -128,7 +130,7 @@ class Meeting extends ActiveRecord
         return $q->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function saveAttendance(array $data)
+    public function saveAttendance(array $attendance, ?string $notes=null)
     {
         $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
         $sql = 'delete from meeting_attendance where meeting_id=?';
@@ -136,7 +138,10 @@ class Meeting extends ActiveRecord
 
         $sql    = 'insert meeting_attendance values(:meeting_id, :member_id, :status)';
         $insert = $pdo->prepare($sql);
+        foreach ($attendance as $row) { $insert->execute($row); }
 
-        foreach ($data as $row) { $insert->execute($row); }
+        $sql    = 'update meetings set attendanceNotes=?';
+        $update = $pdo->prepare($sql);
+        $update->execute([$notes]);
     }
 }
