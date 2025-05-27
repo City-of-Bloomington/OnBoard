@@ -6,7 +6,6 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-use Application\Models\MeetingFilesTable;
 use Web\Database;
 use Web\Search\Solr;
 
@@ -14,21 +13,28 @@ $_SERVER['REQUEST_URI'] = __FILE__;
 
 include '../../src/Web/bootstrap.php';
 
-$solr   = new Solr($SOLR['onboard']);
-$table  = new MeetingFilesTable();
-$files  = $table->find(['indexed'=>false]);
-$total  = count($files);
-$c      = 0;
-
 $db     = Database::getConnection();
-$update = $db->createStatement('update meetingFiles set indexed=CURRENT_TIMESTAMP where id=?');
-
+$solr   = new Solr($SOLR['onboard']);
 $solr->setTimeout(20);
 
-echo "Found $total\n";
-foreach ($files as $f) {
-    $c++;
-    echo "{$f->getFullPath()} {$f->getId()} $c/$total\n";
-    $solr->add($f);
-    $update->execute([$f->getId()]);
+$types  = [
+    'meetingFiles'     => 'Application\Models\MeetingFilesTable',
+    'legislationFiles' => 'Application\Models\Legislation\LegislationFilesTable',
+    'reports'          => 'Application\Models\Reports\ReportsTable'
+];
+foreach ($types as $tablename=>$classname) {
+    $table  = new $classname();
+    $files  = $table->find(['indexed'=>false]);
+    $total  = count($files);
+    $c      = 0;
+
+    $update = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
+
+    echo "Found $total $tablename\n";
+    foreach ($files as $f) {
+        $c++;
+        echo "{$f->getFullPath()} {$f->getId()} $c/$total\n";
+        $solr->add($f);
+        $update->execute([$f->getId()]);
+    }
 }

@@ -396,4 +396,12 @@ abstract class File extends ActiveRecord
             default:  return (int)$size;
         }
     }
+
+    /**
+     * Extracts plain text out of a PDF
+     */
+    public function extractText(): string
+    {
+        return shell_exec("pdftotext -enc UTF-8 -nodiag -nopgbrk -eol unix {$this->getFullPath()} -") ?: '';
+    }
 }

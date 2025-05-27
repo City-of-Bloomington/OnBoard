@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models\Legislation;
 
+use Laminas\Db\Sql\Select;
 use Web\Database;
 use Web\TableGateway;
 
@@ -13,7 +14,31 @@ class LegislationFilesTable extends TableGateway
 {
 	public function __construct() { parent::__construct('legislationFiles', __namespace__.'\LegislationFile'); }
 
-	/**
+	public function find($fields=null, $order=null, $paginated=false, $limit=null)
+    {
+        $select = new Select('legislationFiles');
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'indexed':
+                        if ($value) {
+                            $select->where(['indexed>updated']);
+                        }
+                        else {
+                            $select->where(['indexed is null or updated>indexed']);
+                        }
+                    break;
+
+                    default:
+                        $select->where([$key=>$value]);
+
+                }
+            }
+        }
+        return $this->performSelect($select, $order, $paginated, $limit);
+    }
+
+    /**
 	 * Check if a legislation has a given department
      */
 	public static function hasDepartment(int $department_id, int $file_id): bool

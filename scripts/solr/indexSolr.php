@@ -7,7 +7,6 @@
  */
 declare (strict_types=1);
 
-use Application\Models\MeetingFilesTable;
 use Web\Database;
 use Web\Search\Solr;
 
@@ -22,23 +21,31 @@ $client->getAdapter()->setTimeout(20);
 $buffer = $client->getPlugin('bufferedadd');
 $buffer->setBufferSize(100);
 
-$table = new MeetingFilesTable();
-$files = $table->find();
+$db     = Database::getConnection();
 
-$db    = Database::getConnection();
-$sql   = $db->createStatement('update meetingFiles set indexed=CURRENT_TIMESTAMP where id=?');
+$types  = [
+    'meetingFiles'     => 'Application\Models\MeetingFilesTable',
+    'legislationFiles' => 'Application\Models\Legislation\LegislationFilesTable',
+    'reports'          => 'Application\Models\Reports\ReportsTable'
+];
 
-$total = count($files);
-$c     = 0;
-foreach ($files as $f) {
-    $c++;
-    echo "{$f->getFullPath()} $c/$total\n";
-    $data = $solr->prepareIndexFields($f);
-    $buffer->createDocument($data);
+foreach ($types as $tablename=>$classname) {
+    $table     = new $classname();
+    $files     = $table->find();
+    $sql       = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
-    $sql->execute([$f->getId()]);
+    $total = count($files);
+    $c     = 0;
+    foreach ($files as $f) {
+        $c++;
+        echo "{$f->getFullPath()} $c/$total\n";
+        $data = $solr->prepareIndexFields($f);
+        $buffer->createDocument($data);
+
+        $sql->execute([$f->getId()]);
+    }
+    $buffer->commit();
 }
-$buffer->commit();
 
 $update = $client->createUpdate();
 $update->addOptimize();

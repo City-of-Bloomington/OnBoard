@@ -118,14 +118,6 @@ class MeetingFile extends File
     public function getDownloadUrl():string { return  View::generateUrl('meetingFiles.download', ['id'=>$this->getId()]); }
     public function getDownloadUri():string { return  View::generateUri('meetingFiles.download', ['id'=>$this->getId()]); }
 
-    /**
-     * Extracts plain text out of a PDF
-     */
-    public function extractText(): string
-    {
-        return shell_exec("pdftotext -enc UTF-8 -nodiag -nopgbrk -eol unix {$this->getFullPath()} -") ?: '';
-    }
-
     public function getSolrFields(): array
     {
         $m = $this->getMeeting();

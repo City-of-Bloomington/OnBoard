@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -64,6 +64,7 @@ class Report extends File
 	public function setCommittee (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
 
 	//----------------------------------------------------------------
+	// Custom Functions
 	//----------------------------------------------------------------
 	public function toArray()
 	{
@@ -72,7 +73,22 @@ class Report extends File
             'committee' => $this->getCommittee()->getName(),
             'title'     => $this->getTitle(),
             'date'      => $this->getReportDate(),
-            'url'       => View::generateUrl('reports.download').'?report_id='.$this->getId()
+            'url'       => View::generateUrl('reports.download', ['id'=>$this->getId()])
         ];
 	}
+
+	public function getSolrFields(): array
+    {
+        $c = $this->getCommittee();
+        return [
+            'id'        => $this->getId(),
+            'type'      => 'Report',
+            'title'     => $this->getTitle(),
+            'url'       => View::generateUrl('reports.download', ['id'=>$this->getId()]),
+            'text'      => $this->extractText(),
+            'date'      => $this->getReportDate(),
+            'changed'   => $this->getUpdated(),
+            'committee' => $c->getName()
+        ];
+    }
 }
