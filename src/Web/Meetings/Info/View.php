@@ -121,10 +121,10 @@ class View extends \Web\View
         return $info;
     }
 
-    private static function attendanceNotes(Meeting $m): string
+    private static function attendanceNotes(Meeting $m): ?string
     {
         return parent::isAllowed('meetings', 'attendance')
                 ? $m->getAttendanceNotes()
-                : '';
+                : null;
     }
 }
