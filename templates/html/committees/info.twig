@@ -31,8 +31,8 @@
         {% if committee.getAddress()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('address'      ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getAddress()            }}</dd></div>{% endif %}
         {% if committee.getCalendarId()    %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('calendarId'   ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd></div>{% endif %}
         {% if isAllowed('committees', 'update') %}
-        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('termEndWarningDays' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getTermEndWarningDays()  }}</dd></div>
-        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('applicationLifetime') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getApplicationLifetime() }}</dd></div>
+                {% if committee.hasTerms() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('termEndWarningDays' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getTermEndWarningDays()  }}</dd></div>{% endif %}
+       {% if committee.takesApplications() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('applicationLifetime') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getApplicationLifetime() }}</dd></div>{% endif %}
         {% endif %}
         <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('legislative') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.isLegislative()    ? _('yes') : _('no') }}</dd></div>
         <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('alternates' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.allowsAlternates() ? _('yes') : _('no') }}</dd></div>

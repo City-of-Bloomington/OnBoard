@@ -23,11 +23,14 @@
     {{ forms.field_email   ('calendarId',          'calendarId',          _('calendarId'),          committee.getCalendarId() ) }}
     {{ forms.field_url     ('website',             'website',             _('website'),             committee.getWebsite() ) }}
     {{ forms.field_url     ('videoArchive',        'videoArchive',        _('videoArchive'),        committee.getVideoArchive() ) }}
-    {{ forms.field_number  ('termEndWarningDays',  'termEndWarningDays',  _('termEndWarningDays'),  committee.getTermEndWarningDays(),  false, {'size':4} ) }}
-    {{ forms.field_number  ('applicationLifetime', 'applicationLifetime', _('applicationLifetime'), committee.getApplicationLifetime(), false, {'size':4} ) }}
+    {% if committee.hasTerms() %}
+    {{ forms.field_number  ('termEndWarningDays',  'termEndWarningDays',  _('termEndWarningDays'),  committee.getTermEndWarningDays(),  true, {'size':4} ) }}
+    {% endif %}
+    {% if committee.takesApplications() %}
+    {{ forms.field_number  ('applicationLifetime', 'applicationLifetime', _('applicationLifetime'), committee.getApplicationLifetime(), true, {'size':4} ) }}
+    {% endif %}
     {{ forms.field_textarea('description',         'description',         _('description'),         committee.getDescription() ) }}
     {{ forms.field_textarea('meetingSchedule',     'meetingSchedule',     _('meetingSchedule'),     committee.getMeetingSchedule() ) }}
-
 </fieldset>
 
 <fieldset class="usa-fieldset margin-bottom-3">

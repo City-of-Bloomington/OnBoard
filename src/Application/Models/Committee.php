@@ -49,6 +49,9 @@ class Committee extends ActiveRecord
 	{
         if (!$this->getType()) { $this->setType('seated'); }
 		if (!$this->getName()) { throw new \Exception('missingName'); }
+		if ($this->hasTerms() && !$this->getTermEndWarningDays()) {
+            throw new \Exception('missingTermEndWarningDays');
+        }
 	}
 
 	public function save()
@@ -139,8 +142,10 @@ class Committee extends ActiveRecord
 			'termEndWarningDays', 'applicationLifetime', 'legislative', 'alternates'
 		];
 		foreach ($fields as $f) {
-			$set = 'set'.ucfirst($f);
-			$this->$set($post[$f]);
+            if (array_key_exists($f, $post)) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
+            }
 		}
 	}
 
@@ -278,17 +283,6 @@ class Committee extends ActiveRecord
             }
         }
         return $c;
-	}
-
-	/**
-	 * Returns all the terms for this committee
-	 *
-	 * @return Laminas\Db\ResultSet
-	 */
-	public function getTerms()
-	{
-		$terms = new TermTable();
-		return $terms->find(['committee_id'=>$this->getId()]);
 	}
 
 	/**
@@ -508,7 +502,7 @@ class Committee extends ActiveRecord
 	{
 		$history = [];
 
-		$db = Database::getConnection();
+		$db  = Database::getConnection();
 		$sql = 'select * from committeeHistory where committee_id=? order by date desc';
 		$result = $db->query($sql)->execute([$this->getId()]);
 		foreach ($result as $row) {
@@ -519,7 +513,14 @@ class Committee extends ActiveRecord
 
 	public function isLegislative    (): bool { return $this->getLegislative(); }
 	public function allowsAlternates (): bool { return $this->getAlternates(); }
-	public function takesApplications(): bool
+	public function hasTerms(): bool
+    {
+        $db  = Database::getConnection();
+        $sql = 'select count(*) as count from terms t join seats s on t.seat_id=s.id where s.committee_id=?';
+        $row = $db->query($sql)->execute([$this->getId()])->current();
+        return (int)$row['count'] > 0;
+    }
+    public function takesApplications(): bool
 	{
         $db  = Database::getConnection();
         $sql = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
