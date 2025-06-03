@@ -17,26 +17,29 @@
             <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
                 <div class="grid-row flex-row">
                     <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3><a class="usa-link" href="{{ uri('members.view', {id: row.member_id}) }}">
-                                {% if row.member_person_id %}
-                                {{ row.member_firstname }} {{ row.member_lastname }}
-                                {% else %}
-                                {{ _('vacant') }}
-                                {% endif %}
-                                {% if row.offices %}
-                                {% for office in row.offices|split(',') %}
-                                    {% set o=office|split('|') %}
-                                    <span class="usa-tag margin-left-1">{{ o[1] }}</span>
-                                {% endfor %}
-                                {% endif %}
-                                {% if committee.allowsAlternates() %}
-                                    {% if row.alternate_person_id %}
-                                    {{ row.alternate_firstname }} {{ row.alternate_lastname }}
-                                    {% else %}
-                                    {{ _('alternate_vacant') }}
-                                    {% endif %}
-                                {% endif %}
+                        <h3>{% if row.member_person_id %}
+                            <a href="{{ uri('members.view', {id: row.member_id}) }}">
+                            {{ row.member_firstname }} {{ row.member_lastname }}
                             </a>
+                            {% else %}
+                            {{ _('vacant') }}
+                            {% endif %}
+
+                            {% if row.offices %}
+                            {% for office in row.offices|split(',') %}
+                                {% set o=office|split('|') %}
+                                <span class="usa-tag margin-left-1">{{ o[1] }}</span>
+                            {% endfor %}
+                            {% endif %}
+                            {% if committee.allowsAlternates() %}
+                                {% if row.alternate_person_id %}
+                                <a href="{{ uri('alternates.view', {id: row.alternate_id}) }}">
+                                {{ row.alternate_firstname }} {{ row.alternate_lastname }}
+                                </a>
+                                {% else %}
+                                {{ _('alternate_vacant') }}
+                                {% endif %}
+                            {% endif %}
                         </h3>
                     </div>
                 </div>
