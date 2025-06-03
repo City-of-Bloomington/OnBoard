@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2021-2023 City of Bloomington, Indiana
+ * @copyright 2021-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -98,7 +98,7 @@ class Solr
     public function purge(): ResultInterface
     {
         $delete = $this->client->createUpdate();
-        $delete->addDeleteQuery('index_id:'.APPLICATION_NAME);
+        $delete->addDeleteQuery('index_id:'.strtolower(APPLICATION_NAME));
         $delete->addCommit();
         $delete->addOptimize();
         return $this->client->update($delete);
@@ -139,8 +139,8 @@ class Solr
 
         return [
             'site'             => BASE_URL,
-            'id'               => APPLICATION_NAME."-$data[type]-$data[id]",
-            'index_id'         => APPLICATION_NAME,
+            'id'               => strtolower(APPLICATION_NAME)."-$data[type]-$data[id]",
+            'index_id'         => strtolower(APPLICATION_NAME),
             'ss_search_api_id' => "$data[type]-$data[id]",
             'ss_board'         => $data['committee'],
             'ss_type'          => $data['type' ],
