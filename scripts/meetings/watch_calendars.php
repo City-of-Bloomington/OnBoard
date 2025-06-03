@@ -43,11 +43,14 @@ include '../../src/Web/bootstrap.php';
 $table   = new CommitteeTable();
 $list    = $table->find(['current'=>true]);
 $expires = strtotime("+$minutes minute");
+$debug   = fopen(DEBUG_LOG, 'a');
+fwrite($debug, "----------------\nwatch_calendars\n----------------\n");
 foreach ($list as $c) {
     $calendar_id = $c->getCalendarId();
     if ($calendar_id) {
         $watch_id = APPLICATION_NAME."-{$c->getId()}-".uniqid();
         $channel  = GoogleGateway::watch($calendar_id, $watch_id, $expires);
-        print_r($channel);
+        fwrite($debug, "$watch_id\n");
+        fwrite($debug, print_r($channel, true));
     }
 }
