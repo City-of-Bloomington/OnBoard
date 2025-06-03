@@ -1,60 +1,52 @@
+{#
+ * @copyright 2024-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Department department
+#}
 {% extends "html/layouts/default.twig" %}
 
 {% block content %}
-<section class="container mt-4">
+<section class="grid-container">
     <header>
-        <h1 class="mb-4">
-            <a href="{{ uri('departments.index') }}" class="text-decoration-none">{{ _(['department', 'departments', 10]) }}</a>
+        <h1><a href="{{ uri('departments.index') }}">{{ _(['department', 'departments', 10]) }}</a>
         </h1>
+        <h2>{{ department.name }}</h2>
     </header>
-    <h2 class="mb-4">{{ department.name }}</h2>
 
-    <section class="mb-4">
-        <header>
-            <h3 class="mb-3">{{ _(['committee', 'committees', 10]) }}</h3>
-        </header>
-        <table class="table table-striped">
-            <tbody>
-                {% for committee in department.committees %}
-                    <tr>
-                        <td>
-                            <a href="{{ uri('committees.info', {id: committee.id}) }}" class="text-decoration-none">
-                                {{ committee.name }}
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td>No committees found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+    <section>
+        <header><h3>{{ _(['committee', 'committees', 10]) }}</h3></header>
+        <table>
+            {% for committee in department.committees %}
+            <tr><td><a href="{{ uri('committees.info', {id: committee.id}) }}">
+                        {{ committee.name }}
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td>No committees found.</td></tr>
+            {% endfor %}
         </table>
     </section>
 
     {% if isAllowed('users', 'view') %}
-        <section class="mb-4">
-            <header>
-                <h3 class="mb-3">Users</h3>
-            </header>
-            {% if department.users|length > 0 %}
-                <ul class="list-group">
-                {% for user in department.users %}
-                    <li class="list-group-item">
-                        {% if user.getFullname is defined %}
-                            {{ user.getFullname() }}
-                        {% elseif user.getUsername is defined %}
-                            {{ user.getUsername() }}
-                        {% else %}
-                            User ID: {{ user.getId() }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p>No users found for this department.</p>
-            {% endif %}
-        </section>
+    <section>
+        <header><h3>Users</h3></header>
+        {% if department.users|length > 0 %}
+        <ul>{% for user in department.users %}
+            <li>{% if user.getFullname is defined %}
+                {{ user.getFullname() }}
+                {% elseif user.getUsername is defined %}
+                {{ user.getUsername() }}
+                {% else %}
+                User ID: {{ user.getId() }}
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No users found for this department.</p>
+        {% endif %}
+    </section>
     {% endif %}
 </section>
 {% endblock %}

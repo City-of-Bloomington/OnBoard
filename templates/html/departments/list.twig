@@ -1,11 +1,11 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array departments
 #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
         <h1>{{ _(['department', 'departments', 10]) }}</h1>
         {% if actionLinks %}
@@ -13,7 +13,7 @@
         {% endif %}
     </header>
 
-    <table class="table table-striped">
+    <table>
     {% for d in departments %}
     <tr><td><a href="{{ uri('departments.info', {id: d.id}) }}">{{ d.name }}</a></td>
         <td>{% if d.actionLinks %}

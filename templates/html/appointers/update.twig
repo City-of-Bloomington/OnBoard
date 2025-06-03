@@ -1,17 +1,17 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Appointer appointer
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
         <h1>{{ appointer.getId() ? _('appointer_edit') : _('appointer_add') }}</h1>
     </header>
-    <form method="post">
-        <fieldset>
+    <form         class="usa-form" method="post">
+        <fieldset class="usa-fieldset">
             {{ forms.field_text('name', 'name', _('name'), appointer.getName(), true ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}

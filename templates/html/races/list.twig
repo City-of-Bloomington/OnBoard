@@ -1,12 +1,12 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array races
  * @param array actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header><h2>{{ _(['race', 'races', 10]) }}</h2></header>
     {{ include('html/partials/actionLinks.twig') }}
 

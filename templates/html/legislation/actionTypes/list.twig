@@ -1,19 +1,19 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array types
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
         <h1>{{ _(['legislationActionType', 'legislationActionTypes', 10]) }}</h1>
         {% if actionLinks %}
         {{ include('html/partials/actionLinks.twig') }}
         {% endif %}
     </header>
-    <table class="table">
+    <table>
         {% set canEdit = isAllowed('legislationActionTypes', 'update') %}
         {% for t in types %}
         <tr><td>{{ forms.actionLink(uri('legislationActionTypes.update', {id: t.getId()}), _('legislationActionType_edit'), 'edit') }}</td>

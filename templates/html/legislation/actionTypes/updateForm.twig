@@ -1,17 +1,17 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param ActionType   type
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section>
+<section class="grid-container">
     <header>
         <h1>{{ type.getId() ? _('legislationActionType_edit') : _('legislationActionType_add') }}</h1>
     </header>
-    <form method="post">
-        <fieldset>
+    <form         class="usa-form" method="post">
+        <fieldset class="usa-fieldset">
             {{ forms.field_text('name', 'name', _('name'), type.getName(), true  ) }}
             {{ forms.field_number('ordering', 'ordering', _('ordering'), type.getOrdering() ) }}
 
