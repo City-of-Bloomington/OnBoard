@@ -20,12 +20,9 @@ class View extends \Web\View
             'committee_id' => $search['committee_id'] ?? null,
             'appointer_id' => $search['appointer_id'] ?? null,
             'committees'   => self::committees(),
-            'appointers'   => self::appointers()
+            'appointers'   => self::appointers(),
+            'actionLinks'  => self::actionLinks($search)
         ];
-
-        if (parent::isAllowed('people', 'viewContactInfo')) {
-            $this->vars['actionLinks'] = [['url' => parent::generateUri('seats.index').'?format=csv', 'label' => 'CSV Export', 'class' => 'download']];
-        }
     }
 
     public function render(): string
@@ -63,5 +60,18 @@ class View extends \Web\View
             $o[] = ['value'=>$a->getId(), 'label'=>$a->getName()];
         }
         return $o;
+    }
+
+    private static function actionLinks(array $search): array
+    {
+        if (parent::isAllowed('people', 'viewContactInfo')) {
+            $p = ['format' => 'csv'];
+            if (!empty($search['committee_id'])) { $p['committee_id']=$search['committee_id']; }
+            if (!empty($search['appointer_id'])) { $p['appointer_id']=$search['appointer_id']; }
+            $p = http_build_query($p);
+
+            return [['url' => parent::generateUri('seats.index')."?$p", 'label' => 'CSV Export', 'class' => 'download']];
+        }
+        return [];
     }
 }
