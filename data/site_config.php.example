@@ -19,7 +19,7 @@ define('BASE_URL' , "$_SERVER[REQUEST_SCHEME]://".BASE_HOST.BASE_URI);
 define('USWDS_URL', '/static/uswds/dist');
 
 define('RECAPTCHA_SITE_KEY',   '');
-define('RECAPTCHA_SERVER_KEY', '');
+define('RECAPTCHA_PROJECT_ID', '');
 define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
 define('GOOGLE_USER_EMAIL', 'user@localhost');
 define('GOOGLE_CALENDAR_URL', 'https://calendar.google.com');

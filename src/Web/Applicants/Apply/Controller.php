@@ -12,7 +12,11 @@ use Application\Models\Captcha;
 use Application\Models\Committee;
 use Web\Database;
 
-use ReCaptcha\ReCaptcha;
+use Google\Cloud\RecaptchaEnterprise\V1\Client\RecaptchaEnterpriseServiceClient;
+use Google\Cloud\RecaptchaEnterprise\V1\Event;
+use Google\Cloud\RecaptchaEnterprise\V1\Assessment;
+use Google\Cloud\RecaptchaEnterprise\V1\CreateAssessmentRequest;
+use Google\Cloud\RecaptchaEnterprise\V1\TokenProperties\InvalidReason;
 
 class Controller extends \Web\Controller
 {
@@ -21,9 +25,7 @@ class Controller extends \Web\Controller
         $applicant = new Applicant();
 
         if (isset($_POST['firstname']) && !empty($_POST['g-recaptcha-response'])) {
-            $rc  = new ReCaptcha(RECAPTCHA_SERVER_KEY);
-            $r   = $rc->setExpectedHostname(BASE_HOST)->verify($_POST['g-recaptcha-response']);
-            if ($r->isSuccess()) {
+            if (self::recaptcha_is_valid($_POST['g-recaptcha-response'])) {
                 $db = Database::getConnection();
                 $db->getDriver()->getConnection()->beginTransaction();
                 try {
@@ -78,5 +80,31 @@ class Controller extends \Web\Controller
                 }
             }
         }
+    }
+
+    /**
+     * @see https://cloud.google.com/recaptcha/docs/create-assessment-website
+     */
+    private static function recaptcha_is_valid(string $token): bool
+    {
+        // TODO: To avoid memory issues, move this client generation outside
+        // of this example, and cache it (recommended) or call client.close()
+        // before exiting this method.
+        $credentials =
+        $client      = new RecaptchaEnterpriseServiceClient(['credentials'=>GOOGLE_CREDENTIALS_FILE]);
+        $projectName = $client->projectName(RECAPTCHA_PROJECT_ID);
+        $event       = (new Event())->setSiteKey(RECAPTCHA_SITE_KEY)->setToken($token);
+        $assessment  = (new Assessment())->setEvent($event);
+        $request     = (new CreateAssessmentRequest())->setParent($projectName)->setAssessment($assessment);
+
+        try {
+            $response = $client->createAssessment($request);
+            $is_valid = $response->getTokenProperties()->getValid();
+        }
+        catch (exception $e) {
+            $is_valid = false;
+        }
+        $client->close();
+        return $is_valid;
     }
 }
