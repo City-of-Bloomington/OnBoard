@@ -39,7 +39,7 @@ class Controller extends \Web\Controller
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
                     $id  = SeatTable::update($seat);
-                    $url = View::generateUrl('seats.view', ['id'=>$id]);
+                    $url = \Web\View::generateUrl('seats.view', ['id'=>$id]);
                     header("Location: $url");
                     exit();
                 }
