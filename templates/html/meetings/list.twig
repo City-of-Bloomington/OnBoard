@@ -43,16 +43,20 @@
     <ul class="usa-card-group margin-top-3">
     {% for date, t in meetings %}
         {% for time, m in t %}
-        <li class="margin-bottom-2">
+        <li class="margin-bottom-2 grid-col-12">
             <div        class="usa-card__container">
                 <div    class="usa-card__header">
-                    <h3 class="usa-card__heading">
-                        <a class="usa-link" href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a>
-                    </h3>
-                    <h3 class="usa-card__heading">{{ m.title }}</h3>
+                    <h3><a class="usa-link" href="{{ uri('meetings.view', {id: m.id}) }}">{{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}</a></h3>
+                    <strong>{{ m.title }}</strong>
+                    <div>{{ m.location }}</div>
+                    {% if m.htmlLink -%}
+                    <div>
+                        <a class="usa-link" href="{{ m.htmlLink }}">Google Calendar</a>
+                    </div>
+                    {%- endif %}
                 </div>
                 <div class="usa-card__footer">
-                    <div>{{ m.location }}</div>
+                    
                     {% for type, t in m.files %}
                     {% for f in t %}
                     <div>
@@ -60,12 +64,6 @@
                     </div>
                     {% endfor %}
                     {% endfor %}
-
-                    {% if m.htmlLink -%}
-                    <div>
-                        <a class="usa-link" href="{{ m.htmlLink }}">Google Calendar</a>
-                    </div>
-                    {%- endif %}
                 </div>
             </div>
         </li>
