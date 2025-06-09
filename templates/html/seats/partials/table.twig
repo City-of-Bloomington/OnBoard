@@ -19,7 +19,7 @@
     {% set class = (row.termEndsSoon or row.carryOver) ? '<span class="font-mono-2xs bg-gold padding-x-05 radius-sm display-inline-block">expiring</span>' : '<span class="font-mono-2xs bg-gray-10 padding-x-05 radius-sm display-inline-block">filled</span>' %}
     {% set class = (not row.member_id)                 ? '<span class="font-mono-2xs text-white bg-secondary-dark padding-x-05 radius-sm display-inline-block">vacant</span>'  : class %}
     <tr>
-        <td><a href="{{ uri('committees.members', {id:row.committee_id}) }}">{{ row.committee_name }}</a></td>
+        <td><a class="usa-link" href="{{ uri('committees.members', {id:row.committee_id}) }}">{{ row.committee_name }}</a></td>
         <td>{{ row.seat_name }}</td>
         <td class="font-mono-2xs">{{ row.term_startDate|date('m/d/Y') }}</td>
         <td class="font-mono-2xs">{{ row.term_endDate|date('m/d/Y') }}</td>
