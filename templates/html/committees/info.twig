@@ -10,9 +10,6 @@
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    {% set vacancies = committee.getVacancyCount() %}
-    {% if vacancies %}<span class="usa-tag">{{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}</span>{% endif %}
-
     <h2>{{ _('committee_info') }}</h2>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}

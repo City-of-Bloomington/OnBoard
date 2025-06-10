@@ -6,5 +6,5 @@
 <header>
     <h1>{{ committee.getName() }}</h1>
     {% set v = committee.getVacancyCount() %}
-    {% if  v %}<p>({{ v }} {{ _(['vacancy', 'vacancies', v]) }})</p>{% endif %}
+    {% if  v %}<span class="usa-tag">({{ v }} {{ _(['vacancy', 'vacancies', v]) }})</span>{% endif %}
 </header>
