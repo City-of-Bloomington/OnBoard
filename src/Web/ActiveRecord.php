@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2011-2020 City of Bloomington, Indiana
+ * @copyright 2011-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
@@ -191,14 +191,15 @@ abstract class ActiveRecord
      */
     protected function setForeignKeyField($class, $field, $id)
     {
+        $var = preg_replace('/_id$/', '', $field);
+
         if ($id) {
             $id  = trim($id);
-            $var = preg_replace('/_id$/', '', $field);
             $this->$var = new $class($id);
             $this->data[$field] = $this->$var->getId();
         }
         else {
-            $this->$field       = null;
+            $this->$var         = null;
             $this->data[$field] = null;
         }
     }
