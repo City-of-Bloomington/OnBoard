@@ -916,6 +916,9 @@ msgstr "Page"
 msgid "calendar"
 msgstr "Google Calendar"
 
+msgid "sort"
+msgstr "Sort"
+
 msgid "sort_date_asc"
 msgstr "Oldest"
 
