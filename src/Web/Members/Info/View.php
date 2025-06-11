@@ -41,6 +41,25 @@ class View extends \Web\View
                 'class' => 'edit'
             ];
         }
+        if (parent::isAllowed('members', 'resign')
+            && (!$m->getEndDate() || strtotime($m->getEndDate()) > time() )) {
+            $links[] = [
+                'url'   => parent::generateUri('members.resign', ['id'=>$m->getId()]),
+                'label' => parent::_('member_end'),
+                'class' => 'close'
+            ];
+        }
+        $seat = $m->getSeat();
+        if (parent::isAllowed('members', 'reappoint')
+            && $seat && $seat->getType() == 'termed'
+            && $m->getTerm()->getNextTerm()->isVacant()) {
+
+            $links[] = [
+                'url'   => parent::generateUri('members.reappoint', ['id'=>$m->getId()]),
+                'label' => parent::_('member_continue'),
+                'class' => 'loop'
+            ];
+        }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
                 'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
