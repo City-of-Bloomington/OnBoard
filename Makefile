@@ -6,8 +6,6 @@ K := $(foreach r, ${REQS}, $(if $(shell command -v ${r} 2> /dev/null), '', $(err
 
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
 JAVASCRIPT := $(shell find public -name '*.js' ! -name '*-*.js')
-SASS := $(shell find . -name screen.scss -not -path '*/build/*')
-CSS := $(patsubst %.scss, %-$(VERSION).css, $(SASS))
 
 VERSION := $(shell cat VERSION | tr -d "[:space:]")
 
@@ -16,8 +14,6 @@ default: clean compile package
 clean:
 	rm -Rf build/${APPNAME}*
 
-	rm -Rf public/css/.sass-cache
-	for f in $(shell find public/css  -name 'screen-*.css*'); do rm $$f; done
 	for f in $(shell find public/js   -name '*-*.js'       ); do rm $$f; done
 
 compile: $(CSS)
@@ -34,6 +30,3 @@ test:
 
 $(LANGUAGES):
 	cd $@ && msgfmt -cv *.po
-
-$(CSS): $(SASS)
-	cd $(@D) && sassc -t compact -m screen.scss screen-${VERSION}.css
