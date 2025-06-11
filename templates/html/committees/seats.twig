@@ -18,26 +18,21 @@
     {% for s in seats %}
         <li class="grid-col-12 margin-bottom-2">
             <div class="usa-card__container">
-                <div class="usa-card__header grid-row flex-row">
-                    <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3 class="usa-card__heading">{{ s.getCode() }} {{ s.getName() }}</h3>
-                    </div>
-                    <div class="grid-col-auto display-flex flex-align-center">
-                        <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ _('view') }}</a>
-                    </div>
-                </div>
-                <div class="usa-card__footer grid-row">
-                    <div class="grid-col flex-1">
-                        <div>
+                <div class="usa-card__header">
+                    <h3>
+                        <a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ s.getCode() }} {{ s.getName() }}</a>
+                    </h3>
+                    <div class="grid-row flex-1">
+                        <div class="tablet:grid-col-4">
                             <strong>{{ _('appointed_by') }}:</strong> {{ s.getAppointer() }}
                         </div>
-                        <div>
+                        <div class="tablet:grid-col-2">
                             <strong>{{ _('type') }}:</strong> {{ s.getType() }}
                         </div>
-                        <div>
+                        <div class="tablet:grid-col-3">
                             <strong>{{ _('startDate') }}:</strong> {{ s.getStartDate(DATE_FORMAT) }}
                         </div>
-                        <div>
+                        <div class="tablet:grid-col-3">
                             <strong>{{ _('endDate')   }}:</strong> {{ s.getEndDate  (DATE_FORMAT) }}
                         </div>
                     </div>
