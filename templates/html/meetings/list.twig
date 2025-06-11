@@ -55,8 +55,8 @@
                     </div>
                     {%- endif %}
                 </div>
+                {% if m.files -%}
                 <div class="usa-card__footer">
-                    
                     {% for type, t in m.files %}
                     {% for f in t %}
                     <div>
@@ -65,6 +65,7 @@
                     {% endfor %}
                     {% endfor %}
                 </div>
+                {%- endif %}
             </div>
         </li>
         {% endfor %}
