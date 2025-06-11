@@ -3,7 +3,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  #}
-<table>
+<table class="usa-table usa-table--compact">
     {% if isAllowed('people', 'viewContactInfo') %}
     <tr><th>{{ _('username') }}</th><td>{{ person.getUsername() }}</td></tr>
     <tr><th>{{ _('website' ) }}</th><td><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></td></tr>
