@@ -21,9 +21,16 @@
         <legend class="usa-legend usa-legend--large">{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
 
         {% set url = current_url() %}
-        {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
+        
         {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.getMeeting_id(), meetings, true ) }}
-        {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
+        <div class="grid-row margin-top-1">
+            <div class="flex-col flex-1">
+                {{ url.__set('year', (year - 1) ) }}{{ forms.actionLink(url, (year - 1) ) }}
+            </div>
+            <div class="flex-col flex-align-end">
+                {{ url.__set('year', (year + 1) ) }}{{ forms.actionLink(url, (year + 1) ) }}
+            </div>
+        </div>
 
         {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
         {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
