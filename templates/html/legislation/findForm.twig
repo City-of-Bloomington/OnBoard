@@ -25,9 +25,12 @@
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
 <section>
+    <h2>{{ _('legislation') }}</h2>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
     <form method="get" class="usa-form">
         <fieldset      class="usa-fieldset">
-            <legend    class="usa-legend usa-legend--large">{{ _('legislation') }}</legend>
             <input name="committee_id" type="hidden" value="{{ committee.id }}" />
             {{ forms.field_combo ('year',      'year',      _('year'),              year,      years ) }}
             {{ forms.field_select('status_id', 'status_id', _('legislationStatus'), status_id, statuses, false, {onchange:'this.form.submit();'} ) }}
@@ -37,10 +40,6 @@
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>
-
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
 
     {{ include('html/legislation/partials/list.twig') }}
 
