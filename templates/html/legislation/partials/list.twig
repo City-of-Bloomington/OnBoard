@@ -4,11 +4,12 @@
  * @param array legislation
  #}
 {% import "html/macros/forms.twig" as forms %}
+<div class="usa-card-group margin-top-3">
 {% for l in legislation %}
-<article    class="usa-card">
+<article    class="usa-card__container margin-bottom-2 grid-col-12">
     <header class="usa-card__header">
         <h2 class="usa-card__heading">
-            <a href="{{ uri('legislation.view', {'id': l.getId(), 'committee_id': l.getCommittee_id() }) }}">
+            <a class="usa-link" href="{{ uri('legislation.view', {'id': l.getId(), 'committee_id': l.getCommittee_id() }) }}">
                 {{ l.getType() }} {{ l.getNumber() }} {{ l.getStatus() ? l.getStatus().getName() : '' }}
             </a>
         </h2>
@@ -23,3 +24,4 @@
     </div>
 </article>
 {% endfor %}
+</div>
