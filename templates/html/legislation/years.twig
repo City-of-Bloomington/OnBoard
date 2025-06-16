@@ -1,21 +1,25 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     years
  * @param Committee committee
+ *
+ * Search Form
+ * @param int       type_id
+ * @param array     types
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <header>
-        {% if committee %}
-        <h2>{{ committee.getName() }}
-            {% set vacancies = committee.getVacancyCount() %}
-            {% if vacancies %}({{ vacancies }} {{ _(['vacancy', 'vacancies', vacancies]) }}){% endif %}
-        </h2>
-        {{ include('html/committees/partials/header.twig') }}
-        {% endif %}
-    </header>
+    <header><h2>{{ _(['year', 'years', 10]) }}</h2>
+
+    <form         class="usa-form" method="get">
+        <fieldset class="usa-fieldset">
+            {{ forms.field_select('type_id', 'type_id', _('type'), type_id, types, false, {onchange:'this.form.submit();'} ) }}
+            {{ forms.button('submit', _('search'), 'search') }}
+        </fieldset>
+    </form>
 
     {% set uri = uri('legislation.index', {'committee_id': committee.getId()}) %}
     <ul>{% for year, count in years %}

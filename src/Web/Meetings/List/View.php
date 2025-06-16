@@ -53,7 +53,7 @@ class View extends \Web\View
      */
     private static function years(array $search): array
     {
-        $q     = $search['committee_id'] ? ['committee_id'=>$search['committee_id']] : [];
+        $q     = !empty($search['committee_id']) ? ['committee_id'=>$search['committee_id']] : [];
         $table = new MeetingTable();
         $years = array_keys($table->years($q));
 

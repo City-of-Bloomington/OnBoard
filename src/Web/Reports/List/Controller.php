@@ -23,6 +23,10 @@ class Controller extends \Web\Controller
 
         switch ($this->outputFormat) {
             case 'json':
+                $data = [];
+                $list = $table->find($search, 'reportDate desc');
+                foreach ($list as $r) { $data[] = $r->toArray(); }
+                return new \Web\Views\JSONView($data);
             break;
 
             default:

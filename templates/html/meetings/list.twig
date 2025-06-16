@@ -23,9 +23,11 @@
 {% import  "html/macros/forms.twig"      as forms %}
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
-<section>
+<section class="grid-container">
     <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
+    {% if committee %}
     <div>Last Sync: {{ committee.getSynced('c') }}</div>
+    {% endif %}
     {% if isAllowed('committees', 'meetingsync') %}
     {{ forms.actionLink(uri('committees.meetingsync', {id: committee.getId()}), 'sync') }}
     {% endif %}

@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
 
@@ -84,6 +84,7 @@ class Type extends ActiveRecord
 	// Custom Functions
 	//----------------------------------------------------------------
 	public function __toString() { return parent::get('name'); }
+	public function toArray(): array { return $this->data; }
 
 	public function isSubtype() { return $this->getSubtype() ? true : false; }
 }

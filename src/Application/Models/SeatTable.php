@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2022 City of Bloomington, Indiana
+ * @copyright 2016-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -64,6 +64,7 @@ class SeatTable extends TableGateway
     public static $dataFields = [
         'committee_id'           => 's.committee_id',
         'committee_name'         => 'c.name',
+        'committee_alternates'   => 'c.alternates',
         'seat_id'                => 's.id',
         'seat_code'              => 's.code',
         'seat_name'              => 's.name',

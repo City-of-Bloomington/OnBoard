@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,7 +15,14 @@ class Controller extends \Web\Controller
         if (!empty($params['id'])) {
             try {
                 $c = new Committee($params['id']);
-                return new View($c);
+                switch ($this->outputFormat) {
+                    case 'json':
+                        return new \Web\Views\JSONView($c->toArray());
+                    break;
+
+                    default:
+                        return new View($c);
+                }
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

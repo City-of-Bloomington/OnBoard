@@ -38,6 +38,7 @@ foreach ($ROUTES->getMap()->getRoutes() as $r) {
 // Permissions for unauthenticated browsing
 $ACL->allow(null,  'home');
 $ACL->allow(null,  'people',      'parameters');
+$ACL->allow(null,  'legislationTypes', 'index');
 $ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'statutes', 'liaisons', 'report', 'meetings']);
 $ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
 $ACL->allow(null,  'applicants',  'apply');

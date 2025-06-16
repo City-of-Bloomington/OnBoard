@@ -56,7 +56,7 @@ class Controller extends \Web\Controller
             foreach ($table->find($_GET) as $l) {
                 $legislation[] = $l->toArray();
             }
-            return new \Web\JSONView($legislation);
+            return new \Web\Views\JSONView($legislation);
         }
     }
 }

@@ -376,7 +376,7 @@ class Committee extends ActiveRecord
 	 * @param array $fields
 	 * @return array
 	 */
-	public static function data(array $fields=null)
+	public static function data(array $fields=null): array
 	{
         $where = '';
         if (isset(   $fields['current'])) {
@@ -409,9 +409,11 @@ class Committee extends ActiveRecord
                 $where
                 group by c.id
                 order by c.name";
-        $db = Database::getConnection();
+        $out    = [];
+        $db     = Database::getConnection();
         $result = $db->query($sql)->execute();
-        return $result;
+        foreach ($result as $row) { $out[] = $row; }
+        return $out;
 	}
 
     public function syncGoogleCalendar()
@@ -494,10 +496,7 @@ class Committee extends ActiveRecord
         $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
     }
 
-	/**
-	 * @return array
-	 */
-	public function getHistory()
+	public function getHistory(): array
 	{
 		$history = [];
 
@@ -534,52 +533,29 @@ class Committee extends ActiveRecord
 		return (int)$row['count'] > 0;
 	}
 
-	/**
-	 * Returns an array suitable for serialization
-	 *
-	 * @return array
-	 */
-	public function toArray()
+	public function toArray(): array
 	{
-        $c = [
-            'id'               => (int)$this->getId(),
-            'type'             => $this->getType(),
-            'name'             => $this->getName(),
-            'statutoryName'    => $this->getStatutoryName(),
-            'website'          => $this->getWebsite(),
-            'videoArchive'     => $this->getVideoArchive(),
-            'email'            => $this->getEmail(),
-            'phone'            => $this->getPhone(),
-            'address'          => $this->getAddress(),
-            'city'             => $this->getCity(),
-            'state'            => $this->getState(),
-            'zip'              => $this->getZip(),
-            'calendarId'       => $this->getCalendarId(),
-            'meetingSchedule'  => $this->getMeetingSchedule(),
-            'vacancy'          => $this->hasVacancy(),
-            'description'      => $this->getDescription(),
-            'legislative'      => $this->isLegislative(),
-            'alternates'       => $this->allowsAlternates(),
-            'reports'          => $this->hasReports()
+        return [
+            'id'                => (int)$this->getId(),
+            'type'              => $this->getType(),
+            'name'              => $this->getName(),
+            'statutoryName'     => $this->getStatutoryName(),
+            'website'           => $this->getWebsite(),
+            'videoArchive'      => $this->getVideoArchive(),
+            'email'             => $this->getEmail(),
+            'phone'             => $this->getPhone(),
+            'address'           => $this->getAddress(),
+            'city'              => $this->getCity(),
+            'state'             => $this->getState(),
+            'zip'               => $this->getZip(),
+            'calendarId'        => $this->getCalendarId(),
+            'meetingSchedule'   => $this->getMeetingSchedule(),
+            'vacancy'           => $this->hasVacancy(),
+            'description'       => $this->getDescription(),
+            'legislative'       => $this->isLegislative(),
+            'alternates'        => $this->allowsAlternates(),
+            'reports'           => $this->hasReports(),
+            'takesApplications' => $this->takesApplications()
         ];
-        $statutes = $this->getStatutes();
-        if (count($statutes)) {
-            $c['statutes'] = [];
-            foreach ($statutes as $s) {
-                $c['statutes'][] = ['citation'=>$s->getCitation(), 'url'=>$s->getUrl()];
-            }
-        }
-
-        $c['liaisons'] = [];
-        $data = LiaisonTable::committeeLiaisonData(['committee_id'=>$this->getId()]);
-        foreach ($data['results'] as $row) {
-            $liaison = [];
-            foreach ($row as $f=>$v) {
-                $liaison[$f] = (substr($f, -3) == '_id') ? (int)$v : $v;
-            }
-
-            $c['liaisons'][] = $liaison;
-        }
-        return $c;
 	}
 }

@@ -16,9 +16,23 @@ class Controller extends \Web\Controller
         if (!empty($params['committee_id'])) {
             try {
                 $committee = new Committee($params['committee_id']);
+                $search    = ['committee_id'=>$committee->getId()];
+                if (!empty($_GET['type_id'])) { $search['type_id'] = (int)$_GET['type_id']; }
+
                 $table     = new LegislationTable();
-                $years     = $table->years(['committee_id'=>$committee->getId()]);
-                return new View($years, $committee);
+                $years     = $table->years($search);
+                switch ($this->outputFormat) {
+                    case 'csv':
+                        return new \Web\Views\CSVView($years);
+                    break;
+
+                    case 'json':
+                        return new \Web\Views\JSONView($years);
+                    break;
+
+                    default:
+                        return new View($years, $search, $committee);
+                }
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

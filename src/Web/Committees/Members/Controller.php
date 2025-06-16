@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -48,7 +48,18 @@ class Controller extends \Web\Controller
 
                 $results = $committee->getMembers($search);
                 $members = self::member_data($results);
-                return new OpenView($committee, $members, $search['current']);
+                switch ($this->outputFormat) {
+                    case 'csv':
+                        return new \Web\Views\CSVView($committee->getName(), $members);
+                    break;
+
+                    case 'json':
+                        return new \Web\Views\JSONView($members);
+                    break;
+
+                    default:
+                        return new OpenView($committee, $members, $search['current']);
+                }
             }
         }
         return new \Web\Views\NotFoundView();
