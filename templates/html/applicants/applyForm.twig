@@ -42,17 +42,15 @@
 
         <fieldset class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">Contact</legend>
-            {{ forms.field_email('email',    'email',     _('email'    ), applicant.getEmail(), true, {autocapitalize:'off', autocorrect:'off'} ) }}
-            {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone(), false, {}, _('phone_help' )  ) }}
+            {{ forms.field_email('email', 'email', _('email'), applicant.getEmail(), true,  {autocapitalize:'off', autocorrect:'off'} ) }}
+            {{ forms.field_phone('phone', 'phone', _('phone'), applicant.getPhone(), false, {}, _('phone_help' )  ) }}
         </fieldset>
-
         <fieldset class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">{{ _('mail_address') }}</legend>
             {{ forms.field_text('address', 'address', _('streetaddress'), applicant.getAddress() ) }}
             {{ forms.field_text('city',    'city',    _('city'   ), applicant.getCity() ) }}
-            {{ forms.field_number('zip',   'zip',     _('zip'),     applicant.getZip(), false, {pattern:'[\d]{5}(-[\d]{4})?'} ) }}
+            {{ forms.field_number('zip',   'zip',     _('zip'    ), applicant.getZip(),   false, { pattern:'[\\d]{5}(-[\\d]{4})?'   } ) }}
         </fieldset>
-
 
         {% if not committee %}
         <fieldset class="usa-fieldset margin-bottom-3">
