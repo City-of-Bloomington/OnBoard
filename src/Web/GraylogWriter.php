@@ -9,6 +9,7 @@ namespace Web;
 use Gelf\Publisher;
 use Gelf\Message;
 use Gelf\Transport\UdpTransport;
+use Psr\Log\LogLevel;
 
 class GraylogWriter
 {
@@ -19,8 +20,8 @@ class GraylogWriter
         $publisher->addTransport($transport);
 
         $message = new Message();
+        $message->setLevel(LogLevel::ERROR);
         if (!empty($event['message'])) { $message->setShortMessage($event['message']); }
-        if (!empty($event['errno'  ])) { $message->setLevel       ($event['errno'  ]); }
         if (!empty($event['file'   ])) { $message->setFile        ($event['file'   ]); }
         if (!empty($event['line'   ])) { $message->setLine        ($event['line'   ]); }
 
