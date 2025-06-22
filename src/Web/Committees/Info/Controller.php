@@ -12,9 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['committee_id'])) {
             try {
-                $c = new Committee($params['id']);
+                $c = new Committee($_REQUEST['committee_id']);
                 switch ($this->outputFormat) {
                     case 'json':
                         return new \Web\Views\JSONView($c->toArray());

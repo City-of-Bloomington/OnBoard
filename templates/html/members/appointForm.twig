@@ -57,7 +57,7 @@
         </section>
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('committees.members', {id: newMember.getCommittee_id()}), _('cancel') ) }}
+        {{ forms.actionLink(uri('committees.members', { committee_id: newMember.getCommittee_id()}), _('cancel') ) }}
     </fieldset>
 
 </form>

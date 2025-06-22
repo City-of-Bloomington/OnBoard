@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
 
                 $url = $a->getSeat_id()
                         ? View::generateUrl('seats.view',         ['id'=>$a->getSeat_id()])
-                        : View::generateUrl('committees.members', ['id'=>$a->getCommittee_id()]);
+                        : View::generateUrl('committees.members', ['committee_id'=>$a->getCommittee_id()]);
 
                 AlternateTable::delete($a);
                 header("Location: $url");

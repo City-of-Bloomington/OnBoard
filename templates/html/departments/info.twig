@@ -17,7 +17,7 @@
         <header><h3>{{ _(['committee', 'committees', 10]) }}</h3></header>
         <table>
             {% for committee in department.committees %}
-            <tr><td><a href="{{ uri('committees.info', {id: committee.id}) }}">
+            <tr><td><a href="{{ uri('committees.info', { committee_id: committee.id }) }}">
                         {{ committee.name }}
                     </a>
                 </td>

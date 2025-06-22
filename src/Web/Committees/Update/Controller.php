@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $c = new Committee($params['id']); }
+        if (!empty($_REQUEST['committee_id'])) {
+            try { $c = new Committee($_REQUEST['committee_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -22,7 +22,7 @@ class Controller extends \Web\Controller
             if (isset($_POST['name'])) {
                 try {
                     CommitteeTable::update($c, $_POST);
-                    $url = \Web\View::generateUrl('committees.info', ['id'=>$c->getId()]);
+                    $url = \Web\View::generateUrl('committees.info', ['committee_id'=>$c->getId()]);
                     header("Location: $url");
                     exit();
                 }

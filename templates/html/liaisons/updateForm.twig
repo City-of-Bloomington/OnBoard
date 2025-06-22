@@ -22,7 +22,7 @@
             {{ forms.field_select('type', 'type', _('type'), liaison.getType(), types, true )}}
         </fieldset>
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('committees.liaisons', {id: committee.getId()}), _('cancel') ) }}
+        {{ forms.actionLink(uri('committees.liaisons', { committee_id: committee.getId()}), _('cancel') ) }}
     </form>
 </section>
 <script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>

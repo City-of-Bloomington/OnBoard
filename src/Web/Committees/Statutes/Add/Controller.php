@@ -27,7 +27,7 @@ class Controller extends \Web\Controller
                 try {
                     $statute->handleUpdate($_POST);
                     $statute->save();
-                    $return_url = \Web\View::generateUrl('committees.statutes', ['id'=>$statute->getCommittee_id()]);
+                    $return_url = \Web\View::generateUrl('committees.statutes', ['committee_id'=>$statute->getCommittee_id()]);
                     header("Location: $return_url");
                     exit();
                 }

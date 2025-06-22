@@ -20,7 +20,7 @@ class Controller extends \Web\Controller
                 try { $liaison->delete(); }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-                $return_url = \Web\View::generateUrl('committees.liaisons', ['id'=>$committee_id]);
+                $return_url = \Web\View::generateUrl('committees.liaisons', ['committee_id'=>$committee_id]);
                 header("Location: $return_url");
                 exit();
             }

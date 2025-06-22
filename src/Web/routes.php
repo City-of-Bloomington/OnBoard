@@ -78,17 +78,17 @@ $map->attach('appointers.', '/appointers', function ($r) {
 });
 
 $map->attach('committees.', '/committees', function ($r) {
-    $r->get('members',      '/{id}/members'      , Web\Committees\Members\Controller::class);
-    $r->get('update',       '/{id}/update'       , Web\Committees\Update\Controller::class)->allows(['POST']);
-    $r->get('end',          '/{id}/end'          , Web\Committees\End\Controller::class)->allows(['POST']);
-    $r->get('seats',        '/{id}/seats'        , Web\Committees\Seats\Controller::class);
-    $r->get('statutes',     '/{id}/statutes'     , Web\Committees\Statutes\Info\Controller::class);
-    $r->get('liaisons',     '/{id}/liaisons'     , Web\Committees\Liaisons\Info\Controller::class);
-    $r->get('applications', '/{id}/applications' , Web\Committees\Applications\Controller::class);
-    $r->get('meetings',     '/{id}/meetings'     , Web\Meetings\List\Controller::class);
-    $r->get('meetingsync',  '/{id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
-    $r->get('history',      '/{id}/history'      , Web\Committees\History\Controller::class);
-    $r->get('info',         '/{id}'              , Web\Committees\Info\Controller::class);
+    $r->get('members',      '/{committee_id}/members'      , Web\Committees\Members\Controller::class);
+    $r->get('update',       '/{committee_id}/update'       , Web\Committees\Update\Controller::class)->allows(['POST']);
+    $r->get('end',          '/{committee_id}/end'          , Web\Committees\End\Controller::class)->allows(['POST']);
+    $r->get('seats',        '/{committee_id}/seats'        , Web\Committees\Seats\Controller::class);
+    $r->get('statutes',     '/{committee_id}/statutes'     , Web\Committees\Statutes\Info\Controller::class);
+    $r->get('liaisons',     '/{committee_id}/liaisons'     , Web\Committees\Liaisons\Info\Controller::class);
+    $r->get('applications', '/{committee_id}/applications' , Web\Committees\Applications\Controller::class);
+    $r->get('meetings',     '/{committee_id}/meetings'     , Web\Meetings\List\Controller::class);
+    $r->get('meetingsync',  '/{committee_id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
+    $r->get('history',      '/{committee_id}/history'      , Web\Committees\History\Controller::class);
+    $r->get('info',         '/{committee_id}'              , Web\Committees\Info\Controller::class);
     $r->get('add',          '/add'               , Web\Committees\Add\Controller::class)->allows(['POST']);
     $r->get('report',       '/report'            , Web\Committees\Report\Controller::class);
     $r->get('index',        ''                   , Web\Committees\List\Controller::class);

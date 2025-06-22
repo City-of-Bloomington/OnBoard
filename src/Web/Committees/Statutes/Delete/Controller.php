@@ -24,7 +24,7 @@ class Controller extends \Web\Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('committees.statutes', ['id'=>$committee_id]);
+            $return_url = \Web\View::generateUrl('committees.statutes', ['committee_id'=>$committee_id]);
             header("Location: $return_url");
             exit();
         }

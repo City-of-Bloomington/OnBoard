@@ -130,10 +130,11 @@ class Controller extends \Web\Controller
             catch (\Exception $e) {  }
         }
 
-        if (!empty($params['id'])) {
-            try { return new Committee($params['id']); }
+        if (!empty($_REQUEST['committee_id'])) {
+            try { return new Committee($_REQUEST['committee_id']); }
             catch (\Exception $e) {  }
         }
+
         return null;
     }
 

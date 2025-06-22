@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat      seat          Seat Object
  * @param Committee committee     Committee Object
@@ -25,7 +25,7 @@
             {% if seat.getId() %}
             {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), ) }}
             {% else %}
-            {{ forms.actionLink(uri('committees.seats', {id: committee.getId()}), _('cancel') ) }}
+            {{ forms.actionLink(uri('committees.seats', { committee_id: committee.getId()}), _('cancel') ) }}
             {% endif %}
         </fieldset>
     </form>

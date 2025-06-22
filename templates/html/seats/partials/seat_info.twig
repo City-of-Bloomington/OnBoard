@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat      seat
  * @param Committee committee
@@ -19,7 +19,7 @@
         <td>{{ seat.getAppointer() }}</td>
     </tr>
     <tr><th>{{ _('committee') }}</th>
-        <td><a href="{{ uri('committees.info', {id: committee.getId()}) }}">
+        <td><a href="{{ uri('committees.info', { committee_id: committee.getId()}) }}">
                 {{ committee.getName() }}
             </a>
         </td>

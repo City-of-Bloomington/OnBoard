@@ -30,14 +30,14 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('committees', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('committees.update', ['id'=>$c->getId()]),
+                'url'   => parent::generateUri('committees.update', ['committee_id'=>$c->getId()]),
                 'label' => parent::_('edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('committees', 'end') && !$c->getEndDate()) {
             $links[] = [
-                'url'    => parent::generateUri('committees.end', ['id'=>$c->getId()]),
+                'url'    => parent::generateUri('committees.end', ['committee_id'=>$c->getId()]),
                 'label'  => parent::_('committee_end'),
                 'class'  => 'delete'
             ];

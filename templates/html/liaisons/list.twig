@@ -47,7 +47,7 @@
         </thead>
         <tbody>
             {% for row in data %}
-            <tr><td><a class="usa-link" href="{{ uri('committees.info', {id: row.committee_id}) }}">{{ row.committee }}</a></td>
+            <tr><td><a class="usa-link" href="{{ uri('committees.info', { committee_id: row.committee_id}) }}">{{ row.committee }}</a></td>
                 <td><a class="usa-link" href="{{ uri('people.view', {id: row.person_id}) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
                 {% if isAllowed('people', 'viewContactInfo') %}
                 <td>{{ row.email }}</td>

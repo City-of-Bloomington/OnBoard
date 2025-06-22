@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -25,7 +25,7 @@ class Controller extends \Web\Controller
                 if (!empty($_POST['confirm']) && $_POST['confirm']=='yes') {
                     try {
                         MemberTable::reappoint($member);
-                        $return_url = \Web\View::generateUrl('committees.members', ['id'=>$member->getCommittee_id()]);
+                        $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]);
                         header('Location: '.$return_url);
                         exit();
                     }

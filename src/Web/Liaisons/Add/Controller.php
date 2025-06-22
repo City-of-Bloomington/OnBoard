@@ -30,7 +30,7 @@ class Controller extends \Web\Controller
                     $liaison->handleUpdate($_POST);
                     $liaison->save();
 
-                    $return_url = \Web\View::generateUrl('committees.liaisons', ['id'=>$liaison->getCommittee_id()]);
+                    $return_url = \Web\View::generateUrl('committees.liaisons', ['committee_id'=>$liaison->getCommittee_id()]);
 
                     header("Location: $return_url");
                     exit();

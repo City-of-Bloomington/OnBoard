@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -18,7 +18,7 @@ class Controller extends \Web\Controller
                 $m   = new Member($params['id']);
                 $url = $m->getSeat_id()
                         ? \Web\View::generateUrl(     'seats.view'   , ['id'=>$m->getSeat_id()     ])
-                        : \Web\View::generateUrl('committees.members', ['id'=>$m->getCommittee_id()]);
+                        : \Web\View::generateUrl('committees.members', ['committee_id'=>$m->getCommittee_id()]);
 
                 MemberTable::delete($m);
                 header("Location: $url");

@@ -17,7 +17,7 @@
         {{ forms.button('submit', _('save'), 'save') }}
 
         {% if committee.getId() %}
-        {{ forms.actionLink(uri('committees.info', {id: committee.getId()}), _('cancel') ) }}
+        {{ forms.actionLink(uri('committees.info', { committee_id: committee.getId() }), _('cancel') ) }}
         {% else %}
         {{ forms.actionLink(uri('committees.index'), _('cancel') ) }}
         {% endif %}

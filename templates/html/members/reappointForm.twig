@@ -32,7 +32,7 @@
                 <input name="confirm"   type="hidden" value="yes" />
 
                 {{ forms.button('submit', _('save'), 'save') }}
-                {{ forms.actionLink(uri('committees.members', {id: member.getCommittee_id()}), _('cancel'), 'cancel') }}
+                {{ forms.actionLink(uri('committees.members', { committee_id: member.getCommittee_id() }), _('cancel'), 'cancel') }}
             </fieldset>
         </form>
     </div>

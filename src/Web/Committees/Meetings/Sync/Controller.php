@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $committee = new Committee($params['id']); }
+        if (!empty($_REQUEST['committee_id'])) {
+            try { $committee = new Committee($_REQUEST['committee_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -23,7 +23,7 @@ class Controller extends \Web\Controller
 
         $committee->syncGoogleCalendar();
 
-        header('Location: '.\Web\View::generateUrl('committees.meetings', ['id'=>$committee->getId()]));
+        header('Location: '.\Web\View::generateUrl('committees.meetings', ['committee_id'=>$committee->getId()]));
         exit();
     }
 }

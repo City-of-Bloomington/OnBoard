@@ -29,7 +29,7 @@
     <div>Last Sync: {{ committee.getSynced('c') }}</div>
     {% endif %}
     {% if isAllowed('committees', 'meetingsync') %}
-    {{ forms.actionLink(uri('committees.meetingsync', {id: committee.getId()}), 'sync') }}
+    {{ forms.actionLink(uri('committees.meetingsync', { committee_id: committee.getId()}), 'sync') }}
     {% endif %}
     <form class="usa-form" method="get">
         <fieldset class="usa-fieldset">

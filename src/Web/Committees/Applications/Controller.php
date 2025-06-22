@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,9 +15,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['committee_id'])) {
             try {
-                $committee = new Committee($params['id']);
+                $committee = new Committee($_REQUEST['committee_id']);
                 $seats     = [];
 
                 foreach ($committee->getSeats(['current'=>true]) as $a) {
@@ -48,7 +48,7 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        return !empty($params['id'])
-            && CommitteeTable::hasDepartment($department_id, (int)$params['id']);
+        return !empty($_REQUEST['committee_id'])
+            && CommitteeTable::hasDepartment($department_id, (int)$_REQUEST['committee_id']);
     }
 }
