@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -18,10 +18,12 @@ class Controller extends \Web\Controller
             $department->setName($_POST['name']);
             try {
                 $department->save();
-                header('Location: '.\Web\View::generateUrl('department.index'));
+                header('Location: '.\Web\View::generateUrl('departments.index'));
                 exit();
             }
             catch (\Exception $e) {
+                print_r($e);
+                exit();
                 $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }

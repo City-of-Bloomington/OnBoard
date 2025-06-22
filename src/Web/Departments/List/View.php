@@ -30,7 +30,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('departments.update', ['id' => $d->getId()]),
+                    'url'   => parent::generateUri('departments.update', ['department_id' => $d->getId()]),
                     'label' => parent::_('department_edit'),
                     'class' => 'edit'
                 ];
@@ -46,9 +46,9 @@ class View extends \Web\View
 
     private function actionLinks(): array
     {
-        if (parent::isAllowed('departments', 'update')) {
+        if (parent::isAllowed('departments', 'add')) {
             return [[
-                'url'   => parent::generateUri('departments.update'),
+                'url'   => parent::generateUri('departments.add'),
                 'label' => parent::_('department_add'),
                 'class' => 'add'
             ]];

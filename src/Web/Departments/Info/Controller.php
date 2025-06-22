@@ -12,9 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['department_id'])) {
             try {
-                $department = new Department($params['id']);
+                $department = new Department($_REQUEST['department_id']);
                 return new View($department);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
