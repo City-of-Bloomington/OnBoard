@@ -20,6 +20,7 @@ session_start();
 $request = ServerRequest::fromGlobals();
 $matcher = $ROUTES->getMatcher();
 $ROUTE   = $matcher->match($request);
+foreach ($ROUTE->attributes as $k=>$v) { $_REQUEST[$k] = $v; }
 
 if ($ROUTE) {
     list($resource, $permission) = explode('.', $ROUTE->name);

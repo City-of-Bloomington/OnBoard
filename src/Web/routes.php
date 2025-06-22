@@ -7,7 +7,31 @@ declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
-$map->tokens(['id'=>'\d+', 'committee_id'=>'\d+']);
+$map->tokens(['alternate_id'             => '\d+',
+              'applicantFile_id'         => '\d+',
+              'applicant_id'             => '\d+',
+              'application_id'           => '\d+',
+              'appointer_id'             => '\d+',
+              'committee_id'             => '\d+',
+              'committeeStatute_id'      => '\d+',
+              'department_id'            => '\d+',
+              'legislation_id'           => '\d+',
+              'legislationAction_id'     => '\d+',
+              'legislationActionType_id' => '\d+',
+              'legislationFile_id'       => '\d+',
+              'legislationStatus_id'     => '\d+',
+              'legislationType_id'       => '\d+',
+              'liaison_id'               => '\d+',
+              'meeting_id'               => '\d+',
+              'meetingFile_id'           => '\d+',
+              'member_id'                => '\d+',
+              'office_id'                => '\d+',
+              'person_id'                => '\d+',
+              'race_id'                  => '\d+',
+              'report_id'                => '\d+',
+              'seat_id'                  => '\d+',
+              'term_id'                  => '\d+',
+              'id'                       => '\d+']);
 
 $map->attach('home.', '/', function ($r) {
     $r->get('calendarhook', 'notifications', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);

@@ -19,7 +19,7 @@ define('SOFFICE', '/usr/bin/soffice');
  * configuration are stored.  For backup purposes, backing up this
  * directory would be sufficient for an easy full restore.
  */
-define('SITE_HOME', !empty($_SERVER['SITE_HOME']) ? $_SERVER['SITE_HOME'] : __DIR__.'/data');
+define('SITE_HOME', !empty($_SERVER['SITE_HOME']) ? $_SERVER['SITE_HOME'] : APPLICATION_HOME.'/data');
 
 /**
  * Enable autoloading for the PHP libraries
