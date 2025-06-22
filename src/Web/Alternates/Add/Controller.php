@@ -38,10 +38,7 @@ class Controller extends \Web\Controller
 
                     AlternateTable::update($alternate);
 
-                    $url = $alternate->getSeat_id()
-                            ? \Web\View::generateUrl(     'seats.view',    ['id'=>$alternate->getSeat_id()])
-                            : \Web\View::generateUrl('committees.members', ['id'=>$alternate->getCommittee_id()]);
-
+                    $url = \Web\View::generateUrl('alternates.view', ['alternate_id'=>$alternate->getId()]);
                     header("Location: $url");
                     exit();
                 }

@@ -33,7 +33,7 @@
                             {% endif %}
                             {% if committee.allowsAlternates() %}
                                 {% if row.alternate_person_id %}
-                                <a class="usa-link" href="{{ uri('alternates.view', {id: row.alternate_id}) }}">
+                                <a class="usa-link" href="{{ uri('alternates.view', {alternate_id: row.alternate_id}) }}">
                                 {{ row.alternate_firstname }} {{ row.alternate_lastname }}
                                 </a>
                                 {% else %}

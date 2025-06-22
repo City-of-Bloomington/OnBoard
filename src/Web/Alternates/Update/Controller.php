@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -17,9 +17,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['alternate_id'])) {
             try {
-                $alternate = new Alternate($params['id']);
+                $alternate = new Alternate($_REQUEST['alternate_id']);
                 if (!empty($_REQUEST['person_id'])) { $alternate->setPerson_id($_REQUEST['person_id']); }
                 if (!empty($_REQUEST['startDate'])) { $alternate->setStartDate($_REQUEST['startDate'], 'Y-m-d'); }
             }
@@ -36,10 +36,7 @@ class Controller extends \Web\Controller
 
                     AlternateTable::update($alternate);
 
-                    $url = $alternate->getSeat_id()
-                            ? \Web\View::generateUrl(     'seats.view',    ['id'=>$alternate->getSeat_id()])
-                            : \Web\View::generateUrl('committees.members', ['id'=>$alternate->getCommittee_id()]);
-
+                    $url = \Web\View::generateUrl('alternates.view', ['alternate_id'=>$alternate->getId()]);
                     header("Location: $url");
                     exit();
                 }

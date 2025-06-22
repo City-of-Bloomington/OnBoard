@@ -45,10 +45,10 @@ $map->attach('login.', '/login', function ($r) {
 });
 
 $map->attach('alternates.', '/alternates', function ($r) {
-    $r->get('add',    '/add'        , Web\Alternates\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/{id}/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Alternates\Delete\Controller::class);
-    $r->get('view',   '/{id}'       , Web\Alternates\Info\Controller::class);
+    $r->get('add',    '/add'        ,           Web\Alternates\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{alternate_id}/update', Web\Alternates\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{alternate_id}/delete', Web\Alternates\Delete\Controller::class);
+    $r->get('view',   '/{alternate_id}',        Web\Alternates\Info\Controller::class);
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {

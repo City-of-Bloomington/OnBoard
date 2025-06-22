@@ -187,7 +187,7 @@ class View extends \Web\View
         $p     = ['return_url' => Url::current_url(BASE_HOST)];
         if (parent::isAllowed('alternates', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('alternates.update', ['id'=>$a->getId()]),
+                'url'   => parent::generateUri('alternates.update', ['alternate_id'=>$a->getId()]),
                 'label' => parent::_('alternate_edit'),
                 'class' => 'edit'
             ];
@@ -196,7 +196,7 @@ class View extends \Web\View
             $p['alternate_id'] = $a->getId();
 
             $links[] = [
-                'url'   => parent::generateUri('alternates.delete', ['id'=>$a->getId()]),
+                'url'   => parent::generateUri('alternates.delete', ['alternate_id'=>$a->getId()]),
                 'label' => parent::_('alternate_delete'),
                 'class' => 'delete'
             ];

@@ -20,7 +20,7 @@
     </div>
     <div class="grid-row margin-bottom-1">
         {% for a in term.getAlternates() %}
-            <div class="grid-col"><strong>{{ _(['alternate', 'alternates', 0]) }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', {'id':a.getId()}) }}">{{ a.getPerson().getFullname() }}</a></div>
+            <div class="grid-col"><strong>{{ _(['alternate', 'alternates', 0]) }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', { alternate_id: a.getId() }) }}">{{ a.getPerson().getFullname() }}</a></div>
             <div class="grid-col"><strong>{{ _('start'                       ) }}:</strong> {{ a.getStartDate('m/d/Y') }}</div>
             <div class="grid-col"><strong>{{ _('end'                         ) }}:</strong> {{ a.getEndDate('m/d/Y') }}</div>
         {% endfor %}

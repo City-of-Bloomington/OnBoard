@@ -12,7 +12,7 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        try { $alternate = new Alternate($params['id']); }
+        try { $alternate = new Alternate($_REQUEST['alternate_id']); }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e->getMessage();
             return new \Web\Views\NotFoundView();
