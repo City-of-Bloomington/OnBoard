@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2024 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare(strict_types=1);
@@ -14,8 +14,8 @@ class Controller extends \Web\Controller
     {
         $return_url = \Web\View::generateUrl('appointers.index');
 
-        if (!empty($params['id'])) {
-            try { $appointer = new Appointer($params['id']); }
+        if (!empty($_REQUEST['appointer_id'])) {
+            try { $appointer = new Appointer($_REQUEST['appointer_id']); }
             catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e->getMessage();
                 header("Location: $return_url");
