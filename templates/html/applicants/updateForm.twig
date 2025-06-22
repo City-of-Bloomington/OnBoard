@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant applicant
  #}
@@ -21,7 +21,7 @@
             {{ forms.field_phone('phone',    'phone',     _('phone'    ), applicant.getPhone() ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('applicants.view', {id: applicant.getId()}), _('cancel') ) }}
+            {{ forms.actionLink(uri('applicants.view', { applicant_id: applicant.getId() }), _('cancel') ) }}
         </fieldset>
     </form>
 </section>

@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array applicants
  #}
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
         {% for a in applicants %}
-        <tr><td><a class="usa-link" href="{{ uri('applicants.view', {id: a.id}) }}">{{ a.name  }}</a></td>
+        <tr><td><a class="usa-link" href="{{ uri('applicants.view', { applicant_id: a.id }) }}">{{ a.name  }}</a></td>
             <td>{{ a.email }}</td>
             <td>{{ a.phone }}</td>
             <td>{% if a.actionLinks %}{{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}{% endif %}</td>

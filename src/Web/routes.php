@@ -57,17 +57,17 @@ $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {
-    $r->get('update', '/{id}/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Applicants\Delete\Controller::class);
-    $r->get('view',   '/{id}'       , Web\Applicants\Info\Controller::class);
+    $r->get('update', '/{applicant_id}/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{applicant_id}/delete', Web\Applicants\Delete\Controller::class);
+    $r->get('view',   '/{applicant_id}'       , Web\Applicants\Info\Controller::class);
     $r->get('apply',  '/apply' , Web\Applicants\Apply\Controller::class)->allows(['POST']);;
     $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
 
 $map->attach('applications.', '/applications', function ($r) {
-    $r->get('archive',   '/{id}/archive'  , Web\Applications\Archive\Controller::class);
-    $r->get('unarchive', '/{id}/unarchive', Web\Applications\Unarchive\Controller::class);
-    $r->get('delete',    '/{id}/delete'   , Web\Applications\Delete\Controller::class);
+    $r->get('archive',   '/{application_id}/archive'  , Web\Applications\Archive\Controller::class);
+    $r->get('unarchive', '/{application_id}/unarchive', Web\Applications\Unarchive\Controller::class);
+    $r->get('delete',    '/{application_id}/delete'   , Web\Applications\Delete\Controller::class);
     $r->get('report',    '/report'   , Web\Applications\Report\Controller::class)->allows(['POST']);
 });
 

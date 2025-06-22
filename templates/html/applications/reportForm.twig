@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     seats
@@ -42,7 +42,7 @@
                 <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
                     <td>{{ a.created|date('m/d/Y') }}</td>
                     <td>{% if userCanViewApplicant %}
-                        <a class="usa-link" href="{{ uri('applicants.view', {id: a.applicant_id}) }}">
+                        <a class="usa-link" href="{{ uri('applicants.view', { applicant_id: a.applicant_id }) }}">
                             {{ a.applicant }}
                         </a>
                         {% else %}

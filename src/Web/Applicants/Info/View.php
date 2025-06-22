@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -32,7 +32,7 @@ class View extends \Web\View
         $out = [];
         if (parent::isAllowed('applicants', 'update')) {
             $out[] = [
-                'url'   => parent::generateUri('applicants.update', ['id'=>$applicant->getId()]),
+                'url'   => parent::generateUri('applicants.update', ['applicant_id'=>$applicant->getId()]),
                 'label' => _('applicant_edit'),
                 'class' => 'edit'
             ];
@@ -50,14 +50,14 @@ class View extends \Web\View
             $links  = [];
             if ($canArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.archive', ['id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()]),
                     'label' => $this->_('application_archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
                     'label' => $this->_('application_delete'),
                     'class' => 'delete'
                 ];
@@ -88,14 +88,14 @@ class View extends \Web\View
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.unarchive', ['id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()]),
                     'label' => $this->_('application_unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
                     'label' => $this->_('application_delete'),
                     'class' => 'delete'
                 ];
