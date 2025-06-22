@@ -39,7 +39,7 @@
             {% if isAllowed('applicantFiles', 'download') %}
             <dt>{{ _('applicantFile') }}</dt>
             <dd>{% for f in a.getFiles() %}
-                <a href="{{ uri('applicantFiles.download') }}?applicantFile_id={{ f.getId() }}">{{ f.getFilename() }}</a>
+                <a href="{{ uri('applicantFiles.download', { applicantFile_id: f.getId() }) }}">{{ f.getFilename() }}</a>
                 {% endfor %}
             </dd>
             {% endif %}

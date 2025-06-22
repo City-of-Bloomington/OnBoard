@@ -52,8 +52,8 @@ $map->attach('alternates.', '/alternates', function ($r) {
 });
 
 $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
-    $r->get('download', '/{id}/download', Web\Applicants\Files\Download\Controller::class);
-    $r->get('delete',   '/{id}/delete'  , Web\Applicants\Files\Delete\Controller::class);
+    $r->get('download', '/{applicantFile_id}/download', Web\Applicants\Files\Download\Controller::class);
+    $r->get('delete',   '/{applicantFile_id}/delete'  , Web\Applicants\Files\Delete\Controller::class);
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {

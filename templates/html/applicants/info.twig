@@ -72,9 +72,9 @@
         {% if applicant.getFiles() and isAllowed('applicantFiles', 'download') %}
         <dt class="text-bold">{{ _('applicantFile') }}<strong></dt>
         <dd>{% for f in applicant.getFiles() %}
-            <a href="{{ uri('applicantFiles.download', {id: f.getId()}) }}">{{ f.getFilename() }}</a>
+            <a href="{{ uri('applicantFiles.download', { applicantFile_id: f.getId() }) }}">{{ f.getFilename() }}</a>
             {% if isAllowed('applicantFiles', 'delete') %}
-            {{ forms.actionLink(uri('applicantFiles.delete', {id: f.getId()}), _('delete'), 'delete') }}
+            {{ forms.actionLink(uri('applicantFiles.delete', { applicantFile_id: f.getId() }), _('delete'), 'delete') }}
             {% endif %}
             {% endfor %}
         </dd>
