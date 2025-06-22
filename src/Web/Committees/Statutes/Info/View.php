@@ -38,14 +38,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.update', ['id'=>$s->getId()]),
+                    'url'   => parent::generateUri('committeeStatutes.update', ['committeeStatute_id'=>$s->getId()]),
                     'label' => $this->_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('committeeStatutes.delete', ['id'=>$s->getId()]),
+                    'url'   => parent::generateUri('committeeStatutes.delete', ['committeeStatute_id'=>$s->getId()]),
                     'label' => $this->_('delete'),
                     'class' => 'delete'
                 ];

@@ -95,16 +95,16 @@ $map->attach('committees.', '/committees', function ($r) {
 });
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
-    $r->get('add',    '/add'        , Web\Committees\Statutes\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/{id}/update', Web\Committees\Statutes\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Committees\Statutes\Delete\Controller::class);
+    $r->get('add',    '/add', Web\Committees\Statutes\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{committeeStatute_id}/update', Web\Committees\Statutes\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{committeeStatute_id}/delete', Web\Committees\Statutes\Delete\Controller::class);
 });
 
 $map->attach('departments.', '/departments', function ($r) {
-    $r->get('info',   '/{id}/info'  , Web\Departments\Info\Controller::class);
-    $r->get('update', '/{id}/update', Web\Departments\Update\Controller::class)->allows(['POST']);
-    $r->get('add',    '/add'        , Web\Departments\Add\Controller::class)->allows(['POST']);
-    $r->get('index',  ''            , Web\Departments\List\Controller::class);
+    $r->get('info',   '/{department_id}/info'  , Web\Departments\Info\Controller::class);
+    $r->get('update', '/{department_id}/update', Web\Departments\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add', Web\Departments\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  ''    , Web\Departments\List\Controller::class);
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
