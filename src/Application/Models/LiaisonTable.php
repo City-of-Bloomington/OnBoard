@@ -164,4 +164,15 @@ class LiaisonTable extends TableGateway
         $result  = $db->query($sql)->execute([$person_id, $committee_id]);
         return count($result) ? true : false;
  	}
+
+ 	public static function hasDepartment(int $department_id, int $liaison_id): bool
+    {
+        $sql    = "select l.committee_id
+                   from liaisons l
+                   join committee_departments d on l.committee_id=d.committee_id
+                   where d.department_id=? and l.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $liaison_id]);
+        return count($result) ? true : false;
+    }
 }

@@ -7,4 +7,4 @@ include SITE_HOME.'/test_config.inc';
 
 $loader = require APPLICATION_HOME.'/vendor/autoload.php';
 include APPLICATION_HOME.'/src/Web/routes.php';
-include APPLICATION_HOME.'/access_control.inc';
+include APPLICATION_HOME.'/src/Web/access_control.php';

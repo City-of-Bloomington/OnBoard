@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
+use Web\Database;
 use Web\TableGateway;
 use Laminas\Db\Sql\Select;
 
@@ -86,4 +87,16 @@ class TermTable extends TableGateway
             'changes'      => [$change]
         ]);
 	}
+
+	public static function hasDepartment(int $department_id, int $term_id): bool
+    {
+        $sql    = "select s.committee_id
+                   from terms                 t
+                   join seats                 s on t.seat_id=s.id
+                   join committee_departments d on s.committee_id=d.committee_id
+                   where d.department_id=? and t.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $term_id]);
+        return count($result) ? true : false;
+    }
 }

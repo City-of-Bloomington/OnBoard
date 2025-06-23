@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2022 City of Bloomington, Indiana
+ * @copyright 2022-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -78,5 +78,16 @@ class AlternateTable extends TableGateway
             'action'       => 'delete',
             'changes'      => $changes
         ]);
+    }
+
+    public static function hasDepartment(int $department_id, int $alternate_id): bool
+    {
+        $sql    = "select a.committee_id
+                   from alternates a
+                   join committee_departments d on a.committee_id=d.committee_id
+                   where d.department_id=? and a.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $alternate_id]);
+        return count($result) ? true : false;
     }
 }

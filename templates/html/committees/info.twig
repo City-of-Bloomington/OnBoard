@@ -44,5 +44,16 @@
     <h3>{{ _('meetingSchedule') }}</h3>
     {{ committee.getMeetingSchedule()|markdown_to_html }}
     {% endif %}
+
+    <h3>{{ _(['department', 'departments', 10]) }}</h3>
+    <ul>{% for d in committee.getDepartments() %}
+        <li>{% if isAllowed('departments', 'info') %}
+            <a href="{{ uri('departments.info', { department_id: d.id } ) }}">{{ d.name }}</a>
+            {% else %}
+            {{ d.name }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 </section>
 {% endblock %}

@@ -2,7 +2,7 @@
 /**
  * Checks if a controller is loading a record associated with a given department
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,27 +13,37 @@ use Laminas\Permissions\Acl\Role\RoleInterface;
 use Laminas\Permissions\Acl\Resource\ResourceInterface;
 use Laminas\Permissions\Acl\Assertion\AssertionInterface;
 
-use Application\Models\CommitteeTable;
-use Application\Models\MeetingFilesTable;
-use Application\Models\Legislation\LegislationTable;
-use Application\Models\Legislation\LegislationFilesTable;
-use Application\Models\Legislation\ActionsTable;
-use Application\Models\Reports\ReportsTable;
-use Application\Models\ApplicantTable;
-use Application\Models\ApplicantFilesTable;
-
 class DepartmentAssociation implements AssertionInterface
 {
+    private static $params = [
+        'committee_id'         => '\Application\Models\CommitteeTable',
+        'meeting_id'           => '\Application\Models\MeetingTable',
+        'meetingFile_id'       => '\Application\Models\MeetingFilesTable',
+        'member_id'            => '\Application\Models\MemberTable',
+        'term_id'              => '\Application\Models\TermTable',
+        'seat_id'              => '\Application\Models\SeatTable',
+        'report_id'            => '\Application\Models\Reports\ReportsTable',
+        'alternate_id'         => '\Application\Models\AlternateTable',
+        'applicantFile_id'     => '\Application\Models\ApplicantFilesTable',
+        'applicant_id'         => '\Application\Models\ApplicantTable',
+        'application_id'       => '\Application\Models\ApplicationTable',
+        'committeeStatute_id'  => '\Application\Models\CommitteeStatuteTable',
+        'legislation_id'       => '\Application\Models\Legislation\LegislationTable',
+        'legislationAction_id' => '\Application\Models\Legislation\ActionsTable',
+        'legislationFile_id'   => '\Application\Models\Legislation\LegislationFilesTable',
+        'liaison_id'           => '\Application\Models\LiaisonTable',
+        'office_id'            => '\Application\Models\OfficeTable'
+    ];
+
     public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
             $did = $_SESSION['USER']->getDepartment_id();
 
-            global $ROUTES, $ROUTE;
-            $r = $ROUTES->getMap()->getRoute("$resource.$privilege");
-            if ($r) {
-                $controller = $r->handler;
-                return $controller::hasDepartment($did, $ROUTE->attributes);
+            foreach (self::$params as $p=>$t) {
+                if (!empty($_REQUEST[$p])) {
+                    return $t::hasDepartment($did, $_REQUEST[$p]);
+                }
             }
        }
        return false;

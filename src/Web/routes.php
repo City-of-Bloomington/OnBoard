@@ -101,8 +101,8 @@ $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
 });
 
 $map->attach('departments.', '/departments', function ($r) {
-    $r->get('info',   '/{department_id}/info'  , Web\Departments\Info\Controller::class);
     $r->get('update', '/{department_id}/update', Web\Departments\Update\Controller::class)->allows(['POST']);
+    $r->get('info',   '/{department_id}'       , Web\Departments\Info\Controller::class);
     $r->get('add',    '/add', Web\Departments\Add\Controller::class)->allows(['POST']);
     $r->get('index',  ''    , Web\Departments\List\Controller::class);
 });

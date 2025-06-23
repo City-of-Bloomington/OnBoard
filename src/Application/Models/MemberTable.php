@@ -166,4 +166,15 @@ class MemberTable extends TableGateway
         $result = $db->query($sql)->execute([$person_id, $committee_id]);
         return count($result) ? true : false;
 	}
+
+	public static function hasDepartment(int $department_id, int $member_id): bool
+    {
+        $sql    = "select m.committee_id
+                   from members m
+                   join committee_departments d on m.committee_id=d.committee_id
+                   where d.department_id=? and m.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $member_id]);
+        return count($result) ? true : false;
+    }
 }

@@ -78,4 +78,15 @@ class MeetingTable extends TableGateway
         }
         return $out;
     }
+
+    public static function hasDepartment(int $department_id, int $meeting_id): bool
+    {
+        $sql    = "select m.committee_id
+                   from meetings m
+                   join committee_departments d on m.committee_id=d.committee_id
+                   where d.department_id=? and m.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $meeting_id]);
+        return count($result) ? true : false;
+    }
 }

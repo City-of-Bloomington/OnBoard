@@ -264,4 +264,15 @@ class SeatTable extends TableGateway
             'changes'      =>[$change]
         ]);
 	}
+
+	public static function hasDepartment(int $department_id, int $seat_id): bool
+    {
+        $sql    = "select s.committee_id
+                   from seats s
+                   join committee_departments d on s.committee_id=d.committee_id
+                   where d.department_id=? and s.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $seat_id]);
+        return count($result) ? true : false;
+    }
 }

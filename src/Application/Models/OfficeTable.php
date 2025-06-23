@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright 2014-2018 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
 
+use Web\Database;
 use Web\TableGateway;
 use Laminas\Db\Sql\Select;
 
@@ -31,4 +32,15 @@ class OfficeTable extends TableGateway
 		}
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
+
+	public static function hasDepartment(int $department_id, int $office_id): bool
+    {
+        $sql    = "select o.committee_id
+                   from offices o
+                   join committee_departments d on o.committee_id=d.committee_id
+                   where d.department_id=? and o.id=?";
+        $db     = Database::getConnection();
+        $result = $db->query($sql)->execute([$department_id, $office_id]);
+        return count($result) ? true : false;
+    }
 }
