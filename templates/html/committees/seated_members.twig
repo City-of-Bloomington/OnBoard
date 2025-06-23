@@ -18,7 +18,7 @@
                 <div class="grid-row flex-row">
                     <div class="grid-col flex-1 display-flex flex-align-center">
                         <h3>{% if row.member_person_id %}
-                            <a class="usa-link" href="{{ uri('members.view', {id: row.member_id}) }}">
+                            <a class="usa-link" href="{{ uri('members.view', { member_id: row.member_id }) }}">
                             {{ row.member_firstname }} {{ row.member_lastname }}
                             </a>
                             {% else %}

@@ -12,7 +12,7 @@
     <div class="flex-row margin-bottom-1">
         {% for m in term.getMembers() %}
         <div class="grid-row margin-bottom-1">
-            <div class="grid-col"><strong>{{ _(['member', 'members', 0]) }}:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.getId()}) }}">{{ m.getPerson().getFullname() }}</a></div>
+            <div class="grid-col"><strong>{{ _(['member', 'members', 0]) }}:</strong> <a class="usa-link" href="{{ uri('members.view', { member_id: m.getId() }) }}">{{ m.getPerson().getFullname() }}</a></div>
             <div class="grid-col"><strong>{{ _('start'                 ) }}:</strong> {{ m.getStartDate('m/d/Y') }}</div>
             <div class="grid-col"><strong>{{ _('end'                   ) }}:</strong> {{ m.getEndDate() ? m.getEndDate('m/d/Y') : '' }}</div>
         </div>

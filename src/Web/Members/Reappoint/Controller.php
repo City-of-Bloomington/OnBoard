@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $member = new Member($params['id']); }
+        if (!empty($_REQUEST['member_id'])) {
+            try { $member = new Member($_REQUEST['member_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 

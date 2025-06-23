@@ -171,11 +171,11 @@ $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
 
 $map->attach('members.', '/members', function ($r) {
     $r->get('appoint',   '/appoint'  , Web\Members\Appoint\Controller::class  )->allows(['POST']);
-    $r->get('reappoint', '/{id}/reappoint', Web\Members\Reappoint\Controller::class)->allows(['POST']);
-    $r->get('update',    '/{id}/update'   , Web\Members\Update\Controller::class   )->allows(['POST']);
-    $r->get('resign',    '/{id}/resign'   , Web\Members\Resign\Controller::class   )->allows(['POST']);
-    $r->get('delete',    '/{id}/delete'   , Web\Members\Delete\Controller::class);
-    $r->get('view',      '/{id}'          , Web\Members\Info\Controller::class);
+    $r->get('reappoint', '/{member_id}/reappoint', Web\Members\Reappoint\Controller::class)->allows(['POST']);
+    $r->get('update',    '/{member_id}/update'   , Web\Members\Update\Controller::class   )->allows(['POST']);
+    $r->get('resign',    '/{member_id}/resign'   , Web\Members\Resign\Controller::class   )->allows(['POST']);
+    $r->get('delete',    '/{member_id}/delete'   , Web\Members\Delete\Controller::class);
+    $r->get('view',      '/{member_id}'          , Web\Members\Info\Controller::class);
 });
 
 $map->attach('offices.', '/offices', function ($r) {

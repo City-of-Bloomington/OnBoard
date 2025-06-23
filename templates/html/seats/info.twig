@@ -44,7 +44,7 @@
                         {% set label = _(['member', 'members', 10]) %}
                         {% for m in t.members %}
                         <div class="grid-row margin-bottom-1">
-                            <div class="grid-col"><strong>{{ label }}:</strong> <a class="usa-link" href="{{ uri('members.view', {'id':m.member_id}) }}">{{ m.name }}</a></div>
+                            <div class="grid-col"><strong>{{ label      }}:</strong> <a class="usa-link" href="{{ uri('members.view', { member_id: m.member_id }) }}">{{ m.name }}</a></div>
                             <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ m.startDate|date('m/d/Y') }}</div>
                             <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</div>
                         </div>

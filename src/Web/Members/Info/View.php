@@ -36,7 +36,7 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('members', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.update', ['member_id'=>$m->getId()]),
                 'label' => parent::_('member_edit'),
                 'class' => 'edit'
             ];
@@ -44,7 +44,7 @@ class View extends \Web\View
         if (parent::isAllowed('members', 'resign')
             && (!$m->getEndDate() || strtotime($m->getEndDate()) > time() )) {
             $links[] = [
-                'url'   => parent::generateUri('members.resign', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.resign', ['member_id'=>$m->getId()]),
                 'label' => parent::_('member_end'),
                 'class' => 'close'
             ];
@@ -55,14 +55,14 @@ class View extends \Web\View
             && $m->getTerm()->getNextTerm()->isVacant()) {
 
             $links[] = [
-                'url'   => parent::generateUri('members.reappoint', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.reappoint', ['member_id'=>$m->getId()]),
                 'label' => parent::_('member_continue'),
                 'class' => 'loop'
             ];
         }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.delete', ['member_id'=>$m->getId()]),
                 'label' => parent::_('member_delete'),
                 'class' => 'delete'
             ];

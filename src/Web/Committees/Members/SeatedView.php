@@ -88,14 +88,14 @@ class SeatedView extends View
                             $n = $t->getNextTerm();
 
                             if ($n->isVacant()) {
-                                $uri = parent::generateUri('members.reappoint', ['id'=>$row['member_id']]);
+                                $uri = parent::generateUri('members.reappoint', ['member_id'=>$row['member_id']]);
                                 $actions[] = ['url'=>$uri, 'label'=>$this->_('member_continue')];
                             }
                         }
                     }
 
                     if (!$row['member_endDate'] || strtotime($row['member_endDate']) > time()) {
-                        $uri = parent::generateUri('members.resign', ['id'=>$row['member_id']]);
+                        $uri = parent::generateUri('members.resign', ['member_id'=>$row['member_id']]);
                         $actions[] = ['url'=>$uri, 'label'=>$this->_('member_end')];
                     }
                 }

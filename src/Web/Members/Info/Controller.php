@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         try {
-            $member = new Member($params['id']);
+            $member = new Member($_REQUEST['member_id']);
         }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e->getMessage();

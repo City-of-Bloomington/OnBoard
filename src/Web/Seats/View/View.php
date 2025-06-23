@@ -151,14 +151,14 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('members', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('members.update', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.update', ['member_id'=>$m->getId()]),
                 'label' => $this->_('member_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('members', 'delete')) {
             $links[] = [
-                'url'   => parent::generateUri('members.delete', ['id'=>$m->getId()]),
+                'url'   => parent::generateUri('members.delete', ['member_id'=>$m->getId()]),
                 'label' => $this->_('member_delete'),
                 'class' => 'delete'
             ];
