@@ -15,8 +15,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $file = new LegislationFile((int)$params['id']); }
+        if (!empty($_REQUEST['legislationFile_id'])) {
+            try { $file = new LegislationFile((int)$_REQUEST['legislationFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -68,8 +68,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($params['id'])) {
-            return LegislationFilesTable::hasDepartment($department_id, (int)$params['id']);
+        if (!empty($_REQUEST['legislationFile_id'])) {
+            return LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislationFile_id']);
         }
         if (!empty($_REQUEST['legislation_id'])) {
             return LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);

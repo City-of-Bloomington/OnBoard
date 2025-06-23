@@ -128,10 +128,10 @@ $map->attach('legislation.', '/committees/{committee_id}/legislation', function 
 });
 
 $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
-    $r->get('add'   ,   '/add'        , Web\Legislation\Files\Add\Controller::class)->allows(['POST']);
-    $r->get('update',   '/{id}/update', Web\Legislation\Files\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/{id}/delete', Web\Legislation\Files\Delete\Controller::class);
-    $r->get('download', '/{id}'       , Web\Legislation\Files\Download\Controller::class);
+    $r->get('add'   ,   '/add', Web\Legislation\Files\Add\Controller::class)->allows(['POST']);
+    $r->get('update',   '/{legislationFile_id}/update', Web\Legislation\Files\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{legislationFile_id}/delete', Web\Legislation\Files\Delete\Controller::class);
+    $r->get('download', '/{legislationFile_id}'       , Web\Legislation\Files\Download\Controller::class);
 });
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {

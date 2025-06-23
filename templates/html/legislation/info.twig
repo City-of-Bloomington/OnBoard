@@ -41,19 +41,19 @@
     {% set files = legislation.getFiles() %}
     {% if  files|length>0 %}
     <ul>{% for f in files %}
-        <li><a href="{{ uri('legislationFiles.download', {id: f.getId()} ) }}">{{ f.getFilename() }}</a>
+        <li><a href="{{ uri('legislationFiles.download', { legislationFile_id: f.getId()} ) }}">{{ f.getFilename() }}</a>
             {% if isAllowed('legislationFiles', 'update') %}
-            {{ forms.actionLink(uri('legislationFiles.update', {id: f.getId()} ), _('legislationFile_edit'), 'edit' ) }}
+            {{ forms.actionLink(uri('legislationFiles.update', { legislationFile_id: f.getId()} ), _('legislationFile_edit'), 'edit' ) }}
             {% endif %}
             {% if isAllowed('legislationFiles', 'delete') %}
-            {{ forms.actionLink(uri('legislationFiles.delete', {id: f.getId()} ), _('legislationFile_delete'), 'delete' ) }}
+            {{ forms.actionLink(uri('legislationFiles.delete', { legislationFile_id: f.getId()} ), _('legislationFile_delete'), 'delete' ) }}
             {% endif %}
         </li>
         {% endfor %}
     </ul>
     {% else %}
         {% if isAllowed('legislationFiles', 'add') %}
-        {{ forms.actionLink(uri('legislationFiles.add') ~ '?legislation_id=' ~ legislation.getId() ~ ';return_url=' ~ current_url(), _('legislationFile_add'), 'add' ) }}
+        {{ forms.actionLink(uri('legislationFiles.add') ~ '?legislation_id=' ~ legislation.getId(), _('legislationFile_add'), 'add' ) }}
         {% endif %}
     {% endif %}
 

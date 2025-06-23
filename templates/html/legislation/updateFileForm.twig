@@ -20,7 +20,7 @@
             <input type="hidden" name="legislation_id" value="{{ file.getLegislation_id() }}" />
 
             {% if file.getFilename() -%}
-            <div><a href="{{ uri('legislationFiles.download', {'id':file.getId()}) }}">{{ file.getFilename() }}</a></div>
+            <div><a href="{{ uri('legislationFiles.download', { legislationFile_id: file.getId()}) }}">{{ file.getFilename() }}</a></div>
             {%- endif %}
             {{ forms.field_file('legislationFile', 'legislationFile', _('legislationFile'), file,
                                 accept, maxSize, maxBytes, false, {},

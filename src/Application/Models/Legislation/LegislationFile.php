@@ -42,7 +42,7 @@ class LegislationFile extends File
             'id'        => $this->getId(),
             'type'      => $l->getType(),
             'title'     => $l->getTitle(),
-            'url'       => \Web\View::generateUrl('legislationFiles.download', ['id'=>$this->getId()]),
+            'url'       => \Web\View::generateUrl('legislationFiles.download', ['legislationFile_id'=>$this->getId()]),
             'text'      => $this->extractText(),
             'date'      => $this->getCreated(),
             'changed'   => $this->getUpdated(),

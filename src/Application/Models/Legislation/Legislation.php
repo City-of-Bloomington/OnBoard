@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -191,7 +191,7 @@ class Legislation extends ActiveRecord
         $files = [];
         foreach ($this->getFiles() as $f) {
             $files[] = [
-                'url' => View::generateUrl('legislationFiles.download', ['id'=>$f->getId()])
+                'url' => View::generateUrl('legislationFiles.download', ['legislationFile_id'=>$f->getId()])
             ];
         }
 

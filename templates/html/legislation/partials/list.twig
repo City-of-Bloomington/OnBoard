@@ -18,7 +18,7 @@
         <p>{{ l.getTitle() }}</p>
         <div>
             {% for f in l.getFiles() -%}
-            {{- forms.actionLink(uri('legislationFiles.download', {id: f.getId()}), f.filename, 'download') -}}
+            {{- forms.actionLink(uri('legislationFiles.download', { legislationFile_id: f.getId()}), f.filename, 'download') -}}
             {%- endfor %}
         </div>
     </div>

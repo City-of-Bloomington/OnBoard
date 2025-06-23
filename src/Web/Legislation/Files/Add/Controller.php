@@ -34,16 +34,19 @@ class Controller extends \Web\Controller
                         $file->setFile($_FILES['legislationFile']);
                         $file->save();
 
-                        header('Location: ').\Web\View::generateUrl('legislation.view', [
+                        $url = \Web\View::generateUrl('legislation.view', [
                             'legislation_id' => $file->getLegislation_id(),
                             'committee_id'   => $file->getLegislation()->getCommittee_id()
                         ]);
+                        header("Location: $url");
                         exit();
                     }
-                    catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+                    catch (\Exception $e) {
+                        $_SESSION['errorMessages'][] = $e->getMessage();
+                    }
                 }
             }
-            return new \Web\Legislation\Files\Update\View($file, $_SESSION['return_url']);
+            return new \Web\Legislation\Files\Update\View($file);
         }
 
         return new \Web\Views\NotFoundView();
@@ -61,8 +64,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($params['id'])) {
-            return LegislationFilesTable::hasDepartment($department_id, (int)$params['id']);
+        if (!empty($_REQUEST['legislation_id'])) {
+            return LegislationFilesTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
         }
         if (!empty($_REQUEST['legislation_id'])) {
             return LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
