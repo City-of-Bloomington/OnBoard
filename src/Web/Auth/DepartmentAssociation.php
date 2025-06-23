@@ -42,7 +42,7 @@ class DepartmentAssociation implements AssertionInterface
 
             foreach (self::$params as $p=>$t) {
                 if (!empty($_REQUEST[$p])) {
-                    return $t::hasDepartment($did, $_REQUEST[$p]);
+                    return $t::hasDepartment((int)$did, (int)$_REQUEST[$p]);
                 }
             }
        }
