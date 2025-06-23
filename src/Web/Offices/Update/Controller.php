@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $office = new Office($params['id']); }
+        if (!empty($_REQUEST['office_id'])) {
+            try { $office = new Office($_REQUEST['office_id']); }
             catch (\Exception $e) {
                 $_SESSION['errorMessages'][] = $e->getMessage();
                 header('Location: '.\Web\View::generateUrl('committees.index'));

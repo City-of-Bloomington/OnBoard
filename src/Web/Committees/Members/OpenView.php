@@ -2,7 +2,7 @@
 /**
  * Committee members for committees with open membership
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -56,7 +56,7 @@ class OpenView extends View
             foreach ($m['offices'] as $o) {
                 if ($userCanEditOffices) {
                     $links[] = [
-                        'url'   => parent::generateUri('offices.update', ['id'=>$o->getId()]),
+                        'url'   => parent::generateUri('offices.update', ['office_id'=>$o->getId()]),
                         'label' => sprintf($this->_('office_edit', 'messages'), $o->getTitle()),
                         'class' => 'edit'
                     ];

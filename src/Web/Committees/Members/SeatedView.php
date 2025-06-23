@@ -2,7 +2,7 @@
 /**
  * A view of commiitee members based on Seats and Terms
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -119,7 +119,7 @@ class SeatedView extends View
                     foreach (explode(',',$row['offices']) as $o) {
                         list($office_id, $office_title) = explode('|', $o);
                         $actions[] = [
-                            'url'   => parent::generateUri('offices.update', ['id'=>$office_id]),
+                            'url'   => parent::generateUri('offices.update', ['office_id'=>$office_id]),
                             'label' => "{$this->_('edit')} $office_title",
                             'class' => 'add'
                         ];

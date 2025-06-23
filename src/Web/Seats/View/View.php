@@ -171,7 +171,7 @@ class View extends \Web\View
             ];
             foreach ($m->getPerson()->getOffices($m->getCommittee(), date('Y-m-d')) as $office) {
                 $links[] = [
-                    'url'   => parent::generateUri('offices.update', ['id'=>$office->getId()]),
+                    'url'   => parent::generateUri('offices.update', ['office_id'=>$office->getId()]),
                     'label' => sprintf($this->_('office_edit', 'messages'), $office->getTitle()),
                     'class' => 'edit'
                 ];
