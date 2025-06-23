@@ -104,7 +104,7 @@ class View extends \Web\View
                 $links = [];
                 if ($canEdit) {
                     $links[] = [
-                        'url'   => parent::generateUri('legislationActions.update', ['id'=>$action->getId()]),
+                        'url'   => parent::generateUri('legislationActions.update', ['legislationAction_id'=>$action->getId()]),
                         'label' => $this->_('legislationAction_edit'),
                         'class' => 'edit'
                     ];

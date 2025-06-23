@@ -27,6 +27,7 @@ class Controller extends \Web\Controller
         }
 
         if (isset($action)) {
+            echo "Action ready to edit\n";
             if (isset($_POST['legislation_id'])) {
                 try {
                     $action->setLegislation_id($_POST['legislation_id']);
@@ -36,10 +37,11 @@ class Controller extends \Web\Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    header('Location: ').\Web\View::generateUrl('legislation.view', [
+                    $url = \Web\View::generateUrl('legislation.view', [
                         'legislation_id' => $action->getLegislation_id(),
-                        'committe'       => $action->getLegislation()->getCommittee_id()
+                        'committee_id'   => $action->getLegislation()->getCommittee_id()
                     ]);
+                    header("Location: $url");
                     exit();
                 }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

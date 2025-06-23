@@ -14,8 +14,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $action = new Action($params['id']); }
+        if (!empty($_REQUEST['legislationAction_id'])) {
+            try { $action = new Action($_REQUEST['legislationAction_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -29,13 +29,16 @@ class Controller extends \Web\Controller
                     $action->setVote          ($_POST['vote'          ]);
 
                     $action->save();
-                    header('Location: ').\Web\View::generateUrl('legislation.view', [
+                    $url = \Web\View::generateUrl('legislation.view', [
                         'legislation_id' => $action->getLegislation_id(),
-                        'committe'       => $action->getLegislation()->getCommittee_id()
+                        'committee_id'   => $action->getLegislation()->getCommittee_id()
                     ]);
+                    header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+                catch (\Exception $e) {
+                    $_SESSION['errorMessages'][] = $e->getMessage();
+                }
             }
 
             return new View($action);
@@ -57,8 +60,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($params['id'])) {
-            return ActionsTable::hasDepartment($department_id, (int)$params['id']);
+        if (!empty($_REQUEST['legislationAction_id'])) {
+            return ActionsTable::hasDepartment($department_id, (int)$_REQUEST['legislationAction_id']);
         }
 
         if (!empty($_REQUEST['legislation_id'])) {

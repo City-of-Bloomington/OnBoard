@@ -2,8 +2,10 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param LegislationAction action
+ * @param Committee         committee
+ * @param array             outcomes    Options for select element
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
@@ -14,8 +16,9 @@
             <input name="legislation_id"       type="hidden" value="{{ action.getLegislation_id() }}" />
             <input name="type_id"              type="hidden" value="{{ action.getType_id()        }}" />
 
-            {{ forms.field_date('actionDate', 'actionDate', _('date'), action.getActionDate() ? action.getActionDate('Y-m-d') : 'now'|date('Y-m-d'), true) }}
-            {{ forms.field_text('vote',       'vote',       _('vote'), action.getVote() ) }}
+            {{ forms.field_date('actionDate', 'actionDate', _('date'),    action.getActionDate() ? action.getActionDate('Y-m-d') : 'now'|date('Y-m-d'), true) }}
+            {{ forms.field_text('vote',       'vote',       _('vote'),    action.getVote() ) }}
+            {{ forms.field_select('outcome',  'outcome',    _('outcome'), action.getOutcome(), outcomes ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(uri('legislation.view', { legislation_id: action.getLegislation_id(), committee_id: action.getLegislation().getCommittee_id() }),

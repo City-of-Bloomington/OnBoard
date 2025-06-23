@@ -108,8 +108,8 @@ $map->attach('departments.', '/departments', function ($r) {
 });
 
 $map->attach('legislationActions.', '/legislationActions', function ($r) {
-    $r->get('add',    '/add'        , Web\Legislation\Actions\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/{id}/update', Web\Legislation\Actions\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add', Web\Legislation\Actions\Add\Controller::class)->allows(['POST']);
+    $r->get('update', '/{legislationAction_id}/update', Web\Legislation\Actions\Update\Controller::class)->allows(['POST']);
 });
 
 $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r) {
