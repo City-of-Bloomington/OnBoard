@@ -67,12 +67,6 @@
         src:  'site_config.j2'
         dest: "{{ onboard_site_home }}/site_config.php"
 
-#    - name: Install Google credentials
-#      ansible.builtin.copy:
-#        content: "{{ onboard_google.credentials }}"
-#        dest:    "{{ onboard_site_home }}/credentials.json"
-#        mode:    "0640"
-
     - name: "Install CRON scripts"
       ansible.builtin.template:
         src:  "{{ item.src  }}"
@@ -93,4 +87,5 @@
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
+        - "/var/www" # Required for Apache to use LibreOffice to generate PDF
 ...
