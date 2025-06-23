@@ -23,7 +23,7 @@
                         <h3 class="usa-card__heading">{{ row.firstname }} {{ row.lastname }}</h3>
                     </div>
                     <div class="grid-col-auto display-flex flex-align-center">
-                        <a class="usa-link" href="{{ uri('people.view', {id: row.person_id}) }}">{{ _('view') }}</a>
+                        <a class="usa-link" href="{{ uri('people.view', { person_id: row.person_id }) }}">{{ _('view') }}</a>
                     </div>
                 </div>
                 <div class="usa-card__footer grid-row">

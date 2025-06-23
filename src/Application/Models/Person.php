@@ -216,8 +216,8 @@ class Person extends ActiveRecord
 	/**
 	 * @return string
 	 */
-	public function getUrl() { return View::generateUrl('people.view', ['id'=>$this->getId()]); }
-	public function getUri() { return View::generateUrl('people.view', ['id'=>$this->getId()]); }
+	public function getUrl() { return View::generateUrl('people.view', ['person_id'=>$this->getId()]); }
+	public function getUri() { return View::generateUrl('people.view', ['person_id'=>$this->getId()]); }
 
 	/**
 	 * @return Laminas\Db\ResultSet

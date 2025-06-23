@@ -34,14 +34,14 @@ class View extends \Web\View
         $links = [];
         if (parent::isAllowed('people', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('people.update', ['id'=>$person->getId()]),
+                'url'   => parent::generateUri('people.update', ['person_id'=>$person->getId()]),
                 'label' => parent::_('person_edit'),
                 'class' => 'edit'
             ];
         }
         if (parent::isAllowed('people', 'delete') && $person->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('people.delete', ['id'=>$person->getId()]),
+                'url'   => parent::generateUri('people.delete', ['person_id'=>$person->getId()]),
                 'label' => parent::_('person_delete'),
                 'class' => 'delete'
             ];

@@ -37,7 +37,7 @@ class Controller extends \Web\Controller
                     $return_url->person_id = $person->getId();
                 }
                 else {
-                    $return_url = new Url(\Web\View::generateUrl('people.view', ['id'=>$person->getId()]));
+                    $return_url = new Url(\Web\View::generateUrl('people.view', ['person_id'=>$person->getId()]));
                 }
 
                 header("Location: $return_url");

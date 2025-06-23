@@ -184,9 +184,9 @@ $map->attach('offices.', '/offices', function ($r) {
 });
 
 $map->attach('people.', '/people', function ($r) {
-    $r->get('update',     '/{id}/update', Web\People\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',     '/{id}/delete', Web\People\Delete\Controller::class);
-    $r->get('view',       '/{id}'       , Web\People\View\Controller::class);
+    $r->get('update',     '/{person_id}/update', Web\People\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',     '/{person_id}/delete', Web\People\Delete\Controller::class);
+    $r->get('view',       '/{person_id}'       , Web\People\View\Controller::class);
     $r->get('add',        '/add'        , Web\People\Add\Controller::class)->allows(['POST']);
     $r->get('callback',   '/callback'   , Web\People\Callback\Controller::class);
     $r->get('index',      ''            , Web\People\Find\Controller::class);

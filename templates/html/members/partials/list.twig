@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array members   An array of Member objects
  #}
@@ -13,9 +13,12 @@
     </thead>
     <tbody>
     {% for m in members %}
-    <tr><td><a class="usa-link" href="{{ uri('people.view', {id: m.getPerson_id()}) }}">{{ m.getPerson().getFullname() }}</a></td>
+    <tr><td><a class="usa-link" href="{{ uri('people.view', { person_id: m.getPerson_id() }) }}">
+                {{ m.getPerson().getFullname() }}
+            </a>
+        </td>
         <td class="font-mono-3xs">{{ m.getStartDate|date('m/d/Y') }}</td>
-        <td class="font-mono-3xs">{{ m.getEndDate|date('m/d/Y') }}</td>
+        <td class="font-mono-3xs">{{ m.getEndDate  |date('m/d/Y') }}</td>
     </tr>
     {% endfor %}
     </tbody>

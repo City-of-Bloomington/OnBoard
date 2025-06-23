@@ -32,17 +32,15 @@
                         </h3>
                     </div>
                     <div class="grid-col-auto display-flex flex-align-center">
-                        <a class="usa-link" href="{{ uri('people.view', {id: member.person_id}) }}">{{ _('view') }}</a>
+                        <a class="usa-link" href="{{ uri('people.view', { person_id: member.person_id }) }}">
+                            {{ _('view') }}
+                        </a>
                     </div>
                 </div>
                 <div class="usa-card__footer grid-row">
                     <div class="grid-col flex-1">
-                        <div>
-                            <strong>{{ _('startDate'   ) }}:</strong> {{ member.startDate }}
-                        </div>
-                                                        <div>
-                            <strong>{{ _('endDate'   ) }}:</strong> {{ member.endDate }}
-                        </div>
+                        <div><strong>{{ _('startDate') }}:</strong> {{ member.startDate }}</div>
+                        <div><strong>{{ _('endDate'  ) }}:</strong> {{ member.endDate   }}</div>
                     </div>
                     {% if member.actionLinks is defined %}
                     <div class="grid-col-auto display-flex flex-align-center">
@@ -54,21 +52,5 @@
         </li>
     {% endfor %}
     </ul>
-
-    {# <table class="usa-table">
-        {% for member in members %}
-        <tr><td><a href="{{ uri('people.view', {id: member.person_id}) }}">
-                {{ member.name }}
-                </a>
-            </td>
-            <td>{{ member.startDate }} - {{ member.endDate }}</td>
-            <td>{% if member.actionLinks is defined %}
-                {{ include('html/partials/moreLinks.twig', {actionLinks:member.actionLinks}, with_context:false) }}
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table> #}
-
 </section>
 {% endblock %}

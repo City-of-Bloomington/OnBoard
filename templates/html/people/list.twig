@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Laminas\Paginator people
  * @param bool              callback    Whether this is in a callback context or not
@@ -30,10 +30,14 @@
   <tbody>
   {% for p in people %}
   <tr><td>{% if not callback %}
-          <a class="usa-link" href="{{ uri('people.view', {id: p.getId()}) }}">{{ p.getFullName() }}</a>
+          <a class="usa-link" href="{{ uri('people.view', { person_id: p.getId() }) }}">
+            {{ p.getFullName() }}
+          </a>
           {% else %}
           <a class="usa-link" href="{{ return_url }};person_id={{ p.getId() }}"
-            onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.getId() }})">{{ p.getFullName() }}</a>
+            onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.getId() }})">
+            {{ p.getFullName() }}
+          </a>
           {% endif %}
       </td>
       {% if isAllowed('people', 'viewContactInfo') %}
