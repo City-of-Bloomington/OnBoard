@@ -148,10 +148,10 @@ $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
-    $r->get('add', '/add'           , Web\Liaisons\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/{id}/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Liaisons\Delete\Controller::class);
-    $r->get('index',  ''            , Web\Liaisons\List\Controller::class);
+    $r->get('update', '/{liaison_id}/update', Web\Liaisons\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{liaison_id}/delete', Web\Liaisons\Delete\Controller::class);
+    $r->get('add',    '/add', Web\Liaisons\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  ''    , Web\Liaisons\List\Controller::class);
 });
 
 $map->attach('meetings.', '/meetings', function ($r) {

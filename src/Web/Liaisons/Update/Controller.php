@@ -14,9 +14,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty(($params['id']))) { // ($params['id']
+        if (!empty(($_REQUEST['liaison_id']))) {
             try {
-                $liaison = new Liaison(($params['id']));
+                $liaison = new Liaison(($_REQUEST['liaison_id']));
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
