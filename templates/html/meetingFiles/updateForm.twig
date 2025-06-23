@@ -37,7 +37,10 @@
 
         <div class="usa-form-group">
             {% if meetingFile.getFilename() -%}
-            <div><a href="{{ uri('meetingFiles.download', {id: meetingFile.getId()}) }}">{{ meetingFile.getFilename() }}</a></div>
+            <div><a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.getId() }) }}">
+                    {{ meetingFile.getFilename() }}
+                 </a>
+            </div>
             {%- endif %}
             {{ forms.field_file('meetingFile', 'meetingFile', _('meetingFile'), meetingFile,
                                 accept, maxSize, maxBytes, false, {},

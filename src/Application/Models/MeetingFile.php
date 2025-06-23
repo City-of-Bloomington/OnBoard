@@ -115,8 +115,8 @@ class MeetingFile extends File
         return $this->getMeeting()->getStart('Y/m/d');
     }
 
-    public function getDownloadUrl():string { return  View::generateUrl('meetingFiles.download', ['id'=>$this->getId()]); }
-    public function getDownloadUri():string { return  View::generateUri('meetingFiles.download', ['id'=>$this->getId()]); }
+    public function getDownloadUrl():string { return  View::generateUrl('meetingFiles.download', ['meetingFile_id'=>$this->getId()]); }
+    public function getDownloadUri():string { return  View::generateUri('meetingFiles.download', ['meetingFile_id'=>$this->getId()]); }
 
     public function getSolrFields(): array
     {

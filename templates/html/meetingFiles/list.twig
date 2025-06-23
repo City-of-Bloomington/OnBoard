@@ -48,7 +48,7 @@
     <li class="usa-collection__item">
         <div class="usa-collection__body">
             <h3 class="usa-collection__heading">
-                <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                <a class="usa-link" href="{{ uri('meetingFiles.download', { meetingFile_id: f.id }) }}">
                     {{ f.title ?? f.type }}
                     <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
                         <use href="{{ USWDS_URL }}/img/sprite.svg#file_present"></use>

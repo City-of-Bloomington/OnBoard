@@ -70,14 +70,14 @@ class View extends \Web\View
             ];
             if ($canEdit) {
                 $d['actions'][] = [
-                    'url'   => parent::generateUri('meetingFiles.update', ['id'=>$f->getId()]),
+                    'url'   => parent::generateUri('meetingFiles.update', ['meetingFile_id'=>$f->getId()]),
                     'label' => parent::_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $d['actions'][] = [
-                    'url'   => parent::generateUri('meetingFiles.delete', ['id'=>$f->getId()]),
+                    'url'   => parent::generateUri('meetingFiles.delete', ['meetingFile_id'=>$f->getId()]),
                     'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];

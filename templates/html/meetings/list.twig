@@ -65,7 +65,7 @@
                     {% for type, t in m.files %}
                     {% for f in t %}
                     <div><strong>{{ f.type }}:</strong>
-                        <a class="usa-link" href="{{ uri('meetingFiles.download', {id: f.id}) }}">
+                        <a class="usa-link" href="{{ uri('meetingFiles.download', { meetingFile_id: f.id }) }}">
                             {{ f.title ?? f.filename }}
                         </a>
                     </div>

@@ -161,12 +161,12 @@ $map->attach('meetings.', '/meetings', function ($r) {
 });
 
 $map->attach('meetingFiles.', '/meetingFiles', function ($r) {
-    $r->get('download', '/{id}/download', Web\MeetingFiles\Download\Controller::class);
-    $r->get('update',   '/{id}/update'  , Web\MeetingFiles\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/{id}/delete'  , Web\MeetingFiles\Delete\Controller::class);
-    $r->get('add',      '/add'          , Web\MeetingFiles\Add\Controller::class)->allows(['POST']);
-    $r->get('years',    '/years'        , Web\MeetingFiles\Years\Controller::class);
-    $r->get('index',    ''              , Web\MeetingFiles\List\Controller::class);
+    $r->get('download', '/{meetingFile_id}/download', Web\MeetingFiles\Download\Controller::class);
+    $r->get('update',   '/{meetingFile_id}/update'  , Web\MeetingFiles\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{meetingFile_id}/delete'  , Web\MeetingFiles\Delete\Controller::class);
+    $r->get('add',      '/add'  , Web\MeetingFiles\Add\Controller::class)->allows(['POST']);
+    $r->get('years',    '/years', Web\MeetingFiles\Years\Controller::class);
+    $r->get('index',    ''      , Web\MeetingFiles\List\Controller::class);
 });
 
 $map->attach('members.', '/members', function ($r) {

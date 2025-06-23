@@ -16,8 +16,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $file = new MeetingFile($params['id']); }
+        if (!empty($_REQUEST['meetingFile_id'])) {
+            try { $file = new MeetingFile($_REQUEST['meetingFile_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
         else { $file = new MeetingFile(); }
@@ -68,8 +68,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($params['id'])) {
-            return MeetingFilesTable::hasDepartment($department_id, (int)$params['id']);
+        if (!empty($_REQUEST['meetingFile_id'])) {
+            return MeetingFilesTable::hasDepartment($department_id, (int)$_REQUEST['meetingFile_id']);
         }
 
         return false;

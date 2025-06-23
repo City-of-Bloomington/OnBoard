@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -49,9 +49,7 @@ class Controller extends \Web\Controller
 
                 $file->save();
 
-                $url = !empty($_POST['return_url'])
-                            ? $_POST['return_url']
-                            : \Web\View::generateUrl('meetingFiles.index')."?committee_id={$committee->getId()}";
+                $url = \Web\View::generateUrl('meetings.view', ['meeting_id'=>$file->getMeeting_id()]);
                 header("Location: $url");
                 exit();
             }
