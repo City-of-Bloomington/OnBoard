@@ -135,10 +135,10 @@ $map->attach('legislationFiles.', '/legislationFiles', function ($r) {
 });
 
 $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
-    $r->get('update', '/{id}/update', Web\Legislation\Statuses\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Legislation\Statuses\Delete\Controller::class);
-    $r->get('add'   , '/add'        , Web\Legislation\Statuses\Add\Controller::class)->allows(['POST']);
-    $r->get('index' , ''            , Web\Legislation\Statuses\List\Controller::class);
+    $r->get('update', '/{legislationStatus_id}/update', Web\Legislation\Statuses\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{legislationStatus_id}/delete', Web\Legislation\Statuses\Delete\Controller::class);
+    $r->get('add'   , '/add', Web\Legislation\Statuses\Add\Controller::class)->allows(['POST']);
+    $r->get('index' , ''    , Web\Legislation\Statuses\List\Controller::class);
 });
 
 $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
