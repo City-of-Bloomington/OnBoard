@@ -193,7 +193,7 @@ $map->attach('people.', '/people', function ($r) {
 });
 
 $map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/{id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
+    $r->get('update', '/{race_id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
     $r->get('add',    '/add'        , Web\Races\Add\Controller::class)->allows(['POST']);
     $r->get('index',  ''            , Web\Races\List\Controller::class);
 });

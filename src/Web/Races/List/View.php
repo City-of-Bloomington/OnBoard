@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -30,7 +30,7 @@ class View extends \Web\View
             $links = [];
             if (parent::isAllowed('races', 'update')) {
                 $links = [[
-                    'url'   => parent::generateUri('races.update', ['id' => $r->getId()]),
+                    'url'   => parent::generateUri('races.update', ['race_id' => $r->getId()]),
                     'label' => parent::_('race_edit'),
                     'class' => 'edit'
                 ]];
