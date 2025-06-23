@@ -142,9 +142,9 @@ $map->attach('legislationStatuses.', '/legislationStatuses', function ($r) {
 });
 
 $map->attach('legislationTypes.', '/legislationTypes', function ($r) {
-    $r->get('update', '/{id}/update', Web\Legislation\Types\Update\Controller::class)->allows(['POST']);
-    $r->get('add',    '/add'        , Web\Legislation\Types\Add\Controller::class)->allows(['POST']);
-    $r->get('index',  '',        Web\Legislation\Types\List\Controller::class);
+    $r->get('update', '/{legislationType_id}/update', Web\Legislation\Types\Update\Controller::class)->allows(['POST']);
+    $r->get('add',    '/add', Web\Legislation\Types\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  ''    , Web\Legislation\Types\List\Controller::class);
 });
 
 $map->attach('liaisons.', '/liaisons', function ($r) {
