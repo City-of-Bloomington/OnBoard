@@ -140,8 +140,8 @@ class Meeting extends ActiveRecord
         $insert = $pdo->prepare($sql);
         foreach ($attendance as $row) { $insert->execute($row); }
 
-        $sql    = 'update meetings set attendanceNotes=?';
+        $sql    = 'update meetings set attendanceNotes=? where id=?';
         $update = $pdo->prepare($sql);
-        $update->execute([$notes]);
+        $update->execute([$notes, $this->getId()]);
     }
 }

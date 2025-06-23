@@ -22,7 +22,7 @@
 
 <h3>{{ _('attendance') }}</h3>
 {% if isAllowed('meetings', 'attendance') %}
-    {{ forms.actionLink(uri('meetings.attendance', {id: meeting.getId()} ), _('edit'), 'edit' ) }}
+    {{ forms.actionLink(uri('meetings.attendance', { meeting_id: meeting.getId()} ), _('edit'), 'edit' ) }}
 {% endif %}
 {% if attendance %}
 <table class="usa-table usa-table--compact">

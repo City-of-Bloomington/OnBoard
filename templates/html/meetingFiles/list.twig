@@ -57,13 +57,15 @@
             </h3>
             <ul class="usa-collection__meta" aria-label="More information">
                 {% if not committee %}
-                <li><strong>{{ f.committee }} </strong></li>
+                <li><strong>{{ f.committee }}</strong></li>
                 {% endif %}
                 <li class="usa-collection__meta-item position-relative">
-                    <strong>{{ _('type') }}:</strong> {{ f.type }}
+                    <strong>{{ _('type') }}:</strong>
+                    {{ f.type }}
                 </li>
                 <li class="usa-collection__meta-item position-relative">
-                    <strong>{{ _('meetingDate') }}:</strong> <a class="usa-link" href="{{ uri('meetings.view', {id: f.meeting_id}) }}">{{ f.meetingDate }}</a>
+                    <strong>{{ _('meetingDate') }}:</strong>
+                    <a class="usa-link" href="{{ uri('meetings.view', { meeting_id: f.meeting_id }) }}">{{ f.meetingDate }}</a>
                 </li>
             </ul>
         </div>

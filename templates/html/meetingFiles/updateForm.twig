@@ -21,7 +21,7 @@
         <legend class="usa-legend usa-legend--large">{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
 
         {% set url = current_url() %}
-        
+
         {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.getMeeting_id(), meetings, true ) }}
         <div class="grid-row margin-top-1">
             <div class="flex-col flex-1">
@@ -45,7 +45,7 @@
         </div>
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('meetings.view', {id: meetingFile.getMeeting_id()}) , _('cancel') ) }}
+        {{ forms.actionLink(uri('meetings.view', { meeting_id: meetingFile.getMeeting_id() }) , _('cancel') ) }}
     </fieldset>
 </form>
 {% endblock %}

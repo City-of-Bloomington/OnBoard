@@ -47,7 +47,7 @@ class View extends \Web\View
         }
         if (parent::isAllowed('meetings', 'attendance')) {
             $links[] = [
-                'url'   => parent::generateUri('meetings.attendance', ['id'=>$meeting->getId()]),
+                'url'   => parent::generateUri('meetings.attendance', ['meeting_id'=>$meeting->getId()]),
                 'label' => parent::_('attendance')
             ];
         }

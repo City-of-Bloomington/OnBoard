@@ -44,7 +44,7 @@
         {{ forms.field_textarea('attendanceNotes', 'attendanceNotes', _('notes'), meeting.getAttendanceNotes() ) }}
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('meetings.view', {id: meeting.getId()}), _('cancel') ) }}
+        {{ forms.actionLink(uri('meetings.view', { meeting_id: meeting.getId() }), _('cancel') ) }}
     </fieldset>
 </form>
 

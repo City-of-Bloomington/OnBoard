@@ -12,8 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $meeting = new Meeting($params['id']); }
+        if (!empty($_REQUEST['meeting_id'])) {
+            try { $meeting = new Meeting($_REQUEST['meeting_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -29,7 +29,7 @@ class Controller extends \Web\Controller
             }
             try {
                 $meeting->saveAttendance($data, $notes);
-                header('Location: '.\Web\View::generateUrl('meetings.view', ['id'=>$meeting->getId()]));
+                header('Location: '.\Web\View::generateUrl('meetings.view', ['meeting_id'=>$meeting->getId()]));
                 exit();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
