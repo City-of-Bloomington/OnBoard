@@ -72,10 +72,10 @@
                 <td><a href="{{ link }}">{{ u.department }}</a></td>
                 <td>{{ ad ? 'Staff' : 'Non-staff' }}</td>
                 <td>{% if isAllowed('users', 'update') %}
-                    {{ forms.actionLink(uri('users.update', {id: u.id}), _('edit_account'), 'edit') }}
+                    {{ forms.actionLink(uri('users.update', { person_id: u.id }), _('edit_account'), 'edit') }}
                     {% endif %}
                     {% if isAllowed('users', 'delete') %}
-                    {{ forms.actionLink(uri('users.delete', {id: u.id}), _('delete_account'), 'delete') }}
+                    {{ forms.actionLink(uri('users.delete', { person_id: u.id }), _('delete_account'), 'delete') }}
                     {% endif %}
                 </td>
             </tr>

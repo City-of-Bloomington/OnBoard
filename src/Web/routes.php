@@ -229,12 +229,12 @@ $map->attach('terms.', '/terms', function ($r) {
     $r->get('update',   '/{term_id}/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
     $r->get('delete',   '/{term_id}/delete'  , Web\Terms\Delete\Controller::class);
     $r->get('generate', '/{term_id}/generate', Web\Terms\Generate\Controller::class);
-    $r->get('add',      '/add'          , Web\Terms\Add\Controller::class)->allows(['POST']);
+    $r->get('add',      '/add', Web\Terms\Add\Controller::class)->allows(['POST']);
 });
 
 $map->attach('users.', '/users', function ($r) {
-    $r->get('update', '/{id}/update', Web\Users\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete', Web\Users\Delete\Controller::class);
-    $r->get('add',    '/add'        , Web\Users\Add\Controller::class)->allows(['POST']);
-    $r->get('index',  ''            , Web\Users\Find\Controller::class);
+    $r->get('update', '/{person_id}/update', Web\Users\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{person_id}/delete', Web\Users\Delete\Controller::class);
+    $r->get('add',    '/add', Web\Users\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  ''    , Web\Users\Find\Controller::class);
 });
