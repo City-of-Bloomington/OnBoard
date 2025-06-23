@@ -41,7 +41,7 @@
     <li         class="usa-collection__item">
         <div    class="usa-collection__body">
             <h3 class="usa-collection__heading">
-                <a class="usa-link" href="{{ uri('reports.download', {id: r.id}) }}">
+                <a class="usa-link" href="{{ uri('reports.download', { report_id: r.id }) }}">
                     {{ r.title ?? _('noTitle') }}
                     <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
                         <use href="{{ USWDS_URL }}/img/sprite.svg#file_present"></use>

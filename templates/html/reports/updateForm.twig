@@ -22,7 +22,11 @@
         {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
 
         {% if report.getFilename() -%}
-        <div class="margin-top-3"><a href="{{ uri('reports.download', {id: report.getId()}) }}">{{ report.getFilename() }}</a></div>
+        <div class="margin-top-3">
+            <a href="{{ uri('reports.download', { report_id: report.getId() }) }}">
+                {{ report.getFilename() }}
+            </a>
+        </div>
         {%- endif %}
         {{ forms.field_file('reportFile', 'reportFile', _('report'), report,
                             accept, maxSize, maxBytes, false, {},

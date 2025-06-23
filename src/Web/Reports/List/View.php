@@ -48,14 +48,14 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('reports.update', ['id'=>$r->getId()]),
+                    'url'   => parent::generateUri('reports.update', ['report_id'=>$r->getId()]),
                     'label' => parent::_('edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('reports.delete', ['id'=>$r->getId()]),
+                    'url'   => parent::generateUri('reports.delete', ['report_id'=>$r->getId()]),
                     'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];

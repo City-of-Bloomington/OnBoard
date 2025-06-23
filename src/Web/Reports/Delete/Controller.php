@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -14,9 +14,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['report_id'])) {
             try {
-                $file         = new Report($params['id']);
+                $file         = new Report($_REQUEST['report_id']);
                 $committee_id = $file->getCommittee_id();
                 $return_url   = \Web\View::generateUrl('reports.index').'?committee_id='.$committee_id;
 
@@ -44,8 +44,8 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        if (!empty($params['id'])) {
-            return ReportsTable::hasDepartment($department_id, (int)$params['id']);
+        if (!empty($_REQUEST['report_id'])) {
+            return ReportsTable::hasDepartment($department_id, (int)$_REQUEST['report_id']);
         }
 
         return false;

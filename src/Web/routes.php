@@ -199,9 +199,9 @@ $map->attach('races.', '/races', function ($r) {
 });
 
 $map->attach('reports.', '/reports', function ($r) {
-    $r->get('download', '/{id}/download', Web\Reports\Download\Controller::class);
-    $r->get('update',   '/{id}/update'  , Web\Reports\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/{id}/delete'  , Web\Reports\Delete\Controller::class);
+    $r->get('download', '/{report_id}/download', Web\Reports\Download\Controller::class);
+    $r->get('update',   '/{report_id}/update'  , Web\Reports\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{report_id}/delete'  , Web\Reports\Delete\Controller::class);
     $r->get('add',      '/add'          , Web\Reports\Add\Controller::class)->allows(['POST']);
     $r->get('index',    ''              , Web\Reports\List\Controller::class);
 });

@@ -73,7 +73,7 @@ class Report extends File
             'committee' => $this->getCommittee()->getName(),
             'title'     => $this->getTitle(),
             'date'      => $this->getReportDate(),
-            'url'       => View::generateUrl('reports.download', ['id'=>$this->getId()])
+            'url'       => View::generateUrl('reports.download', ['report_id'=>$this->getId()])
         ];
 	}
 
@@ -84,7 +84,7 @@ class Report extends File
             'id'        => $this->getId(),
             'type'      => 'Report',
             'title'     => $this->getTitle(),
-            'url'       => View::generateUrl('reports.download', ['id'=>$this->getId()]),
+            'url'       => View::generateUrl('reports.download', ['report_id'=>$this->getId()]),
             'text'      => $this->extractText(),
             'date'      => $this->getReportDate(),
             'changed'   => $this->getUpdated(),
