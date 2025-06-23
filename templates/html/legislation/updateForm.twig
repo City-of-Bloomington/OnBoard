@@ -15,7 +15,7 @@
     <header>
         {% if legislation.getParent_id() %}
         {% set parent=legislation.getParent() %}
-        <h2><a href="{{ uri('legislation.view', {'id': legislation.getParent_id(), 'committee_id': committee.getId() }) }}">
+        <h2><a href="{{ uri('legislation.view', { legislation_id: legislation.getParent_id(), committee_id: committee.getId() }) }}">
             {{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}
             </a>
         </h2>

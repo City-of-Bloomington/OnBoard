@@ -18,8 +18,8 @@ class Controller extends \Web\Controller
                 $file = new LegislationFile((int)$params['id']);
                 $file->delete();
                 header('Location: '.\Web\View::generateUrl('legislation.view', [
-                    'id'           => $file->getLegislation_id(),
-                    'committee_id' => $file->getLegislation()->getCommittee_id()
+                    'legislation_id' => $file->getLegislation_id(),
+                    'committee_id'   => $file->getLegislation()->getCommittee_id()
                 ]));
                 exit();
             }

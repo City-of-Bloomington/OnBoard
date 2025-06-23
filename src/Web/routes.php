@@ -119,10 +119,10 @@ $map->attach('legislationActionTypes.', '/legislationActionTypes', function ($r)
 });
 
 $map->attach('legislation.', '/committees/{committee_id}/legislation', function ($r) {
+    $r->get('update', '/{legislation_id}/update', Web\Legislation\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{legislation_id}/delete', Web\Legislation\Delete\Controller::class);
+    $r->get('view',   '/{legislation_id}'       , Web\Legislation\Info\Controller::class);
     $r->get('add',    '/add'         , Web\Legislation\Add\Controller::class)->allows(['POST']);
-    $r->get('update', '/{id}/update' , Web\Legislation\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{id}/delete' , Web\Legislation\Delete\Controller::class);
-    $r->get('view',   '/{id}'        , Web\Legislation\Info\Controller::class);
     $r->get('years',  '/years'       , Web\Legislation\Years\Controller::class);
     $r->get('index',  ''             , Web\Legislation\Find\Controller::class);
 });

@@ -27,7 +27,7 @@
                                 accept ~ ' - ' ~ maxSize) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(url('legislation.view', {'id':file.getLegislation_id(), 'committee_id':file.getLegislation().getCommittee_id()    }) ,
+            {{ forms.actionLink(url('legislation.view', { legislation_id: file.getLegislation_id(), committee_id: file.getLegislation().getCommittee_id() }),
                                 _('cancel'), 'cancel') }}
         </fieldset>
     </form>

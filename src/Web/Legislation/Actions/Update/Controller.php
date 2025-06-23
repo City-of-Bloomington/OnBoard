@@ -30,8 +30,8 @@ class Controller extends \Web\Controller
 
                     $action->save();
                     header('Location: ').\Web\View::generateUrl('legislation.view', [
-                        'id'       => $action->getLegislation_id(),
-                        'committe' => $action->getLegislation()->getCommittee_id()
+                        'legislation_id' => $action->getLegislation_id(),
+                        'committe'       => $action->getLegislation()->getCommittee_id()
                     ]);
                     exit();
                 }

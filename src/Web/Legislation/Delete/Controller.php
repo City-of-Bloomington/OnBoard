@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\Vew
     {
-        if (!empty($params['id'])) {
-            try { $legislation = new Legislation($params['id']); }
+        if (!empty($_REQUEST['legislation_id'])) {
+            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
         }
 
@@ -45,7 +45,7 @@ class Controller extends \Web\Controller
      */
     public static function hasDepartment(int $department_id, array $params): bool
     {
-        return !empty($params['id'])
-            && LegislationTable::hasDepartment($department_id, (int)$params['id']);
+        return !empty($_REQUEST['legislation_id'])
+            && LegislationTable::hasDepartment($department_id, (int)$_REQUEST['legislation_id']);
     }
 }

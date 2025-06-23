@@ -14,8 +14,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $legislation = new Legislation($params['id']); }
+        if (!empty($_REQUEST['legislation_id'])) {
+            try { $legislation = new Legislation($_REQUEST['legislation_id']); }
             catch (\Exception $e) { $_SESSION['errorMesssages'][] = $e->getMessage(); }
         }
 
@@ -34,8 +34,8 @@ class Controller extends \Web\Controller
             }
 
             $return_url = \Web\View::generateUrl('legislation.view', [
-                'id'           => $legislation->getId(),
-                'committee_id' => $legislation->getCommittee_id()
+                'legislation_id' => $legislation->getId(),
+                'committee_id'   => $legislation->getCommittee_id()
             ]);
             if (isset($_POST['number'])) {
                 try {

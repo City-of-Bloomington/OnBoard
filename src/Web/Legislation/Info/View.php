@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -35,7 +35,7 @@ class View extends \Web\View
     private function actionLinks(Legislation $legislation): array
     {
         $links  = [];
-        $params = ['id'=>$legislation->getId(), 'committee_id'=>$legislation->getCommittee()->getId()];
+        $params = ['legislation_id'=>$legislation->getId(), 'committee_id'=>$legislation->getCommittee()->getId()];
         if (parent::isAllowed('legislation', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('legislation.update', $params),

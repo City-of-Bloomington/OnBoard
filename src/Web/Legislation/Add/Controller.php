@@ -37,11 +37,11 @@ class Controller extends \Web\Controller
 
         $p = ['committee_id'=>$committee->getId()];
         if ($legislation->getId()) {
-            $p['id'] = $legislation->getId();
+            $p['legislation_id'] = $legislation->getId();
             $return_url = \Web\View::generateUrl('legislation.view', $p);
         }
         elseif ($legislation->getParent_id()) {
-            $p['id'] = $legislation->getParent_id();
+            $p['legislation_id'] = $legislation->getParent_id();
             $return_url = \Web\View::generateUrl('legislation.view', $p);
         }
         else {

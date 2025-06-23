@@ -18,7 +18,7 @@
             {{ forms.field_text('vote',       'vote',       _('vote'), action.getVote() ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('legislation.view', { 'id': action.getLegislation_id(), 'committee_id': action.getLegislation().getCommittee_id() }),
+            {{ forms.actionLink(uri('legislation.view', { legislation_id: action.getLegislation_id(), committee_id: action.getLegislation().getCommittee_id() }),
                                 _('cancel'), 'cancel') }}
         </fieldset>
     </form>
