@@ -29,8 +29,10 @@
         </thead>
         <tbody>
         {% for s in seats %}
-            <tr>
-                <td><a class="usa-link" href="{{ uri('seats.view', {id: s.getId()}) }}">{{ s.getCode() }} {{ s.getName() }}</a></td>
+            <tr><td><a class="usa-link" href="{{ uri('seats.view', { seat_id: s.getId() }) }}">
+                        {{ s.getCode() }} {{ s.getName() }}
+                    </a>
+                </td>
                 <td>{{ s.getType() }}</td>
                 <td>{{ s.getStartDate(DATE_FORMAT) }}</td>
                 <td>{{ s.getEndDate  (DATE_FORMAT) }}</td>

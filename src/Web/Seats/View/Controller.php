@@ -12,9 +12,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['seat_id'])) {
             try {
-                $seat = new Seat($params['id']);
+                $seat = new Seat($_REQUEST['seat_id']);
                 switch ($this->outputFormat) {
                     case 'csv':
                         return new CSVView($seat);

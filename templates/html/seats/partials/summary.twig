@@ -1,10 +1,10 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Seat seat
  #}
 
-<a class="usa-link" href="{{ uri('seats.view', {id: seat.getId()}) }}">{{ seat.getName() }}</a>
+<a class="usa-link" href="{{ uri('seats.view', { seat_id: seat.getId() }) }}">{{ seat.getName() }}</a>
 
 <dl><dt class="text-bold">{{ _('appointed_by') }}</dt>
     <dd>{{ seat.getAppointer() }}</dd>

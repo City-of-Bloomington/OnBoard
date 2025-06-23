@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,8 +13,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $seat = new Seat($params['id']); }
+        if (!empty($_REQUEST['seat_id'])) {
+            try { $seat = new Seat($_REQUEST['seat_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -22,7 +22,7 @@ class Controller extends \Web\Controller
             if (isset($_POST['endDate'])) {
                 try {
                     SeatTable::end($seat, new \DateTime($_POST['endDate']));
-                    $url = \Web\View::generateUrl('seats.view', ['id'=>$seat->getId()]);
+                    $url = \Web\View::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
                     header("Location: $url");
                     exit();
                 }

@@ -15,7 +15,7 @@
             {{ forms.field_date('endDate', 'endDate', _('endDate'), 'now'|date('Y-m-d'), true) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('seats.view', { seat_id: seat.getId()}), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>

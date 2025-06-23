@@ -14,8 +14,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
-            try { $seat = new Seat($params['id']); }
+        if (!empty($_REQUEST['seat_id'])) {
+            try { $seat = new Seat($_REQUEST['seat_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
@@ -34,7 +34,7 @@ class Controller extends \Web\Controller
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
                     SeatTable::update($seat);
-                    $url = View::generateUrl('seats.view', ['id'=>$seat->getId()]);
+                    $url = View::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
                     header("Location: $url");
                     exit();
                 }

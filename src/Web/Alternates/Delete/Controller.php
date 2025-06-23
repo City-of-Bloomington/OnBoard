@@ -20,7 +20,7 @@ class Controller extends \Web\Controller
                 $a  = new Alternate($_REQUEST['alternate_id']);
 
                 $url = $a->getSeat_id()
-                        ? View::generateUrl('seats.view',         ['id'=>$a->getSeat_id()])
+                        ? View::generateUrl('seats.view',         ['seat_id'=>$a->getSeat_id()])
                         : View::generateUrl('committees.members', ['committee_id'=>$a->getCommittee_id()]);
 
                 AlternateTable::delete($a);

@@ -207,10 +207,10 @@ $map->attach('reports.', '/reports', function ($r) {
 });
 
 $map->attach('seats.', '/seats', function ($r) {
-    $r->get('update',    '/{id}/update'   , Web\Seats\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',    '/{id}/delete'   , Web\Seats\Delete\Controller::class);
-    $r->get('end',       '/{id}/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
-    $r->get('view',      '/{id}'          , Web\Seats\View\Controller::class);
+    $r->get('update',    '/{seat_id}/update'   , Web\Seats\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',    '/{seat_id}/delete'   , Web\Seats\Delete\Controller::class);
+    $r->get('end',       '/{seat_id}/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
+    $r->get('view',      '/{seat_id}'          , Web\Seats\View\Controller::class);
     $r->get('add',       '/add'           , Web\Seats\Add\Controller::class)->allows(['POST']);
     $r->get('vacancies', '/vacancies'     , Web\Seats\Vacancies\Controller::class);
     $r->get('index',     ''               , Web\Seats\List\Controller::class);

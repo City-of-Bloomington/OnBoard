@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
                     $term->setStartDate($_POST['startDate'], 'Y-m-d');
                     $term->setEndDate  ($_POST['endDate'  ], 'Y-m-d');
                     TermTable::update($term);
-                    $url = \Web\View::generateUrl('seats.view', ['id'=>$term->getSeat_id()]);
+                    $url = \Web\View::generateUrl('seats.view', ['seat_id'=>$term->getSeat_id()]);
                     header("Location: $url");
                     exit();
                 }

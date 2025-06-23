@@ -13,9 +13,9 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        if (!empty($params['id'])) {
+        if (!empty($_REQUEST['seat_id'])) {
             try {
-                $s   = new Seat($params['id']);
+                $s   = new Seat($_REQUEST['seat_id']);
                 $url = \Web\View::generateUrl('committees.members', ['committee_id'=>$s->getCommittee_id()]);
 
                 SeatTable::delete($s);

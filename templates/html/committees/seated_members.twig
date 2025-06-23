@@ -47,7 +47,7 @@
                     <div class="tablet:grid-col-2">
                         <strong>{{ _('seat') }}:</strong>
                         {% if isAllowed('seats', 'view') %}
-                        <a class="usa-link" href="{{ uri('seats.view', {id: row.seat_id}) }}">{{ row.seat_code }}</a>
+                        <a class="usa-link" href="{{ uri('seats.view', { seat_id: row.seat_id }) }}">{{ row.seat_code }}</a>
                         {% else %}
                         {{ row.seat_code }}
                         {% endif %}

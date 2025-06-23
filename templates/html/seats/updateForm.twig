@@ -23,7 +23,7 @@
 
             {{ forms.button('submit', _('save'), 'save') }}
             {% if seat.getId() %}
-            {{ forms.actionLink(uri('seats.view', {id: seat.getId()}), _('cancel'), ) }}
+            {{ forms.actionLink(uri('seats.view', { seat_id: seat.getId() }), _('cancel'), ) }}
             {% else %}
             {{ forms.actionLink(uri('committees.seats', { committee_id: committee.getId()}), _('cancel') ) }}
             {% endif %}
