@@ -226,9 +226,9 @@ $map->attach('site.', '/site', function ($r) {
 });
 
 $map->attach('terms.', '/terms', function ($r) {
-    $r->get('update',   '/{id}/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
-    $r->get('delete',   '/{id}/delete'  , Web\Terms\Delete\Controller::class);
-    $r->get('generate', '/{id}/generate', Web\Terms\Generate\Controller::class);
+    $r->get('update',   '/{term_id}/update'  , Web\Terms\Update\Controller::class)->allows(['POST']);
+    $r->get('delete',   '/{term_id}/delete'  , Web\Terms\Delete\Controller::class);
+    $r->get('generate', '/{term_id}/generate', Web\Terms\Generate\Controller::class);
     $r->get('add',      '/add'          , Web\Terms\Add\Controller::class)->allows(['POST']);
 });
 

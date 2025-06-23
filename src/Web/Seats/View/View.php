@@ -32,15 +32,18 @@ class View extends \Web\View
             $this->vars['terms'] = $this->term_data($seat);
             if (parent::isAllowed('terms', 'generate')) {
                 if (isset($this->vars['terms'][0])) {
-                    $generate = parent::generateUri('terms.generate', ['id'=>$this->vars['terms'][0]['term_id']]);
+                    $l    = count($this->vars['terms']) - 1;
+                    $next = parent::generateUri('terms.generate', ['term_id'=>$this->vars['terms'][0 ]['term_id']]).'?direction=next';
+                    $prev = parent::generateUri('terms.generate', ['term_id'=>$this->vars['terms'][$l]['term_id']]).'?direction=previous';
+
 
                     $this->vars['termActions'][] = [
-                        'url'   => "$generate?direction=next",
+                        'url'   => $next,
                         'label' => parent::_('term_add_next'),
                         'class' => 'add'
                     ];
                     $this->vars['termActions'][] = [
-                        'url'   => "$generate?direction=pervious",
+                        'url'   => $prev,
                         'label' => parent::_('term_add_previous'),
                         'class' => 'add'
                     ];
@@ -114,7 +117,7 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'update')) {
             $links[] = [
-                'url'   => parent::generateUri('terms.update', ['id'=>$term_id]),
+                'url'   => parent::generateUri('terms.update', ['term_id'=>$term_id]),
                 'label' => parent::_('term_edit'),
                 'class' => 'edit'
             ];
@@ -122,7 +125,7 @@ class View extends \Web\View
 
         if (parent::isAllowed('terms', 'delete') && $term->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('terms.delete', ['id'=>$term_id]),
+                'url'   => parent::generateUri('terms.delete', ['term_id'=>$term_id]),
                 'label' => parent::_('term_delete'),
                 'class' => 'delete'
             ];
