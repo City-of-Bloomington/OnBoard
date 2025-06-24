@@ -146,6 +146,7 @@ class SeatTable extends TableGateway
             foreach ($fields as $k=>$v) {
                 if ($k === 'current' && $v) {
                     $date    = $v->format(ActiveRecord::MYSQL_DATE_FORMAT);
+                    $where[] = "(c.endDate is null or '$date' <= c.endDate)";
                     $where[] = "((s.startDate is null or s.startDate <= '$date') and (s.endDate is null or '$date' <= s.endDate))";
                 }
                 if ($k === 'vacant' && $v) {
