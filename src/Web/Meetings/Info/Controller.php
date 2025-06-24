@@ -13,13 +13,13 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['meeting_id'])) {
-            try { $meeting = new Meeting($_REQUEST['meeting_id']); }
+            try {
+                $meeting = new Meeting($_REQUEST['meeting_id']);
+                return new View($meeting);
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if ($meeting) {
-            return new View($meeting);
-        }
         return new \Web\Views\NotFoundView();
     }
 }
