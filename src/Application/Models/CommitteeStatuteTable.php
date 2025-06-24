@@ -11,9 +11,9 @@ use Laminas\Db\Sql\Select;
 
 class CommitteeStatuteTable extends TableGateway
 {
-	public function __construct() { parent::__construct('committeeStatutes', __namespace__.'\CommitteeStatute'); }
+    public function __construct() { parent::__construct('committeeStatutes', __namespace__.'\CommitteeStatute'); }
 
-	public static function hasDepartment(int $department_id, int $statute_id): bool
+    public static function hasDepartment(int $department_id, int $statute_id): bool
     {
         $sql    = "select s.committee_id
                    from committeeStatutes s

@@ -13,15 +13,15 @@ use Laminas\Db\Sql\Select;
 
 class MemberTable extends TableGateway
 {
-	public function __construct() { parent::__construct('members', __namespace__.'\Member'); }
+    public function __construct() { parent::__construct('members', __namespace__.'\Member'); }
 
-	public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
-	{
-		$select = new Select('members');
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					case 'current':
+    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    {
+        $select = new Select('members');
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'current':
                         if (is_object($value) && get_class($value)=='DateTime') {
                             $d = $value->format('Y-m-d');
                             $select->where("startDate <= '$d'");
@@ -35,23 +35,23 @@ class MemberTable extends TableGateway
                             // current == false (the past)
                             $select->where("(endDate is not null and endDate <= now())");
                         }
-						break;
+                        break;
 
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	//----------------------------------------------------------------
-	// Route Action Functions
-	//
-	// These are functions that match the actions defined in the route
-	//----------------------------------------------------------------
-	public static function update(Member $member)
-	{
+    //----------------------------------------------------------------
+    // Route Action Functions
+    //
+    // These are functions that match the actions defined in the route
+    //----------------------------------------------------------------
+    public static function update(Member $member)
+    {
         if ($member->getId()) {
             $action   = 'edit';
             $original = new Member($member->getId());
@@ -69,10 +69,10 @@ class MemberTable extends TableGateway
             'action'      => $action,
             'changes'     => [['original'=>$original, 'updated'=>$member->getData()]]
         ]);
-	}
+    }
 
-	public static function appoint(Member $newMember, ?\DateTime $currentMemberEndDate=null)
-	{
+    public static function appoint(Member $newMember, ?\DateTime $currentMemberEndDate=null)
+    {
         $seat = $newMember->getSeat();
         if ($seat) {
             // Close out the current member
@@ -95,13 +95,13 @@ class MemberTable extends TableGateway
             'action'      => 'appoint',
             'changes'     => $changes
         ]);
-	}
+    }
 
-	/**
+    /**
      * Returns the new membership on success
      */
-	public static function reappoint(Member $member): Member
-	{
+    public static function reappoint(Member $member): Member
+    {
         $changes = [];
         $term = $member->getTerm();
         if (!$member->getEndDate()) {
@@ -128,10 +128,10 @@ class MemberTable extends TableGateway
         ]);
 
         return $newMember;
-	}
+    }
 
-	public static function resign(Member $member, \DateTime $endDate)
-	{
+    public static function resign(Member $member, \DateTime $endDate)
+    {
         $original = $member->getData();
         $member->setEndDate($endDate->format('Y-m-d'));
         $member->save();
@@ -143,10 +143,10 @@ class MemberTable extends TableGateway
             'action'       => 'resign',
             'changes'      => [['original'=>$original, 'updated'=>$updated]]
         ]);
-	}
+    }
 
-	public static function delete(Member $member)
-	{
+    public static function delete(Member $member)
+    {
         $committee_id = $member->getCommittee_id();
         $changes      = [['original'=>$member->getData()]];
         $member->delete();
@@ -157,17 +157,17 @@ class MemberTable extends TableGateway
             'action'       => 'delete',
             'changes'      => $changes
         ]);
-	}
+    }
 
-	public static function isMember(int $person_id, int $committee_id): bool
-	{
+    public static function isMember(int $person_id, int $committee_id): bool
+    {
         $sql    = "select id from members where person_id=? and committee_id=? and (endDate is null or endDate > now())";
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$person_id, $committee_id]);
         return count($result) ? true : false;
-	}
+    }
 
-	public static function hasDepartment(int $department_id, int $member_id): bool
+    public static function hasDepartment(int $department_id, int $member_id): bool
     {
         $sql    = "select m.committee_id
                    from members m

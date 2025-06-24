@@ -13,46 +13,46 @@ use Laminas\Db\Sql\Select;
 
 class TermTable extends TableGateway
 {
-	public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
+    public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
 
-	public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
-	{
-		$select = new Select('terms');
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					case 'current':
-						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-						$select->where("(startDate is null or startDate<='$date')");
-						$select->where("(endDate   is null or endDate  >='$date')");
-						break;
+    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    {
+        $select = new Select('terms');
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'current':
+                        $date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+                        $select->where("(startDate is null or startDate<='$date')");
+                        $select->where("(endDate   is null or endDate  >='$date')");
+                        break;
 
-					case 'before':
-						$date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-						$select->where("startDate is null or startDate < '$date'");
-						$select->where("endDate < '$date'");
-						break;
+                    case 'before':
+                        $date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
+                        $select->where("startDate is null or startDate < '$date'");
+                        $select->where("endDate < '$date'");
+                        break;
 
                     case 'committee_id':
                         $select->join(['s'=>'seats'], 'terms.seat_id=s.id', [] );
                         $select->where(['s.committee_id'=>$value]);
                         break;
 
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	//----------------------------------------------------------------
-	// Route Action Functions
-	//
-	// These are functions that match the actions defined in the route
-	//----------------------------------------------------------------
-	public static function update(Term $term)
-	{
+    //----------------------------------------------------------------
+    // Route Action Functions
+    //
+    // These are functions that match the actions defined in the route
+    //----------------------------------------------------------------
+    public static function update(Term $term)
+    {
         if ($term->getId()) {
             $action   = 'edit';
             $original = new Term($term->getId());
@@ -72,10 +72,10 @@ class TermTable extends TableGateway
             'action'       => $action,
             'changes'      => [$change]
         ]);
-	}
+    }
 
-	public static function delete(Term $term)
-	{
+    public static function delete(Term $term)
+    {
         $seat   = $term->getSeat();
         $change = [CommitteeHistory::STATE_ORIGINAL=>$term];
         $term->delete();
@@ -86,9 +86,9 @@ class TermTable extends TableGateway
             'action'       => 'delete',
             'changes'      => [$change]
         ]);
-	}
+    }
 
-	public static function hasDepartment(int $department_id, int $term_id): bool
+    public static function hasDepartment(int $department_id, int $term_id): bool
     {
         $sql    = "select s.committee_id
                    from terms                 t

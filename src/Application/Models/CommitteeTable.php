@@ -13,14 +13,14 @@ use Laminas\Db\Sql\Select;
 
 class CommitteeTable extends TableGateway
 {
-	public function __construct() { parent::__construct('committees', __namespace__.'\Committee'); }
+    public function __construct() { parent::__construct('committees', __namespace__.'\Committee'); }
 
-	public function find($fields=null, $order='name', $paginated=false, $limit=null)
-	{
-		$select = new Select('committees');
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
+    public function find($fields=null, $order='name', $paginated=false, $limit=null)
+    {
+        $select = new Select('committees');
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
                     case 'current':
                         // current == true|false (false is the past)
                         $value
@@ -28,15 +28,15 @@ class CommitteeTable extends TableGateway
                             : $select->where("(committees.endDate is not null and committees.endDate <= now())");
                     break;
 
-					case 'member_id':
-						$select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
-						$select->where(['m.person_id' => $value]);
-					break;
+                    case 'member_id':
+                        $select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
+                        $select->where(['m.person_id' => $value]);
+                    break;
 
-					case 'liaison_id':
+                    case 'liaison_id':
                         $select->join(['l'=>'committee_liaisons'], 'committees.id=l.committee_id', []);
                         $select->where(['l.person_id' => $value]);
-					break;
+                    break;
 
                     case 'department_id':
                         $select->join(['d'=>'committee_departments'], 'committees.id=d.committee_id', []);
@@ -46,32 +46,32 @@ class CommitteeTable extends TableGateway
                     case 'legislative':
                     case  'alternates':
                         $select->where([$key=>$value ? 1 : 0]);
-					break;
+                    break;
 
-					case 'takesApplications':
+                    case 'takesApplications':
                         $select->join(['s'=>'seats'], 'committees.id=s.committee_id', [], Select::JOIN_LEFT);
                         $select->group('committees.id');
                         $select->where(['s.takesApplications' => (bool)$value]);
-					break;
+                    break;
 
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	//----------------------------------------------------------------
-	// Route Action Functions
-	//
-	// These are functions that match the actions defined in the route
-	//----------------------------------------------------------------
-	/**
+    //----------------------------------------------------------------
+    // Route Action Functions
+    //
+    // These are functions that match the actions defined in the route
+    //----------------------------------------------------------------
+    /**
      * @return int   committee_id
      */
-	public static function update(Committee $committee, array $post): int
-	{
+    public static function update(Committee $committee, array $post): int
+    {
         $action = $committee->getId() ? 'edit' : 'add';
         $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()] : [];
 
@@ -87,10 +87,10 @@ class CommitteeTable extends TableGateway
         ]);
 
         return (int)$committee->getId();
-	}
+    }
 
-	public static function end(Committee $committee, \DateTime $endDate)
-	{
+    public static function end(Committee $committee, \DateTime $endDate)
+    {
         $db      = Database::getConnection();
         $change  = [CommitteeHistory::STATE_ORIGINAL => $committee->getData()];
         $params  = [$endDate->format(ActiveRecord::MYSQL_DATE_FORMAT), $committee->getId()];
@@ -122,15 +122,15 @@ class CommitteeTable extends TableGateway
             'action'      => 'end',
             'changes'     => [$change]
         ]);
-	}
+    }
 
-	public static function hasDepartment(int $department_id, int $committee_id): bool
-	{
+    public static function hasDepartment(int $department_id, int $committee_id): bool
+    {
         $sql    = "select committee_id
                    from committee_departments
                    where department_id=? and committee_id=?";
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$department_id, $committee_id]);
         return count($result) ? true : false;
-	}
+    }
 }

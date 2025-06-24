@@ -11,29 +11,29 @@ use Laminas\Db\Sql\Select;
 
 class OfficeTable extends TableGateway
 {
-	public function __construct() { parent::__construct('offices', __namespace__.'\Office'); }
+    public function __construct() { parent::__construct('offices', __namespace__.'\Office'); }
 
-	public function find($fields=null, $order='startDate', $paginated=false, $limit=null)
-	{
-		$select = new Select('offices');
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					case 'current':
-						$date = \DateTime::createFromFormat('Y-m-d', $value);
-						$select->where("startDate<='{$date->format('Y-m-d')}'");
-						$select->where("(endDate is null or endDate>='{$date->format('Y-m-d')}')");
-						break;
+    public function find($fields=null, $order='startDate', $paginated=false, $limit=null)
+    {
+        $select = new Select('offices');
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'current':
+                        $date = \DateTime::createFromFormat('Y-m-d', $value);
+                        $select->where("startDate<='{$date->format('Y-m-d')}'");
+                        $select->where("(endDate is null or endDate>='{$date->format('Y-m-d')}')");
+                        break;
 
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	public static function hasDepartment(int $department_id, int $office_id): bool
+    public static function hasDepartment(int $department_id, int $office_id): bool
     {
         $sql    = "select o.committee_id
                    from offices o

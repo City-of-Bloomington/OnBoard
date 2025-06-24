@@ -14,27 +14,27 @@ class ApplicantFilesTable extends TableGateway
 {
     const TABLE = 'applicantFiles';
 
-	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\ApplicantFile'); }
+    public function __construct() { parent::__construct(self::TABLE, __namespace__.'\ApplicantFile'); }
 
-	public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
-	{
-		$select = new Select(self::TABLE);
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+    public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
+    {
+        $select = new Select(self::TABLE);
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	/**
-	 * Check if the user shares a committee with the file's applicant.
-	 */
-	public static function shareCommittee(int $user_id, int $file_id): bool
-	{
+    /**
+     * Check if the user shares a committee with the file's applicant.
+     */
+    public static function shareCommittee(int $user_id, int $file_id): bool
+    {
         $sql    = "select a.committee_id
                    from applicantFiles f
                    join applications   a on f.applicant_id=a.applicant_id
@@ -43,7 +43,7 @@ class ApplicantFilesTable extends TableGateway
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$user_id, $file_id]);
         return count($result) ? true : false;
-	}
+    }
 
     /**
      * Check if an applicant is for a given department

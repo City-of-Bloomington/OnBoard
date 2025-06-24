@@ -14,15 +14,15 @@ use Laminas\Db\Sql\Literal;
 
 class SeatTable extends TableGateway
 {
-	public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
+    public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
 
-	public function find($fields=null, $order=['s.code', 's.name'], $paginated=false, $limit=null)
-	{
-		$select = new Select(['s'=>'seats']);
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
-					case 'current':
+    public function find($fields=null, $order=['s.code', 's.name'], $paginated=false, $limit=null)
+    {
+        $select = new Select(['s'=>'seats']);
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'current':
                         if ($value) {
                             // current == true
                             $select->where("(s.startDate is null or s.startDate<=now())");
@@ -50,13 +50,13 @@ class SeatTable extends TableGateway
                                     or  (t.startDate is null     and p.firstname is null)");
                     break;
 
-					default:
-						$select->where(["s.$key" => $value]);
-				}
-			}
-		}
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+                    default:
+                        $select->where(["s.$key" => $value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
     /**
      * These are the fields that will be returned for all *Data functions
@@ -207,15 +207,15 @@ class SeatTable extends TableGateway
                 $where
                 order by c.name, s.code";
         return self::performDataSelect($sql, $params);
-	}
+    }
 
-	//----------------------------------------------------------------
-	// Route Action Functions
-	//
-	// These are functions that match the actions defined in the route
-	//----------------------------------------------------------------
-	public static function update(Seat $seat): int
-	{
+    //----------------------------------------------------------------
+    // Route Action Functions
+    //
+    // These are functions that match the actions defined in the route
+    //----------------------------------------------------------------
+    public static function update(Seat $seat): int
+    {
         if ($seat->getId()) {
             $action   = 'edit';
             $original = new Seat($seat->getId());
@@ -236,10 +236,10 @@ class SeatTable extends TableGateway
             'changes'      => $changes
         ]);
         return (int)$seat->getId();
-	}
+    }
 
-	public static function delete(Seat $seat)
-	{
+    public static function delete(Seat $seat)
+    {
         $committee_id = $seat->getCommittee_id();
         $change = [CommitteeHistory::STATE_ORIGINAL=>$seat->getData()];
         $seat->delete();
@@ -250,10 +250,10 @@ class SeatTable extends TableGateway
             'action'       => 'delete',
             'changes'      => [$change]
         ]);
-	}
+    }
 
-	public static function end(Seat $seat, \DateTime $endDate)
-	{
+    public static function end(Seat $seat, \DateTime $endDate)
+    {
         $change[CommitteeHistory::STATE_ORIGINAL] = $seat->getData();
         $seat->saveEndDate($endDate);
         $change[CommitteeHistory::STATE_UPDATED ] = $seat->getData();
@@ -264,9 +264,9 @@ class SeatTable extends TableGateway
             'action'       =>'end',
             'changes'      =>[$change]
         ]);
-	}
+    }
 
-	public static function hasDepartment(int $department_id, int $seat_id): bool
+    public static function hasDepartment(int $department_id, int $seat_id): bool
     {
         $sql    = "select s.committee_id
                    from seats s

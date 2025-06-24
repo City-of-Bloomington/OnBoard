@@ -16,13 +16,13 @@ class MeetingFilesTable extends TableGateway
     const TABLE = 'meetingFiles';
     public static $sortableFields = ['filename', 'start', 'created'];
 
-	public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
+    public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 
-	private function processFields(array $fields=null, Select &$select)
-	{
-		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
+    private function processFields(array $fields=null, Select &$select)
+    {
+        if ($fields) {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
                     case 'start':
                         $select->where(['m.start >= ?'=> $value->format('Y-m-d')]);
                     break;
@@ -44,24 +44,24 @@ class MeetingFilesTable extends TableGateway
                         }
                     break;
 
-					default:
-						$select->where([$key=>$value]);
-				}
-			}
-		}
-	}
+                    default:
+                        $select->where([$key=>$value]);
+                }
+            }
+        }
+    }
 
-	public function find($fields=null, $order='f.updated desc', $paginated=false, $limit=null)
-	{
-		$select = new Select(['f' => self::TABLE]);
+    public function find($fields=null, $order='f.updated desc', $paginated=false, $limit=null)
+    {
+        $select = new Select(['f' => self::TABLE]);
         $select->join(['m'=>'meetings'], 'm.id=f.meeting_id', []);
-		$this->processFields($fields, $select);
+        $this->processFields($fields, $select);
 
-		return parent::performSelect($select, $order, $paginated, $limit);
-	}
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
-	public function years($fields=null)
-	{
+    public function years($fields=null)
+    {
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
                       ->from(['f'=>self::TABLE])
@@ -82,13 +82,13 @@ class MeetingFilesTable extends TableGateway
             $out[$row['year']] = (int)$row['count'];
         }
         return $out;
-	}
+    }
 
-	/**
-	 * Check if a meetingFile has a given department
+    /**
+     * Check if a meetingFile has a given department
      */
-	public static function hasDepartment(int $department_id, int $file_id): bool
-	{
+    public static function hasDepartment(int $department_id, int $file_id): bool
+    {
         $sql    = "select d.department_id
                    from meetingFiles          f
                    join meetings              m on m.id=f.meeting_id
@@ -97,5 +97,5 @@ class MeetingFilesTable extends TableGateway
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$department_id, $file_id]);
         return count($result) ? true : false;
-	}
+    }
 }

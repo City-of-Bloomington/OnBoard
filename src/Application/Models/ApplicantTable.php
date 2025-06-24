@@ -12,13 +12,13 @@ use Laminas\Db\Sql\Select;
 
 class ApplicantTable extends TableGateway
 {
-	public function __construct() { parent::__construct('applicants', __namespace__.'\Applicant'); }
+    public function __construct() { parent::__construct('applicants', __namespace__.'\Applicant'); }
 
-	/**
-	 * Check if the user shares a committee with the applicant
+    /**
+     * Check if the user shares a committee with the applicant
      */
-	public static function shareCommittee(int $user_id, int $applicant_id): bool
-	{
+    public static function shareCommittee(int $user_id, int $applicant_id): bool
+    {
         $sql    = "select a.committee_id
                    from applications a
                    join members      m on a.committee_id=m.committee_id and (m.endDate is null or m.endDate > now())
@@ -26,7 +26,7 @@ class ApplicantTable extends TableGateway
         $db     = Database::getConnection();
         $result = $db->query($sql)->execute([$user_id, $applicant_id]);
         return count($result) ? true : false;
-	}
+    }
 
     /**
      * Check if an applicant is for a given department

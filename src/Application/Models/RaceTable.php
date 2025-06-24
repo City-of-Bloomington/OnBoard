@@ -11,5 +11,5 @@ use Laminas\Db\Sql\Select;
 
 class RaceTable extends TableGateway
 {
-	public function __construct() { parent::__construct('races', __namespace__.'\Race'); }
+    public function __construct() { parent::__construct('races', __namespace__.'\Race'); }
 }

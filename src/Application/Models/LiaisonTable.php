@@ -11,7 +11,7 @@ use Laminas\Db\Sql\Select;
 
 class LiaisonTable extends TableGateway
 {
-	public function __construct() { parent::__construct('liaisons', __namespace__.'\Liaison'); }
+    public function __construct() { parent::__construct('liaisons', __namespace__.'\Liaison'); }
 
     /**
      * These are the fields that will be returned for all *Data functions
@@ -87,18 +87,18 @@ class LiaisonTable extends TableGateway
         ];
     }
 
-	/**
-	 * Returns liaison data for all committees
-	 *
-	 * This query does a left joins of liaisons for committees.
-	 * So, all committees will be represented, but there may be
-	 * empty fields for the liaison and person information.
-	 *
-	 * @param array $fields
-	 * @return array
-	 */
-	public static function data($fields=null)
-	{
+    /**
+     * Returns liaison data for all committees
+     *
+     * This query does a left joins of liaisons for committees.
+     * So, all committees will be represented, but there may be
+     * empty fields for the liaison and person information.
+     *
+     * @param array $fields
+     * @return array
+     */
+    public static function data($fields=null)
+    {
         $columns = self::getDataColumns();
 
         list($where, $params) = self::bindFields($fields);
@@ -110,19 +110,19 @@ class LiaisonTable extends TableGateway
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
-	}
+    }
 
-	/**
-	 * This query uses a straight join on committees
-	 *
-	 * If a committee does not have any liaisons, that committee
-	 * will not be included in the results
-	 *
-	 * @param array $fields
-	 * @return array
-	 */
-	public static function committeeLiaisonData($fields=null)
-	{
+    /**
+     * This query uses a straight join on committees
+     *
+     * If a committee does not have any liaisons, that committee
+     * will not be included in the results
+     *
+     * @param array $fields
+     * @return array
+     */
+    public static function committeeLiaisonData($fields=null)
+    {
         $columns = self::getDataColumns();
         list($where, $params) = self::bindFields($fields);
 
@@ -133,18 +133,18 @@ class LiaisonTable extends TableGateway
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
- 	}
+     }
 
- 	/**
- 	 * This query uses a straight join on People
- 	 *
- 	 * If a person is not a liaison, then no data rows will be returned
- 	 *
- 	 * @param array $fields
- 	 * @return array
- 	 */
- 	public static function personLiaisonData($fields=null)
- 	{
+     /**
+      * This query uses a straight join on People
+      *
+      * If a person is not a liaison, then no data rows will be returned
+      *
+      * @param array $fields
+      * @return array
+      */
+     public static function personLiaisonData($fields=null)
+     {
         $columns = self::getDataColumns();
         list($where, $params) = self::bindFields($fields);
 
@@ -155,17 +155,17 @@ class LiaisonTable extends TableGateway
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
- 	}
+     }
 
- 	public static function isLiaison(int $person_id, int $committee_id): bool
- 	{
+     public static function isLiaison(int $person_id, int $committee_id): bool
+     {
         $sql     = 'select id from liaisons where person_id=? and committee_id=?';
         $db = Database::getConnection();
         $result  = $db->query($sql)->execute([$person_id, $committee_id]);
         return count($result) ? true : false;
- 	}
+     }
 
- 	public static function hasDepartment(int $department_id, int $liaison_id): bool
+     public static function hasDepartment(int $department_id, int $liaison_id): bool
     {
         $sql    = "select l.committee_id
                    from liaisons l
