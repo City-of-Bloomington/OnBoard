@@ -39,8 +39,8 @@
                 </div>
                 <div class="usa-card__footer grid-row">
                     <div class="grid-col flex-1">
-                        <div><strong>{{ _('startDate') }}:</strong> {{ member.startDate }}</div>
-                        <div><strong>{{ _('endDate'  ) }}:</strong> {{ member.endDate   }}</div>
+                        <div><strong>{{ _('startDate') }}:</strong> {{ member.startDate ? member.startDate|date(DATE_FORMAT) : '' }}</div>
+                        <div><strong>{{ _('endDate'  ) }}:</strong> {{ member.endDate   ? member.startDate|date(DATE_FORMAT) : '' }}</div>
                     </div>
                     {% if member.actionLinks is defined %}
                     <div class="grid-col-auto display-flex flex-align-center">
