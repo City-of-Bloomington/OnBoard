@@ -35,7 +35,7 @@
             {{ forms.field_text  ('address', 'address', _('streetaddress'), person.getAddress() ) }}
             {{ forms.field_text  ('city',    'city',    _('city'),          person.getCity()    ) }}
             {{ forms.field_select('state',   'state',   _('state'),         person.getState(), states ) }}
-            {{ forms.field_number('zip',     'zip',     _('zip'),           person.getZip(), false, { pattern:'[\d]{5}(-[\d]{4})?' } ) }}
+            {{ forms.field_number('zip',     'zip',     _('zip'),           person.getZip(), false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
         </fieldset>
         <fieldset   class="usa-fieldset">
             {{ forms.field_radio ('gender',  'gender',  _('gender'), person.getGender(),  genders ) }}
