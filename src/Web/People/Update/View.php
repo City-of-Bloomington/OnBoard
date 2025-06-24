@@ -70,7 +70,6 @@ class View extends \Web\View
     public static function genders(): array
     {
         return [
-            ['value' => ''],
             ['value' => 'male'  ],
             ['value' => 'female']
         ];
