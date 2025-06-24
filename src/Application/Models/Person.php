@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
+use Web\Auth\ExternalIdentity;
 use Web\Database;
 use Web\View;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -91,10 +92,6 @@ class Person extends ActiveRecord
         }
     }
 
-
-    //----------------------------------------------------------------
-    // Generic Getters & Setters
-    //----------------------------------------------------------------
     public function getId():int    { return (int)parent::get('id');   }
     public function getFirstname() { return parent::get('firstname'); }
     public function getLastname()  { return parent::get('lastname');  }
@@ -139,10 +136,7 @@ class Person extends ActiveRecord
     public function setDepartment_id        ($i) { parent::setForeignKeyField (__namespace__.'\Department', 'department_id', $i); }
     public function setDepartment(Department $o) { parent::setForeignKeyObject(__namespace__.'\Department', 'department_id', $o); }
 
-    /**
-     * @param array $post
-     */
-    public function handleUpdate($post)
+    public function handleUpdate(array $post)
     {
         $fields = [
             'firstname', 'middlename', 'lastname', 'gender', 'race_id',
@@ -156,13 +150,8 @@ class Person extends ActiveRecord
         }
     }
 
-    /**
-     * @param array $post
-     */
-    public function handleUpdateUserAccount($post)
+    public function handleUpdateUserAccount(array $post)
     {
-        global $LDAP;
-
         $fields = ['username', 'email', 'role', 'department_id'];
         foreach ($fields as $f) {
             if (isset($post[$f])) {
@@ -170,15 +159,25 @@ class Person extends ActiveRecord
                 $this->$set($post[$f]);
             }
         }
+
+        $id = $this->getExternalIdentity();
+        if ($id) { $this->populateFromExternalIdentity($id); }
     }
 
-    public function getExternalIdentity(): ?\Web\Auth\ExternalIdentity
+    public function getExternalIdentity(): ?ExternalIdentity
     {
         if ($this->getUsername()) {
             try { return new \Web\Ldap($this->getUsername());; }
             catch (\Exception $e) { }
         }
         return null;
+    }
+
+    public function populateFromExternalIdentity(ExternalIdentity $id)
+    {
+        if (!$this->getFirstname() && $id->getFirstname()) { $this->setFirstname($id->getFirstname()); }
+        if (!$this->getLastname()  && $id->getLastname() ) { $this->setLastname ($id->getLastname() ); }
+        if (!$this->getEmail()     && $id->getEmail()    ) { $this->setEmail    ($id->getEmail()    ); }
     }
 
     /**
