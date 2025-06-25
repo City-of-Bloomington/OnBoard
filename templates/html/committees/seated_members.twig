@@ -31,16 +31,18 @@
                                 <span class="usa-tag margin-left-1">{{ o[1] }}</span>
                             {% endfor %}
                             {% endif %}
-                            {% if committee.allowsAlternates() %}
-                                {% if row.alternate_person_id %}
-                                <a class="usa-link" href="{{ uri('alternates.view', {alternate_id: row.alternate_id}) }}">
-                                {{ row.alternate_firstname }} {{ row.alternate_lastname }}
-                                </a>
-                                {% else %}
-                                {{ _('alternate_vacant') }}
-                                {% endif %}
-                            {% endif %}
                         </h3>
+                        {% if committee.allowsAlternates() %}
+                        <div>
+                            {% if row.alternate_person_id %}
+                            <a class="usa-link" href="{{ uri('alternates.view', {alternate_id: row.alternate_id}) }}">
+                            ({{ _('alternate') }}: {{ row.alternate_firstname }} {{ row.alternate_lastname }})
+                            </a>
+                            {% else %}
+                            {{ _('alternate_vacant') }}
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="grid-row flex-1">
