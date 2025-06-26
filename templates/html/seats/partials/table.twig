@@ -30,10 +30,7 @@
         {% endif %}
         <td>{{ class|raw }}</td>
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
-        <td>{{ row.member_firstname }} {{ row.member_lastname }}
-            {{ row.offices }}
-            {{ row.alternate_firstname }} {{ row.alternate_lastname }}
-        </td>
+        <td>{{ row.member_firstname }} {{ row.member_lastname }}</td>
     </tr>
     {% endfor %}
     </tbody>
