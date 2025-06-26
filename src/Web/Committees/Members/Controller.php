@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Committees\Members;
 
 use Application\Models\Committee;
+use Application\Models\Member;
 use Application\Models\SeatTable;
 use Application\Models\OfficeTable;
 use Web\Seats\List\Controller as SeatsController;
@@ -47,7 +48,7 @@ class Controller extends \Web\Controller
                 }
 
                 $results = $committee->getMembers($search);
-                $members = self::member_data($results);
+                $members = $this->member_data($results);
                 switch ($this->outputFormat) {
                     case 'csv':
                         return new \Web\Views\CSVView($committee->getName(), $members);
@@ -65,19 +66,13 @@ class Controller extends \Web\Controller
         return new \Web\Views\NotFoundView();
     }
 
-    private static function member_data($results): array
+    private function member_data($results): array
     {
         $data    = [];
         $canView = \Web\View::isAllowed('people', 'viewContactInfo');
         $fields  = ['email', 'address', 'city', 'state', 'zip'];
-        $ot      = new OfficeTable();
         foreach ($results as $m) {
-            $offices = [];
             $person  = $m->getPerson();
-            $search  = ['person_id'    => $m->getPerson_id(),
-                        'committee_id' => $m->getCommittee_id(),
-                        'current'      => date('Y-m-d') ];
-            foreach ($ot->find($search) as $o) { $offices[] = $o; }
 
             $row    = [
                 'committee_id'           => $m->getCommittee_id(),
@@ -89,7 +84,7 @@ class Controller extends \Web\Controller
                 'member_website'         => $person->getWebsite(),
                 'member_startDate'       => $m->getStartDate(),
                 'member_endDate'         => $m->getEndDate(),
-                'offices'                => $offices
+                'offices'                => $this->offices($m)
             ];
             if ($canView) {
                 $row['member_email'  ] = $person->getEmail();
@@ -101,5 +96,35 @@ class Controller extends \Web\Controller
             $data[] = $row;
         }
         return $data;
+    }
+
+    private function offices(Member $m)
+    {
+        $offices = [];
+        $table   = new OfficeTable();
+        $search  = ['person_id'    => $m->getPerson_id(),
+                    'committee_id' => $m->getCommittee_id(),
+                    'current'      => date('Y-m-d') ];
+        foreach ($table->find($search) as $o) { $offices[] = $o; }
+        return $this->outputFormat == 'html'
+               ? $offices
+               : self::serializeOffices($offices);
+
+    }
+
+    /**
+     * Formats an array of Offices to match SeatTable::currentData()
+     *
+     * SeatTable::currentData must return a single row per seat.
+     * Because there can be many offices for a single membership,
+     * we pack office ID and title into a string.
+     *
+     * @see Application\Models\SeatTable::$dataFields
+     */
+    private static function serializeOffices(array $offices): string
+    {
+        $out = [];
+        foreach ($offices as $o) { $out[] = "{$o->getId()}|{$o->getTitle()}"; }
+        return implode(',', $out);
     }
 }
