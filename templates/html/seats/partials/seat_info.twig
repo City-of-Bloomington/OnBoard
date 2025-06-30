@@ -8,12 +8,19 @@
  * @param array termIntervals  Human readable termIntervals lookup
  * @param array termModifiers  Human readable termModifiers lookup
  #}
+{% import  "html/macros/forms.twig" as forms %}
+{% if isAllowed('seats', 'update') %}
+{{ forms.actionLink(uri('seats.update', { seat_id: seat.getId() }) ,_('seat_edit'),'edit') }}
+{% endif %}
 <table class="usa-table usa-table--compact">
     <tr><th>{{ _('type') }}</th>
         <td>{{ _(seat.getType()) }}</td>
     </tr>
     <tr><th>{{ _('code') }}</th>
-        <td>{{ seat.getCode() }}</td>
+        <td><a href="{{ uri('seats.view', { seat_id: seat.getId() }) }}">
+            {{ seat.getCode() }}
+            </a>
+        </td>
     </tr>
     <tr><th>{{ _('appointed_by') }}</th>
         <td>{{ seat.getAppointer() }}</td>
@@ -53,4 +60,3 @@
         <td>{{ seat.takesApplications() ? _('yes') : _('no') }}</td>
     </tr>
 </table>
-
