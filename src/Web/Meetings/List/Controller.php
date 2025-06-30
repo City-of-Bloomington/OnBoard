@@ -35,14 +35,14 @@ class Controller extends \Web\Controller
 
         $table = new MeetingTable();
         if ($this->outputFormat !='json') {
-            $list  = $table->find($search, null, true);
+            $list  = $table->find($search, "start $sort", true);
             $list->setCurrentPageNumber($page);
             $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
 
             $totalItemCount = $list->getTotalItemCount();
         }
         else {
-            $list  = $table->find($search);
+            $list  = $table->find($search, "start $sort");
             $totalItemCount = count($list);
         }
 
@@ -65,10 +65,10 @@ class Controller extends \Web\Controller
                 'files'    => $files
             ];
         }
-        if ($meetings) {
-            if ($sort == 'asc') {  ksort($meetings); }
-            else                { krsort($meetings); }
-        }
+        // if ($meetings) {
+        //     if ($sort == 'asc') {  ksort($meetings); }
+        //     else                { krsort($meetings); }
+        // }
 
         switch ($this->outputFormat) {
             case 'json':

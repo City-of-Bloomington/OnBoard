@@ -35,7 +35,7 @@
         <fieldset class="usa-fieldset">
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('year',     'year',     _('year'), year,     years,     false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('fileType', 'fileType', _('type'), fileType, fileTypes, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('fileType', 'fileType', _('meetingFile_type'), fileType, fileTypes, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('sort',     'sort',     _('sort'), sort,     sorts,     false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('filter'), 'search') }}

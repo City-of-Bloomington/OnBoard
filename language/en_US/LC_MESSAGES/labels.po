@@ -813,6 +813,9 @@ msgstr "Edit Document"
 msgid "meetingFile_delete"
 msgstr "Delete Document"
 
+msgid "meetingFile_type"
+msgstr "Meeting File Type"
+
 msgid "filename"
 msgstr "Filename"
 
