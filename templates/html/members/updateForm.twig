@@ -8,10 +8,24 @@
 {% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/committee.twig" %}
 {% block content %}
+
 <section>
+    {% if member.getSeat_id() %}
+    <header>
+        <h2>{{ _('info_seat') }}</h2>
+        {{ include('html/seats/partials/summary.twig', { seat: member.getSeat() }, with_context=false) }}
+        {% if member.getTerm_id() %}
+        <h3>{{ _('term') }}:
+            {{ member.getTerm().getStartDate(DATE_FORMAT) }} -
+            {{ member.getTerm().getEndDate  (DATE_FORMAT) }}
+        </h3>
+        {% endif %}
+    </header>
+    {% endif %}
+
     <form class="usa-form" method="post">
         <fieldset class="usa-fieldset">
-            <legend class="usa-legend usa-legend--large">{{ member.getId() ? _('member_edit') : _('member_add') }}</legend>
+            <legend class="usa-legend usa-legend--large">{{ member.getId() ? _('member_edit') : _('new_member') }}</legend>
             <input name="committee_id" type="hidden" value="{{ member.getCommittee_id()  }}" />
             <input name="term_id"      type="hidden" value="{{ member.getTerm_id() ?? '' }}" />
             <input name="seat_id"      type="hidden" value="{{ member.getSeat_id() ?? '' }}" />
@@ -29,15 +43,10 @@
 
 {% if member.getSeat_id() %}
 <section>
-    <h2>{{ _('info_seat') }}</h2>
-    {{ include('html/seats/partials/summary.twig', {seat: member.getSeat() }, with_context=false) }}
-</section>
-<section>
     <h2>{{ _(['past_member', 'past_members', 10]) }}</h2>
-    {{ include('html/members/partials/list.twig', {members: member.getSeat().getMembers() }, with_context=false) }}
+    {{ include('html/members/partials/list.twig', { members: member.getSeat().getMembers() }, with_context=false) }}
 </section>
 {% endif %}
 
 <script type="text/javascript" src="{{ BASE_URI }}/js/people/chooser-{{ VERSION }}.js"></script>
-
 {% endblock %}

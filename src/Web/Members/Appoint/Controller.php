@@ -20,34 +20,22 @@ class Controller extends \Web\Controller
             if (    !empty($_REQUEST['term_id'     ])) { $o = new Term     ($_REQUEST['term_id']); }
             elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat     ($_REQUEST['seat_id']); }
             elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
-            elseif (!empty($_REQUEST['newMember']['term_id'     ])) { $o = new Term     ($_REQUEST['newMember']['term_id']); }
-            elseif (!empty($_REQUEST['newMember']['seat_id'     ])) { $o = new Seat     ($_REQUEST['newMember']['seat_id']); }
-            elseif (!empty($_REQUEST['newMember']['committee_id'])) { $o = new Committee($_REQUEST['newMember']['committee_id']); }
-            $newMember = $o->newMember();
-
-            $seat = $newMember->getSeat();
-            if ($seat) {
-                // If the current member has already been closed out,
-                // there's no reason to include them in the form
-                $currentMember = $seat->getLatestMember();
-                if ($currentMember && $currentMember->getEndDate()) { unset($currentMember); }
-            }
-
-            if (isset($_REQUEST['newMember']['person_id'])) { $newMember->setPerson_id($_POST['newMember']['person_id']); }
-            if (isset($_REQUEST['newMember']['startDate'])) { $newMember->setStartDate($_POST['newMember']['startDate'], 'Y-m-d'); }
+            $member = $o->newMember();
         }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e->getMessage();
             return \Web\Views\NotFoundView();
         }
 
-        if (isset($_POST['newMember'])) {
+        if (isset($_POST['committee_id'])) {
             try {
-                $endDate = !empty($_POST['currentMember']['endDate']) ? new \DateTime($_POST['currentMember']['endDate']) : null;
+                $member->setPerson_id($_POST['person_id']);
+                $member->setStartDate($_POST['startDate']);
+                $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
 
-                MemberTable::appoint($newMember, $endDate);
+                MemberTable::appoint($member);
 
-                $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$newMember->getCommittee_id()]);
+                $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]);
                 header("Location: $return_url");
                 exit();
             }
@@ -56,6 +44,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        return new View($newMember, $currentMember ?? null);
+        return new View($member);
     }
 }
