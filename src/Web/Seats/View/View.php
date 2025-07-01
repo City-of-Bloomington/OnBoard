@@ -112,8 +112,9 @@ class View extends \Web\View
 
     private function actionLinksForTerm(Term $term): array
     {
-        $links   = [];
-        $term_id = $term->getId();
+        $links      = [];
+        $term_id    = $term->getId();
+        $return_url = Url::current_url(BASE_HOST);
 
         if (parent::isAllowed('terms', 'update')) {
             $links[] = [
@@ -132,13 +133,13 @@ class View extends \Web\View
         }
         if (parent::isAllowed('members', 'appoint')) {
             $links[] = [
-                'url'   => parent::generateUri('members.appoint')."?term_id=$term_id",
+                'url'   => parent::generateUri('members.appoint')."?term_id=$term_id;return_url=$return_url",
                 'label' => parent::_('member_add'),
                 'class' => 'add'
             ];
         }
         if (parent::isAllowed('alternates', 'add') && $this->vars['committee']->allowsAlternates()) {
-            $p = ['term_id'=>$term_id, 'return_url'=>Url::current_url(BASE_HOST)];
+            $p = ['term_id'=>$term_id, 'return_url'=>$return_url];
 
             $links[] = [
                 'url'   => parent::generateUri('alternates.add').'?'.http_build_query($p, '', ';'),

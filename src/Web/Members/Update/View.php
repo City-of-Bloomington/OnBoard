@@ -11,18 +11,14 @@ use Application\Models\Person;
 
 class View extends \Web\View
 {
-    public function __construct(Member $m)
+    public function __construct(Member $m, string $return_url)
     {
         parent::__construct();
-
-        $url = $m->getSeat_id()
-                ? parent::generateUri(     'seats.view'   , ['seat_id'    =>$m->getSeat_id()      ])
-                : parent::generateUri('committees.members', ['commitee_id'=>$m->getCommittee_id() ]);
 
         $this->vars = [
             'member'     => $m,
             'committee'  => $m->getCommittee(),
-            'return_url' => $url
+            'return_url' => $return_url
         ];
     }
 

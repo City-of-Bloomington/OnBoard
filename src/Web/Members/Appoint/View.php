@@ -11,7 +11,7 @@ use Application\Models\Seat;
 
 class View extends \Web\View
 {
-    public function __construct(Member $member, Member $currentMember=null)
+    public function __construct(Member $member, string $return_url)
     {
         parent::__construct();
 
@@ -20,9 +20,8 @@ class View extends \Web\View
         $this->vars = [
             'committee'     => $member->getCommittee(),
             'member'        => $member,
-            'currentMember' => $currentMember,
             'requirements'  => $seat ? $seat->getRequirements()   : null,
-            'return_url'    => \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()])
+            'return_url'    => $return_url
         ];
     }
 

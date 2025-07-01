@@ -27,6 +27,12 @@ class Controller extends \Web\Controller
             return \Web\Views\NotFoundView();
         }
 
+        if (empty($_SESSION['return_url'])) {
+            $_SESSION['return_url'] = !empty($_REQUEST['return_url'])
+                                    ? $_REQUEST['return_url']
+                                    : \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]);
+        }
+
         if (isset($_POST['committee_id'])) {
             try {
                 $member->setPerson_id($_POST['person_id']);
@@ -35,7 +41,8 @@ class Controller extends \Web\Controller
 
                 MemberTable::appoint($member);
 
-                $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]);
+                $return_url = $_SESSION['return_url'];
+                unset($_SESSION['return_url']);
                 header("Location: $return_url");
                 exit();
             }
@@ -44,6 +51,6 @@ class Controller extends \Web\Controller
             }
         }
 
-        return new View($member);
+        return new View($member, $_SESSION['return_url']);
     }
 }
