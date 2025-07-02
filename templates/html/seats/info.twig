@@ -37,7 +37,7 @@
                 <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
                     <div class="grid-row flex-row">
                         <div class="grid-col flex-1 display-flex flex-align-center">
-                            <h3>{{ t.startDate|date('m/d/Y') }} - {{ t.endDate|date('m/d/Y') }}</h3>
+                            <h3>{{ t.startDate|date(DATE_FORMAT) }} - {{ t.endDate|date(DATE_FORMAT) }}</h3>
                         </div>
                     </div>
                     <div class="flex-row margin-bottom-1">
@@ -45,8 +45,8 @@
                         {% for m in t.members %}
                         <div class="grid-row margin-bottom-1">
                             <div class="grid-col"><strong>{{ label      }}:</strong> <a class="usa-link" href="{{ uri('members.view', { member_id: m.member_id }) }}">{{ m.name }}</a></div>
-                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ m.startDate|date('m/d/Y') }}</div>
-                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</div>
+                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ m.startDate|date(DATE_FORMAT) }}</div>
+                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ m.endDate ? m.endDate|date(DATE_FORMAT) : '' }}</div>
                         </div>
                         {% endfor %}
                     </div>
@@ -54,8 +54,8 @@
                         {% set label = _(['alternate', 'alternates', 10]) %}
                         {% for a in t.alternates %}
                             <div class="grid-col"><strong>{{ label }}:</strong> <a class="usa-link" href="{{ uri('alternates.view', { alternate_id: a.alternate_id }) }}">{{ a.name }}</a></div>
-                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ a.startDate|date('m/d/Y') }}</div>
-                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ a.endDate ? a.endDate|date('m/d/Y') : '' }}</div>
+                            <div class="grid-col"><strong>{{ _('start') }}:</strong> {{ a.startDate|date(DATE_FORMAT) }}</div>
+                            <div class="grid-col"><strong>{{ _('end'  ) }}:</strong> {{ a.endDate ? a.endDate|date(DATE_FORMAT) : '' }}</div>
                         {% endfor %}
                     </div>
                     <div class="grid-row flex-1 margin-top-2">
@@ -75,7 +75,7 @@
         <table class="usa-table">
         {% for m in members %}
         <tr><td>{{ m.name }}</td>
-            <td>{{ m.startDate|date('m/d/Y') }} - {{ m.endDate ? m.endDate|date('m/d/Y') : '' }}</td>
+            <td>{{ m.startDate|date(DATE_FORMAT) }} - {{ m.endDate ? m.endDate|date(DATE_FORMAT) : '' }}</td>
             {% if m.actionLinks %}<td>{{ include('html/partials/moreLinks.twig', {actionLinks: m.actionLinks}, with_context=false) }}</td>{% endif %}
         </tr>
         {% endfor %}

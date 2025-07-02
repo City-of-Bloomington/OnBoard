@@ -22,9 +22,9 @@
         {% set userCanViewApplicant    = isAllowed('applicants',   'view')         %}
 
         {% for a in applications_current %}
-        <tr><td>{{ a.created|date('m/d/Y') }}</td>
+        <tr><td>{{ a.created|date(DATE_FORMAT) }}</td>
             <td>{{ a.committee }} </td>
-            <td>{{ a.expires|date('m/d/Y') }}</td>
+            <td>{{ a.expires|date(DATE_FORMAT) }}</td>
             <td>{% if a.actionLinks %}
                 {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
                 {% endif %}

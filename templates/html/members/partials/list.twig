@@ -17,8 +17,8 @@
                 {{ m.getPerson().getFullname() }}
             </a>
         </td>
-        <td class="font-mono-3xs">{{ m.getStartDate|date('m/d/Y') }}</td>
-        <td class="font-mono-3xs">{{ m.getEndDate  |date('m/d/Y') }}</td>
+        <td class="font-mono-3xs">{{ m.getStartDate|date(DATE_FORMAT) }}</td>
+        <td class="font-mono-3xs">{{ m.getEndDate  |date(DATE_FORMAT) }}</td>
     </tr>
     {% endfor %}
     </tbody>

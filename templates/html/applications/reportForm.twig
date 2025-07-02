@@ -40,7 +40,7 @@
 
                 {% for a in applications_current %}
                 <tr><td><input name="applications[]" type="checkbox" value="{{ a.id }}" /></td>
-                    <td>{{ a.created|date('m/d/Y') }}</td>
+                    <td>{{ a.created|date(DATE_FORMAT) }}</td>
                     <td>{% if userCanViewApplicant %}
                         <a class="usa-link" href="{{ uri('applicants.view', { applicant_id: a.applicant_id }) }}">
                             {{ a.applicant }}
@@ -49,7 +49,7 @@
                         {{ a.applicant }}
                         {% endif %}
                     </td>
-                    <td>{{ a.expires|date('m/d/Y') }}</td>
+                    <td>{{ a.expires|date(DATE_FORMAT) }}</td>
                     <td>{% if a.actionLinks %}
                         {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
                         {% endif %}
@@ -80,7 +80,7 @@
         <tbody>
 
             {% for a in applications_archived %}
-            <tr><td>{{ a.created|date('m/d/Y') }}</td>
+            <tr><td>{{ a.created|date(DATE_FORMAT) }}</td>
                 <td>{% if userCanViewApplicant %}
                     <a class="usa-link" href="{{ uri('applicants.view', { applicant_id: a.applicant_id}) }}">
                         {{ a.applicant }}
@@ -89,7 +89,7 @@
                     {{ a.applicant }}
                     {% endif %}
                 </td>
-                <td>{{ a.archived|date('m/d/Y') }}</td>
+                <td>{{ a.archived|date(DATE_FORMAT) }}</td>
                 <td>{% if a.actionLinks %}
                     {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
                     {% endif %}

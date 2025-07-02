@@ -26,7 +26,7 @@
 <section class="grid-container">
     <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
     {% if committee %}
-    <div>Last Sync: {{ committee.getSynced('c') }}</div>
+    <div>Last Sync: {{ committee.getSynced(DATETIME_FORMAT) }}</div>
     {% endif %}
     {% if isAllowed('committees', 'meetingsync') %}
     {{ forms.actionLink(uri('committees.meetingsync', { committee_id: committee.getId()}), 'sync') }}
@@ -49,7 +49,7 @@
             <div        class="usa-card__container">
                 <div    class="usa-card__header">
                     <h3><a class="usa-link" href="{{ uri('meetings.view', { meeting_id: m.id }) }}">
-                            {{ m.start|date('m/d/Y') }} {{ m.start|date('g:i a') }} - {{ m.end|date('g:i a') }}
+                            {{ m.start|date(DATE_FORMAT) }} {{ m.start|date(TIME_FORMAT) }} - {{ m.end|date(TIME_FORMAT) }}
                         </a>
                     </h3>
                     <strong>{{ m.title }}</strong>
