@@ -6,6 +6,7 @@
 namespace Application\Models;
 
 use Web\TableGateway;
+use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Predicate\Like;
 
@@ -55,6 +56,7 @@ class PeopleTable extends TableGateway
     public function search($fields, $order='lastname', $paginated=false, $limit=null)
     {
         $select = new Select(['p'=>'people']);
+
         foreach ($fields as $k => $v) {
             switch ($k) {
                 case 'user_account':
@@ -65,6 +67,22 @@ class PeopleTable extends TableGateway
                 case 'role':
                 case 'department_id':
                     if ($v) { $select->where(["p.$k"=>$v]); }
+                break;
+
+                case 'involvement':
+                    $sql = "(select count(*) from (
+                                select id from members where person_id=p.id
+                                union
+                                select id from alternates where person_id=p.id
+                                union
+                                select id from liaisons where person_id=p.id
+                                union
+                                select id from offices where person_id=p.id
+                            ) i )";
+                    $select->columns(['*', 'involvement'=> new Expression($sql)], false);
+
+                    if ($v) { $select->having('involvement > 0'); }
+                    else    { $select->having('involvement = 0'); }
                 break;
 
                 default:

@@ -15,6 +15,11 @@ class Controller extends \Web\Controller
             try {
                 $person = new Person($_REQUEST['person_id']);
 
+                if (   !\Web\View::isAllowed('people', 'viewContactInfo')
+                    && !$person->isInvolved()) {
+                    return new \Web\Views\NotFoundView();
+                }
+
                 switch ($this->outputFormat) {
                     case 'json':
                         return new \Web\Views\JSONView([

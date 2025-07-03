@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,20 +13,39 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-        $people = null;
+        $people = [];
+        $list   = null;
+        $search = self::prepareSearch();
 
         if (isset($_GET['firstname'])) {
             $table = new PeopleTable();
-            $people = $table->search($_GET, 'lastname', true);
+            $list  = $table->search($search, 'lastname', true);
 
-            $people->setCurrentPageNumber($page);
-            $people->setItemCountPerPage(parent::ITEMS_PER_PAGE);
+            $list->setCurrentPageNumber($page);
+            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
+            foreach ($list as $p) { $people[] = $p; }
         }
 
-
         return new View($people,
-                        $people ? $people->getTotalItemCount() : 0,
+                        $search,
+                        $list ? $list->getTotalItemCount() : 0,
                         parent::ITEMS_PER_PAGE,
                         $page);
+    }
+
+    private static function prepareSearch(): array
+    {
+        $search = [];
+        if (!empty($_GET['firstname'])) { $search['firstname'] = $_GET['firstname']; }
+        if (!empty($_GET['lastname' ])) { $search['lastname' ] = $_GET['lastname' ]; }
+
+        if (\Web\View::isAllowed('people', 'viewContactInfo')) {
+            if (!empty($_GET['email'])) { $search['email'] = $_GET['email']; }
+        }
+        else {
+            $search['involvement'] = true;
+        }
+
+        return $search;
     }
 }

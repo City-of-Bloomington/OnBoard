@@ -342,6 +342,21 @@ class Person extends ActiveRecord
         return count($result) ? false : true;
     }
 
+    public function isInvolved(): bool
+    {
+        $sql = "select id from members where person_id=?
+                union
+                select id from alternates where person_id=?
+                union
+                select id from liaisons where person_id=?
+                union
+                select id from offices where person_id=?";
+        $db = Database::getConnection();
+        $id = $this->getId();
+        $r  = $db->query($sql, [$id, $id, $id, $id]);
+        return count($r) ? true : false;
+    }
+
     public function sendNotification(string $message, string $subject=null, string $replyTo=null)
     {
         $to = $this->getEmail();
