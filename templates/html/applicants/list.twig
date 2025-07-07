@@ -4,18 +4,35 @@
  * @param array applicants
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
 <section  class="grid-container">
     <header>
         <h1>{{ _(['applicant', 'applicants', 10]) }}</h1>
     </header>
 
+    <form method="get" class="usa-form">
+        <fieldset      class="usa-fieldset">
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname ) }}
+            {{ forms.field_text('email',     'email',     _('email'    ), email    ) }}
+
+            {{ forms.button('submit', _('search'), 'search') }}
+        </fieldset>
+    </form>
+    {% if firstname or lastname or email %}
+        {% if not applicants %}
+        <div>{{ _('no_results', 'messages')|format(_(['applicant', 'applicants', 10])) }}</div>
+        {% endif %}
+    {% endif %}
+
+    {% if applicants %}
     <table>
         <thead>
-            <tr>
-                <th>{{ _('name') }}</th>
-                <th>{{ _('email') }}</th>
-                <th>{{ _('phone') }}</th>
+            <tr><th>{{ _('name'   ) }}</th>
+                <th>{{ _('email'  ) }}</th>
+                <th>{{ _('phone'  ) }}</th>
                 <th>{{ _('actions') }}</th>
             </tr>
         </thead>
@@ -29,6 +46,12 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+
 </section>
 
 {% endblock %}
