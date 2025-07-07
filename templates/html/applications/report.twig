@@ -1,7 +1,7 @@
 {#
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array     applicants
+ * @param array     applications
  * @param array     seats
  * @param Committee committee
  #}
@@ -23,14 +23,17 @@
     </section>
     {% endif %}
 
-    {% for a in applicants %}
-    <article>
-        <header><h4>{{ a.getFirstname() }} {{ a.getLastname() }}</h4></header>
-        <dl><dt>{{ _('email'         ) }}</dt><dd>{{ a.getEmail() }}</dd>
-            <dt>{{ _('phone'         ) }}</dt><dd>{{ a.getPhone() }}</dd>
-            <dt>{{ _('address'       ) }}</dt><dd><address>{{ a.getAddress() }}\n{{ a.getCity() }} {{ a.getZip() }}</address></dd>
-            <dt>{{ _('citylimits'    ) }}</dt><dd>{{ a.getCitylimits() ? 'Yes' : 'No' }}</dd>
-            <dt>{{ _('occupation'    ) }}</dt><dd>{{ a.getOccupation()     }}</dd>
+    {% for a in applications %}
+    <article     class="usa-card">
+        <header  class="usa-card__header">
+            <h3  class="usa-card__heading">{{ a.getApplicant().getFullname() }} {{ a.created|date(DATE_FORMAT) }}</h3>
+        </header>
+        <dl      class="usa-card__body">
+            <dt>{{ _('email'         ) }}</dt><dd>{{ a.getApplicant().getEmail() }}</dd>
+            <dt>{{ _('phone'         ) }}</dt><dd>{{ a.getApplicant().getPhone() }}</dd>
+            <dt>{{ _('address'       ) }}</dt><dd><address>{{ a.getApplicant().getAddress() }}\n{{ a.getApplicant().getCity() }} {{ a.getApplicant().getZip() }}</address></dd>
+            <dt>{{ _('citylimits'    ) }}</dt><dd>{{ a.getApplicant().getCitylimits() ? 'Yes' : 'No' }}</dd>
+            <dt>{{ _('occupation'    ) }}</dt><dd>{{ a.getApplicant().getOccupation() }}</dd>
             <dt>{{ _('referredFrom'  ) }}</dt><dd>{{ a.getReferredFrom()   }}</dd>
             <dt>{{ _('referredOther' ) }}</dt><dd>{{ a.getReferredOther()  }}</dd>
             <dt>{{ _('interest'      ) }}</dt><dd>{{ a.getInterest()       }}</dd>
@@ -38,7 +41,7 @@
 
             {% if isAllowed('applicantFiles', 'download') %}
             <dt>{{ _('applicantFile') }}</dt>
-            <dd>{% for f in a.getFiles() %}
+            <dd>{% for f in a.getApplicant().getFiles() %}
                 <a href="{{ uri('applicantFiles.download', { applicantFile_id: f.getId() }) }}">{{ f.getFilename() }}</a>
                 {% endfor %}
             </dd>
@@ -46,7 +49,5 @@
         </dl>
     </article>
     {% endfor %}
-
 </section>
-
 {% endblock %}

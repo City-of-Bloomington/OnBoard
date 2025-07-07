@@ -160,10 +160,6 @@ create table applicants (
     zip       varchar(5),
     citylimits     boolean,
     occupation     varchar(128),
-    referredFrom   varchar(128),
-    referredOther  varchar(128),
-    interest       text,
-    qualifications text,
     created  datetime  not null default CURRENT_TIMESTAMP,
     modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
@@ -174,6 +170,10 @@ create table applications (
     applicant_id int unsigned not null,
     created  timestamp not null default CURRENT_TIMESTAMP,
     archived datetime,
+    referredFrom   varchar(128),
+    referredOther  varchar(128),
+    interest       text,
+    qualifications text,
     foreign key (committee_id) references committees(id),
     foreign key (applicant_id) references applicants(id)
 );

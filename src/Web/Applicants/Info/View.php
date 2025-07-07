@@ -66,13 +66,17 @@ class View extends \Web\View
             $p      = $a->getApplicant();
             $c      = $a->getCommittee();
             $data[] = [
-                'id'           => $a->getId(),
-                'applicant_id' => $a->getApplicant_id(),
-                'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
-                'committee'    => $c->getName(),   
-                'created'      => $a->getCreated(),
-                'expires'      => $a->getExpires(),
-                'actionLinks'  => $links
+                'id'             => $a->getId(),
+                'applicant_id'   => $a->getApplicant_id(),
+                'applicant'      => "{$p->getFirstname()} {$p->getLastname()}",
+                'committee'      => $c->getName(),
+                'created'        => $a->getCreated(),
+                'expires'        => $a->getExpires(),
+                'referredFrom'   => $a->getReferredFrom(),
+                'referredOther'  => $a->getReferredOther(),
+                'interest'       => $a->getInterest(),
+                'qualifications' => $a->getQualifications(),
+                'actionLinks'    => $links
             ];
         }
         return $data;
@@ -107,7 +111,7 @@ class View extends \Web\View
                 'id'           => $a->getId(),
                 'applicant_id' => $a->getApplicant_id(),
                 'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
-                'committee'    => $c->getName(), 
+                'committee'    => $c->getName(),
                 'created'      => $a->getCreated(),
                 'archived'     => $a->getArchived(),
                 'actionLinks'  => $links

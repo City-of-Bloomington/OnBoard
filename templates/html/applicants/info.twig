@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant applicant
  * @param array     actionLinks
@@ -48,25 +48,9 @@
         <dt class="text-bold">{{ _('occupation') }}</dt>
         <dd>{{ applicant.getOccupation() }}</dd>
         {% endif %}
-        {% if applicant.getReferredFrom() %}
-        <dt class="text-bold">{{ _('referredFrom') }}</dt>
-        <dd>{{ applicant.getReferredFrom() }}</dd>
-        {% endif %}
         {% if applicant.getEmail() %}
         <dt class="text-bold">{{ _('email') }}</dt>
         <dd>{{ applicant.getEmail() }}</dd>
-        {% endif %}
-        {% if applicant.getReferredOther() %}
-        <dt class="text-bold">{{ _('referredOther') }}</dt>
-        <dd>{{ applicant.getReferredOther() }}</dd>
-        {% endif %}
-        {% if applicant.getInterest() %}
-        <dt class="text-bold">{{ _('interest') }}</dt>
-        <dd>{{ applicant.getInterest() }}</dd>
-        {% endif %}
-        {% if applicant.getQualifications() %}
-        <dt class="text-bold">{{ _('qualifications') }}</dt>
-        <dd>{{ applicant.getQualifications() }}</dd>
         {% endif %}
 
         {% if applicant.getFiles() and isAllowed('applicantFiles', 'download') %}
