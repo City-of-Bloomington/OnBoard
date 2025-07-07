@@ -16,7 +16,7 @@ class ApplicantTable extends TableGateway
 
     public static $fields = ['firstname', 'lastname', 'email'];
 
-    public function search($fields=null, $order='name', $paginated=false, $limit=null)
+    public function search($fields=null, $order=['lastname', 'firstname'], $paginated=false, $limit=null)
     {
         $select = new Select('applicants');
 
