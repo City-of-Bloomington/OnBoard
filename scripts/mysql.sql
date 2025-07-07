@@ -1,8 +1,8 @@
--- @copyright 2006-2020 City of Bloomington, Indiana
+-- @copyright 2006-2025 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
 create table races (
-	id int unsigned not null primary key auto_increment,
-	name varchar(50) not null unique
+    id   int unsigned not null primary key auto_increment,
+    name varchar(50) not null unique
 );
 insert races set name='Caucasion';
 insert races set name='Hispanic';
@@ -17,51 +17,51 @@ create table departments (
 );
 
 create table people (
-	id int unsigned not null primary key auto_increment,
-	firstname varchar(128) not null,
-	lastname  varchar(128) not null,
-	email     varchar(128) unique,
-	phone     varchar(32),
-	address   varchar(128),
-	city      varchar(32),
-	state     varchar(8),
-	zip       varchar(8),
-	website   varchar(128),
-	gender    enum('male','female'),
-	race_id   int unsigned,
-	username             varchar(128) unique,
-	password             varchar(40),
-	authenticationMethod varchar(40),
-	role                 varchar(30),
-	department_id        int unsigned,
-	foreign key (race_id      ) references races(id),
-	foreign key (department_id) references departments(id)
+    id        int unsigned not null primary key auto_increment,
+    firstname varchar(128) not null,
+    lastname  varchar(128) not null,
+    email     varchar(128) unique,
+    phone     varchar(32),
+    address   varchar(128),
+    city      varchar(32),
+    state     varchar(8),
+    zip       varchar(8),
+    website   varchar(128),
+    gender    enum('male','female'),
+    race_id   int unsigned,
+    username             varchar(128) unique,
+    password             varchar(40),
+    authenticationMethod varchar(40),
+    role                 varchar(30),
+    department_id        int unsigned,
+    foreign key (race_id      ) references races(id),
+    foreign key (department_id) references departments(id)
 );
 
 create table committees (
-	id            int unsigned  not null primary key auto_increment,
-	type enum('seated', 'open') not null default 'seated',
-	name          varchar(128)  not null,
-	statutoryName varchar(128),
-	code          varchar(8),
-	yearFormed    year(4),
-	endDate       date,
-	calendarId    varchar(128),
-	syncToken     varchar(64),
-	website       varchar(128),
-	videoArchive  varchar(128),
-	email         varchar(128),
-	phone         varchar(128),
-	address       varchar(128),
-	city          varchar(128),
-	state         varchar(32),
-	zip           varchar(32),
+    id            int unsigned  not null primary key auto_increment,
+    type enum('seated', 'open') not null default 'seated',
+    name          varchar(128)  not null,
+    statutoryName varchar(128),
+    code          varchar(8),
+    yearFormed    year(4),
+    endDate       date,
+    calendarId    varchar(128),
+    syncToken     varchar(64),
+    website       varchar(128),
+    videoArchive  varchar(128),
+    email         varchar(128),
+    phone         varchar(128),
+    address       varchar(128),
+    city          varchar(128),
+    state         varchar(32),
+    zip           varchar(32),
     description     text,
-	meetingSchedule text,
-	termEndWarningDays  tinyint unsigned not null default 0,
-	applicationLifetime tinyint unsigned not null default 90,
-	legislative    boolean,
-	alternates     boolean
+    meetingSchedule text,
+    termEndWarningDays  tinyint unsigned not null default 0,
+    applicationLifetime tinyint unsigned not null default 90,
+    legislative    boolean,
+    alternates     boolean
 );
 
 create table committeeStatutes(
@@ -81,8 +81,8 @@ create table committee_departments (
 );
 
 create table appointers (
-	id int unsigned not null primary key auto_increment,
-	name varchar(128) not null unique
+    id int unsigned not null primary key auto_increment,
+    name varchar(128) not null unique
 );
 insert appointers values(1,'Elected');
 
@@ -91,8 +91,8 @@ create table seats (
     type              enum('termed', 'open') not null default 'termed',
     code              varchar(16),
     name              varchar(128) not null,
-	committee_id      int unsigned not null,
-	appointer_id      int unsigned,
+    committee_id      int unsigned not null,
+    appointer_id      int unsigned,
     startDate         date,
     endDate           date,
     requirements      text,
@@ -100,44 +100,44 @@ create table seats (
     termModifier      varchar(32),
     voting            boolean not null default 1,
     takesApplications boolean not null default 0,
-	foreign key (committee_id) references committees(id),
-	foreign key (appointer_id) references appointers(id)
+    foreign key (committee_id) references committees(id),
+    foreign key (appointer_id) references appointers(id)
 );
 
 create table terms (
     id      int unsigned not null primary key auto_increment,
-	seat_id int unsigned,
-	startDate date not null,
-	endDate   date not null,
-	foreign key (seat_id) references seats(id)
+    seat_id int unsigned,
+    startDate date not null,
+    endDate   date not null,
+    foreign key (seat_id) references seats(id)
 );
 
 create table members (
-	id int unsigned not null primary key auto_increment,
-	committee_id int unsigned not null,
-	seat_id      int unsigned,
-	term_id      int unsigned,
-	person_id    int unsigned not null,
-	startDate date,
-	endDate   date,
-	foreign key (committee_id) references committees(id),
-	foreign key (seat_id)      references seats     (id),
-	foreign key (term_id)      references terms     (id),
-	foreign key (person_id)    references people    (id)
+    id int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    seat_id      int unsigned,
+    term_id      int unsigned,
+    person_id    int unsigned not null,
+    startDate date,
+    endDate   date,
+    foreign key (committee_id) references committees(id),
+    foreign key (seat_id)      references seats     (id),
+    foreign key (term_id)      references terms     (id),
+    foreign key (person_id)    references people    (id)
 );
 
 create table alternates (
-	id int unsigned not null primary key auto_increment,
-	committee_id int unsigned not null,
-	seat_id      int unsigned,
-	term_id      int unsigned,
-	person_id    int unsigned not null,
-	startDate date,
-	endDate   date,
-	foreign key (committee_id) references committees(id),
-	foreign key (seat_id)      references seats     (id),
-	foreign key (term_id)      references terms     (id),
-	foreign key (person_id)    references people    (id)
+    id int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    seat_id      int unsigned,
+    term_id      int unsigned,
+    person_id    int unsigned not null,
+    startDate date,
+    endDate   date,
+    foreign key (committee_id) references committees(id),
+    foreign key (seat_id)      references seats     (id),
+    foreign key (term_id)      references terms     (id),
+    foreign key (person_id)    references people    (id)
 );
 
 create table liaisons (
@@ -151,21 +151,21 @@ create table liaisons (
 
 create table applicants (
     id int unsigned not null primary key auto_increment,
-	firstname varchar(128) not null,
-	lastname  varchar(128) not null,
-	email     varchar(128),
-	phone     varchar(32),
-	address   varchar(128),
-	city      varchar(128),
-	zip       varchar(5),
-	citylimits     boolean,
-	occupation     varchar(128),
-	referredFrom   varchar(128),
-	referredOther  varchar(128),
-	interest       text,
-	qualifications text,
-	created  datetime  not null default CURRENT_TIMESTAMP,
-	modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
+    firstname varchar(128) not null,
+    lastname  varchar(128) not null,
+    email     varchar(128),
+    phone     varchar(32),
+    address   varchar(128),
+    city      varchar(128),
+    zip       varchar(5),
+    citylimits     boolean,
+    occupation     varchar(128),
+    referredFrom   varchar(128),
+    referredOther  varchar(128),
+    interest       text,
+    qualifications text,
+    created  datetime  not null default CURRENT_TIMESTAMP,
+    modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
 
 create table applications (
@@ -179,25 +179,25 @@ create table applications (
 );
 
 create table applicantFiles (
-	id int unsigned not null primary key auto_increment,
-	internalFilename varchar(128) not null,
-	filename         varchar(128) not null,
-	mime_type        varchar(128) not null,
-	created          datetime     not null default CURRENT_TIMESTAMP,
-	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	applicant_id     int unsigned not null,
-	foreign key (applicant_id) references applicants(id)
+    id int unsigned not null primary key auto_increment,
+    internalFilename varchar(128) not null,
+    filename         varchar(128) not null,
+    mime_type        varchar(128) not null,
+    created          datetime     not null default CURRENT_TIMESTAMP,
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    applicant_id     int unsigned not null,
+    foreign key (applicant_id) references applicants(id)
 );
 
 create table offices (
-	id int unsigned not null primary key auto_increment,
-	committee_id int unsigned not null,
-	person_id int unsigned not null,
-	title varchar(128) not null,
-	startDate date not null,
-	endDate date,
-	foreign key (committee_id) references committees(id),
-	foreign key (person_id) references people(id)
+    id int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    person_id int unsigned not null,
+    title varchar(128) not null,
+    startDate date not null,
+    endDate date,
+    foreign key (committee_id) references committees(id),
+    foreign key (person_id) references people(id)
 );
 
 create table siteContent (
@@ -221,18 +221,18 @@ create table meetings(
 );
 
 create table meetingFiles(
-	id               int unsigned not null primary key auto_increment,
+    id               int unsigned not null primary key auto_increment,
     meeting_id       int unsigned not null,
     type             varchar(16)  not null,
-	title            varchar(32),
-	internalFilename varchar(128) not null,
-	filename         varchar(128) not null,
-	mime_type        varchar(128) not null,
-	created          timestamp    not null default CURRENT_TIMESTAMP,
-	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	indexed          timestamp,
-	foreign key (committee_id) references committees(id),
-	foreign key (  meeting_id) references   meetings(id)
+    title            varchar(32),
+    internalFilename varchar(128) not null,
+    filename         varchar(128) not null,
+    mime_type        varchar(128) not null,
+    created          timestamp    not null default CURRENT_TIMESTAMP,
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    indexed          timestamp,
+    foreign key (committee_id) references committees(id),
+    foreign key (  meeting_id) references   meetings(id)
 );
 
 create table meeting_attendance (
@@ -305,13 +305,13 @@ create table legislationActions (
 create table legislationFiles (
     id               int unsigned not null primary key auto_increment,
     legislation_id   int unsigned not null,
-	internalFilename varchar(128) not null,
-	filename         varchar(128) not null,
-	mime_type        varchar(128) not null,
-	created          datetime     not null default CURRENT_TIMESTAMP,
-	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	indexed          timestamp,
-	foreign key (legislation_id) references legislation(id)
+    internalFilename varchar(128) not null,
+    filename         varchar(128) not null,
+    mime_type        varchar(128) not null,
+    created          datetime     not null default CURRENT_TIMESTAMP,
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    indexed          timestamp,
+    foreign key (legislation_id) references legislation(id)
 );
 
 create table reports (
@@ -319,11 +319,11 @@ create table reports (
     committee_id     int unsigned not null,
     title            varchar(128) not null,
     reportDate       date         not null,
-	internalFilename varchar(128) not null,
-	filename         varchar(128) not null,
-	mime_type        varchar(128) not null,
-	created          datetime     not null default CURRENT_TIMESTAMP,
-	updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-	indexed          timestamp,
-	foreign key (committee_id) references committees(id)
+    internalFilename varchar(128) not null,
+    filename         varchar(128) not null,
+    mime_type        varchar(128) not null,
+    created          datetime     not null default CURRENT_TIMESTAMP,
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    indexed          timestamp,
+    foreign key (committee_id) references committees(id)
 );
