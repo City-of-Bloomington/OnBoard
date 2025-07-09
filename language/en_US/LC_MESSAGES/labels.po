@@ -613,6 +613,9 @@ msgstr "Meeting Schedule"
 msgid "termEndWarningDays"
 msgstr "End of Term Warning"
 
+msgid "termEndsSoon"
+msgstr "Term Ends Soon"
+
 msgid "applicationLifetime"
 msgstr "Application Lifetime"
 
