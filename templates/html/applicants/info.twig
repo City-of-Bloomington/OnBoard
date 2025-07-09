@@ -40,14 +40,6 @@
         <dt class="text-bold">{{ _('zip') }}</dt>
         <dd>{{ applicant.getZip() }}</dd>
         {% endif %}
-        {% if applicant.getCitylimits() %}
-        <dt class="text-bold">{{ _('citylimits') }}</dt>
-        <dd>{{ applicant.getEmail() ? _('yes') : _('no') }}</dd>
-        {% endif %}
-        {% if applicant.getOccupation() %}
-        <dt class="text-bold">{{ _('occupation') }}</dt>
-        <dd>{{ applicant.getOccupation() }}</dd>
-        {% endif %}
         {% if applicant.getEmail() %}
         <dt class="text-bold">{{ _('email') }}</dt>
         <dd>{{ applicant.getEmail() }}</dd>

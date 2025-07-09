@@ -84,40 +84,40 @@ class Person extends ActiveRecord
      */
     public function deleteUserAccount()
     {
-        $userAccountFields = array(
-            'username', 'role'
-        );
-        foreach ($userAccountFields as $f) {
-            $this->data[$f] = null;
-        }
+        $this->data['username'] = null;
+        $this->data['role'    ] = null;
     }
 
-    public function getId():int    { return (int)parent::get('id');   }
-    public function getFirstname() { return parent::get('firstname'); }
-    public function getLastname()  { return parent::get('lastname');  }
-    public function getEmail()     { return parent::get('email');     }
-    public function getPhone()     { return parent::get('phone');     }
-    public function getAddress()   { return parent::get('address');   }
-    public function getCity()      { return parent::get('city');      }
-    public function getState()     { return parent::get('state');     }
-    public function getZip()       { return parent::get('zip');       }
-    public function getWebsite()   { return parent::get('website');   }
-    public function getGender()    { return parent::get('gender');    }
-    public function getRace_id()   { return parent::get('race_id');   }
-    public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
+    public function getId():int     { return (int)parent::get('id');    }
+    public function getFirstname()  { return parent::get('firstname');  }
+    public function getLastname()   { return parent::get('lastname');   }
+    public function getEmail()      { return parent::get('email');      }
+    public function getPhone()      { return parent::get('phone');      }
+    public function getAddress()    { return parent::get('address');    }
+    public function getCity()       { return parent::get('city');       }
+    public function getState()      { return parent::get('state');      }
+    public function getZip()        { return parent::get('zip');        }
+    public function getOccupation() { return parent::get('occupation'); }
+    public function getWebsite()    { return parent::get('website');    }
+    public function getGender()     { return parent::get('gender');     }
+    public function getRace_id()    { return parent::get('race_id');    }
+    public function getRace()       { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
+    public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
 
-    public function setFirstname($s) { parent::set('firstname', $s); }
-    public function setLastname ($s) { parent::set('lastname',  $s); }
-    public function setEmail    ($s) { parent::set('email',     $s); }
-    public function setPhone    ($s) { parent::set('phone',     $s); }
-    public function setAddress  ($s) { parent::set('address',   $s); }
-    public function setCity     ($s) { parent::set('city',      $s); }
-    public function setState    ($s) { parent::set('state',     $s); }
-    public function setZip      ($s) { parent::set('zip',       $s); }
-    public function setWebsite  ($s) { parent::set('website',   $s); }
-    public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
-    public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
-    public function setGender   ($s)
+    public function setFirstname ($s) { parent::set('firstname',  $s); }
+    public function setLastname  ($s) { parent::set('lastname',   $s); }
+    public function setEmail     ($s) { parent::set('email',      $s); }
+    public function setPhone     ($s) { parent::set('phone',      $s); }
+    public function setAddress   ($s) { parent::set('address',    $s); }
+    public function setCity      ($s) { parent::set('city',       $s); }
+    public function setState     ($s) { parent::set('state',      $s); }
+    public function setZip       ($s) { parent::set('zip',        $s); }
+    public function setWebsite   ($s) { parent::set('website',    $s); }
+    public function setOccupation($s) { parent::set('occupation', $s); }
+    public function setCitylimits($s) { $this->data['citylimits'] = $s ? 1 : 0; }
+    public function setRace_id   ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
+    public function setRace      ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
+    public function setGender    ($s)
     {
         if ($s) {
             strtolower(trim($s)) == 'male'
@@ -140,7 +140,8 @@ class Person extends ActiveRecord
     {
         $fields = [
             'firstname', 'middlename', 'lastname', 'gender', 'race_id',
-            'email', 'phone', 'address', 'city', 'state', 'zip', 'website'
+            'email', 'phone', 'address', 'city', 'state', 'zip', 'website',
+            'citylimits', 'occupation'
         ];
         foreach ($fields as $field) {
             if (isset($post[$field])) {

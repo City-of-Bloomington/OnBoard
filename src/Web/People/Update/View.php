@@ -19,6 +19,7 @@ class View extends \Web\View
             'person'     => $person,
             'races'      => self::races(),
             'states'     => self::states(),
+            'yesno'      => self::yesno(),
             'genders'    => self::genders(),
             'callback'   => isset($_REQUEST['callback']),
             'return_url' => $return_url
@@ -47,6 +48,14 @@ class View extends \Web\View
         $o = [['value'=>'']];
         foreach (Person::$STATES as $s) { $o[] = ['value'=>$s]; }
         return $o;
+    }
+
+    private static function yesno(): array
+    {
+        return [
+            ['value'=>1, 'label'=>parent::_('yes')],
+            ['value'=>0, 'label'=>parent::_('no' )],
+        ];
     }
 
     /**

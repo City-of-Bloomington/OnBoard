@@ -9,7 +9,7 @@ use Application\Models\Applicant;
 use Application\Models\ApplicantFilesTable;
 use Application\Models\ApplicantTable;
 
-include '../src/Web/bootstrap.php';
+include '../../../src/Web/bootstrap.php';
 
 $db  = Database::getConnection();
 $pdo = $db->getDriver()->getConnection()->getResource();
