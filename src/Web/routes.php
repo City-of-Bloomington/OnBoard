@@ -191,6 +191,16 @@ $map->attach('people.', '/people', function ($r) {
     $r->get('callback',   '/callback'   , Web\People\Callback\Controller::class);
     $r->get('index',      ''            , Web\People\Find\Controller::class);
 });
+$map->attach('emails.', '/people/{person_id}/emails', function ($r) {
+    $r->get('update', '/{email_id}/update', Web\People\Emails\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{email_id}/delete', Web\People\Emails\Delete\Controller::class);
+    $r->get('add',    '/add',               Web\People\Emails\Add\Controller::class)->allows(['POST']);
+});
+$map->attach('phones.', '/people/{person_id}/phones', function ($r) {
+    $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
+    $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
+});
 
 $map->attach('races.', '/races', function ($r) {
     $r->get('update', '/{race_id}/update', Web\Races\Update\Controller::class)->allows(['POST']);

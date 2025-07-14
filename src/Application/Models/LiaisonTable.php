@@ -25,8 +25,8 @@ class LiaisonTable extends TableGateway
         'username'     => 'p.username',
         'firstname'    => 'p.firstname',
         'lastname'     => 'p.lastname',
-        'email'        => 'p.email',
-        'phone'        => 'p.phone'
+        'email'        => 'e.email',
+        'phone'        => 'h.number'
     ];
 
     /**
@@ -104,9 +104,11 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees    c
-                left join liaisons l on c.id=l.committee_id
-                left join people   p on l.person_id=p.id
+                from committees         c
+                left join liaisons      l on c.id=l.committee_id
+                left join people        p on l.person_id=p.id
+                left join people_emails e on e.person_id=p.id and e.main=1
+                left join people_phones h on h.person_id=p.id and h.main=1
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
@@ -127,9 +129,11 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees  c
-                join liaisons    l on c.id=l.committee_id
-                left join people p on l.person_id=p.id
+                from committees         c
+                join liaisons           l on c.id=l.committee_id
+                left join people        p on l.person_id=p.id
+                left join people_emails e on e.person_id=p.id and e.main=1
+                left join people_phones h on h.person_id=p.id and h.main=1
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
@@ -149,9 +153,11 @@ class LiaisonTable extends TableGateway
         list($where, $params) = self::bindFields($fields);
 
         $sql = "select $columns
-                from committees c
-                join liaisons   l on c.id=l.committee_id
-                join people     p on l.person_id=p.id
+                from committees         c
+                join liaisons           l on c.id=l.committee_id
+                join people             p on l.person_id=p.id
+                left join people_emails e on e.person_id=p.id and e.main=1
+                left join people_phones h on h.person_id=p.id and h.main=1
                 $where
                 order by c.name";
         return self::performDataSelect($sql, $params);
@@ -165,7 +171,7 @@ class LiaisonTable extends TableGateway
         return count($result) ? true : false;
      }
 
-     public static function hasDepartment(int $department_id, int $liaison_id): bool
+    public static function hasDepartment(int $department_id, int $liaison_id): bool
     {
         $sql    = "select l.committee_id
                    from liaisons l

@@ -8,6 +8,7 @@ namespace Application;
 
 use Application\Models\Committee;
 use Web\Database;
+use Web\Ldap;
 
 class WarehouseService
 {
@@ -66,11 +67,11 @@ class WarehouseService
         return $out;
     }
 
-    public static function permitting_staff(string $email): array
+    public static function permitting_staff(string $username): array
     {
-        $db      = Database::getConnection('warehouse');
+        $db  = Database::getConnection('warehouse');
         $sql = 'select * from epl.staff where username=?';
-        $res = $db->createStatement($sql)->execute([$email]);
+        $res = $db->createStatement($sql)->execute([Ldap::bind_dn($username)]);
         if (count($res)) {
             $out = [];
             foreach ($res as $r) { $out[] = $r; }

@@ -31,4 +31,26 @@
     {% endif %}
 </section>
 
+<section class="grid-container">
+    <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
+    <table>
+    {% for e in user.getEmails() %}
+    <tr><td>{{ e.email }}</td>
+        <td>{% if e.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+
+<section class="grid-container">
+    <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
+    <table>
+    {% for p in user.getPhones() %}
+    <tr><td>{{ p.number }}</td>
+        <td>{% if p.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+
 {% endblock %}

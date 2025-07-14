@@ -1,0 +1,26 @@
+<?php
+/**
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ */
+declare (strict_types=1);
+namespace Web\People\Phones\Update;
+
+use Application\Models\Phone;
+
+class View extends \Web\View
+{
+    public function __construct(Phone $phone)
+    {
+        parent::__construct();
+
+        $this->vars = [
+            'phone' => $phone
+        ];
+    }
+
+    public function render(): string
+    {
+        return $this->twig->render('html/people/phones/updateForm.twig', $this->vars);
+    }
+}

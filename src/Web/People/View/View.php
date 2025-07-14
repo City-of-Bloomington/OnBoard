@@ -20,6 +20,8 @@ class View extends \Web\View
             'person'      => $person,
             'members'     => self::members ($person),
             'liaisons'    => self::liaisons($person),
+            'emails'      => self::emails  ($person),
+            'phones'      => self::phones  ($person),
             'actionLinks' => $disableButtons ? null : self::actionLinks($person)
         ];
     }
@@ -46,7 +48,7 @@ class View extends \Web\View
                 'class' => 'delete'
             ];
         }
-        if (parent::isAllowed('users', 'update')) {
+        if (!$person->getUsername() && parent::isAllowed('users', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('users.update', ['person_id'=>$person->getId()]),
                 'label' => parent::_('create_account'),
@@ -83,6 +85,71 @@ class View extends \Web\View
                 'committee_id'   => $l['committee_id'],
                 'committee_name' => $l['committee'],
                 'type'           => $l['type']
+            ];
+        }
+        return $out;
+    }
+
+    private static function emails(Person $p): array
+    {
+        $out = [];
+        $canEdit   = parent::isAllowed('emails', 'update');
+        $canDelete = parent::isAllowed('emails', 'delete');
+        foreach ($p->getEmails() as $e) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()]),
+                    'label' => parent::_('email_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()]),
+                    'label' => parent::_('email_delete'),
+                    'class' => 'delete'
+                ];
+            }
+
+            $out[] = [
+                'email_id'    => $e->getId(),
+                'email'       => $e->getEmail(),
+                'person_id'   => $e->getPerson_id(),
+                'main'        => $e->getMain(),
+                'actionLinks' => $links
+            ];
+        }
+        return $out;
+    }
+
+    private static function phones(Person $p): array
+    {
+        $out = [];
+        $canEdit   = parent::isAllowed('phones', 'update');
+        $canDelete = parent::isAllowed('phones', 'delete');
+        foreach ($p->getPhones() as $e) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()]),
+                    'label' => parent::_('phone_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()]),
+                    'label' => parent::_('phone_delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $out[] = [
+                'phone_id'    => $e->getId(),
+                'number'      => $e->getNumber(),
+                'person_id'   => $e->getPerson_id(),
+                'main'        => $e->getMain(),
+                'actionLinks' => $links
             ];
         }
         return $out;

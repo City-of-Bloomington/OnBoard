@@ -23,23 +23,13 @@ class Controller extends \Web\Controller
         }
 
         if (isset($_POST['username'])) {
-            try {
-                $person->handleUpdateUserAccount($_POST);
-                // We might have populated this person's information from LDAP
-                // We need to do a new lookup in the system, to see if a person
-                // with their email address already exists.
-                // If they already exist, we should add the account info to that
-                // person record.
-                if (!$person->getId() && $person->getEmail()) {
-                    try {
-                        $existingPerson = new Person($person->getEmail());
-                        $existingPerson->handleUpdateUserAccount($_POST);
-                    }
-                    catch (\Exception $e) { }
-                }
+            $person->handleUpdateUserAccount($_POST);
 
-                if (isset($existingPerson)) { $existingPerson->save(); }
-                else { $person->save(); }
+            try {
+                $person->save();
+                if (!empty($_POST['email']) && !$person->hasEmail($_POST['email'])) {
+                     $person->saveEmail($_POST['email']);
+                }
 
                 header('Location: '.\Web\View::generateUrl('users.index'));
                 exit();

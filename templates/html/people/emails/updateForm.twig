@@ -1,0 +1,25 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Email email
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section class="grid-container">
+    <header><h1>{{ email.getPerson().getFullname() }}</h1></header>
+    {{ include('html/people/partials/info.twig', { person: email.getPerson() }) }}
+
+    <form           class="usa-form" method="post">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">{{ email.getId() ? _('email_edit') : _('email_add') }}</legend>
+
+            {{ forms.field_email('email', 'email', _('email'), email.getEmail() ) }}
+            {{ forms.field_bool('main',   'main',  _('main' ), email.getMain()  ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('people.view', { person_id: email.getPerson_id() }), _('cancel'), 'cancel' ) }}
+        </fieldset>
+    </form>
+</section>
+{% endblock %}
