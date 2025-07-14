@@ -20,8 +20,6 @@ create table people (
 	id int unsigned not null primary key auto_increment,
 	firstname varchar(128) not null,
 	lastname  varchar(128) not null,
-	email     varchar(128) unique,
-	phone     varchar(32),
 	address   varchar(128),
 	city      varchar(32),
 	state     varchar(8),
@@ -36,6 +34,24 @@ create table people (
 	department_id        int unsigned,
 	foreign key (race_id      ) references races(id),
 	foreign key (department_id) references departments(id)
+);
+
+create table people_emails (
+    id        int unsigned not null primary key auto_increment,
+    person_id int unsigned not null,
+    email     varchar(128) not null unique,
+    main      boolean,
+    unique  key (person_id, email),
+    foreign key (person_id) references people(id)
+);
+
+create table people_phones (
+    id        int unsigned not null primary key auto_increment,
+    person_id int unsigned not null,
+    number    varchar(32)  not null,
+    main      boolean,
+    unique  key (person_id, phone),
+    foreign key (person_id) references people(id)
 );
 
 create table committees (

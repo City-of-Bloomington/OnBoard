@@ -12,7 +12,7 @@ use Laminas\Db\Sql\Predicate\Like;
 
 class PeopleTable extends TableGateway
 {
-    public static $columns = ['firstname', 'lastname', 'email', 'phone', 'username', 'department_id'];
+    public static $columns = ['firstname', 'lastname', 'username', 'department_id'];
 
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
@@ -41,6 +41,11 @@ class PeopleTable extends TableGateway
                         $select->where(['s.committee_id'=>$v]);
                     break;
 
+                    case 'email':
+                        $select->join(['e'=>'people_emails'], 'p.id=e.person_id', []);
+                        $select->where(['e.email'=>$v]);
+                    break;
+
                     default:
                         if ($v && in_array($k, self::$columns)) {
                             $select->where(["p.$k"=>$v]);
@@ -67,6 +72,11 @@ class PeopleTable extends TableGateway
                 case 'role':
                 case 'department_id':
                     if ($v) { $select->where(["p.$k"=>$v]); }
+                break;
+
+                case 'email':
+                    $select->join(['e'=>'people_emails'], 'p.id=e.person_id', []);
+                    $select->where->like('e.email', "$v%");
                 break;
 
                 case 'involvement':

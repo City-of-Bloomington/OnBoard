@@ -156,8 +156,28 @@ msgid_plural "emails"
 msgstr[0] "Email"
 msgstr[1] "Email Addresses"
 
+msgid "email_add"
+msgstr "Add Email"
+
+msgid "email_edit"
+msgstr "Edit Email"
+
+msgid "email_delete"
+msgstr "Delete Email"
+
 msgid "phone"
-msgstr "Phone Number"
+msgid_plural "phones"
+msgstr[0] "Phone Number"
+msgstr[1] "Phone Numbers"
+
+msgid "phone_add"
+msgstr "Add Phone"
+
+msgid "phone_edit"
+msgstr "Edit Phone"
+
+msgid "phone_delete"
+msgstr "Delete Phone"
 
 msgid "phone_help"
 msgstr "10-digit, U.S. only, for example 999-999-9999"

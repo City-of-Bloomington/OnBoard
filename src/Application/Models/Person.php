@@ -43,9 +43,6 @@ class Person extends ActiveRecord
                 if (ActiveRecord::isId($id)) {
                     $sql = 'select * from people where id=?';
                 }
-                elseif (false !== strpos($id,'@')) {
-                    $sql = 'select * from people where email=?';
-                }
                 else {
                     $sql = 'select * from people where username=?';
                 }
@@ -77,7 +74,16 @@ class Person extends ActiveRecord
     }
 
     public function save() { parent::save(); }
-    public function delete() { if ($this->isSafeToDelete()) { parent::delete(); } }
+    public function delete()
+    {
+        if ($this->isSafeToDelete()) {
+            $db = Database::getConnection();
+            $db->query('delete from people_phones where person_id=?', [$this->getId()]);
+            $db->query('delete from people_emails where person_id=?', [$this->getId()]);
+
+            parent::delete();
+        }
+    }
 
     /**
      * Removes all the user account related fields from this Person
@@ -95,8 +101,6 @@ class Person extends ActiveRecord
     public function getId():int    { return (int)parent::get('id');   }
     public function getFirstname() { return parent::get('firstname'); }
     public function getLastname()  { return parent::get('lastname');  }
-    public function getEmail()     { return parent::get('email');     }
-    public function getPhone()     { return parent::get('phone');     }
     public function getAddress()   { return parent::get('address');   }
     public function getCity()      { return parent::get('city');      }
     public function getState()     { return parent::get('state');     }
@@ -108,8 +112,6 @@ class Person extends ActiveRecord
 
     public function setFirstname($s) { parent::set('firstname', $s); }
     public function setLastname ($s) { parent::set('lastname',  $s); }
-    public function setEmail    ($s) { parent::set('email',     $s); }
-    public function setPhone    ($s) { parent::set('phone',     $s); }
     public function setAddress  ($s) { parent::set('address',   $s); }
     public function setCity     ($s) { parent::set('city',      $s); }
     public function setState    ($s) { parent::set('state',     $s); }
@@ -140,7 +142,7 @@ class Person extends ActiveRecord
     {
         $fields = [
             'firstname', 'middlename', 'lastname', 'gender', 'race_id',
-            'email', 'phone', 'address', 'city', 'state', 'zip', 'website'
+            'address', 'city', 'state', 'zip', 'website'
         ];
         foreach ($fields as $field) {
             if (isset($post[$field])) {
@@ -152,32 +154,13 @@ class Person extends ActiveRecord
 
     public function handleUpdateUserAccount(array $post)
     {
-        $fields = ['username', 'email', 'role', 'department_id'];
+        $fields = ['username', 'role', 'department_id'];
         foreach ($fields as $f) {
             if (isset($post[$f])) {
                 $set = 'set'.ucfirst($f);
                 $this->$set($post[$f]);
             }
         }
-
-        $id = $this->getExternalIdentity();
-        if ($id) { $this->populateFromExternalIdentity($id); }
-    }
-
-    public function getExternalIdentity(): ?ExternalIdentity
-    {
-        if ($this->getUsername()) {
-            try { return new \Web\Ldap($this->getUsername());; }
-            catch (\Exception $e) { }
-        }
-        return null;
-    }
-
-    public function populateFromExternalIdentity(ExternalIdentity $id)
-    {
-        if (!$this->getFirstname() && $id->getFirstname()) { $this->setFirstname($id->getFirstname()); }
-        if (!$this->getLastname()  && $id->getLastname() ) { $this->setLastname ($id->getLastname() ); }
-        if (!$this->getEmail()     && $id->getEmail()    ) { $this->setEmail    ($id->getEmail()    ); }
     }
 
     /**
@@ -213,10 +196,66 @@ class Person extends ActiveRecord
     }
 
     /**
-     * @return string
+     * Returns this person's main email address
      */
-    public function getUrl() { return View::generateUrl('people.view', ['person_id'=>$this->getId()]); }
-    public function getUri() { return View::generateUrl('people.view', ['person_id'=>$this->getId()]); }
+    public function getEmail(): ?Email
+    {
+        $t = new EmailTable();
+        $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
+        if (count($l)) { return $l->current(); }
+        return null;
+    }
+
+    /**
+     * Returns all of this person's email records
+     *
+     * @return array   An array of Email objects
+     */
+    public function getEmails(): array
+    {
+        $o = [];
+        $t = new EmailTable();
+        $l = $t->find(['person_id'=>$this->getId()]);
+        foreach ($l as $e) { $o[] = $e; }
+        return $o;
+    }
+
+    public function hasEmail(string $email): bool
+    {
+        if ($this->getId()) {
+            $t = new EmailTable();
+            $l = $t->find(['person_id'=>$this->getId(), 'email'=>$email]);
+            return count($l) ? true : false;
+        }
+        return false;
+    }
+
+    public function saveEmail(string $email)
+    {
+        if (!$this->hasEmail($email)) {
+            $e = new Email();
+            $e->setPerson($this);
+            $e->setEmail($email);
+            $e->save();
+        }
+    }
+
+    public function getPhone(): ?Phone
+    {
+        $t = new PhoneTable();
+        $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
+        if (count($l)) { return $l->current(); }
+        return null;
+    }
+
+    public function getPhones(): array
+    {
+        $o = [];
+        $t = new PhoneTable();
+        $l = $t->find(['person_id'=>$this->getId()]);
+        foreach ($l as $p) { $o[] = $p; }
+        return $o;
+    }
 
     /**
      * @return Laminas\Db\ResultSet

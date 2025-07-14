@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -11,7 +11,7 @@ use Application\Models\Person;
 
 class View extends \Web\View
 {
-    public function __construct($users, int $total, int $itemsPerPage, int $currentPage)
+    public function __construct(array $users, array $search, int $total, int $itemsPerPage, int $currentPage)
     {
         parent::__construct();
 

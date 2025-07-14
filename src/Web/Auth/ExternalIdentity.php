@@ -17,6 +17,7 @@ interface ExternalIdentity
 	 * @throws Exception
 	 */
 	public static function authenticate(string $username, string $password): bool;
+    public static function bind_dn(string $username): string;
 
 	/**
 	 * @return string

@@ -12,13 +12,13 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $_GET['user_account'] = true;
-
+        $search = self::prepareSearch();
         $people = new PeopleTable();
+        $users  = [];
 
         switch ($this->outputFormat) {
             case 'csv':
-                $users = $people->search($_GET);
+                $users = $people->search($search);
                 $data  = [];
                 foreach ($users as $u) {
                     $data[] = [
@@ -35,15 +35,29 @@ class Controller extends \Web\Controller
             break;
 
             default:
-                $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-                $users = $people->search($_GET, null, true);
-                $users->setCurrentPageNumber($page);
-                $users->setItemCountPerPage(parent::ITEMS_PER_PAGE);
+                $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+                $list = $people->search($search, 'lastname', true);
+                $list->setCurrentPageNumber($page);
+                $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
+                foreach ($list as $u) { $users[] = $u; }
+
 
                 return new View($users,
-                                $users->getTotalItemCount(),
+                                $search,
+                                $list->getTotalItemCount(),
                                 parent::ITEMS_PER_PAGE,
                                 $page);
         }
+    }
+
+    private static function prepareSearch(): array
+    {
+        $q = ['user_account'=>true];
+
+        $fields = ['firstname', 'lastname', 'email', 'username', 'department_id', 'role'];
+        foreach ($fields as $f) {
+            if (!empty($_GET[$f])) { $q[$f] = $_GET[$f]; }
+        }
+        return $q;
     }
 }

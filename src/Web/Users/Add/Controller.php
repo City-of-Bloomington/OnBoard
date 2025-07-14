@@ -1,37 +1,38 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Users\Add;
 
+use Application\Models\Email;
 use Application\Models\Person;
+use Application\Models\PeopleTable;
+use Web\Ldap;
 
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
         $person = new Person();
+        $ldap   = null;
 
         if (isset($_POST['username'])) {
             try {
-                $person->handleUpdateUserAccount($_POST);
-                // We might have populated this person's information from LDAP
-                // We need to do a new lookup in the system, to see if a person
-                // with their email address already exists.
-                // If they already exist, we should add the account info to that
-                // person record.
-                if (!$person->getId() && $person->getEmail()) {
-                    try {
-                        $existingPerson = new Person($person->getEmail());
-                        $existingPerson->handleUpdateUserAccount($_POST);
-                    }
-                    catch (\Exception $e) { }
-                }
+                $ldap = new Ldap($_POST['username']);
+                $p    = self::existingPerson($ldap);
+                if ($p) { $person = $p; }
+            }
+            catch (\Exception $e) { }
 
-                if (isset($existingPerson)) { $existingPerson->save(); }
-                else { $person->save(); }
+            $person->handleUpdateUserAccount($_POST);
+            if ($ldap) { self::populateFromLdap($person, $ldap); }
+
+            try {
+                $person->save();
+                if (!empty($_POST['email'])) { $person->saveEmail($_POST['email']); }
+                elseif ($ldap)               { $person->saveEmail($ldap->getEmail()); }
 
                 header('Location: '.\Web\View::generateUrl('users.index'));
                 exit();
@@ -42,5 +43,23 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Users\Update\View($person);
+    }
+
+    private static function populateFromLdap(Person &$p, Ldap &$l)
+    {
+        if (!$p->getFirstname() && $l->getFirstname()) { $p->setFirstname($l->getFirstname()); }
+        if (!$p->getLastname()  && $l->getLastname() ) { $p->setLastname ($l->getLastname() ); }
+    }
+
+    private static function existingPerson(Ldap $ldap): ?Person
+    {
+        $t = new PeopleTable();
+        $r = $t->find(['username'=>$ldap->getUsername()]);
+        if (count($r)) { return $r->current(); }
+
+        $r = $t->find(['email'=>$ldap->getEmail()]);
+        if (count($r)) { return $r->current(); }
+
+        return null;
     }
 }
