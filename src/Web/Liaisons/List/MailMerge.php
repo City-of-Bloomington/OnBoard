@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @see LiaisonTable::$dataFields
  */
@@ -20,7 +20,9 @@ class MailMerge extends \Web\View
     {
         $people = [];
         foreach ($this->data as $row) {
-            $people[$row['person_id']] = "$row[firstname] $row[lastname] <$row[email]>";
+            $people[$row['person_id']] = isset($row['email'])
+                ? "$row[firstname] $row[lastname] <$row[email]>"
+                : "$row[firstname] $row[lastname]";
         }
         return implode(",\n", $people);
     }
