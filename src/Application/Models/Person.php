@@ -94,32 +94,32 @@ class Person extends ActiveRecord
         $this->data['role'    ] = null;
     }
 
-    public function getId():int    { return (int)parent::get('id');   }
-    public function getFirstname() { return parent::get('firstname'); }
-    public function getLastname()  { return parent::get('lastname');  }
-    public function getAddress()   { return parent::get('address');   }
-    public function getCity()      { return parent::get('city');      }
-    public function getState()     { return parent::get('state');     }
-    public function getZip()       { return parent::get('zip');       }
+    public function getId():int     { return (int)parent::get('id');   }
+    public function getFirstname()  { return parent::get('firstname'); }
+    public function getLastname()   { return parent::get('lastname');  }
+    public function getAddress()    { return parent::get('address');   }
+    public function getCity()       { return parent::get('city');      }
+    public function getState()      { return parent::get('state');     }
+    public function getZip()        { return parent::get('zip');       }
     public function getOccupation() { return parent::get('occupation'); }
-    public function getWebsite()   { return parent::get('website');   }
-    public function getGender()    { return parent::get('gender');    }
-    public function getRace_id()   { return parent::get('race_id');   }
-    public function getRace()      { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
+    public function getWebsite()    { return parent::get('website');   }
+    public function getGender()     { return parent::get('gender');    }
+    public function getRace_id()    { return parent::get('race_id');   }
+    public function getRace()       { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
     public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
 
-    public function setFirstname($s) { parent::set('firstname', $s); }
-    public function setLastname ($s) { parent::set('lastname',  $s); }
-    public function setAddress  ($s) { parent::set('address',   $s); }
-    public function setCity     ($s) { parent::set('city',      $s); }
-    public function setState    ($s) { parent::set('state',     $s); }
-    public function setZip      ($s) { parent::set('zip',       $s); }
-    public function setWebsite  ($s) { parent::set('website',   $s); }
+    public function setFirstname ($s) { parent::set('firstname', $s); }
+    public function setLastname  ($s) { parent::set('lastname',  $s); }
+    public function setAddress   ($s) { parent::set('address',   $s); }
+    public function setCity      ($s) { parent::set('city',      $s); }
+    public function setState     ($s) { parent::set('state',     $s); }
+    public function setZip       ($s) { parent::set('zip',       $s); }
+    public function setWebsite   ($s) { parent::set('website',   $s); }
     public function setOccupation($s) { parent::set('occupation', $s); }
     public function setCitylimits($s) { $this->data['citylimits'] = $s ? 1 : 0; }
-    public function setRace_id  ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
-    public function setRace     ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
-    public function setGender   ($s)
+    public function setRace_id   ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
+    public function setRace      ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
+    public function setGender    ($s)
     {
         if ($s) {
             strtolower(trim($s)) == 'male'
@@ -128,13 +128,13 @@ class Person extends ActiveRecord
         }
     }
 
-    public function getUsername()             { return parent::get('username'); }
-    public function getRole()                 { return parent::get('role');     }
+    public function getUsername() { return parent::get('username'); }
+    public function getRole()     { return parent::get('role');     }
     public function getDepartment_id(): ?int     { return !empty($this->data['department_id']) ? (int)$this->data['department_id'] : null; }
     public function getDepartment(): ?Department { return parent::getForeignKeyObject(__namespace__.'\Department', 'department_id'); }
 
-    public function setUsername            ($s) { parent::set('username',             $s); }
-    public function setRole                ($s) { parent::set('role',                 $s); }
+    public function setUsername($s) { parent::set('username', $s); }
+    public function setRole    ($s) { parent::set('role',     $s); }
     public function setDepartment_id        ($i) { parent::setForeignKeyField (__namespace__.'\Department', 'department_id', $i); }
     public function setDepartment(Department $o) { parent::setForeignKeyObject(__namespace__.'\Department', 'department_id', $o); }
 
