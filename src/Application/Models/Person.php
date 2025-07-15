@@ -258,6 +258,26 @@ class Person extends ActiveRecord
         return $o;
     }
 
+    public function hasPhone(string $number): bool
+    {
+        if ($this->getId()) {
+            $t = new PhoneTable();
+            $l = $t->find(['person_id'=>$this->getId(), 'number'=>$number]);
+            return count($l) ? true : false;
+        }
+        return false;
+    }
+
+    public function savePhone(string $number)
+    {
+        if (!$this->hasPhone($number)) {
+            $p = new Phone();
+            $p->setPerson($this);
+            $p->setNumber($number);
+            $p->save();
+        }
+    }
+
     /**
      * @return Laminas\Db\ResultSet
      */

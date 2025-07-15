@@ -28,11 +28,18 @@ where phone is not null
 
 alter table people drop email;
 alter table people drop phone;
+alter table people add citylimits boolean      after zip;
+alter table people add occupation varchar(128) after citylimits;
 
 alter table applications add referredFrom   varchar(128);
 alter table applications add referredOther  varchar(128);
 alter table applications add interest       text;
 alter table applications add qualifications text;
+alter table applications add person_id      int unsigned after applicant_id;
+alter table applications add foreign key (person_id) references people(id);
+
+alter table applicantFiles add person_id int unsigned after applicant_id;
+alter table applicantFiles add foreign key (person_id) references people(id);
 
 update applications a
 join applicants t on a.applicant_id=t.id
