@@ -21,11 +21,18 @@ class Controller extends \Web\Controller
             try { $application->unarchive(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $url = \Web\View::generateUrl('committees.applications', ['committee_id'=>$application->getCommittee_id()]);
+            $url = self::return_url($application->getCommittee_id());
             header("Location: $url");
             exit();
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    private static function return_url($committee_id): string
+    {
+        return !empty($_REQUEST['return_url'])
+                    ? $_REQUEST['return_url']
+                    : \Web\View::generateUrl('committees.applications', ['committee_id'=>$committee_id]);
     }
 }

@@ -10,12 +10,13 @@ use Application\Models\Email;
 
 class View extends \Web\View
 {
-    public function __construct(Email $email)
+    public function __construct(Email $email, string $return_url)
     {
         parent::__construct();
 
         $this->vars = [
-            'email' => $email
+            'email'      => $email,
+            'return_url' => $return_url
         ];
     }
 

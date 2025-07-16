@@ -18,9 +18,10 @@
         </thead>
         <tbody>
 
+            {% set url = current_url() %}
             {% for a in applications_archived %}
             <tr><td>{{ a.created   }}</td>
-                <td><a href="{{ uri('committees.applications', { committee_id: a.committee_id }) }}">
+                <td><a href="{{ uri('committees.applications', { committee_id: a.committee_id }) ~ '?return_url=' ~ url }}">
                         {{ a.committee }}
                     </a>
                 </td>

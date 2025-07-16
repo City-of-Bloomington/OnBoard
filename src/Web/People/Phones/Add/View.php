@@ -10,12 +10,13 @@ use Application\Models\Phone;
 
 class View extends \Web\View
 {
-    public function __construct(Phone $phone)
+    public function __construct(Phone $phone, string $return_url)
     {
         parent::__construct();
 
         $this->vars = [
-            'phone' => $phone
+            'phone'      => $phone,
+            'return_url' => $return_url
         ];
     }
 

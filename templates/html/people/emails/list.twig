@@ -8,7 +8,7 @@
 <section class="grid-container">
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
     {% if isAllowed('emails', 'add') %}
-    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }), _('email_add'), 'add') }}
+    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }) ~ '?return_url=' ~ current_url(), _('email_add'), 'add') }}
     {% endif %}
     <table>
     {% for e in emails %}

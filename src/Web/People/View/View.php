@@ -98,18 +98,19 @@ class View extends \Web\View
         $out = [];
         $canEdit   = parent::isAllowed('emails', 'update');
         $canDelete = parent::isAllowed('emails', 'delete');
+        $url       = parent::current_url();
         foreach ($p->getEmails() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()]),
+                    'url'   => parent::generateUri('emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$url",
                     'label' => parent::_('email_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()]),
+                    'url'   => parent::generateUri('emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$url",
                     'label' => parent::_('email_delete'),
                     'class' => 'delete'
                 ];
@@ -131,18 +132,19 @@ class View extends \Web\View
         $out = [];
         $canEdit   = parent::isAllowed('phones', 'update');
         $canDelete = parent::isAllowed('phones', 'delete');
+        $url       = parent::current_url();
         foreach ($p->getPhones() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()]),
+                    'url'   => parent::generateUri('phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$url",
                     'label' => parent::_('phone_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()]),
+                    'url'   => parent::generateUri('phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$url",
                     'label' => parent::_('phone_delete'),
                     'class' => 'delete'
                 ];
@@ -162,6 +164,7 @@ class View extends \Web\View
     {
         $canDownload = parent::isAllowed('applicantFiles', 'download');
         $canDelete   = parent::isAllowed('applicantFiles', 'delete');
+        $url         = parent::current_url();
 
         if (!$canDownload) { return []; }
 
@@ -170,7 +173,7 @@ class View extends \Web\View
             $links = [];
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applicantFiles.delete', ['applicantFile_id'=>$f->getId()]),
+                    'url'   => parent::generateUri('applicantFiles.delete', ['applicantFile_id'=>$f->getId()])."?return_url=$url",
                     'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
@@ -191,20 +194,21 @@ class View extends \Web\View
 
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
+        $url        = parent::current_url();
 
         $data = [];
         foreach ($person->getApplications(['current' =>time()]) as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];
@@ -242,14 +246,14 @@ class View extends \Web\View
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];

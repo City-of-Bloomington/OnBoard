@@ -15,7 +15,7 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['applicantFile_id'])) {
             try {
                 $file = new ApplicantFile($_REQUEST['applicantFile_id']);
-                $url  = \Web\View::generateUrl('people.view', ['person_id'=>$file->getPerson_id()]);
+                $url  = self::return_url($file->getPerson_id();
 
                 $file->delete();
                 header("Location: $url");
@@ -25,5 +25,12 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\View\NotFoundView();
+    }
+
+    private static function return_url($person_id): string
+    {
+        return !empty($_REQUEST['return_url'])
+                    ? $_REQUEST['return_url']
+                    : \Web\View::generateUrl('people.view', ['person_id'=>$file->getPerson_id()]);
     }
 }

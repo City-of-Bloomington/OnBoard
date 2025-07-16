@@ -1,7 +1,8 @@
 {#
  * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param Phone phone
+ * @param Phone  phone
+ * @param string return_url
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
@@ -18,7 +19,7 @@
             {{ forms.field_bool('main',    'main',   _('main' ), phone.getMain()   ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('people.view', { person_id: phone.getPerson_id() }), _('cancel'), 'cancel' ) }}
+            {{ forms.actionLink(return_url, _('cancel'), 'cancel' ) }}
         </fieldset>
     </form>
 </section>

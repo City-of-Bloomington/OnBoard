@@ -32,20 +32,21 @@ class ReportView extends \Web\View
     {
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
+        $url        = parent::current_url();
 
         $data = [];
         foreach ($committee->getApplications(['current' =>time()]) as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];
@@ -68,20 +69,21 @@ class ReportView extends \Web\View
     {
         $canUnArchive = parent::isAllowed('applications', 'unarchive');
         $canDelete    = parent::isAllowed('applications', 'delete');
+        $url          = parent::current_url();
 
         $data = [];
         foreach ($committee->getApplications(['archived' =>time()]) as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
                     'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];

@@ -24,8 +24,15 @@ class Controller extends \Web\Controller
         try { $email->delete(); }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-        $url = \Web\View::generateUrl('people.view', ['person_id'=>$person->getId()]);
+        $url = self::return_url($person->getId());
         header("Location: $url");
         exit();
+    }
+
+    private static function return_url(int $person_id): string
+    {
+        return !empty($_REQUEST['return_url'])
+                    ? $_REQUEST['return_url']
+                    : \Web\View::generateUrl('people.view', ['person_id'=>$person_id]);
     }
 }
