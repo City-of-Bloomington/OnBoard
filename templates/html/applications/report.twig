@@ -24,16 +24,17 @@
     {% endif %}
 
     {% for a in applications %}
+    {% set person = a.getPerson() %}
     <article     class="usa-card">
         <header  class="usa-card__header">
-            <h3  class="usa-card__heading">{{ a.getApplicant().getFullname() }} {{ a.created|date(DATE_FORMAT) }}</h3>
+            <h3  class="usa-card__heading">{{ person.getFullname() }} {{ a.created|date(DATE_FORMAT) }}</h3>
         </header>
         <dl      class="usa-card__body">
-            <dt>{{ _('email'         ) }}</dt><dd>{{ a.getApplicant().getEmail() }}</dd>
-            <dt>{{ _('phone'         ) }}</dt><dd>{{ a.getApplicant().getPhone() }}</dd>
-            <dt>{{ _('address'       ) }}</dt><dd><address>{{ a.getApplicant().getAddress() }}\n{{ a.getApplicant().getCity() }} {{ a.getApplicant().getZip() }}</address></dd>
-            <dt>{{ _('citylimits'    ) }}</dt><dd>{{ a.getApplicant().getCitylimits() ? 'Yes' : 'No' }}</dd>
-            <dt>{{ _('occupation'    ) }}</dt><dd>{{ a.getApplicant().getOccupation() }}</dd>
+            <dt>{{ _('email'         ) }}</dt><dd>{{ person.getEmail() }}</dd>
+            <dt>{{ _('phone'         ) }}</dt><dd>{{ person.getPhone() }}</dd>
+            <dt>{{ _('address'       ) }}</dt><dd><address>{{ person.getAddress() }}<br />{{ person.getCity() }} {{ person.getZip() }}</address></dd>
+            <dt>{{ _('citylimits'    ) }}</dt><dd>{{ person.getCitylimits() ? 'Yes' : 'No' }}</dd>
+            <dt>{{ _('occupation'    ) }}</dt><dd>{{ person.getOccupation() }}</dd>
             <dt>{{ _('referredFrom'  ) }}</dt><dd>{{ a.getReferredFrom()   }}</dd>
             <dt>{{ _('referredOther' ) }}</dt><dd>{{ a.getReferredOther()  }}</dd>
             <dt>{{ _('interest'      ) }}</dt><dd>{{ a.getInterest()       }}</dd>
@@ -41,7 +42,7 @@
 
             {% if isAllowed('applicantFiles', 'download') %}
             <dt>{{ _('applicantFile') }}</dt>
-            <dd>{% for f in a.getApplicant().getFiles() %}
+            <dd>{% for f in person.getFiles() %}
                 <a href="{{ uri('applicantFiles.download', { applicantFile_id: f.getId() }) }}">{{ f.getFilename() }}</a>
                 {% endfor %}
             </dd>

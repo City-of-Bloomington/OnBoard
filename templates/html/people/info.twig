@@ -6,6 +6,8 @@
  * @param array  liaisons
  * @param array  emails
  * @param array  phones
+ * @param array  applications_current
+ * @param array  applications_archived
  * @param array  actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
@@ -19,41 +21,10 @@
     {{ include('html/people/partials/info.twig') }}
 </section>
 
-<section class="grid-container">
-    <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
-    {% if isAllowed('emails', 'add') %}
-    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }), _('email_add'), 'add') }}
-    {% endif %}
-    <table>
-    {% for e in emails %}
-    <tr><td>{{ e.email }}</td>
-        <td>{% if e.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-        <td>{% if e.actionLinks %}
-            {{ include('html/partials/actionLinks.twig', { actionLinks: e.actionLinks} ) }}
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-    </table>
-</section>
-
-<section class="grid-container">
-    <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
-    {% if isAllowed('phones', 'add') %}
-    {{ forms.actionLink(uri('phones.add', { person_id: person.getId() }), _('phone_add'), 'add') }}
-    {% endif %}
-    <table>
-    {% for p in phones %}
-    <tr><td>{{ p.number }}</td>
-        <td>{% if p.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-        <td>{% if p.actionLinks %}
-            {{ include('html/partials/actionLinks.twig', { actionLinks: p.actionLinks} ) }}
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-    </table>
-</section>
+{% if isAllowed('people', 'viewContactInfo') %}
+{{ include('html/people/emails/list.twig') }}
+{{ include('html/people/phones/list.twig') }}
+{% endif %}
 
 {% if members %}
 <section class="grid-container">
@@ -99,6 +70,18 @@
     </tbody>
     </table>
 </section>
+{% endif %}
+
+{% if applicantFiles %}
+{{ include('html/applicants/partials/files.twig', { applicant:person } ) }}
+{% endif %}
+
+{% if applications_current %}
+{{ include('html/applications/partials/applications_current.twig') }}
+{% endif %}
+
+{% if applications_archived %}
+{{ include('html/applications/partials/applications_archived.twig') }}
 {% endif %}
 
 {% endblock %}

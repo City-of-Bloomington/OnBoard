@@ -744,7 +744,7 @@ msgid "thanks"
 msgstr "Thank You"
 
 msgid "citylimits"
-msgstr "Do you live in the city limits?"
+msgstr "City Limits"
 
 msgid "occupation"
 msgstr "Occupation"
@@ -790,11 +790,8 @@ msgstr "View Report"
 msgid "report_delete"
 msgstr "Delete Report"
 
-msgid "applicantFile_label"
-msgstr "Resume"
-
 msgid "applicantFile"
-msgstr "Include a resume (optional)"
+msgstr "Resume"
 
 msgid "error"
 msgstr "Sorry"

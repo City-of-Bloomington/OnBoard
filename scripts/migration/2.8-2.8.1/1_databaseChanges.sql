@@ -30,6 +30,8 @@ alter table people drop email;
 alter table people drop phone;
 alter table people add citylimits boolean      after zip;
 alter table people add occupation varchar(128) after citylimits;
+alter table people add created    datetime  not null default CURRENT_TIMESTAMP;
+alter table people add updated    timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP;
 
 alter table applications add referredFrom   varchar(128);
 alter table applications add referredOther  varchar(128);

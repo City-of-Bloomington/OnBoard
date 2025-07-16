@@ -13,7 +13,7 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'applicants'  => $this->applicant_data($applicants),
+            'applicants'  => self::applicant_data($applicants),
             'total'       => $total,
             'itemsPerPage'=> $itemsPerPage,
             'currentPage' => $currentPage,
@@ -28,26 +28,15 @@ class View extends \Web\View
         return $this->twig->render('html/applicants/list.twig', $this->vars);
     }
 
-    private function applicant_data(array $applicants): array
+    private static function applicant_data(array $applicants): array
     {
-        $canDelete = parent::isAllowed('applicants', 'delete');
-
         $out = [];
         foreach ($applicants as $a) {
-            $links = [];
-            if ($canDelete) {
-                $links[] = [
-                    'url'   => parent::generateUri('applicants.delete', ['applicant_id'=>$a->getId()]),
-                    'label' => $this->_('delete'),
-                    'class' => 'delete'
-                ];
-            }
             $out[] = [
-                'id'          => $a->getId(),
-                'name'        => "{$a->getFirstname()} {$a->getLastname()}",
-                'email'       => $a->getEmail(),
-                'phone'       => $a->getPhone(),
-                'actionLinks' => $links
+                'id'    => $a->getId(),
+                'name'  => "{$a->getFirstname()} {$a->getLastname()}",
+                'email' => $a->getEmail(),
+                'phone' => $a->getPhone()
             ];
         }
         return $out;

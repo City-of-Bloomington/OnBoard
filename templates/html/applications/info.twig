@@ -1,0 +1,42 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Application application
+ * @param Committeee  committee
+ * @param Person      person
+ * @param array       emails
+ * @param array       phones
+ * @param array  applications_current
+ * @param array  applications_archived
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% block content %}
+<section class="grid-container">
+    <header><h2>{{ application.getCreated(DATE_FORMAT) }} {{ person.getFullname() }}</h2></header>
+    <dl><dt>{{ _('referredFrom'  ) }}</dt><dd>{{ application.getReferredFrom()   }}</dd>
+        <dt>{{ _('referredOther' ) }}</dt><dd>{{ application.getReferredOther()  }}</dd>
+        <dt>{{ _('interest'      ) }}</dt><dd>{{ application.getInterest()       }}</dd>
+        <dt>{{ _('qualifications') }}</dt><dd>{{ application.getQualifications() }}</dd>
+    </dl>
+
+    {{ include('html/people/partials/info.twig') }}
+</section>
+
+{% if isAllowed('people', 'viewContactInfo') %}
+{{ include('html/people/emails/list.twig') }}
+{{ include('html/people/phones/list.twig') }}
+{% endif %}
+
+{% if applicantFiles %}
+{{ include('html/applicants/partials/files.twig', { applicant:person } ) }}
+{% endif %}
+
+{% if applications_current %}
+{{ include('html/applications/partials/applications_current.twig') }}
+{% endif %}
+
+{% if applications_archived %}
+{{ include('html/applications/partials/applications_archived.twig') }}
+{% endif %}
+
+{% endblock %}

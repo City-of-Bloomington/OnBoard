@@ -11,7 +11,7 @@ use Web\Database;
 class Application extends ActiveRecord
 {
     protected $tablename = 'applications';
-    protected $applicant;
+    protected $person;
     protected $committee;
 
     public static $referralOptions = [
@@ -96,9 +96,9 @@ class Application extends ActiveRecord
     //----------------------------------------------------------------
     public function getId()           { return parent::get('id');   }
     public function getCommittee_id() { return parent::get('committee_id'); }
-    public function getApplicant_id() { return parent::get('applicant_id'); }
+    public function getPerson_id()    { return parent::get('person_id'); }
     public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-    public function getApplicant()    { return parent::getForeignKeyObject(__namespace__.'\Applicant', 'applicant_id'); }
+    public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
     public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
     public function getArchived($f=null) { return parent::getDateData('archived', $f); }
     public function getReferredFrom  () { return parent::get('referredFrom'  ); }
@@ -107,9 +107,9 @@ class Application extends ActiveRecord
     public function getQualifications() { return parent::get('qualifications'); }
 
     public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
-    public function setApplicant_id($i) { parent::setForeignKeyField (__namespace__.'\Applicant', 'applicant_id', $i); }
+    public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
     public function setCommittee($o)    { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
-    public function setApplicant($o)    { parent::setForeignKeyObject(__namespace__.'\Applicant', 'applicant_id', $o); }
+    public function setPerson   ($o)    { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
     public function setArchived ($d)    { parent::setDateData('archived', $d); }
     public function setReferredFrom  ($s) { parent::set('referredFrom',   $s); }
     public function setReferredOther ($s) { parent::set('referredOther',  $s); }

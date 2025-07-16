@@ -7,9 +7,8 @@ declare (strict_types=1);
 namespace Web\Committees\Applications;
 
 use Application\Models\Committee;
-use Web\View;
 
-class ReportView extends View
+class ReportView extends \Web\View
 {
     public function __construct(Committee $committee,
                                 array     $seats)
@@ -19,8 +18,8 @@ class ReportView extends View
         $this->vars = [
             'committee'             => $committee,
             'seats'                 => $seats,
-            'applications_current'  => $this->application_data_current($committee),
-            'applications_archived' => $this->application_data_archived($committee)
+            'applications_current'  => self::applications_current ($committee),
+            'applications_archived' => self::applications_archived($committee)
         ];
     }
 
@@ -29,7 +28,7 @@ class ReportView extends View
         return $this->twig->render($this->outputFormat.'/applications/reportForm.twig', $this->vars);
     }
 
-    private function application_data_current(Committee $committee): array
+    private static function applications_current(Committee $committee): array
     {
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
@@ -40,32 +39,32 @@ class ReportView extends View
             if ($canArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()]),
-                    'label' => $this->_('application_archive'),
+                    'label' => parent::_('application_archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
-                    'label' => $this->_('application_delete'),
+                    'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];
             }
 
-            $p      = $a->getApplicant();
+            $p      = $a->getPerson();
             $data[] = [
                 'id'           => $a->getId(),
-                'applicant_id' => $a->getApplicant_id(),
-                'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
-                'created'      => $a->getCreated(),
-                'expires'      => $a->getExpires(),
+                'person_id'    => $a->getPerson_id(),
+                'person'       => "{$p->getFirstname()} {$p->getLastname()}",
+                'created'      => $a->getCreated(DATE_FORMAT),
+                'expires'      => $a->getExpires(DATE_FORMAT),
                 'actionLinks'  => $links
             ];
         }
         return $data;
     }
 
-    private function application_data_archived(Committee $committee): array
+    private static function applications_archived(Committee $committee): array
     {
         $canUnArchive = parent::isAllowed('applications', 'unarchive');
         $canDelete    = parent::isAllowed('applications', 'delete');
@@ -76,25 +75,25 @@ class ReportView extends View
             if ($canUnArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()]),
-                    'label' => $this->_('application_unarchive'),
+                    'label' => parent::_('application_unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
-                    'label' => $this->_('application_delete'),
+                    'label' => parent::_('application_delete'),
                     'class' => 'delete'
                 ];
             }
 
-            $p      = $a->getApplicant();
+            $p      = $a->getPerson();
             $data[] = [
                 'id'           => $a->getId(),
-                'applicant_id' => $a->getApplicant_id(),
-                'applicant'    => "{$p->getFirstname()} {$p->getLastname()}",
-                'created'      => $a->getCreated(),
-                'archived'     => $a->getArchived(),
+                'person_id'    => $a->getPerson_id(),
+                'person'       => "{$p->getFirstname()} {$p->getLastname()}",
+                'created'      => $a->getCreated (DATE_FORMAT),
+                'archived'     => $a->getArchived(DATE_FORMAT),
                 'actionLinks'  => $links
             ];
         }

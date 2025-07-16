@@ -1,0 +1,24 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Person person
+ * @param array  emails
+ #}
+{% import 'html/macros/forms.twig' as forms %}
+<section class="grid-container">
+    <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
+    {% if isAllowed('emails', 'add') %}
+    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }), _('email_add'), 'add') }}
+    {% endif %}
+    <table>
+    {% for e in emails %}
+    <tr><td>{{ e.email }}</td>
+        <td>{% if e.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
+        <td>{% if e.actionLinks %}
+            {{ include('html/partials/actionLinks.twig', { actionLinks: e.actionLinks} ) }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>

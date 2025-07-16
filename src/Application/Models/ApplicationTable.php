@@ -21,7 +21,7 @@ class ApplicationTable extends TableGateway
         if (!$order) { $order = self::$defaultOrder; }
 
         $select = new Select(['a'=>'applications']);
-        $select->join(['p'=>'applicants'], 'a.applicant_id=p.id', []);
+        $select->join(['p'=>'people'], 'a.person_id=p.id', []);
 
         if ($fields) {
             foreach ($fields as $key=>$value) {

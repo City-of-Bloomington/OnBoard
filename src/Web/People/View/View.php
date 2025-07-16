@@ -22,6 +22,9 @@ class View extends \Web\View
             'liaisons'    => self::liaisons($person),
             'emails'      => self::emails  ($person),
             'phones'      => self::phones  ($person),
+            'applicantFiles'       => self::applicantFiles($person),
+            'applications_current' => self::applications_current ($person),
+            'applications_archived'=> self::applications_archived($person),
             'actionLinks' => $disableButtons ? null : self::actionLinks($person)
         ];
     }
@@ -90,7 +93,7 @@ class View extends \Web\View
         return $out;
     }
 
-    private static function emails(Person $p): array
+    public static function emails(Person $p): array
     {
         $out = [];
         $canEdit   = parent::isAllowed('emails', 'update');
@@ -123,7 +126,7 @@ class View extends \Web\View
         return $out;
     }
 
-    private static function phones(Person $p): array
+    public static function phones(Person $p): array
     {
         $out = [];
         $canEdit   = parent::isAllowed('phones', 'update');
@@ -153,5 +156,118 @@ class View extends \Web\View
             ];
         }
         return $out;
+    }
+
+    public static function applicantFiles(Person $p): array
+    {
+        $canDownload = parent::isAllowed('applicantFiles', 'download');
+        $canDelete   = parent::isAllowed('applicantFiles', 'delete');
+
+        if (!$canDownload) { return []; }
+
+        $data = [];
+        foreach ($p->getFiles() as $f) {
+            $links = [];
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('applicantFiles.delete', ['applicantFile_id'=>$f->getId()]),
+                    'label' => parent::_('delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $data[] = [
+                'id'          => $f->getId(),
+                'filename'    => $f->getFilename(),
+                'updated'     => $f->getUpdated(DATE_FORMAT),
+                'actionLinks' => $links
+            ];
+        }
+        return $data;
+    }
+
+    public static function applications_current(Person $person): array
+    {
+        if (!parent::isAllowed('applicants', 'index')) { return []; }
+
+        $canArchive = parent::isAllowed('applications', 'archive');
+        $canDelete  = parent::isAllowed('applications', 'delete');
+
+        $data = [];
+        foreach ($person->getApplications(['current' =>time()]) as $a) {
+            $links  = [];
+            if ($canArchive) {
+                $links[] = [
+                    'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()]),
+                    'label' => parent::_('application_archive'),
+                    'class' => 'archive'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'label' => parent::_('application_delete'),
+                    'class' => 'delete'
+                ];
+            }
+
+            $p      = $a->getPerson();
+            $c      = $a->getCommittee();
+            $data[] = [
+                'id'             => $a->getId(),
+                'person_id'      => $a->getPerson_id(),
+                'person'         => "{$p->getFirstname()} {$p->getLastname()}",
+                'committee_id'   => $c->getId(),
+                'committee'      => $c->getName(),
+                'created'        => $a->getCreated(DATE_FORMAT),
+                'expires'        => $a->getExpires(DATE_FORMAT),
+                'referredFrom'   => $a->getReferredFrom(),
+                'referredOther'  => $a->getReferredOther(),
+                'interest'       => $a->getInterest(),
+                'qualifications' => $a->getQualifications(),
+                'actionLinks'    => $links
+            ];
+        }
+        return $data;
+    }
+
+    public static function applications_archived(Person $person): array
+    {
+        if (!parent::isAllowed('applicants', 'index')) { return []; }
+
+        $canUnArchive = parent::isAllowed('applications', 'unarchive');
+        $canDelete    = parent::isAllowed('applications', 'delete');
+
+        $data = [];
+        foreach ($person->getApplications(['archived' =>time()]) as $a) {
+            $links  = [];
+            if ($canUnArchive) {
+                $links[] = [
+                    'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()]),
+                    'label' => parent::_('application_unarchive'),
+                    'class' => 'unarchive'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()]),
+                    'label' => parent::_('application_delete'),
+                    'class' => 'delete'
+                ];
+            }
+
+            $p      = $a->getPerson();
+            $c      = $a->getCommittee();
+            $data[] = [
+                'id'           => $a->getId(),
+                'person_id'    => $a->getPerson_id(),
+                'person'       => "{$p->getFirstname()} {$p->getLastname()}",
+                'committee_id' => $c->getId(),
+                'committee'    => $c->getName(),
+                'created'      => $a->getCreated (DATE_FORMAT),
+                'archived'     => $a->getArchived(DATE_FORMAT),
+                'actionLinks'  => $links
+            ];
+        }
+        return $data;
     }
 }

@@ -34,6 +34,8 @@ create table people (
 	authenticationMethod varchar(40),
 	role                 varchar(30),
 	department_id        int unsigned,
+    created    datetime  not null default CURRENT_TIMESTAMP,
+    updated    timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 	foreign key (race_id      ) references races(id),
 	foreign key (department_id) references departments(id)
 );
@@ -167,25 +169,10 @@ create table liaisons (
     foreign key (person_id)    references people(id)
 );
 
-create table applicants (
-    id int unsigned not null primary key auto_increment,
-    firstname varchar(128) not null,
-    lastname  varchar(128) not null,
-    email     varchar(128),
-    phone     varchar(32),
-    address   varchar(128),
-    city      varchar(128),
-    zip       varchar(5),
-    citylimits     boolean,
-    occupation     varchar(128),
-    created  datetime  not null default CURRENT_TIMESTAMP,
-    modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
-);
-
 create table applications (
     id int unsigned not null primary key auto_increment,
     committee_id int unsigned not null,
-    applicant_id int unsigned not null,
+    person_id    int unsigned not null,
     created  timestamp not null default CURRENT_TIMESTAMP,
     archived datetime,
     referredFrom   varchar(128),
@@ -193,7 +180,7 @@ create table applications (
     interest       text,
     qualifications text,
     foreign key (committee_id) references committees(id),
-    foreign key (applicant_id) references applicants(id)
+    foreign key (person_id   ) references people(id)
 );
 
 create table applicantFiles (
@@ -203,8 +190,8 @@ create table applicantFiles (
     mime_type        varchar(128) not null,
     created          datetime     not null default CURRENT_TIMESTAMP,
     updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    applicant_id     int unsigned not null,
-    foreign key (applicant_id) references applicants(id)
+    person_id        int unsigned not null,
+    foreign key (person_id) references people(id)
 );
 
 create table offices (

@@ -107,6 +107,8 @@ class Person extends ActiveRecord
     public function getRace_id()    { return parent::get('race_id');   }
     public function getRace()       { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
     public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
+    public function getCreated($f=null)   { return parent::getDateData('created', $f); }
+    public function getUpdated($f=null)   { return parent::getDateData('updated', $f); }
 
     public function setFirstname ($s) { parent::set('firstname', $s); }
     public function setLastname  ($s) { parent::set('lastname',  $s); }
@@ -439,4 +441,38 @@ class Person extends ActiveRecord
             $mail->send();
         }
     }
+
+    /**
+     * Applications for this applicant
+     *
+     * @param array $params Additional query parameters
+     */
+    public function getApplications(array $params=null): array
+    {
+        $out = [];
+        if ($this->getId()) {
+            if (!$params) { $params = []; }
+            $params['person_id'] = $this->getId();
+
+            $t = new ApplicationTable();
+            $l = $t->find($params);
+            foreach ($l as $a) { $out[] = $a; }
+        }
+        return $out;
+    }
+
+    /**
+     * @return array An array of File objects
+     */
+    public function getFiles(): array
+    {
+        $files = [];
+        if ($this->getId()) {
+            $t = new ApplicantFilesTable();
+            $l  = $t->find(['person_id'=>$this->getId()]);
+            foreach ($l as $f) { $files[] = $f; }
+        }
+        return $files;
+    }
+
 }

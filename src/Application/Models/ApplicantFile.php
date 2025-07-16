@@ -3,8 +3,8 @@
  * Files will be stored as /data/applicantFiles/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
- * @copyright 2016-2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -43,11 +43,11 @@ class ApplicantFile extends File
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getApplicant_id() { return parent::get('applicant_id');   }
-    public function getApplicant()    { return parent::getForeignKeyObject(__namespace__.'\Applicant', 'applicant_id'); }
+    public function getPerson_id()   { return parent::get('person_id');   }
+    public function getPerson()      { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
 
-    public function setApplicant_id($i) { parent::setForeignKeyField (__namespace__.'\Applicant', 'applicant_id', $i); }
-    public function setApplicant   ($o) { parent::setForeignKeyObject(__namespace__.'\Applicant', 'applicant_id', $o);  }
+    public function setPerson_id($i) { parent::setForeignKeyField (__namespace__.'\Person', 'person_id', $i); }
+    public function setPerson   ($o) { parent::setForeignKeyObject(__namespace__.'\Person', 'person_id', $o);  }
 
     /**
      * @param array $post
