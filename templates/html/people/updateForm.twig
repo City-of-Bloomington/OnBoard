@@ -2,8 +2,10 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
+ *
  * @param array  races
  * @param array  states
+ * @param array  yesno
  * @param array  genders
  *
  * @param string return_url
@@ -36,8 +38,14 @@
             {{ forms.field_text  ('city',    'city',    _('city'),          person.getCity()    ) }}
             {{ forms.field_select('state',   'state',   _('state'),         person.getState(), states ) }}
             {{ forms.field_number('zip',     'zip',     _('zip'),           person.getZip(), false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
+            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.getCitylimits(), yesno ) }}
+        </fieldset>
+
+        <fieldset class="usa-fieldset margin-bottom-3">
+            <legend class="usa-legend usa-legend--large">{{ _('occupation') }}</legend>
         </fieldset>
         <fieldset   class="usa-fieldset">
+            {{ forms.field_text(  'occupation', 'occupation', _('occupation'), person.getOccupation() ) }}
             {{ forms.field_radio ('gender',  'gender',  _('gender'), person.getGender(),  genders ) }}
             {{ forms.field_select('race_id', 'race_id', _('race'),   person.getRace_id(), races   ) }}
 

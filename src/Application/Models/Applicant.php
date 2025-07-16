@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2017 City of Bloomington, Indiana
+ * @copyright 2016-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -11,11 +11,6 @@ use Web\Database;
 class Applicant extends ActiveRecord
 {
     protected $tablename = 'applicants';
-
-    public static $referralOptions = [
-        'Herald-Times', 'Radio', 'City Council Meeting', 'City Staff', 'City Website',
-        'Community Organization', 'Facebook', 'Press Release', 'Other'
-    ];
 
     /**
      * Populates the object with data
@@ -101,10 +96,6 @@ class Applicant extends ActiveRecord
     public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
     public function getCitylimits    () { return parent::get('citylimits'    ); }
     public function getOccupation    () { return parent::get('occupation'    ); }
-    public function getReferredFrom  () { return parent::get('referredFrom'  ); }
-    public function getReferredOther () { return parent::get('referredOther' ); }
-    public function getInterest      () { return parent::get('interest'      ); }
-    public function getQualifications() { return parent::get('qualifications'); }
 
     public function setFirstname($s) { parent::set('firstname', $s); }
     public function setLastname ($s) { parent::set('lastname',  $s); }
@@ -115,18 +106,13 @@ class Applicant extends ActiveRecord
     public function setZip      ($s) { parent::set('zip',       $s); }
     public function setCitylimits    ($s) { parent::set('citylimits', $s ? 1 : 0);}
     public function setOccupation    ($s) { parent::set('occupation',     $s); }
-    public function setReferredFrom  ($s) { parent::set('referredFrom',   $s); }
-    public function setReferredOther ($s) { parent::set('referredOther',  $s); }
-    public function setInterest      ($s) { parent::set('interest',       $s); }
-    public function setQualifications($s) { parent::set('qualifications', $s); }
 
     public function handleUpdate(array $post)
     {
         $fields = [
             'firstname', 'lastname', 'email', 'phone',
             'address', 'city', 'zip',
-            'citylimits', 'occupation', 'interest', 'qualifications',
-            'referredFrom', 'referredOther'
+            'citylimits', 'occupation'
         ];
 
         foreach ($fields as $field) {
@@ -162,29 +148,6 @@ class Applicant extends ActiveRecord
         }
     }
 
-    public function saveCommittees(array $ids)
-    {
-        $currentApplications = $this->getApplications();
-        $currentCommittees = [];
-        foreach ($currentApplications as $a) {
-            $currentCommittees[] = $a->getCommittee_id();
-        }
-
-        $db = Database::getConnection();
-
-        $delete = $db->createStatement('delete from applications where committee_id=? and applicant_id=?');
-        $toDelete = array_diff($currentCommittees, $ids);
-        foreach ($toDelete as $committee_id) {
-            $delete->execute([$committee_id, $this->getId()]);
-        }
-
-        $insert = $db->createStatement('insert applications set committee_id=?,applicant_id=?');
-        $toInsert = array_diff($ids, $currentCommittees);
-        foreach ($toInsert as $committee_id) {
-            $insert->execute([$committee_id, $this->getId()]);
-        }
-    }
-
     /**
      * @return array An array of File objects
      */
@@ -197,5 +160,21 @@ class Applicant extends ActiveRecord
             foreach ($list as $f) { $files[] = $f; }
         }
         return $files;
+    }
+
+    public function mergeFrom(Applicant $a)
+    {
+        if ($this->getId() && $a->getId()) {
+            $db = Database::getConnection();
+
+            $update = $db->createStatement('update applicantFiles set applicant_id=? where applicant_id=?');
+            $update->execute([$this->getId(), $a->getId()]);
+
+            $update = $db->createStatement('update applications   set applicant_id=? where applicant_id=?');
+            $update->execute([$this->getId(), $a->getId()]);
+
+            $delete = $db->createStatement('delete from applicants where id=?');
+            $delete->execute([$a->getId()]);
+        }
     }
 }

@@ -72,7 +72,7 @@
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.applications', { committee_id: committee.getId() }) }}"
-                class="{{ ROUTE_NAME in ['committees.applications', 'applications.report'] ? 'usa-current' : '' }}">
+                class="{{ ROUTE_NAME in ['committees.applications', 'applications.report', 'applications.view'] ? 'usa-current' : '' }}">
                 {{ _(['application', 'applications', 10]) }}
             </a>
         </li>

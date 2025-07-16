@@ -9,7 +9,6 @@ $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
 $map->tokens(['alternate_id'             => '\d+',
               'applicantFile_id'         => '\d+',
-              'applicant_id'             => '\d+',
               'application_id'           => '\d+',
               'appointer_id'             => '\d+',
               'committee_id'             => '\d+',
@@ -57,9 +56,6 @@ $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {
-    $r->get('update', '/{applicant_id}/update', Web\Applicants\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{applicant_id}/delete', Web\Applicants\Delete\Controller::class);
-    $r->get('view',   '/{applicant_id}'       , Web\Applicants\Info\Controller::class);
     $r->get('apply',  '/apply' , Web\Applicants\Apply\Controller::class)->allows(['POST']);;
     $r->get('index',  ''       , Web\Applicants\List\Controller::class);
 });
@@ -68,7 +64,8 @@ $map->attach('applications.', '/applications', function ($r) {
     $r->get('archive',   '/{application_id}/archive'  , Web\Applications\Archive\Controller::class);
     $r->get('unarchive', '/{application_id}/unarchive', Web\Applications\Unarchive\Controller::class);
     $r->get('delete',    '/{application_id}/delete'   , Web\Applications\Delete\Controller::class);
-    $r->get('report',    '/report'   , Web\Applications\Report\Controller::class)->allows(['POST']);
+    $r->get('view',      '/{application_id}'          , Web\Applications\Info\Controller::class);
+    $r->get('report',    '/report'                    , Web\Applications\Report\Controller::class);
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {
@@ -190,6 +187,16 @@ $map->attach('people.', '/people', function ($r) {
     $r->get('add',        '/add'        , Web\People\Add\Controller::class)->allows(['POST']);
     $r->get('callback',   '/callback'   , Web\People\Callback\Controller::class);
     $r->get('index',      ''            , Web\People\Find\Controller::class);
+});
+$map->attach('emails.', '/people/{person_id}/emails', function ($r) {
+    $r->get('update', '/{email_id}/update', Web\People\Emails\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{email_id}/delete', Web\People\Emails\Delete\Controller::class);
+    $r->get('add',    '/add',               Web\People\Emails\Add\Controller::class)->allows(['POST']);
+});
+$map->attach('phones.', '/people/{person_id}/phones', function ($r) {
+    $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
+    $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
 });
 
 $map->attach('races.', '/races', function ($r) {

@@ -8,6 +8,7 @@ namespace Web\Applicants\Apply;
 
 use Application\Models\Applicant;
 use Application\Models\ApplicantFile;
+use Application\Models\Application;
 use Application\Models\Committee;
 use Application\Models\CommitteeTable;
 use Application\Models\Site;
@@ -15,14 +16,14 @@ use Application\Models\File;
 
 class View extends \Web\View
 {
-    public function __construct(Applicant $applicant, ?Committee $committee=null)
+    public function __construct(array $post, ?Committee $committee=null)
     {
         parent::__construct();
 
         list($maxSize, $maxBytes) = File::maxUpload();
 
         $this->vars = [
-            'applicant' => $applicant,
+            'post'      => $post,
             'committee' => $committee,
             'help'      => Site::getContent('applyForm_help'),
             'committee_options'  => self::committee_options(),
@@ -74,7 +75,7 @@ class View extends \Web\View
     private function referral_options(): array
     {
         $options = [['value'=>'']];
-        foreach (Applicant::$referralOptions as $o) { $options[] = ['value'=>$o]; }
+        foreach (Application::$referralOptions as $o) { $options[] = ['value'=>$o]; }
         return $options;
     }
 

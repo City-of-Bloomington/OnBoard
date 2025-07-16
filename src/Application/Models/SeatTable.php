@@ -77,8 +77,8 @@ class SeatTable extends TableGateway
         'member_person_id'       => 'm.person_id',
         'member_firstname'       => 'mp.firstname',
         'member_lastname'        => 'mp.lastname',
-        'member_email'           => 'mp.email',
-        'member_phone'           => 'mp.phone',
+        'member_email'           => 'me.email',
+        'member_phone'           => 'mh.number',
         'member_website'         => 'mp.website',
         'member_address'         => 'mp.address',
         'member_city'            => 'mp.city',
@@ -92,8 +92,8 @@ class SeatTable extends TableGateway
         'alternate_person_id'    => 'alt.person_id',
         'alternate_firstname'    => 'ap.firstname',
         'alternate_lastname'     => 'ap.lastname',
-        'alternate_email'        => 'ap.email',
-        'alternate_phone'        => 'ap.phone',
+        'alternate_email'        => 'ae.email',
+        'alternate_phone'        => 'ah.number',
         'alternate_website'      => 'ap.website',
         'alternate_address'      => 'ap.address',
         'alternate_city'         => 'ap.city',
@@ -204,6 +204,10 @@ class SeatTable extends TableGateway
                 left join terms       at  on alt.term_id=at.id
                 left join people      mp  on   m.person_id=mp.id
                 left join people      ap  on alt.person_id=ap.id
+                left join people_emails me on me.person_id=mp.id and me.main=1
+                left join people_phones mh on mh.person_id=mp.id and mh.main=1
+                left join people_emails ae on ae.person_id=ap.id and ae.main=1
+                left join people_phones ah on ah.person_id=ap.id and ah.main=1
                 $where
                 order by c.name, s.code";
         return self::performDataSelect($sql, $params);

@@ -46,15 +46,16 @@ class Ldap implements ExternalIdentity
      */
     public static function authenticate(string $username, string $password): bool
     {
-        $config = self::getConfig();
-
-        $bindUser = sprintf(str_replace('{username}','%s',$config['user_binding']), $username);
-
+        $config     = self::getConfig();
         $connection = ldap_connect($config['server']) or die("Couldn't connect to ADS");
         ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-        if (ldap_bind($connection,$bindUser,$password)) {
-            return true;
-        }
+        return ldap_bind($connection, self::bind_dn($username), $password) ? true : false;
+    }
+
+    public static function bind_dn(string $username): string
+    {
+        $config = self::getConfig();
+        return sprintf(str_replace('{username}','%s',$config['user_binding']), $username);
     }
 
 

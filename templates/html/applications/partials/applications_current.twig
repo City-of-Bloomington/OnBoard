@@ -1,0 +1,37 @@
+{#
+ * @copyright 2024-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array applications_current
+ #}
+<section class="grid-container">
+    <header>
+        <h2>{{ _('applications_current') }}</h2>
+    </header>
+
+    <table class="usa-table">
+        <thead>
+            <tr><th>{{ _('created'  ) }}</th>
+                <th>{{ _('committee') }}</th>
+                <th>{{ _('expires'  ) }}</th>
+                <th>{{ _('actions'  ) }}</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for a in applications_current %}
+            <tr><td>{{ a.created }}</td>
+                <td><a href="{{ uri('committees.applications', { committee_id: a.committee_id }) }}">
+                        {{ a.committee }}
+                    </a>
+                </td>
+                <td>{{ a.expires }}</td>
+                <td>{% if a.actionLinks %}
+                    {{ include('html/partials/actionLinks.twig', { actionLinks:a.actionLinks }, with_context=false ) }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+

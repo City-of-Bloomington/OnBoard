@@ -8,6 +8,7 @@ namespace Web\Applicants\Apply;
 
 use Application\Models\Applicant;
 use Application\Models\ApplicantFile;
+use Application\Models\Application;
 use Application\Models\Captcha;
 use Application\Models\Committee;
 use Web\Database;
@@ -32,21 +33,33 @@ class Controller extends \Web\Controller
 
                     $applicant->handleUpdate($_POST);
                     $applicant->save();
-                    if (isset($_POST['committees'])) {
-                        $applicant->saveCommittees($_POST['committees']);
+
+                    if (   isset($_POST['committees'])) {
+                        foreach ($_POST['committees'] as $committee_id) {
+                            $data = [
+                                'applicant_id'   => $applicant->getId(),
+                                'committee_id'   => $committee_id,
+                                'referredFrom'   => $_POST['referredFrom'  ],
+                                'referredOther'  => $_POST['referredOther' ],
+                                'interest'       => $_POST['interest'      ],
+                                'qualifications' => $_POST['qualifications'],
+                            ];
+                            $application = new Application($data);
+                            $application->save();
+                        }
                     }
 
                     if (isset($_FILES['applicantFile'])
                         &&    $_FILES['applicantFile']['error'] === UPLOAD_ERR_OK) {
                         $file = new ApplicantFile();
-                    $file->setApplicant_id($applicant->getId());
-                    $file->setFile($_FILES['applicantFile']);
-                    $file->save();
-                        }
-                        $db->getDriver()->getConnection()->commit();
+                        $file->setApplicant_id($applicant->getId());
+                        $file->setFile($_FILES['applicantFile']);
+                        $file->save();
+                    }
+                    $db->getDriver()->getConnection()->commit();
 
-                        $this->notifyLiaisons($applicant);
-                        return new Success($applicant);
+                    $this->notifyLiaisons($applicant);
+                    return new Success($applicant);
                 }
                 catch (\Exception $e) {
                     $db->getDriver()->getConnection()->rollback();
@@ -63,7 +76,7 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($applicant, $committee ?? null);
+        return new View($_POST ?? [], $committee ?? null);
     }
 
     private function notifyLiaisons(Applicant $applicant)

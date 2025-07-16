@@ -27,18 +27,14 @@ class Controller extends \Web\Controller
                     }
                 }
 
-                $applicants = [];
+                $applications = [];
                 if (!empty(  $_REQUEST['applications'])) {
                     foreach ($_REQUEST['applications'] as $id) {
-                        $id = (int)$id;
-                        try {
-                            $a            = new Application($id);
-                            $applicants[] = $a->getApplicant();
-                        }
+                        try { $applications[] = new Application((int)$id); }
                         catch (\Exception $e) { }
                     }
                 }
-                return new View($applicants, $committee, $seats);
+                return new View($applications, $committee, $seats);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

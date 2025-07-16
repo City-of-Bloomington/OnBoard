@@ -1,0 +1,22 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array applicantFiles
+ #}
+{% import "html/macros/forms.twig" as forms %}
+{% if applicantFiles and isAllowed('applicantFiles', 'download') %}
+<section class="grid-container">
+    <header><h2>{{ _('applicantFile') }}</h2></header>
+    <table>
+    {% for f in applicantFiles %}
+    <tr><td><a href="{{ uri('applicantFiles.download', { applicantFile_id: f.id }) }}">{{ f.filename }}</a></td>
+        <td>{{ f.updated }}</td>
+        <td>{% if f.actionLinks %}
+            {{ include('html/partials/actionLinks.twig', { actionLinks: f.actionLinks }) }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+{% endif %}

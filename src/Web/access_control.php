@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2024 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use Laminas\Permissions\Acl\Acl;
@@ -53,10 +53,6 @@ $ACL->allow('Appointer', 'applicants',     'view',         $requiresDepartmentAs
 $ACL->allow('Appointer', 'applications',   'report',       $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'people',         'viewContactInfo');
 
-$ACL->allow('Staff');
-$ACL->deny ('Staff', 'users', ['update', 'delete']);
-$ACL->deny ('Staff', 'applicantFiles', 'delete');
-
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',
             ['meetingFiles', 'legislation', 'legislationFiles', 'legislationActions', 'reports'],
@@ -67,6 +63,11 @@ $ACL->allow('Liaison', 'committees', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'update'], $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'offices', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'people', 'update');
+$ACL->allow('Liaison', ['emails', 'phones']);
+
+$ACL->allow('Staff');
+$ACL->deny ('Staff', 'users', ['update', 'delete']);
+$ACL->deny ('Staff', 'applicantFiles', 'delete');
 
 // Administrator is allowed access to everything
 $ACL->allow('Administrator');

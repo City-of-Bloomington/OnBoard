@@ -4,9 +4,14 @@
  * @param Person person
  * @param array  members
  * @param array  liaisons
+ * @param array  emails
+ * @param array  phones
+ * @param array  applications_current
+ * @param array  applications_archived
  * @param array  actionLinks
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  'html/macros/forms.twig' as forms %}
 {% block content %}
 <section class="grid-container">
     <header><h1>{{ person.getFullname() }}</h1></header>
@@ -15,6 +20,11 @@
     {% endif %}
     {{ include('html/people/partials/info.twig') }}
 </section>
+
+{% if isAllowed('people', 'viewContactInfo') %}
+{{ include('html/people/emails/list.twig') }}
+{{ include('html/people/phones/list.twig') }}
+{% endif %}
 
 {% if members %}
 <section class="grid-container">
@@ -60,6 +70,18 @@
     </tbody>
     </table>
 </section>
+{% endif %}
+
+{% if applicantFiles %}
+{{ include('html/applicants/partials/files.twig', { applicant:person } ) }}
+{% endif %}
+
+{% if applications_current %}
+{{ include('html/applications/partials/applications_current.twig') }}
+{% endif %}
+
+{% if applications_archived %}
+{{ include('html/applications/partials/applications_archived.twig') }}
 {% endif %}
 
 {% endblock %}

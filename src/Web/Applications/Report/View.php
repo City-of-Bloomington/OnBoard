@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -10,14 +10,14 @@ use Application\Models\Committee;
 
 class View extends \Web\View
 {
-    public function __construct(array $applicants, Committee $committee, array $seats)
+    public function __construct(array $applications, Committee $committee, array $seats)
     {
         parent::__construct();
 
         $this->vars = [
-            'applicants' => $applicants,
-            'committee'  => $committee,
-            'seats'      => $seats
+            'applications' => $applications,
+            'committee'    => $committee,
+            'seats'        => $seats
         ];
     }
 
