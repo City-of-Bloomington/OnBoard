@@ -103,9 +103,6 @@ class Person extends ActiveRecord
     public function getZip()        { return parent::get('zip');       }
     public function getOccupation() { return parent::get('occupation'); }
     public function getWebsite()    { return parent::get('website');   }
-    public function getGender()     { return parent::get('gender');    }
-    public function getRace_id()    { return parent::get('race_id');   }
-    public function getRace()       { return parent::getForeignKeyObject(__namespace__.'\Race', 'race_id'); }
     public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
     public function getCreated($f=null)   { return parent::getDateData('created', $f); }
     public function getUpdated($f=null)   { return parent::getDateData('updated', $f); }
@@ -119,16 +116,6 @@ class Person extends ActiveRecord
     public function setWebsite   ($s) { parent::set('website',   $s); }
     public function setOccupation($s) { parent::set('occupation', $s); }
     public function setCitylimits($s) { $this->data['citylimits'] = $s ? 1 : 0; }
-    public function setRace_id   ($i) { parent::setForeignKeyField (__namespace__.'\Race', 'race_id', $i); }
-    public function setRace      ($o) { parent::setForeignKeyObject(__namespace__.'\Race', 'race_id', $o); }
-    public function setGender    ($s)
-    {
-        if ($s) {
-            strtolower(trim($s)) == 'male'
-                ? parent::set('gender', 'male')
-                : parent::set('gender', 'female');
-        }
-    }
 
     public function getUsername() { return parent::get('username'); }
     public function getRole()     { return parent::get('role');     }
@@ -143,7 +130,7 @@ class Person extends ActiveRecord
     public function handleUpdate(array $post)
     {
         $fields = [
-            'firstname', 'middlename', 'lastname', 'gender', 'race_id',
+            'firstname', 'middlename', 'lastname',
             'address', 'city', 'state', 'zip', 'website',
             'citylimits', 'occupation'
         ];

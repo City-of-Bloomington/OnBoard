@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -17,10 +17,8 @@ class View extends \Web\View
 
         $this->vars = [
             'person'     => $person,
-            'races'      => self::races(),
             'states'     => self::states(),
             'yesno'      => self::yesno(),
-            'genders'    => self::genders(),
             'callback'   => isset($_REQUEST['callback']),
             'return_url' => $return_url
         ];
@@ -55,32 +53,6 @@ class View extends \Web\View
         return [
             ['value'=>1, 'label'=>parent::_('yes')],
             ['value'=>0, 'label'=>parent::_('no' )],
-        ];
-    }
-
-    /**
-     * Returns an array of options in the format expected by the forms macros
-     *
-     * @see templates/html/macros/forms.twig
-     */
-    public static function races(): array
-    {
-        $o = [['value'=>'']];
-        $t = new RaceTable();
-        foreach ($t->find() as $r) { $o[] = ['value'=>$r->getId(), 'label'=>$r->getName()]; }
-        return $o;
-    }
-
-    /**
-     * Returns an array of options in the format expected by the forms macros
-     *
-     * @see templates/html/macros/forms.twig
-     */
-    public static function genders(): array
-    {
-        return [
-            ['value' => 'male'  ],
-            ['value' => 'female']
         ];
     }
 }

@@ -27,9 +27,7 @@ class Controller extends \Web\Controller
                             'firstname' => $person->getFirstname(),
                             'lastname'  => $person->getLastname(),
                             'website'   => $person->getWebsite(),
-                            'username'  => $person->getUsername(),
-                            'gender'    => $person->getGender(),
-                            'race'      => $person->getRace()
+                            'username'  => $person->getUsername()
                         ]);
                         break;
 

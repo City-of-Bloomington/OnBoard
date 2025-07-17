@@ -26,7 +26,6 @@ $map->tokens(['alternate_id'             => '\d+',
               'member_id'                => '\d+',
               'office_id'                => '\d+',
               'person_id'                => '\d+',
-              'race_id'                  => '\d+',
               'report_id'                => '\d+',
               'seat_id'                  => '\d+',
               'term_id'                  => '\d+',
@@ -197,12 +196,6 @@ $map->attach('phones.', '/people/{person_id}/phones', function ($r) {
     $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
     $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
-});
-
-$map->attach('races.', '/races', function ($r) {
-    $r->get('update', '/{race_id}/update', Web\Races\Update\Controller::class)->allows(['POST']);
-    $r->get('add',    '/add'        , Web\Races\Add\Controller::class)->allows(['POST']);
-    $r->get('index',  ''            , Web\Races\List\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {

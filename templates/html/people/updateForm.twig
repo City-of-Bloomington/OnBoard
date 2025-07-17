@@ -3,10 +3,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  *
- * @param array  races
  * @param array  states
  * @param array  yesno
- * @param array  genders
  *
  * @param string return_url
  * @param array  additional_params
@@ -46,8 +44,6 @@
         </fieldset>
         <fieldset   class="usa-fieldset">
             {{ forms.field_text(  'occupation', 'occupation', _('occupation'), person.getOccupation() ) }}
-            {{ forms.field_radio ('gender',  'gender',  _('gender'), person.getGender(),  genders ) }}
-            {{ forms.field_select('race_id', 'race_id', _('race'),   person.getRace_id(), races   ) }}
 
             {% for k, v in additional_params %}
             <input name="{{ k }}" type="hidden" value="{{ v }}" />

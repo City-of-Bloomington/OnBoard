@@ -26,6 +26,9 @@ from people
 where phone is not null
   and phone !='';
 
+alter table people drop foreign key people_ibfk_1;
+alter table people drop gender;
+alter table people drop race_id;
 alter table people drop email;
 alter table people drop phone;
 alter table people add citylimits boolean      after zip;
@@ -52,3 +55,5 @@ alter table applicants drop referredFrom;
 alter table applicants drop referredOther;
 alter table applicants drop interest;
 alter table applicants drop qualifications;
+
+drop table races;

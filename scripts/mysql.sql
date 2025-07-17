@@ -1,16 +1,5 @@
 -- @copyright 2006-2025 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
-create table races (
-    id   int unsigned not null primary key auto_increment,
-    name varchar(50) not null unique
-);
-insert races set name='Caucasion';
-insert races set name='Hispanic';
-insert races set name='African American';
-insert races set name='Native American';
-insert races set name='Asian';
-insert races set name='Other';
-
 create table departments (
     id    int unsigned not null primary key auto_increment,
     name  varchar(128) not null unique
@@ -27,8 +16,6 @@ create table people (
     citylimits boolean,
     occupation varchar(128),
 	website    varchar(128),
-	gender     enum('male','female'),
-	race_id    int unsigned,
 	username             varchar(128) unique,
 	password             varchar(40),
 	authenticationMethod varchar(40),
