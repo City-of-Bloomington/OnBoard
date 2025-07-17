@@ -28,7 +28,7 @@ class Controller extends \Web\Controller
         $oidc   = new OpenIDConnectClient($config['server'], $config['client_id'], $config['client_secret']);
         $oidc->addScope(['openid', 'allatclaims', 'profile']);
         $oidc->setAllowImplicitFlow(true);
-        $oidc->setRedirectURL(\Web\View::generateUrl('login.index'));
+        $oidc->setRedirectURL(\Web\View::generateUrl('login.cob'));
 
         $success = null;
         try { $success = $oidc->authenticate(); }

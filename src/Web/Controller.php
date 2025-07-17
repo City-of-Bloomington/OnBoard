@@ -14,4 +14,15 @@ abstract class Controller
 	{
         $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
 	}
+
+	/**
+     * Saves a new return_url into the SESSION
+     *
+     * @param string $default   Default url to use if none available in REQUEST or SESSION
+     */
+	public static function captureNewReturnUrl(?string $default=BASE_URL)
+    {
+        if (!empty($_REQUEST['return_url'])) { $_SESSION['return_url'] = $_REQUEST['return_url']; }
+        if (!empty($_SESSION['return_url'])) { $_SESSION['return_url'] = $default; }
+    }
 }

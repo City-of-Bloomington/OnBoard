@@ -1,0 +1,53 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string return_url
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section class="grid-container">
+    <header><h1>{{ _('login') }}</h1></header>
+
+    <ul class="usa-card-group">
+        <li class="usa-card">
+            <div class="usa-card__container">
+                <header class="usa-card__header">
+                    <h3 class="usa-card__heading">City of Bloomington Staff</h3>
+                </header>
+                <div class="usa-card__media">
+                    <div class="usa-card__img">
+                        <img src="{{ BASE_URI }}/images/cob-logo-horizontal.svg" />
+                    </div>
+                </div>
+                <div class="usa-card__body">
+                    <p>Log in as a city staff member.</p>
+                </div>
+                <div class="usa-card__footer">
+                    <a href="{{ uri('login.cob') }}" class="usa-button">Login</a>
+                </div>
+            </div>
+        </li>
+        <li class="usa-card">
+            <div class="usa-card__container">
+                <header class="usa-card__header">
+                    <h3 class="usa-card__heading">Access Indiana</h3>
+                </header>
+                <div class="usa-card__media">
+                    <div class="usa-card__img">
+                        <img src="{{ BASE_URI }}/images/access_indiana.svg" />
+                    </div>
+                </div>
+                <div class="usa-card__body">
+                    <p>Log in with Access Indiana</p>
+                    <p><a class="usa-link" href="https://access.in.gov/signup">Register for an Access Indiana account</a></p>
+                    <p><a class="usa-link" href="https://www.in.gov/access/getting-started">Get help creating your account</a></p>
+                </div>
+                <div class="usa-card__footer">
+                    <a href="{{ uri('login.accessin') }}" class="usa-button">Login</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+
+{% endblock %}
