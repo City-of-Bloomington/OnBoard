@@ -85,7 +85,6 @@ class Controller extends \Web\Controller
             $people = $a->getPeopleToNotify();
             if (count($people)) {
                 $email   = new Email($a);
-                $email->outputFormat = 'txt';
                 $message = $email->render();
                 $subject = sprintf($email->_('board_application_subject', 'messages'), $a->getCommittee()->getName());
                 foreach ($people as $p) {

@@ -33,7 +33,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/people/updateForm.twig", $this->vars);
+        return $this->twig->render('html/people/updateForm.twig', $this->vars);
     }
 
     /**

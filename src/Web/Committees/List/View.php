@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -31,6 +31,6 @@ class View extends \Web\View
     public function render(): string
     {
         $template = $this->vars['current'] ? 'current' : 'past';
-        return $this->twig->render("{$this->outputFormat}/committees/$template.twig", $this->vars);
+        return $this->twig->render("html/committees/$template.twig", $this->vars);
     }
 }

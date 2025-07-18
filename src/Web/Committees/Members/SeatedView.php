@@ -41,7 +41,7 @@ class SeatedView extends View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/committees/seated_members.twig", $this->vars);
+        return $this->twig->render('html/committees/seated_members.twig', $this->vars);
     }
 
     /**

@@ -19,7 +19,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/departments/list.twig", $this->vars);
+        return $this->twig->render('html/departments/list.twig', $this->vars);
     }
 
     private function department_data($departments): array

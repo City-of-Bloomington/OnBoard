@@ -18,6 +18,6 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/departments/info.twig", $this->vars);
+        return $this->twig->render('html/departments/info.twig', $this->vars);
     }
 }

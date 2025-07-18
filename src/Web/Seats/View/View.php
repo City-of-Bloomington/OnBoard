@@ -72,7 +72,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/seats/info.twig', $this->vars);
+        return $this->twig->render('html/seats/info.twig', $this->vars);
     }
 
     private function actionLinksForSeat(Seat $seat): array

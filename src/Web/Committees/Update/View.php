@@ -26,7 +26,7 @@ class View extends \Web\View
     public function render(): string
     {
         $form = $this->vars['committee']->getId() ? 'updateForm' : 'addForm';
-        return $this->twig->render("{$this->outputFormat}/committees/$form.twig", $this->vars);
+        return $this->twig->render("html/committees/$form.twig", $this->vars);
     }
 
     /**

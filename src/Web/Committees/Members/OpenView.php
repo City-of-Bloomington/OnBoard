@@ -30,7 +30,7 @@ class OpenView extends View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/committees/open_members.twig", $this->vars);
+        return $this->twig->render('html/committees/open_members.twig', $this->vars);
     }
 
     private function member_data(Committee $committee, array &$member_data): array

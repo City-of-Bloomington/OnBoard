@@ -29,7 +29,7 @@ class View extends \Web\View
     {
         $template = $this->vars['callback']
                     ? 'people/chooser'
-                    : ($this->outputFormat == 'html' ? 'people/findForm' : 'people/list');
-        return $this->twig->render("{$this->outputFormat}/$template.twig", $this->vars);
+                    : 'people/findForm';
+        return $this->twig->render("html/$template.twig", $this->vars);
     }
 }

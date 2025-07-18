@@ -31,7 +31,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/people/info.twig", $this->vars);
+        return $this->twig->render('html/people/info.twig', $this->vars);
     }
 
     private static function actionLinks(Person $person): array
@@ -240,6 +240,7 @@ class View extends \Web\View
 
         $canUnArchive = parent::isAllowed('applications', 'unarchive');
         $canDelete    = parent::isAllowed('applications', 'delete');
+        $url          = parent::current_url();
 
         $data = [];
         foreach ($person->getApplications(['archived' =>time()]) as $a) {
