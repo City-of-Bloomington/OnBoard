@@ -26,7 +26,7 @@ class ReportView extends View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/applications/reportForm.twig', $this->vars);
+        return $this->twig->render('html/applications/reportForm.twig', $this->vars);
     }
 
     private function application_data_current(Committee $committee): array

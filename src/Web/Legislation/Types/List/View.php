@@ -21,7 +21,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/legislation/types/list.twig', $this->vars);
+        return $this->twig->render('html/legislation/types/list.twig', $this->vars);
     }
 
     private function types_data($types): array

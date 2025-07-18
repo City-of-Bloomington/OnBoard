@@ -27,7 +27,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/seats/list.twig', $this->vars);
+        return $this->twig->render('html/seats/list.twig', $this->vars);
     }
 
     /**

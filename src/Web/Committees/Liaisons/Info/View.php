@@ -25,7 +25,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/committees/liaisons.twig', $this->vars);
+        return $this->twig->render('html/committees/liaisons.twig', $this->vars);
     }
 
     private function liaisonData(int $committee_id): array

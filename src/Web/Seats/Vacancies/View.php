@@ -23,6 +23,6 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/seats/vacancies.twig', $this->vars);
+        return $this->twig->render('html/seats/vacancies.twig', $this->vars);
     }
 }

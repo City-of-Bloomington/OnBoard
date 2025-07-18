@@ -22,7 +22,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/committees/info.twig", $this->vars);
+        return $this->twig->render('html/committees/info.twig', $this->vars);
     }
 
     private static function actionLinks(Committee $c): array

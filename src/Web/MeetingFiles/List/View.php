@@ -42,7 +42,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat."/meetingFiles/list.twig", $this->vars);
+        return $this->twig->render('html/meetingFiles/list.twig', $this->vars);
     }
 
     private function createActionLinks(): array

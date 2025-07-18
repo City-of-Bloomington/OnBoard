@@ -25,7 +25,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render($this->outputFormat.'/committees/statutes.twig', $this->vars);
+        return $this->twig->render('html/committees/statutes.twig', $this->vars);
     }
 
     private function statuteData(Committee $committee): array

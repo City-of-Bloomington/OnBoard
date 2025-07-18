@@ -55,6 +55,6 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/committees/history.twig", $this->vars);
+        return $this->twig->render("html/committees/history.twig", $this->vars);
     }
 }

@@ -12,6 +12,6 @@ class HomeView extends View
 {
     public function render(): string
     {
-        return $this->twig->render("{$this->outputFormat}/index.twig");
+        return $this->twig->render("html/index.twig");
     }
 }
