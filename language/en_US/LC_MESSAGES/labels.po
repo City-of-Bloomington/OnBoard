@@ -237,17 +237,6 @@ msgstr "Edit User Account"
 msgid "delete_account"
 msgstr "Delete User Account"
 
-msgid "race"
-msgid_plural "races"
-msgstr[0] "Ethnicity"
-msgstr[1] "Ethnicities"
-
-msgid "race_edit"
-msgstr "Edit"
-
-msgid "race_add"
-msgstr "New Ethnicity"
-
 msgid "committee"
 msgid_plural "committees"
 msgstr[0] "Board/Commission"
