@@ -11,7 +11,10 @@
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="grid-container">
-    <header><h2>{{ user.getId() ? _('edit_account') : _('create_account') }}</h2></header>
+    <header>
+        <h1>{{ user.getFullname() }}</h1>
+        <h2>{{ user.getId() ? _('edit_account') : _('create_account') }}</h2>
+    </header>
 
     <form method="post" class="usa-form">
         <fieldset       class="usa-fieldset">

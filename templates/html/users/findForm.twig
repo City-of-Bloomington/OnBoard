@@ -62,6 +62,7 @@
             </tr>
         </thead>
         <tbody>
+        {% set return_url = current_url() %}
         {% for u in users %}
             {% set link=uri('people.view', { person_id: u.id }) %}
             <tr><td><a href="{{ link }}">{{ u.username }}</a></td>
@@ -69,7 +70,9 @@
                 <td><a href="{{ link }}">{{ u.role }}</a></td>
                 <td><a href="{{ link }}">{{ u.department }}</a></td>
                 <td>{% if isAllowed('users', 'update') %}
-                    {{ forms.actionLink(uri('users.update', { person_id: u.id }), _('edit_account'), 'edit') }}
+                    {{ forms.actionLink(uri('users.update', { person_id: u.id }) ~ '?return_url=' ~ return_url,
+                                          _('edit_account'),
+                                            'edit') }}
                     {% endif %}
                     {% if isAllowed('users', 'delete') %}
                     {{ forms.actionLink(uri('users.delete', { person_id: u.id }), _('delete_account'), 'delete') }}

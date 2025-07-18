@@ -3,9 +3,26 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  #}
+{% import 'html/macros/forms.twig' as forms %}
+
 {% if isAllowed('people', 'viewContactInfo') %}
+{% set return_url = current_url() %}
 <table class="usa-table usa-table--compact">
-    <tr><th>{{ _('username') }}</th><td>{{ person.getUsername() }}</td></tr>
+    <tr><th>{{ _('username') }}</th>
+        <td>{{ person.getUsername() }}
+            {% if person.getUsername() and isAllowed('users', 'delete') %}
+            {{ forms.actionLink(uri('users.delete', { person_id: person.getId() }) ~ '?return_url=' ~ return_url,
+                                  _('delete_account'),
+                                    'delete' ) }}
+            {% endif %}
+
+            {% if not person.getUsername() and isAllowed('users', 'update') %}
+            {{ forms.actionLink(uri('users.update', { person_id: person.getId() } ) ~ '?return_url=' ~ return_url,
+                                  _('create_account'),
+                                    'add' ) }}
+            {% endif %}
+        </td>
+    </tr>
     <tr><th>{{ _('website' ) }}</th><td><a href="{{ person.getWebsite()}}">{{ person.getWebsite() }}</a></td></tr>
     <tr><th>{{ _('occupation') }}</th><td>{{ person.getOccupation() }}</td></tr>
     <tr><th>{{ _('address' ) }}</th><td>{{ person.getAddress()  }}</td></tr>

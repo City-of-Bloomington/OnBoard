@@ -229,13 +229,13 @@ msgid "person_choose"
 msgstr "Choose Person"
 
 msgid "create_account"
-msgstr "Create Account"
+msgstr "Create User Account"
 
 msgid "edit_account"
-msgstr "Edit"
+msgstr "Edit User Account"
 
 msgid "delete_account"
-msgstr "Delete"
+msgstr "Delete User Account"
 
 msgid "race"
 msgid_plural "races"

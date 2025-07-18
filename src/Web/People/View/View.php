@@ -51,13 +51,6 @@ class View extends \Web\View
                 'class' => 'delete'
             ];
         }
-        if (!$person->getUsername() && parent::isAllowed('users', 'update')) {
-            $links[] = [
-                'url'   => parent::generateUri('users.update', ['person_id'=>$person->getId()]),
-                'label' => parent::_('create_account'),
-                'class' => 'add'
-            ];
-        }
         return $links;
     }
 

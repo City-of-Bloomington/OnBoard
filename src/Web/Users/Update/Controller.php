@@ -18,9 +18,8 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (!isset($person)) {
-            return new \Web\Views\NotFoundView();
-        }
+        if (!isset($person)) { return new \Web\Views\NotFoundView(); }
+        parent::captureNewReturnUrl(\Web\View::generateUrl('users.index'));
 
         if (isset($_POST['username'])) {
             $person->handleUpdateUserAccount($_POST);
@@ -31,7 +30,8 @@ class Controller extends \Web\Controller
                      $person->saveEmail($_POST['email']);
                 }
 
-                header('Location: '.\Web\View::generateUrl('users.index'));
+                $url = parent::popCurrentReturnUrl();
+                header("Location: $url");
                 exit();
             }
             catch (\Exception $e) {

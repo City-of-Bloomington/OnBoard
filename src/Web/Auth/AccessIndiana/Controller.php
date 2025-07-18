@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Auth\AccessIndiana;
 
 use Application\Models\Person;
+use Application\Models\PeopleTable;
 use Jumbojett\OpenIDConnectClient;
 
 class Controller extends \Web\Controller
@@ -57,11 +58,18 @@ class Controller extends \Web\Controller
         return new \Web\Views\ForbiddenView();
     }
 
+    /**
+     * Find a person record that matches an email address
+     *
+     * Public user accounts use the email address as the username.
+     * Access Indiana verifies that the person is in control of the email address,
+     * so if we have an email address, we'll presume any person in the system
+     * with that email address should be the person behind the browser.
+     */
     private static function findPerson(string $email): ?Person
     {
-        list($username, $domain) = explode('@', $email);
-
         // Allow city staff to log in using Access Indiana
+        list($username, $domain) = explode('@', $email);
         if ($domain == 'bloomington.in.gov') {
             try { return new Person($username); }
             catch (\Exception $e) {
@@ -72,14 +80,22 @@ class Controller extends \Web\Controller
 
         // Look for existing person records
         try {
-            $person = new Person($email);
-            if (!$person->getUsername()) {
+            $people = new PeopleTable();
+            $res    = $people->find(['username'=>$email]);
+            if (count($res)==1) {
+                // Existing public user account
+                return $res->current();
+            }
+
+            $res    = $people->find(['email'=>$email, 'user_account'=>false]);
+            if (count($res)==1) {
                 // Create public user account on existing person
+                $person = $res->current();
                 $person->setUsername($email);
                 $person->setRole('Public');
                 $person->save();
+                return $person;
             }
-            return $person;
         }
         catch (\Exception $e) { }
 
@@ -87,15 +103,18 @@ class Controller extends \Web\Controller
     }
 
     /**
-     * Create a new person record from OIDC claims
+     * Create a new person record from Access Indiana claims
      */
     private static function createPerson($claims): Person
     {
-        $person = new Person();
-        $person->setFirstname($claims->given_name        );
-        $person->setLastname ($claims->family_name       );
-        $person->setEmail    ($claims->email             );
-        $person->setUsername ($claims->preferred_username);
-        $person->setRole('Public');
+        $p = new Person();
+        $p->setFirstname($claims->given_name        );
+        $p->setLastname ($claims->family_name       );
+        $p->setUsername ($claims->preferred_username);
+        $p->setRole('Public');
+
+        $p->save();
+        $p->saveEmail($claims->email);
+        return $p;
     }
 }
