@@ -464,11 +464,13 @@ class Committee extends ActiveRecord
             // Only save one year's worth of future events in the database
             if ($start > $year) { continue; }
 
+            $title    = substr((string)$event->summary, 0, 255);
             $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
 
             if ($list->count()) {
                 foreach ($list as $meeting) {
                     fwrite($debug, "Updating meeting\n");
+                    $meeting->setTitle   ($title);
                     $meeting->setStart   ($start  ->format('Y-m-d H:i:s'));
                     $meeting->setEnd     ($end    ->format('Y-m-d H:i:s'));
                     $meeting->setLocation($location);
@@ -479,7 +481,7 @@ class Committee extends ActiveRecord
             else {
                 $meeting = new Meeting([
                     'committee_id' => $this->getId(),
-                    'title'        => substr((string)$event->summary, 0, 255),
+                    'title'        => $title,
                     'eventId'      => $eventId,
                     'start'        => $start  ->format('Y-m-d H:i:s'),
                     'end'          => $end    ->format('Y-m-d H:i:s'),
