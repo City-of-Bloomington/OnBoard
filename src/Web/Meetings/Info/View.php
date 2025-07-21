@@ -35,20 +35,14 @@ class View extends \Web\View
         return $this->twig->render('html/meetings/info.twig', $this->vars);
     }
 
-    private static function actionLinks(Meeting $meeting): array
+    private static function actionLinks(Meeting $m): array
     {
         $links = [];
-        if (parent::isAllowed('meetingFiles', 'add')) {
+        if (parent::isAllowed('meetings', 'delete') && $m->isSafeToDelete()) {
             $links[] = [
-                'url'   => parent::generateUri('meetingFiles.add').'?meeting_id='.$meeting->getId(),
-                'label' => parent::_('meetingFile_add'),
-                'class' => 'add'
-            ];
-        }
-        if (parent::isAllowed('meetings', 'attendance')) {
-            $links[] = [
-                'url'   => parent::generateUri('meetings.attendance', ['meeting_id'=>$meeting->getId()]),
-                'label' => parent::_('attendance')
+                'url'   => parent::generateUri('meetings.delete', ['meeting_id'=>$m->getId()]),
+                'label' => parent::_('delete'),
+                'class' => 'delete'
             ];
         }
         return $links;

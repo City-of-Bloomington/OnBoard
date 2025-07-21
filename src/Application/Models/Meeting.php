@@ -62,6 +62,14 @@ class Meeting extends ActiveRecord
         if (!$this->getStart())        { throw new \Exception('missingStart'); }
     }
 
+    public function delete()
+    {
+        $files = $this->getMeetingFiles();
+        foreach ($files as $f) { $f->delete(); }
+
+        parent::delete();
+    }
+
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
@@ -95,6 +103,16 @@ class Meeting extends ActiveRecord
     {
         $table = new MeetingFilesTable();
         return $table->find(['meeting_id'=>$this->getId()]);
+    }
+
+    public function isSafeToDelete(): bool
+    {
+        $sql = 'select count(*) from meetingFiles where meeting_id=?';
+        $db  = Database::getConnection();
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        $files = $res->getResource()->fetchColumn();
+
+        return !$files && !$this->getEventId();
     }
 
     public function hasAttendance(): bool

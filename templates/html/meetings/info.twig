@@ -14,6 +14,8 @@
 {% block content %}
 <h2>{{ meeting.getStart()|date("F j, Y") }}  {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}</h2>
 <h2>{{ meeting.getTitle() }}</h2>
+{% if actionLinks %}{{ include('html/partials/actionLinks.twig') }}{% endif %}
+
 <p>{{ meeting.getLocation() }}
     {% if meeting.getHtmlLink() -%}
     <div><a href="{{ meeting.getHtmlLink() }}" class="usa-link">Google Calendar</a></div>

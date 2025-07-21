@@ -156,6 +156,7 @@ $map->attach('liaisons.', '/liaisons', function ($r) {
 
 $map->attach('meetings.', '/meetings', function ($r) {
     $r->get('attendance', '/{meeting_id}/attendance', Web\Meetings\Attendance\Controller::class)->allows(['POST']);
+    $r->get('delete',     '/{meeting_id}/delete',     Web\Meetings\Delete\Controller::class);
     $r->get('view',       '/{meeting_id}',            Web\Meetings\Info\Controller::class);
     $r->get('index',      '', Web\Meetings\List\Controller::class);
 });
