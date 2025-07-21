@@ -54,7 +54,7 @@ class Controller extends \Web\Controller
             $files = [];
             foreach ($m->getMeetingFiles() as $f) { $files[$f->getType()][] = $f->getData(); }
 
-            $meetings[$date][$time] = [
+            $meetings[$date][$time][] = [
                 'id'       => $m->getId(),
                 'title'    => $m->getTitle(),
                 'eventId'  => $m->getEventId(),
@@ -65,10 +65,6 @@ class Controller extends \Web\Controller
                 'files'    => $files
             ];
         }
-        // if ($meetings) {
-        //     if ($sort == 'asc') {  ksort($meetings); }
-        //     else                { krsort($meetings); }
-        // }
 
         switch ($this->outputFormat) {
             case 'json':
