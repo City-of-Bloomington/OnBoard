@@ -54,7 +54,7 @@ class View extends \Web\View
         return $links;
     }
 
-    private static function members(Person $p): array
+    public static function members(Person $p): array
     {
         $out = [];
         foreach ($p->getMembers() as $m) {
@@ -72,7 +72,7 @@ class View extends \Web\View
         return $out;
     }
 
-    private static function liaisons(Person $p): array
+    public static function liaisons(Person $p): array
     {
         $out  = [];
         $data = LiaisonTable::personLiaisonData(['person_id'=>$p->getId()]);

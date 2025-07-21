@@ -19,7 +19,9 @@
         <dt>{{ _('qualifications') }}</dt><dd>{{ application.getQualifications() }}</dd>
     </dl>
 
+    {% if isAllowed('people', 'viewContactInfo') %}
     {{ include('html/people/partials/info.twig') }}
+    {% endif %}
 </section>
 
 {% if isAllowed('people', 'viewContactInfo') %}
@@ -27,7 +29,7 @@
 {{ include('html/people/phones/list.twig') }}
 {% endif %}
 
-{% if applicantFiles %}
+{% if applicantFiles and isAllowed('applicantFiles', 'download') %}
 {{ include('html/people/partials/files.twig', { applicant:person } ) }}
 {% endif %}
 

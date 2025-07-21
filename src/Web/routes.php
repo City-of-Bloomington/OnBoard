@@ -175,6 +175,7 @@ $map->attach('members.', '/members', function ($r) {
     $r->get('view',      '/{member_id}'          , Web\Members\Info\Controller::class);
 });
 
+
 $map->attach('offices.', '/offices', function ($r) {
     $r->get('update', '/{office_id}/update', Web\Offices\Update\Controller::class)->allows(['POST']);
     $r->get('add',    '/add', Web\Offices\Add\Controller::class)->allows(['POST']);
@@ -197,6 +198,17 @@ $map->attach('phones.', '/people/{person_id}/phones', function ($r) {
     $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
     $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
     $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
+});
+
+$map->attach('profile.', '/profile', function ($r) {
+    $r->get('email_delete', '/emails/{email_id}/delete', Web\Profile\Emails\Delete\Controller::class);
+    $r->get('email_update', '/emails/{email_id}/update', Web\Profile\Emails\Update\Controller::class)->allows(['POST']);
+    $r->get('email_add',    '/emails/add',               Web\Profile\Emails\Add\Controller::class)->allows(['POST']);
+    $r->get('phone_delete', '/phones/{phone_id}/delete', Web\Profile\Phones\Delete\Controller::class);
+    $r->get('phone_update', '/phones/{phone_id}/update', Web\Profile\Phones\Update\Controller::class)->allows(['POST']);
+    $r->get('phone_add',    '/phones/add',               Web\Profile\Phones\Add\Controller::class)->allows(['POST']);
+    $r->get('update',       '/update',                   Web\Profile\Update\Controller::class)->allows(['POST']);
+    $r->get('index',        '',                          Web\Profile\Info\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {

@@ -4,8 +4,6 @@
  * @param Person person
  #}
 {% import 'html/macros/forms.twig' as forms %}
-
-{% if isAllowed('people', 'viewContactInfo') %}
 {% set return_url = current_url() %}
 <table class="usa-table usa-table--compact">
     <tr><th>{{ _('username') }}</th>
@@ -31,4 +29,3 @@
     <tr><th>{{ _('zip'     ) }}</th><td>{{ person.getZip()      }}</td></tr>
     <tr><th>{{ _('citylimits') }}</th><td>{{ person.getCitylimits() }}</td></tr>
 </table>
-{% endif %}

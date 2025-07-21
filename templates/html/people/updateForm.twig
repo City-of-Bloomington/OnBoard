@@ -18,17 +18,11 @@
         <h1>{{ person.getId() ? _('person_edit') : _('person_add') }}</h1>
     </header>
 
-    <form method="post" class="usa-form">
-        <fieldset       class="usa-fieldset">
-            <legend     class="usa-legend">Full Name</legend>
+    <form           class="usa-form" method="post">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">Full Name</legend>
             {{ forms.field_text('firstname', 'firstname', _('firstname'), person.getFirstname(), true) }}
             {{ forms.field_text('lastname',  'lastname',  _('lastname' ), person.getLastname(),  true) }}
-        </fieldset>
-        <fieldset   class="usa-fieldset">
-            <legend class="usa-legend">Contact</legend>
-            {{ forms.field_email('email',   'email',   _('email'  ), person.getEmail()   ) }}
-            {{ forms.field_phone('phone',   'phone',   _('phone'  ), person.getPhone()   ) }}
-            {{ forms.field_url  ('website', 'website', _('website'), person.getWebsite() ) }}
         </fieldset>
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('mail_address') }}</legend>
@@ -39,11 +33,10 @@
             {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.getCitylimits(), yesno ) }}
         </fieldset>
 
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('occupation') }}</legend>
-        </fieldset>
         <fieldset   class="usa-fieldset">
-            {{ forms.field_text(  'occupation', 'occupation', _('occupation'), person.getOccupation() ) }}
+            <legend class="usa-legend">{{ _('about') }}</legend>
+            {{ forms.field_text('occupation', 'occupation', _('occupation'), person.getOccupation() ) }}
+            {{ forms.field_url ('website',    'website',    _('website'),    person.getWebsite() ) }}
 
             {% for k, v in additional_params %}
             <input name="{{ k }}" type="hidden" value="{{ v }}" />

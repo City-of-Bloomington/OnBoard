@@ -9,9 +9,11 @@ use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
 
 use Web\Auth\CommitteeAssociation;
 use Web\Auth\DepartmentAssociation;
+use Web\Auth\PersonAssociation;
 
 $requiresCommitteeAssociation  = new CommitteeAssociation();
 $requiresDepartmentAssociation = new DepartmentAssociation();
+$requiresOwnership             = new PersonAssociation();
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
@@ -46,6 +48,11 @@ $ACL->allow(null,  'login');
 $ACL->allow(null,
             ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
             ['index', 'view', 'years', 'download', 'callback']);
+
+$ACL->allow('Public', 'profile');
+$ACL->allow('Public', ['emails', 'phones', 'applicantFiles'],
+                      ['add', 'update', 'delete', 'download'],
+                      $requiresOwnership);
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);

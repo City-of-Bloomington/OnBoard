@@ -49,6 +49,6 @@
   </tbody>
 </table>
 
-{% if isAllowed('people', 'add') %}
+{% if not callback and isAllowed('people', 'add') %}
 <a class="usa-button" href="{{ uri('people.add') }}{{ callback ? '?callback=1' : ''}}"> {{ _('person_add') }}</a>
 {% endif %}

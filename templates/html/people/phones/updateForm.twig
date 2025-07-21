@@ -9,7 +9,10 @@
 {% block content %}
 <section class="grid-container">
     <header><h1>{{ phone.getPerson().getFullname() }}</h1></header>
+
+    {% if isAllowed('people', 'viewContactInfo') %}
     {{ include('html/people/partials/info.twig', { person: phone.getPerson() }) }}
+    {% endif %}
 
     <form           class="usa-form" method="post">
         <fieldset   class="usa-fieldset">

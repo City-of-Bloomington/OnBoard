@@ -7,7 +7,6 @@ declare (strict_types=1);
 namespace Web\People\Update;
 
 use Application\Models\Person;
-use Application\Models\RaceTable;
 
 class View extends \Web\View
 {
@@ -41,14 +40,14 @@ class View extends \Web\View
      *
      * @see templates/html/macros/forms.twig
      */
-    private static function states(): array
+    public static function states(): array
     {
         $o = [['value'=>'']];
         foreach (Person::$STATES as $s) { $o[] = ['value'=>$s]; }
         return $o;
     }
 
-    private static function yesno(): array
+    public static function yesno(): array
     {
         return [
             ['value'=>1, 'label'=>parent::_('yes')],

@@ -204,6 +204,12 @@ msgid_plural "users"
 msgstr[0] "User Account"
 msgstr[1] "User Accounts"
 
+msgid "my_profile"
+msgstr "My Profile"
+
+msgid "profile_edit"
+msgstr "Edit Profile"
+
 msgid "info_person"
 msgstr "Person Info"
 

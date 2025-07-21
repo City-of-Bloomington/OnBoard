@@ -1,0 +1,26 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array members
+ #}
+<section class="grid-container">
+    <header><h2>{{ _(['membership', 'memberships', 10]) }}</h2></header>
+
+    <table class="usa-table usa-table--compact">
+        <thead>
+            <tr>
+                <th>{{ _('committee'   ) }}</th>
+                <th>{{ _('office'      ) }}</th>
+                <th>{{ _('start'      ) }} - {{ _('end'      ) }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for m in members %}
+        <tr><td><a class="usa-link" href="{{ uri('committees.members', { committee_id: m.committee_id }) }}">{{ m.committee_name }}</a></td>
+            <td>{{ m.offices|join(', ') }}</td>
+            <td>{{ m.startDate }} - {{ m.endDate }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>

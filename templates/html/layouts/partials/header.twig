@@ -54,10 +54,11 @@
                         <span>{{ USER.getFullname() }}</span>
                     </button>
                     <ul id="user-nav" class="usa-nav__submenu">
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('profile.index') }}">{{ _('my_profile') }}</a></li>
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout' ) }}">{{ _('logout'    ) }}</a></li>
                         {% if isAllowed('settings', 'index') %}
                         <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
                         {% endif %}
-                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
                     </ul>
                 </li>
                 {% endif %}

@@ -1,0 +1,32 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Person person
+ * @param array  emails
+ * @param array  phones
+ * @param array  members
+ * @param array  liaisons
+ * @param array  applicantFiles
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import 'html/macros/forms.twig' as forms %}
+{% block content %}
+<section class="grid-container">
+    <header><h1>{{ person.getFullname() }}</h1></header>
+
+    {{ forms.actionLink(uri('profile.update'), _('profile_edit'), 'edit' ) }}
+    {{ include('html/people/partials/info.twig') }}
+</section>
+{{ include('html/people/emails/list.twig') }}
+{{ include('html/people/phones/list.twig') }}
+{{ include('html/people/partials/files.twig') }}
+
+{% if members %}
+{{ include('html/people/partials/members.twig') }}
+{% endif %}
+
+{% if liaisons %}
+{{ include('html/people/partials/liaisons.twig') }}
+{% endif %}
+
+{% endblock %}

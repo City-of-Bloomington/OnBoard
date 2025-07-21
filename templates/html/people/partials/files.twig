@@ -4,7 +4,6 @@
  * @param array applicantFiles
  #}
 {% import "html/macros/forms.twig" as forms %}
-{% if applicantFiles and isAllowed('applicantFiles', 'download') %}
 <section class="grid-container">
     <header><h2>{{ _('applicantFile') }}</h2></header>
     <table>
@@ -19,4 +18,3 @@
     {% endfor %}
     </table>
 </section>
-{% endif %}

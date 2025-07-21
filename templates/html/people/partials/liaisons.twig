@@ -1,0 +1,24 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array liaisons
+ #}
+<section class="grid-container">
+    <header><h2>{{ _(['liaisonship', 'liaisonships', 10]) }}</h2></header>
+
+    <table class="usa-table usa-table--compact">
+    <thead>
+        <tr>
+            <th>{{ _('committee'   ) }}</th>
+            <th>{{ _('type'      ) }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in liaisons %}
+        <tr><td><a class="usa-link" href="{{ uri('committees.liaisons', { committee_id: l.committee_id }) }}">{{ l.committee_name }}</a></td>
+            <td>{{ _(l.type) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</section>
