@@ -439,11 +439,16 @@ class Committee extends ActiveRecord
             fwrite($debug, "Event: $eventId\n");
 
             if ($event->status == 'cancelled') {
-                // Remove the Google Event Information but preserve the meeting
                 foreach ($list as $meeting)  {
-                    $meeting->setEventId(null);
-                    $meeting->setHtmlLink(null);
-                    $meeting->save();
+                    if ($meeting->isSafeToDelete()) {
+                        $meeting->delete();
+                    }
+                    else {
+                        // Remove the Google Event Information but preserve the meeting
+                        $meeting->setEventId(null);
+                        $meeting->setHtmlLink(null);
+                        $meeting->save();
+                    }
                 }
                 continue;
             }
