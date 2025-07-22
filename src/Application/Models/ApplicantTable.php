@@ -27,10 +27,19 @@ class ApplicantTable extends TableGateway
         if ($fields) {
             foreach ($fields as $k=>$v) {
                 if ($v && in_array($k, self::$fields)) {
-                    $select->where->like("p.$k", "$v%");
+                    switch ($k) {
+                        case 'email':
+                            $select->join(['e'=>'people_emails'], 'e.person_id=p.id', []);
+                            $select->where->like("e.email", "$v%");
+                        break;
+
+                        default:
+                            $select->where->like("p.$k", "$v%");
+                    }
                 }
             }
         }
+        echo $this->getSqlForSelect($select)."\n";
         return parent::performSelect($select, $order, $paginated, $limit);
     }
 

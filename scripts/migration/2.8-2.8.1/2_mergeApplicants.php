@@ -7,7 +7,6 @@ declare (strict_types=1);
 use Web\Database;
 use Application\Models\Applicant;
 use Application\Models\ApplicantFilesTable;
-use Application\Models\ApplicantTable;
 
 include '../../../src/Web/bootstrap.php';
 
@@ -32,13 +31,23 @@ foreach ($res as $email) {
 
 function merge_applicants(int $id, string $email)
 {
+    global $pdo;
+
+    echo "merge_applicants($id, $email)\n";
     $table  = new ApplicantTable();
     $target = new Applicant($id);
-    print_r($target);
+    echo "Target {$target->getId()}:{$target->getEmail()}\n";
 
-    $applicants = $table->search(['email'=>$email]);
-    foreach ($applicants as $a) {
-        if ($a->getId() != $target->getId()) {
+    $query  = $pdo->prepare('select id from applicants where email=?');
+    $query->execute([$email]);
+    $result = $query->fetchAll(\PDO::FETCH_COLUMN);
+    if (!count($result)) {
+        echo "No applicants found\n";
+        exit();
+    }
+    foreach ($result as $applicant_id) {
+        if ($applicant_id != $target->getId()) {
+            $a = new Applicant($applicant_id);
             echo "Merge {$a->getId()} into {$target->getId()}\n";
             $target->mergeFrom($a);
         }
