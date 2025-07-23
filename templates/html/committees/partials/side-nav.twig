@@ -109,5 +109,14 @@
             </a>
         </li>
         {% endif %}
+
+        {% if committee.takesApplications() %}
+        <li class="usa-sidenav__item">
+            <a href="{{ uri('committees.apply', { committee_id: committee.getId() }) }}"
+                class="{{ ROUTE_NAME=='committees.apply' ? 'usa-current' : '' }}">
+                {{ _('apply') }}
+            </a>
+        </li>
+        {% endif %}
     </ul>
 </nav>

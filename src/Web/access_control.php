@@ -42,13 +42,13 @@ $ACL->allow(null,  'people',      'parameters');
 $ACL->allow(null,  'legislationTypes', 'index');
 $ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'statutes', 'liaisons', 'report', 'meetings']);
 $ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
-$ACL->allow(null,  'applicants',  'apply');
 $ACL->allow(null,  'login');
 $ACL->allow(null,
             ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
             ['index', 'view', 'years', 'download', 'callback']);
 
 $ACL->allow('Public', 'profile');
+$ACL->allow('Public', 'committees', 'apply');
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);

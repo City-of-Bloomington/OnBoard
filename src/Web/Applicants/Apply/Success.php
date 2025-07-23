@@ -6,16 +6,16 @@
 declare (strict_types=1);
 namespace Web\Applicants\Apply;
 
-use Application\Models\Applicant;
+use Application\Models\Application;
 
 class Success extends \Web\View
 {
-    public function __construct(Applicant $applicant)
+    public function __construct(Application $a)
     {
         parent::__construct();
 
         $this->vars = [
-            'applicant' => $applicant
+            'application' => $a
         ];
     }
 

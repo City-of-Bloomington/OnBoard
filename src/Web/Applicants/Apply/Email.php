@@ -15,7 +15,7 @@ class Email extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'person'       => $application->getApplicant()->getFullname(),
+            'person'       => $application->getPerson()->getFullname(),
             'committee'    => $application->getCommittee()->getName(),
             'committee_id' => $application->getCommittee_id()
         ];

@@ -56,8 +56,7 @@ $map->attach('applicantFiles.', '/applicantFiles', function ($r) {
 });
 
 $map->attach('applicants.', '/applicants', function ($r) {
-    $r->get('apply',  '/apply' , Web\Applicants\Apply\Controller::class)->allows(['POST']);;
-    $r->get('index',  ''       , Web\Applicants\List\Controller::class);
+    $r->get('index', '', Web\Applicants\List\Controller::class);
 });
 
 $map->attach('applications.', '/applications', function ($r) {
@@ -85,6 +84,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('meetings',     '/{committee_id}/meetings'     , Web\Meetings\List\Controller::class);
     $r->get('meetingsync',  '/{committee_id}/meetings/sync', Web\Committees\Meetings\Sync\Controller::class);
     $r->get('history',      '/{committee_id}/history'      , Web\Committees\History\Controller::class);
+    $r->get('apply',        '/{committee_id}/apply'        , Web\Applicants\Apply\Controller::class)->allows(['POST']);
     $r->get('info',         '/{committee_id}'              , Web\Committees\Info\Controller::class);
     $r->get('add',          '/add'               , Web\Committees\Add\Controller::class)->allows(['POST']);
     $r->get('report',       '/report'            , Web\Committees\Report\Controller::class);

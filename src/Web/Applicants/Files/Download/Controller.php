@@ -6,7 +6,6 @@
 declare (strict_types=1);
 namespace Web\Applicants\Files\Download;
 
-use Application\Models\ApplicantTable;
 use Application\Models\ApplicantFile;
 use Application\Models\ApplicantFilesTable;
 

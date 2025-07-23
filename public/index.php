@@ -36,11 +36,17 @@ if ($ROUTE) {
         }
     }
     else {
-        header('HTTP/1.1 403 Forbidden', true, 403);
-        $_SESSION['errorMessages'][] = $role == 'Anonymous'
-                                        ? 'notLoggedIn'
-                                        : 'noAccessAllowed';
-        $template = new \Web\Views\ForbiddenView();
+        if (!isset($_SESSION['USER'])) {
+            $return_url = \Web\View::current_url();
+            $login      = \Web\View::generateUrl('login.index')."?return_url=$return_url";
+            header("Location: $login");
+            exit();
+        }
+        else {
+            header('HTTP/1.1 403 Forbidden', true, 403);
+            $_SESSION['errorMessages'][] = 'noAccessAllowed';
+            $template = new \Web\Views\ForbiddenView();
+        }
     }
 }
 

@@ -2,130 +2,41 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     post
- * @param Committee committee (optional)
+ * @param Committee committee
  * @param string    help
- * @param array     committee_options
- * @param array     committees_chosen   Array of IDs for chosen committees
  * @param array     citylimits_options
  * @param array     referral_options
- * @param string accept     Comma separated mime_types that are accepted
- * @param int    maxBytes   Max upload size in bytes
- * @param string maxSize    Max upload size, human readable
- * @param string RECAPTCHA_SITE_KEY
  #}
-{% extends "html/layouts/default.twig" %}
+{% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section class="grid-container">
     <header>
-        <h1>{% if committee %}
-            {{ _('applyToCommittee', 'messages')|format(committee.getName()) }}
-            {% else %}
-            {{ _('apply') }}
-            {% endif %}
-        </h1>
+        <h1>{{ _('applyToCommittee', 'messages')|format(committee.getName()) }}</h1>
     </header>
 
     {{ help|markdown_to_html }}
 
-    <form class="usa-form usa-form--large" method="post" id="applyForm" enctype="multipart/form-data">
-
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">Full Name</legend>
-            {% if committee %}
-            <input name="committee_id" type="hidden" value="{{ committee.getId() }}" />
-            <input name="committees[]" type="hidden" value="{{ committee.getId() }}" />
-            {% endif %}
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), post.firstname ?? '', true, {}, _('firstname_help') ) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), post.lastname  ?? '',  true, {}, _('lastname_help' ) ) }}
-        </fieldset>
-
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">Contact</legend>
-            {{ forms.field_email('email', 'email', _('email'), post.email ?? '', true,  {autocapitalize:'off', autocorrect:'off'} ) }}
-            {{ forms.field_phone('phone', 'phone', _('phone'), post.phone ?? '', false, {}, _('phone_help' )  ) }}
-        </fieldset>
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('mail_address') }}</legend>
-            {{ forms.field_text('address', 'address', _('streetaddress'), post.address ?? '' ) }}
-            {{ forms.field_text('city',    'city',    _('city'), post.city ?? '' ) }}
-            {{ forms.field_number('zip',   'zip',     _('zip' ), post.zip  ?? '',   false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
-        </fieldset>
-
-        {% if not committee %}
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _(['committee', 'committees', 10]) }}</legend>
-            <div class="usa-alert usa-alert--info usa-alert--slim margin-bottom-3">
-                <div class="usa-alert__body">
-                    <p class="usa-alert__text">You may apply to more than one board or commission.</p>
-                </div>
-            </div>
-            {% for c in committee_options %}
-                <div class="usa-checkbox">
-                    <input class="usa-checkbox__input" name="committees[{{ c.value }}]" type="checkbox" value="{{ c.value }}" id="check-{{ c.value }}"
-                        {{- c.value in committees_chosen ? 'checked="true"' : ''}} />
-                    <label class="usa-checkbox__label" for="check-{{ c.value }}">
-                        {{ c.label }}
-                    </label>
-                </div>
-            {% endfor %}
-        </fieldset>
-        {% endif %}
-
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('citylimits') }}</legend>
-            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), post.citylimits ?? '', citylimits_options) }}
-        </fieldset>
-
-        <fieldset class="usa-fieldset margin-bottom-3">
-            <legend class="usa-legend usa-legend--large">{{ _('occupation') }}</legend>
-            {{ forms.field_text(  'occupation', 'occupation', _('occupation_help'), post.occupation ?? '' ) }}
-        </fieldset>
-
-        <fieldset class="usa-fieldset margin-bottom-3">
+    <form           class="usa-form usa-form--large" method="post">
+        <fieldset   class="usa-fieldset">
             <legend class="usa-legend usa-legend--large">{{ _('referral') }}</legend>
             {{ forms.field_select('referredFrom',  'referredFrom',  _('referredFrom'),  post.referredFrom  ?? '', referral_options ) }}
             {{ forms.field_text  ('referredOther', 'referredOther', _('referredOther'), post.referredOther ?? '' ) }}
         </fieldset>
 
-        <fieldset class="usa-fieldset margin-bottom-3">
+        <fieldset   class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">{{ _('interest_label') }}</legend>
             {{ forms.field_textarea('interest', 'interest', _('interest'), post.interest ?? '' ) }}
         </fieldset>
 
-        <fieldset class="usa-fieldset margin-bottom-3">
+        <fieldset   class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">{{ _('qualifications_label') }}</legend>
             {{ forms.field_textarea('qualifications', 'qualifications', _('qualifications'), post.qualifications ?? '' ) }}
         </fieldset>
 
-        <fieldset class="usa-fieldset margin-bottom-3">
-        <legend class="usa-legend usa-legend--large">{{ _('postFile_label') }}</legend>
-            <div class="usa-form-group">
-                <label class="usa-label" for="postFile">{{ _('postFile') }}</label>
-                <span class="usa-hint" id="postFile-help">{{ accept }} - {{ maxSize }}</span>
-                <input class="usa-file-input"
-                       id ="postFile"
-                       name="postFile"
-                       type="file"
-                       aria-describedby="postFile-help"
-                       accepts="{{ accept }}"
-                       size="{{ maxBytes }}"
-                       data-errorMessage="Please upload a single {{ accept }} file that is not larger than {{ maxSize }}."
-                       />
-            </div>
-        </fieldset>
-
-        <fieldset class="usa-fieldset">
-            <script src="https://www.google.com/recaptcha/api.js"></script>
-            <script>
-               function recaptcha(token) { document.getElementById('applyForm').submit(); }
-            </script>
-            <button type="submit" class="usa-button save g-recaptcha"
-                data-sitekey="{{ RECAPTCHA_SITE_KEY }}"
-                data-callback='recaptcha'
-                data-action='submit'>
-                {{ _('save') }}
-            </button>
+        <fieldset   class="usa-fieldset">
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(uri('committees.info', { committee_id: committee.getId()}), _('cancel'), 'cancel' ) }}
         </fieldset>
     </form>
 </section>

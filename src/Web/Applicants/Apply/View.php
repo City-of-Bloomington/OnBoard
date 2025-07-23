@@ -6,62 +6,28 @@
 declare (strict_types=1);
 namespace Web\Applicants\Apply;
 
-use Application\Models\Applicant;
-use Application\Models\ApplicantFile;
 use Application\Models\Application;
 use Application\Models\Committee;
-use Application\Models\CommitteeTable;
 use Application\Models\Site;
-use Application\Models\File;
 
 class View extends \Web\View
 {
-    public function __construct(array $post, ?Committee $committee=null)
+    public function __construct(array $post, Committee $committee)
     {
         parent::__construct();
-
-        list($maxSize, $maxBytes) = File::maxUpload();
 
         $this->vars = [
             'post'      => $post,
             'committee' => $committee,
             'help'      => Site::getContent('applyForm_help'),
-            'committee_options'  => self::committee_options(),
-            'committees_chosen'  => self::committees_chosen(),
             'citylimits_options' => $this->citylimits_options(),
-            'referral_options'   => $this->referral_options(),
-            'accept'      => self::mime_types(),
-            'maxBytes'    => $maxBytes,
-            'maxSize'     => $maxSize,
-            'RECAPTCHA_SITE_KEY' => RECAPTCHA_SITE_KEY
+            'referral_options'   => $this->referral_options()
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/applicants/applyForm.twig', $this->vars);
-    }
-
-    private static function committee_options(): array
-    {
-        $options = [];
-        $table   = new CommitteeTable();
-        $list    = $table->find(['current'=>true, 'takesApplications'=>true]);
-        foreach ($list as $c) {
-            $options[] = ['value'=>$c->getId(), 'label'=>$c->getName()];
-        }
-        return $options;
-    }
-
-    private static function committees_chosen(): array
-    {
-        $out = [];
-        if (!empty($_REQUEST['committees'])) {
-            foreach (array_keys($_REQUEST['committees']) as $id) {
-                $out[] = (int)$id;
-            }
-        }
-        return $out;
     }
 
     private function citylimits_options(): array
@@ -77,12 +43,5 @@ class View extends \Web\View
         $options = [['value'=>'']];
         foreach (Application::$referralOptions as $o) { $options[] = ['value'=>$o]; }
         return $options;
-    }
-
-    private static function mime_types(): string
-    {
-        $accept = [];
-        foreach (ApplicantFile::$mime_types as $mime=>$ext) { $accept[] = ".$ext"; }
-        return implode(',', $accept);
     }
 }

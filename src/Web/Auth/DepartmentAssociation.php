@@ -25,7 +25,6 @@ class DepartmentAssociation implements AssertionInterface
         'report_id'            => '\Application\Models\Reports\ReportsTable',
         'alternate_id'         => '\Application\Models\AlternateTable',
         'applicantFile_id'     => '\Application\Models\ApplicantFilesTable',
-        'applicant_id'         => '\Application\Models\ApplicantTable',
         'application_id'       => '\Application\Models\ApplicationTable',
         'committeeStatute_id'  => '\Application\Models\CommitteeStatuteTable',
         'legislation_id'       => '\Application\Models\Legislation\LegislationTable',

@@ -58,7 +58,7 @@ class Application extends ActiveRecord
 
     public function validate()
     {
-        if (!$this->getCommittee_id() || !$this->getApplicant_id()) {
+        if (!$this->getCommittee_id() || !$this->getPerson_id()) {
             throw new \Exception('missingRequiredFields');
         }
     }
@@ -115,6 +115,17 @@ class Application extends ActiveRecord
     public function setReferredOther ($s) { parent::set('referredOther',  $s); }
     public function setInterest      ($s) { parent::set('interest',       $s); }
     public function setQualifications($s) { parent::set('qualifications', $s); }
+
+    public function handleUpdate(array $post)
+    {
+        $fields = ['referredFrom', 'referredOther', 'interest', 'qualifications'];
+        foreach ($fields as $f) {
+            if (isset($post[$f])) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
+            }
+        }
+    }
 
     //----------------------------------------------------------------
     // Custom functions

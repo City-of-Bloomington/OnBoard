@@ -42,11 +42,6 @@
                     <a href="{{ uri('liaisons.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'liaisons.index' ? 'usa-current' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
                 </li>
                 {% endif %}
-                {% if isAllowed('applicants', 'apply') %}
-                <li class="usa-nav__primary-item">
-                    <a href="{{ uri('applicants.apply') }}" class="usa-nav-link {{ ROUTE_NAME == 'applicants.apply' ? 'usa-current' : '' }}">{{ _('apply') }}</a>
-                </li>
-                {% endif %}
 
                 {% if USER is defined %}
                 <li class="usa-nav__primary-item">
