@@ -15,10 +15,10 @@ class Controller extends \Web\Controller
     {
         $email = new Email();
         $email->setPerson($_SESSION['USER']);
+        $return_url = \Web\View::generateUrl('profile.index');
 
         if (isset($_POST['email'])) {
             $email->handleUpdate($_POST);
-            $return_url = \Web\View::generateUrl('profile.index');
 
             try  {
                 $email->save();
@@ -28,6 +28,6 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($email);
+        return new View($email, $return_url);
     }
 }

@@ -39,7 +39,6 @@ class ApplicantTable extends TableGateway
                 }
             }
         }
-        echo $this->getSqlForSelect($select)."\n";
         return parent::performSelect($select, $order, $paginated, $limit);
     }
 

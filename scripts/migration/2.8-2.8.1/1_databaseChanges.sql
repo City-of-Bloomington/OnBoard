@@ -45,6 +45,7 @@ alter table applications add foreign key (person_id) references people(id);
 
 alter table applicantFiles add person_id int unsigned after applicant_id;
 alter table applicantFiles add foreign key (person_id) references people(id);
+alter table applicantFiles modify updated timestamp not null;
 
 update applications a
 join applicants t on a.applicant_id=t.id

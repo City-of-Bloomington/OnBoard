@@ -20,9 +20,7 @@ class View extends \Web\View
 
         $this->vars = [
             'person' => $p,
-            'emails'               => PeopleView::emails($p),
-            'phones'               => PeopleView::phones($p),
-            'applicantFiles'       => PeopleView::applicantFiles($p),
+            'applicantFiles'       => self::applicantFiles($p),
             'members'              => PeopleView::members ($p),
             'liaisons'             => PeopleView::liaisons($p),
         ];
@@ -31,5 +29,32 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/profile/info.twig', $this->vars);
+    }
+
+    private static function applicantFiles(Person $p): array
+    {
+        $canDownload = parent::isAllowed('profile', 'file_download');
+        $canDelete   = parent::isAllowed('profile', 'file_delete');
+
+        if (!$canDownload) { return []; }
+
+        $data = [];
+        foreach ($p->getFiles() as $f) {
+            $links = [];
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('profile.file_delete', ['applicantFile_id'=>$f->getId()]),
+                    'label' => parent::_('delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $data[] = [
+                'id'          => $f->getId(),
+                'filename'    => $f->getFilename(),
+                'updated'     => $f->getUpdated(DATE_FORMAT),
+                'actionLinks' => $links
+            ];
+        }
+        return $data;
     }
 }

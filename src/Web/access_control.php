@@ -13,7 +13,6 @@ use Web\Auth\PersonAssociation;
 
 $requiresCommitteeAssociation  = new CommitteeAssociation();
 $requiresDepartmentAssociation = new DepartmentAssociation();
-$requiresOwnership             = new PersonAssociation();
 
 $ACL = new Acl();
 $ACL->addRole(new Role('Anonymous'))
@@ -50,9 +49,6 @@ $ACL->allow(null,
             ['index', 'view', 'years', 'download', 'callback']);
 
 $ACL->allow('Public', 'profile');
-$ACL->allow('Public', ['emails', 'phones', 'applicantFiles'],
-                      ['add', 'update', 'delete', 'download'],
-                      $requiresOwnership);
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);

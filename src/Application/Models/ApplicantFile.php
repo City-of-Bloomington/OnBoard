@@ -14,7 +14,7 @@ use Web\Database;
 class ApplicantFile extends File
 {
     protected $tablename = 'applicantFiles';
-    protected $applicant;
+    protected $person;
 
     /**
      * Whitelist of accepted file types
@@ -35,9 +35,9 @@ class ApplicantFile extends File
     public function validate()
     {
         // Check for required fields here.  Throw an exception if anything is missing.
-        if (!$this->getFilename())      { throw new \Exception('files/missingFilename');  }
-        if (!$this->getMime_type())     { throw new \Exception('files/missingMimeType');  }
-        if (!$this->getApplicant_id())  { throw new \Exception('files/missingApplicant'); }
+        if (!$this->getFilename())  { throw new \Exception('files/missingFilename');  }
+        if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType');  }
+        if (!$this->getPerson_id()) { throw new \Exception('files/missingApplicant'); }
     }
 
     //----------------------------------------------------------------
@@ -48,12 +48,4 @@ class ApplicantFile extends File
 
     public function setPerson_id($i) { parent::setForeignKeyField (__namespace__.'\Person', 'person_id', $i); }
     public function setPerson   ($o) { parent::setForeignKeyObject(__namespace__.'\Person', 'person_id', $o);  }
-
-    /**
-     * @param array $post
-     */
-    public function handleUpdate($post)
-    {
-        $this->setApplicant_id($post['applicant_id']);
-    }
 }

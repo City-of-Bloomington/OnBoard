@@ -15,10 +15,6 @@ class Controller extends \Web\Controller
     {
         $phone = new Phone();
         $phone->setPerson($_SESSION['USER']);
-
-
-        if (!isset($person)) { return new \Web\Views\NotFoundView(); }
-
         $return_url = \Web\View::generateUrl('profile.index');
 
         if (isset($_POST['number'])) {
