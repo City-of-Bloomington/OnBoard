@@ -3,7 +3,9 @@
         <div class="usa-navbar">
             <div class="usa-logo">
                 <a class="grid-row" href="{{ BASE_URI }}" title="City of Bloomington, Indiana>">
-                    <img src="//bloomington.in.gov/static/snowflake-blue.svg" alt="City of Bloomington Logo" class="grid-col-auto maxh-5 margin-right-105">
+                    <img src="//bloomington.in.gov/static/snowflake-blue.svg"
+                         alt="City of Bloomington Logo"
+                         class="grid-col-auto maxh-5 margin-right-105" />
                     <em class="usa-logo__text font-sans-lg grid-col-auto margin-y-auto">{{ APPLICATION_NAME }}</em>
                 </a>
             </div>
@@ -54,10 +56,11 @@
                         <span>{{ USER.getFullname() }}</span>
                     </button>
                     <ul id="user-nav" class="usa-nav__submenu">
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
                         {% if isAllowed('settings', 'index') %}
                         <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
                         {% endif %}
-                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout') }}">{{ _('logout') }}</a></li>
+                        <li class="usa-nav__submenu-item"><a href="{{ BASE_URI }}/guide">User Guide</a></li>
                     </ul>
                 </li>
                 {% endif %}
