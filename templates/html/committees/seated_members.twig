@@ -26,7 +26,11 @@
                             <span class="usa-tag margin-left-1">{{ _('termEndsSoon') }}</span>
                             {% endif %}
 
-                            {% else %}
+                            {% if row.carryOver %}
+                            <span class="usa-tag margin-left-1">{{ _('carryOver') }}</span>
+                            {% endif %}
+
+                        {% else %}
                             {{ _('vacant') }}
                         {% endif %}
 
