@@ -439,17 +439,7 @@ class Committee extends ActiveRecord
             fwrite($debug, "Event: $eventId\n");
 
             if ($event->status == 'cancelled') {
-                foreach ($list as $meeting)  {
-                    if ($meeting->isSafeToDelete()) {
-                        $meeting->delete();
-                    }
-                    else {
-                        // Remove the Google Event Information but preserve the meeting
-                        $meeting->setEventId(null);
-                        $meeting->setHtmlLink(null);
-                        $meeting->save();
-                    }
-                }
+                foreach ($list as $meeting)  { self::cancelMeeting($meeting); }
                 continue;
             }
 
@@ -501,6 +491,35 @@ class Committee extends ActiveRecord
         $db  = Database::getConnection();
         $sql = 'update committees set syncToken=?, synced=now() where id=?';
         $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
+
+        $this->validateFutureMeetings();
+    }
+
+    /**
+     * Disassociate a meeting with the Google Calendar
+     */
+    private static function cancelMeeting(Meeting $m)
+    {
+        $m->setEventId (null);
+        $m->setHtmlLink(null);
+        $m->save();
+
+        if ($m->isSafeToDelete()) { $m->delete(); }
+    }
+
+    public function validateFutureMeetings()
+    {
+        $t = new MeetingTable();
+        $l = $t->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
+        foreach ($l as $m) {
+            try {
+                $event = GoogleGateway::getEvent($this->getCalendarId(), $m->getEventId());
+                if ($event->status == 'cancelled') { self::cancelMeeting($m); }
+            }
+            catch (\Exception $e) {
+                if ($e->getCode() == 404) { self::cancelMeeting($m); }
+            }
+        }
     }
 
     public function getHistory(): array
