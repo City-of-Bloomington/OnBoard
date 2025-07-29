@@ -62,6 +62,8 @@ class Meeting extends ActiveRecord
         if (!$this->getStart())        { throw new \Exception('missingStart'); }
     }
 
+    public function save() { parent::save(); }
+
     public function delete()
     {
         $files = $this->getMeetingFiles();

@@ -38,6 +38,13 @@ class View extends \Web\View
     private static function actionLinks(Meeting $m): array
     {
         $links = [];
+        if (parent::isAllowed('meetings', 'update')) {
+            $links[] = [
+                'url'   => parent::generateUri('meetings.update', ['meeting_id'=>$m->getId()]),
+                'label' => parent::_('meeting_edit'),
+                'class' => 'edit'
+            ];
+        }
         if (parent::isAllowed('meetings', 'delete') && $m->isSafeToDelete()) {
             $links[] = [
                 'url'   => parent::generateUri('meetings.delete', ['meeting_id'=>$m->getId()]),

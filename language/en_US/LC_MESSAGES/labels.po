@@ -802,6 +802,9 @@ msgid_plural "meetings"
 msgstr[0] "Meeting"
 msgstr[1] "Meetings"
 
+msgid "meeting_edit"
+msgstr "Edit Meeting"
+
 msgid "meetingFile"
 msgid_plural "meetingFiles"
 msgstr[0] "Meeting File"
