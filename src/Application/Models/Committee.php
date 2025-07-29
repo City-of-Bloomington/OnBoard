@@ -512,13 +512,17 @@ class Committee extends ActiveRecord
         $t = new MeetingTable();
         $l = $t->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
         foreach ($l as $m) {
-            try {
-                $event = GoogleGateway::getEvent($this->getCalendarId(), $m->getEventId());
-                if ($event->status == 'cancelled') { self::cancelMeeting($m); }
+            $event_id = $m->getEventId();
+            if ($event_id) {
+                try {
+                    $event = GoogleGateway::getEvent($this->getCalendarId(), $event_id);
+                    if ($event->status == 'cancelled') { self::cancelMeeting($m); }
+                }
+                catch (\Exception $e) {
+                    if ($e->getCode() == 404) { self::cancelMeeting($m); }
+                }
             }
-            catch (\Exception $e) {
-                if ($e->getCode() == 404) { self::cancelMeeting($m); }
-            }
+            else { self::cancelMeeting($m); }
         }
     }
 
