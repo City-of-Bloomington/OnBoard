@@ -23,6 +23,6 @@ class View extends \Web\View
 
     public function render(): string
     {
-        echo $this->twig->render('html/meetings/updateForm.twig', $this->vars);
+        return $this->twig->render('html/meetings/updateForm.twig', $this->vars);
     }
 }
