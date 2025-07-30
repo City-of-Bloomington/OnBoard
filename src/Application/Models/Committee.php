@@ -491,8 +491,6 @@ class Committee extends ActiveRecord
         $db  = Database::getConnection();
         $sql = 'update committees set syncToken=?, synced=now() where id=?';
         $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
-
-        $this->validateFutureMeetings();
     }
 
     /**
