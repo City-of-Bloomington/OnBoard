@@ -15,24 +15,43 @@
     {% for row in seat_data %}
         <li class="grid-col-12">
             <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
-                <div class="grid-row flex-row">
-                    <div class="grid-col flex-1 display-flex flex-align-center">
-                        <h3>
-                        {% if row.member_person_id %}
-                            <a class="usa-link" href="{{ uri('members.view', { member_id: row.member_id }) }}">
-                            {{ row.member_firstname }} {{ row.member_lastname }}
-                            </a>
-                            {% if row.termEndsSoon %}
-                            <span class="usa-tag margin-left-1">{{ _('termEndsSoon') }}</span>
-                            {% endif %}
-
-                            {% if row.carryOver %}
-                            <span class="usa-tag margin-left-1">{{ _('carryOver') }}</span>
-                            {% endif %}
-
+                <header>
+                    <h3>{% if isAllowed('seats', 'view') %}
+                        <a class="usa-link" href="{{ uri('seats.view', { seat_id: row.seat_id }) }}">
+                        {{ row.seat_code }} {{ row.seat_name }} {{ _('membership') }}
+                        </a>
                         {% else %}
-                            {{ _('vacant') }}
+                        {{ row.seat_code }} {{ row.seat_name }}
                         {% endif %}
+
+                        {% if not row.member_person_id %}<span class="usa-tag margin-left-1">{{ _('vacant')       }}</span>{% endif %}
+                        {% if row.termEndsSoon         %}<span class="usa-tag margin-left-1">{{ _('termEndsSoon') }}</span>{% endif %}
+                        {% if row.carryOver            %}<span class="usa-tag margin-left-1">{{ _('carryOver')    }}</span>{% endif %}
+                    </h3>
+                    {% if row.seat_type=='termed' %}
+                    <h4>{{ _('seat_term') }}:
+                        {{ row.term_startDate|date(DATE_FORMAT) }} -
+                        {{ row.term_endDate  |date(DATE_FORMAT) }}
+                    </h4>
+                    {% endif %}
+
+                    <h4><strong>{{ _('appointed_by') }}:</strong>
+                        {{ row.appointer_name }} {{ row.seat_voting ? ' (voting)' : '' }}
+                    </h4>
+                </header>
+                <div>
+                    <div>
+                    {% if row.member_person_id %}
+                        <strong>{{ _('membership') }}:</strong>
+                        {% if isAllowed('people', 'view') %}
+                        <a href="{{ uri('people.view', { person_id: row.member_person_id }) }}">
+                            {{ row.member_firstname }} {{ row.member_lastname }}
+                        </a>
+                        {% else %}
+                        {{ row.member_firstname }} {{ row.member_lastname }}
+                        {% endif %}
+                        {{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }} -
+                        {{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}
 
                         {% if row.offices %}
                             {% for office in row.offices|split(',') %}
@@ -40,43 +59,19 @@
                             <span class="usa-tag margin-left-1">{{ o[1] }}</span>
                             {% endfor %}
                         {% endif %}
-                        </h3>
-                        {% if committee.allowsAlternates() %}
-                        <div>
-                            {% if row.alternate_person_id %}
-                            <a class="usa-link" href="{{ uri('alternates.view', {alternate_id: row.alternate_id}) }}">
-                            ({{ _('alternate') }}: {{ row.alternate_firstname }} {{ row.alternate_lastname }})
-                            </a>
-                            {% else %}
-                            {{ _('alternate_vacant') }}
-                            {% endif %}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="grid-row flex-1">
-                    <div class="tablet:grid-col-2">
-                        <strong>{{ _('seat') }}:</strong>
-                        {% if isAllowed('seats', 'view') %}
-                        <a class="usa-link" href="{{ uri('seats.view', { seat_id: row.seat_id }) }}">{{ row.seat_code }}</a>
+                    {% endif %}
+
+                    {% if committee.allowsAlternates() %}
+                        {% if row.alternate_person_id %}
+                        <a class="usa-link" href="{{ uri('alternates.view', {alternate_id: row.alternate_id}) }}">
+                        ({{ _('alternate') }}: {{ row.alternate_firstname }} {{ row.alternate_lastname }})
+                        </a>
                         {% else %}
-                        {{ row.seat_code }}
+                        {{ _('alternate_vacant') }}
                         {% endif %}
+                    {% endif %}
                     </div>
-                    <div class="tablet:grid-col-4">
-                        {% if row.seat_type == 'termed' %}
-                        <strong>{{ _('seat_term'   ) }}:</strong>
-                        {{ row.term_startDate|date(DATE_FORMAT) }} -
-                        {{ row.term_endDate  |date(DATE_FORMAT) }}
-                        {% else %}
-                        <strong>{{ _('membership') }}</strong>
-                        {{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }} -
-                        {{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}
-                        {% endif %}
-                    </div>
-                    <div class="tablet:grid-col-6">
-                        <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
-                    </div>
+
                 </div>
             </div>
         </li>
