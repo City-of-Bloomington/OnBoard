@@ -38,12 +38,10 @@
     </div>
 </section>
 
-{% if recentMembers %}
+{% if seat %}
 <section>
-    <header><h3>{{ _(['recent_member', 'recent_members', 10]) }}</h3></header>
-    {% for t in recentMembers %}
-    <div>{{ t.members }} {{ t.startDate }} - {{ t.endDate }}<div>
-    {% endfor %}
+    <h2>{{ _(['past_member', 'past_members', 10]) }}</h2>
+    {{ include('html/members/partials/list.twig', { members: seat.getMembers() }, with_context=false) }}
 </section>
 {% endif %}
 
