@@ -1,0 +1,27 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array notifications
+ * @param array actionLinks
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section class="grid-container">
+    <header><h1>{{ _(['notification', 'notifications', 10]) }}</h1></header>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <table>
+    {% for n in notifications %}
+    <tr><td><a href="{{ uri('notifications.update', { notification_id: n.getId() }) }}">
+                {{ n.getEvent() }}
+            </a>
+        </td>
+        <td>{{ n.getCommittee().getName() }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+{% endblock %}
