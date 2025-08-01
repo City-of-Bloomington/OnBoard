@@ -122,7 +122,7 @@ class GoogleGateway
         $opts  = [
             'id'         => $watch_id,
             'type'       => 'web_hook',
-            'address'    => BASE_URL.'/notifications',
+            'address'    => \Web\View::generateUrl('home.calendarhook'),
             'expiration' => $expiration.'000',
             'eventTypes' => 'default'
         ];

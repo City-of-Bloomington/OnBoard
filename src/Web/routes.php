@@ -24,6 +24,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'meeting_id'               => '\d+',
               'meetingFile_id'           => '\d+',
               'member_id'                => '\d+',
+              'notification_id'          => '\d+',
               'office_id'                => '\d+',
               'person_id'                => '\d+',
               'report_id'                => '\d+',
@@ -32,7 +33,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'id'                       => '\d+']);
 
 $map->attach('home.', '/', function ($r) {
-    $r->get('calendarhook', 'notifications', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
+    $r->get('calendarhook', 'google', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
     $r->get ('index', '', Web\Committees\List\Controller::class);
 });
 
@@ -175,6 +176,13 @@ $map->attach('members.', '/members', function ($r) {
     $r->get('view',      '/{member_id}'          , Web\Members\Info\Controller::class);
 });
 
+$map->attach('notifications.', '/notifications', function ($r) {
+    $r->get('update', '/{notification_id}/update', Web\Notifications\Update\Controller::class)->allows(['POST']);
+    $r->get('delete', '/{notification_id}/delete', Web\Notifications\Delete\Controller::class);
+    $r->get('info',   '/{notification_id}',        Web\Notifications\Info\Controller::class);
+    $r->get('add',    '/add',                      Web\Notifications\Add\Controller::class)->allows(['POST']);
+    $r->get('index',  '',                          Web\Notifications\List\Controller::class);
+});
 
 $map->attach('offices.', '/offices', function ($r) {
     $r->get('update', '/{office_id}/update', Web\Offices\Update\Controller::class)->allows(['POST']);

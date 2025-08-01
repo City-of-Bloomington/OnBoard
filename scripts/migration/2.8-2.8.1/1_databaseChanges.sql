@@ -58,3 +58,11 @@ alter table applicants drop interest;
 alter table applicants drop qualifications;
 
 drop table races;
+
+create table notifications (
+    id           int unsigned not null primary key auto_increment,
+    event        varchar(32)  not null,
+    committee_id int unsigned,
+    template     text         not null,
+    foreign key (committee_id) references committees(id)
+);

@@ -6,6 +6,7 @@
 declare (strict_types=1);
 use Web\Database;
 use Application\Models\Applicant;
+use Application\Models\ApplicantTable;
 use Application\Models\ApplicantFilesTable;
 
 include '../../../src/Web/bootstrap.php';

@@ -319,3 +319,33 @@ create table reports (
     indexed          timestamp,
     foreign key (committee_id) references committees(id)
 );
+
+create table notifications (
+    id           int unsigned not null primary key auto_increment,
+    event        varchar(32)  not null,
+    committee_id int unsigned,
+    template     text         not null,
+    foreign key (committee_id) references committees(id)
+);
+
+create table notification_subscriptions (
+    person_id       int unsigned not null,
+    notification_id int unsigned not null,
+    committee_id    int unsigned not null,
+    unique (person_id, notification_id, committee_id),
+    foreign key (      person_id) references people(id),
+    foreign key (notification_id) references notifications(id),
+    foreign key (   committee_id) references committees(id)
+);
+
+create table email_queue (
+    id      int unsigned not null primary key auto_increment,
+    created datetime     not null default CURRENT_TIMESTAMP,
+    sent    datetime,
+    from    varchar(128) not null,
+    to      varchar(128) not null,
+    cc      varchar(128),
+    bcc     varchar(128),
+    subject varchar(128) not null,
+    body    text
+);
