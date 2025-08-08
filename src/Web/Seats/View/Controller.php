@@ -10,6 +10,8 @@ use Application\Models\Seat;
 
 class Controller extends \Web\Controller
 {
+    protected $valid_output_formats = ['html', 'csv'];
+
     public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['seat_id'])) {

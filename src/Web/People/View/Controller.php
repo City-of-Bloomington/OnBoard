@@ -9,6 +9,8 @@ use Application\Models\Person;
 
 class Controller extends \Web\Controller
 {
+    protected $valid_output_formats = ['html', 'json'];
+
     public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['person_id'])) {
