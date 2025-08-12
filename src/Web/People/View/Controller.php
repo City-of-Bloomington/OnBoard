@@ -37,6 +37,6 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return \Web\Views\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 }
