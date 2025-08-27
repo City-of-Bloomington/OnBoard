@@ -152,11 +152,10 @@ class Application extends ActiveRecord
         $sql = "select p.*
                 from people       p
                 join liaisons     l on p.id=l.person_id
-                join applications a on l.committee_id=a.committee_id
-                where a.id=?
-                  and type=?";
+                where l.type='departmental'
+                  and l.committee_id=?";
         $db = Database::getConnection();
-        $result  = $db->createStatement($sql)->execute([$this->getId(), Liaison::TYPE_DEPARTMENTAL]);
+        $result  = $db->createStatement($sql)->execute([$this->getCommittee_id()]);
         foreach ($result as $p) { $people[] = new Person($p); }
 
         return $people;

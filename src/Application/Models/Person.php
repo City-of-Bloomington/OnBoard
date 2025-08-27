@@ -6,11 +6,12 @@
 declare (strict_types=1);
 namespace Application\Models;
 
+use Application\Models\Notifications\Email as Notification;
+
 use Web\ActiveRecord;
 use Web\Auth\ExternalIdentity;
 use Web\Database;
 use Web\View;
-use PHPMailer\PHPMailer\PHPMailer;
 
 class Person extends ActiveRecord
 {
@@ -414,18 +415,12 @@ class Person extends ActiveRecord
                 $subject = APPLICATION_NAME.' Notification';
             }
 
-            $mail = new PHPMailer(true);
-            $mail->isHTML(false);
-            $mail->isSMTP();
-            $mail->Host        = SMTP_HOST;
-            $mail->Port        = SMTP_PORT;
-            $mail->SMTPSecure  = false;
-            $mail->SMTPAutoTLS = false;
-            $mail->Subject     = $subject;
-            $mail->Body        = $message;
-            $mail->setFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
-            $mail->addAddress($to);
-            $mail->send();
+            $mail = new Notification();
+            $mail->setSubject($subject);
+            $mail->setBody($message);
+            $mail->setEmailFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
+            $mail->setEmailTo($to);
+            $mail->save();
         }
     }
 

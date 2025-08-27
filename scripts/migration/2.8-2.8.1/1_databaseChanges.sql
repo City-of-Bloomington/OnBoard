@@ -58,3 +58,15 @@ alter table applicants drop interest;
 alter table applicants drop qualifications;
 
 drop table races;
+
+create table email_queue (
+    id        int unsigned not null primary key auto_increment,
+    emailfrom varchar(128) not null,
+    emailto   varchar(128) not null,
+    cc        varchar(128),
+    bcc       varchar(128),
+    subject   varchar(128) not null,
+    body      text,
+    created   datetime not null default CURRENT_TIMESTAMP,
+    sent      datetime
+);
