@@ -84,29 +84,31 @@ class Email extends ActiveRecord
 
     public function send()
     {
-        $to   = $this->getEmailto()   ? explode(';', $this->getEmailto()  ) : null;
-        $cc   = $this->getCc()        ? explode(';', $this->getCc()       ) : null;
-        $bcc  = $this->getBcc()       ? explode(';', $this->getBcc()      ) : null;
+        if (defined('SMTP_HOST') && defined('SMTP_PORT')) {
+            $to   = $this->getEmailto()   ? explode(';', $this->getEmailto()  ) : null;
+            $cc   = $this->getCc()        ? explode(';', $this->getCc()       ) : null;
+            $bcc  = $this->getBcc()       ? explode(';', $this->getBcc()      ) : null;
 
-        $mail = new PHPMailer(true);
-        $mail->isHTML(false);
-        $mail->isSMTP();
-        $mail->Host        = SMTP_HOST;
-        $mail->Port        = SMTP_PORT;
-        $mail->SMTPSecure  = false;
-        $mail->SMTPAutoTLS = false;
-        $mail->Subject     = $this->getSubject();
-        $mail->Body        = $this->getBody();
-        $mail->setFrom($this->getFrom());
+            $mail = new PHPMailer(true);
+            $mail->isHTML(false);
+            $mail->isSMTP();
+            $mail->Host        = SMTP_HOST;
+            $mail->Port        = SMTP_PORT;
+            $mail->SMTPSecure  = false;
+            $mail->SMTPAutoTLS = false;
+            $mail->Subject     = $this->getSubject();
+            $mail->Body        = $this->getBody();
+            $mail->setFrom($this->getEmailFrom());
 
-        if ($to  ) { foreach ($to   as $a) { $mail->addAddress($a); }}
-        if ($cc  ) { foreach ($cc   as $c) { $mail->addCC($c);      }}
-        if ($bcc ) { foreach ($bcc  as $c) { $mail->addBCC($c);     }}
+            if ($to  ) { foreach ($to   as $a) { $mail->addAddress($a); }}
+            if ($cc  ) { foreach ($cc   as $c) { $mail->addCC($c);      }}
+            if ($bcc ) { foreach ($bcc  as $c) { $mail->addBCC($c);     }}
 
-        $mail->send();
+            $mail->send();
 
-        $db  = Database::getConnect();
-        $sql = 'update email_queue set sent=now() where id=?';
-        $db->query($sql)->execute([$this->getId()]);
+            $db  = Database::getConnection();
+            $sql = 'update email_queue set sent=now() where id=?';
+            $db->query($sql)->execute([$this->getId()]);
+        }
     }
 }

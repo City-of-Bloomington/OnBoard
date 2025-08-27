@@ -10,6 +10,30 @@ use Laminas\Db\Sql\Select;
 
 class EmailQueue extends TableGateway
 {
-	public function __construct() { parent::__construct('email_queue', __namespace__.'\Email'); }
+    const TABLE = 'email_queue';
+
+    public function __construct() { parent::__construct('email_queue', __namespace__.'\Email'); }
 	protected $columns = ['email', 'person_id', 'main'];
+
+    public function find($fields=null, $order='id', $paginated=false, $limit=null)
+    {
+        $select = new Select(self::TABLE);
+        if ($fields) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
+                    case 'sent':
+                        if (!$v) {
+                            $select->where(['sent is null']);
+                        }
+                        else {
+                            $select->where(['sent is not null']);
+                        }
+                    break;
+                    default:
+                        $select->where([$k=>$v]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
 }

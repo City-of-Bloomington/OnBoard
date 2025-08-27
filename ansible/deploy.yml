@@ -73,8 +73,9 @@
         dest: "{{ item.dest }}"
         mode: "0755"
       loop:
-        - { src: 'daily.sh',  dest: '/etc/cron.daily/backup.d/onboard' }
+        - { src: 'daily.sh',  dest: '/etc/cron.daily/onboard' }
         - { src: 'hourly.sh', dest: '/etc/cron.hourly/onboard' }
+        - { src: 'cron.sh',   dest: '/etc/cron.d/onboard' }
 
     - name: 'Update directory permissions'
       ansible.builtin.file:
