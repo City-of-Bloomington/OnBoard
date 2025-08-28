@@ -32,7 +32,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'id'                       => '\d+']);
 
 $map->attach('home.', '/', function ($r) {
-    $r->get('calendarhook', 'notifications', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
+    $r->get('calendarhook', 'google', Web\Meetings\CalendarHook\Controller::class)->allows(['POST']);
     $r->get ('index', '', Web\Committees\List\Controller::class);
 });
 

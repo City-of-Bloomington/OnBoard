@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2024 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -122,7 +122,7 @@ class GoogleGateway
         $opts  = [
             'id'         => $watch_id,
             'type'       => 'web_hook',
-            'address'    => BASE_URL.'/notifications',
+            'address'    => \Web\View::generateUrl('home.calendarhook'),
             'expiration' => $expiration.'000',
             'eventTypes' => 'default'
         ];
