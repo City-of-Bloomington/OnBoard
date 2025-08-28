@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -60,44 +60,36 @@ class Member extends ActiveRecord
         if (!$this->getPerson_id()) { throw new \Exception('missingPerson'); }
 
         $seat = $this->getSeat();
-        if ($seat && $seat->getType() === 'termed'
-            && !$this->getTerm_id()) {
-            throw new \Exception('missingTerm');
-        }
 
         if (!$this->getCommittee_id()) {
             if ($seat && $seat->getCommittee_id()) {
                 $this->setCommittee_id($seat->getCommittee_id());
             }
-            else {
-                throw new \Exception('missingCommittee');
-            }
+            else { throw new \Exception('missingCommittee'); }
         }
 
-        if ($this->getCommittee()->getType() === 'seated'
-            && !$this->getSeat_id()) {
+        if (!$seat && $this->getCommittee()->getType() == 'seated') {
             throw new \Exception('missingSeat');
         }
 
-        if (!$this->getStartDate()) {
-            throw new \Exception('missingRequiredFields');
+        $termStart = null;
+        $termEnd   = null;
+        if ($seat && $seat->getType() === 'termed') {
+            if (!$this->getTerm_id()) { throw new \Exception('missingTerm'); }
+            $termStart = new \DateTime($this->getTerm()->getStartDate());
+            $termEnd   = new \DateTime($this->getTerm()->getEndDate());
         }
 
-        if ($this->getEndDate()) {
-            $start = new \DateTime($this->getStartDate());
-            $end   = new \DateTime($this->  getEndDate());
-            $start->setTime(0,0,0,0);
-            $end  ->setTime(0,0,0,0);
+        if (!$this->getStartDate()) { throw new \Exception('missingRequiredFields'); }
+        $start = new \DateTime($this->getStartDate());
+        $start->setTime(0,0,0,0);
+        if ($termStart && $start < $termStart) { throw new \Exception('invalidStartDateBeforeTerm'); }
 
-            if ($end < $start) {
-                throw new \Exception('invalidEndDateBeforeStart');
-            }
-            if ($seat && $seat->getType() == 'termed') {
-                $te = new \DateTime($this->getTerm()->getEndDate());
-                if ($end > $te) {
-                    throw new \Exception('invalidEndDateAfterTerm');
-                }
-            }
+        if ($this->getEndDate()) {
+            $end = new \DateTime($this->  getEndDate());
+            $end->setTime(0,0,0,0);
+            if ($end < $start) { throw new \Exception('invalidEndDateBeforeStart'); }
+            if ($termEnd && $end > $termEnd) { throw new \Exception('invalidEndDateAfterTerm'); }
         }
 
         // Make sure this person is not serving overlapping terms for the same committee

@@ -42,7 +42,7 @@ class Controller extends \Web\Controller
                     header("Location: $url");
                     exit();
                 }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
             return new \Web\Alternates\Update\View($alternate);
