@@ -23,8 +23,11 @@ $ROUTE   = $matcher->match($request);
 
 if ($ROUTE) {
     foreach ($ROUTE->attributes as $k=>$v) { $_REQUEST[$k] = $v; }
-    list($resource, $permission) = explode('.', $ROUTE->name);
-    $role = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
+
+    $p = pathinfo($ROUTE->name);
+    $resource   = $p['filename'];
+    $permission = $p['extension'];
+    $role       = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
     if (   $ACL->hasResource($resource)
         && $ACL->isAllowed($role, $resource, $permission)) {
 
