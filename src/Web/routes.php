@@ -13,6 +13,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'appointer_id'             => '\d+',
               'committee_id'             => '\d+',
               'committeeStatute_id'      => '\d+',
+              'definition_id'            => '\d+',
               'department_id'            => '\d+',
               'legislation_id'           => '\d+',
               'legislationAction_id'     => '\d+',
@@ -28,6 +29,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'person_id'                => '\d+',
               'report_id'                => '\d+',
               'seat_id'                  => '\d+',
+              'subscription_id'          => '\d+',
               'term_id'                  => '\d+',
               'id'                       => '\d+']);
 
@@ -175,6 +177,15 @@ $map->attach('members.', '/members', function ($r) {
     $r->get('view',      '/{member_id}'          , Web\Members\Info\Controller::class);
 });
 
+$map->attach('notifications.', '/notifications', function ($r) {
+    $r->attach('definitions.', '/definitions', function ($r) {
+        $r->get('update', '/{definition_id}/update', Web\Notifications\Definitions\Update\Controller::class)->allows(['POST']);
+        $r->get('delete', '/{definition_id}/delete', Web\Notifications\Definitions\Delete\Controller::class);
+        $r->get('info',   '/{definition_id}',        Web\Notifications\Definitions\Info\Controller::class);
+        $r->get('add',    '/add',                   Web\Notifications\Definitions\Add\Controller::class)->allows(['POST']);
+        $r->get('index',  '',                       Web\Notifications\Definitions\List\Controller::class);
+    });
+});
 
 $map->attach('offices.', '/offices', function ($r) {
     $r->get('update', '/{office_id}/update', Web\Offices\Update\Controller::class)->allows(['POST']);

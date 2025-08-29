@@ -942,3 +942,17 @@ msgstr "Oldest"
 
 msgid "sort_date_desc"
 msgstr "Latest"
+
+msgid "notification_definition"
+msgid_plural "notification_definitions"
+msgstr[0] "Notification"
+msgstr[1] "Notifications"
+
+msgid "notification_definition_add"
+msgstr "Add Notification"
+
+msgid "notification_definition_edit"
+msgstr "Edit Notification"
+
+msgid "notification_definition_delete"
+msgstr "Delete Notification"

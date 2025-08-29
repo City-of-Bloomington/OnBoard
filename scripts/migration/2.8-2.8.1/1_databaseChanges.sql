@@ -70,3 +70,21 @@ create table email_queue (
     created   datetime not null default CURRENT_TIMESTAMP,
     sent      datetime
 );
+
+create table notification_definitions (
+    id           int unsigned not null primary key auto_increment,
+    event        varchar(32)  not null,
+    committee_id int unsigned,
+    template     text         not null,
+    foreign key (committee_id) references committees(id)
+);
+
+create table notification_subscriptions (
+    person_id       int unsigned not null,
+    notification_id int unsigned not null,
+    committee_id    int unsigned not null,
+    unique (person_id, notification_id, committee_id),
+    foreign key (      person_id) references people(id),
+    foreign key (notification_id) references notification_definitions(id),
+    foreign key (   committee_id) references committees(id)
+);
