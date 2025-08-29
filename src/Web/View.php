@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2006-2024 City of Bloomington, Indiana
+ * @copyright 2006-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
@@ -17,17 +17,17 @@ use Twig\TwigTest;
 
 abstract class View
 {
-	protected $vars         = [];
+    protected $vars         = [];
     protected $twig;
     public    $outputFormat = 'html';
 
-	abstract public function render();
+    abstract public function render();
 
-	/**
-	 * Configures the gettext translations
-	 */
-	public function __construct(array $vars=null)
-	{
+    /**
+     * Configures the gettext translations
+     */
+    public function __construct(array $vars=null)
+    {
         // Twig templates
         $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
         $tpl = [];
@@ -41,8 +41,8 @@ abstract class View
             }
         }
 
-		// Twig Templates
-		$tpl[]      = APPLICATION_HOME.'/templates';
+        // Twig Templates
+        $tpl[]      = APPLICATION_HOME.'/templates';
         $loader     = new FilesystemLoader($tpl);
         $this->twig = new Environment($loader, ['cache'            => false,
                                                 'strict_variables' => true,
@@ -83,52 +83,52 @@ abstract class View
                 }
             }
         });
-	}
+    }
 
-	/**
-	 * Magic Method for setting object properties
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 */
-	public function __set($key,$value) {
-		$this->vars[$key] = $value;
-	}
-	/**
-	 * Magic method for getting object properties
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		if (isset($this->vars[$key])) {
-			return $this->vars[$key];
-		}
-		return null;
-	}
+    /**
+     * Magic Method for setting object properties
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function __set($key,$value) {
+        $this->vars[$key] = $value;
+    }
+    /**
+     * Magic method for getting object properties
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (isset($this->vars[$key])) {
+            return $this->vars[$key];
+        }
+        return null;
+    }
 
-	/**
-	 * @param string $key
-	 * @return boolean
-	 */
-	public function __isset($key) {
-		return array_key_exists($key,$this->vars);
-	}
+    /**
+     * @param string $key
+     * @return boolean
+     */
+    public function __isset($key) {
+        return array_key_exists($key,$this->vars);
+    }
 
-	/**
-	 * Cleans strings for output
-	 *
-	 * There are more bad characters than htmlspecialchars deals with.  We just want
-	 * to add in some other characters to clean.  While here, we might as well
-	 * have it trim out the whitespace too.
-	 *
-	 * @param  array|string $input
-	 * @param  int          $quotes Optional, the desired constant to use for the htmlspecidalchars call
-	 * @return string
-	 */
-	public static function escape($input, $quotes=ENT_QUOTES)
-	{
+    /**
+     * Cleans strings for output
+     *
+     * There are more bad characters than htmlspecialchars deals with.  We just want
+     * to add in some other characters to clean.  While here, we might as well
+     * have it trim out the whitespace too.
+     *
+     * @param  array|string $input
+     * @param  int          $quotes Optional, the desired constant to use for the htmlspecidalchars call
+     * @return string
+     */
+    public static function escape($input, $quotes=ENT_QUOTES)
+    {
         if ($input) {
             if (is_array($input)) {
                 foreach ($input as $key=>$value) {
@@ -140,17 +140,17 @@ abstract class View
             }
         }
 
-		return $input;
-	}
+        return $input;
+    }
 
-	/**
-	 * Reverses the escaping done by View::escape()
-	 *
-	 * @param array|string $input
-	 * @return string
-	 */
-	public static function unescape($input)
-	{
+    /**
+     * Reverses the escaping done by View::escape()
+     *
+     * @param array|string $input
+     * @return string
+     */
+    public static function unescape($input)
+    {
         if (is_array($input)) {
             foreach ($input as $key=>$value) {
                 $input[$key] = self::unescape($value);
@@ -160,7 +160,7 @@ abstract class View
             $input = htmlspecialchars_decode(trim($input), ENT_QUOTES);
         }
         return $input;
-	}
+    }
 
     /**
      * Returns the gettext translation of msgid
@@ -258,13 +258,13 @@ abstract class View
         return new Url(Url::current_url(BASE_HOST));
     }
 
-	public static function isAllowed(string $resource, ?string $action=null): bool
+    public static function isAllowed(string $resource, ?string $action=null): bool
     {
-		global $ACL;
-		$role = 'Anonymous';
-		if (isset  ($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
-			$role = $_SESSION['USER']->getRole();
-		}
-		return $ACL->isAllowed($role, $resource, $action);
+        global $ACL;
+        $role = 'Anonymous';
+        if (isset  ($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
+            $role = $_SESSION['USER']->getRole();
+        }
+        return $ACL->isAllowed($role, $resource, $action);
     }
 }
