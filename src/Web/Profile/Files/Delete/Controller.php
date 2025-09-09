@@ -12,12 +12,16 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
+        $return_url = \Web\View::generateUrl('profile.index');
+
         if (!empty($_REQUEST['applicantFile_id'])) {
             try {
                 $file = new ApplicantFile($_REQUEST['applicantFile_id']);
-                $file->delete();
 
-                $return_url = \Web\View::generateUrl('profile.index');
+                if ($file->getPerson_id() == $_SESSION['USER']->getId()) {
+                    $file->delete();
+                }
+
                 header("Location: $return_url");
                 exit();
             }

@@ -21,6 +21,10 @@ class Controller extends \Web\Controller
         if (!isset($phone)) { return new \Web\Views\NotFoundView(); }
 
         $return_url = \Web\View::generateUrl('profile.index');
+        if ($phone->getPerson_id() != $_SESSION['USER']->getId()) {
+            header("Location: $return_url");
+            exit();
+        }
 
         if (isset($_POST['number'])) {
             $phone->handleUpdate($_POST);

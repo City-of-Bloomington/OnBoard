@@ -20,8 +20,12 @@ class Controller extends \Web\Controller
 
         if (!isset($email)) { return new \Web\Views\NotFoundView(); }
 
-
         $return_url = \Web\View::generateUrl('profile.index');
+        if ($email->getPerson_id() != $_SESSION['USER']->getId()) {
+            header("Location: $return_url");
+            exit();
+        }
+
         if (isset($_POST['email'])) {
             $email->handleUpdate($_POST);
 

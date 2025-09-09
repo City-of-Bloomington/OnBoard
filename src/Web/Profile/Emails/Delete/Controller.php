@@ -13,17 +13,19 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         if (!empty($params['email_id'])) {
-            try { $email = new Email($params['email_id']); }
+            try {
+                $email = new Email($params['email_id']);
+                if ($email->getPerson_id() == $_SESSION['USER']->getId()) {
+                    $email->delete();
+                }
+            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+
+            $return_url = \Web\View::generateUrl('profile.index');
+            header("Location: $return_url");
+            exit();
         }
 
-        if (!isset($email)) { return new \Web\Views\NotFoundView(); }
-
-        try { $email->delete(); }
-        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-
-        $return_url = \Web\View::generateUrl('profile.index');
-        header("Location: $return_url");
-        exit();
+        return new \Web\Views\NotFoundView();
     }
 }

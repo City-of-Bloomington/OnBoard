@@ -15,7 +15,9 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['applicantFile_id'])) {
             try {
                 $file = new ApplicantFile($_REQUEST['applicantFile_id']);
-                $file->sendToBrowser();
+                if ($file->getPerson_id() == $_SESSION['USER']->getId()) {
+                    $file->sendToBrowser();
+                }
             }
             catch (\Exception $e) { }
         }
