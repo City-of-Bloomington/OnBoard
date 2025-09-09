@@ -438,4 +438,22 @@ class Person extends ActiveRecord
         return $files;
     }
 
+    public function hasNotificationSubscription(string $event, int $committee_id): ?Notifications\Subscription
+    {
+        $t = new Notifications\SubscriptionTable();
+        $l = $t->find(['person_id'    => $this->getId(),
+                       'committee_id' => $committee_id,
+                       'event'        => $event]);
+        if (count($l)) { return $l->current(); }
+        return null;
+    }
+
+    public function getNotificationSubscriptions(): array
+    {
+        $sub = [];
+        $t = new Notifications\SubscriptionTable();
+        $l = $t->find(['person_id'=>$this->getId()]);
+        foreach ($l as $s) { $sub[] = $s; }
+        return $sub;
+    }
 }

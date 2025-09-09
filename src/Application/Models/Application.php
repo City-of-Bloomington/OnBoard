@@ -94,9 +94,9 @@ class Application extends ActiveRecord
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getId()           { return parent::get('id');   }
-    public function getCommittee_id() { return parent::get('committee_id'); }
-    public function getPerson_id()    { return parent::get('person_id'); }
+    public function getId()           { return (int)parent::get('id');   }
+    public function getCommittee_id() { return (int)parent::get('committee_id'); }
+    public function getPerson_id()    { return (int)parent::get('person_id'); }
     public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
     public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
     public function getCreated ($f=null) { return parent::getDateData('created',  $f); }

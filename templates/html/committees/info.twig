@@ -10,10 +10,12 @@
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <h2>{{ _('committee_info') }}</h2>
-    {% if actionLinks %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
+    <header>
+        <h2>{{ _('committee_info') }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </header>
 
     <dl>
         {% if committee.getType()          %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('type'         ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getType()               }}</dd></div>{% endif %}

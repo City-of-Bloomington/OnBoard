@@ -80,7 +80,7 @@ class Committee extends ActiveRecord
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getId()                { return parent::get('id');               }
+    public function getId()                { return (int)parent::get('id');          }
     public function getType()              { return parent::get('type');             }
     public function getName()              { return parent::get('name');             }
     public function getStatutoryName()     { return parent::get('statutoryName');    }

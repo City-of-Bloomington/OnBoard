@@ -228,6 +228,10 @@ $map->attach('profile.', '/profile', function ($r) {
         $r->get('update',   '/{applicantFile_id}/update',   Web\Profile\Files\Update\Controller::class);
         $r->get('add',      '/add',                         Web\Profile\Files\Add\Controller::class)->allows(['POST']);
     });
+    $r->attach('notifications.', '/notifications', function ($r) {
+        $r->get('delete', '/{subscription_id}/delete', Web\Profile\Notifications\Delete\Controller::class);
+        $r->get('add',    '/add',                      Web\Profile\Notifications\Add\Controller::class)->allows(['POST']);
+    });
     $r->get('update', '/update', Web\Profile\Update\Controller::class)->allows(['POST']);
     $r->get('index',  '',        Web\Profile\Info\Controller::class);
 });

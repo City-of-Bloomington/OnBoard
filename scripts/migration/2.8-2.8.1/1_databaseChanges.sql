@@ -82,11 +82,11 @@ create table notification_definitions (
 );
 
 create table notification_subscriptions (
-    person_id       int unsigned not null,
-    notification_id int unsigned not null,
-    committee_id    int unsigned not null,
-    unique (person_id, notification_id, committee_id),
-    foreign key (      person_id) references people(id),
-    foreign key (notification_id) references notification_definitions(id),
-    foreign key (   committee_id) references committees(id)
+    id            int unsigned not null primary key auto_increment,
+    person_id     int unsigned not null,
+    committee_id  int unsigned not null,
+    event         varchar(128) not null,
+    unique (person_id, committee_id, event),
+    foreign key (   person_id) references people(id),
+    foreign key (committee_id) references committees(id)
 );

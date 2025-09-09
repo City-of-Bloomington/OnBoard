@@ -956,3 +956,14 @@ msgstr "Edit Notification"
 
 msgid "notification_definition_delete"
 msgstr "Delete Notification"
+
+msgid "notification_subscription"
+msgid_plural "notification_subscriptions"
+msgstr[0] "Notification"
+msgstr[1] "Notifications"
+
+msgid "notification_subscription_add"
+msgstr "Subscribe"
+
+msgid "notification_subscription_delete"
+msgstr "Unsubscribe"

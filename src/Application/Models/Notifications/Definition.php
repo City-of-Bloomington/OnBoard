@@ -15,8 +15,6 @@ class Definition extends \Web\ActiveRecord
 
     private const COMMITTEE = 'Application\Models\Committee';
 
-
-
     /**
      * Populates the object with data
      *
@@ -102,7 +100,22 @@ class Definition extends \Web\ActiveRecord
     }
 
     /**
+     * @return array    An array of people objects
+     */
+    public function getSubscribers(int $committee_id): array
+    {
+        $o = [];
+        $t = new SubscriptionTable();
+        $l = $t->find(['committee_id'=>$committee_id, 'event'=>$this->getEvent()]);
+        foreach ($l as $s) { $o[] = $s->getPerson(); }
+        return $o;
+    }
+
+    /**
      * An array of people objects
+     *
+     * @param array  $people  Non-subscribers to include in the notification
+     * @param object $model   Object to use for template variables
      */
     public function send(array $people, $model)
     {
@@ -110,8 +123,10 @@ class Definition extends \Web\ActiveRecord
         $b = new \Web\Notifications\View($this->getBody(),    $model);
         $subject = $s->render();
         $body    = $b->render();
+        $subs    = $this->getSubscribers($model->getCommittee_id());
+        $rec     = array_merge($subs, $people);
 
-        foreach ($people as $p) {
+        foreach ($rec as $p) {
             $to = $p->getEmail();
             if ($to) {
                 $mail = new Email();
@@ -123,5 +138,4 @@ class Definition extends \Web\ActiveRecord
             }
         }
     }
-
 }

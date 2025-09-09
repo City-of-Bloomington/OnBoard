@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Committees\Applications;
 
 use Application\Models\Committee;
+use Application\Models\Notifications\SubscriptionTable;
 
 class ReportView extends \Web\View
 {
@@ -19,13 +20,46 @@ class ReportView extends \Web\View
             'committee'             => $committee,
             'seats'                 => $seats,
             'applications_current'  => self::applications_current ($committee),
-            'applications_archived' => self::applications_archived($committee)
+            'applications_archived' => self::applications_archived($committee),
+            'actionLinks'           => self::actionLinks($committee)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/applications/reportForm.twig', $this->vars);
+    }
+
+    private static function actionLinks(Committee $c): array
+    {
+        $ret     = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
+        $event = 'Web\Applicants\Apply::notice';
+        $sub   = null;
+
+        $links = [];
+        if ( isset($_SESSION['USER'])) {
+            $sub = $_SESSION['USER']->hasNotificationSubscription($event, $c->getId());
+            if ($sub) {
+                if (parent::isAllowed('profile.notifications', 'delete')) {
+                    $links[] = [
+                        'url'   => parent::generateUri('profile.notifications.delete', ['subscription_id'=>$sub->getId()])."?return_url=$ret",
+                        'label' => parent::_('notification_subscription_delete'),
+                        'class' => 'notifications_off'
+                    ];
+                }
+            }
+            else {
+                if (parent::isAllowed('profile.notifications', 'add')) {
+                    $params  = http_build_query(['committee_id'=>$c->getId(), 'event'=>$event, 'return_url'=>$ret]);
+                    $links[] = [
+                        'url'   => parent::generateUri('profile.notifications.add')."?$params",
+                        'label' => parent::_('notification_subscription_add'),
+                        'class' => 'notifications'
+                    ];
+                }
+            }
+        }
+        return $links;
     }
 
     private static function applications_current(Committee $committee): array

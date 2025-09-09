@@ -5,11 +5,18 @@
  * @param array     seats
  * @param array     applications_current
  * @param array     applications_archived
+ * @param array     actionLinks
  #}
 {% extends "html/layouts/committee.twig" %}
 {% block content %}
 <section>
-    <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
+    <header>
+        <h2>{{ _('applications_reportForm_title', 'messages') }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </header>
+
     <form action="{{ uri('applications.report') }}">
         <fieldset   class="usa-fieldset margin-bottom-2">
             <legend class="usa-legend">{{ _(['seat', 'seats', 10 ]) }}</legend>

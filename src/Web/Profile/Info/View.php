@@ -23,6 +23,7 @@ class View extends \Web\View
             'applicantFiles'       => self::applicantFiles($p),
             'members'              => PeopleView::members ($p),
             'liaisons'             => PeopleView::liaisons($p),
+            'subscriptions'        => self::subscriptions ($p)
         ];
     }
 
@@ -54,6 +55,28 @@ class View extends \Web\View
                 'updated'     => $f->getUpdated(DATE_FORMAT),
                 'actionLinks' => $links
             ];
+        }
+        return $data;
+    }
+
+    private static function subscriptions(Person $p): array
+    {
+        $canDelete = parent::isAllowed('profile.notifications', 'delete');
+        $data = [];
+        foreach ($p->getNotificationSubscriptions() as $s) {
+            $d = [
+                'event'        => $s->getEvent(),
+                'committee_id' => $s->getCommittee_id(),
+                'committee'    => $s->getCommittee()->getName()
+            ];
+            if ($canDelete) {
+                $d['actions'][] = [
+                    'url'   => parent::generateUri('profile.notifications.delete', ['subscription_id'=>$s->getId()]),
+                    'label' => parent::_('notification_subscription_delete'),
+                    'class' => 'notifications_off'
+                ];
+            }
+            $data[] = $d;
         }
         return $data;
     }

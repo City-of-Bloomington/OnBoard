@@ -7,6 +7,7 @@
  * @param array  members
  * @param array  liaisons
  * @param array  applicantFiles
+ * @param array  subscriptions
  #}
 {% extends "html/layouts/default.twig" %}
 {% import 'html/macros/forms.twig' as forms %}
@@ -69,6 +70,21 @@
 
 {% if liaisons %}
 {{ include('html/people/partials/liaisons.twig') }}
+{% endif %}
+
+{% if subscriptions %}
+<section class="grid-container">
+    <header><h2>{{ _(['notification_subscription', 'notification_subscriptions', 10]) }}</h2></header>
+
+    <table>
+    {% for s in subscriptions %}
+    <tr><td>{{ s.event     }}</td>
+        <td>{{ s.committee }}</td>
+        <td>{% if s.actions is defined %}{{ include('html/partials/actionLinks.twig', { actionLinks: s.actions }) }}{% endif %}
+    </tr>
+    {% endfor %}
+    </table>
+</section>
 {% endif %}
 
 {% endblock %}
