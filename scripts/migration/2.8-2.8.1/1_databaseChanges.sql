@@ -73,10 +73,12 @@ create table email_queue (
 
 create table notification_definitions (
     id           int unsigned not null primary key auto_increment,
-    event        varchar(32)  not null,
+    event        varchar(128) not null,
     committee_id int unsigned,
-    template     text         not null,
-    foreign key (committee_id) references committees(id)
+    subject      varchar(128) not null,
+    body         text         not null,
+    foreign key (committee_id) references committees(id),
+    unique (event, committee_id)
 );
 
 create table notification_subscriptions (

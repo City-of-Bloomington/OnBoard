@@ -2,6 +2,7 @@
  * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Definition definition
+ * @param array      events
  * @param array      committees
  #}
 {% extends "html/layouts/default.twig" %}
@@ -14,9 +15,10 @@
 
     <form class="usa-form" method="post">
         <fieldset class="usa-fieldset">
-            {{ forms.field_text  (   'event',     'event',        _('event'),     definition.getEvent(), true ) }}
+            {{ forms.field_select(   'event',     'event',        _('event'),     definition.getEvent(), events, true ) }}
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), definition.getCommittee_id(), committees ) }}
-            {{ forms.field_textarea('template',   'template',     _('template'),  definition.getTemplate() ) }}
+            {{ forms.field_text  ('subject',      'subject',      _('subject'),   definition.getSubject(), true ) }}
+            {{ forms.field_textarea( 'body',      'body',         _('body'),      definition.getBody(),    true ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(return_url, _('cancel') ) }}

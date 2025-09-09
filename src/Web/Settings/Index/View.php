@@ -42,6 +42,11 @@ class View extends \Web\View
                 ];
             }
         }
+
+        $links[] = [
+            'url' => parent::generateUri('notifications.definitions.index'),
+            'label' => $this->_(['notification_definition', 'notification_definitions', 10])
+        ];
         return $links;
     }
 }

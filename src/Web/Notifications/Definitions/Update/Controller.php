@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
 
         $r = \Web\View::generateUrl('notifications.definitions.info', ['definition_id'=>$d->getId()]);
 
-        if (isset($_POST['template'])) {
+        if (isset($_POST['body'])) {
             $d->handleUpdate($_POST);
 
             try {

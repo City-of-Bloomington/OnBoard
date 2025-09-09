@@ -60,7 +60,9 @@ class Definition extends \Web\ActiveRecord
      */
     public function validate()
     {
-        if (!$this->getEvent()) { throw new \Exception('missingRequiredFields'); }
+        if (!$this->getEvent() || !$this->getSubject() || !$this->getBody()) {
+            throw new \Exception('missingRequiredFields');
+        }
     }
 
     public function save() { parent::save(); }
@@ -71,12 +73,14 @@ class Definition extends \Web\ActiveRecord
     //----------------------------------------------------------------
     public function getId()           { return parent::get('id'); }
     public function getEvent()        { return parent::get('event'); }
-    public function getTemplate()     { return parent::get('template'); }
+    public function getSubject()      { return parent::get('subject'); }
+    public function getBody()         { return parent::get('body'); }
     public function getCommittee_id() { return parent::get('committee_id'); }
     public function getCommittee()    { return parent::getForeignKeyObject(self::COMMITTEE, 'committee_id'); }
 
     public function setEvent   ($s) { parent::set('event',    $s); }
-    public function setTemplate($s) { parent::set('template', $s); }
+    public function setSubject ($s) { parent::set('subject',  $s); }
+    public function setBody    ($s) { parent::set('body',     $s); }
     public function setCommittee_id($i) { parent::setForeignKeyField (self::COMMITTEE, 'committee_id', $i); }
     public function setCommittee   ($o) { parent::setForeignKeyObject(self::COMMITTEE, 'committee_id', $o); }
 
@@ -87,6 +91,37 @@ class Definition extends \Web\ActiveRecord
     {
         $this->setEvent       ($post['event'       ]);
         $this->setCommittee_id($post['committee_id']);
-        $this->setTemplate    ($post['template'    ]);
+        $this->setSubject     ($post['subject'     ]);
+        $this->setBody        ($post['body'        ]);
     }
+
+    public function render($model): string
+    {
+        $v = new \Web\Notifications\View($this->getTemplate(), $model);
+        return $v->render();
+    }
+
+    /**
+     * An array of people objects
+     */
+    public function send(array $people, $model)
+    {
+        $s = new \Web\Notifications\View($this->getSubject(), $model);
+        $b = new \Web\Notifications\View($this->getBody(),    $model);
+        $subject = $s->render();
+        $body    = $b->render();
+
+        foreach ($people as $p) {
+            $to = $p->getEmail();
+            if ($to) {
+                $mail = new Email();
+                $mail->setSubject($subject);
+                $mail->setBody($body);
+                $mail->setEmailFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
+                $mail->setEmailTo($to);
+                $mail->save();
+            }
+        }
+    }
+
 }

@@ -16,7 +16,7 @@ class Controller extends \Web\Controller
         $n = new Definition();
         $r = \Web\View::generateUri('notifications.definitions.index');
 
-        if (isset($_POST['template'])) {
+        if (isset($_POST['body'])) {
             $n->handleUpdate($_POST);
             try {
                 $n->save();

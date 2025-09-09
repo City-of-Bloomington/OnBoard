@@ -6,8 +6,6 @@
 declare (strict_types=1);
 namespace Application\Models;
 
-use Application\Models\Notifications\Email as Notification;
-
 use Web\ActiveRecord;
 use Web\Auth\ExternalIdentity;
 use Web\Database;
@@ -405,23 +403,6 @@ class Person extends ActiveRecord
         $id = $this->getId();
         $r  = $db->query($sql, [$id, $id, $id, $id]);
         return count($r) ? true : false;
-    }
-
-    public function sendNotification(string $message, string $subject=null, string $replyTo=null)
-    {
-        $to = $this->getEmail();
-        if ($to) {
-            if (!$subject) {
-                $subject = APPLICATION_NAME.' Notification';
-            }
-
-            $mail = new Notification();
-            $mail->setSubject($subject);
-            $mail->setBody($message);
-            $mail->setEmailFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
-            $mail->setEmailTo($to);
-            $mail->save();
-        }
     }
 
     /**

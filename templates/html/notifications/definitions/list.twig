@@ -15,11 +15,11 @@
 
     <table>
     {% for d in definitions %}
-    <tr><td><a href="{{ uri('notifications.definitions.update', { definition_id: d.getId() }) }}">
+    <tr><td><a href="{{ uri('notifications.definitions.info', { definition_id: d.getId() }) }}">
                 {{ d.getEvent() }}
             </a>
         </td>
-        <td>{{ d.getCommittee().getName() }}</td>
+        <td>{% if d.getCommittee() %}{{ d.getCommittee().getName() }}{% endif %}</td>
     </tr>
     {% endfor %}
     </table>

@@ -8,6 +8,8 @@ namespace Web\Applicants\Apply;
 
 use Application\Models\Application;
 use Application\Models\Committee;
+use Application\Models\Notifications\Definition;
+use Application\Models\Notifications\DefinitionTable;
 
 class Controller extends \Web\Controller
 {
@@ -32,7 +34,7 @@ class Controller extends \Web\Controller
         if (isset($_POST['interest'])) {
             try {
                 $application->handleUpdate($_POST);
-                self::notifyLiaisons($application);
+                self::notify($application);
                 $application->save();
                 return new Success($application);
             }
@@ -42,16 +44,27 @@ class Controller extends \Web\Controller
         return new View($_POST ?? [], $committee);
     }
 
-    private static function notifyLiaisons(Application $a)
+    private static function notify(Application $a)
     {
-        $people = $a->getPeopleToNotify();
-        if (count($people)) {
-            $email   = new Email($a);
-            $message = $email->render();
-            $subject = sprintf($email->_('board_application_subject', 'messages'), $a->getCommittee()->getName());
-            foreach ($people as $p) {
-                $p->sendNotification($message, $subject);
-            }
+        $n = self::definition(__NAMESPACE__.'::confirmation', $a);
+        if (isset($n)) { $n->send([$a->getPerson()], $a); }
+
+        $p = $a->getPeopleToNotify();
+        $n = self::definition(__NAMESPACE__.'::notice', $a);
+        if (isset($n) && count($p)) {
+            $n->send($p, $a);
         }
+    }
+
+    private static function definition(string $event, Application $a): ?Definition
+    {
+        $t = new DefinitionTable();
+        $l = $t->find(['committee_id'=>$a->getCommittee_id(), 'event'=>$event]);
+        if (count($l)) { return $l->current(); }
+        else {
+            $l = $t->find(['committee_id'=>null, 'event'=>$event]);
+            if (count($l)) { return $l->current(); }
+        }
+        return null;
     }
 }

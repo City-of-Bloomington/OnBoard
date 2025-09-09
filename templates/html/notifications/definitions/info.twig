@@ -9,12 +9,13 @@
 <section class="grid-container">
     <header>
         <h1>{{ definition.getEvent() }}</h1>
-        <h2>{{ definition.getCommittee().getName() }}</h2>
+        {% if definition.getCommittee() %}<h2>{{ definition.getCommittee().getName() }}</h2>{% endif %}
     </header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
 
-    <div>{{ definition.getTemplate() }}</div>
+    <h3>{{ definition.getSubject() }}</h3>
+    <div>{{ definition.getBody() }}</div>
 </section>
 {% endblock %}

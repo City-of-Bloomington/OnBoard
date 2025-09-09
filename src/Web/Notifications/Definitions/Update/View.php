@@ -8,6 +8,7 @@ namespace Web\Notifications\Definitions\Update;
 
 use Application\Models\CommitteeTable;
 use Application\Models\Notifications\Definition;
+use Application\Models\Notifications\DefinitionTable;
 
 class View extends \Web\View
 {
@@ -17,6 +18,7 @@ class View extends \Web\View
 
         $this->vars = [
             'definition' => $d,
+            'events'     => self::events(),
             'committees' => self::committees(),
             'return_url' => $return_url
         ];
@@ -38,6 +40,15 @@ class View extends \Web\View
         $t = new CommitteeTable();
         $l = $t->find();
         foreach ($l as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
+    }
+
+    private static function events(): array
+    {
+        $o = [['value'=>'']];
+        foreach (DefinitionTable::events() as $e) {
+            $o[] = ['value'=>$e];
+        }
         return $o;
     }
 }
