@@ -20,13 +20,13 @@
 
 <section class="grid-container">
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
-    {{ forms.actionLink(uri('profile.email_add', { person_id: person.getId() }), _('email_add'), 'add') }}
+    {{ forms.actionLink(uri('profile.emails.add', { person_id: person.getId() }), _('email_add'), 'add') }}
     <table>
     {% for e in person.getEmails() %}
     <tr><td>{{ e.email }}</td>
         <td>{% if e.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-        <td>{{ forms.actionLink(uri('profile.email_update', { email_id: e.id }), _('email_edit'  ), 'edit'  ) }}
-            {{ forms.actionLink(uri('profile.email_delete', { email_id: e.id }), _('email_delete'), 'delete') }}
+        <td>{{ forms.actionLink(uri('profile.emails.update', { email_id: e.id }), _('email_edit'  ), 'edit'  ) }}
+            {{ forms.actionLink(uri('profile.emails.delete', { email_id: e.id }), _('email_delete'), 'delete') }}
         </td>
     </tr>
     {% endfor %}
@@ -35,13 +35,13 @@
 
 <section class="grid-container">
     <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
-    {{ forms.actionLink(uri('profile.phone_add'), _('phone_add'), 'add') }}
+    {{ forms.actionLink(uri('profile.phones.add'), _('phone_add'), 'add') }}
     <table>
     {% for p in person.getPhones() %}
     <tr><td>{{ p.number }}</td>
         <td>{% if p.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-        <td>{{ forms.actionLink(uri('profile.phone_update', { phone_id: p.id }), _('phone_edit'  ), 'edit'  ) }}
-            {{ forms.actionLink(uri('profile.phone_delete', { phone_id: p.id }), _('phone_delete'), 'delete') }}
+        <td>{{ forms.actionLink(uri('profile.phones.update', { phone_id: p.id }), _('phone_edit'  ), 'edit'  ) }}
+            {{ forms.actionLink(uri('profile.phones.delete', { phone_id: p.id }), _('phone_delete'), 'delete') }}
         </td>
     </tr>
     {% endfor %}
@@ -51,13 +51,13 @@
 <section class="grid-container">
     <header><h2>{{ _('applicantFile') }}</h2></header>
     {% if not applicantFiles %}
-    {{ forms.actionLink(uri('profile.file_add'), _('add'), 'add') }}
+    {{ forms.actionLink(uri('profile.files.add'), _('add'), 'add') }}
     {% endif %}
     <table>
     {% for f in person.getFiles() %}
-    <tr><td>{{ forms.actionLink(uri('profile.file_download', { applicantFile_id: f.id }), f.filename, 'download') }}</td>
+    <tr><td>{{ forms.actionLink(uri('profile.files.download', { applicantFile_id: f.id }), f.filename, 'download') }}</td>
         <td>{{ f.updated|date(DATE_FORMAT) }}</td>
-        <td>{{ forms.actionLink(uri('profile.file_delete', { applicantFile_id: f.id }), _('delete'), 'delete' ) }}</td>
+        <td>{{ forms.actionLink(uri('profile.files.delete', { applicantFile_id: f.id }), _('delete'), 'delete' ) }}</td>
     </tr>
     {% endfor %}
     </table>

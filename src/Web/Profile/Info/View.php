@@ -43,7 +43,7 @@ class View extends \Web\View
             $links = [];
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('profile.file_delete', ['applicantFile_id'=>$f->getId()]),
+                    'url'   => parent::generateUri('profile.files.delete', ['applicantFile_id'=>$f->getId()]),
                     'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];

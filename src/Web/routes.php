@@ -212,18 +212,24 @@ $map->attach('phones.', '/people/{person_id}/phones', function ($r) {
 });
 
 $map->attach('profile.', '/profile', function ($r) {
-    $r->get('email_delete',  '/emails/{email_id}/delete', Web\Profile\Emails\Delete\Controller::class);
-    $r->get('email_update',  '/emails/{email_id}/update', Web\Profile\Emails\Update\Controller::class)->allows(['POST']);
-    $r->get('email_add',     '/emails/add',               Web\Profile\Emails\Add\Controller::class)->allows(['POST']);
-    $r->get('phone_delete',  '/phones/{phone_id}/delete', Web\Profile\Phones\Delete\Controller::class);
-    $r->get('phone_update',  '/phones/{phone_id}/update', Web\Profile\Phones\Update\Controller::class)->allows(['POST']);
-    $r->get('phone_add',     '/phones/add',               Web\Profile\Phones\Add\Controller::class)->allows(['POST']);
-    $r->get('file_download', '/files/{applicantFile_id}/download', Web\Profile\Files\Download\Controller::class);
-    $r->get('file_delete',   '/files/{applicantFile_id}/delete',   Web\Profile\Files\Delete\Controller::class);
-    $r->get('file_update',   '/files/{applicantFile_id}/update',   Web\Profile\Files\Update\Controller::class);
-    $r->get('file_add',      '/files/add',                         Web\Profile\Files\Add\Controller::class)->allows(['POST']);
-    $r->get('update',        '/update', Web\Profile\Update\Controller::class)->allows(['POST']);
-    $r->get('index',         '',        Web\Profile\Info\Controller::class);
+    $r->attach('emails.', '/emails', function ($r) {
+        $r->get('delete',  '/{email_id}/delete', Web\Profile\Emails\Delete\Controller::class);
+        $r->get('update',  '/{email_id}/update', Web\Profile\Emails\Update\Controller::class)->allows(['POST']);
+        $r->get('add',     '/add',               Web\Profile\Emails\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('phones.', '/phones', function ($r) {
+        $r->get('delete',  '/{phone_id}/delete', Web\Profile\Phones\Delete\Controller::class);
+        $r->get('update',  '/{phone_id}/update', Web\Profile\Phones\Update\Controller::class)->allows(['POST']);
+        $r->get('add',     '/add',               Web\Profile\Phones\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('files.', '/files', function ($r) {
+        $r->get('download', '/{applicantFile_id}/download', Web\Profile\Files\Download\Controller::class);
+        $r->get('delete',   '/{applicantFile_id}/delete',   Web\Profile\Files\Delete\Controller::class);
+        $r->get('update',   '/{applicantFile_id}/update',   Web\Profile\Files\Update\Controller::class);
+        $r->get('add',      '/add',                         Web\Profile\Files\Add\Controller::class)->allows(['POST']);
+    });
+    $r->get('update', '/update', Web\Profile\Update\Controller::class)->allows(['POST']);
+    $r->get('index',  '',        Web\Profile\Info\Controller::class);
 });
 
 $map->attach('reports.', '/reports', function ($r) {
