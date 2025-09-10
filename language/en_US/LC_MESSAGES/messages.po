@@ -73,3 +73,9 @@ msgstr "%s application received"
 
 msgid "board_application_message"
 msgstr "%s has applied for %s"
+
+msgid "committee-statutoryName-help"
+msgstr "Name of the committee as it appears in the municipal code"
+
+msgid "committee-code-help"
+msgstr "Abbreviation used on various screens to save screen space"

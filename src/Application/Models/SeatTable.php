@@ -64,6 +64,7 @@ class SeatTable extends TableGateway
     public static $dataFields = [
         'committee_id'           => 's.committee_id',
         'committee_name'         => 'c.name',
+        'committee_code'         => 'c.code',
         'committee_alternates'   => 'c.alternates',
         'seat_id'                => 's.id',
         'seat_code'              => 's.code',

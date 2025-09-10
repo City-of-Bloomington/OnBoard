@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2020 City of Bloomington, Indiana
+ * @copyright 2016-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -17,16 +17,17 @@ class LiaisonTable extends TableGateway
      * These are the fields that will be returned for all *Data functions
      */
     public static $dataFields = [
-        'liaison_id'   => 'l.id',
-        'committee_id' => 'c.id',
-        'committee'    => 'c.name',
-        'type'         => 'l.type',
-        'person_id'    => 'p.id',
-        'username'     => 'p.username',
-        'firstname'    => 'p.firstname',
-        'lastname'     => 'p.lastname',
-        'email'        => 'e.email',
-        'phone'        => 'h.number'
+        'liaison_id'     => 'l.id',
+        'committee_id'   => 'c.id',
+        'committee'      => 'c.name',
+        'committee_code' => 'c.code',
+        'type'           => 'l.type',
+        'person_id'      => 'p.id',
+        'username'       => 'p.username',
+        'firstname'      => 'p.firstname',
+        'lastname'       => 'p.lastname',
+        'email'          => 'e.email',
+        'phone'          => 'h.number'
     ];
 
     /**

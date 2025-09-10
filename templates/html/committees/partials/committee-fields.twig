@@ -11,6 +11,12 @@
 
     {{ forms.field_radio('type', 'type', _('type'), committee.getType(), committee_types, true) }}
     {{ forms.field_text ('name', 'name', _('name'), committee.getName(), true) }}
+    {{ forms.field_text ('statutoryName', 'statutoryName', _('statutoryName'), committee.getStatutoryName(), false, {}, _('committee-statutoryName-help', 'messages') ) }}
+
+    <label for="code" class="usa-label">{{ _('code') }}</label>
+    <div class="usa-hint" id="code-help">{{ _('committee-code-help', 'messages') }}</div>
+    <input  id="code" name="code" value="{{ committee.getCode() }}"
+         class="usa-input usa-input--xs" maxlength="5" />
 
     <div class="margin-top-3">
         {{ forms.field_bool('legislative', 'legislative', _('legislative'), committee.getLegislative() ) }}
@@ -18,8 +24,6 @@
     </div>
 
     {{ forms.field_number  ('yearFormed',          'yearFormed',          _('yearFormed'),          committee.getYearFormed(),          false, {'size':4} ) }}
-    {{ forms.field_text    ('statutoryName',       'statutoryName',       _('statutoryName'),       committee.getStatutoryName() ) }}
-    {{ forms.field_text    ('code',                'code',                _('code'),                committee.getCode(),                false, {'size':5} ) }}
     {{ forms.field_email   ('calendarId',          'calendarId',          _('calendarId'),          committee.getCalendarId() ) }}
     {{ forms.field_url     ('website',             'website',             _('website'),             committee.getWebsite() ) }}
     {{ forms.field_url     ('videoArchive',        'videoArchive',        _('videoArchive'),        committee.getVideoArchive() ) }}

@@ -214,7 +214,7 @@ class View extends \Web\View
                 'person_id'      => $a->getPerson_id(),
                 'person'         => "{$p->getFirstname()} {$p->getLastname()}",
                 'committee_id'   => $c->getId(),
-                'committee'      => $c->getName(),
+                'committee'      => $c->getCode() ?? $c->getName(),
                 'created'        => $a->getCreated(DATE_FORMAT),
                 'expires'        => $a->getExpires(DATE_FORMAT),
                 'referredFrom'   => $a->getReferredFrom(),
@@ -260,7 +260,7 @@ class View extends \Web\View
                 'person_id'    => $a->getPerson_id(),
                 'person'       => "{$p->getFirstname()} {$p->getLastname()}",
                 'committee_id' => $c->getId(),
-                'committee'    => $c->getName(),
+                'committee'    => $c->getCode() ?? $c->getName(),
                 'created'      => $a->getCreated (DATE_FORMAT),
                 'archived'     => $a->getArchived(DATE_FORMAT),
                 'actionLinks'  => $links
