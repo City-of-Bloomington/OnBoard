@@ -15,22 +15,25 @@ class ApplicantTable extends TableGateway
 {
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
-    public static $fields = ['firstname', 'lastname', 'email'];
+    public static $searchable_fields = ['firstname', 'lastname', 'email', 'committee_id'];
 
     public function search($fields=null, $order=['lastname', 'firstname'], $paginated=false, $limit=null)
     {
         $select = new Select(['p'=>'people']);
-        $sql = "(select count(*) from (select id from applications where person_id=p.id) i )";
-        $select->columns(['*', 'applications'=> new Expression($sql)], false);
-        $select->having('applications > 0');
+        $select->join(['a'=>'applications'], 'p.id=a.person_id', []);
+        $select->group('p.id');
 
         if ($fields) {
             foreach ($fields as $k=>$v) {
-                if ($v && in_array($k, self::$fields)) {
+                if ($v && in_array($k, self::$searchable_fields)) {
                     switch ($k) {
                         case 'email':
                             $select->join(['e'=>'people_emails'], 'e.person_id=p.id', []);
                             $select->where->like("e.email", "$v%");
+                        break;
+
+                        case 'committee_id':
+                            $select->where(['a.committee_id'=>$v]);
                         break;
 
                         default:

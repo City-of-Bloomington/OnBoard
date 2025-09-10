@@ -6,6 +6,8 @@
 declare (strict_types=1);
 namespace Web\Applicants\List;
 
+use Application\Models\CommitteeTable;
+
 class View extends \Web\View
 {
     public function __construct(array $applicants, array $search, int $total, int $itemsPerPage, int $currentPage)
@@ -13,13 +15,15 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'applicants'  => self::applicant_data($applicants),
-            'total'       => $total,
-            'itemsPerPage'=> $itemsPerPage,
-            'currentPage' => $currentPage,
-            'firstname'   => $search['firstname'] ?? '',
-            'lastname'    => $search['lastname' ] ?? '',
-            'email'       => $search['email'    ] ?? '',
+            'applicants'   => self::applicant_data($applicants),
+            'total'        => $total,
+            'itemsPerPage' => $itemsPerPage,
+            'currentPage'  => $currentPage,
+            'firstname'    => $search['firstname'   ] ?? '',
+            'lastname'     => $search['lastname'    ] ?? '',
+            'email'        => $search['email'       ] ?? '',
+            'committee_id' => $search['committee_id'] ?? null,
+            'committees'   => self::committees()
         ];
     }
 
@@ -40,5 +44,19 @@ class View extends \Web\View
             ];
         }
         return $out;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    private static function committees(): array
+    {
+        $o = [['value'=>'']];
+        $t = new CommitteeTable();
+        $l = $t->find();
+        foreach ($l as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
     }
 }

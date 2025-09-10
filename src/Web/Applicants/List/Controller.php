@@ -34,10 +34,9 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         $search = [];
-        if (!empty($_GET['firstname'])) { $search['firstname'] = $_GET['firstname']; }
-        if (!empty($_GET['lastname' ])) { $search['lastname' ] = $_GET['lastname' ]; }
-        if (!empty($_GET['email'    ])) { $search['email'    ] = $_GET['email'    ]; }
-
+        foreach (ApplicantTable::$searchable_fields as $f) {
+            if (!empty($_GET[$f])) { $search[$f] = $_GET[$f]; }
+        }
         return $search;
     }
 }
