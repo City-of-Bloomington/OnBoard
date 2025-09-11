@@ -22,8 +22,10 @@ class Controller extends \Web\Controller
                 $return_url = \Web\View::generateUrl('meetings.view', ['meeting_id'=>$file->getMeeting_id()]);
 
                 global $SOLR;
-                $solr = new Solr($SOLR['onboard']);
-                $solr->delete($file);
+                if ($SOLR) {
+                    $solr = new Solr($SOLR['onboard']);
+                    $solr->delete($file);
+                }
 
                 $file->delete();
                 header("Location: $return_url");

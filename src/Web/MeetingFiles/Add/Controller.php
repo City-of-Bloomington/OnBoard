@@ -9,6 +9,10 @@ namespace Web\MeetingFiles\Add;
 use Application\Models\Meeting;
 use Application\Models\MeetingFile;
 
+use Web\MeetingFiles\Update\Controller as UpdateController;
+use Web\MeetingFiles\Update\View       as UpdateView;
+
+
 class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
@@ -31,32 +35,11 @@ class Controller extends \Web\Controller
             return new \Web\Views\NotFoundView();
         }
 
-        $meeting   = $file->getMeeting();
-        $committee = $meeting->getCommittee();
         if (isset($_POST['type'])) {
-            try {
-                $file->setType      ($_POST['type'      ]);
-                $file->setTitle     ($_POST['title'     ]);
-                $file->setMeeting_id($_POST['meeting_id']);
-                $file->setUpdatedPerson($_SESSION['USER']);
-
-                // Before we save the file, make sure all the database information is correct
-                $file->validateDatabaseInformation();
-                // If they are editing an existing document, they do not need to upload a new file
-                if (isset($_FILES['meetingFile']) && $_FILES['meetingFile']['error'] != UPLOAD_ERR_NO_FILE) {
-                    $file->setFile($_FILES['meetingFile']);
-                }
-
-                $file->save();
-
-                $url = \Web\View::generateUrl('meetings.view', ['meeting_id'=>$file->getMeeting_id()]);
-                header("Location: $url");
-                exit();
-            }
+            try { UpdateController::saveAndRedirect($file); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new \Web\MeetingFiles\Update\View($file, $committee);
-
+        return new UpdateView($file);
     }
 }

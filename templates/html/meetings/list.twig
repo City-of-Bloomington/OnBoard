@@ -24,13 +24,15 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% block content %}
 <section class="grid-container">
-    <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
-    {% if committee %}
-    <div>Last Sync: {{ committee.getSynced(DATETIME_FORMAT) }}</div>
-    {% endif %}
-    {% if isAllowed('committees', 'meetingsync') %}
-    {{ forms.actionLink(uri('committees.meetingsync', { committee_id: committee.getId()}), 'sync') }}
-    {% endif %}
+    <header>
+        <h2>{{ _(['meeting', 'meetings', 10]) }}</h2>
+        {% if committee %}
+        <div>Last Sync: {{ committee.getSynced(DATETIME_FORMAT) }}</div>
+        {% endif %}
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </header>
     <form class="usa-form" method="get">
         <fieldset class="usa-fieldset">
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}

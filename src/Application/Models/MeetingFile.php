@@ -9,7 +9,7 @@ use Web\ActiveRecord;
 use Web\Database;
 use Web\View;
 
-class MeetingFile extends File
+class MeetingFile extends File implements Notifications\Model
 {
     const VALIDATION_ALL  = 0b1111;
     const VALIDATION_DB   = 0b0001;
@@ -80,6 +80,10 @@ class MeetingFile extends File
     public function getCommittee(): Committee
     {
         return $this->getMeeting()->getCommittee();
+    }
+    public function getCommittee_id(): int
+    {
+        return (int)$this->getMeeting()->getCommittee_id();
     }
 
     public function getDisplayFilename(): string

@@ -32,34 +32,10 @@ class ReportView extends \Web\View
 
     private static function actionLinks(Committee $c): array
     {
-        $ret     = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
+        $ret   = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
         $event = 'Web\Applicants\Apply::notice';
-        $sub   = null;
 
-        $links = [];
-        if ( isset($_SESSION['USER'])) {
-            $sub = $_SESSION['USER']->hasNotificationSubscription($event, $c->getId());
-            if ($sub) {
-                if (parent::isAllowed('profile.notifications', 'delete')) {
-                    $links[] = [
-                        'url'   => parent::generateUri('profile.notifications.delete', ['subscription_id'=>$sub->getId()])."?return_url=$ret",
-                        'label' => parent::_('notification_subscription_delete'),
-                        'class' => 'notifications_off'
-                    ];
-                }
-            }
-            else {
-                if (parent::isAllowed('profile.notifications', 'add')) {
-                    $params  = http_build_query(['committee_id'=>$c->getId(), 'event'=>$event, 'return_url'=>$ret]);
-                    $links[] = [
-                        'url'   => parent::generateUri('profile.notifications.add')."?$params",
-                        'label' => parent::_('notification_subscription_add'),
-                        'class' => 'notifications'
-                    ];
-                }
-            }
-        }
-        return $links;
+        return \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
     }
 
     private static function applications_current(Committee $committee): array

@@ -8,7 +8,6 @@ namespace Web\Applicants\Apply;
 
 use Application\Models\Application;
 use Application\Models\Committee;
-use Application\Models\Notifications\Definition;
 use Application\Models\Notifications\DefinitionTable;
 
 class Controller extends \Web\Controller
@@ -46,25 +45,13 @@ class Controller extends \Web\Controller
 
     private static function notify(Application $a)
     {
-        $n = self::definition(__NAMESPACE__.'::confirmation', $a);
+        $t = new DefinitionTable();
+
+        $n = $t->loadForSending(__NAMESPACE__.'::confirmation', $a->getCommittee_id());
         if (isset($n)) { $n->send([$a->getPerson()], $a); }
 
         $p = $a->getPeopleToNotify();
-        $n = self::definition(__NAMESPACE__.'::notice', $a);
-        if (isset($n) && count($p)) {
-            $n->send($p, $a);
-        }
-    }
-
-    private static function definition(string $event, Application $a): ?Definition
-    {
-        $t = new DefinitionTable();
-        $l = $t->find(['committee_id'=>$a->getCommittee_id(), 'event'=>$event]);
-        if (count($l)) { return $l->current(); }
-        else {
-            $l = $t->find(['committee_id'=>null, 'event'=>$event]);
-            if (count($l)) { return $l->current(); }
-        }
-        return null;
+        $n = $t->loadForSending(__NAMESPACE__.'::notice', $a->getCommittee_id());
+        if (isset($n) && count($p)) { $n->send($p, $a); }
     }
 }

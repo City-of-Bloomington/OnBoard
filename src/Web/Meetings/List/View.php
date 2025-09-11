@@ -38,12 +38,30 @@ class View extends \Web\View
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
             'sort'         => $sort,
+            'actionLinks'  => $committee ? self::actionLinks($committee) : []
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/meetings/list.twig', $this->vars);
+    }
+
+    private static function actionLinks(Committee $c)
+    {
+        $ret   = parent::current_url()->__toString();
+        $event = 'Web\MeetingFiles\Update::notice';
+        $links = \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
+
+        if (parent::isAllowed('committees', 'meetingsync')) {
+            $links[] = [
+                'url'   => parent::generateUri('committees.meetingsync', ['committee_id'=>$c->getId()]),
+                'label' => _('sync'),
+                'class' => 'autorenew'
+            ];
+        }
+
+        return $links;
     }
 
     /**

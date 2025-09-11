@@ -117,7 +117,7 @@ class Definition extends \Web\ActiveRecord
      * @param array  $people  Non-subscribers to include in the notification
      * @param object $model   Object to use for template variables
      */
-    public function send(array $people, $model)
+    public function send(array $people, Model $model)
     {
         $s = new \Web\Notifications\View($this->getSubject(), $model);
         $b = new \Web\Notifications\View($this->getBody(),    $model);

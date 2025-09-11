@@ -17,7 +17,8 @@ class DefinitionTable extends \Web\TableGateway
     {
         return [
             'Web\Applicants\Apply::confirmation',
-            'Web\Applicants\Apply::notice'
+            'Web\Applicants\Apply::notice',
+            'Web\MeetingFiles\Update::notice'
         ];
     }
 
@@ -47,5 +48,17 @@ class DefinitionTable extends \Web\TableGateway
             }
         }
         return parent::performSelect($select, $order);
+    }
+
+    public function loadForSending(string $event, int $committee_id): ?Definition
+    {
+        $t = new DefinitionTable();
+        $l = $t->find(['committee_id'=>$committee_id, 'event'=>$event]);
+        if (count($l)) { return $l->current(); }
+        else {
+            $l = $t->find(['committee_id'=>null, 'event'=>$event]);
+            if (count($l)) { return $l->current(); }
+        }
+        return null;
     }
 }

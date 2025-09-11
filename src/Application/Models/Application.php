@@ -8,7 +8,7 @@ namespace Application\Models;
 use Web\ActiveRecord;
 use Web\Database;
 
-class Application extends ActiveRecord
+class Application extends ActiveRecord implements Notifications\Model
 {
     protected $tablename = 'applications';
     protected $person;
@@ -94,17 +94,17 @@ class Application extends ActiveRecord
     //----------------------------------------------------------------
     // Generic Getters & Setters
     //----------------------------------------------------------------
-    public function getId()           { return (int)parent::get('id');   }
-    public function getCommittee_id() { return (int)parent::get('committee_id'); }
-    public function getPerson_id()    { return (int)parent::get('person_id'); }
-    public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-    public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
-    public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
-    public function getArchived($f=null) { return parent::getDateData('archived', $f); }
-    public function getReferredFrom  () { return parent::get('referredFrom'  ); }
-    public function getReferredOther () { return parent::get('referredOther' ); }
-    public function getInterest      () { return parent::get('interest'      ); }
-    public function getQualifications() { return parent::get('qualifications'); }
+    public function getId()          : int { return (int)parent::get('id');   }
+    public function getCommittee_id(): int { return (int)parent::get('committee_id'); }
+    public function getPerson_id()   : int { return (int)parent::get('person_id'); }
+    public function getCommittee(): Committee    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
+    public function getPerson()   : Person       { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
+    public function getCreated ($f=null): string { return parent::getDateData('created',  $f); }
+    public function getArchived($f=null): string { return parent::getDateData('archived', $f); }
+    public function getReferredFrom  () : string { return parent::get('referredFrom'  ); }
+    public function getReferredOther () : string { return parent::get('referredOther' ); }
+    public function getInterest      () : string { return parent::get('interest'      ); }
+    public function getQualifications() : string { return parent::get('qualifications'); }
 
     public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
     public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
