@@ -99,12 +99,12 @@ class Application extends ActiveRecord implements Notifications\Model
     public function getPerson_id()   : int { return (int)parent::get('person_id'); }
     public function getCommittee(): Committee    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
     public function getPerson()   : Person       { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id'); }
-    public function getCreated ($f=null): string { return parent::getDateData('created',  $f); }
-    public function getArchived($f=null): string { return parent::getDateData('archived', $f); }
-    public function getReferredFrom  () : string { return parent::get('referredFrom'  ); }
-    public function getReferredOther () : string { return parent::get('referredOther' ); }
-    public function getInterest      () : string { return parent::get('interest'      ); }
-    public function getQualifications() : string { return parent::get('qualifications'); }
+    public function getCreated ($f=null):  string { return parent::getDateData('created',  $f); }
+    public function getArchived($f=null): ?string { return parent::getDateData('archived', $f); }
+    public function getReferredFrom  () : ?string { return parent::get('referredFrom'  ); }
+    public function getReferredOther () : ?string { return parent::get('referredOther' ); }
+    public function getInterest      () : ?string { return parent::get('interest'      ); }
+    public function getQualifications() : ?string { return parent::get('qualifications'); }
 
     public function setCommittee_id($i) { parent::setForeignKeyField (__namespace__.'\Committee', 'committee_id', $i); }
     public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
