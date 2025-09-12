@@ -6,10 +6,9 @@
 {% extends "html/layouts/default.twig" %}
 
 {% block content %}
-<section class="grid-container">
+<section>
     <header>
-        <h1><a href="{{ uri('departments.index') }}">{{ _(['department', 'departments', 10]) }}</a>
-        </h1>
+        <h1><a href="{{ uri('departments.index') }}">{{ _(['department', 'departments', 10]) }}</a></h1>
         <h2>{{ department.name }}</h2>
     </header>
 

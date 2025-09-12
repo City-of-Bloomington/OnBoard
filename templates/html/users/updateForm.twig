@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person user
  *
@@ -10,7 +10,7 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header>
         <h1>{{ user.getFullname() }}</h1>
         <h2>{{ user.getId() ? _('edit_account') : _('create_account') }}</h2>
@@ -34,7 +34,7 @@
     {% endif %}
 </section>
 
-<section class="grid-container">
+<section>
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
     <table>
     {% for e in user.getEmails() %}
@@ -45,7 +45,7 @@
     </table>
 </section>
 
-<section class="grid-container">
+<section>
     <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
     <table>
     {% for p in user.getPhones() %}

@@ -8,6 +8,7 @@
     <div class="usa-overlay"></div>
     {{ include('html/layouts/partials/header.twig') }}
     <main id="main-content" class="flex-1 tablet:padding-bottom-10">
+        <div class="grid-container">
         {% if breadcrumbs is defined %}
         {{ include('html/layouts/partials/breadcrumbs.twig') }}
         {% endif %}
@@ -17,6 +18,7 @@
 
         {% block content %}
         {% endblock %}
+        </div>
 	</main>
     {{ include('html/layouts/partials/footer.twig') }}
     {{ include('html/layouts/partials/identifier.twig') }}

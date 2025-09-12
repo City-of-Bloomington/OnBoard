@@ -6,7 +6,7 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header><h2>{{ type.getId() ? _('legislationType_edit') : _('legislationType_add') }}</h2></header>
 
     <form         class="usa-form" method="post">

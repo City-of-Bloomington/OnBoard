@@ -6,7 +6,7 @@
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header>
         <h1>{{ _(definition.getEvent()) }}</h1>
         {% if definition.getCommittee() %}<h2>{{ definition.getCommittee().getName() }}</h2>{% endif %}

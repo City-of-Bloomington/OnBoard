@@ -11,7 +11,7 @@
  #}
 {% extends "html/layouts/committee.twig" %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header><h2>{{ application.getCreated(DATE_FORMAT) }} {{ person.getFullname() }}</h2></header>
     <dl><dt>{{ _('referredFrom'  ) }}</dt><dd>{{ application.getReferredFrom()   }}</dd>
         <dt>{{ _('referredOther' ) }}</dt><dd>{{ application.getReferredOther()  }}</dd>

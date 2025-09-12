@@ -7,7 +7,7 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header><h1>{{ phone.getPerson().getFullname() }}</h1></header>
 
     {% if isAllowed('people', 'viewContactInfo') %}

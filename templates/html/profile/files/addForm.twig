@@ -11,7 +11,7 @@
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header><h1>{{ person.getFullname() }}</h1></header>
     {{ include('html/people/partials/info.twig') }}
 

@@ -5,7 +5,7 @@
  * @param array  emails
  #}
 {% import 'html/macros/forms.twig' as forms %}
-<section class="grid-container">
+<section>
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
     {% if isAllowed('emails', 'add') %}
     {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }) ~ '?return_url=' ~ current_url(), _('email_add'), 'add') }}

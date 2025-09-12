@@ -17,7 +17,7 @@
 {% import  "html/macros/pagination.twig" as pagination %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
-<section class="grid-container">
+<section>
     <header><h1>{{ _(['notification_definition', 'notification_definitions', 10]) }}</h1></header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
@@ -35,7 +35,7 @@
     </table>
 </section>
 
-<section class="grid-container">
+<section>
     <form           class="usa-form" method="get">
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend usa-legend--large">Email Queue</legend>

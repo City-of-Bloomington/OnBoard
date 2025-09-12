@@ -13,14 +13,14 @@
     <div class="usa-overlay"></div>
     {{ include('html/layouts/partials/header.twig') }}
     <main id="main-content" class="flex-1 tablet:padding-bottom-10">
-        {% if breadcrumbs is defined %}
-        {{ include('html/layouts/partials/breadcrumbs.twig') }}
-        {% endif %}
-        {% if ERROR_MESSAGES is defined %}
-        {{ include('html/layouts/partials/errorMessages.twig') }}
-        {% endif %}
-
         <div class="grid-container">
+            {% if breadcrumbs is defined %}
+            {{ include('html/layouts/partials/breadcrumbs.twig') }}
+            {% endif %}
+            {% if ERROR_MESSAGES is defined %}
+            {{ include('html/layouts/partials/errorMessages.twig') }}
+            {% endif %}
+
             {{ include('html/committees/partials/header.twig') }}
 
             <div class="grid-row grid-gap">

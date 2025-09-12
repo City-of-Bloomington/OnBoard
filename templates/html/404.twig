@@ -1,11 +1,9 @@
 {% extends "html/layouts/default.twig" %}
 {% set title = '404' %}
-
 {% block content %}
-<div class="usa-section">
-<section class="grid-container">
-<div class="usa-prose">
-    <h1>Page not found</h1>
+<section class="usa-prose">
+    <header><h1>Page not found</h1></header>
+
     <p class="usa-intro">We’re sorry, we can’t find the page you're looking for. The site administrator may have removed it, changed its location, or made it otherwise unavailable.</p>
     <p>If you typed the URL directly, check your spelling and capitalization. Our URLs look like this: <strong>bloomington.in.gov/welcome</strong></p>
     <p>Visit our homepage for helpful tools and resources, or contact us and we’ll point you in the right direction.</p>
@@ -30,7 +28,5 @@
         </li>
     </ul>
     <p class="text-base"><strong>Error code:</strong> 404</p>
-</div>
 </section>
-</div>
 {% endblock %}
