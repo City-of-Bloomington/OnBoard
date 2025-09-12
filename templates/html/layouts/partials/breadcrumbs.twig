@@ -1,0 +1,23 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array breadcrumbs
+ #}
+<nav           class="usa-breadcrumb grid-container" aria-label="Breadcrumbs">
+    <ol        class="usa-breadcrumb__list">
+        <li    class="usa-breadcrumb__list-item">
+            <a class="usa-breadcrumb__link" href="{{ BASE_URI }}">{{ _('home') }}</a>
+        </li>
+        {% for url,label in breadcrumbs %}
+        {% if not loop.last %}
+        <li    class="usa-breadcrumb__list-item">
+            <a class="usa-breadcrumb__link" href="{{ url }}">{{ label }}</a>
+        </li>
+        {% else %}
+        <li    class="usa-breadcrumb__list-item usa-current" aria-current="page">
+            {{ label }}
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ol>
+</na>

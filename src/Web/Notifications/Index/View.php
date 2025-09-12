@@ -29,7 +29,8 @@ class View extends \Web\View
             'event'        => $search['event'       ] ?? '',
             'committee_id' => $search['committee_id'] ?? null,
             'events'       => DefinitionView::events(),
-            'committees'   => DefinitionView::committees()
+            'committees'   => DefinitionView::committees(),
+            'breadcrumbs'  => self::breadcrumbs()
         ];
     }
 
@@ -49,5 +50,13 @@ class View extends \Web\View
             ];
         }
         return $links;
+    }
+
+    private static function breadcrumbs(): array
+    {
+        return [
+            parent::generateUri('settings.index')      => parent::_('settings'),
+            parent::generateUri('notifications.index') => parent::_(['notification', 'notifications', 10])
+        ];
     }
 }
