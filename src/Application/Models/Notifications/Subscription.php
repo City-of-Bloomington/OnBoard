@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Application\Models\Notifications;
 
 use Web\Database;
+use Application\Models\Notifications\DefinitionTable;
 
 class Subscription extends \Web\ActiveRecord
 {
@@ -63,6 +64,10 @@ class Subscription extends \Web\ActiveRecord
     {
         if (!$this->getPerson_id() || !$this->getEvent() || !$this->getCommittee_id()) {
             throw new \Exception('missingRequiredFields');
+        }
+
+        if (!in_array($this->getEvent(), array_keys(DefinitionTable::$events))) {
+            throw new \Exception('notifications/invalidEvent');
         }
     }
 

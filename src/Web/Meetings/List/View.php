@@ -10,6 +10,7 @@ use Application\Models\Committee;
 use Application\Models\CommitteeTable;
 use Application\Models\MeetingFile;
 use Application\Models\MeetingTable;
+use Application\Models\Notifications\DefinitionTable;
 
 class View extends \Web\View
 {
@@ -50,7 +51,7 @@ class View extends \Web\View
     private static function actionLinks(Committee $c)
     {
         $ret   = parent::current_url()->__toString();
-        $event = 'Web\MeetingFiles\Update::notice';
+        $event = DefinitionTable::MEETINGFILE_NOTICE;
         $links = \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
 
         if (parent::isAllowed('committees', 'meetingsync')) {

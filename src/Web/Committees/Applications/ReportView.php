@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\Committees\Applications;
 
 use Application\Models\Committee;
+use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
 
 class ReportView extends \Web\View
@@ -33,7 +34,7 @@ class ReportView extends \Web\View
     private static function actionLinks(Committee $c): array
     {
         $ret   = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
-        $event = 'Web\Applicants\Apply::notice';
+        $event = DefinitionTable::APPLICATION_NOTICE;
 
         return \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
     }

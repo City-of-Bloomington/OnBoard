@@ -78,8 +78,8 @@
 
     <table>
     {% for s in subscriptions %}
-    <tr><td>{{ s.event     }}</td>
-        <td>{{ s.committee }}</td>
+    <tr><td>{{ s.committee }}</td>
+        <td>{{ _(s.event)  }}</td>
         <td>{% if s.actions is defined %}{{ include('html/partials/actionLinks.twig', { actionLinks: s.actions }) }}{% endif %}
     </tr>
     {% endfor %}

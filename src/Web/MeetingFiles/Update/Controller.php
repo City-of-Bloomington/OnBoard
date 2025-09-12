@@ -64,7 +64,7 @@ class Controller extends \Web\Controller
     {
         $t = new DefinitionTable();
 
-        $n = $t->loadForSending(__NAMESPACE__.'::notice', $f->getMeeting()->getCommittee_id());
+        $n = $t->loadForSending(DefinitionTable::MEETINGFILE_NOTICE, $f->getMeeting()->getCommittee_id());
         if (isset($n)) { $n->send([], $f); }
     }
 }
