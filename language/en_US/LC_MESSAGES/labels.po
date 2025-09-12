@@ -723,6 +723,12 @@ msgstr "Archive"
 msgid "application_unarchive"
 msgstr "Unarchive"
 
+msgid "application_confirmation"
+msgstr "Application Confirmation"
+
+msgid "application_notice"
+msgstr "Application Notice"
+
 msgid "applications_current"
 msgstr "Current Applications"
 
@@ -833,6 +839,9 @@ msgstr "Delete Document"
 
 msgid "meetingFile_type"
 msgstr "Meeting File Type"
+
+msgid "meetingFile_notice"
+msgstr "Meeting File Notice"
 
 msgid "filename"
 msgstr "Filename"

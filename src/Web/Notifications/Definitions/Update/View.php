@@ -36,7 +36,7 @@ class View extends \Web\View
      */
     public static function committees(): array
     {
-        $o = [['value'=>'']];
+        $o = [['value'=>'', 'label'=>parent::_('global')]];
         $t = new CommitteeTable();
         $l = $t->find();
         foreach ($l as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
@@ -46,8 +46,8 @@ class View extends \Web\View
     public static function events(): array
     {
         $o = [['value'=>'']];
-        foreach (DefinitionTable::events() as $e) {
-            $o[] = ['value'=>$e];
+        foreach (array_keys(DefinitionTable::$events) as $e) {
+            $o[] = ['value'=>$e, 'label'=>parent::_($e)];
         }
         return $o;
     }

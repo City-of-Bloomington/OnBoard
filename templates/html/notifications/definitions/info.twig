@@ -8,7 +8,7 @@
 {% block content %}
 <section class="grid-container">
     <header>
-        <h1>{{ definition.getEvent() }}</h1>
+        <h1>{{ _(definition.getEvent()) }}</h1>
         {% if definition.getCommittee() %}<h2>{{ definition.getCommittee().getName() }}</h2>{% endif %}
     </header>
     {% if actionLinks %}

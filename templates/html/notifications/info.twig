@@ -26,7 +26,7 @@
     <table>
     {% for d in definitions %}
     <tr><td><a href="{{ uri('notifications.definitions.info', { definition_id: d.getId() }) }}">
-                {{ d.getEvent() }}
+                {{ _(d.getEvent()) }}
             </a>
         </td>
         <td>{% if d.getCommittee() %}{{ d.getCommittee().getName() }}{% endif %}</td>
@@ -64,9 +64,9 @@
                 {{ e.created }}
                 {% endif %}
             </td>
-            <td>{{ e.emailto }}</td>
-            <td>{{ e.sent    }}</td>
-            <td>{{ e.event   }}</td>
+            <td>{{ e.emailto  }}</td>
+            <td>{{ e.sent     }}</td>
+            <td>{{ _(e.event) }}</td>
             <td>{{ e.committee.code ?? e.committee.name }}</td>
         </tr>
         {% endfor %}

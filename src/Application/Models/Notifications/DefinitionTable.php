@@ -13,14 +13,18 @@ class DefinitionTable extends \Web\TableGateway
     public const TABLE = 'notification_definitions';
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\Definition'); }
 
-    public static function events(): array
-    {
-        return [
-            'Web\Applicants\Apply::confirmation',
-            'Web\Applicants\Apply::notice',
-            'Web\MeetingFiles\Update::notice'
-        ];
-    }
+    public const APPLICATION_CONFIRMATION = 'application_confirmation';
+    public const APPLICATION_NOTICE       = 'application_notice';
+    public const MEETINGFILE_NOTICE       = 'meetingFile_notice';
+
+    /**
+     * Maps event names to the model objects use for template variables
+     */
+    public static $events = [
+        self::APPLICATION_CONFIRMATION => 'Application\Models\Application',
+        self::APPLICATION_NOTICE       => 'Application\Models\Application',
+        self::MEETINGFILE_NOTICE       => 'Application\Models\MeetingFile'
+    ];
 
     public function find($fields=null, $order=['event','committee_id'], $paginated=false, $limit=null)
     {
@@ -52,11 +56,14 @@ class DefinitionTable extends \Web\TableGateway
 
     public function loadForSending(string $event, int $committee_id): ?Definition
     {
-        $t = new DefinitionTable();
-        $l = $t->find(['committee_id'=>$committee_id, 'event'=>$event]);
+        if (!in_array($event, array_keys(self::$events))) {
+            throw new \Exception('notifications/invalidEvent');
+        }
+
+        $l = $this->find(['committee_id'=>$committee_id, 'event'=>$event]);
         if (count($l)) { return $l->current(); }
         else {
-            $l = $t->find(['committee_id'=>null, 'event'=>$event]);
+            $l = $this->find(['committee_id'=>null, 'event'=>$event]);
             if (count($l)) { return $l->current(); }
         }
         return null;

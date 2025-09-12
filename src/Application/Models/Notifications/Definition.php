@@ -61,6 +61,10 @@ class Definition extends \Web\ActiveRecord
         if (!$this->getEvent() || !$this->getSubject() || !$this->getBody()) {
             throw new \Exception('missingRequiredFields');
         }
+
+        if (!in_array($this->getEvent(), array_keys(DefinitionTable::$events))) {
+            throw new \Exception('notifications/invalidEvent');
+        }
     }
 
     public function save() { parent::save(); }

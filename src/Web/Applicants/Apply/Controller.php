@@ -47,11 +47,11 @@ class Controller extends \Web\Controller
     {
         $t = new DefinitionTable();
 
-        $n = $t->loadForSending(__NAMESPACE__.'::confirmation', $a->getCommittee_id());
+        $n = $t->loadForSending(DefinitionTable::APPLICATION_CONFIRMATION, $a->getCommittee_id());
         if (isset($n)) { $n->send([$a->getPerson()], $a); }
 
         $p = $a->getPeopleToNotify();
-        $n = $t->loadForSending(__NAMESPACE__.'::notice', $a->getCommittee_id());
+        $n = $t->loadForSending(DefinitionTable::APPLICATION_NOTICE, $a->getCommittee_id());
         if (isset($n) && count($p)) { $n->send($p, $a); }
     }
 }
