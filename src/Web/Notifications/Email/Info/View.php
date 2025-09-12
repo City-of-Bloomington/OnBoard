@@ -15,12 +15,24 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'email' => $e
+            'email'       => $e,
+            'breadcrumbs' => self::breadcrumbs($e)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/notifications/email/info.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Email $e): array
+    {
+        $settings      = parent::_('settings');
+        $notifications = parent::_(['notification', 'notifications', 10]);
+        return [
+            $settings        => parent::generateUri('settings.index'),
+            $notifications   => parent::generateUri('notifications.index'),
+            $e->getCreated() => null
+        ];
     }
 }

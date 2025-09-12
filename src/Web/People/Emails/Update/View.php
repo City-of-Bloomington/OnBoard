@@ -7,6 +7,7 @@ declare (strict_types=1);
 namespace Web\People\Emails\Update;
 
 use Application\Models\Email;
+use Application\Models\Person;
 
 class View extends \Web\View
 {
@@ -16,12 +17,22 @@ class View extends \Web\View
 
         $this->vars = [
             'email'      => $email,
-            'return_url' => $return_url
+            'return_url' => $return_url,
+            'breadcrumbs' => self::breadcrumbs($email->getPerson())
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/people/emails/updateForm.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Person $p): array
+    {
+        return [
+            parent::_(['person', 'people', 10]) => parent::generateUri('people.index'),
+            $p->getFullname() => parent::generateUri('people.view', ['person_id'=>$p->getId()]),
+            parent::_('email_edit') => null
+        ];
     }
 }

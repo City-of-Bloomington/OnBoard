@@ -23,7 +23,7 @@
         </li>
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.statutes', { committee_id: committee.getId() }) }}"
-                class="{{ ROUTE_NAME in ['committees.statutes', 'committees.add', 'committees.update'] ? 'usa-current' : '' }}">
+                class="{{ ROUTE_NAME in ['committees.statutes', 'committeeStatutes.add', 'committeeStatutes.update'] ? 'usa-current' : '' }}">
                 {{ _(['committeeStatute', 'committeeStatutes', 10]) }}
             </a>
         </li>

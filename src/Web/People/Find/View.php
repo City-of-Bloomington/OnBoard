@@ -21,7 +21,8 @@ class View extends \Web\View
             'lastname'    => $search['lastname' ] ?? '',
             'email'       => $search['email'    ] ?? '',
             'callback'    => !empty($_REQUEST['callback']),
-            'return_url'  => !empty($_REQUEST['return_url']) ? $_REQUEST['return_url'] : null
+            'return_url'  => !empty($_REQUEST['return_url']) ? $_REQUEST['return_url'] : null,
+            'breadcrumbs' => self::breadcrumbs()
         ];
     }
 
@@ -31,5 +32,12 @@ class View extends \Web\View
                     ? 'people/chooser'
                     : 'people/findForm';
         return $this->twig->render("html/$template.twig", $this->vars);
+    }
+
+    private static function breadcrumbs(): array
+    {
+        return [
+             parent::_(['person', 'people', 10]) => null
+        ];
     }
 }

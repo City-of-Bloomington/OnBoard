@@ -16,13 +16,25 @@ class View extends \Web\View
 
         $this->vars = [
             'definition'  => $d,
-            'actionLinks' => self::actionLinks($d)
+            'actionLinks' => self::actionLinks($d),
+            'breadcrumbs' => self::breadcrumbs($d)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/notifications/definitions/info.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Definition $d): array
+    {
+        $settings      = parent::_('settings');
+        $notifications = parent::_(['notification', 'notifications', 10]);
+        return [
+            $settings      => parent::generateUri('settings.index'),
+            $notifications => parent::generateUri('notifications.index'),
+            parent::_($d->getEvent()) => null
+        ];
     }
 
     private static function actionLinks(Definition $d): array

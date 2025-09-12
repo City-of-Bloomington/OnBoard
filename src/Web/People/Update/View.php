@@ -15,11 +15,12 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'person'     => $person,
-            'states'     => self::states(),
-            'yesno'      => self::yesno(),
-            'callback'   => isset($_REQUEST['callback']),
-            'return_url' => $return_url
+            'person'      => $person,
+            'states'      => self::states(),
+            'yesno'       => self::yesno(),
+            'callback'    => isset($_REQUEST['callback']),
+            'return_url'  => $return_url,
+            'breadcrumbs' => self::breadcrumbs()
         ];
 
         // Preserve any extra parameters passed in
@@ -33,6 +34,15 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/people/updateForm.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Person $p): array
+    {
+        return [
+            parent::_(['person', 'people', 10]) => parent::generateUri('people.index'),
+            $p->getFullname() => parent::generateUri('people.view', ['person_id'=>$p->getId()]),
+            parent::_('person_edit') => null
+        ];
     }
 
     /**

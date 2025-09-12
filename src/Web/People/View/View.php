@@ -34,6 +34,14 @@ class View extends \Web\View
         return $this->twig->render('html/people/info.twig', $this->vars);
     }
 
+    private static function breadcrumbs(Person $p): array
+    {
+        return [
+            parent::_(['person', 'people', 10]) => parent::generateUri('people.index'),
+            $p->getFullname() => null,
+        ];
+    }
+
     private static function actionLinks(Person $person): array
     {
         $links = [];

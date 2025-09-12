@@ -8,7 +8,7 @@
         <li    class="usa-breadcrumb__list-item">
             <a class="usa-breadcrumb__link" href="{{ BASE_URI }}">{{ _('home') }}</a>
         </li>
-        {% for url,label in breadcrumbs %}
+        {% for label, url in breadcrumbs %}
         {% if not loop.last %}
         <li    class="usa-breadcrumb__list-item">
             <a class="usa-breadcrumb__link" href="{{ url }}">{{ label }}</a>

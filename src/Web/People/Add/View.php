@@ -16,21 +16,22 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'firstname'  => $_REQUEST['firstname' ] ?? '',
-            'lastname'   => $_REQUEST['lastname'  ] ?? '',
-            'address'    => $_REQUEST['address'   ] ?? '',
-            'city'       => $_REQUEST['city'      ] ?? '',
-            'state'      => $_REQUEST['state'     ] ?? '',
-            'zip'        => $_REQUEST['zip'       ] ?? '',
-            'citylimits' => $_REQUEST['citylimits'] ?? '',
-            'occupation' => $_REQUEST['occupation'] ?? '',
-            'website'    => $_REQUEST['website'   ] ?? '',
-            'email'      => $_REQUEST['email'     ] ?? '',
-            'phone'      => $_REQUEST['phone'     ] ?? '',
-            'states'     => UpdateView::states(),
-            'yesno'      => UpdateView::yesno(),
-            'callback'   => isset($_REQUEST['callback']),
-            'return_url' => $return_url
+            'firstname'   => $_REQUEST['firstname' ] ?? '',
+            'lastname'    => $_REQUEST['lastname'  ] ?? '',
+            'address'     => $_REQUEST['address'   ] ?? '',
+            'city'        => $_REQUEST['city'      ] ?? '',
+            'state'       => $_REQUEST['state'     ] ?? '',
+            'zip'         => $_REQUEST['zip'       ] ?? '',
+            'citylimits'  => $_REQUEST['citylimits'] ?? '',
+            'occupation'  => $_REQUEST['occupation'] ?? '',
+            'website'     => $_REQUEST['website'   ] ?? '',
+            'email'       => $_REQUEST['email'     ] ?? '',
+            'phone'       => $_REQUEST['phone'     ] ?? '',
+            'states'      => UpdateView::states(),
+            'yesno'       => UpdateView::yesno(),
+            'callback'    => isset($_REQUEST['callback']),
+            'return_url'  => $return_url,
+            'breadcrumbs' => self::breadcrumbs()
         ];
 
         // Preserve any extra parameters passed in
@@ -44,5 +45,13 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/people/addForm.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(): array
+    {
+        return [
+            parent::_(['person', 'people', 10]) => parent::generateUri('people.index'),
+            parent::_('person_add') => null
+        ];
     }
 }

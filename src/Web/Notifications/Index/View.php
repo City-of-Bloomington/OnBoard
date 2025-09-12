@@ -55,8 +55,8 @@ class View extends \Web\View
     private static function breadcrumbs(): array
     {
         return [
-            parent::generateUri('settings.index')      => parent::_('settings'),
-            parent::generateUri('notifications.index') => parent::_(['notification', 'notifications', 10])
+            parent::_('settings') => parent::generateUri('settings.index'),
+            parent::_(['notification', 'notifications', 10]) => null
         ];
     }
 }

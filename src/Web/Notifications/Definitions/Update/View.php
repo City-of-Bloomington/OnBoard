@@ -17,16 +17,38 @@ class View extends \Web\View
         parent::__construct();
 
         $this->vars = [
-            'definition' => $d,
-            'events'     => self::events(),
-            'committees' => self::committees(),
-            'return_url' => $return_url
+            'definition'  => $d,
+            'events'      => self::events(),
+            'committees'  => self::committees(),
+            'return_url'  => $return_url,
+            'breadcrumbs' => self::breadcrumbs($d)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/notifications/definitions/updateForm.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Definition $d): array
+    {
+        $settings      = parent::_('settings');
+        $notifications = parent::_(['notification', 'notifications', 10]);
+        if ($d->getId()) {
+            return [
+                $settings      => parent::generateUri('settings.index'),
+                $notifications => parent::generateUri('notifications.index'),
+                parent::_($d->getEvent()) => parent::generateUri('notifications.definitions.info', ['definition_id'=>$d->getId()]),
+                parent::_('notification_definition_edit') => null
+            ];
+        }
+        else {
+            return [
+                $settings      => parent::generateUri('settings.index'),
+                $notifications => parent::generateUri('notifications.index'),
+                parent::_('notification_definition_add') => null
+            ];
+        }
     }
 
     /**
