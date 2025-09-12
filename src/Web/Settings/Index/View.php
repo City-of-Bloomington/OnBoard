@@ -31,7 +31,7 @@ class View extends \Web\View
             'users'      => 'user',
             'legislationTypes'       => 'legislationType',
             'legislationActionTypes' => 'legislationActionType',
-            'legislationStatuses'    => 'legislationStatus'
+            'legislationStatuses'    => 'legislationStatus',
         ];
         foreach ($routes as $plural=>$single) {
             if (parent::isAllowed($plural, 'index')) {
@@ -42,10 +42,12 @@ class View extends \Web\View
             }
         }
 
-        $links[] = [
-            'url' => parent::generateUri('notifications.definitions.index'),
-            'label' => $this->_(['notification_definition', 'notification_definitions', 10])
-        ];
+        if (parent::isAllowed('notifications', 'index')) {
+            $links[] = [
+                'url' => parent::generateUri('notifications.index'),
+                'label' => $this->_(['notification_definition', 'notification_definitions', 10])
+            ];
+        }
         return $links;
     }
 }

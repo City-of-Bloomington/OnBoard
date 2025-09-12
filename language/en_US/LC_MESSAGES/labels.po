@@ -48,6 +48,9 @@ msgstr "Save"
 msgid "cancel"
 msgstr "Cancel"
 
+msgid "reset"
+msgstr "Reset"
+
 msgid "done"
 msgstr "Done"
 
@@ -942,6 +945,11 @@ msgstr "Oldest"
 
 msgid "sort_date_desc"
 msgstr "Latest"
+
+msgid "notification"
+msgid_plural "notifications"
+msgstr[0] "Notification"
+msgstr[1] "Notifications"
 
 msgid "notification_definition"
 msgid_plural "notification_definitions"

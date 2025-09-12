@@ -19,7 +19,7 @@ class Controller extends \Web\Controller
 
         if (!isset($n)) { return new \Web\Views\NotFoundView(); }
 
-        $r = \Web\View::generateUri('notifications.definitions.index');
+        $r = \Web\View::generateUri('notifications.index');
 
         try { $n->delete(); }
         catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

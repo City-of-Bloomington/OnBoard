@@ -34,7 +34,7 @@ class View extends \Web\View
      *
      * @see templates/html/macros/forms.twig
      */
-    private static function committees(): array
+    public static function committees(): array
     {
         $o = [['value'=>'']];
         $t = new CommitteeTable();
@@ -43,7 +43,7 @@ class View extends \Web\View
         return $o;
     }
 
-    private static function events(): array
+    public static function events(): array
     {
         $o = [['value'=>'']];
         foreach (DefinitionTable::events() as $e) {

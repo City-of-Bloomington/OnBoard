@@ -14,7 +14,7 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         $n = new Definition();
-        $r = \Web\View::generateUri('notifications.definitions.index');
+        $r = \Web\View::generateUri('notifications.index');
 
         if (isset($_POST['body'])) {
             $n->handleUpdate($_POST);

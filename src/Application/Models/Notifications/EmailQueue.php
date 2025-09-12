@@ -13,24 +13,26 @@ class EmailQueue extends TableGateway
     const TABLE = 'email_queue';
 
     public function __construct() { parent::__construct('email_queue', __namespace__.'\Email'); }
-	protected $columns = ['email', 'person_id', 'main'];
+	protected $columns = ['email', 'person_id', 'main', 'event', 'committee_id'];
 
-    public function find($fields=null, $order='id', $paginated=false, $limit=null)
+    public function find($fields=null, $order='created desc', $paginated=false, $limit=null)
     {
         $select = new Select(self::TABLE);
         if ($fields) {
             foreach ($fields as $k=>$v) {
-                switch ($k) {
-                    case 'sent':
-                        if (!$v) {
-                            $select->where(['sent is null']);
-                        }
-                        else {
-                            $select->where(['sent is not null']);
-                        }
-                    break;
-                    default:
-                        $select->where([$k=>$v]);
+                if (in_array($k, $this->columns)) {
+                    switch ($k) {
+                        case 'sent':
+                            if (!$v) {
+                                $select->where(['sent is null']);
+                            }
+                            else {
+                                $select->where(['sent is not null']);
+                            }
+                        break;
+                        default:
+                            $select->where([$k=>$v]);
+                    }
                 }
             }
         }

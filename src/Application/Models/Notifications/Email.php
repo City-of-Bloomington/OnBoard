@@ -10,10 +10,13 @@ use Web\ActiveRecord;
 use Web\Database;
 use PHPMailer\PHPMailer\PHPMailer;
 
+use Application\Models\Committee;
 
 class Email extends ActiveRecord
 {
     protected $tablename = 'email_queue';
+    protected $committee;
+    private const COMMITTEE = 'Application\Models\Committee';
 
     /**
      * Populates the object with data
@@ -65,13 +68,17 @@ class Email extends ActiveRecord
 
     public function save() { parent::save(); }
 
-    public function getId():int    { return (int)parent::get('id');   }
-    public function getEmailfrom() { return parent::get('emailfrom'); }
-    public function getEmailto()   { return parent::get('emailto'  ); }
-    public function getCc()        { return parent::get('cc'       ); }
-    public function getBcc()       { return parent::get('bcc'      ); }
-    public function getSubject()   { return parent::get('subject'  ); }
-    public function getBody()      { return parent::get('body'     ); }
+    public function getId()       : int    { return (int)parent::get('id');   }
+    public function getEmailfrom(): string { return parent::get('emailfrom'); }
+    public function getEmailto()  : string { return parent::get('emailto'  ); }
+    public function getCc()       : string { return parent::get('cc'       ); }
+    public function getBcc()      : string { return parent::get('bcc'      ); }
+    public function getSubject()  : string { return parent::get('subject'  ); }
+    public function getBody()     : string { return parent::get('body'     ); }
+    public function getEvent()    : string { return parent::get('event'    ); }
+    public function getCommittee_id(): int { return parent::get('committee_id'); }
+    public function getCommittee(): Committee { return parent::getForeignKeyObject(self::COMMITTEE, 'committee_id'); }
+
     public function getCreated(?string $format=null) { return parent::getDateData('created', $format); }
     public function getSent   (?string $format=null) { return parent::getDateData('sent',    $format); }
 
@@ -81,6 +88,9 @@ class Email extends ActiveRecord
     public function setBcc      ($s) { parent::set('bcc',       $s); }
     public function setSubject  ($s) { parent::set('subject',   $s); }
     public function setBody     ($s) { parent::set('body',      $s); }
+    public function setEvent    ($s) { parent::set('event',    $s); }
+    public function setCommittee_id($i) { parent::setForeignKeyField (self::COMMITTEE, 'committee_id', $i); }
+    public function setCommittee   ($o) { parent::setForeignKeyObject(self::COMMITTEE, 'committee_id', $o); }
 
     public function send()
     {

@@ -1,0 +1,81 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array definitions
+ * @param array emails
+ *
+ * Email Search Form Parameters
+ * @param string event
+ * @param int    committee_id
+ * @param int    total
+ * @param int    itemsPerPage
+ * @param int    currentPage
+ * @param array  events
+ * @param array  committees
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section class="grid-container">
+    <header><h1>{{ _(['notification_definition', 'notification_definitions', 10]) }}</h1></header>
+    {% if actionLinks %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
+
+    <table>
+    {% for d in definitions %}
+    <tr><td><a href="{{ uri('notifications.definitions.info', { definition_id: d.getId() }) }}">
+                {{ d.getEvent() }}
+            </a>
+        </td>
+        <td>{% if d.getCommittee() %}{{ d.getCommittee().getName() }}{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+
+<section class="grid-container">
+    <form           class="usa-form" method="get">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend usa-legend--large">Email Queue</legend>
+            {{ forms.field_select(   'event',     'event',        _('event'),     event,        events    , false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.button('submit', _('search'), 'search') }}
+            <a href="{{ uri('notifications.index') }}" class="usa-button">{{ _('reset') }}</a>
+        </fieldset>
+    </form>
+
+    {% if emails %}
+    <table class="usa-table usa-table--compact">
+    <thead>
+        <tr><th>{{ _('created'  ) }}</th>
+            <th>{{ _('to'       ) }}</th>
+            <th>{{ _('sent'     ) }}</th>
+            <th>{{ _('event'    ) }}</th>
+            <th>{{ _('committee') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in emails %}
+        <tr><td>{% if isAllowed('notifications.log', 'info') %}
+                <a href="{{ uri('notifications.log.info', { email_id: e.id }) }}">{{ e.created }}</a>
+                {% else %}
+                {{ e.created }}
+                {% endif %}
+            </td>
+            <td>{{ e.emailto }}</td>
+            <td>{{ e.sent    }}</td>
+            <td>{{ e.event   }}</td>
+            <td>{{ e.committee.code ?? e.committee.name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+{% endblock %}

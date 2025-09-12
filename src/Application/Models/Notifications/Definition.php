@@ -134,6 +134,8 @@ class Definition extends \Web\ActiveRecord
                 $mail->setBody($body);
                 $mail->setEmailFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
                 $mail->setEmailTo($to);
+                $mail->setEvent($this->getEvent());
+                $mail->setCommittee_id($model->getCommittee_id());
                 $mail->save();
             }
         }

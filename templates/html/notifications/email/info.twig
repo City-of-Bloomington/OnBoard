@@ -1,0 +1,15 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Email email
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section class="grid-container">
+    <header>
+        <h1>{{ email.subject }}</h1>
+        <h2>{{ email.emailTo }} on {{ email.sent }}</h2>
+    </header>
+    <div>{{ email.body }}</div>
+</section>
+{% endblock %}

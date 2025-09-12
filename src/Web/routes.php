@@ -15,6 +15,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'committeeStatute_id'      => '\d+',
               'definition_id'            => '\d+',
               'department_id'            => '\d+',
+              'email_id'                 => '\d+',
               'legislation_id'           => '\d+',
               'legislationAction_id'     => '\d+',
               'legislationActionType_id' => '\d+',
@@ -183,8 +184,11 @@ $map->attach('notifications.', '/notifications', function ($r) {
         $r->get('delete', '/{definition_id}/delete', Web\Notifications\Definitions\Delete\Controller::class);
         $r->get('info',   '/{definition_id}',        Web\Notifications\Definitions\Info\Controller::class);
         $r->get('add',    '/add',                   Web\Notifications\Definitions\Add\Controller::class)->allows(['POST']);
-        $r->get('index',  '',                       Web\Notifications\Definitions\List\Controller::class);
     });
+    $r->attach('log.', '/log', function ($r) {
+        $r->get('info', '/{email_id}', Web\Notifications\Email\Info\Controller::class);
+    });
+    $r->get('index', '', Web\Notifications\Index\Controller::class);
 });
 
 $map->attach('offices.', '/offices', function ($r) {
