@@ -37,7 +37,7 @@
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.members', { committee_id: committee.getId() }) }}"
                 class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and current ? 'usa-current' : '' }}">
-                {{ _(['current_member', 'current_members', 10]) }}
+                {{ _(['member', 'members', 10]) }}
             </a>
         </li>
 

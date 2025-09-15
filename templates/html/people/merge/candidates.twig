@@ -59,7 +59,7 @@
 
 {% if duplicates %}
 <section>
-    <header><h2>{{ _('duplicates') }}</h2></header>
+    <header><h2>Possible Duplicates</h2></header>
     <table>
     {% for d in duplicates %}
     <tr><td><a href="{{ uri('people.merge.index') ~ '?firstname=' ~ d.firstname ~ ';lastname=' ~ d.lastname }}">

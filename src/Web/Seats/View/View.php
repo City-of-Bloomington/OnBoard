@@ -25,7 +25,8 @@ class View extends \Web\View
             'seatActions'   => self::actionLinksForSeat($seat),
             'termActions'   => [],
             'termIntervals' => Seat::$termIntervals,
-            'termModifiers' => Seat::$termModifiers
+            'termModifiers' => Seat::$termModifiers,
+            'breadcrumbs'   => self::breadcrumbs($seat)
         ];
 
         if ($seat->getType() == 'termed') {
@@ -73,6 +74,19 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/seats/info.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Seat $s)
+    {
+        $committee_id = $s->getCommittee_id();
+        $committee    = $s->getCommittee()->getName();
+        $seats        = parent::_(['seat', 'seats', 10]);
+        $seat         = "{$s->getCode()} {$s->getName()}";
+        return [
+            $committee  => parent::generateUri('committees.info',  ['committee_id'=>$committee_id]),
+            $seats      => parent::generateUri('committees.seats', ['committee_id'=>$committee_id]),
+            $seat       => null
+        ];
     }
 
     private function actionLinksForSeat(Seat $seat): array

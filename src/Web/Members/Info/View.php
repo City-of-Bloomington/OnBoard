@@ -22,13 +22,26 @@ class View extends \Web\View
             'term'          => $member->getTerm(),
             'actionLinks'   => self::actionLinks($member),
             'termIntervals' => Seat::$termIntervals,
-            'termModifiers' => Seat::$termModifiers
+            'termModifiers' => Seat::$termModifiers,
+            'breadcrumbs'   => self::breadcrumbs($member)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/members/info.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Member $m): array
+    {
+        $committee_id = $m->getCommittee_id();
+        $committee    = $m->getCommittee()->getName();
+        $members      = parent::_(['member', 'members', 10]);
+        return [
+            $committee  => parent::generateUri('committees.info',    ['committee_id'=>$committee_id]),
+            $members    => parent::generateUri('committees.members', ['committee_id'=>$committee_id]),
+            $m->getPerson()->getFullname() => null
+        ];
     }
 
     private static function actionLinks(Member $m): array
