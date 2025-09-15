@@ -1,6 +1,18 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * ---------
+ * There are cases where a user needs to choose a person to assign them to something.
+ * The person-choosing is done in a popup window and is rendered with minimal headers.
+ * The choosing uses the same Controllers and Views for People::Find, People::Add.
+ * When rendering for use in a popup person chooser, the links on each person
+ * must call a javascript function, rather than link to the person.
+ *
+ * The only chooser we have ever needed was for personChooser.
+ * For now, in a callback context, we can always call the setPerson() javascript function
+ * Callbacks
+ * @see public/js/people/chooser.js
+ *
  * @param string firstname
  * @param string lastname
  * @param string email
@@ -34,7 +46,30 @@
     {% endif %}
 
     {% if people %}
-        {{ include('html/people/list.twig') }}
+    <table class="usa-table usa-table--borderless">
+    <thead>
+        <tr><th scope="col">{{ _('name') }}</th>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <th scope="col">{{ _('email') }}</th>
+            <th scope="col">{{ _('phone') }}</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in people %}
+        <tr><td><a class="usa-link" href="{{ return_url }};person_id={{ p.getId() }}"
+                    onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.getId() }})">
+                    {{ p.getFullName() }}
+                </a>
+            </td>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <td>{{ p.getEmail() }}</td>
+            <td>{{ p.getPhone() }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
     {% endif %}
 
     {% if total > itemsPerPage %}

@@ -14,7 +14,6 @@ use Web\View;
 class Person extends ActiveRecord
 {
     protected $tablename = 'people';
-    protected $race;
     protected $department;
 
     public static $STATES = ['IN'];
@@ -456,4 +455,49 @@ class Person extends ActiveRecord
         foreach ($l as $s) { $sub[] = $s; }
         return $sub;
     }
+
+	/**
+	 * Transfers all data from a person, then deletes that person
+	 *
+	 * This person will end up containing all information from both people.
+	 *
+	 * @param Person $person
+	 */
+	public function mergeFrom(Person $person)
+	{
+		if ($this->getId() && $person->getId()) {
+			if($this->getId() == $person->getId()){
+				// can not merge same person throw exception
+				throw new \Exception('people/mergerNotAllowed');
+			}
+
+            $tables = [
+                'people_emails',
+                'people_phones',
+                'members',
+                'alternates',
+                'liaisons',
+                'applications',
+                'applicantFiles',
+                'offices',
+                'committeeHistory',
+                'notification_subscriptions'
+            ];
+
+			$db = Database::getConnection();
+			$db->getDriver()->getConnection()->beginTransaction();
+            try {
+                foreach ($tables as $t) {
+                    $db->query("update $t set person_id=? where person_id=?")
+                       ->execute([$this->getId(), $person->getId()]);
+                }
+				$db->query('delete from people where id=?')->execute([$person->getId()]);
+            }
+            catch (Exception $e) {
+                $db->getDriver()->getConnection()->rollback();
+                throw($e);
+            }
+            $db->getDriver()->getConnection()->commit();
+		}
+	}
 }

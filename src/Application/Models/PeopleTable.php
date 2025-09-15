@@ -5,6 +5,7 @@
  */
 namespace Application\Models;
 
+use Web\Database;
 use Web\TableGateway;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Select;
@@ -103,5 +104,15 @@ class PeopleTable extends TableGateway
         }
         $order = 'p.'.$order;
         return parent::performSelect($select, $order, $paginated, $limit);
+    }
+
+    public static function duplicatesByName()
+    {
+        $sql = "select firstname,lastname, count(*) as count
+                from people
+                group by firstname, lastname
+                having count(*)>1";
+        $db     = Database::getConnection();
+        return $db->query($sql)->execute();
     }
 }

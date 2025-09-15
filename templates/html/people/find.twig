@@ -20,12 +20,7 @@
     <form class="usa-form usa-form--large" method="get">
         <fieldset class="usa-fieldset margin-bottom-3">
             <legend class="usa-legend usa-legend--large">{{ _('find_person') }}</legend>
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
-            {{ forms.field_text('lastname', 'lastname', _('lastname'), lastname) }}
-
-            {% if isAllowed('people', 'viewContactInfo') %}
-            {{ forms.field_text('email', 'email', _('email'), email) }}
-            {% endif %}
+            {{ include('html/people/partials/findFields.twig') }}
 
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
@@ -37,7 +32,33 @@
     {% endif %}
 
     {% if people %}
-        {{ include('html/people/list.twig') }}
+    <table class="usa-table usa-table--borderless">
+    <thead>
+    <tr><th scope="col">{{ _('name') }}</th>
+        {% if isAllowed('people', 'viewContactInfo') %}
+        <th scope="col">{{ _('email') }}</th>
+        <th scope="col">{{ _('phone') }}</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in people %}
+    <tr><td><a class="usa-link" href="{{ uri('people.view', { person_id: p.getId() }) }}">
+                {{ p.getFullName() }}
+            </a>
+        </td>
+        {% if isAllowed('people', 'viewContactInfo') %}
+        <td>{{ p.getEmail() }}</td>
+        <td>{{ p.getPhone() }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+
+    {% if isAllowed('people', 'add') %}
+    <a class="usa-button" href="{{ uri('people.add') }}"> {{ _('person_add') }}</a>
+    {% endif %}
     {% endif %}
 
     {% if total > itemsPerPage %}

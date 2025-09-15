@@ -197,12 +197,16 @@ $map->attach('offices.', '/offices', function ($r) {
 });
 
 $map->attach('people.', '/people', function ($r) {
+    $r->attach('merge.', '/merge', function ($r) {
+        $r->get('confirm', '/confirm', Web\People\Merge\Confirm\Controller::class)->allows(['POST']);
+        $r->get('index',   '',         Web\People\Merge\Candidates\Controller::class)->allows(['POST']);
+    });
     $r->get('update',     '/{person_id}/update', Web\People\Update\Controller::class)->allows(['POST']);
     $r->get('delete',     '/{person_id}/delete', Web\People\Delete\Controller::class);
     $r->get('view',       '/{person_id}'       , Web\People\View\Controller::class);
-    $r->get('add',        '/add'        , Web\People\Add\Controller::class)->allows(['POST']);
-    $r->get('callback',   '/callback'   , Web\People\Callback\Controller::class);
-    $r->get('index',      ''            , Web\People\Find\Controller::class);
+    $r->get('add',        '/add'     , Web\People\Add\Controller::class)->allows(['POST']);
+    $r->get('callback',   '/callback', Web\People\Callback\Controller::class);
+    $r->get('index',      ''         , Web\People\Find\Controller::class);
 });
 $map->attach('emails.', '/people/{person_id}/emails', function ($r) {
     $r->get('update', '/{email_id}/update', Web\People\Emails\Update\Controller::class)->allows(['POST']);

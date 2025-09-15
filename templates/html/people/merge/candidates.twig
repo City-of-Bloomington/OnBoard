@@ -1,0 +1,76 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param array  people         Array of people search results
+ * @param array  duplicates     Candidate searches that look like duplicates
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h1>{{ _('merge_people') }}</h1></header>
+
+    <form method="get" class="usa-form" >
+        <fieldset      class="usa-fieldset">
+            <legend    class="usa-legend">{{ _('find_person') }}</legend>
+            {{ include('html/people/partials/findFields.twig') }}
+
+            {{ forms.button('submit', _('search'), 'search') }}
+        </fieldset>
+    </form>
+    {% if firstname or lastname or email %}
+        {% if not people %}
+        <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
+        {% endif %}
+    {% endif %}
+
+    {% if people %}
+    <p>To merge people into a single record, choose which person to keep.</p>
+    <form method="post" target="_blank">
+        <table>
+        <thead>
+            <tr><th>{{ _('keep' ) }}</th>
+                <th>{{ _('name' ) }}</th>
+                <th>{{ _('email') }}</th>
+                <th>{{ _('phone') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in people %}
+            <tr><td><input name="target_id"   value="{{ p.id }}" type="radio" required="true" />
+                    <input name="person_id[]" value="{{ p.id }}" type="hidden" />
+                </td>
+                <td><a href="{{ uri('people.view', { person_id: p.id } ) }}">{{ p.getFullName() }}</a></td>
+                <td>{{ p.getEmail() }}</td>
+                <td>{{ p.getPhone() }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        {{ forms.button('submit', _('merge'), 'submit') }}
+        <a href="{{ uri('people.merge.index') }}" class="usa-button">{{ _('reset') }}</a>
+    </form>
+    {% endif %}
+
+</section>
+
+{% if duplicates %}
+<section>
+    <header><h2>{{ _('duplicates') }}</h2></header>
+    <table>
+    {% for d in duplicates %}
+    <tr><td><a href="{{ uri('people.merge.index') ~ '?firstname=' ~ d.firstname ~ ';lastname=' ~ d.lastname }}">
+                {{ d.firstname }} {{ d.lastname }}
+            </a>
+        </td>
+        <td>{{ d.count }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+{% endif %}
+
+{% endblock %}

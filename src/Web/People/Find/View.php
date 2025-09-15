@@ -28,10 +28,8 @@ class View extends \Web\View
 
     public function render(): string
     {
-        $template = $this->vars['callback']
-                    ? 'people/chooser'
-                    : 'people/findForm';
-        return $this->twig->render("html/$template.twig", $this->vars);
+        $template = $this->vars['callback'] ? 'chooser' : 'find';
+        return $this->twig->render("html/people/$template.twig", $this->vars);
     }
 
     private static function breadcrumbs(): array

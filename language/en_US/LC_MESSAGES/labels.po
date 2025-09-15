@@ -202,6 +202,12 @@ msgstr "Delete Person"
 msgid "person_change"
 msgstr "Change Person"
 
+msgid "merge_people"
+msgstr "Merge People"
+
+msgid "merge"
+msgstr "Merge"
+
 msgid "user"
 msgid_plural "users"
 msgstr[0] "User Account"
@@ -236,6 +242,7 @@ msgstr "Find someone"
 
 msgid "person_choose"
 msgstr "Choose Person"
+
 
 msgid "create_account"
 msgstr "Create User Account"

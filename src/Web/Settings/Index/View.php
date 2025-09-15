@@ -48,6 +48,12 @@ class View extends \Web\View
                 'label' => $this->_(['notification_definition', 'notification_definitions', 10])
             ];
         }
+        if (parent::isAllowed('people.merge', 'index')) {
+            $links[] = [
+                'url' => parent::generateUri('people.merge.index'),
+                'label' => $this->_('merge_people')
+            ];
+        }
         return $links;
     }
 }
