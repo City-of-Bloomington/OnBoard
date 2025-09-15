@@ -21,9 +21,9 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (empty($_SESSION['return_url'])) { $_SESSION['return_url'] = self::return_url($member); }
-
         if (isset($member)) {
+            parent::captureNewReturnUrl(self::return_url($member));
+
             if (!empty($_POST['committee_id'])) {
                 $member->setPerson_id($_POST['person_id']);
                 $member->setStartDate($_POST['startDate']);
@@ -32,8 +32,7 @@ class Controller extends \Web\Controller
                 try {
                     MemberTable::update($member);
 
-                    $url = $_SESSION['return_url'];
-                    unset ($_SESSION['return_url']);
+                    $url = parent::popCurrentReturnUrl();
                     header("Location: $url");
                     exit();
                 }
@@ -46,10 +45,8 @@ class Controller extends \Web\Controller
 
     private static function return_url(Member $m): string
     {
-        return !empty($_REQUEST['return_url'])
-                    ? $_REQUEST['return_url']
-                    : ($m->getSeat_id()
-                          ? \Web\View::generateUrl('seats.view', ['seat_id'=>$m->getSeat_id()])
-                          : \Web\View::generateUrl('committees.members', ['committee_id'=>$m->getCommittee_id()]));
+        return $m->getSeat_id()
+                ? \Web\View::generateUrl('seats.view',         ['seat_id'      => $m->getSeat_id()])
+                : \Web\View::generateUrl('committees.members', ['committee_id' => $m->getCommittee_id()]);
     }
 }

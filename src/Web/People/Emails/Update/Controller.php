@@ -20,17 +20,14 @@ class Controller extends \Web\Controller
 
         if (!isset($email)) { return new \Web\Views\NotFoundView(); }
 
-        if (empty($_SESSION['return_url'])) {
-                  $_SESSION['return_url'] = self::return_url($email->getPerson_id());
-        }
+        parent::captureNewReturnUrl(\Web\View::generateUrl('people.view', ['person_id'=>$email->getPerson_id()]));
 
         if (isset($_POST['email'])) {
             $email->handleUpdate($_POST);
 
             try  {
                 $email->save();
-                $url = $_SESSION['return_url'];
-                unset( $_SESSION['return_url'] );
+                $url = parent::popCurrentReturnUrl();
                 header("Location: $url");
                 exit();
             }
@@ -38,12 +35,5 @@ class Controller extends \Web\Controller
         }
 
         return new View($email, $_SESSION['return_url']);
-    }
-
-    private static function return_url($person_id): string
-    {
-        return !empty($_REQUEST['return_url'])
-                    ? $_REQUEST['return_url']
-                    : \Web\View::generateUrl('people.view', ['person_id'=>$person_id]);
     }
 }
