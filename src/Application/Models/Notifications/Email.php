@@ -68,14 +68,14 @@ class Email extends ActiveRecord
 
     public function save() { parent::save(); }
 
-    public function getId()       : int    { return (int)parent::get('id');   }
-    public function getEmailfrom(): string { return parent::get('emailfrom'); }
-    public function getEmailto()  : string { return parent::get('emailto'  ); }
-    public function getCc()       : string { return parent::get('cc'       ); }
-    public function getBcc()      : string { return parent::get('bcc'      ); }
-    public function getSubject()  : string { return parent::get('subject'  ); }
-    public function getBody()     : string { return parent::get('body'     ); }
-    public function getEvent()    : string { return parent::get('event'    ); }
+    public function getId(): int    { return (int)parent::get('id');   }
+    public function getEmailfrom()  { return parent::get('emailfrom'); }
+    public function getEmailto()    { return parent::get('emailto'  ); }
+    public function getCc()         { return parent::get('cc'       ); }
+    public function getBcc()        { return parent::get('bcc'      ); }
+    public function getSubject()    { return parent::get('subject'  ); }
+    public function getBody()       { return parent::get('body'     ); }
+    public function getEvent()      { return parent::get('event'    ); }
     public function getCommittee_id(): int { return parent::get('committee_id'); }
     public function getCommittee(): Committee { return parent::getForeignKeyObject(self::COMMITTEE, 'committee_id'); }
 
