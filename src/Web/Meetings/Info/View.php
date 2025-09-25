@@ -26,13 +26,26 @@ class View extends \Web\View
             'attendance'      => $m->hasAttendance() ? $m->getAttendance() : null,
             'attendanceNotes' => self::attendanceNotes($m),
             'actionLinks'     => self::actionLinks($m),
-            'warehouse'       => self::warehouse_data($m)
+            'warehouse'       => self::warehouse_data($m),
+            'breadcrumbs'     => self::breadcrumbs($m)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/meetings/info.twig', $this->vars);
+    }
+
+    private static function breadcrumbs(Meeting $m): array
+    {
+        $committee_id = $m->getCommittee_id();
+        $committee    = $m->getCommittee()->getName();
+        $meetings     = parent::_(['meeting', 'meetings', 10]);
+        return [
+            $committee  => parent::generateUri('committees.info',     ['committee_id'=>$committee_id]),
+            $meetings   => parent::generateUri('committees.meetings', ['committee_id'=>$committee_id]),
+            $m->getStart('F j, Y g:ia') => null
+        ];
     }
 
     private static function actionLinks(Meeting $meeting): array
