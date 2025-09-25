@@ -125,10 +125,10 @@ abstract class File extends ActiveRecord
         if ($this->tempFile && $this->newFile) {
             $this->saveFile($this->tempFile, $this->newFile);
 
-            if ($this->data['mime_type'] != 'application/pdf') {
+            if (!in_array($this->data['mime_type'], ['application/pdf', 'application/zip'])) {
                 self::convertToPDF($this->newFile);
 
-                $extension = self::$mime_types[$this->data['mime_type']];
+                $extension = static::$mime_types[$this->data['mime_type']];
                 $this->data['filename' ] = basename($this->data['filename'], $extension).'pdf';
                 $this->data['mime_type'] = 'application/pdf';
             }
@@ -209,8 +209,8 @@ abstract class File extends ActiveRecord
         }
 
         $this->data['mime_type'] = mime_content_type($this->tempFile);
-        if (array_key_exists($this->data['mime_type'], self::$mime_types)) {
-            $extension = self::$mime_types[$this->data['mime_type']];
+        if (array_key_exists($this->data['mime_type'], static::$mime_types)) {
+            $extension = static::$mime_types[$this->data['mime_type']];
         }
         else {
             throw new \Exception("{$this->tablename}/unknownFileType");
@@ -307,7 +307,7 @@ abstract class File extends ActiveRecord
      */
     public function getExtension()
     {
-        return self::$mime_types[$this->getMime_type()];
+        return static::$mime_types[$this->getMime_type()];
     }
 
     /**

@@ -29,6 +29,7 @@ class MeetingFile extends File
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
         'application/vnd.oasis.opendocument'                                      => 'odf',
         'application/vnd.oasis.opendocument.text'                                 => 'odt',
+        'application/zip'                                                         => 'zip',
         'application/pdf'                                                         => 'pdf',
         'application/rtf'                                                         => 'rtf',
                'text/rtf'                                                         => 'rtf'
