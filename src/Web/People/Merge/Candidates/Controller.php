@@ -25,7 +25,7 @@ class Controller extends \Web\Controller
                         $target->mergeFrom($p);
                     }
                 }
-                $_SESSION['errorMessages'][] = '';
+                $_SESSION['errorMessages'][] = 'success';
                 $url = \Web\View::generateUrl('people.view', ['person_id'=>$target->getId()]);
                 header("Location: $url");
                 exit();
