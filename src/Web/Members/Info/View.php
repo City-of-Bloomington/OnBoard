@@ -94,6 +94,13 @@ class View extends \Web\View
                 ];
             }
         }
+        if (parent::isAllowed('people', 'view')) {
+            $links[] = [
+                'url'   => parent::generateUri('people.view', ['person_id'=>$m->getPerson_id()]),
+                'label' => parent::_('person_view'),
+                'class' => 'person'
+            ];
+        }
 
         return $links;
     }
