@@ -55,6 +55,7 @@ $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAs
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicants',     'view',         $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'people',         'viewContactInfo');
+$ACL->allow('Appointer', 'committees.notes', 'view',       $requiresDepartmentAssociation);
 
 $ACL->allow('Clerk',  'people', 'viewContactInfo');
 $ACL->allow('Clerk',
@@ -67,6 +68,7 @@ $ACL->allow('Liaison', 'members', ['index', 'appoint', 'reappoint', 'resign', 'u
 $ACL->allow('Liaison', 'offices', 'update', $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'people', 'update');
 $ACL->allow('Liaison', ['emails', 'phones']);
+$ACL->allow('Liaison', 'committees.notes', ['add', 'update', 'view'], $requiresCommitteeAssociation);
 
 $ACL->allow('Staff');
 $ACL->deny ('Staff', 'users', ['update', 'delete']);

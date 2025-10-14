@@ -93,3 +93,14 @@ create table notification_subscriptions (
     foreign key (   person_id) references people(id),
     foreign key (committee_id) references committees(id)
 );
+
+create table committee_notes (
+    id           int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    person_id    int unsigned not null,
+    note text,
+    created  timestamp not null default CURRENT_TIMESTAMP,
+    modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    foreign key (committee_id) references committees(id),
+    foreign key (   person_id) references     people(id)
+);

@@ -87,6 +87,17 @@ create table committee_departments (
     foreign key (department_id) references departments(id)
 );
 
+create table committee_notes (
+    id           int unsigned not null primary key auto_increment,
+    committee_id int unsigned not null,
+    person_id    int unsigned not null,
+    note text,
+    created  timestamp not null default CURRENT_TIMESTAMP,
+    modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    foreign key (committee_id) references committees(id),
+    foreign key (   person_id) references     people(id)
+);
+
 create table appointers (
     id int unsigned not null primary key auto_increment,
     name varchar(128) not null unique

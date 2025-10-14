@@ -8,20 +8,22 @@ namespace Web\Committees\Applications;
 
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
+use Application\Models\Committees\NoteTable;
 use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
 
 class View extends \Web\View
 {
-    public function __construct(Committee $committee)
+    public function __construct(Committee $c)
     {
         parent::__construct();
 
         $this->vars = [
-            'committee'             => $committee,
-            'applications_current'  => self::applications_current ($committee),
-            'applications_archived' => self::applications_archived($committee),
-            'actionLinks'           => self::actionLinks($committee)
+            'committee'             => $c,
+            'applications_current'  => self::applications_current ($c),
+            'applications_archived' => self::applications_archived($c),
+            'notes'                 => self::committee_notes($c),
+            'actionLinks'           => self::actionLinks($c)
         ];
     }
 
@@ -111,6 +113,38 @@ class View extends \Web\View
                 'created'      => $a->getCreated (DATE_FORMAT),
                 'archived'     => $a->getArchived(DATE_FORMAT),
                 'actionLinks'  => $links
+            ];
+        }
+        return $data;
+    }
+
+    private static function committee_notes(Committee $c): array
+    {
+        $canView = parent::isAllowed('committees.notes', 'view');
+        $canEdit = parent::isAllowed('committees.notes', 'update');
+        $url     = parent::current_url();
+        if (!$canView) { return []; }
+
+        $table = new NoteTable();
+        $notes = $table->find(['committee_id'=>$c->getId(), 'created desc']);
+        $data  = [];
+        foreach ($notes as $n) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('committees.notes.update', ['committee_id'=>$c->getId(), 'note_id'=>$n->getId()])."?return_url=$url",
+                    'label' => parent::_('note_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            $data[] = [
+                'id'          => $n->getId(),
+                'person_id'   => $n->getPerson_id(),
+                'person'      => $n->getPerson()->getFullname(),
+                'created'     => $n->getCreated (DATETIME_FORMAT),
+                'modified'    => $n->getModified(DATETIME_FORMAT),
+                'note'        => $n->getNote(),
+                'actionLinks' => $links
             ];
         }
         return $data;

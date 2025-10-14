@@ -26,6 +26,7 @@ $map->tokens(['alternate_id'             => '\d+',
               'meeting_id'               => '\d+',
               'meetingFile_id'           => '\d+',
               'member_id'                => '\d+',
+              'note_id'                  => '\d+',
               'office_id'                => '\d+',
               'person_id'                => '\d+',
               'report_id'                => '\d+',
@@ -76,6 +77,11 @@ $map->attach('appointers.', '/appointers', function ($r) {
 });
 
 $map->attach('committees.', '/committees', function ($r) {
+    $r->attach('notes.', '/{committee_id}/notes', function ($r) {
+        $r->get('update', '/{note_id}/update', Web\Committees\Notes\Update\Controller::class)->allows(['POST']);
+        $r->get('add',    '/add',              Web\Committees\Notes\Add\Controller::class)->allows(['POST']);
+    });
+
     $r->get('members',      '/{committee_id}/members'      , Web\Committees\Members\Controller::class);
     $r->get('update',       '/{committee_id}/update'       , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/{committee_id}/end'          , Web\Committees\End\Controller::class)->allows(['POST']);

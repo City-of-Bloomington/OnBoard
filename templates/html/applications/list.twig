@@ -2,12 +2,13 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param array     seats
+ * @param array     notes
  * @param array     applications_current
  * @param array     applications_archived
  * @param array     actionLinks
  #}
 {% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
@@ -50,6 +51,35 @@
     </tbody>
     </table>
 </section>
+
+{% if isAllowed('committees.notes', 'view') %}
+<section>
+    <header><h2>{{ _(['note', 'notes', 10]) }}</h2></header>
+    {% if isAllowed('committees.notes', 'add') %}
+    {{ forms.actionLink(uri('committees.notes.add', { committee_id: committee.id }), _('note_add'), 'comment') }}
+    {% endif %}
+
+    <div class="usa-card-group">
+    {% for n in notes %}
+    <article class="usa-card">
+        <div class="usa-card__container">
+            <div class="usa-card__body">
+                {{ n.note }}
+            </div>
+            <footer class="usa-card__footer">
+                <div>{{ n.person }} - {{ n.created }}</div>
+                {% if n.actionLinks %}
+                <div>
+                {{ include('html/partials/actionLinks.twig', { actionLinks: n.actionLinks }, with_context: false ) }}
+                </div>
+                {% endif %}
+            </footer>
+        </div>
+    </article>
+    {% endfor %}
+    </div>
+</section>
+{% endif %}
 
 <section>
     <header>

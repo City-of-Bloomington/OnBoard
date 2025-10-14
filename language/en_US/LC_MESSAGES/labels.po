@@ -626,8 +626,16 @@ msgstr "Description"
 msgid "synopsis"
 msgstr "Synopsis"
 
-msgid "notes"
-msgstr "Notes"
+msgid "note"
+msgid_plural "notes"
+msgstr[0] "Note"
+msgstr[1] "Notes"
+
+msgid "note_add"
+msgstr "Add Note"
+
+msgid "note_edit"
+msgstr "Edit Note"
 
 msgid "amendsCode"
 msgstr "Amends Code"
