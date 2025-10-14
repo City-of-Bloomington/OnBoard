@@ -6,20 +6,19 @@
 declare (strict_types=1);
 namespace Web\Committees\Applications;
 
+use Application\Models\ApplicationTable;
 use Application\Models\Committee;
 use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
 
-class ReportView extends \Web\View
+class View extends \Web\View
 {
-    public function __construct(Committee $committee,
-                                array     $seats)
+    public function __construct(Committee $committee)
     {
         parent::__construct();
 
         $this->vars = [
             'committee'             => $committee,
-            'seats'                 => $seats,
             'applications_current'  => self::applications_current ($committee),
             'applications_archived' => self::applications_archived($committee),
             'actionLinks'           => self::actionLinks($committee)
@@ -28,7 +27,7 @@ class ReportView extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render('html/applications/reportForm.twig', $this->vars);
+        return $this->twig->render('html/applications/list.twig', $this->vars);
     }
 
     private static function actionLinks(Committee $c): array
@@ -39,14 +38,16 @@ class ReportView extends \Web\View
         return \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
     }
 
-    private static function applications_current(Committee $committee): array
+    private static function applications_current(Committee $c): array
     {
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
         $url        = parent::current_url();
 
+        $tab  = new ApplicationTable();
+        $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
         $data = [];
-        foreach ($committee->getApplications(['current' =>time()]) as $a) {
+        foreach ($apps as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
@@ -76,14 +77,16 @@ class ReportView extends \Web\View
         return $data;
     }
 
-    private static function applications_archived(Committee $committee): array
+    private static function applications_archived(Committee $c): array
     {
         $canUnArchive = parent::isAllowed('applications', 'unarchive');
         $canDelete    = parent::isAllowed('applications', 'delete');
         $url          = parent::current_url();
 
+        $tab  = new ApplicationTable();
+        $apps = $tab->find(['archived'=>time(), 'committee_id'=>$c->getId()], 'archived desc');
         $data = [];
-        foreach ($committee->getApplications(['archived' =>time()]) as $a) {
+        foreach ($apps as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [

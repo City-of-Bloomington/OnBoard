@@ -67,7 +67,6 @@ $map->attach('applications.', '/applications', function ($r) {
     $r->get('unarchive', '/{application_id}/unarchive', Web\Applications\Unarchive\Controller::class);
     $r->get('delete',    '/{application_id}/delete'   , Web\Applications\Delete\Controller::class);
     $r->get('view',      '/{application_id}'          , Web\Applications\Info\Controller::class);
-    $r->get('report',    '/report'                    , Web\Applications\Report\Controller::class);
 });
 
 $map->attach('appointers.', '/appointers', function ($r) {

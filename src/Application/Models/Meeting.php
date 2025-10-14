@@ -83,10 +83,10 @@ class Meeting extends ActiveRecord
     public function getAttendanceNotes() { return parent::get('attendanceNotes'); }
     public function getCommittee_id()    { return parent::get('committee_id'   ); }
     public function getCommittee()       { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
-    public function getStart  ($f=null)  { return parent::getDateData('start', $f); }
-    public function getEnd    ($f=null)  { return parent::getDateData('end',   $f); }
-    public function getCreated($f=null)  { return parent::getDateData('start', $f); }
-    public function getUpdated($f=null)  { return parent::getDateData('end',   $f); }
+    public function getStart  ($f=null)  { return parent::getDateData('start',   $f); }
+    public function getEnd    ($f=null)  { return parent::getDateData('end',     $f); }
+    public function getCreated($f=null)  { return parent::getDateData('created', $f); }
+    public function getUpdated($f=null)  { return parent::getDateData('updated', $f); }
 
     public function setTitle          ($s) { parent::set('title',           $s); }
     public function setEventId        ($s) { parent::set('eventId',         $s); }

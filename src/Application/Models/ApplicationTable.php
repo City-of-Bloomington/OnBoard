@@ -12,7 +12,7 @@ use Laminas\Db\Sql\Select;
 
 class ApplicationTable extends TableGateway
 {
-    public static $defaultOrder = ['a.archived', 'p.lastname', 'p.firstname'];
+    public static $defaultOrder = ['a.archived desc', 'p.lastname', 'p.firstname'];
 
     public function __construct() { parent::__construct('applications', __namespace__.'\Application'); }
 

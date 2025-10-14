@@ -6,6 +6,7 @@
 declare (strict_types=1);
 namespace Web\People\View;
 
+use Application\Models\ApplicationTable;
 use Application\Models\Committee;
 use Application\Models\LiaisonTable;
 use Application\Models\Person;
@@ -189,7 +190,7 @@ class View extends \Web\View
         return $data;
     }
 
-    public static function applications_current(Person $person): array
+    public static function applications_current(Person $p): array
     {
         if (!parent::isAllowed('applicants', 'index')) { return []; }
 
@@ -197,8 +198,10 @@ class View extends \Web\View
         $canDelete  = parent::isAllowed('applications', 'delete');
         $url        = parent::current_url();
 
+        $tab  = new ApplicationTable();
+        $apps = $tab->find(['current'=>time(), 'person_id'=>$p->getId()], 'created desc');
         $data = [];
-        foreach ($person->getApplications(['current' =>time()]) as $a) {
+        foreach ($apps as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
@@ -215,12 +218,11 @@ class View extends \Web\View
                 ];
             }
 
-            $p      = $a->getPerson();
             $c      = $a->getCommittee();
             $data[] = [
                 'id'             => $a->getId(),
                 'person_id'      => $a->getPerson_id(),
-                'person'         => "{$p->getFirstname()} {$p->getLastname()}",
+                'person'         => $p->getFullname(),
                 'committee_id'   => $c->getId(),
                 'committee'      => $c->getCode() ?? $c->getName(),
                 'created'        => $a->getCreated(DATE_FORMAT),
@@ -235,7 +237,7 @@ class View extends \Web\View
         return $data;
     }
 
-    public static function applications_archived(Person $person): array
+    public static function applications_archived(Person $p): array
     {
         if (!parent::isAllowed('applicants', 'index')) { return []; }
 
@@ -243,8 +245,10 @@ class View extends \Web\View
         $canDelete    = parent::isAllowed('applications', 'delete');
         $url          = parent::current_url();
 
+        $tab  = new ApplicationTable();
+        $apps = $tab->find(['archived'=>time(), 'person_id'=>$p->getId()], 'archived desc');
         $data = [];
-        foreach ($person->getApplications(['archived' =>time()]) as $a) {
+        foreach ($apps as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
@@ -261,12 +265,11 @@ class View extends \Web\View
                 ];
             }
 
-            $p      = $a->getPerson();
             $c      = $a->getCommittee();
             $data[] = [
                 'id'           => $a->getId(),
                 'person_id'    => $a->getPerson_id(),
-                'person'       => "{$p->getFirstname()} {$p->getLastname()}",
+                'person'       => $p->getFullname(),
                 'committee_id' => $c->getId(),
                 'committee'    => $c->getCode() ?? $c->getName(),
                 'created'      => $a->getCreated (DATE_FORMAT),

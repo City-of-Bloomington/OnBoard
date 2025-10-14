@@ -41,7 +41,7 @@ class Definition extends \Web\ActiveRecord
                     $this->exchangeArray($res->current());
                 }
                 else {
-                    throw new \Exception('noitifications/unknownDefinition');
+                    throw new \Exception('notifications/unknownDefinition');
                 }
             }
         }
