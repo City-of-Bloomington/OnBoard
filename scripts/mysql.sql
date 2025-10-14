@@ -227,7 +227,7 @@ create table meetingFiles(
     id               int unsigned not null primary key auto_increment,
     meeting_id       int unsigned not null,
     type             varchar(16)  not null,
-    title            varchar(32),
+    title            varchar(64),
     internalFilename varchar(128) not null,
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,

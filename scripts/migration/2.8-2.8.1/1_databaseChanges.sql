@@ -104,3 +104,5 @@ create table committee_notes (
     foreign key (committee_id) references committees(id),
     foreign key (   person_id) references     people(id)
 );
+
+alter table meetingFiles modify title varchar(64);
