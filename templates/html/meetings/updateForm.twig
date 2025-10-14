@@ -1,0 +1,27 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Meeting   meeting
+ * @param Committee committee
+ * @param string    return_url
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    {{ include('html/meetings/partials/header.twig') }}
+
+    <form class="usa-form" method="post">
+        <fieldset class="usa-fieldset">
+            {{ forms.field_text('title',    'title',    _('title'),    meeting.getTitle(), true ) }}
+            {{ forms.field_text('eventId',  'eventId',  _('eventId'),  meeting.getEventId()  ) }}
+            {{ forms.field_text('location', 'location', _('location'), meeting.getLocation() ) }}
+            {{ forms.field_text('htmlLink', 'htmlLink', _('url'),      meeting.getHtmlLink() ) }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel') ) }}
+        </fieldset>
+    </form>
+</section>
+
+{% endblock %}

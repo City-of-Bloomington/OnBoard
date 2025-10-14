@@ -12,6 +12,8 @@ use Application\Models\SeatTable;
 
 class Controller extends \Web\Controller
 {
+    protected $valid_output_formats = ['html', 'csv'];
+
     public function __invoke(array $params): \Web\View
     {
         $search = self::parseQueryParameters();

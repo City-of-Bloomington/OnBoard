@@ -15,6 +15,8 @@ use Web\View;
 
 class Controller extends \Web\Controller
 {
+    protected $valid_output_formats = ['html', 'csv', 'json'];
+
     public function __invoke(array $params): View
     {
         if (!empty($_REQUEST['committee_id'])) {

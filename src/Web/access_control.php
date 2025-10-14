@@ -41,7 +41,7 @@ foreach ($ROUTES->getMap()->getRoutes() as $r) {
 $ACL->allow(null,  'home');
 $ACL->allow(null,  'people',      'parameters');
 $ACL->allow(null,  'legislationTypes', 'index');
-$ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'statutes', 'liaisons', 'report', 'meetings']);
+$ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'statutes', 'liaisons', 'meetings']);
 $ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
 $ACL->allow(null,  'login');
 $ACL->allow(null,

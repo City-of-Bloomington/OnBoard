@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -18,8 +18,7 @@ class View extends \Web\View
             'member'        => $member,
             'seat'          => $member->getSeat(),
             'term'          => $member->getTerm(),
-            'committee'     => $member->getCommittee(),
-            'recentMembers' => \Web\Members\Appoint\View::recentMembers($member->getSeat()),
+            'committee'     => $member->getCommittee()
         ];
     }
 

@@ -402,7 +402,7 @@ class Committee extends ActiveRecord
                             where a.committee_id=c.id and (a.archived is null or now() <= a.archived)
                         ) as applications
                 from committees c
-                left join seats s    on c.id= s.committee_id
+                left join seats s    on c.id= s.committee_id and (s.endDate is null or now()<=s.endDate)
                 left join members m  on s.id= m.seat_id and  (m.startDate is null or  m.startDate <= now()) and ( m.endDate is null or now() <= m.endDate)
                 left join terms   t  on s.id= t.seat_id and  (t.startDate is null or  t.startDate <= now()) and ( t.endDate is null or now() <= t.endDate)
                 left join members tm on t.id=tm.term_id and (tm.startDate is null or tm.startDate <= now()) and (tm.endDate is null or now() <=tm.endDate)
@@ -439,12 +439,7 @@ class Committee extends ActiveRecord
             fwrite($debug, "Event: $eventId\n");
 
             if ($event->status == 'cancelled') {
-                // Remove the Google Event Information but preserve the meeting
-                foreach ($list as $meeting)  {
-                    $meeting->setEventId(null);
-                    $meeting->setHtmlLink(null);
-                    $meeting->save();
-                }
+                foreach ($list as $meeting)  { self::cancelMeeting($meeting); }
                 continue;
             }
 
@@ -464,11 +459,13 @@ class Committee extends ActiveRecord
             // Only save one year's worth of future events in the database
             if ($start > $year) { continue; }
 
+            $title    = substr((string)$event->summary, 0, 255);
             $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
 
             if ($list->count()) {
                 foreach ($list as $meeting) {
                     fwrite($debug, "Updating meeting\n");
+                    $meeting->setTitle   ($title);
                     $meeting->setStart   ($start  ->format('Y-m-d H:i:s'));
                     $meeting->setEnd     ($end    ->format('Y-m-d H:i:s'));
                     $meeting->setLocation($location);
@@ -479,7 +476,7 @@ class Committee extends ActiveRecord
             else {
                 $meeting = new Meeting([
                     'committee_id' => $this->getId(),
-                    'title'        => substr((string)$event->summary, 0, 255),
+                    'title'        => $title,
                     'eventId'      => $eventId,
                     'start'        => $start  ->format('Y-m-d H:i:s'),
                     'end'          => $end    ->format('Y-m-d H:i:s'),
@@ -494,6 +491,37 @@ class Committee extends ActiveRecord
         $db  = Database::getConnection();
         $sql = 'update committees set syncToken=?, synced=now() where id=?';
         $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
+    }
+
+    /**
+     * Disassociate a meeting with the Google Calendar
+     */
+    private static function cancelMeeting(Meeting $m)
+    {
+        $m->setEventId (null);
+        $m->setHtmlLink(null);
+        $m->save();
+
+        if ($m->isSafeToDelete()) { $m->delete(); }
+    }
+
+    public function validateFutureMeetings()
+    {
+        $t = new MeetingTable();
+        $l = $t->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
+        foreach ($l as $m) {
+            $event_id = $m->getEventId();
+            if ($event_id) {
+                try {
+                    $event = GoogleGateway::getEvent($this->getCalendarId(), $event_id);
+                    if ($event->status == 'cancelled') { self::cancelMeeting($m); }
+                }
+                catch (\Exception $e) {
+                    if ($e->getCode() == 404) { self::cancelMeeting($m); }
+                }
+            }
+            else { self::cancelMeeting($m); }
+        }
     }
 
     public function getHistory(): array

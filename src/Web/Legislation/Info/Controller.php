@@ -10,6 +10,8 @@ use Application\Models\Legislation\Legislation;
 
 class Controller extends \Web\Controller
 {
+    protected $valid_output_formats = ['html', 'json'];
+
     public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['legislation_id'])) {

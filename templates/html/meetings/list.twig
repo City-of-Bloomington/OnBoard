@@ -46,7 +46,8 @@
 
     <ul class="usa-card-group margin-top-3">
     {% for date, t in meetings %}
-        {% for time, m in t %}
+        {% for time, tm in t %}
+            {% for m in tm %}
         <li class="margin-bottom-2 grid-col-12">
             <div        class="usa-card__container">
                 <div    class="usa-card__header">
@@ -77,6 +78,7 @@
                 {%- endif %}
             </div>
         </li>
+            {% endfor %}
         {% endfor %}
     {% endfor %}
     </ul>

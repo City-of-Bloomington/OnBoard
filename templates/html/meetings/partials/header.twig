@@ -1,0 +1,11 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Meeting meeting
+ #}
+<header>
+    <h2>{{ meeting.getStart()|date("F j, Y") }}
+        {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}
+    </h2>
+    <h2>{{ meeting.getTitle() }}</h2>
+</header>
