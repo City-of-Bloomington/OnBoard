@@ -63,16 +63,17 @@
                         {{ row.seat_code }}
                         {% endif %}
                     </div>
+                    {% if row.seat_type == 'termed' %}
                     <div class="tablet:grid-col-4">
-                        {% if row.seat_type == 'termed' %}
                         <strong>{{ _('seat_term'   ) }}:</strong>
                         {{ row.term_startDate|date(DATE_FORMAT) }} -
                         {{ row.term_endDate  |date(DATE_FORMAT) }}
-                        {% else %}
+                    </div>
+                    {% endif %}
+                    <div class="tablet:grid-col-4">
                         <strong>{{ _('membership') }}</strong>
                         {{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }} -
                         {{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}
-                        {% endif %}
                     </div>
                     <div class="tablet:grid-col-6">
                         <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
