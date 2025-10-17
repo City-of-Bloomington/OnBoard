@@ -126,7 +126,7 @@ class View extends \Web\View
         if (!$canView) { return []; }
 
         $table = new NoteTable();
-        $notes = $table->find(['committee_id'=>$c->getId(), 'created desc']);
+        $notes = $table->find(['committee_id'=>$c->getId()], 'created desc');
         $data  = [];
         foreach ($notes as $n) {
             $links = [];
