@@ -35,12 +35,12 @@ var PERSON_CHOOSER = {
 		);
         return false;
 	},
-	setPerson: function (person_id) {
+	setPerson: function (person_id, fieldId) {
         ONBOARD.ajax(
             BASE_URL + '/people/' + person_id + '?format=json',
             function (request) {
-                const id     = PERSON_CHOOSER.fieldId,
-                      name   = PERSON_CHOOSER.fieldId + '-name',
+                const id     = PERSON_CHOOSER.fieldId ? PERSON_CHOOSER.fieldId : fieldId,
+                      name   = id + '-name',
                       person = JSON.parse(request.responseText);
 
                 document.getElementById(id).value       = person.id;

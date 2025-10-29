@@ -2,23 +2,24 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array members   An array of Member objects
+ * @param bool  chooser   Whether there is an active personChooser or not
  #}
-<table class="usa-table usa-table--borderless">
-    <thead>
-        <tr>
-            <th>{{ _('name') }}</th>
-            <th>{{ _('startDate') }}</th>
-            <th>{{ _('endDate') }}</th>
-        </tr>
-    </thead>
+<table class="usa-table usa-table--compact usa-table--borderless">
     <tbody>
     {% for m in members %}
-    <tr><td><a class="usa-link" href="{{ uri('people.view', { person_id: m.getPerson_id() }) }}">
+    <tr>{% if chooser is defined and chooser %}
+        <td><button onclick="PERSON_CHOOSER.setPerson({{ m.person_id }}, 'person_id');">
+                {{ _('person_choose') }}
+            </button>
+        </td>
+        {% endif %}
+        <td><a class="usa-link" href="{{ uri('people.view', { person_id: m.getPerson_id() }) }}">
                 {{ m.getPerson().getFullname() }}
             </a>
         </td>
-        <td class="font-mono-3xs">{{ m.getStartDate|date(DATE_FORMAT) }}</td>
-        <td class="font-mono-3xs">{{ m.getEndDate  |date(DATE_FORMAT) }}</td>
+        <td>{{ m.getStartDate|date(DATE_FORMAT) }}
+            {{ m.getEndDate  |date(DATE_FORMAT) }}
+        </td>
     </tr>
     {% endfor %}
     </tbody>
