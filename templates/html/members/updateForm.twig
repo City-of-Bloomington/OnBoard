@@ -44,7 +44,7 @@
 {% if member.getSeat_id() %}
 <section>
     <h2>{{ _(['past_member', 'past_members', 10]) }}</h2>
-    {{ include('html/members/partials/list.twig', { members: member.getSeat().getMembers() }, with_context=false) }}
+    {{ include('html/members/partials/list.twig', { members: member.seat.members, chooser: true }, with_context=false) }}
 </section>
 {% endif %}
 

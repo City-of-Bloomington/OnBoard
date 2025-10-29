@@ -246,7 +246,6 @@ msgstr "Find someone"
 msgid "person_choose"
 msgstr "Choose Person"
 
-
 msgid "create_account"
 msgstr "Create User Account"
 
