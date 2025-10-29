@@ -83,9 +83,24 @@ $SOLR = [
 
 $AUTHENTICATION = [
     'oidc' => [
-        'server'         => '{{ onboard_oidc.server        }}',
-        'client_id'      => '{{ onboard_oidc.client_id     }}',
-        'client_secret'  => '{{ onboard_oidc.client_secret }}',
+        'server'         => '{{ onboard_authentication.oidc.server        }}',
+        'client_id'      => '{{ onboard_authentication.oidc.client_id     }}',
+        'client_secret'  => '{{ onboard_authentication.oidc.client_secret }}',
+        'claims' => [
+            // OnBoard field => OIDC Claim
+            'username'    => 'preferred_username',
+            'displayname' => 'commonname',
+            'firstname'   => 'given_name',
+            'lastname'    => 'family_name',
+            'email'       => 'email',
+            'groups'      => 'group',
+            'groupmap'    => []
+        ],
+    ],
+    'accessin' => [
+        'server'         => '{{ onboard_authentication.accessin.server        }}',
+        'client_id'      => '{{ onboard_authentication.accessin.client_id     }}',
+        'client_secret'  => '{{ onboard_authentication.accessin.client_secret }}',
         'claims' => [
             // OnBoard field => OIDC Claim
             'username'    => 'preferred_username',
