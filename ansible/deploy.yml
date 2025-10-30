@@ -75,7 +75,12 @@
       loop:
         - { src: 'daily.sh',  dest: '/etc/cron.daily/onboard' }
         - { src: 'hourly.sh', dest: '/etc/cron.hourly/onboard' }
-        - { src: 'cron.sh',   dest: '/etc/cron.d/onboard' }
+
+    - name: 'Install email notification CRON'
+      ansible.builtin.template:
+        src:  'cron.sh'
+        dest: '/etc/cron.d/onboard'
+        mode: '0644'
 
     - name: 'Update directory permissions'
       ansible.builtin.file:
