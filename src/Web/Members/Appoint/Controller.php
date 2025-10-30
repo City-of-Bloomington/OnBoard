@@ -37,7 +37,7 @@ class Controller extends \Web\Controller
 
                 MemberTable::appoint($member);
 
-                $return_url = popCurrentReturnUrl();
+                $return_url = parent::popCurrentReturnUrl();
                 unset($_SESSION['return_url']);
                 header("Location: $return_url");
                 exit();
