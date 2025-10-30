@@ -13,7 +13,7 @@ class EmailQueue extends TableGateway
     const TABLE = 'email_queue';
 
     public function __construct() { parent::__construct('email_queue', __namespace__.'\Email'); }
-	protected $columns = ['email', 'person_id', 'main', 'event', 'committee_id'];
+	protected $columns = ['email', 'person_id', 'main', 'event', 'committee_id', 'sent'];
 
     public function find($fields=null, $order='created desc', $paginated=false, $limit=null)
     {
