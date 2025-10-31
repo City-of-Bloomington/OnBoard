@@ -6,60 +6,55 @@
 {% extends "html/layouts/default.twig" %}
 {% block content %}
 <section>
-    <header><h1>{{ _('login') }}</h1></header>
+    <header><h1>OnBoard User Login</h1></header>
 
-    <p>The City of Bloomington is now requiring that applicants and active
-       board and commission members log in to OnBoard with an Access Indiana
-       account. Benefits of creating an Access Indiana Account:
+    <p>In order to secure city systems and provide enhanced services, the
+       OnBoard system including the board application process now requires an
+       account.  To access OnBoard, applicants and active
+       board and commission members can log in to OnBoard with an Access Indiana
+       account.
     </p>
-    <ul><li>Confirmed identity for applying to City of Bloomington programs</li>
-        <li>Reduces the information you need to enter to apply</li>
-        <li>Enables customization of your OnBoard notification subscriptions</li>
-        <li>Single log in to access many
+    <p>Benefits of the new log in system include:</p>
+    <ul><li>Confirming identity for applying to City of Bloomington programs</li>
+        <li>Reducing data entry needed to apply</li>
+        <li>Enabling customization of your OnBoard notification subscriptions</li>
+        <li>Convenient access to Bloomington and
             <a href="https://www.in.gov/access/available-services">State of Indiana programs and services</a>
         </li>
     </ul>
 
-    <ul class="usa-card-group">
-        <li class="usa-card">
+    <div class="grid-row">
+        <div class="usa-card tablet:grid-col-7 desktop:grid-col-5">
             <div class="usa-card__container">
                 <header class="usa-card__header">
-                    <h3 class="usa-card__heading">City of Bloomington Staff</h3>
+                    <h2 class="usa-card__heading">Public OnBoard Login for Bloomington Residents</h2>
                 </header>
-                <div class="usa-card__media">
-                    <div class="usa-card__img">
-                        <img src="{{ BASE_URI }}/images/cob-logo-horizontal.svg" />
-                    </div>
-                </div>
                 <div class="usa-card__body">
-                    <p>Log in as a city staff member.</p>
-                </div>
-                <div class="usa-card__footer">
-                    <a href="{{ uri('login.cob') }}" class="usa-button">Login</a>
-                </div>
-            </div>
-        </li>
-        <li class="usa-card">
-            <div class="usa-card__container">
-                <header class="usa-card__header">
-                    <h3 class="usa-card__heading">Access Indiana</h3>
-                </header>
-                <div class="usa-card__media">
-                    <div class="usa-card__img">
-                        <img src="{{ BASE_URI }}/images/access_indiana.svg" />
-                    </div>
-                </div>
-                <div class="usa-card__body">
-                    <p>Log in with Access Indiana</p>
                     <p><a class="usa-link" href="https://access.in.gov/signup">Register for an Access Indiana account</a></p>
                     <p><a class="usa-link" href="https://www.in.gov/access/getting-started">Get help creating your account</a></p>
+                    <p>Log in to OnBoard with Access Indiana</p>
                 </div>
                 <div class="usa-card__footer">
                     <a href="{{ uri('login.accessin') }}" class="usa-button">Login</a>
                 </div>
             </div>
-        </li>
-    </ul>
+        </div>
+    </div>
+    <div class="grid-row">
+        <div class="usa-card tablet:grid-col-7 desktop:grid-col-5">
+            <div class="usa-card__container">
+                <header class="usa-card__header">
+                    <h2 class="usa-card__heading">Staff OnBoard Login</h2>
+                </header>
+                <div class="usa-card__body">
+                    <p>Log in for city staff OnBoard users</p>
+                </div>
+                <div class="usa-card__footer">
+                    <a href="{{ uri('login.cob') }}" class="usa-button">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 {% endblock %}
