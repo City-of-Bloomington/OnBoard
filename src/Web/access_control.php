@@ -52,6 +52,7 @@ $ACL->allow('Public', 'profile');
 $ACL->allow('Public', 'committees', 'apply');
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
+$ACL->allow('Appointer', 'applications',   'view',         $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicantFiles', 'download',     $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'applicants',     'view',         $requiresDepartmentAssociation);
 $ACL->allow('Appointer', 'people',         'viewContactInfo');
