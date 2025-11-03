@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -37,7 +37,7 @@ class ApplicantFilesTable extends TableGateway
     {
         $sql    = "select a.committee_id
                    from applicantFiles f
-                   join applications   a on f.applicant_id=a.applicant_id
+                   join applications   a on f.person_id=a.person_id
                    join members        m on a.committee_id=m.committee_id and (m.endDate is null or m.endDate > now())
                    where m.person_id=? and  f.id=?";
         $db     = Database::getConnection();
@@ -52,7 +52,7 @@ class ApplicantFilesTable extends TableGateway
     {
         $sql    = "select c.department_id
                     from applicantFiles f
-                    join applications   a on f.applicant_id=a.applicant_id
+                    join applications   a on f.person_id=a.person_id
                     join committee_departments c on a.committee_id=c.committee_id
                     where c.department_id=? and f.id=?";
         $db     = Database::getConnection();
