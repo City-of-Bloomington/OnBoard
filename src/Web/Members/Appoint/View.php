@@ -6,6 +6,8 @@
 declare (strict_types=1);
 namespace Web\Members\Appoint;
 
+use Application\Models\ApplicationTable;
+use Application\Models\Committee;
 use Application\Models\Member;
 use Application\Models\Seat;
 
@@ -15,12 +17,14 @@ class View extends \Web\View
     {
         parent::__construct();
 
-        $seat = $member->getSeat();
+        $committee = $member->getCommittee();
+        $seat      = $member->getSeat();
 
         $this->vars = [
-            'committee'     => $member->getCommittee(),
+            'committee'     => $committee,
             'member'        => $member,
             'requirements'  => $seat ? $seat->getRequirements()   : null,
+            'applications'  => self::applications($committee),
             'return_url'    => $return_url
         ];
     }
@@ -28,5 +32,25 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/members/updateForm.twig', $this->vars);
+    }
+
+    public static function applications(Committee $c): array
+    {
+        $data = [];
+
+        if (parent::isAllowed('applications', 'view')) {
+            $tab  = new ApplicationTable();
+            $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
+            foreach ($apps as $a) {
+                $data[] = [
+                    'id'           => $a->getId(),
+                    'person_id'    => $a->getPerson_id(),
+                    'person'       => $a->getPerson()->getFullname(),
+                    'created'      => $a->getCreated(DATE_FORMAT)
+                ];
+            }
+        }
+
+        return $data;
     }
 }

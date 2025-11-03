@@ -8,8 +8,8 @@
     <tbody>
     {% for m in members %}
     <tr>{% if chooser is defined and chooser %}
-        <td><button onclick="PERSON_CHOOSER.setPerson({{ m.person_id }}, 'person_id');">
-                {{ _('person_choose') }}
+        <td><button onclick="PERSON_CHOOSER.setPerson({{ m.person_id }}, 'person_id');" class="usa-button">
+                {{ _('choose') }}
             </button>
         </td>
         {% endif %}
@@ -17,7 +17,7 @@
                 {{ m.getPerson().getFullname() }}
             </a>
         </td>
-        <td>{{ m.getStartDate|date(DATE_FORMAT) }}
+        <td>{{ m.getStartDate|date(DATE_FORMAT) }} -
             {{ m.getEndDate  |date(DATE_FORMAT) }}
         </td>
     </tr>

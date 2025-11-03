@@ -33,6 +33,9 @@ msgstr "Edit"
 msgid "delete"
 msgstr "Delete"
 
+msgid "choose"
+msgstr "Choose"
+
 msgid "settings"
 msgstr "Settings"
 

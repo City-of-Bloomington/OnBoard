@@ -4,6 +4,7 @@
  * @param Member    member
  * @param Committee committee
  * @param string    return_url
+ * @param array     applications
  #}
 {% import  "html/macros/forms.twig"         as forms   %}
 {% extends "html/layouts/committee.twig" %}
@@ -41,9 +42,29 @@
     </form>
 </section>
 
+{% if applications %}
+<section>
+    <header><h3>{{ _(['application', 'applications', 10]) }}</h3></header>
+    <table>
+        {% for a in applications %}
+        <tr><td><button onclick="PERSON_CHOOSER.setPerson({{ a.person_id }}, 'person_id');" class="usa-button">
+                    {{ _('choose') }}
+                </button>
+            </td>
+            <td><a href="{{ uri('applications.view', { application_id: a.id }) }}" class="usa-link" >
+                    {{ a.person  }}
+                </a>
+            </td>
+            <td>{{ a.created }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endif %}
+
 {% if member.getSeat_id() %}
 <section>
-    <h2>{{ _(['past_member', 'past_members', 10]) }}</h2>
+    <header><h3>{{ _(['past_member', 'past_members', 10]) }}</h3></header>
     {{ include('html/members/partials/list.twig', { members: member.seat.members, chooser: true }, with_context=false) }}
 </section>
 {% endif %}
