@@ -20,7 +20,7 @@ class View extends \Web\View
             'yesno'       => self::yesno(),
             'callback'    => isset($_REQUEST['callback']),
             'return_url'  => $return_url,
-            'breadcrumbs' => self::breadcrumbs()
+            'breadcrumbs' => self::breadcrumbs($person)
         ];
 
         // Preserve any extra parameters passed in
