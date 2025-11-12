@@ -34,10 +34,13 @@
         <ul class="add-list-reset grid-row margin-y-3">
             {% for t in terms %}
             <li class="grid-col-12">
-                <div class="hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
+                <div class="{{ t.current ? 'bg-base-lighter ' : '' }}hover:bg-base-lightest border-1px border-base-lightest radius-md padding-x-1 padding-bottom-1">
                     <div class="grid-row flex-row">
                         <div class="grid-col flex-1 display-flex flex-align-center">
-                            <h3>{{ t.startDate|date(DATE_FORMAT) }} - {{ t.endDate|date(DATE_FORMAT) }}</h3>
+                            <h3>{{ t.startDate|date(DATE_FORMAT) }} -
+                                {{ t.endDate|date(DATE_FORMAT) }}
+                                {{ t.current ? '- Current' : '' }}
+                            </h3>
                         </div>
                     </div>
                     <div class="flex-row margin-bottom-1">

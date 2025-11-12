@@ -225,12 +225,14 @@ class View extends \Web\View
 
     private function term_data(Seat $seat): array
     {
+        $today = date('Y-m-d');
         $terms = [];
         foreach ($seat->getTerms() as $t) {
             $terms[] = [
                 'term_id'     => $t->getId(),
                 'startDate'   => $t->getStartDate(),
                 'endDate'     => $t->getEndDate(),
+                'current'     => $t->getStartDate() < $today && $today < $t->getEndDate(),
                 'actionLinks' => $this->actionLinksForTerm($t),
                 'members'     => $this->member_data($t),
                 'alternates'  => $this->alternate_data($t)
