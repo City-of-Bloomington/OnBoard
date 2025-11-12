@@ -17,8 +17,6 @@ create table people (
     occupation varchar(128),
 	website    varchar(128),
 	username             varchar(128) unique,
-	password             varchar(40),
-	authenticationMethod varchar(40),
 	role                 varchar(30),
 	department_id        int unsigned,
     created    datetime  not null default CURRENT_TIMESTAMP,
