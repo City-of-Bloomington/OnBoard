@@ -29,7 +29,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        return $this->twig->render('html/applications/list.twig', $this->vars);
+        return $this->twig->render('html/committees/applications.twig', $this->vars);
     }
 
     private static function actionLinks(Committee $c): array

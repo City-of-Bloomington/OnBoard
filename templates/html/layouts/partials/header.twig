@@ -1,5 +1,6 @@
-<header class="usa-header usa-header--basic">
+<header class="usa-header usa-header--extended">
     <div class="usa-nav-container">
+
         <div class="usa-navbar">
             <div class="usa-logo">
                 <a class="grid-row" href="{{ BASE_URI }}" title="City of Bloomington, Indiana>">
@@ -11,6 +12,7 @@
             </div>
             <button type="button" class="usa-menu-btn">Menu</button>
         </div>
+
         <nav aria-label="Primary navigation" class="usa-nav">
             <button type="button" class="usa-nav__close">
                 <img src="{{ USWDS_URL }}/img/usa-icons/close.svg" role="img" alt="Close" />
@@ -49,27 +51,33 @@
                     <a href="{{ uri('applicants.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applicants.index' ? 'usa-current' : '' }}">{{ _(['applicant', 'applicants', 10]) }}</a>
                 </li>
                 {% endif %}
-
-                {% if USER is defined %}
+                {% if isAllowed('applications', 'index') %}
                 <li class="usa-nav__primary-item">
-                    <button class="usa-accordion__button outline-1px" type="button" aria-controls="user-nav" aria-expanded="false">
-                        <span>{{ USER.getFullname() }}</span>
-                    </button>
-                    <ul id="user-nav" class="usa-nav__submenu">
-                        <li class="usa-nav__submenu-item"><a href="{{ uri('profile.index') }}">{{ _('my_profile') }}</a></li>
-                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout' ) }}">{{ _('logout'    ) }}</a></li>
-                        {% if isAllowed('settings', 'index') %}
-                        <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
-                        {% endif %}
-                        <li class="usa-nav__submenu-item"><a href="{{ BASE_URI }}/guide">User Guide</a></li>
-                    </ul>
+                    <a href="{{ uri('applications.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applications.index' ? 'usa-current' : '' }}">{{ _(['application', 'applications', 10]) }}</a>
                 </li>
                 {% endif %}
             </ul>
 
-            {% if not USER is defined %}
-            <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
-            {% endif %}
+            <div        class="usa-nav__secondary">
+                <ul     class="usa-nav__secondary-links usa-accordion">
+                    <li class="usa-nav__secondary-item">
+                        {% if USER is defined %}
+                        <button class="usa-accordion__button outline-1px" type="button" aria-controls="user-nav" aria-expanded="false">
+                            <span>{{ USER.getFullname() }}</span>
+                        </button>
+                        <ul id="user-nav" class="usa-nav__submenu">
+                            <li class="usa-nav__submenu-item"><a href="{{ uri('profile.index') }}">{{ _('my_profile') }}</a></li>
+                            <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout' ) }}">{{ _('logout'    ) }}</a></li>
+                            {% if isAllowed('settings', 'index') %}
+                            <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
+                            {% endif %}
+                            <li class="usa-nav__submenu-item"><a href="{{ BASE_URI }}/guide">User Guide</a></li>
+                        </ul>
+                        {% else %}
+                        <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+                        {% endif %}
+                    </li>
+                </ul>
         </nav>
     </div>
 </header>

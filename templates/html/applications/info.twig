@@ -10,9 +10,11 @@
  * @param array  applications_archived
  #}
 {% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
 <section>
     <header><h2>{{ application.getCreated(DATE_FORMAT) }} {{ person.getFullname() }}</h2></header>
+    {{ forms.actionLink(uri('people.view', { person_id: person.id }), _('person_view'), 'person') }}
     <dl><dt>{{ _('referredFrom'  ) }}</dt><dd>{{ application.getReferredFrom()   }}</dd>
         <dt>{{ _('referredOther' ) }}</dt><dd>{{ application.getReferredOther()  }}</dd>
         <dt>{{ _('interest'      ) }}</dt><dd>{{ application.getInterest()       }}</dd>

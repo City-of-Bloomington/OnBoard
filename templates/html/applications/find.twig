@@ -1,0 +1,75 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array applications
+ *
+ * Search fields
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param int    committee_id
+ *
+ * Pagination
+ * @param int total
+ * @param int itemsPerPage
+ * @param int currentPage
+ *
+ * Drop down options
+ * @param array committees
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% import  "html/macros/forms.twig"      as forms %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _(['application', 'applications', 10]) }}</h2>
+    </header>
+
+    <form method="get" class="usa-form">
+        <fieldset      class="usa-fieldset">
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname ) }}
+            {{ forms.field_text('email',     'email',     _('email'    ), email    ) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('status',       'status',       _('status'),    status,       statuses,   false, { onchange:'this.form.submit();' } ) }}
+
+            {{ forms.button('submit', _('search'), 'search') }}
+            {{ forms.actionLink(uri('applications.index'), _('reset'), 'cancel') }}
+        </fieldset>
+    </form>
+
+    {% if firstname or lastname or email or committee_id %}
+        {% if not applications %}
+        <div>{{ _('no_results', 'messages')|format(_(['application', 'applications', 10])) }}</div>
+        {% endif %}
+    {% endif %}
+
+    {% if applications %}
+    <table>
+        <thead>
+            <tr><th></th>
+                <th>{{ _('applicant') }}</th>
+                <th>{{ _('committee') }}</th>
+                <th>{{ _('created'  ) }}</th>
+                {% if status=='archived' %}<th>{{ _('archived' ) }}</th>{% endif %}
+        </thead>
+        <tbody>
+        {% for a in applications %}
+        <tr><td><a href="{{ uri('applications.view', { application_id: a.id }) }}">{{ a.id }}</a></td>
+            <td>{{ a.person.fullname }}</td>
+            <td>{{ a.committee.code ?? a.committee.name  }}</td>
+            <td>{{ a.created|date(DATE_FORMAT) }}</td>
+            {% if status=='archived' %}<td>{{ a.archived ? a.archived|date(DATE_FORMAT) : '' }}</td>{% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+
+{% endblock %}

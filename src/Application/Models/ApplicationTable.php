@@ -13,6 +13,7 @@ use Laminas\Db\Sql\Select;
 class ApplicationTable extends TableGateway
 {
     public static $defaultOrder = ['a.archived desc', 'p.lastname', 'p.firstname'];
+    public static $searchable_fields = ['firstname', 'lastname', 'email', 'committee_id', 'current', 'archived', 'since'];
 
     public function __construct() { parent::__construct('applications', __namespace__.'\Application'); }
 
@@ -44,6 +45,38 @@ class ApplicationTable extends TableGateway
 
                     default:
                         $select->where([$key=>$value]);
+                }
+            }
+        }
+        return parent::performSelect($select, $order, $paginated, $limit);
+    }
+
+    public function search(?array $fields=null, ?string $order=null, ?bool $paginated=false, ?int $limit=null)
+    {
+        if (!$order) { $order = self::$defaultOrder; }
+
+        $select = new Select(['a'=>'applications']);
+        $select->join(['p'=>'people'], 'a.person_id=p.id', []);
+
+        foreach (self::$searchable_fields as $f) {
+            if (!empty($fields[$f])) {
+                switch ($f) {
+                    case 'current':
+                        $date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $fields[$f]);
+                        $select->where("(a.archived is null or a.archived>='$date')");
+                        break;
+
+                    case 'archived':
+                        $date = date(ActiveRecord::MYSQL_DATETIME_FORMAT, $fields[$f]);
+                        $select->where("(a.archived is not null and a.archived<='$date')");
+                        break;
+
+                    case 'committee_id':
+                        $select->where([$f=>$fields[$f]]);
+                    break;
+
+                    default:
+                        $select->where->like($f, $fields[$f].'%');
                 }
             }
         }
