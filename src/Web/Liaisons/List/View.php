@@ -7,7 +7,6 @@ declare (strict_types=1);
 namespace Web\Liaisons\List;
 
 use Application\Models\Liaison;
-use Web\Url;
 
 class View extends \Web\View
 {

@@ -12,8 +12,6 @@ use Application\Models\Legislation\LegislationTable;
 use Application\Models\Legislation\StatusesTable;
 use Application\Models\Legislation\TypesTable;
 
-use Web\Url;
-
 class View extends \Web\View
 {
     public function __construct(array $legislation,

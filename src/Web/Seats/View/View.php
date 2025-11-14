@@ -11,8 +11,6 @@ use Application\Models\Member;
 use Application\Models\Seat;
 use Application\Models\Term;
 
-use Web\Url;
-
 class View extends \Web\View
 {
     public function __construct(Seat $seat)

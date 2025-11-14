@@ -7,7 +7,6 @@ declare (strict_types=1);
 namespace Web\People\Update;
 
 use Application\Models\Person;
-use Web\Url;
 
 class Controller extends \Web\Controller
 {

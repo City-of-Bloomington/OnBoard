@@ -8,7 +8,6 @@ namespace Web\Alternates\Info;
 
 use Application\Models\Alternate;
 use Application\Models\Seat;
-use Web\Url;
 
 class View extends \Web\View
 {

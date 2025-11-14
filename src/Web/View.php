@@ -74,7 +74,6 @@ abstract class View
         $this->twig->addFunction(new TwigFunction('uri',         [$this, 'generateUri']));
         $this->twig->addFunction(new TwigFunction('url',         [$this, 'generateUrl']));
         $this->twig->addFunction(new TwigFunction('isAllowed',   [$this, 'isAllowed'  ]));
-        $this->twig->addFunction(new TwigFunction('current_url', [$this, 'current_url']));
 
         $this->twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load($class) {
@@ -253,9 +252,18 @@ abstract class View
     {
         return "https://".BASE_HOST.self::generateUri($route_name, $params);
     }
-    public static function current_url(): Url
+    public static function current_url(): string
     {
-        return new Url(Url::current_url(BASE_HOST));
+        global $ROUTE;
+
+        $url = generateUri($ROUTE->name);
+        if ($_SERVER['QUERY_STRING']) {
+            $s = preg_replace('/[^a-zA-Z0-9\=\;\&\+]/', '', $_SERVER['QUERY_STRING']);
+            $p = [];
+            parse_str($s, $p);
+            $url.='?'.http_build_query($p);
+        }
+        return $url;
     }
 
     public static function isAllowed(string $resource, ?string $action=null): bool

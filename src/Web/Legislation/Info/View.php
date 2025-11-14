@@ -9,8 +9,6 @@ namespace Web\Legislation\Info;
 use Application\Models\Legislation\Legislation;
 use Application\Models\Legislation\TypesTable;
 
-use Web\Url;
-
 class View extends \Web\View
 {
     public function __construct(Legislation $legislation)
