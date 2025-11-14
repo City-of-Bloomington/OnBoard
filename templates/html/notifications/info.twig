@@ -1,17 +1,18 @@
 {#
  * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array definitions
- * @param array emails
+ * @param array  definitions  Notifications defined in the system
+ * @param array  emails       Email queue search results
+ * @param array  search       Email queue search parameters
  *
  * Email Search Form Parameters
- * @param string event
- * @param int    committee_id
+ * @param array  events
+ * @param array  committees
+ *
+ * Pagination
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
- * @param array  events
- * @param array  committees
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
@@ -25,11 +26,11 @@
 
     <table>
     {% for d in definitions %}
-    <tr><td><a href="{{ uri('notifications.definitions.info', { definition_id: d.getId() }) }}">
-                {{ _(d.getEvent()) }}
+    <tr><td><a href="{{ uri('notifications.definitions.info', { definition_id: d.id }) }}">
+                {{ _(d.event) }}
             </a>
         </td>
-        <td>{% if d.getCommittee() %}{{ d.getCommittee().getName() }}{% endif %}</td>
+        <td>{% if d.committee_id %}{{ d.committee.name }}{% endif %}</td>
     </tr>
     {% endfor %}
     </table>
@@ -39,8 +40,8 @@
     <form           class="usa-form" method="get">
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend usa-legend--large">Email Queue</legend>
-            {{ forms.field_select(   'event',     'event',        _('event'),     event,        events    , false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select(   'event',     'event',        _('event'),     search.event        ?? '', events    , false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), search.committee_id ?? '', committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', _('search'), 'search') }}
             <a href="{{ uri('notifications.index') }}" class="usa-button">{{ _('reset') }}</a>
         </fieldset>
@@ -75,7 +76,7 @@
     {% endif %}
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

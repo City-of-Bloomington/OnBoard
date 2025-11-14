@@ -32,7 +32,7 @@ class Controller extends \Web\Controller
             if (in_array($_GET['fileType'], MeetingFile::$types)) { $search['fileType'] = $_GET['fileType']; }
         }
 
-        $page     = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+        $page     =  !empty($_GET['page']) ? (int)$_GET['page'] : 1;
         $sort     = (!empty($_GET['sort']) && $_GET['sort']=='asc') ? 'asc' : 'desc';
 
         $table = new MeetingTable();

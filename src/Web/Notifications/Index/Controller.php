@@ -45,10 +45,8 @@ class Controller extends \Web\Controller
     private static function prepareSearch(): array
     {
         $s = [];
-        $fields = ['event', 'committee_id'];
-        foreach ($fields as $f) {
-            if (!empty($_GET[$f])) { $s[$f] = $_GET[$f]; }
-        }
+        if (!empty($_GET['committee_id'])) { $s['committee_id'] = (int)$_GET['committee_id']; }
+        if (!empty($_GET['event'       ])) { $s['event'       ] =      $_GET['event'       ]; }
         return $s;
     }
 }

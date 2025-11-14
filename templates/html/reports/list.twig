@@ -1,17 +1,19 @@
 {#
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array     reports
+ * @param array     reports   Search results
+ * @param array     search    Search parameters
+ * @param string    sort      Chosen sort direction
  * @param Committee committee (optional)
  *
+ * Search Form Metadata
  * @param array     committees
  * @param array     sorts
  *
  * Pagination
- * @param string sort
- * @param int    total
- * @param int    itemsPerPage
- * @param int    currentPage
+ * @param int       total
+ * @param int       itemsPerPage
+ * @param int       currentPage
  #}
 {% set t = committee ? 'html/layouts/committee.twig' : 'html/layouts/default.twig' %}
 {% extends t %}
@@ -29,7 +31,7 @@
     <form method="get" class="usa-form">
         <fieldset      class="usa-fieldset">
             <input name="page" value="{{ currentPage }}" type="hidden" />
-            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.id : '', committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('sort', 'sort', _('sort'), sort, sorts, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', _('filter'), 'search') }}
         </fieldset>
@@ -68,7 +70,7 @@
     {% endif %}
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

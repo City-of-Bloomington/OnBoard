@@ -18,10 +18,7 @@ class View extends \Web\View
 
         $this->vars = [
             'applications' => $applications,
-            'firstname'    => $search['firstname'   ] ?? '',
-            'lastname'     => $search['lastname'    ] ?? '',
-            'email'        => $search['email'       ] ?? '',
-            'committee_id' => $search['committee_id'] ?? null,
+            'search'       => $search,
             'status'       => $status,
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,

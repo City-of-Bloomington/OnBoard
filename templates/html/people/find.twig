@@ -60,7 +60,7 @@
     {% endif %}
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

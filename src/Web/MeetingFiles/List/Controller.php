@@ -16,38 +16,16 @@ class Controller extends \Web\Controller
 
     public function __invoke(array $params): \Web\View
     {
-        $search    = [];
         $committee = null;
 
         if (!empty($_GET['committee_id'])) {
-            try {
-                $committee = new Committee($_GET['committee_id']);
-                $search['committee_id'] = $committee->getId();
-            }
+            try { $committee = new Committee($_GET['committee_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-		$page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-        $sort = [
-            'field'     => 'start',
-            'direction' => 'desc'
-        ];
-		if (!empty($_GET['sort'])) {
-            $s = explode(' ', $_GET['sort']);
-            $f = $s[0];
-            $d = $s[1] ?? 'desc';
-            if (in_array($f, MeetingFilesTable::$sortableFields)) {
-                $sort['field']     = $f;
-                $sort['direction'] = $d == 'asc' ? 'asc' : 'desc';
-            }
-		}
-
-		if (!empty($_GET['type'])) {
-            if (in_array($_GET['type'], MeetingFile::$types)) { $search['type'] = $_GET['type']; }
-		}
-		if (!empty($_GET['year'])) {
-            $search['year'] = (int)$_GET['year'];
-		}
+		$page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
+        $search = self::prepareSearch();
+        $sort   = self::prepareSort();
 
         $table = new MeetingFilesTable();
         if ($this->outputFormat != 'csv') {
@@ -90,5 +68,34 @@ class Controller extends \Web\Controller
     {
         if (isset($search['year'])) { unset($search['year']); }
         return array_keys($table->years($search));
+    }
+
+    private static function prepareSearch(): array
+    {
+        $s = [];
+        if (!empty($_GET['committee_id'])) { $s['committee_id'] = (int)$_GET['committee_id']; }
+        if (!empty($_GET['year'        ])) { $s['year'        ] = (int)$_GET['year'        ]; }
+		if (!empty($_GET['type'])) {
+            if (in_array($_GET['type'], MeetingFile::$types)) { $s['type'] = $_GET['type']; }
+		}
+        return $s;
+    }
+
+    private static function prepareSort(): array
+    {
+        $sort = [
+            'field'     => 'start',
+            'direction' => 'desc'
+        ];
+		if (!empty($_GET['sort'])) {
+            $s = explode(' ', $_GET['sort']);
+            $f = $s[0];
+            $d = $s[1] ?? 'desc';
+            if (in_array($f, MeetingFilesTable::$sortableFields)) {
+                $sort['field']     = $f;
+                $sort['direction'] = $d == 'asc' ? 'asc' : 'desc';
+            }
+		}
+		return $sort;
     }
 }

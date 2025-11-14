@@ -45,6 +45,7 @@ class Controller extends \Web\Controller
                 $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
 
                 return new View($list,
+                                $search,
                                 $sort,
                                 $list->getTotalItemCount(),
                                 parent::ITEMS_PER_PAGE,

@@ -28,10 +28,7 @@ class View extends \Web\View
         $this->vars = [
             'legislation'  => $legislation,
             'committee'    => $committee,
-            'year'         => $search['year'     ] ?? null,
-            'status_id'    => $search['status_id'] ?? null,
-            'type_id'      => $search['type_id'  ] ?? null,
-            'number'       => $search['number'   ] ?? null,
+            'search'       => $search,
             'committees'   => self::committees(),
             'years'        => self::years(),
             'statuses'     => self::statuses(),

@@ -12,6 +12,7 @@ use Application\Models\CommitteeTable;
 class View extends \Web\View
 {
     public function __construct($reports,
+                                array  $search,
                                 string $sort,
                                 int    $total,
                                 int    $itemsPerPage,
@@ -22,6 +23,7 @@ class View extends \Web\View
 
         $this->vars = [
             'reports'      => self::report_data($reports),
+            'search'       => $search,
             'committee'    => $committee,
             'committees'   => self::committees(),
             'sort'         => $sort,

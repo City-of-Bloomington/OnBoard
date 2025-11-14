@@ -2,12 +2,7 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array applicants
- *
- * Search fields
- * @param string firstname
- * @param string lastname
- * @param string email
- * @param int    committee_id
+ * @param array search       The search parameters requested
  *
  * Pagination
  * @param int total
@@ -28,15 +23,15 @@
 
     <form method="get" class="usa-form">
         <fieldset      class="usa-fieldset">
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname ) }}
-            {{ forms.field_text('email',     'email',     _('email'    ), email    ) }}
-            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), search.firstname ?? '') }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), search.lastname  ?? '') }}
+            {{ forms.field_text('email',     'email',     _('email'    ), search.email     ?? '') }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), search.committee_id ?? '', committees, false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>
-    {% if firstname or lastname or email or committee_id %}
+    {% if search|length > 0 %}
         {% if not applicants %}
         <div>{{ _('no_results', 'messages')|format(_(['applicant', 'applicants', 10])) }}</div>
         {% endif %}
@@ -62,7 +57,7 @@
     {% endif %}
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 
 </section>

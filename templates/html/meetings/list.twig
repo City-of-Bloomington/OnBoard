@@ -1,7 +1,8 @@
 {#
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param array     meetings
+ * @param array     search      Search parameters
+ * @param array     meetings    Search results
  * @param Committee committee
  *
  * Search form drop down options
@@ -9,11 +10,6 @@
  * @param array     years
  * @param array     fileTypes
  * @oaram array     sorts
- *
- * Search for parameters
- * @param int       year
- * @param DateTime  start
- * @param DateTime  end
  *
  * Meetings are a multi-dimension array by date and time.  For each
  * day, there are several meetings.  These are indexed by meeting time.
@@ -35,10 +31,10 @@
     </header>
     <form class="usa-form" method="get">
         <fieldset class="usa-fieldset">
-            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee ? committee.getId() : '', committees, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('year',     'year',     _('year'), year,     years,     false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('fileType', 'fileType', _('meetingFile_type'), fileType, fileTypes, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('sort',     'sort',     _('sort'), sort,     sorts,     false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'),        search.committee_id ?? '', committees, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('year',         'year',         _('year'),             search.year         ?? '',      years, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('fileType',     'fileType',     _('meetingFile_type'), search.fileType     ?? '',  fileTypes, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('sort',         'sort',         _('sort'),             search.sort         ?? '',      sorts, false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('filter'), 'search') }}
         </fieldset>
@@ -89,7 +85,7 @@
 
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

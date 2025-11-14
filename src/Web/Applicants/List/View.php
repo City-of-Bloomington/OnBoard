@@ -19,10 +19,7 @@ class View extends \Web\View
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
-            'firstname'    => $search['firstname'   ] ?? '',
-            'lastname'     => $search['lastname'    ] ?? '',
-            'email'        => $search['email'       ] ?? '',
-            'committee_id' => $search['committee_id'] ?? null,
+            'search'       => $search,
             'committees'   => self::committees()
         ];
     }

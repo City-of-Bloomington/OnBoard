@@ -25,9 +25,8 @@ class View extends \Web\View
 
         $this->vars = [
             'committee'    => $committee,
+            'search'       => $search,
             'files'        => $this->createFileData($files),
-            'year'         => $search['year'] ?? null,
-            'type'         => $search['type'] ?? null,
             'years'        => self::years($years),
             'types'        => self::types(),
             'committees'   => self::committees(),

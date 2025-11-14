@@ -2,22 +2,13 @@
  * @copyright 2018-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  *
+ * @param array  search Search parameters
  * @param array  users  Search Results
- *
- * Query parameters that were used for the search
- * @param string username
- * @param string firstname
- * @param string lastname
- * @param string email
- * @param int    department_id
- * @param string role
  *
  * Pagination
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
- *
- * @param array  additional_params    Additional URL parameters to preserve
  *
  * Metadata
  * @param array  departments
@@ -39,13 +30,13 @@
     {% endif %}
     <form method="get" class="usa-form">
         <fieldset      class="usa-fieldset">
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname )}}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname'),  lastname  )}}
-            {{ forms.field_text('username',  'username',  _('username'),  username  )}}
-            {{ forms.field_text('email',     'email',     _('email'),     email     )}}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), search.firstname ?? '' )}}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname'),  search.lastname  ?? '' )}}
+            {{ forms.field_text('username',  'username',  _('username'),  search.username  ?? '' )}}
+            {{ forms.field_text('email',     'email',     _('email'),     search.email     ?? '' )}}
 
-            {{ forms.field_select('department_id', 'department_id', _('department'), department_id, departments, false, {onchange:'this.form.submit();'} )}}
-            {{ forms.field_select('role', 'role', _('role'), role, roles, false, {onchange:'this.form.submit();'} )}}
+            {{ forms.field_select('department_id', 'department_id', _('department'), search.department_id ?? '', departments, false, {onchange:'this.form.submit();'} )}}
+            {{ forms.field_select('role',          'role',          _('role'      ), search.role          ?? '',       roles, false, {onchange:'this.form.submit();'} )}}
 
             {{ forms.button('submit', _('search'), 'search') }}
             {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
@@ -85,7 +76,7 @@
     {% endif %}
 
     {% if total > itemsPerPage %}
-    {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

@@ -26,8 +26,7 @@ class View extends \Web\View
             'total'        => $total,
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
-            'event'        => $search['event'       ] ?? '',
-            'committee_id' => $search['committee_id'] ?? null,
+            'search'       => $search,
             'events'       => DefinitionView::events(),
             'committees'   => DefinitionView::committees(),
             'breadcrumbs'  => self::breadcrumbs()

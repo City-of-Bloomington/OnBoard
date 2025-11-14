@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -23,20 +23,18 @@ class LegislationTable extends TableGateway
 	private function processFields(array $fields=null, Select &$select)
 	{
 		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
+			foreach ($fields as $k=>$v) {
+				switch ($k) {
                     case 'parent_id':
                         # parent_id may be null, and we do, in fact, want to
                         # find legislation where parent_id is null
-                        $select->where([$key=>$value]);
+                        $select->where([$k=>$v]);
                     break;
 
                     default:
                         # If there is no value, don't include the field in the search
-                        if ($value) {
-                            if (in_array($key, $this->columns)) {
-                                $select->where([$key=>$value]);
-                            }
+                        if ($v && in_array($k, $this->columns)) {
+                            $select->where([$k=>$v]);
                         }
 				}
             }
@@ -50,6 +48,34 @@ class LegislationTable extends TableGateway
 
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
+
+	public function search($fields=null, $order='number desc', $paginated=false, $limit=null)
+    {
+		$select = new Select(self::TABLE);
+        if ($fields) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
+                    case 'id':
+                    case 'year':
+                    case 'type_id':
+                    case 'status_id':
+                        if ($v) { $select->where([$k=>$v]); }
+                    break;
+                    case 'parent_id':
+                        # parent_id may be null, and we do, in fact, want to
+                        # find legislation where parent_id is null
+                        $select->where([$k=>$v]);
+                    break;
+
+                    default:
+                        if ($v && in_array($k, $this->columns)) {
+                            $select->where->like($k, "$v%");
+                        }
+                }
+            }
+        }
+		return parent::performSelect($select, $order, $paginated, $limit);
+    }
 
 	public function years($fields=null)
 	{
