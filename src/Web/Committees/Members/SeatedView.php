@@ -34,7 +34,8 @@ class SeatedView extends View
         $this->vars = [
             'committee'   => $committee,
             'seat_data'   => $seat_data,
-            'actionLinks' => $links
+            'actionLinks' => $links,
+            'search'      => ['current'=>true] // Needed for side-nav partial
         ];
     }
 

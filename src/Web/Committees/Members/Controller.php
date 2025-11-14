@@ -44,11 +44,7 @@ class Controller extends \Web\Controller
                 }
             }
             else {
-                $search = ['current' => true];
-                if (isset($_GET['current']) && !$_GET['current']) {
-                    $search['current'] = false;
-                }
-
+                $search  = ['current' => isset($_GET['current']) ? (bool)$_GET['current'] : true];
                 $results = $committee->getMembers($search);
                 $members = $this->member_data($results);
                 switch ($this->outputFormat) {
@@ -61,7 +57,7 @@ class Controller extends \Web\Controller
                     break;
 
                     default:
-                        return new OpenView($committee, $members, $search['current']);
+                        return new OpenView($committee, $members, $search);
                 }
             }
         }

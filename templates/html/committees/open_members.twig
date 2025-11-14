@@ -5,12 +5,13 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     members
+ * @param array     search  Query parameters
  #}
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <h2>{{ _(['member', 'members', 10]) }}</h2>
+    <h2>{{ search.current ? _('members_current') : _('members_past') }}</h2>
 
     {% if isAllowed('members', 'appoint') %}
     {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}

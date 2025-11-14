@@ -16,12 +16,14 @@ class Controller extends \Web\Controller
             try {
                 $committee = new Committee($_REQUEST['committee_id']);
                 $seats     = [];
-                $current   = isset($_GET['current']) ? (bool)$_GET['current'] : true;
+                $search    = [
+                    'current' => isset($_GET['current']) ? (bool)$_GET['current'] : true
+                ];
 
-                foreach ($committee->getSeats(['current'=>$current]) as $s) {
+                foreach ($committee->getSeats($search) as $s) {
                     $seats[] = $s;
                 }
-                return new View($committee, $seats);
+                return new View($committee, $seats, $search);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }

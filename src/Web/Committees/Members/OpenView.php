@@ -13,18 +13,14 @@ use Web\View;
 
 class OpenView extends View
 {
-    public function __construct(Committee $committee, array $members, bool $current)
+    public function __construct(Committee $committee, array $members, array $search)
     {
         parent::__construct();
-
-        $title = $current
-                 ? parent::_(['current_member', 'current_members', 10])
-                 : parent::_(['past_member',    'past_members',    10]);
 
         $this->vars = [
             'committee' => $committee,
             'members'   => $this->member_data($committee, $members),
-            'title'     => $title
+            'search'    => $search
         ];
     }
 

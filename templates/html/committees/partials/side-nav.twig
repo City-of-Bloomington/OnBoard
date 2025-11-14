@@ -3,17 +3,15 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param string    ROUTE_NAME   Global
- #}
-
-{#
+ *
+ * @param array     search       Query parameters
    Several of the routes use a current=0 $_GET parameter to designate "past" listings
    To determine which route is the current route, we often need to check for this parameter.
    "Past" routes will have a current=0 parameter in the URL.
    "Current" routes will not have the parameter at all
 #}
+{% set current = search.current ?? false %}
 <nav aria-label="Secondary navigation">
-    {% set url     = current_url() %}
-    {% set current = url.current is defined and url.current==0 ? false : true %}
     <ul class="usa-sidenav">
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.info', { committee_id: committee.getId() }) }}"
@@ -34,13 +32,23 @@
             </a>
         </li>
 
+        {# Members routes use current=0 in the URL to denote past members #}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.members', { committee_id: committee.getId() }) }}"
                 class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and current ? 'usa-current' : '' }}">
                 {{ _(['member', 'members', 10]) }}
             </a>
         </li>
+        {% if committee.getType()=='open' and committee.hasPastMembers() %}
+        <li class="usa-sidenav__item">
+            <a href="{{ uri('committees.members', { committee_id: committee.getId() }) }}?current=0"
+                class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and not current ? 'usa-current' : '' }}">
+                {{ _('members_past') }}
+            </a>
+        </li>
+        {% endif %}
 
+        {# Seats routes use current=0 in the URL to denote past seats #}
         {% if committee.getType() == 'seated' and isAllowed('seats', 'update') %}
         <li class="usa-sidenav__item">
             <a href="{{ uri('committees.seats', { committee_id: committee.getId() }) }}"
@@ -60,14 +68,6 @@
         </li>
         {% endif %}
 
-        {% if committee.getType()=='open' and committee.hasPastMembers() %}
-        <li class="usa-sidenav__item">
-            <a href="{{ uri('committees.members', { committee_id: committee.getId() }) }}?current=0"
-                class="{{ ROUTE_NAME in ['committees.members', 'members.appoint', 'members.update', 'members.reappoint', 'members.resign', 'members.view'] and not current ? 'usa-current' : '' }}">
-                {{ _(['past_member', 'past_members', 10]) }}
-            </a>
-        </li>
-        {% endif %}
 
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="usa-sidenav__item">

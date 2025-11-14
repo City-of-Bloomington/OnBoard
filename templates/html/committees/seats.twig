@@ -2,13 +2,14 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param array     seats
+ * @param array     seats,
+ * @param array     search  Query parameters
  #}
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <h2>{{ _(['seat', 'seats', 10]) }}</h2>
+    <h2>{{ search.current ? _('seats_current') : _('seats_past') }}</h2>
     {% if isAllowed('seats', 'add') %}
     {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
     {% endif %}
