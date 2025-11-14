@@ -1,14 +1,12 @@
 {#
- * @copyright 2017-2024 City of Bloomington, Indiana
+ * @copyright 2017-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param string firstname
- * @param string lastname
- * @param string email
+ * @param array search    The search parameters the user requested
  #}
 {% import  "html/macros/forms.twig" as forms %}
-{{ forms.field_text('firstname', 'firstname', _('firstname'), firstname ) }}
-{{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname  ) }}
+{{ forms.field_text('firstname', 'firstname', _('firstname'), search.firstname ?? '' ) }}
+{{ forms.field_text('lastname',  'lastname',  _('lastname' ), search.lastname  ?? '' ) }}
 
 {% if isAllowed('people', 'viewContactInfo') %}
-{{ forms.field_email('email',    'email',     _('email'    ), email ) }}
+{{ forms.field_text('email', 'email', _('email'), search.email ?? '' ) }}
 {% endif %}

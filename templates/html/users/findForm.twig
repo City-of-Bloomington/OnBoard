@@ -22,6 +22,7 @@
  * Metadata
  * @param array  departments
  * @param array  roles
+ * @param string return_url
 #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/pagination.twig" as pagination %}
@@ -62,7 +63,6 @@
             </tr>
         </thead>
         <tbody>
-        {% set return_url = current_url() %}
         {% for u in users %}
             {% set link=uri('people.view', { person_id: u.id }) %}
             <tr><td><a href="{{ link }}">{{ u.username }}</a></td>

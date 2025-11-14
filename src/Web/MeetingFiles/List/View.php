@@ -32,7 +32,7 @@ class View extends \Web\View
             'types'        => self::types(),
             'committees'   => self::committees(),
             'sorts'        => self::sorts(),
-            'actionLinks'  => $this->createActionLinks(),
+            'actionLinks'  => $this->createActionLinks($search),
             'sort'         => implode(' ', $sort),
             'total'        => $totalItemCount,
             'itemsPerPage' => $itemsPerPage,
@@ -45,10 +45,10 @@ class View extends \Web\View
         return $this->twig->render('html/meetingFiles/list.twig', $this->vars);
     }
 
-    private function createActionLinks(): array
+    private function createActionLinks(array $search): array
     {
-        $url = parent::current_url();
-        $url->format = 'csv';
+        $params = array_merge($search, ['format'=>'csv']);
+        $url    = parent::generateUri('meetingFiles.index').'?'.http_build_query($params);
         return [['url' => $url, 'label' => 'CSV Export', 'class'=>'download']];
     }
 

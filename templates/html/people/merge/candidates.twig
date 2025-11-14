@@ -1,9 +1,7 @@
 {#
  * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param string firstname
- * @param string lastname
- * @param string email
+ * @param array  search         The search parameters the user requested
  * @param array  people         Array of people search results
  * @param array  duplicates     Candidate searches that look like duplicates
  #}
@@ -21,7 +19,7 @@
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>
-    {% if firstname or lastname or email %}
+    {% if search|length > 0 %}
         {% if not people %}
         <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
         {% endif %}
@@ -43,9 +41,9 @@
             <tr><td><input name="target_id"   value="{{ p.id }}" type="radio" required="true" />
                     <input name="person_id[]" value="{{ p.id }}" type="hidden" />
                 </td>
-                <td><a href="{{ uri('people.view', { person_id: p.id } ) }}">{{ p.getFullName() }}</a></td>
-                <td>{{ p.getEmail() }}</td>
-                <td>{{ p.getPhone() }}</td>
+                <td><a href="{{ uri('people.view', { person_id: p.id } ) }}">{{ p.fullname }}</a></td>
+                <td>{{ p.email }}</td>
+                <td>{{ p.phone }}</td>
             </tr>
             {% endfor %}
         </tbody>

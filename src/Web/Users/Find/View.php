@@ -15,36 +15,42 @@ class View extends \Web\View
     {
         parent::__construct();
 
-        $csv = parent::current_url();
-        $csv->format = 'csv';
-
         $this->vars = [
-            'users'                 => $users,
-            'total'                 => $total,
-            'itemsPerPage'          => $itemsPerPage,
-            'currentPage'           => $currentPage,
-            'firstname'             => $_GET['firstname'    ] ?? null,
-            'lastname'              => $_GET['lastname'     ] ?? null,
-            'username'              => $_GET['username'     ] ?? null,
-            'email'                 => $_GET['email'        ] ?? null,
-            'department_id'         => $_GET['department_id'] ?? null,
-            'role'                  => $_GET['role'         ] ?? null,
-            'departments'           => self::department_options(),
-            'roles'                 => self::role_options(),
-            'actionLinks' => [
-                ['url'   => parent::generateUri('users.add'),
-                 'label' => parent::_('create_account'),
-                 'class' => 'add'],
-                ['url'   => $csv->__toString(),
-                 'label' => 'csv',
-                 'class' => 'download'],
-            ]
+            'users'         => $users,
+            'total'         => $total,
+            'itemsPerPage'  => $itemsPerPage,
+            'currentPage'   => $currentPage,
+            'firstname'     => $search['firstname'    ] ?? null,
+            'lastname'      => $search['lastname'     ] ?? null,
+            'username'      => $search['username'     ] ?? null,
+            'email'         => $search['email'        ] ?? null,
+            'department_id' => $search['department_id'] ?? null,
+            'role'          => $search['role'         ] ?? null,
+            'departments'   => self::department_options(),
+            'roles'         => self::role_options(),
+            'actionLinks'   => self::actionLinks($search),
+            'return_url'    => parent::generateUrl('users.index').'?'.http_build_query($search)
         ];
     }
 
     public function render(): string
     {
         return $this->twig->render('html/users/findForm.twig', $this->vars);
+    }
+
+    private static function actionLinks(array $search): array
+    {
+        $p   = array_merge($search, ['format'=>'csv']);
+        $csv = parent::generateUri('users.index').'?'.http_build_query($p);
+
+        return [
+            ['url'   => parent::generateUri('users.add'),
+             'label' => parent::_('create_account'),
+             'class' => 'add'],
+            ['url'   => $csv,
+             'label' => 'csv',
+             'class' => 'download'],
+        ];
     }
 
     private static function department_options(): array

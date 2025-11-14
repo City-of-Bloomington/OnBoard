@@ -14,12 +14,10 @@ class View extends \Web\View
 
         $this->vars = [
             'people'      => $people,
+            'search'      => $search,
             'total'       => $total,
             'itemsPerPage'=> $itemsPerPage,
             'currentPage' => $currentPage,
-            'firstname'   => $search['firstname'] ?? '',
-            'lastname'    => $search['lastname' ] ?? '',
-            'email'       => $search['email'    ] ?? '',
             'callback'    => !empty($_REQUEST['callback']),
             'return_url'  => !empty($_REQUEST['return_url']) ? $_REQUEST['return_url'] : null,
             'breadcrumbs' => self::breadcrumbs()

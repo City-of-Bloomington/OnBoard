@@ -28,10 +28,6 @@
             {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
-
-    {% if user.id %}
-    {{ include('html/people/partials/info.twig', {person:user}, with_context=false) }}
-    {% endif %}
 </section>
 
 <section>

@@ -16,16 +16,18 @@ class View extends \Web\View
         parent::__construct();
 
         $person = $a->getPerson();
+        $return_url = parent::generateUrl('applications.view', ['application_id'=>$a->getId()]);
 
         $this->vars = [
             'application' => $a,
             'committee'   => $a->getCommittee(),
+            'return_url'  => $return_url,
             'person'      => $person,
-            'emails'               => PeopleView::emails($person),
-            'phones'               => PeopleView::phones($person),
-            'applicantFiles'       => PeopleView::applicantFiles($person),
-            'applications_current' => PeopleView::applications_current ($person),
-            'applications_archived'=> PeopleView::applications_archived($person),
+            'emails'               => PeopleView::emails               ($person, $return_url),
+            'phones'               => PeopleView::phones               ($person, $return_url),
+            'applicantFiles'       => PeopleView::applicantFiles       ($person, $return_url),
+            'applications_current' => PeopleView::applications_current ($person, $return_url),
+            'applications_archived'=> PeopleView::applications_archived($person, $return_url),
         ];
     }
 

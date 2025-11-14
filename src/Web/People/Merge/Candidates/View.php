@@ -15,9 +15,7 @@ class View extends \Web\View
         $this->vars = [
             'people'      => $people,
             'duplicates'  => $duplicates,
-            'firstname'   => $search['firstname'] ?? '',
-            'lastname'    => $search['lastname' ] ?? '',
-            'email'       => $search['email'    ] ?? '',
+            'search'      => $search,
             'breadcrumbs' => self::breadcrumbs()
         ];
     }

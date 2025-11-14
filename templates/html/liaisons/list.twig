@@ -2,7 +2,8 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @see LiaisonTable::$dataFields
- * @param array data
+ * @param array  data
+ * @param string type
  #}
 {% extends "html/layouts/default.twig" %}
 {% block content %}
@@ -21,13 +22,7 @@
         </a>
     </header>
 
-    {% set url = current_url() %}
-    {% set legal = url('liaisons.index') ~ '?type=legal' %}
-    {% if url == legal %}
-        <h2>{{ _('legal') }}</h2>
-        {% else %}
-        <h2>{{ _('departmental') }}</h2>
-    {% endif %}
+    <h2>{{ _(type) }}</h2>
 
 
     {% if actionLinks is defined %}

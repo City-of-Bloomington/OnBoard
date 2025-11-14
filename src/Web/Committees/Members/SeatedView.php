@@ -18,11 +18,10 @@ class SeatedView extends View
     {
         parent::__construct();
 
-        $url = parent::current_url();
-        $url->format = 'csv';
+        $url = parent::generateUri('committees.members', ['committee_id'=>$committee->getId()]);
         $links = [
             'download' => [
-                'url'   => $url,
+                'url'   => $url.'?format=csv',
                 'label' => 'CSV Export',
                 'class' => 'download'
             ]

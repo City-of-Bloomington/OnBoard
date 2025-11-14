@@ -39,7 +39,7 @@ class View extends \Web\View
             'itemsPerPage' => $itemsPerPage,
             'currentPage'  => $currentPage,
             'sort'         => $sort,
-            'actionLinks'  => $committee ? self::actionLinks($committee) : []
+            'actionLinks'  => $committee ? self::actionLinks($committee, $search) : []
         ];
     }
 
@@ -48,9 +48,10 @@ class View extends \Web\View
         return $this->twig->render('html/meetings/list.twig', $this->vars);
     }
 
-    private static function actionLinks(Committee $c)
+    private static function actionLinks(Committee $c, array $search)
     {
-        $ret   = parent::current_url()->__toString();
+        $url   = parent::generateUrl('committees.meetings', ['committee_id'=>$c->getId()]);
+        $ret   = $url.'?'.http_build_query($search);
         $event = DefinitionTable::MEETINGFILE_NOTICE;
         $links = \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
 

@@ -13,10 +13,8 @@
  * Callbacks
  * @see public/js/people/chooser.js
  *
- * @param string firstname
- * @param string lastname
- * @param string email
- * @param array  people         Array of people search results
+ * @param array  search    The search parameters the user requested
+ * @param array  people    Array of people search results
  * @param int    total
  * @param int    itemsPerPage
  * @param int    currentPage
@@ -29,7 +27,7 @@
     <header>
         <h1>{{ _(['person', 'people', 100]) }}</h1>
     </header>
-    <form class="usa-form usa-form--large" method="get">
+    <form class="usa-form">
         <fieldset class="usa-fieldset">
             <legend class="usa-legend usa-legend--large">{{ _('find_person') }}</legend>
             {{ include('html/people/partials/findFields.twig') }}
@@ -39,7 +37,7 @@
         </fieldset>
         <button type="submit" class="usa-button">{{ _('search') }}</button>
     </form>
-    {% if firstname or lastname or email %}
+    {% if search|length > 0 %}
         {% if not people %}
         <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
         {% endif %}
@@ -57,14 +55,14 @@
     </thead>
     <tbody>
         {% for p in people %}
-        <tr><td><a class="usa-link" href="{{ return_url }};person_id={{ p.getId() }}"
-                    onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.getId() }})">
-                    {{ p.getFullName() }}
+        <tr><td><a class="usa-link" href="{{ return_url }};person_id={{ p.id }}"
+                    onclick="self.opener.PERSON_CHOOSER.setPerson({{ p.id }})">
+                    {{ p.fullname }}
                 </a>
             </td>
             {% if isAllowed('people', 'viewContactInfo') %}
-            <td>{{ p.getEmail() }}</td>
-            <td>{{ p.getPhone() }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.phone }}</td>
             {% endif %}
         </tr>
         {% endfor %}

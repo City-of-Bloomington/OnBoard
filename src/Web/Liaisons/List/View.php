@@ -11,14 +11,15 @@ use Web\Url;
 
 class View extends \Web\View
 {
-    public function __construct(array $data)
+    public function __construct(array $data, string $type)
     {
         parent::__construct();
         self::prepare_data($data);
 
         $this->vars = [
             'data'        => $data,
-            'actionLinks' => self::actionLinks()
+            'type'        => $type,
+            'actionLinks' => self::actionLinks($type)
         ];
     }
 
@@ -45,21 +46,21 @@ class View extends \Web\View
         }
     }
 
-    private function actionLinks(): array
+    private function actionLinks(string $type): array
     {
+        global $ROUTE;
+
         $out = [];
         if (parent::isAllowed('people', 'viewContactInfo')) {
-            $uri = new Url(Url::current_url(BASE_HOST));
-            $uri->format = 'csv';
+            $uri = parent::generateUri($ROUTE->name);
             $out[] = [
-                'url'   => $uri->__toString(),
+                'url'   => $uri.'?'.http_build_query(['type'=>$type, 'format'=>'csv']),
                 'label' => 'CSV Export',
                 'class' => 'download'
             ];
 
-            $uri->format = 'email';
             $out[] = [
-                'url'   => $uri->__toString(),
+                'url'   => $uri.'?'.http_build_query(['type'=>$type, 'format'=>'csv']),
                 'label' => 'Liaison Email List',
                 'class' => 'mail'
             ];

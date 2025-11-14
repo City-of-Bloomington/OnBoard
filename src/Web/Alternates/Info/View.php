@@ -35,7 +35,6 @@ class View extends \Web\View
     private function actionLinks(Alternate $a): array
     {
         $links = [];
-        $p     = ['return_url' => Url::current_url(BASE_HOST)];
         if (parent::isAllowed('alternates', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('alternates.update', ['alternate_id'=>$a->getId()]),
@@ -44,8 +43,6 @@ class View extends \Web\View
             ];
         }
         if (parent::isAllowed('alternates', 'delete')) {
-            $p['alternate_id'] = $a->getId();
-
             $links[] = [
                 'url'   => parent::generateUri('alternates.delete', ['alternate_id'=>$a->getId()]),
                 'label' => parent::_('alternate_delete'),

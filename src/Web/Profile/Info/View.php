@@ -20,10 +20,11 @@ class View extends \Web\View
 
         $this->vars = [
             'person' => $p,
-            'applicantFiles'       => self::applicantFiles($p),
-            'members'              => PeopleView::members ($p),
-            'liaisons'             => PeopleView::liaisons($p),
-            'subscriptions'        => self::subscriptions ($p)
+            'applicantFiles' => self::applicantFiles($p),
+            'members'        => PeopleView::members ($p),
+            'liaisons'       => PeopleView::liaisons($p),
+            'subscriptions'  => self::subscriptions ($p),
+            'return_url'     => parent::generateUrl('profile.index')
         ];
     }
 

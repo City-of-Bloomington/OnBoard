@@ -36,7 +36,7 @@ class Controller extends \Web\Controller
             break;
 
             default:
-                return new View($data);
+                return new View($data, $type);
         }
     }
 

@@ -44,7 +44,7 @@ class View extends \Web\View
     {
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
-        $url        = parent::current_url();
+        $url        = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
 
         $tab  = new ApplicationTable();
         $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
@@ -83,7 +83,7 @@ class View extends \Web\View
     {
         $canUnArchive = parent::isAllowed('applications', 'unarchive');
         $canDelete    = parent::isAllowed('applications', 'delete');
-        $url          = parent::current_url();
+        $url          = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
 
         $tab  = new ApplicationTable();
         $apps = $tab->find(['archived'=>time(), 'committee_id'=>$c->getId()], 'archived desc');
@@ -122,7 +122,6 @@ class View extends \Web\View
     {
         $canView = parent::isAllowed('committees.notes', 'view');
         $canEdit = parent::isAllowed('committees.notes', 'update');
-        $url     = parent::current_url();
         if (!$canView) { return []; }
 
         $table = new NoteTable();
@@ -132,7 +131,7 @@ class View extends \Web\View
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('committees.notes.update', ['committee_id'=>$c->getId(), 'note_id'=>$n->getId()])."?return_url=$url",
+                    'url'   => parent::generateUri('committees.notes.update', ['committee_id'=>$c->getId(), 'note_id'=>$n->getId()]),
                     'label' => parent::_('note_edit'),
                     'class' => 'edit'
                 ];

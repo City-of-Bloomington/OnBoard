@@ -3,12 +3,13 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  * @param array  phones
+ * @param string return_url
  #}
 {% import 'html/macros/forms.twig' as forms %}
 <section>
     <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
     {% if isAllowed('phones', 'add') %}
-    {{ forms.actionLink(uri('phones.add', { person_id: person.getId() }) ~ '?return_url=' ~ current_url(),
+    {{ forms.actionLink(uri('phones.add', { person_id: person.getId() }) ~ '?return_url=' ~ return_url,
                           _('phone_add'),
                             'add') }}
     {% endif %}

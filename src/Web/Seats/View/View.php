@@ -114,21 +114,18 @@ class View extends \Web\View
                 'label' => parent::_('seat_end')
             ];
         }
-        $url = parent::current_url();
-        $url->format = 'csv';
         $links[] = [
-            'url'   => $url,
+            'url'   => parent::generateUri('seats.view', ['seat_id'=>$seat->getId()]).'?format=csv',
             'label' => 'CSV',
             'class' => 'download'
         ];
         return $links;
     }
 
-    private function actionLinksForTerm(Term $term): array
+    private function actionLinksForTerm(Term $term, string $return_url): array
     {
         $links      = [];
         $term_id    = $term->getId();
-        $return_url = Url::current_url(BASE_HOST);
 
         if (parent::isAllowed('terms', 'update')) {
             $links[] = [
@@ -202,7 +199,6 @@ class View extends \Web\View
     private function actionLinksForAlternate(Alternate $a): array
     {
         $links = [];
-        $p     = ['return_url' => Url::current_url(BASE_HOST)];
         if (parent::isAllowed('alternates', 'update')) {
             $links[] = [
                 'url'   => parent::generateUri('alternates.update', ['alternate_id'=>$a->getId()]),
@@ -211,8 +207,6 @@ class View extends \Web\View
             ];
         }
         if (parent::isAllowed('alternates', 'delete')) {
-            $p['alternate_id'] = $a->getId();
-
             $links[] = [
                 'url'   => parent::generateUri('alternates.delete', ['alternate_id'=>$a->getId()]),
                 'label' => parent::_('alternate_delete'),
@@ -227,13 +221,14 @@ class View extends \Web\View
     {
         $today = date('Y-m-d');
         $terms = [];
+        $ret   = parent::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
         foreach ($seat->getTerms() as $t) {
             $terms[] = [
                 'term_id'     => $t->getId(),
                 'startDate'   => $t->getStartDate(),
                 'endDate'     => $t->getEndDate(),
                 'current'     => $t->getStartDate() < $today && $today < $t->getEndDate(),
-                'actionLinks' => $this->actionLinksForTerm($t),
+                'actionLinks' => $this->actionLinksForTerm($t, $ret),
                 'members'     => $this->member_data($t),
                 'alternates'  => $this->alternate_data($t)
             ];

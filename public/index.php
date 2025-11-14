@@ -17,9 +17,9 @@ ini_set('session.cookie_path', BASE_URI);
 session_start();
 
 // Check for routes
-$request = ServerRequest::fromGlobals();
+$REQUEST = ServerRequest::fromGlobals();
 $matcher = $ROUTES->getMatcher();
-$ROUTE   = $matcher->match($request);
+$ROUTE   = $matcher->match($REQUEST);
 
 if ($ROUTE) {
     foreach ($ROUTE->attributes as $k=>$v) { $_REQUEST[$k] = $v; }

@@ -3,12 +3,13 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  * @param array  emails
+ * @param string return_url
  #}
 {% import 'html/macros/forms.twig' as forms %}
 <section>
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
     {% if isAllowed('emails', 'add') %}
-    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }) ~ '?return_url=' ~ current_url(), _('email_add'), 'add') }}
+    {{ forms.actionLink(uri('emails.add', { person_id: person.getId() }) ~ '?return_url=' ~ return_url, _('email_add'), 'add') }}
     {% endif %}
     <table>
     {% for e in emails %}
