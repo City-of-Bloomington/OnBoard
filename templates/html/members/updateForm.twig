@@ -42,7 +42,7 @@
     </form>
 </section>
 
-{% if applications %}
+{% if applications is defined %}
 <section>
     <header><h3>{{ _(['application', 'applications', 10]) }}</h3></header>
     <table>
@@ -64,7 +64,7 @@
 
 {% if member.getSeat_id() %}
 <section>
-    <header><h3>{{ _(['past_member', 'past_members', 10]) }}</h3></header>
+    <header><h3>{{ _('members_past') }}</h3></header>
     {{ include('html/members/partials/list.twig', { members: member.seat.members, chooser: true }, with_context=false) }}
 </section>
 {% endif %}
