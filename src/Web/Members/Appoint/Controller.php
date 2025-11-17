@@ -6,6 +6,7 @@
 declare (strict_types=1);
 namespace Web\Members\Appoint;
 
+use Application\Models\ApplicationTable;
 use Application\Models\Member;
 use Application\Models\MemberTable;
 use Application\Models\Term;
@@ -30,12 +31,18 @@ class Controller extends \Web\Controller
         parent::captureNewReturnUrl(\Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]));
 
         if (isset($_POST['committee_id'])) {
+            $member->setPerson_id($_POST['person_id']);
+            $member->setStartDate($_POST['startDate']);
+            $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
+
+            $table = new ApplicationTable();
+            $apps  = $table->find(['current'     => time(),
+                                  'committee_id' => $member->getCommittee_id(),
+                                     'person_id' => $member->getPerson_id()]);
             try {
-                $member->setPerson_id($_POST['person_id']);
-                $member->setStartDate($_POST['startDate']);
-                $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
 
                 MemberTable::appoint($member);
+                foreach ($apps as $a) { $a->archive(); }
 
                 $return_url = parent::popCurrentReturnUrl();
                 unset($_SESSION['return_url']);
