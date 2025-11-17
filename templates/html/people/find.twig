@@ -23,7 +23,7 @@
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>
-    {% if search|length > 0 %}
+    {% if search.firstname is defined or search.lastname is defined or search.email is defined %}
         {% if not people %}
         <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
         {% endif %}
