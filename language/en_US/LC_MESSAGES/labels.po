@@ -742,6 +742,9 @@ msgstr "Unarchive"
 msgid "application_confirmation"
 msgstr "Application Confirmation"
 
+msgid "application_created"
+msgstr "Applied"
+
 msgid "application_notice"
 msgstr "Application Notice"
 
