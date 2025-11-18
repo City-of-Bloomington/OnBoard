@@ -1,4 +1,4 @@
-<header class="usa-header usa-header--extended">
+<header class="usa-header usa-header--basic">
     <div class="usa-nav-container">
 
         <div class="usa-navbar">
@@ -46,38 +46,30 @@
                     <a href="{{ uri('liaisons.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'liaisons.index' ? 'usa-current' : '' }}">{{ _(['liaison', 'liaisons', 10]) }}</a>
                 </li>
                 {% endif %}
-                {% if isAllowed('applicants', 'index') %}
-                <li class="usa-nav__primary-item">
-                    <a href="{{ uri('applicants.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applicants.index' ? 'usa-current' : '' }}">{{ _(['applicant', 'applicants', 10]) }}</a>
-                </li>
-                {% endif %}
                 {% if isAllowed('applications', 'index') %}
                 <li class="usa-nav__primary-item">
                     <a href="{{ uri('applications.index') }}" class="usa-nav-link {{ ROUTE_NAME starts with 'applications.index' ? 'usa-current' : '' }}">{{ _(['application', 'applications', 10]) }}</a>
                 </li>
                 {% endif %}
-            </ul>
-
-            <div        class="usa-nav__secondary">
-                <ul     class="usa-nav__secondary-links usa-accordion">
-                    <li class="usa-nav__secondary-item">
-                        {% if USER is defined %}
-                        <button class="usa-accordion__button outline-1px" type="button" aria-controls="user-nav" aria-expanded="false">
-                            <span>{{ USER.getFullname() }}</span>
-                        </button>
-                        <ul id="user-nav" class="usa-nav__submenu">
-                            <li class="usa-nav__submenu-item"><a href="{{ uri('profile.index') }}">{{ _('my_profile') }}</a></li>
-                            <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout' ) }}">{{ _('logout'    ) }}</a></li>
-                            {% if isAllowed('settings', 'index') %}
-                            <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
-                            {% endif %}
-                            <li class="usa-nav__submenu-item"><a href="{{ BASE_URI }}/guide">User Guide</a></li>
-                        </ul>
-                        {% else %}
-                        <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+                {% if USER is defined %}
+                <li class="usa-nav__primary-item">
+                    <button class="usa-accordion__button outline-1px" type="button" aria-controls="user-nav" aria-expanded="false">
+                        <span>{{ USER.getFullname() }}</span>
+                    </button>
+                    <ul id="user-nav" class="usa-nav__submenu">
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('profile.index') }}">{{ _('my_profile') }}</a></li>
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('login.logout' ) }}">{{ _('logout'    ) }}</a></li>
+                        {% if isAllowed('settings', 'index') %}
+                        <li class="usa-nav__submenu-item"><a href="{{ uri('settings.index') }}">{{ _('settings') }}</a></li>
                         {% endif %}
-                    </li>
-                </ul>
+                        <li class="usa-nav__submenu-item"><a href="{{ BASE_URI }}/guide">User Guide</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
+            {% if not USER is defined %}
+            <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+            {% endif %}
         </nav>
     </div>
 </header>

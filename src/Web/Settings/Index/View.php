@@ -29,6 +29,7 @@ class View extends \Web\View
             'departments'=> 'department',
             'appointers' => 'appointer',
             'users'      => 'user',
+            'applicants' => 'applicant',
             'legislationTypes'       => 'legislationType',
             'legislationActionTypes' => 'legislationActionType',
             'legislationStatuses'    => 'legislationStatus',
