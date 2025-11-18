@@ -75,6 +75,11 @@ class ApplicationTable extends TableGateway
                         $select->where([$f=>$fields[$f]]);
                     break;
 
+                    case 'email':
+                        $select->join(['e'=>'people_emails'], 'e.person_id=p.id', []);
+                        $select->where->like('e.email', $fields['email'].'%');
+                    break;
+
                     default:
                         $select->where->like($f, $fields[$f].'%');
                 }
