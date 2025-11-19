@@ -255,9 +255,9 @@ abstract class View
     }
     public static function current_url(): string
     {
-        global $ROUTE;
+        global $REQUEST;
 
-        $url = self::generateUri($ROUTE->name);
+        $url = $REQUEST->getUri()->getPath();
         if ($_SERVER['QUERY_STRING']) {
             $s = preg_replace('/[^a-zA-Z0-9\=\;\&\+]/', '', $_SERVER['QUERY_STRING']);
             $p = [];
