@@ -109,7 +109,8 @@ class View extends \Web\View
         if (parent::isAllowed('seats', 'end') && (!$endDate || $endDate > time())) {
             $links[] = [
                 'url'   => parent::generateUri('seats.end', ['seat_id'=>$seat_id]),
-                'label' => parent::_('seat_end')
+                'label' => parent::_('seat_end'),
+                'class' => 'remove_circle'
             ];
         }
         $links[] = [

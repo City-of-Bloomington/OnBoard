@@ -8,21 +8,31 @@
  * @param array     actionLinks
  #}
 {% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
         <h2>{{ member.getPerson().getFirstname() }} {{ member.getPerson().getLastname() }}</h2>
-        {% if actionLinks %}
-        {{ include('html/partials/actionLinks.twig') }}
-        {% endif %}
+        <div>
+            {% if isAllowed('people', 'view') %}
+            {{ forms.actionLink(uri('people.view', { person_id: member.person_id }), _('person_view'), 'person') }}
+            {% endif %}
+        </div>
     </header>
     {% if term %}
     {{ include('html/terms/partials/info.twig') }}
     {% endif %}
+    {% if actionLinks %}
+    <div>
+    {{ include('html/partials/actionLinks.twig') }}
+    </div>
+    {% endif %}
 
     {% if seat %}
     {{ include('html/seats/partials/seat_info.twig') }}
+        {% if isAllowed('seats', 'update') %}
+        {{ forms.actionLink(uri('seats.update', { seat_id: seat.id }), _('seat_edit'), 'edit' ) }}
+        {% endif %}
     {% endif %}
 </section>
-
 {% endblock %}

@@ -9,9 +9,6 @@
  * @param array termModifiers  Human readable termModifiers lookup
  #}
 {% import  "html/macros/forms.twig" as forms %}
-{% if isAllowed('seats', 'update') %}
-{{ forms.actionLink(uri('seats.update', { seat_id: seat.getId() }) ,_('seat_edit'),'edit') }}
-{% endif %}
 <table class="usa-table usa-table--compact">
     <tr><th>{{ _('type') }}</th>
         <td>{{ _(seat.getType()) }}</td>
