@@ -23,11 +23,11 @@
         {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.getMeeting_id(), meetings, true ) }}
         <div class="grid-row margin-top-1">
             <div class="flex-col flex-1">
-                {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ year - 1 %}
+                {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ (year - 1) %}
                 {{ forms.actionLink(url, (year - 1) ) }}
             </div>
             <div class="flex-col flex-align-end">
-                {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ year + 1 %}
+                {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ (year + 1) %}
                 {{ forms.actionLink(url, (year + 1) ) }}
             </div>
         </div>
