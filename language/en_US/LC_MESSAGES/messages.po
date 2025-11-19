@@ -1,5 +1,5 @@
 # Translation
-# Copyright (C) 2013-2016 City of Bloomington
+# Copyright (C) 2013-2025 City of Bloomington
 # This file is distributed under the same license as the civic-legislation package.
 #
 domain "messages"
@@ -8,20 +8,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OnBoard\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
-"PO-Revision-Date: 2016-01-05 12:25-0500\n"
+"PO-Revision-Date: 2025-11-19 08:44-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 "Language: en_US\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"POT-Creation-Date: \n"
 
 msgid "signed_in_as"
 msgstr "Signed in as %s"
+
+msgid "no_results"
+msgstr "No %s found"
 
 msgid "votingRecordComparison_explanation"
 msgstr "Shows how often (as a percentage) that other members vote the same way as %s"
@@ -79,3 +79,4 @@ msgstr "Name of the committee as it appears in the municipal code"
 
 msgid "committee-code-help"
 msgstr "Abbreviation used on various screens to save screen space"
+
