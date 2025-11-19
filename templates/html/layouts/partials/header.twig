@@ -68,7 +68,7 @@
                 {% endif %}
             </ul>
             {% if not USER is defined %}
-            <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+            <a class="usa-button" type="button" href="{{ url('login.index' ) ~ '?return_url=' ~ REQUEST.uri }}">{{ _('login') }}</a>
             {% endif %}
         </nav>
     </div>

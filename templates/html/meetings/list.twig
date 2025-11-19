@@ -83,9 +83,8 @@
     <div>{{ _('no_results', 'messages')|format(_(['meeting', 'meetings', 10])) }}</div>
     {% endif %}
 
-
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
     {% endif %}
 </section>
 {% endblock %}

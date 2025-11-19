@@ -73,7 +73,7 @@
     </ul>
 
     {% if total > itemsPerPage %}
-        {{ pagination.pageLinks(search, total, itemsPerPage, currentPage) }}
+        {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
     {% endif %}
 
     {{ include('html/partials/actionLinks.twig') }}

@@ -47,13 +47,14 @@ abstract class View
         $this->twig = new Environment($loader, ['cache'            => false,
                                                 'strict_variables' => true,
                                                 'debug'            => true]);
-        global $ROUTE;
+
+        global $REQUEST, $ROUTE;
         $this->twig->addGlobal('APPLICATION_NAME', APPLICATION_NAME);
         $this->twig->addGlobal('VERSION',          VERSION);
         $this->twig->addGlobal('BASE_URL',         BASE_URL);
         $this->twig->addGlobal('BASE_URI',         BASE_URI);
         $this->twig->addGlobal('USWDS_URL',        USWDS_URL);
-        $this->twig->addGlobal('REQUEST_URI',      $_SERVER['REQUEST_URI']);
+        $this->twig->addGlobal('REQUEST',          $REQUEST);
         $this->twig->addGlobal('ROUTE_NAME',       $ROUTE ? $ROUTE->name : null);
         $this->twig->addGlobal('DATE_FORMAT',      DATE_FORMAT);
         $this->twig->addGlobal('TIME_FORMAT',      TIME_FORMAT);
@@ -256,7 +257,7 @@ abstract class View
     {
         global $ROUTE;
 
-        $url = generateUri($ROUTE->name);
+        $url = self::generateUri($ROUTE->name);
         if ($_SERVER['QUERY_STRING']) {
             $s = preg_replace('/[^a-zA-Z0-9\=\;\&\+]/', '', $_SERVER['QUERY_STRING']);
             $p = [];
