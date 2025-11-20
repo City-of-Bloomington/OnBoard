@@ -205,8 +205,7 @@ $map->attach('offices.', '/offices', function ($r) {
 
 $map->attach('people.', '/people', function ($r) {
     $r->attach('merge.', '/merge', function ($r) {
-        $r->get('confirm', '/confirm', Web\People\Merge\Confirm\Controller::class)->allows(['POST']);
-        $r->get('index',   '',         Web\People\Merge\Candidates\Controller::class)->allows(['POST']);
+        $r->get('index',   '', Web\People\Merge\Candidates\Controller::class)->allows(['POST']);
     });
     $r->get('update',     '/{person_id}/update', Web\People\Update\Controller::class)->allows(['POST']);
     $r->get('delete',     '/{person_id}/delete', Web\People\Delete\Controller::class);
