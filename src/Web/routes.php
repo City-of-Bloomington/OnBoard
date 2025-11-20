@@ -239,7 +239,6 @@ $map->attach('profile.', '/profile', function ($r) {
     $r->attach('files.', '/files', function ($r) {
         $r->get('download', '/{applicantFile_id}/download', Web\Profile\Files\Download\Controller::class);
         $r->get('delete',   '/{applicantFile_id}/delete',   Web\Profile\Files\Delete\Controller::class);
-        $r->get('update',   '/{applicantFile_id}/update',   Web\Profile\Files\Update\Controller::class);
         $r->get('add',      '/add',                         Web\Profile\Files\Add\Controller::class)->allows(['POST']);
     });
     $r->attach('notifications.', '/notifications', function ($r) {
