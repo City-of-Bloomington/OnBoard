@@ -96,7 +96,6 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('apply',        '/{committee_id}/apply'        , Web\Applicants\Apply\Controller::class)->allows(['POST']);
     $r->get('info',         '/{committee_id}'              , Web\Committees\Info\Controller::class);
     $r->get('add',          '/add'               , Web\Committees\Add\Controller::class)->allows(['POST']);
-    $r->get('report',       '/report'            , Web\Committees\Report\Controller::class);
     $r->get('index',        ''                   , Web\Committees\List\Controller::class);
 });
 
