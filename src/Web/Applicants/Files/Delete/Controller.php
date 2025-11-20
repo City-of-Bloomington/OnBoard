@@ -15,7 +15,7 @@ class Controller extends \Web\Controller
         if (!empty($_REQUEST['applicantFile_id'])) {
             try {
                 $file = new ApplicantFile($_REQUEST['applicantFile_id']);
-                $url  = self::return_url($file->getPerson_id();
+                $url  = self::return_url($file->getPerson_id());
 
                 $file->delete();
                 header("Location: $url");
