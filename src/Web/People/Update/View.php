@@ -18,17 +18,9 @@ class View extends \Web\View
             'person'      => $person,
             'states'      => self::states(),
             'yesno'       => self::yesno(),
-            'callback'    => isset($_REQUEST['callback']),
             'return_url'  => $return_url,
             'breadcrumbs' => self::breadcrumbs($person)
         ];
-
-        // Preserve any extra parameters passed in
-        $params = [];
-        foreach ($_REQUEST as $key=>$value) {
-            if (!in_array($key, array_keys($this->vars))) { $params[$key] = $value; }
-        }
-        $this->vars['additional_params'] = $params;
     }
 
     public function render(): string

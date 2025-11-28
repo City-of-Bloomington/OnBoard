@@ -1,17 +1,7 @@
 {#
  * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param string firstname
- * @param string lastname
- * @param string address
- * @param string city
- * @param string state
- * @param string zip
- * @param string citylimits
- * @param string occupation
- * @param string website
- * @param string email
- * @param string phone
+ * @param Person person
  *
  * @param array  states
  * @param array  yesno
@@ -27,28 +17,24 @@
 
     <form           class="usa-form" method="post">
         <fieldset   class="usa-fieldset">
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), firstname, true) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), lastname,  true) }}
-            {{ forms.field_email('email',    'email',     _('email'    ), email ) }}
-            {{ forms.field_phone('phone',    'phone',     _('phone'    ), phone ) }}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), person.firstname, true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), person.lastname,  true) }}
+            {{ forms.field_email('email',    'email',     _('email'    ), person.email ) }}
+            {{ forms.field_phone('phone',    'phone',     _('phone'    ), person.phone ) }}
         </fieldset>
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('mail_address') }}</legend>
-            {{ forms.field_text  ('address', 'address', _('streetaddress'), address ) }}
-            {{ forms.field_text  ('city',    'city',    _('city'),          city    ) }}
-            {{ forms.field_select('state',   'state',   _('state'),         state, states ) }}
-            {{ forms.field_number('zip',     'zip',     _('zip'),           zip, false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
-            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), citylimits, yesno ) }}
+            {{ forms.field_text  ('address', 'address', _('streetaddress'), person.address ) }}
+            {{ forms.field_text  ('city',    'city',    _('city'),          person.city    ) }}
+            {{ forms.field_select('state',   'state',   _('state'),         person.state, states ) }}
+            {{ forms.field_number('zip',     'zip',     _('zip'),           person.zip, false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
+            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.citylimits, yesno ) }}
         </fieldset>
 
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('about') }}</legend>
-            {{ forms.field_text('occupation', 'occupation', _('occupation'), occupation ) }}
-            {{ forms.field_url ('website',    'website',    _('website'),    website    ) }}
-
-            {% for k, v in additional_params %}
-            <input name="{{ k }}" type="hidden" value="{{ v }}" />
-            {% endfor %}
+            {{ forms.field_text('occupation', 'occupation', _('occupation'), person.occupation ) }}
+            {{ forms.field_url ('website',    'website',    _('website'),    person.website    ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(return_url, _('cancel') ) }}

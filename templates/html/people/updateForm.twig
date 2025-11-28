@@ -7,40 +7,34 @@
  * @param array  yesno
  *
  * @param string return_url
- * @param array  additional_params
- * @param bool   callback   Whether this form is being rendered as a callback modal
  #}
 {% extends "html/layouts/default.twig" %}
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
-        <h1>{{ person.getId() ? _('person_edit') : _('person_add') }}</h1>
+        <h1>{{ _('person_edit') }}</h1>
     </header>
 
     <form           class="usa-form" method="post">
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">Full Name</legend>
-            {{ forms.field_text('firstname', 'firstname', _('firstname'), person.getFirstname(), true) }}
-            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), person.getLastname(),  true) }}
+            {{ forms.field_text('firstname', 'firstname', _('firstname'), person.firstname, true) }}
+            {{ forms.field_text('lastname',  'lastname',  _('lastname' ), person.lastname,  true) }}
         </fieldset>
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('mail_address') }}</legend>
-            {{ forms.field_text  ('address', 'address', _('streetaddress'), person.getAddress() ) }}
-            {{ forms.field_text  ('city',    'city',    _('city'),          person.getCity()    ) }}
-            {{ forms.field_select('state',   'state',   _('state'),         person.getState(), states ) }}
-            {{ forms.field_number('zip',     'zip',     _('zip'),           person.getZip(), false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
-            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.getCitylimits(), yesno ) }}
+            {{ forms.field_text  ('address', 'address', _('streetaddress'), person.address ) }}
+            {{ forms.field_text  ('city',    'city',    _('city'),          person.city    ) }}
+            {{ forms.field_select('state',   'state',   _('state'),         person.state, states ) }}
+            {{ forms.field_number('zip',     'zip',     _('zip'),           person.zip, false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
+            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.citylimits, yesno ) }}
         </fieldset>
 
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('about') }}</legend>
-            {{ forms.field_text('occupation', 'occupation', _('occupation'), person.getOccupation() ) }}
-            {{ forms.field_url ('website',    'website',    _('website'),    person.getWebsite() ) }}
-
-            {% for k, v in additional_params %}
-            <input name="{{ k }}" type="hidden" value="{{ v }}" />
-            {% endfor %}
+            {{ forms.field_text('occupation', 'occupation', _('occupation'), person.occupation ) }}
+            {{ forms.field_url ('website',    'website',    _('website'),    person.website    ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(return_url, _('cancel') ) }}

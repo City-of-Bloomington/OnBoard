@@ -21,7 +21,7 @@ class Controller extends \Web\Controller
             return new \Web\Views\NotFoundView();
         }
 
-        $return_url = $_REQUEST['return_url'] ?? \Web\View::generateUrl('people.view', ['person_id'=>$person->getId()]);
+        $return_url = \Web\View::generateUrl('people.view', ['person_id'=>$person->getId()]);
 
         if (isset($_POST['firstname'])) {
             $person->handleUpdate($_POST);

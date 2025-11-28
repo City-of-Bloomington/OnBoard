@@ -24,40 +24,39 @@
         </fieldset>
     </form>
     {% if search.firstname is defined or search.lastname is defined or search.email is defined %}
-        {% if not people %}
+        {% if people %}
+        <table class="usa-table usa-table--borderless">
+        <thead>
+        <tr><th scope="col">{{ _('name') }}</th>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <th scope="col">{{ _('email') }}</th>
+            <th scope="col">{{ _('phone') }}</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in people %}
+        <tr><td><a class="usa-link" href="{{ uri('people.view', { person_id: p.id }) }}">
+                    {{ p.fullname }}
+                </a>
+            </td>
+            {% if isAllowed('people', 'viewContactInfo') %}
+            <td>{{ p.email }}</td>
+            <td>{{ p.phone }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        {% else %}
         <div>{{ _('no_results', 'messages')|format(_(['person', 'people', 10])) }}</div>
         {% endif %}
+
+        {% if isAllowed('people', 'add') %}
+        <a class="usa-button" href="{{ uri('people.add') }}"> {{ _('person_add') }}</a>
+        {% endif %}
     {% endif %}
 
-    {% if people %}
-    <table class="usa-table usa-table--borderless">
-    <thead>
-    <tr><th scope="col">{{ _('name') }}</th>
-        {% if isAllowed('people', 'viewContactInfo') %}
-        <th scope="col">{{ _('email') }}</th>
-        <th scope="col">{{ _('phone') }}</th>
-        {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for p in people %}
-    <tr><td><a class="usa-link" href="{{ uri('people.view', { person_id: p.id }) }}">
-                {{ p.fullname }}
-            </a>
-        </td>
-        {% if isAllowed('people', 'viewContactInfo') %}
-        <td>{{ p.email }}</td>
-        <td>{{ p.phone }}</td>
-        {% endif %}
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-
-    {% if isAllowed('people', 'add') %}
-    <a class="usa-button" href="{{ uri('people.add') }}"> {{ _('person_add') }}</a>
-    {% endif %}
-    {% endif %}
 
     {% if total > itemsPerPage %}
         {{ pagination.pageLinks(REQUEST.uri.path, search, total, itemsPerPage, currentPage) }}
