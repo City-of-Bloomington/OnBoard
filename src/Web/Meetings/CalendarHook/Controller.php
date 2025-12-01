@@ -27,22 +27,23 @@ class Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        $committees  = new CommitteeTable();
-        $meetings    = new MeetingTable();
-        $calendar_id = self::parseCalendarId($_SERVER['HTTP_X_GOOG_RESOURCE_URI']);
-        $list        = $committees->find(['calendarId'=>$calendar_id]);
+        if (!empty($_SERVER['HTTP_X_GOOG_RESOURCE_URI'])) {
+            $committees  = new CommitteeTable();
+            $meetings    = new MeetingTable();
+            $calendar_id = self::parseCalendarId($_SERVER['HTTP_X_GOOG_RESOURCE_URI']);
+            $list        = $committees->find(['calendarId'=>$calendar_id]);
 
-        $debug       = fopen(DEBUG_LOG, 'a');
-        // if (isset($_SERVER)) { fwrite($debug, print_r($_SERVER, true)."\n"); }
-        fwrite($debug, "home.calendarhook\nCalendar: $calendar_id\n");
+            $debug       = fopen(DEBUG_LOG, 'a');
+            fwrite($debug, "home.calendarhook\nCalendar: $calendar_id\n");
 
-        if ($list->count()) {
-            $committee = $list->current();
-            fwrite($debug, "Committee: ".$committee->getName()."\n");
-            $committee->syncGoogleCalendar();
-        }
-        else {
-            fwrite($debug, 'No Committee Found: '.$calendar_id."\n");
+            if ($list->count()) {
+                $committee = $list->current();
+                fwrite($debug, "Committee: ".$committee->getName()."\n");
+                $committee->syncGoogleCalendar();
+            }
+            else {
+                fwrite($debug, 'No Committee Found: '.$calendar_id."\n");
+            }
         }
 
         return new View();
