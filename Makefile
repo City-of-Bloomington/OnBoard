@@ -26,7 +26,7 @@ package:
 	cd build && tar czf ${APPNAME}-${VERSION}.tar.gz ${APPNAME}
 
 test:
-	vendor/phpunit/phpunit/phpunit -c src/Test/Unit.xml
+	vendor/phpunit/phpunit/phpunit -c src/Test/phpunit.xml --testsuite Unit
 
 $(LANGUAGES):
 	cd $@ && msgfmt -cv *.po

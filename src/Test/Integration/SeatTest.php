@@ -5,13 +5,14 @@
  */
 use Application\Models\Seat;
 use Application\Models\Term;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SeatTest extends TestCase
 {
     public static $DATE_FORMAT = 'Y-m-d';
 
-    public function futureTermDateProvider()
+    public static function futureTermDateProvider(): array
     {
         return [
             [['start'=>'2013-02-01', 'end'=>'2015-01-31', 'target'=>'2016-01-15', 'length'=>'P2Y'] , ['start'=>'2015-02-01', 'end'=>'2017-01-31']],
@@ -20,9 +21,7 @@ class SeatTest extends TestCase
     }
 
 
-	/**
-	 * @dataProvider futureTermDateProvider
-	 */
+    #[DataProvider('futureTermDateProvider')]
     public function testGenerateFutureTerms($in, $out)
     {
         $seat = new Seat();

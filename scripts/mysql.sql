@@ -20,8 +20,7 @@ create table people (
 	role                 varchar(30),
 	department_id        int unsigned,
     created    datetime  not null default CURRENT_TIMESTAMP,
-    updated    timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
-	foreign key (race_id      ) references races(id),
+    updated    timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 	foreign key (department_id) references departments(id)
 );
 
@@ -39,7 +38,7 @@ create table people_phones (
     person_id int unsigned not null,
     number    varchar(32)  not null,
     main      boolean,
-    unique  key (person_id, phone),
+    unique  key (person_id, number),
     foreign key (person_id) references people(id)
 );
 
@@ -232,7 +231,6 @@ create table meetingFiles(
     created          timestamp    not null default CURRENT_TIMESTAMP,
     updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     indexed          timestamp,
-    foreign key (committee_id) references committees(id),
     foreign key (  meeting_id) references   meetings(id)
 );
 

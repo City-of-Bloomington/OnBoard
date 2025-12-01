@@ -10,7 +10,7 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
-        session_destroy();
+        $_SESSION = [];
         header('Location: '.BASE_URL);
         exit();
     }
