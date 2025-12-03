@@ -13,6 +13,7 @@ class MailMerge extends \Web\View
     {
         // Do not call parent::__construct
         // This does not use Twig templating
+        $this->outputFormat = 'mail';
     }
 
     public function render(): string

@@ -59,7 +59,7 @@ class View extends \Web\View
             ];
 
             $out[] = [
-                'url'   => $uri.'?'.http_build_query(['type'=>$type, 'format'=>'csv']),
+                'url'   => $uri.'?'.http_build_query(['type'=>$type, 'format'=>'email']),
                 'label' => 'Liaison Email List',
                 'class' => 'mail'
             ];
