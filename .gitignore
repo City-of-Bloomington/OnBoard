@@ -1,11 +1,8 @@
-ckan_config.inc
-site_config.inc
 credentials.json
 ansible/roles/City-of-Bloomington.*
 ansible/*.retry
 data/.*
 data/sessions/*
-data/ckan
 data/applicantFiles
 data/meetingFiles
 data/legislationFiles

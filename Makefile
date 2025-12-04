@@ -27,7 +27,7 @@ package:
 
 test:
 	vendor/bin/phpunit -c src/Test/phpunit.xml --testsuite Unit
-	vendor/bin/phpstan analyse src/Application src/Web
+	vendor/bin/phpstan analyse -l 0
 
 $(LANGUAGES):
 	cd $@ && msgfmt -cv *.po
