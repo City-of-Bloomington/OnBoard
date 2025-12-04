@@ -33,7 +33,7 @@ class Person extends ActiveRecord
     public function __construct($id=null)
     {
         if ($id) {
-            if (is_array($id) || $id instanceof ArrayObject) {
+            if (is_array($id) || $id instanceof \ArrayObject) {
                 $this->exchangeArray($id);
             }
             else {
@@ -128,7 +128,7 @@ class Person extends ActiveRecord
     public function handleUpdate(array $post)
     {
         $fields = [
-            'firstname', 'middlename', 'lastname',
+            'firstname', 'lastname',
             'address', 'city', 'state', 'zip', 'website',
             'citylimits', 'occupation'
         ];
@@ -493,7 +493,7 @@ class Person extends ActiveRecord
                 }
 				$db->query('delete from people where id=?')->execute([$person->getId()]);
             }
-            catch (Exception $e) {
+            catch (\Exception $e) {
                 $db->getDriver()->getConnection()->rollback();
                 throw($e);
             }

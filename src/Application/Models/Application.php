@@ -34,7 +34,7 @@ class Application extends ActiveRecord implements Notifications\Model
     public function __construct($id=null)
     {
         if ($id) {
-            if (is_array($id) || $id instanceof ArrayObject) {
+            if (is_array($id) || $id instanceof \ArrayObject) {
                 $this->exchangeArray($id);
             }
             else {
