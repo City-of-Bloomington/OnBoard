@@ -15,6 +15,7 @@ abstract class ActiveRecord
     const MYSQL_TIME_FORMAT     = 'H:i:s';
     const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
 
+    abstract public function getId();
     abstract public function validate();
 
     /**
@@ -88,13 +89,8 @@ abstract class ActiveRecord
      * Format is specified using PHP's date() syntax
      * http://www.php.net/manual/en/function.date.php
      * If no format is given, the database's raw data is returned
-     *
-     * @param string $field
-     * @param string $format
-     * @param DateTimeZone $timezone
-     * @return string
      */
-    protected function getDateData($dateField, $format=null, \DateTimeZone $timezone=null)
+    protected function getDateData(string $dateField, string $format=null, \DateTimeZone $timezone=null): ?string
     {
         if (isset($this->data[$dateField])) {
             if ($format) {
@@ -106,6 +102,7 @@ abstract class ActiveRecord
                 return $this->data[$dateField];
             }
         }
+        return null;
     }
 
     /**

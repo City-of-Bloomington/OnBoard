@@ -27,7 +27,7 @@ class Applicant extends ActiveRecord
     public function __construct($id=null)
     {
         if ($id) {
-            if (is_array($id) || $id instanceof ArrayObject) {
+            if (is_array($id) || $id instanceof \ArrayObject) {
                 $this->exchangeArray($id);
             }
             else {
@@ -135,17 +135,19 @@ class Applicant extends ActiveRecord
      * Applications for this applicant
      *
      * @param array $params Additional query parameters
-     * @return Laminas\Db\Result
      */
-    public function getApplications(array $params=null)
+    public function getApplications(?array $params=null): array
     {
+        $out = [];
         if ($this->getId()) {
             if (!$params) { $params = []; }
             $params['applicant_id'] = $this->getId();
 
             $table = new ApplicationTable();
-            return $table->find($params);
+            $list  = $table->find($params);
+            foreach ($list as $a) { $out[] = $a; }
         }
+        return $out;
     }
 
     /**

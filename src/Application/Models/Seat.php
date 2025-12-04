@@ -190,10 +190,7 @@ class Seat extends ActiveRecord
     //----------------------------------------------------------------
     public function getData() { return $this->data; }
 
-    /**
-     * @return boolean
-     */
-    public function isSafeToDelete()
+    public function isSafeToDelete(): bool
     {
         $sql = "select count(*) as count from (
                     select id from terms where seat_id=?
@@ -206,6 +203,7 @@ class Seat extends ActiveRecord
             $row = $result->current();
             return (int)$row['count'] === 0 ? true : false;
         }
+        return false;
     }
 
     /**
@@ -223,16 +221,14 @@ class Seat extends ActiveRecord
         return $table->find(['seat_id'=>$this->getId()]);
     }
 
-    /**
-     * @return Member
-     */
-    public function getCurrentMember()
+    public function getCurrentMember(): ?Member
     {
         $table = new MemberTable();
         $list = $table->find(['seat_id'=>$this->getId(), 'current'=>true]);
         if (count($list)) {
             return $list->current();
         }
+        return null;
     }
 
     /**
@@ -352,7 +348,7 @@ class Seat extends ActiveRecord
      * @param int $timestamp   The target timestamp
      * @return Term  A newly created Term that has not been saved in the database
      */
-    public function generateTermForTimestamp(Term $latestTerm, $timestamp)
+    public function generateTermForTimestamp(Term $latestTerm, int $timestamp): Term
     {
         $c = 0;
         $maxIterations = 3;
@@ -362,7 +358,7 @@ class Seat extends ActiveRecord
             if (   $timestamp > $latestTerm->getStartDate('U')
                 && $timestamp < $latestTerm->getEndDate('U')) {
 
-                return $latestTerm;
+                break;
             }
             else {
                 $latestTerm = ($timestamp > $latestTerm->getEndDate('U'))
@@ -371,20 +367,20 @@ class Seat extends ActiveRecord
                 $c++;
             }
         }
+        return $latestTerm;
     }
 
     /**
      * Returns the most recent term in the database
-     *
-     * @return Term
      */
-    public function getLatestTerm()
+    public function getLatestTerm(): ?Term
     {
         $table = new TermTable();
         $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
         if (count($list)) {
             return $list->current();
         }
+        return null;
     }
 
     /**

@@ -122,10 +122,7 @@ class Term extends ActiveRecord
     //----------------------------------------------------------------
     public function getData() { return $this->data; }
 
-    /**
-     * @return boolean
-     */
-    public function isSafeToDelete()
+    public function isSafeToDelete(): bool
     {
         $sql = 'select count(*) as count from members where term_id=?';
         $db = Database::getConnection();
@@ -134,6 +131,7 @@ class Term extends ActiveRecord
             $row = $result->current();
             return ((int)$row['count'] === 0) ? true : false;
         }
+        return false;
     }
 
     /**
@@ -163,18 +161,15 @@ class Term extends ActiveRecord
         return $alternate;
     }
 
-    /**
-     * @param int $timestamp
-     * @return Member
-     */
-    public function getMember($timestamp=null)
+    public function getMember(?int $timestamp=null): ?Member
     {
         if (!$timestamp) { $timestamp = time(); }
         $table = new MemberTable();
         $list = $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
-        if (count($list)) {
+        if ( count($list)) {
             return $list->current();
         }
+        return null;
     }
 
     /**
