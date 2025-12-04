@@ -46,12 +46,7 @@ class Controller extends \Web\Controller
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
 
-            $appointers = [];
-            $table      = new AppointerTable();
-            $list       = $table->find();
-            foreach ($list as $a) { $appointers[] = ['id'=>$a->getId(), 'name'=>$a->getName()]; }
-
-            return new \Web\Seats\Update\View($seat, $appointers);
+            return new \Web\Seats\Update\View($seat);
 
         }
         return new \Web\Views\NotFoundView();
