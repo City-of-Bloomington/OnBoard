@@ -33,10 +33,8 @@ class Meeting extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
-                if (ActiveRecord::isId($id)) {
-                    $sql = 'select * from meetings where id=?';
-                }
+                $db     = Database::getConnection();
+                $sql    = 'select * from meetings where id=?';
                 $result = $db->createStatement($sql)->execute([$id]);
                 if (count($result)) {
                     $this->exchangeArray($result->current());

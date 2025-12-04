@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2014-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2014-2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -38,6 +38,7 @@ class AppointerTable extends TableGateway
 
     private function handleJoins(Select &$select, &$fields)
     {
+        $joins = [];
         foreach ($fields as $key=>$value) {
             switch ($key) {
                 case 'committee_id':

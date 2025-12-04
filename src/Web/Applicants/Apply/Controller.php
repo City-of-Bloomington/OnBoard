@@ -40,7 +40,7 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($_POST ?? [], $committee);
+        return new View($_POST, $committee);
     }
 
     private static function notify(Application $a)

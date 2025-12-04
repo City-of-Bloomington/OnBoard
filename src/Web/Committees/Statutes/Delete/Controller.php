@@ -18,13 +18,11 @@ class Controller extends \Web\Controller
         }
 
         if (isset($statute)) {
-            try {
-                $committee_id = $statute->getCommittee_id();
-                $statute->delete();
-            }
+            $return_url = \Web\View::generateUrl('committees.statutes', ['committee_id'=>$statute->getCommittee_id()]);
+
+            try { $statute->delete(); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-            $return_url = \Web\View::generateUrl('committees.statutes', ['committee_id'=>$committee_id]);
             header("Location: $return_url");
             exit();
         }

@@ -13,19 +13,20 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['meeting_id'])) {
-            try {
-                $meeting    = new Meeting($_REQUEST['meeting_id']);
-                $return_url = \Web\View::generateUrl('committees.meetings', ['committee_id'=>$meeting->getCommittee_id()]);
-            }
+            try { $meeting = new Meeting($_REQUEST['meeting_id']); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (!isset($meeting)) { return new \Web\Views\NotFoundView(); }
+        if (isset($meeting)) {
+            $return_url = \Web\View::generateUrl('committees.meetings', ['committee_id'=>$meeting->getCommittee_id()]);
 
-        try { $meeting->delete(); }
-        catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+            try { $meeting->delete(); }
+            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
 
-        header("Location: $return_url");
-        exit();
+            header("Location: $return_url");
+            exit();
+        }
+
+        return new \Web\Views\NotFoundView();
     }
 }

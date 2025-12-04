@@ -17,27 +17,27 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        if (isset($_POST['members'])) {
-            $notes = $_POST['attendanceNotes'] ?? null;
-            $data  = [];
-            foreach ($_POST['members'] as $member_id=>$status) {
-                $data[] = [
-                    'meeting_id' => (int)$meeting->getId(),
-                    'member_id'  => (int)$member_id,
-                    'status'     => $status
-                ];
+        if (isset($meeting)) {
+            if (isset($_POST['members'])) {
+                $notes = $_POST['attendanceNotes'] ?? null;
+                $data  = [];
+                foreach ($_POST['members'] as $member_id=>$status) {
+                    $data[] = [
+                        'meeting_id' => (int)$meeting->getId(),
+                        'member_id'  => (int)$member_id,
+                        'status'     => $status
+                    ];
+                }
+                try {
+                    $meeting->saveAttendance($data, $notes);
+                    header('Location: '.\Web\View::generateUrl('meetings.view', ['meeting_id'=>$meeting->getId()]));
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
             }
-            try {
-                $meeting->saveAttendance($data, $notes);
-                header('Location: '.\Web\View::generateUrl('meetings.view', ['meeting_id'=>$meeting->getId()]));
-                exit();
-            }
-            catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
-        }
-
-        if ($meeting) {
             return new View($meeting);
         }
+
         return new \Web\Views\NotFoundView();
     }
 }

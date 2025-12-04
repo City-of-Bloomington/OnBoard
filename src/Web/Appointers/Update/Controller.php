@@ -16,23 +16,24 @@ class Controller extends \Web\Controller
 
         if (!empty($_REQUEST['appointer_id'])) {
             try { $appointer = new Appointer($_REQUEST['appointer_id']); }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = $e->getMessage();
-                header("Location: $return_url");
-                exit();
-            }
-        }
-
-        if (isset($_POST['name'])) {
-            $appointer->setName($_POST['name']);
-            try {
-                $appointer->save();
-                header("Location: $return_url");
-                exit();
-            }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
 
-        return new View($appointer);
+        if (isset($appointer)) {
+            if (isset($_POST['name'])) {
+                $appointer->setName($_POST['name']);
+                try {
+                    $appointer->save();
+                    header("Location: $return_url");
+                    exit();
+                }
+                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+            }
+
+            return new View($appointer);
+        }
+
+        header("Location: $return_url");
+        exit();
     }
 }
