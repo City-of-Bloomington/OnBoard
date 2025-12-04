@@ -64,7 +64,7 @@ $ACL->allow('Clerk',
             ['add', 'update', 'delete'],
             $requiresDepartmentAssociation);
 
-$ACL->allow('Liaison', 'committees.notes', ['add', 'update', 'view'], $requiresCommitteeAssociation);
+$ACL->allow('Liaison', 'committees.notes', ['add', 'update'], $requiresCommitteeAssociation);
 
 $ACL->allow('Staff');
 $ACL->deny ('Staff', 'users', ['update', 'delete']);
