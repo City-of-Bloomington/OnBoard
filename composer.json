@@ -24,7 +24,8 @@
         "google/apiclient-services": ["Calendar"]
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "@stable",
+        "phpstan/phpstan": "@stable"
     },
     "autoload": {
         "psr-4": {
