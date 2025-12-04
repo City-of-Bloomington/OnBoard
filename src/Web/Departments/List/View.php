@@ -53,5 +53,6 @@ class View extends \Web\View
                 'class' => 'add'
             ]];
         }
+        return [];
     }
 }

@@ -26,7 +26,7 @@ class View extends \Web\View
         $this->vars = [
             'committee'    => $committee,
             'search'       => $search,
-            'files'        => $this->createFileData($files),
+            'files'        => $this->createFileData($files, $committee),
             'years'        => self::years($years),
             'types'        => self::types(),
             'committees'   => self::committees(),
@@ -51,7 +51,7 @@ class View extends \Web\View
         return [['url' => $url, 'label' => 'CSV Export', 'class'=>'download']];
     }
 
-    private static function createFileData(array $files): array
+    private static function createFileData(array $files, ?Committee $committee=null): array
     {
         $filedata = [];
         $userCanEdit   = parent::isAllowed('meetingFiles', 'update');
