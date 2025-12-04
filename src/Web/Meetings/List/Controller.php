@@ -84,43 +84,6 @@ class Controller extends \Web\Controller
         }
     }
 
-    private static function loadMeetingData(array $search, array $sort, int $page, ?Committee $committee): array
-    {
-        $table = new MeetingTable();
-        if ($this->outputFormat == 'html') {
-            $list  = $table->find($search);
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-
-            $totalItemCount = $list->getTotalItemCount();
-        }
-        else {
-            $list  = $table->find($search);
-            $totalItemCount = count($list);
-        }
-        $list  = $table->find($search);
-        foreach ($list as $m) {
-            $date  = $m->getStart('Y-m-d');
-            $time  = $m->getStart('H:i:s');
-
-            $files = [];
-            foreach ($m->getMeetingFiles() as $f) { $files[$f->getType()][] = $f->getData(); }
-
-            $meetings[$date][$time] = [
-                'id'       => $m->getId(),
-                'eventId'  => $m->getEventId(),
-                'location' => $m->getLocation(),
-                'start'    => $m->getStart('c'),
-                'end'      => $m->getEnd  ('c'),
-                'htmlLink' => $m->getHtmlLink(),
-                'files'    => $files
-            ];
-        }
-        if ($sort == 'asc') {  ksort($meetings); }
-        else                { krsort($meetings); }
-        return $meetings;
-    }
-
     private static function checkForCommittee(array $params): ?Committee
     {
         if (!empty($_GET['committee_id'])) {
