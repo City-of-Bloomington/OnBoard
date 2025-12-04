@@ -13,10 +13,11 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): \Web\View
     {
+        $email = new Email();
+
         if (!empty($params['person_id'])) {
             try {
                 $person = new Person($params['person_id']);
-                $email  = new Email();
                 $email->setPerson($person);
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }

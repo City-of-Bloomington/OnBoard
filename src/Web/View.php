@@ -26,7 +26,7 @@ abstract class View
     /**
      * Configures the gettext translations
      */
-    public function __construct(array $vars=null)
+    public function __construct()
     {
         // Twig templates
         $this->outputFormat = !empty($_REQUEST['format']) ? $_REQUEST['format'] : 'html';
