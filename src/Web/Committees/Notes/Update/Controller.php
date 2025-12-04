@@ -32,6 +32,6 @@ class Controller extends \Web\Controller
             }
             return new View($note);
         }
-        return \Web\Views\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 }

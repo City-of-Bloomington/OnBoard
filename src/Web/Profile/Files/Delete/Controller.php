@@ -28,6 +28,6 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { }
         }
 
-        return new \Web\View\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 }

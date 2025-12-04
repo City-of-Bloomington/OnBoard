@@ -18,7 +18,7 @@ class Controller extends \Web\Controller
         }
 
         if (!isset($committee)) {
-            return \Web\Views\NotFoundView();
+            return new \Web\Views\NotFoundView();
         }
 
         $committee->syncGoogleCalendar();

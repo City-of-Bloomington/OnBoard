@@ -26,7 +26,7 @@ class Controller extends \Web\Controller
             exit();
         }
 
-        return \Web\Views\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 
     private static function return_url($committee_id): string

@@ -24,13 +24,13 @@ class Controller extends \Web\Controller
             catch (\Exception $e) { }
         }
 
-        return new \Web\View\NotFoundView();
+        return new \Web\Views\NotFoundView();
     }
 
     private static function return_url($person_id): string
     {
         return !empty($_REQUEST['return_url'])
                     ? $_REQUEST['return_url']
-                    : \Web\View::generateUrl('people.view', ['person_id'=>$file->getPerson_id()]);
+                    : \Web\View::generateUrl('people.view', ['person_id'=>$person_id]);
     }
 }

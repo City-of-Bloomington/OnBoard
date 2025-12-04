@@ -11,7 +11,7 @@ use Application\Models\Legislation\LegislationTable;
 
 class Controller extends \Web\Controller
 {
-    public function __invoke(array $params): \Web\Vew
+    public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['legislation_id'])) {
             try { $legislation = new Legislation($_REQUEST['legislation_id']); }

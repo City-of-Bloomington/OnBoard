@@ -31,7 +31,7 @@ class Database
 			try {
 				self::$connections[$db] = new Adapter($DATABASES[$db]);
 			}
-			catch (Exception $e) { die($e->getMessage()); }
+			catch (\Exception $e) { die($e->getMessage()); }
 		}
 		return self::$connections[$db];
 	}

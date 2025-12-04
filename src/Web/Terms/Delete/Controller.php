@@ -26,7 +26,8 @@ class Controller extends \Web\Controller
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
-        header('Location: '.View::generateUrl('committees.index'));
+
+        header('Location: '.\Web\View::generateUrl('committees.index'));
         exit();
     }
 }
