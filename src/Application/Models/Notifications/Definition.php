@@ -97,12 +97,6 @@ class Definition extends \Web\ActiveRecord
         $this->setBody        ($post['body'        ]);
     }
 
-    public function render($model): string
-    {
-        $v = new \Web\Notifications\View($this->getTemplate(), $model);
-        return $v->render();
-    }
-
     /**
      * @return array    An array of people objects
      */
