@@ -24,10 +24,6 @@ class Controller extends \Web\Controller
                 $table     = new LegislationTable();
                 $years     = $table->years($search);
                 switch ($this->outputFormat) {
-                    case 'csv':
-                        return new \Web\Views\CSVView($years);
-                    break;
-
                     case 'json':
                         return new \Web\Views\JSONView($years);
                     break;
