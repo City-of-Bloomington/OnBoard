@@ -306,29 +306,6 @@ class Person extends ActiveRecord
     }
 
     /**
-     * @return array An array of People in the same committes
-     */
-    public function getPeers()
-    {
-        $peers = array();
-
-        $committees = array();
-        foreach ($this->getMemberCommittees() as $committee) {
-            $committees[] = $committee->getId();
-        }
-        if (count($committees)) {
-            $table = new PeopleTable();
-            $list = $table->find(['committee_id'=>$committees]);
-            foreach ($list as $person) {
-                if ($person->getId() != $this->getId()) {
-                    $peers[] = $person;
-                }
-            }
-        }
-        return $peers;
-    }
-
-    /**
      * Returns the offices held for the given committee
      *
      * If a date is given, it will return only offices held on that date
