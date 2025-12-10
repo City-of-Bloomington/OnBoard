@@ -40,6 +40,9 @@
                 {% else %}
                 {{ a.person }}
                 {% endif %}
+                {% if a.current_member %}
+                <div class="usa-tag margin-left-1">{{ _('members_current') }}</div>
+                {% endif %}
             </td>
             <td>{{ a.expires }}</td>
             <td>{% if a.actionLinks %}

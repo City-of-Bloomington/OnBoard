@@ -8,6 +8,7 @@ namespace Web\Committees\Applications;
 
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
+use Application\Models\MemberTable;
 use Application\Models\Committees\NoteTable;
 use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
@@ -73,7 +74,8 @@ class View extends \Web\View
                 'person'       => "{$p->getFirstname()} {$p->getLastname()}",
                 'created'      => $a->getCreated(DATE_FORMAT),
                 'expires'      => $a->getExpires(DATE_FORMAT),
-                'actionLinks'  => $links
+                'actionLinks'  => $links,
+                'current_member' => MemberTable::isMember($a->getPerson_id(), $a->getCommittee_id())
             ];
         }
         return $data;
