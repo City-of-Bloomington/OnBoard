@@ -518,8 +518,10 @@ msgstr "Reappoint Member"
 msgid "member_delete"
 msgstr "Delete Member"
 
-msgid "members_current"
-msgstr "Current Members"
+msgid "current_member"
+msgid_plural "current_members"
+msgstr[0] "Current Member"
+msgstr[1] "Current Members"
 
 msgid "members_past"
 msgstr "Previous Members"
