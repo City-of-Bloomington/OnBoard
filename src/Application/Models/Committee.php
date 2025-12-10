@@ -349,21 +349,6 @@ class Committee extends ActiveRecord
     }
 
     /**
-     * Application objects for this committee
-     *
-     * @param array $params Additional query parameters
-     * @return Laminas\Db\Result
-     */
-    public function getApplications(array $params=null)
-    {
-        if (!$params) { $params = []; }
-        $params['committee_id'] = $this->getId();
-
-        $table = new ApplicationTable();
-        return $table->find($params);
-    }
-
-    /**
      * @return Laminas\Db\Result
      */
     public function getStatutes()
