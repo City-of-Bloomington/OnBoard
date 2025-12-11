@@ -101,20 +101,20 @@ class View extends \Web\View
     public static function emails(Person $p, string $return_url): array
     {
         $out = [];
-        $canEdit   = parent::isAllowed('emails', 'update');
-        $canDelete = parent::isAllowed('emails', 'delete');
+        $canEdit   = parent::isAllowed('people.emails', 'update');
+        $canDelete = parent::isAllowed('people.emails', 'delete');
         foreach ($p->getEmails() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('email_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('email_delete'),
                     'class' => 'delete'
                 ];
@@ -134,20 +134,20 @@ class View extends \Web\View
     public static function phones(Person $p, string $return_url): array
     {
         $out = [];
-        $canEdit   = parent::isAllowed('phones', 'update');
-        $canDelete = parent::isAllowed('phones', 'delete');
+        $canEdit   = parent::isAllowed('people.phones', 'update');
+        $canDelete = parent::isAllowed('people.phones', 'delete');
         foreach ($p->getPhones() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('phone_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('phone_delete'),
                     'class' => 'delete'
                 ];
