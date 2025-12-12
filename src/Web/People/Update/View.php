@@ -16,7 +16,6 @@ class View extends \Web\View
 
         $this->vars = [
             'person'      => $person,
-            'states'      => self::states(),
             'yesno'       => self::yesno(),
             'return_url'  => $return_url,
             'breadcrumbs' => self::breadcrumbs($person)
@@ -35,18 +34,6 @@ class View extends \Web\View
             $p->getFullname() => parent::generateUri('people.view', ['person_id'=>$p->getId()]),
             parent::_('person_edit') => null
         ];
-    }
-
-    /**
-     * Returns an array of options in the format expected by the forms macros
-     *
-     * @see templates/html/macros/forms.twig
-     */
-    public static function states(): array
-    {
-        $o = [['value'=>'']];
-        foreach (Person::$STATES as $s) { $o[] = ['value'=>$s]; }
-        return $o;
     }
 
     public static function yesno(): array
