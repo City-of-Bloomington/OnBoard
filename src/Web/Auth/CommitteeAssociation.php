@@ -7,7 +7,7 @@
  * applicants to committees, as a single application is associated with multiple
  * committees.
  *
- * @copyright 2020-2023 City of Bloomington, Indiana
+ * @copyright 2020-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -29,7 +29,7 @@ use Application\Models\Term;
 
 class CommitteeAssociation implements AssertionInterface
 {
-    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    public function assert(Acl $acl, ?RoleInterface $role=null, ?ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
             $user_id      = $_SESSION['USER']->getId();

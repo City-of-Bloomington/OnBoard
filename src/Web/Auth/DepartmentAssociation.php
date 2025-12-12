@@ -34,7 +34,7 @@ class DepartmentAssociation implements AssertionInterface
         'office_id'            => '\Application\Models\OfficeTable'
     ];
 
-    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    public function assert(Acl $acl, ?RoleInterface $role=null, ?ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
             $did = $_SESSION['USER']->getDepartment_id();

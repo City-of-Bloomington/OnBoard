@@ -21,7 +21,7 @@ abstract class ActiveRecord
     /**
      * Callback from TableGateway
      */
-    public function exchangeArray($data)
+    public function exchangeArray(array $data)
     {
         $this->data = $data;
     }

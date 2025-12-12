@@ -10,7 +10,7 @@ namespace Web;
 use Laminas\Db\TableGateway\TableGateway as LaminasTableGateway;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Select;
-use Laminas\Paginator\Adapter\DbSelect;
+use Laminas\Paginator\Adapter\LaminasDb\DbSelect;
 use Laminas\Paginator\Paginator;
 
 abstract class TableGateway
