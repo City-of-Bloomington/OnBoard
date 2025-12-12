@@ -29,6 +29,7 @@
 {% if isAllowed('people', 'viewContactInfo') %}
 {{ include('html/people/emails/list.twig') }}
 {{ include('html/people/phones/list.twig') }}
+{{ include('html/people/addresses/list.twig') }}
 {% endif %}
 
 {% if members %}

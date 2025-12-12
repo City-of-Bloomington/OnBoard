@@ -25,6 +25,7 @@ class View extends \Web\View
             'liaisons'             => self::liaisons             ($person),
             'emails'               => self::emails               ($person, $return_url),
             'phones'               => self::phones               ($person, $return_url),
+            'addresses'            => self::addresses            ($person, $return_url),
             'applicantFiles'       => self::applicantFiles       ($person, $return_url),
             'applications_current' => self::applications_current ($person, $return_url),
             'applications_archived'=> self::applications_archived($person, $return_url),
@@ -160,6 +161,44 @@ class View extends \Web\View
                 'actionLinks' => $links
             ];
         }
+        return $out;
+    }
+
+    public static function addresses(Person $p, string $return_url): array
+    {
+        $out = [];
+        $canEdit   = parent::isAllowed('people.addresses', 'update');
+        $canDelete = parent::isAllowed('people.addresses', 'delete');
+        foreach ($p->getAddresses() as $e) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('people.addresses.update', ['person_id'=>$p->getId(), 'address_id'=>$e->getId()])."?return_url=$return_url",
+                    'label' => parent::_('address_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('people.addresses.delete', ['person_id'=>$p->getId(), 'address_id'=>$e->getId()])."?return_url=$return_url",
+                    'label' => parent::_('address_delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $out[] = [
+                'address_id'  => $e->getId(),
+                'person_id'   => $e->getPerson_id(),
+                'type'        => $e->getType(),
+                'address'     => $e->getAddress(),
+                'city'        => $e->getCity(),
+                'state'       => $e->getState(),
+                'zip'         => $e->getZip(),
+                'x'           => $e->getX(),
+                'y'           => $e->getY(),
+                'actionLinks' => $links
+            ];
+        }
+
         return $out;
     }
 

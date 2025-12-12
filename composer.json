@@ -1,14 +1,14 @@
 {
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "aura/router":                      "@stable",
         "google/apiclient":                 "~2.0",
         "google/cloud-recaptcha-enterprise":"@stable",
-        "apereo/phpcas":                    "@stable",
         "graylog2/gelf-php":                "~1",
         "jumbojett/openid-connect-php":     "@stable",
         "laminas/laminas-db":               "^2.20",
         "laminas/laminas-paginator":        "@stable",
+        "laminas/laminas-paginator-adapter-laminasdb": "@stable",
         "laminas/laminas-permissions-acl":  "@stable",
         "michelf/php-markdown":             "@stable",
         "phpmailer/phpmailer":              "@stable",

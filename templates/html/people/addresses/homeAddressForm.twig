@@ -1,0 +1,59 @@
+{#
+ * @copyright 2025 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Address  address
+ * @param string   return_url
+ * @param array    states
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h1>{{ address.person.fullname }}</h1></header>
+    {% if isAllowed('people', 'viewContactInfo') %}
+    {{ include('html/people/partials/info.twig', { person: address.person }) }}
+    {% endif %}
+
+    <h2>Home Address</h2>
+    <p>Most boards and commissions require a resident in the city limits.
+       This home address is used to determine city and county residency.
+       Use this tool to look up your address to determine if you live in the city limits.
+    </p>
+    <form class="usa-search usa-search--small" role="search" id="addressChooser">
+        <label class="usa-sr-only" for="query">Address Lookup</label>
+        <input name="query" id="query" class="usa-input" type="search" />
+        <button class="usa-button" type="submit">
+            <img src="/static/uswds/dist/img/usa-icons-bg/search--white.svg"
+               class="usa-search__submit-icon"
+                 alt="Address Lookup" />
+        </button>
+    </form>
+    <div id="results"></div>
+    <script src="{{ BASE_URI }}/js/people/addressChooser-{{ VERSION }}.js"></script>
+    <script>
+        ADDRESS_CHOOSER.start((candidate) => {
+            const a = candidate.address.split(',');
+
+            document.getElementById('address').value = a[0];
+            document.getElementById('city'   ).value = a[1];
+            document.getElementById('state'  ).value = a[2];
+            document.getElementById('zip'    ).value = a[3];
+            document.getElementById('x').value = candidate.location.x;
+            document.getElementById('y').value = candidate.location.y;
+
+            document.getElementById('addressForm').submit();
+        });
+    </script>
+
+
+    <form           class="usa-form" method="post" id="addressForm">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">Home Address</legend>
+            {{ include('html/people/addresses/partials/addressFields.twig') }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel'), 'cancel' ) }}
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

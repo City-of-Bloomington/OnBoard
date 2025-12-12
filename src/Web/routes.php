@@ -217,6 +217,11 @@ $map->attach('people.', '/people', function ($r) {
         $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
         $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
     });
+    $r->attach('addresses.', '/{person_id}/addresses', function ($r) {
+        $r->get('update', '/{address_id}/update', Web\People\Addresses\Update\Controller::class)->allows(['POST']);
+        $r->get('delete', '/{address_id}/delete', Web\People\Addresses\Delete\Controller::class);
+        $r->get('add',    '/add',                 Web\People\Addresses\Add\Controller::class)->allows(['POST']);
+    });
     $r->get('update',     '/{person_id}/update', Web\People\Update\Controller::class)->allows(['POST']);
     $r->get('delete',     '/{person_id}/delete', Web\People\Delete\Controller::class);
     $r->get('view',       '/{person_id}'       , Web\People\View\Controller::class);

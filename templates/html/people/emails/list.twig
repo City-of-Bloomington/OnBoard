@@ -9,7 +9,7 @@
 <section>
     <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
     {% if isAllowed('people.emails', 'add') %}
-    {{ forms.actionLink(uri('people.emails.add', { person_id: person.getId() }) ~ '?return_url=' ~ return_url, _('email_add'), 'add') }}
+    {{ forms.actionLink(uri('people.emails.add', { person_id: person.id }) ~ '?return_url=' ~ return_url, _('email_add'), 'add') }}
     {% endif %}
     <table>
     {% for e in emails %}

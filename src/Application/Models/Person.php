@@ -16,8 +16,6 @@ class Person extends ActiveRecord
     protected $tablename = 'people';
     protected $department;
 
-    public static $STATES = ['IN'];
-
     /**
      * Populates the object with data
      *
@@ -37,13 +35,11 @@ class Person extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
-                if (ActiveRecord::isId($id)) {
-                    $sql = 'select * from people where id=?';
-                }
-                else {
-                    $sql = 'select * from people where username=?';
-                }
+                $db  = Database::getConnection();
+                $sql = ActiveRecord::isId($id)
+                     ? 'select * from people where id=?'
+                     : 'select * from people where username=?';
+
                 $result = $db->createStatement($sql)->execute([$id]);
                 if (count($result)) {
                     $this->exchangeArray($result->current());
@@ -76,8 +72,9 @@ class Person extends ActiveRecord
     {
         if ($this->isSafeToDelete()) {
             $db = Database::getConnection();
-            $db->query('delete from people_phones where person_id=?', [$this->getId()]);
-            $db->query('delete from people_emails where person_id=?', [$this->getId()]);
+            $db->query('delete from people_phones    where person_id=?', [$this->getId()]);
+            $db->query('delete from people_emails    where person_id=?', [$this->getId()]);
+            $db->query('delete from people_addresses where person_id=?', [$this->getId()]);
 
             parent::delete();
         }
@@ -95,25 +92,15 @@ class Person extends ActiveRecord
     public function getId():int     { return (int)parent::get('id');   }
     public function getFirstname()  { return parent::get('firstname'); }
     public function getLastname()   { return parent::get('lastname');  }
-    public function getAddress()    { return parent::get('address');   }
-    public function getCity()       { return parent::get('city');      }
-    public function getState()      { return parent::get('state');     }
-    public function getZip()        { return parent::get('zip');       }
     public function getOccupation() { return parent::get('occupation'); }
     public function getWebsite()    { return parent::get('website');   }
-    public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
     public function getCreated($f=null)   { return parent::getDateData('created', $f); }
     public function getUpdated($f=null)   { return parent::getDateData('updated', $f); }
 
     public function setFirstname ($s) { parent::set('firstname', $s); }
     public function setLastname  ($s) { parent::set('lastname',  $s); }
-    public function setAddress   ($s) { parent::set('address',   $s); }
-    public function setCity      ($s) { parent::set('city',      $s); }
-    public function setState     ($s) { parent::set('state',     $s); }
-    public function setZip       ($s) { parent::set('zip',       $s); }
     public function setWebsite   ($s) { parent::set('website',   $s); }
     public function setOccupation($s) { parent::set('occupation', $s); }
-    public function setCitylimits($s) { $this->data['citylimits'] = $s ? 1 : 0; }
 
     public function getUsername() { return parent::get('username'); }
     public function getRole()     { return parent::get('role');     }
@@ -127,15 +114,11 @@ class Person extends ActiveRecord
 
     public function handleUpdate(array $post)
     {
-        $fields = [
-            'firstname', 'lastname',
-            'address', 'city', 'state', 'zip', 'website',
-            'citylimits', 'occupation'
-        ];
-        foreach ($fields as $field) {
-            if (isset($post[$field])) {
-                $set = 'set'.ucfirst($field);
-                $this->$set($post[$field]);
+        $fields = ['firstname', 'lastname', 'website', 'occupation'];
+        foreach ($fields as $f) {
+            if (isset($post[$f])) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
             }
         }
     }
@@ -265,13 +248,21 @@ class Person extends ActiveRecord
         }
     }
 
-    /**
-     * @return Laminas\Db\ResultSet
-     */
-    public function getMemberCommittees()
+    public function getAddresses(): array
     {
-        $table = new CommitteeTable();
-        return $table->find(['member_id'=>$this->getId()]);
+        $o = [];
+        $t = new AddressTable();
+        $l = $t->find(['person_id'=>$this->getId()]);
+        foreach ($l as $a) { $o[] = $a; }
+        return $o;
+    }
+
+    public function getAddress(string $type): ?Address
+    {
+        $t = new AddressTable();
+        $l = $t->find(['person_id'=>$this->getId(), 'type'=>$type]);
+        if (count($l)) { return $l[0]; }
+        return null;
     }
 
     /**
@@ -451,6 +442,7 @@ class Person extends ActiveRecord
             $tables = [
                 'people_emails',
                 'people_phones',
+                'people_addresses',
                 'members',
                 'alternates',
                 'liaisons',

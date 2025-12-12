@@ -68,7 +68,6 @@ class Controller extends \Web\Controller
     {
         $data    = [];
         $canView = \Web\View::isAllowed('people', 'viewContactInfo');
-        $fields  = ['email', 'address', 'city', 'state', 'zip'];
         foreach ($results as $m) {
             $person  = $m->getPerson();
 
@@ -85,11 +84,7 @@ class Controller extends \Web\Controller
                 'offices'                => $this->offices($m)
             ];
             if ($canView) {
-                $row['member_email'  ] = $person->getEmail();
-                $row['member_address'] = $person->getAddress();
-                $row['member_city'   ] = $person->getCity();
-                $row['member_state'  ] = $person->getState();
-                $row['member_zip'    ] = $person->getZip();
+                $row['member_email'] = $person->getEmail();
             }
             $data[] = $row;
         }

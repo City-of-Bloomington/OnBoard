@@ -42,6 +42,19 @@ create table people_phones (
     foreign key (person_id) references people(id)
 );
 
+create table people_addresses (
+    id        int unsigned not null primary key auto_increment,
+    person_id int unsigned not null,
+    type      enum('Home', 'Mailing') not null default 'Home'
+	address   varchar(128) not null,
+	city      varchar(32),
+	state     varchar(8),
+	zip       varchar(8),
+	x         int,
+	y         int,
+	foreign key (person_id) references people(id)
+);
+
 create table committees (
     id            int unsigned  not null primary key auto_increment,
     type enum('seated', 'open') not null default 'seated',
