@@ -14,7 +14,7 @@ class LegislationFilesTable extends TableGateway
 {
 	public function __construct() { parent::__construct('legislationFiles', __namespace__.'\LegislationFile'); }
 
-	public function find($fields=null, $order=null, $paginated=false, $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('legislationFiles');
         if ($fields) {

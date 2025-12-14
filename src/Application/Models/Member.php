@@ -193,10 +193,7 @@ class Member extends ActiveRecord
         return null;
     }
 
-    /**
-     * @param Term $term
-     */
-    private function populateDates(Term $term=null)
+    private function populateDates(?Term $term=null)
     {
         if ($term) {
             $members = $term->getMembers();

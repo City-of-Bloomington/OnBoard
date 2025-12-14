@@ -50,7 +50,7 @@ class LiaisonTable extends TableGateway
      * @param array $fields
      * @return array [$where, $params]
      */
-    private static function bindFields($fields=null)
+    private static function bindFields(?array $fields=null): array
     {
         $where  = [];
         $params = [];
@@ -98,7 +98,7 @@ class LiaisonTable extends TableGateway
      * @param array $fields
      * @return array
      */
-    public static function data($fields=null)
+    public static function data(?array $fields=null)
     {
         $columns = self::getDataColumns();
 
@@ -124,7 +124,7 @@ class LiaisonTable extends TableGateway
      * @param array $fields
      * @return array
      */
-    public static function committeeLiaisonData($fields=null)
+    public static function committeeLiaisonData(?array $fields=null)
     {
         $columns = self::getDataColumns();
         list($where, $params) = self::bindFields($fields);
@@ -148,7 +148,7 @@ class LiaisonTable extends TableGateway
       * @param array $fields
       * @return array
       */
-     public static function personLiaisonData($fields=null)
+     public static function personLiaisonData(?array $fields=null)
      {
         $columns = self::getDataColumns();
         list($where, $params) = self::bindFields($fields);

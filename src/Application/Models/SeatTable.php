@@ -16,7 +16,7 @@ class SeatTable extends TableGateway
 {
     public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
 
-    public function find($fields=null, $order=['s.code', 's.name'], $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order=['s.code', 's.name'], ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['s'=>'seats']);
         if ($fields) {
@@ -139,7 +139,7 @@ class SeatTable extends TableGateway
      * @param array $fields
      * @return array [$where, $params]
      */
-    private static function bindFields($fields=null)
+    private static function bindFields(?array $fields=null): array
     {
         $where  = [];
         $params = [];
@@ -172,7 +172,7 @@ class SeatTable extends TableGateway
      * @param string $sql
      * @param array $params
      */
-    private static function performDataSelect($sql, $params)
+    private static function performDataSelect(string $sql, array $params)
     {
         $db = Database::getConnection();
         $result = $db->query($sql)->execute($params);
@@ -186,7 +186,7 @@ class SeatTable extends TableGateway
      * @param array $fields
      * @return array
      */
-    public static function currentData(array $fields=null)
+    public static function currentData(?array $fields=null)
     {
         if (empty($fields['current'])) { $fields['current'] = new \DateTime(); }
         $date   = $fields['current']->format(ActiveRecord::MYSQL_DATE_FORMAT);

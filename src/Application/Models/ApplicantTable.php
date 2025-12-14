@@ -17,7 +17,7 @@ class ApplicantTable extends TableGateway
 
     public static $searchable_fields = ['firstname', 'lastname', 'email', 'committee_id'];
 
-    public function search($fields=null, $order=['lastname', 'firstname'], $paginated=false, $limit=null)
+    public function search(?array $fields=null, string|array|null $order=['lastname', 'firstname'], ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['p'=>'people']);
         $select->join(['a'=>'applications'], 'p.id=a.person_id', []);

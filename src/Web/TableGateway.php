@@ -48,12 +48,12 @@ abstract class TableGateway
 	 * However, this basic implementation will allow you to get up and
 	 * running quicker.
 	 *
-	 * @param array $fields Key value pairs to select on
-	 * @param string $order The default ordering to use for select
+	 * @param array   $fields    Key value pairs to select on
+	 * @param string  $order     The default ordering to use for select
 	 * @param boolean $paginated If set to true, will return a paginator
-	 * @param int $limit
+	 * @param int     $limit
 	 */
-	public function find($fields=null, $order=null, $paginated=false, $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
 	{
 		$select = new Select($this->tableGateway->getTable());
 		if ($fields) {

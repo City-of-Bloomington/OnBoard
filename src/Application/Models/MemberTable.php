@@ -15,7 +15,7 @@ class MemberTable extends TableGateway
 {
     public function __construct() { parent::__construct('members', __namespace__.'\Member'); }
 
-    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='startDate desc', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('members');
         if ($fields) {

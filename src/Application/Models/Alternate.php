@@ -138,7 +138,7 @@ class Alternate extends ActiveRecord
     //----------------------------------------------------------------
     public function getData() { return $this->data; }
 
-    private function populateDates(Term $term=null)
+    private function populateDates(?Term $term=null)
     {
         if ($term) {
             $a = $term->getAlternates();

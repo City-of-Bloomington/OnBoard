@@ -12,7 +12,7 @@ class AppointerTable extends TableGateway
 {
     public function __construct() { parent::__construct('appointers', __namespace__.'\Appointer'); }
 
-    public function find($fields=null, $order='name', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('appointers');
         if ($fields) {

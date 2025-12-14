@@ -17,7 +17,7 @@ class PeopleTable extends TableGateway
 
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
-    public function find($fields=null, $order='lastname', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='lastname', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['p'=>'people']);
         $select->quantifier(Select::QUANTIFIER_DISTINCT);
@@ -59,7 +59,7 @@ class PeopleTable extends TableGateway
         return parent::performSelect($select, $order, $paginated, $limit);
     }
 
-    public function search($fields, $order='lastname', $paginated=false, $limit=null)
+    public function search(array $fields, ?string $order='lastname', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['p'=>'people']);
 

@@ -90,7 +90,7 @@ abstract class ActiveRecord
      * http://www.php.net/manual/en/function.date.php
      * If no format is given, the database's raw data is returned
      */
-    protected function getDateData(string $dateField, string $format=null, \DateTimeZone $timezone=null): ?string
+    protected function getDateData(string $dateField, ?string $format=null, ?\DateTimeZone $timezone=null): ?string
     {
         if (isset($this->data[$dateField])) {
             if ($format) {

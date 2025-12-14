@@ -18,7 +18,7 @@ class MeetingFilesTable extends TableGateway
 
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 
-    private function processFields(array $fields=null, Select &$select)
+    private function processFields(Select &$select, ?array $fields=null)
     {
         if ($fields) {
             foreach ($fields as $key=>$value) {
@@ -51,16 +51,16 @@ class MeetingFilesTable extends TableGateway
         }
     }
 
-    public function find($fields=null, $order='f.updated desc', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='f.updated desc', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['f' => self::TABLE]);
         $select->join(['m'=>'meetings'], 'm.id=f.meeting_id', []);
-        $this->processFields($fields, $select);
+        $this->processFields($select, $fields);
 
         return parent::performSelect($select, $order, $paginated, $limit);
     }
 
-    public function years($fields=null)
+    public function years(?array $fields=null)
     {
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
@@ -73,7 +73,7 @@ class MeetingFilesTable extends TableGateway
                       ->group('year')
                       ->order('year desc');
 
-        $this->processFields($fields, $select);
+        $this->processFields($select, $fields);
 
         $query  = $sql->prepareStatementForSqlObject($select);
         $result = $query->execute();

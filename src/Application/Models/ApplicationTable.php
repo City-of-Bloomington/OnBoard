@@ -17,7 +17,7 @@ class ApplicationTable extends TableGateway
 
     public function __construct() { parent::__construct('applications', __namespace__.'\Application'); }
 
-    public function find($fields=null, $order=null, $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
     {
         if (!$order) { $order = self::$defaultOrder; }
 

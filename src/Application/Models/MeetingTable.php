@@ -19,7 +19,7 @@ class MeetingTable extends TableGateway
 
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\Meeting'); }
 
-    private function processFields(array $fields=null, Select &$select)
+    private function processFields(Select &$select, ?array $fields=null)
     {
         if ($fields) {
             foreach ($fields as $key=>$value) {
@@ -48,15 +48,15 @@ class MeetingTable extends TableGateway
         }
     }
 
-    public function find($fields=null, $order='start', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='start', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(['m' => self::TABLE]);
-        $this->processFields($fields, $select);
+        $this->processFields($select, $fields);
 
         return parent::performSelect($select, $order, $paginated, $limit);
     }
 
-    public function years($fields=null): array
+    public function years(?array $fields=null): array
     {
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
@@ -68,7 +68,7 @@ class MeetingTable extends TableGateway
                       ->group('year')
                       ->order('year desc');
 
-        $this->processFields($fields, $select);
+        $this->processFields($select, $fields);
 
         $query  = $sql->prepareStatementForSqlObject($select);
         $result = $query->execute();

@@ -185,7 +185,7 @@ class Committee extends ActiveRecord
      * @param array $fields
      * @return Laminas\Db\ResultSet
      */
-    public function getMembers(array $fields=null)
+    public function getMembers(?array $fields=null)
     {
         $fields['committee_id'] = $this->getId();
 
@@ -197,7 +197,7 @@ class Committee extends ActiveRecord
      * @param string $date
      * @return Laminas\Db\Result
      */
-    public function getOffices($date=null)
+    public function getOffices(?string $date=null)
     {
         $search = ['committee_id'=>$this->getId()];
         if (!empty($date)) { $search['current'] = $date; }
@@ -212,7 +212,7 @@ class Committee extends ActiveRecord
      * @param array $fields
      * @return Laminas\Db\ResultSet A ResultSet containing the Seat objects
      */
-    public function getSeats(array $fields=null)
+    public function getSeats(?array $fields=null)
     {
         $fields['committee_id'] = $this->getId();
 
@@ -325,7 +325,7 @@ class Committee extends ActiveRecord
     /**
      * @param array $ids An array of (int) department_ids
      */
-    public function setDepartments(array $ids=null)
+    public function setDepartments(?array $ids=null)
     {
         if ($ids) {
             $current = array_keys($this->getDepartments());
@@ -357,11 +357,7 @@ class Committee extends ActiveRecord
         return $table->find(['committee_id'=>$this->getId()]);
     }
 
-    /**
-     * @param array $fields
-     * @return array
-     */
-    public static function data(array $fields=null): array
+    public static function data(?array $fields=null): array
     {
         $where = '';
         if (isset(   $fields['current'])) {

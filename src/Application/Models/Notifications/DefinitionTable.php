@@ -26,7 +26,7 @@ class DefinitionTable extends \Web\TableGateway
         self::MEETINGFILE_NOTICE       => 'Application\Models\MeetingFile'
     ];
 
-    public function find($fields=null, $order=['event','committee_id'], $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order=['event','committee_id'], ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(self::TABLE);
 

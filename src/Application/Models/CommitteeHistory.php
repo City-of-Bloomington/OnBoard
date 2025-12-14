@@ -86,7 +86,7 @@ class CommitteeHistory extends ActiveRecord
     public function getPerson_id()    { return parent::get('person_id'   ); }
     public function getCommittee()    { return parent::getForeignKeyObject(__namespace__.'\Committee', 'committee_id'); }
     public function getPerson()       { return parent::getForeignKeyObject(__namespace__.'\Person',    'person_id'   ); }
-    public function getDate($f=null, $tz=null) { return parent::getDateData('date', $f, $tz); }
+    public function getDate(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('date', $format, $tz); }
     public function getChanges() { return json_decode(parent::get('changes'), true); }
 
     public function setTablename   ($s) { parent::set('tablename', $s); }
@@ -95,5 +95,5 @@ class CommitteeHistory extends ActiveRecord
     public function setPerson_id   ($i) { parent::setForeignKeyField (__namespace__.'\Person',    'person_id',    $i); }
     public function setCommittee   ($o) { parent::setForeignKeyObject(__namespace__.'\Committee', 'committee_id', $o); }
     public function setPerson      ($o) { parent::setForeignKeyObject(__namespace__.'\Person',    'person_id',    $o); }
-    public function setChanges(array $d=null) { parent::set('changes', json_encode($d)); }
+    public function setChanges(?array $data=null) { parent::set('changes', json_encode($data)); }
 }

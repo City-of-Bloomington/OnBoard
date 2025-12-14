@@ -15,7 +15,7 @@ class EmailQueue extends TableGateway
     public function __construct() { parent::__construct('email_queue', __namespace__.'\Email'); }
 	protected $columns = ['email', 'person_id', 'main', 'event', 'committee_id', 'sent'];
 
-    public function find($fields=null, $order='created desc', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='created desc', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(self::TABLE);
         if ($fields) {

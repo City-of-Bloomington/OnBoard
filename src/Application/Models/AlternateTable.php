@@ -15,7 +15,7 @@ class AlternateTable extends TableGateway
 {
     public function __construct() { parent::__construct('alternates', __namespace__.'\Alternate'); }
 
-    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='startDate desc', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('alternates');
         if ($fields) {

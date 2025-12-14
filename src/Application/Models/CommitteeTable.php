@@ -15,7 +15,7 @@ class CommitteeTable extends TableGateway
 {
     public function __construct() { parent::__construct('committees', __namespace__.'\Committee'); }
 
-    public function find($fields=null, $order='name', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('committees');
         if ($fields) {

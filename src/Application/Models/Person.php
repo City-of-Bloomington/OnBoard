@@ -305,7 +305,7 @@ class Person extends ActiveRecord
      * @param string $date
      * @return array An array of Office objects
      */
-    public function getOffices(Committee $committee=null, $date=null)
+    public function getOffices(?Committee $committee=null, ?string $date=null)
     {
         $search = ['person_id'=>$this->getId()];
         if ($committee) {
@@ -322,24 +322,6 @@ class Person extends ActiveRecord
             $offices[] = $o;
         }
         return $offices;
-    }
-
-    /**
-     * Returns all the appointment information for a person.
-     *
-     * Optionally provide a committee to limit the appointment information
-     *
-     * @param Committee $committee
-     * @return Laminas\Db\ResultSet
-     */
-    public function getAppointers(Committee $committee=null)
-    {
-        $search = ['person_id'=>$this->getId()];
-        if ($committee) {
-            $search['committee_id'] = $committee->getId();
-        }
-        $table = new AppointerTable();
-        return $table->find($search);
     }
 
     /**
@@ -377,7 +359,7 @@ class Person extends ActiveRecord
      *
      * @param array $params Additional query parameters
      */
-    public function getApplications(array $params=null): array
+    public function getApplications(?array $params=null): array
     {
         $out = [];
         if ($this->getId()) {

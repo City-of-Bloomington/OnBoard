@@ -15,7 +15,7 @@ class ReportsTable extends TableGateway
     public $columns = ['id', 'title', 'reportDate', 'committee_id'];
 	public function __construct() { parent::__construct('reports', __namespace__.'\Report'); }
 
-	public function find($fields=null, $order=null, $paginated=false, $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select('reports');
         if ($fields) {

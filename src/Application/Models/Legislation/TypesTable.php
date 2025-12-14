@@ -14,7 +14,7 @@ class TypesTable extends TableGateway
 
 	public function __construct() { parent::__construct('legislationTypes', __namespace__.'\Type'); }
 
-	public function find($fields=null, $order='name', $paginated=false, $limit=null)
+	public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
 	{
 		$select = new Select('legislationTypes');
 

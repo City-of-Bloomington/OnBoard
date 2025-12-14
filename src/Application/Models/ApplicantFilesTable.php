@@ -16,7 +16,7 @@ class ApplicantFilesTable extends TableGateway
 
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\ApplicantFile'); }
 
-    public function find($fields=null, $order='updated desc', $paginated=false, $limit=null)
+    public function find(?array $fields=null, string|array|null $order='updated desc', ?bool $paginated=false, ?int $limit=null)
     {
         $select = new Select(self::TABLE);
         if ($fields) {

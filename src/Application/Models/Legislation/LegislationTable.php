@@ -20,7 +20,7 @@ class LegislationTable extends TableGateway
 
 	public function __construct() { parent::__construct('legislation', __namespace__.'\Legislation'); }
 
-	private function processFields(array $fields=null, Select &$select)
+	private function processFields(Select &$select, ?array $fields=null)
 	{
 		if ($fields) {
 			foreach ($fields as $k=>$v) {
@@ -41,15 +41,15 @@ class LegislationTable extends TableGateway
         }
     }
 
-	public function find($fields=null, $order='number desc', $paginated=false, $limit=null)
+	public function find(?array $fields=null, string|array|null $order='number desc', ?bool $paginated=false, ?int $limit=null)
 	{
 		$select = new Select(self::TABLE);
-		$this->processFields($fields, $select);
+		$this->processFields($select, $fields);
 
 		return parent::performSelect($select, $order, $paginated, $limit);
 	}
 
-	public function search($fields=null, $order='number desc', $paginated=false, $limit=null)
+	public function search(?array $fields=null, ?string $order='number desc', ?bool $paginated=false, ?int $limit=null)
     {
 		$select = new Select(self::TABLE);
         if ($fields) {
@@ -77,7 +77,7 @@ class LegislationTable extends TableGateway
 		return parent::performSelect($select, $order, $paginated, $limit);
     }
 
-	public function years($fields=null)
+	public function years(?array $fields=null): array
 	{
         $sql    = new Sql(Database::getConnection());
         $select = $sql->select()
@@ -89,7 +89,7 @@ class LegislationTable extends TableGateway
                       ->group('year')
                       ->order('year desc');
 
-        $this->processFields($fields, $select);
+        $this->processFields($select, $fields);
 
         $query  = $sql->prepareStatementForSqlObject($select);
         $result = $query->execute();

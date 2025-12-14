@@ -140,12 +140,7 @@ class Legislation extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom functions
 	//----------------------------------------------------------------
-	/**
-	 * Returns an array of Actions
-	 *
-	 * @return array  An array of Action objects
-	 */
-	public function getActions(array $fields=null)
+	public function getActions(?array $fields=null): array
 	{
         $search = $fields ? $fields : [];
         $search['legislation_id'] = $this->getId();
