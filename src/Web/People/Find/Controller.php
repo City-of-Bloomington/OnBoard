@@ -13,22 +13,16 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         $page   = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-        $people = [];
-        $list   = null;
         $search = self::prepareSearch();
 
         if (isset($_GET['firstname'])) {
             $table = new PeopleTable();
-            $list  = $table->search($search, 'lastname', true);
-
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-            foreach ($list as $p) { $people[] = $p; }
+            $list  = $table->search($search, 'lastname', parent::ITEMS_PER_PAGE, $page);
         }
 
-        return new View($people,
+        return new View($list['rows'] ?? [],
                         $search,
-                        $list ? $list->getTotalItemCount() : 0,
+                        $list['total'] ?? 0,
                         parent::ITEMS_PER_PAGE,
                         $page);
     }

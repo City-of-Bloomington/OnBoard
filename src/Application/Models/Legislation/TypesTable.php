@@ -14,7 +14,7 @@ class TypesTable extends TableGateway
 
 	public function __construct() { parent::__construct('legislationTypes', __namespace__.'\Type'); }
 
-	public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
 		$select = new Select('legislationTypes');
 
@@ -34,6 +34,6 @@ class TypesTable extends TableGateway
             }
         }
 
-		return parent::performSelect($select, $order, $paginated, $limit);
+		return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 }

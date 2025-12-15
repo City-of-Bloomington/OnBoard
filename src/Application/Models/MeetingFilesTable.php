@@ -51,13 +51,13 @@ class MeetingFilesTable extends TableGateway
         }
     }
 
-    public function find(?array $fields=null, string|array|null $order='f.updated desc', ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order='f.updated desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select(['f' => self::TABLE]);
         $select->join(['m'=>'meetings'], 'm.id=f.meeting_id', []);
         $this->processFields($select, $fields);
 
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public function years(?array $fields=null)

@@ -73,7 +73,7 @@ class View extends \Web\View
         ]);
 
         $options = [['value'=>'', 'label'=>'']];
-        foreach ($list as $m) {
+        foreach ($list['rows'] as $m) {
             $options[] = ['value'=>$m->getId(), 'label'=>$m->getStart('F j Y g:i a')];
         }
         return $options;

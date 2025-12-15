@@ -239,7 +239,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['current'=>time(), 'person_id'=>$p->getId()], 'created desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
@@ -285,7 +285,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['archived'=>time(), 'person_id'=>$p->getId()], 'archived desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [

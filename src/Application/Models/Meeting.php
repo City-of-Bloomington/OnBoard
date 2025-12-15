@@ -99,10 +99,11 @@ class Meeting extends ActiveRecord
     //----------------------------------------------------------------
     // Custom Functions
     //----------------------------------------------------------------
-    public function getMeetingFiles()
+    public function getMeetingFiles(): array
     {
-        $table = new MeetingFilesTable();
-        return $table->find(['meeting_id'=>$this->getId()]);
+        $t = new MeetingFilesTable();
+        $r = $t->find(['meeting_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
     public function isSafeToDelete(): bool

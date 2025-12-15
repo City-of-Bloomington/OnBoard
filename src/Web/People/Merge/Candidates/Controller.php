@@ -34,20 +34,19 @@ class Controller extends \Web\Controller
 
         }
 
-        $people = [];
         $table  = new PeopleTable();
-        $list   = null;
         $search = self::prepareSearch();
         if (isset($_GET['firstname'])) {
             $list  = $table->search($search, 'lastname');
-            foreach ($list as $p) { $people[] = $p; }
         }
 
         $dup = [];
         $res = $table->duplicatesByName();
         foreach ($res as $row) { $dup[] = $row; }
 
-        return new View($people, $search, $dup);
+        return new View($list['rows'] ?? [],
+                        $search,
+                        $dup);
     }
 
     private static function prepareSearch(): array

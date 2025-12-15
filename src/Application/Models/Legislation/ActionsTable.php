@@ -13,9 +13,9 @@ class ActionsTable extends TableGateway
 {
 	public function __construct() { parent::__construct('legislationActions', __namespace__.'\Action'); }
 
-	public function find(?array $fields=null, string|array|null $order='actionDate', ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order='actionDate', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
-        return parent::find($fields, $order, $paginated, $limit);
+        return parent::find($fields, $order, $itemsPerPage, $currentPage);
 	}
 
 	/**

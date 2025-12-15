@@ -11,8 +11,8 @@ class ActionTypesTable extends TableGateway
 {
 	public function __construct() { parent::__construct('legislationActionTypes', __namespace__.'\ActionType'); }
 
-	public function find(?array $fields=null, string|array|null $order='ordering', ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order='ordering', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
-        return parent::find($fields, $order, $paginated, $limit);
+        return parent::find($fields, $order, $itemsPerPage, $currentPage);
 	}
 }

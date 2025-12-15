@@ -13,7 +13,7 @@ class OfficeTable extends TableGateway
 {
     public function __construct() { parent::__construct('offices', __namespace__.'\Office'); }
 
-    public function find(?array $fields=null, string|array|null $order='startDate', ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order='startDate', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select('offices');
         if ($fields) {
@@ -30,7 +30,7 @@ class OfficeTable extends TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public static function hasDepartment(int $department_id, int $office_id): bool

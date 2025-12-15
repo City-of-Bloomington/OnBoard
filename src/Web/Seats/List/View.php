@@ -40,7 +40,7 @@ class View extends \Web\View
         $o = [['value'=>'']];
         $t = new CommitteeTable();
         $l = $t->find(['current'=>true]);
-        foreach ($l as $c) {
+        foreach ($l['rows'] as $c) {
             $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()];
         }
         return $o;
@@ -56,7 +56,7 @@ class View extends \Web\View
         $o = [['value'=>'']];
         $t = new AppointerTable();
         $l = $t->find();
-        foreach ($l as $a) {
+        foreach ($l['rows'] as $a) {
             $o[] = ['value'=>$a->getId(), 'label'=>$a->getName()];
         }
         return $o;

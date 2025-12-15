@@ -17,7 +17,7 @@ class ApplicationTable extends TableGateway
 
     public function __construct() { parent::__construct('applications', __namespace__.'\Application'); }
 
-    public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         if (!$order) { $order = self::$defaultOrder; }
 
@@ -48,10 +48,10 @@ class ApplicationTable extends TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
-    public function search(?array $fields=null, ?string $order=null, ?bool $paginated=false, ?int $limit=null)
+    public function search(?array $fields=null, ?string $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         if (!$order) { $order = self::$defaultOrder; }
 
@@ -85,7 +85,7 @@ class ApplicationTable extends TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public static function hasDepartment(int $department_id, int $application_id): bool

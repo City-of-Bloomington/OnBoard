@@ -15,7 +15,7 @@ class ReportsTable extends TableGateway
     public $columns = ['id', 'title', 'reportDate', 'committee_id'];
 	public function __construct() { parent::__construct('reports', __namespace__.'\Report'); }
 
-	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select('reports');
         if ($fields) {
@@ -38,7 +38,7 @@ class ReportsTable extends TableGateway
                 }
             }
         }
-        return $this->performSelect($select, $order, $paginated, $limit);
+        return $this->performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     /**

@@ -27,7 +27,7 @@ class Controller extends \Web\Controller
             case 'json':
                 $data = [];
                 $list = $table->find($search, 'reportDate desc');
-                foreach ($list as $r) { $data[] = $r->toArray(); }
+                foreach ($list['rows'] as $r) { $data[] = $r->toArray(); }
                 return new \Web\Views\JSONView($data);
             break;
 
@@ -40,14 +40,11 @@ class Controller extends \Web\Controller
                 }
 
 
-                $list  = $table->find($search, "reportDate $sort", true);
-                $list->setCurrentPageNumber($page);
-                $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-
-                return new View($list,
+                $list  = $table->find($search, "reportDate $sort", parent::ITEMS_PER_PAGE, $page);
+                return new View($list['rows'],
                                 $search,
                                 $sort,
-                                $list->getTotalItemCount(),
+                                $list['total'],
                                 parent::ITEMS_PER_PAGE,
                                 $page,
                                 $committee ?? null);

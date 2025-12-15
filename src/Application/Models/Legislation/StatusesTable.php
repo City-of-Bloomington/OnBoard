@@ -15,8 +15,8 @@ class StatusesTable extends TableGateway
 
 	public function __construct() { parent::__construct('legislationStatuses', __namespace__.'\Status'); }
 
-	public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
-        return parent::find($fields, $order, $paginated, $limit);
+        return parent::find($fields, $order, $itemsPerPage, $currentPage);
 	}
 }

@@ -93,16 +93,14 @@ class Controller extends \Web\Controller
 
     private function offices(Member $m)
     {
-        $offices = [];
-        $table   = new OfficeTable();
         $search  = ['person_id'    => $m->getPerson_id(),
                     'committee_id' => $m->getCommittee_id(),
                     'current'      => date('Y-m-d') ];
-        foreach ($table->find($search) as $o) { $offices[] = $o; }
+        $t = new OfficeTable();
+        $r = $t->find($search);
         return $this->outputFormat == 'html'
-               ? $offices
-               : self::serializeOffices($offices);
-
+               ? $r['rows']
+               : self::serializeOffices($r['rows']);
     }
 
     /**

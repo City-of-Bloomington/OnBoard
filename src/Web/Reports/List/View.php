@@ -85,7 +85,8 @@ class View extends \Web\View
     {
         $o = [['value'=>'']];
         $t = new CommitteeTable();
-        foreach ($t->find() as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        $l = $t->find();
+        foreach ($l['rows'] as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
         return $o;
     }
 

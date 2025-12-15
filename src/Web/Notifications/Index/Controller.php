@@ -19,15 +19,12 @@ class Controller extends \Web\Controller
         $result = null;
 
         $table  = new EmailQueue();
-        $result = $table->find($search, 'created desc', true);
-        $result->setCurrentPageNumber($page);
-        $result->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-        foreach ($result as $e) { $emails[] = $e; }
+        $result = $table->find($search, 'created desc', parent::ITEMS_PER_PAGE, $page);
 
         return new View(self::definitions(),
-                        $emails,
+                        $result['rows'],
                         $search,
-                        $result ? $result->getTotalItemCount() : 0,
+                        $result['total'],
                         parent::ITEMS_PER_PAGE,
                         $page);
         return new View(self::definitions());
@@ -38,7 +35,7 @@ class Controller extends \Web\Controller
         $defs = [];
         $t    = new DefinitionTable();
         $l    = $t->find();
-        foreach ($l as $d) { $defs[] = $d; }
+        foreach ($l['rows'] as $d) { $defs[] = $d; }
         return $defs;
     }
 

@@ -55,10 +55,10 @@ class Controller extends \Web\Controller
     {
         $t = new PeopleTable();
         $r = $t->find(['username'=>$ldap->getUsername()]);
-        if (count($r)) { return $r->current(); }
+        if (count($r['rows'])) { return $r['rows'][0]; }
 
         $r = $t->find(['email'=>$ldap->getEmail()]);
-        if (count($r)) { return $r->current(); }
+        if (count($r['rows'])) { return $r['rows'][0]; }
 
         return null;
     }

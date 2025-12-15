@@ -173,7 +173,7 @@ class Person extends ActiveRecord
     {
         $t = new EmailTable();
         $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
@@ -184,11 +184,9 @@ class Person extends ActiveRecord
      */
     public function getEmails(): array
     {
-        $o = [];
         $t = new EmailTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $e) { $o[] = $e; }
-        return $o;
+        return $l['rows'];
     }
 
     public function hasEmail(string $email): bool
@@ -196,7 +194,7 @@ class Person extends ActiveRecord
         if ($this->getId()) {
             $t = new EmailTable();
             $l = $t->find(['person_id'=>$this->getId(), 'email'=>$email]);
-            return count($l) ? true : false;
+            return count($l['rows']) ? true : false;
         }
         return false;
     }
@@ -215,17 +213,15 @@ class Person extends ActiveRecord
     {
         $t = new PhoneTable();
         $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
     public function getPhones(): array
     {
-        $o = [];
         $t = new PhoneTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $p) { $o[] = $p; }
-        return $o;
+        return $l['rows'];
     }
 
     public function hasPhone(string $number): bool
@@ -233,7 +229,7 @@ class Person extends ActiveRecord
         if ($this->getId()) {
             $t = new PhoneTable();
             $l = $t->find(['person_id'=>$this->getId(), 'number'=>$number]);
-            return count($l) ? true : false;
+            return count($l['rows']) ? true : false;
         }
         return false;
     }
@@ -250,25 +246,20 @@ class Person extends ActiveRecord
 
     public function getAddresses(): array
     {
-        $o = [];
         $t = new AddressTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $a) { $o[] = $a; }
-        return $o;
+        return $l['rows'];
     }
 
     public function getAddress(string $type): ?Address
     {
         $t = new AddressTable();
         $l = $t->find(['person_id'=>$this->getId(), 'type'=>$type]);
-        if (count($l)) { return $l[0]; }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
-    /**
-     * @return array An array of Committee objects
-     */
-    public function getLiaisonCommittees()
+    public function getLiaisonCommittees(): array
     {
         $sql = 'select distinct c.*
                 from liaisons l
@@ -284,28 +275,21 @@ class Person extends ActiveRecord
         return $committees;
     }
 
-    /**
-     * @param array $fields Extra fields to search on
-     * @return Laminas\Db\ResultSet
-     */
     public function getMembers($fields=null)
     {
         $fields['person_id'] = $this->getId();
 
-        $table = new MemberTable();
-        return $table->find($fields);
+        $t = new MemberTable();
+        $r = $t->find($fields);
+        return $r['rows'];
     }
 
     /**
      * Returns the offices held for the given committee
      *
      * If a date is given, it will return only offices held on that date
-     *
-     * @param Committee $committee
-     * @param string $date
-     * @return array An array of Office objects
      */
-    public function getOffices(?Committee $committee=null, ?string $date=null)
+    public function getOffices(?Committee $committee=null, ?string $date=null): array
     {
         $search = ['person_id'=>$this->getId()];
         if ($committee) {
@@ -317,17 +301,12 @@ class Person extends ActiveRecord
 
 
         $offices = [];
-        $table = new OfficeTable();
-        foreach ($table->find($search) as $o) {
-            $offices[] = $o;
-        }
-        return $offices;
+        $t = new OfficeTable();
+        $r = $t->find($search);
+        return $r['rows'];
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSafeToDelete()
+    public function isSafeToDelete(): bool
     {
         $id = (int)$this->getId();
 
@@ -354,37 +333,27 @@ class Person extends ActiveRecord
         return count($r) ? true : false;
     }
 
-    /**
-     * Applications for this applicant
-     *
-     * @param array $params Additional query parameters
-     */
     public function getApplications(?array $params=null): array
     {
-        $out = [];
         if ($this->getId()) {
             if (!$params) { $params = []; }
             $params['person_id'] = $this->getId();
 
             $t = new ApplicationTable();
             $l = $t->find($params);
-            foreach ($l as $a) { $out[] = $a; }
+            return $l['rows'];
         }
-        return $out;
+        return [];
     }
 
-    /**
-     * @return array An array of File objects
-     */
     public function getFiles(): array
     {
-        $files = [];
         if ($this->getId()) {
             $t = new ApplicantFilesTable();
             $l  = $t->find(['person_id'=>$this->getId()]);
-            foreach ($l as $f) { $files[] = $f; }
+            return $l['rows'];
         }
-        return $files;
+        return [];
     }
 
     public function hasNotificationSubscription(string $event, int $committee_id): ?Notifications\Subscription
@@ -393,17 +362,15 @@ class Person extends ActiveRecord
         $l = $t->find(['person_id'    => $this->getId(),
                        'committee_id' => $committee_id,
                        'event'        => $event]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
     public function getNotificationSubscriptions(): array
     {
-        $sub = [];
         $t = new Notifications\SubscriptionTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $s) { $sub[] = $s; }
-        return $sub;
+        return $l['rows'];
     }
 
 	/**

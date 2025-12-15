@@ -26,7 +26,7 @@ class DefinitionTable extends \Web\TableGateway
         self::MEETINGFILE_NOTICE       => 'Application\Models\MeetingFile'
     ];
 
-    public function find(?array $fields=null, string|array|null $order=['event','committee_id'], ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order=['event','committee_id'], ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select(self::TABLE);
 
@@ -51,7 +51,7 @@ class DefinitionTable extends \Web\TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public function loadForSending(string $event, int $committee_id): ?Definition
@@ -61,10 +61,10 @@ class DefinitionTable extends \Web\TableGateway
         }
 
         $l = $this->find(['committee_id'=>$committee_id, 'event'=>$event]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         else {
             $l = $this->find(['committee_id'=>null, 'event'=>$event]);
-            if (count($l)) { return $l->current(); }
+            if (count($l['rows'])) { return $l['rows'][0]; }
         }
         return null;
     }

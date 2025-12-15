@@ -36,20 +36,12 @@ class Controller extends \Web\Controller
         $sort     = (!empty($_GET['sort']) && $_GET['sort']=='asc') ? 'asc' : 'desc';
 
         $table = new MeetingTable();
-        if ($this->outputFormat !='json') {
-            $list  = $table->find($search, "start $sort", true);
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-
-            $totalItemCount = $list->getTotalItemCount();
-        }
-        else {
-            $list  = $table->find($search, "start $sort");
-            $totalItemCount = count($list);
-        }
+        $list  = $this->outputFormat !='json'
+               ? $table->find($search, "start $sort", parent::ITEMS_PER_PAGE, $page)
+               : $table->find($search, "start $sort");
 
         $meetings = [];
-        foreach ($list as $m) {
+        foreach ($list['rows'] as $m) {
             $date  = $m->getStart('Y-m-d');
             $time  = $m->getStart('H:i:s');
 
@@ -77,7 +69,7 @@ class Controller extends \Web\Controller
                 return new View($meetings,
                                 $search,
                                 $sort,
-                                $totalItemCount,
+                                $list['total'],
                                 $page,
                                 parent::ITEMS_PER_PAGE,
                                 $committee);

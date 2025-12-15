@@ -164,36 +164,26 @@ class Term extends ActiveRecord
     public function getMember(?int $timestamp=null): ?Member
     {
         if (!$timestamp) { $timestamp = time(); }
-        $table = new MemberTable();
-        $list = $table->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
-        if ( count($list)) {
-            return $list->current();
-        }
-        return null;
+        $t = new MemberTable();
+        $l = $t->find(['term_id'=>$this->getId(), 'current'=>$timestamp]);
+        return count($l['rows']) ? $l['rows'][0] : null;
     }
 
-    /**
-     * @return Laminas\Db\Result
-     */
-    public function getMembers()
+    public function getMembers(): array
     {
-        $table = new MemberTable();
-        return $table->find(['term_id'=>$this->getId()]);
+        $t = new MemberTable();
+        $r = $t->find(['term_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
-    /**
-     * @return Laminas\Db\Result
-     */
-    public function getAlternates()
+    public function getAlternates(): array
     {
-        $table = new AlternateTable();
-        return $table->find(['term_id'=>$this->getId()]);
+        $t = new AlternateTable();
+        $r = $t->find(['term_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
-    /**
-     * @return Committee
-     */
-    public function getCommittee()
+    public function getCommittee(): Committee
     {
         return $this->getSeat()->getCommittee();
     }

@@ -14,7 +14,7 @@ class LegislationFilesTable extends TableGateway
 {
 	public function __construct() { parent::__construct('legislationFiles', __namespace__.'\LegislationFile'); }
 
-	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select('legislationFiles');
         if ($fields) {
@@ -35,7 +35,7 @@ class LegislationFilesTable extends TableGateway
                 }
             }
         }
-        return $this->performSelect($select, $order, $paginated, $limit);
+        return $this->performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     /**

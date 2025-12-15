@@ -31,12 +31,12 @@ $types  = [
 
 foreach ($types as $tablename=>$classname) {
     $table     = new $classname();
-    $files     = $table->find();
+    $result    = $table->find();
     $sql       = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
-    $total = count($files);
+    $total = $result['total'];
     $c     = 0;
-    foreach ($files as $f) {
+    foreach ($result['rows'] as $f) {
         $c++;
         echo "{$f->getFullPath()} $c/$total\n";
         $data = $solr->prepareIndexFields($f);

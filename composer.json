@@ -7,8 +7,6 @@
         "graylog2/gelf-php":                "~1",
         "jumbojett/openid-connect-php":     "@stable",
         "laminas/laminas-db":               "^2.20",
-        "laminas/laminas-paginator":        "@stable",
-        "laminas/laminas-paginator-adapter-laminasdb": "@stable",
         "laminas/laminas-permissions-acl":  "@stable",
         "michelf/php-markdown":             "@stable",
         "phpmailer/phpmailer":              "@stable",

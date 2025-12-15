@@ -50,7 +50,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
@@ -90,7 +90,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['archived'=>time(), 'committee_id'=>$c->getId()], 'archived desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
@@ -129,7 +129,7 @@ class View extends \Web\View
         $table = new NoteTable();
         $notes = $table->find(['committee_id'=>$c->getId()], 'created desc');
         $data  = [];
-        foreach ($notes as $n) {
+        foreach ($notes['rows'] as $n) {
             $links = [];
             if ($canEdit) {
                 $links[] = [

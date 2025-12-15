@@ -24,14 +24,14 @@ $types  = [
 ];
 foreach ($types as $tablename=>$classname) {
     $table  = new $classname();
-    $files  = $table->find(['indexed'=>false]);
-    $total  = count($files);
+    $result = $table->find(['indexed'=>false]);
+    $total  = $result['total'];
     $c      = 0;
 
     $update = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
     echo "Found $total $tablename\n";
-    foreach ($files as $f) {
+    foreach ($result['rows'] as $f) {
         $c++;
         echo "{$f->getFullPath()} {$f->getId()} $c/$total\n";
         $solr->add($f);

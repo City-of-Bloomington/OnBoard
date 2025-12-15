@@ -17,7 +17,7 @@ class PeopleTable extends TableGateway
 
     public function __construct() { parent::__construct('people', __namespace__.'\Person'); }
 
-    public function find(?array $fields=null, string|array|null $order='lastname', ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order='lastname', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select(['p'=>'people']);
         $select->quantifier(Select::QUANTIFIER_DISTINCT);
@@ -56,10 +56,10 @@ class PeopleTable extends TableGateway
         }
 
         $order = 'p.'.$order;
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
-    public function search(array $fields, ?string $order='lastname', ?bool $paginated=false, ?int $limit=null)
+    public function search(array $fields, ?string $order='lastname', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select(['p'=>'people']);
 
@@ -103,7 +103,7 @@ class PeopleTable extends TableGateway
             }
         }
         $order = 'p.'.$order;
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public static function duplicatesByName()

@@ -18,15 +18,11 @@ class Controller extends \Web\Controller
         $applicants = [];
 
         $table = new ApplicantTable();
-        $list  = $table->search($search, ['lastname','firstname'], true);
+        $res   = $table->search($search, ['lastname','firstname'], parent::ITEMS_PER_PAGE, $page);
 
-        $list->setCurrentPageNumber($page);
-        $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-        foreach ($list as $p) { $applicants[] = $p; }
-
-        return new View($applicants,
+        return new View($res['rows'],
                         $search,
-                        $list ? $list->getTotalItemCount() : 0,
+                        $res['total'],
                         parent::ITEMS_PER_PAGE,
                         $page);
     }

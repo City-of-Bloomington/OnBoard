@@ -23,26 +23,19 @@ class Controller extends \Web\Controller
 
         if ($this->outputFormat == 'html') {
             $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-            $list  = $table->search($search, 'year desc, number desc', true);
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
+            $list  = $table->search($search, 'year desc, number desc', parent::ITEMS_PER_PAGE, $page);
 
-            $legislation = [];
-            foreach ($list as $l) { $legislation[] = $l; }
-            return new View($legislation,
+            return new View($list['rows'],
                             $search,
-                            $list->getTotalItemCount(),
+                            $list['total'],
                             $page,
-                            $list->getItemCountPerPage(),
+                            parent::ITEMS_PER_PAGE,
                             $committee);
 
         }
         else {
-            $legislation = [];
-            foreach ($table->search($search) as $l) {
-                $legislation[] = $l->toArray();
-            }
-            return new \Web\Views\JSONView($legislation);
+            $list = $table->search($search);
+            return new \Web\Views\JSONView($list['rows']);
         }
     }
 

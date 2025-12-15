@@ -50,7 +50,7 @@ class View extends \Web\View
         $table   = new StatusesTable();
         $search  = $l->getId() ? null : ['active' => 1]; // New legislation should only use active statuses
         $list    = $table->find($search);
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
+        foreach ($list['rows'] as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
         return $options;
     }
 
@@ -59,7 +59,7 @@ class View extends \Web\View
         $options = [];
         $table   = new TypesTable();
         $list    = $table->find(['subtype'=>$l->getParent_id() ? true : false]);
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
+        foreach ($list['rows'] as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
         return $options;
     }
 }

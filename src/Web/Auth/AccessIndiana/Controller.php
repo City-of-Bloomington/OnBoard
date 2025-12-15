@@ -80,17 +80,17 @@ class Controller extends \Web\Controller
 
         // Look for existing person records
         try {
-            $people = new PeopleTable();
-            $res    = $people->find(['username'=>$email]);
-            if (count($res)==1) {
+            $p = new PeopleTable();
+            $r = $p->find(['username'=>$email]);
+            if (count($r['rows'])==1) {
                 // Existing public user account
-                return $res->current();
+                return $r['rows'][0];
             }
 
-            $res    = $people->find(['email'=>$email, 'user_account'=>false]);
-            if (count($res)==1) {
+            $r = $p->find(['email'=>$email, 'user_account'=>false]);
+            if (count($r['rows'])==1) {
                 // Create public user account on existing person
-                $person = $res->current();
+                $person = $r['rows'][0];
                 $person->setUsername($email);
                 $person->setRole('Public');
                 $person->save();

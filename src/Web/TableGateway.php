@@ -2,16 +2,16 @@
 /**
  * A base class that streamlines creation of ZF2 TableGateway
  *
- * @copyright 2014-2020 City of Bloomington, Indiana
+ * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
 
 use Laminas\Db\TableGateway\TableGateway as LaminasTableGateway;
 use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Select;
-use Laminas\Paginator\Adapter\LaminasDb\DbSelect;
-use Laminas\Paginator\Paginator;
+use Laminas\Db\Sql\Sql;
 
 abstract class TableGateway
 {
@@ -50,10 +50,10 @@ abstract class TableGateway
 	 *
 	 * @param array   $fields    Key value pairs to select on
 	 * @param string  $order     The default ordering to use for select
-	 * @param boolean $paginated If set to true, will return a paginator
-	 * @param int     $limit
+	 * @param int     $itemsPerPage
+	 * @param int     $currentPage
 	 */
-	public function find(?array $fields=null, string|array|null $order=null, ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
 		$select = new Select($this->tableGateway->getTable());
 		if ($fields) {
@@ -68,26 +68,47 @@ abstract class TableGateway
                 }
 			}
 		}
-		return $this->performSelect($select, $order, $paginated, $limit);
+		return $this->performSelect($select, $order, $itemsPerPage, $currentPage);
 	}
 
 	/**
-	 * @param  Laminas\Db\Sql\Select $select
-	 * @return Laminas\Db\ResultSet
+	 * Laminas Paginator has been abandoned and must be removed as a dependency
+	 *
+	 * This function does not depend on the Laminas Paginator.  Instead it takes
+	 * explicit $itemsPerPage and $currentPage, returning an array with one page
+	 * of results and a total item count.
 	 */
-	public function performSelect(Select $select, $order, $paginated=false, $limit=null)
+	public function performSelect(Select $select, string|array|null $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
-		if ($order) { $select->order($order); }
-		if ($limit) { $select->limit($limit); }
+		$total = null;
+        if ($itemsPerPage) {
+            $currentPage = $currentPage ? $currentPage : 1;
 
-		if ($paginated) {
-			$adapter = new DbSelect($select, $this->tableGateway->getAdapter(), $this->resultSetPrototype);
-			$paginator = new Paginator($adapter);
-			return $paginator;
-		}
-		else {
-			return $this->tableGateway->selectWith($select);
-		}
+			$sql   = new Sql($this->tableGateway->getAdapter());
+			$c     = $sql->select();
+			$c->columns(['count'=>new Expression('count(*)')]);
+            $c->from(['o'=>$select]);
+			$q     = $sql->prepareStatementForSqlObject($c);
+			$res   = $q->execute();
+
+			$o = [];
+			foreach ($res as $r) { $o[] = $r; }
+			$total = $o[0]['count'];
+
+            $select->limit ($itemsPerPage);
+            $select->offset($itemsPerPage * ($currentPage-1));
+        }
+
+        if ($order) { $select->order($order); }
+
+		$rows = [];
+		$res  = $this->tableGateway->selectWith($select);
+		foreach ($res as $r) { $rows[] = $r; }
+
+        return [
+            'rows'  => $rows,
+            'total' => $total ?? count($rows)
+        ];
 	}
 
 	/**

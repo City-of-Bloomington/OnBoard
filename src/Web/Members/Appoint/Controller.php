@@ -40,9 +40,8 @@ class Controller extends \Web\Controller
                                   'committee_id' => $member->getCommittee_id(),
                                      'person_id' => $member->getPerson_id()]);
             try {
-
                 MemberTable::appoint($member);
-                foreach ($apps as $a) { $a->archive(); }
+                foreach ($apps['rows'] as $a) { $a->archive(); }
 
                 $return_url = parent::popCurrentReturnUrl();
                 unset($_SESSION['return_url']);

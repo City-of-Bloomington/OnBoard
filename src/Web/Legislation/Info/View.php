@@ -59,7 +59,7 @@ class View extends \Web\View
             $add   = parent::generateUri('legislation.add', ['committee_id'=>$legislation->getCommittee_id()]);
             $table = new TypesTable();
             $list  = $table->find(['subtype'=>true]);
-            foreach ($list as $t) {
+            foreach ($list['rows'] as $t) {
                 $links[] = [
                     'url'   => $add."?type_id={$t->getId()};parent_id=".$legislation->getId(),
                     'label' => sprintf($this->_('add_something', 'messages'), $t->getName()),

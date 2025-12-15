@@ -45,7 +45,7 @@ $list    = $table->find(['current'=>true]);
 $expires = strtotime("+$minutes minute");
 $debug   = fopen(DEBUG_LOG, 'a');
 fwrite($debug, "----------------\nwatch_calendars\n----------------\n");
-foreach ($list as $c) {
+foreach ($list['rows'] as $c) {
     $calendar_id = $c->getCalendarId();
     if ($calendar_id) {
         $watch_id = APPLICATION_NAME."-{$c->getId()}-".uniqid();

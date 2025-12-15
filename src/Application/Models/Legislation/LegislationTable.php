@@ -41,15 +41,15 @@ class LegislationTable extends TableGateway
         }
     }
 
-	public function find(?array $fields=null, string|array|null $order='number desc', ?bool $paginated=false, ?int $limit=null)
+	public function find(?array $fields=null, string|array|null $order='number desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
 		$select = new Select(self::TABLE);
 		$this->processFields($select, $fields);
 
-		return parent::performSelect($select, $order, $paginated, $limit);
+		return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
 	}
 
-	public function search(?array $fields=null, ?string $order='number desc', ?bool $paginated=false, ?int $limit=null)
+	public function search(?array $fields=null, string|array|null $order='number desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
 		$select = new Select(self::TABLE);
         if ($fields) {
@@ -74,7 +74,7 @@ class LegislationTable extends TableGateway
                 }
             }
         }
-		return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
 	public function years(?array $fields=null): array

@@ -28,35 +28,24 @@ class Controller extends \Web\Controller
         $sort   = self::prepareSort();
 
         $table = new MeetingFilesTable();
-        if ($this->outputFormat != 'csv') {
-            $list  = $table->find($search, "$sort[field] $sort[direction]", true);
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-
-            $totalItemCount = $list->getTotalItemCount();
-        }
-        else {
-            $list  = $table->find($search, "$sort[field] $sort[direction]");
-            $totalItemCount = count($list);
-        }
+        $list  = $this->outputFormat != 'csv'
+               ? $table->find($search, "$sort[field] $sort[direction]", parent::ITEMS_PER_PAGE, $page)
+               : $table->find($search, "$sort[field] $sort[direction]");
 
         switch ($this->outputFormat) {
             case 'csv':
                 $files = [];
-                foreach ($list as $f) { $files[] = $f->getData(); }
+                foreach ($list['rows'] as $f) { $files[] = $f->getData(); }
 
                 return new \Web\Views\CSVView('Meetings', $files);
             break;
 
             default:
-                $files = [];
-                foreach ($list as $f) { $files[] = $f; }
-
-                return new View($files,
+                return new View($list['rows'],
                                 $search,
                                 $sort,
                                 $this->years($table, $search),
-                                $totalItemCount,
+                                $list['total'],
                                 $page,
                                 parent::ITEMS_PER_PAGE,
                                 $committee);

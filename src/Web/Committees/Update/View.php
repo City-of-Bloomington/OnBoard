@@ -50,7 +50,8 @@ class View extends \Web\View
     {
         $out = [];
         $t   = new DepartmentTable();
-        foreach ($t->find() as $d) { $out[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
+        $r   = $t->find();
+        foreach ($r['rows'] as $d) { $out[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
         return $out;
     }
 }

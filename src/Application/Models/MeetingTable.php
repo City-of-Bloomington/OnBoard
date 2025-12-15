@@ -48,12 +48,12 @@ class MeetingTable extends TableGateway
         }
     }
 
-    public function find(?array $fields=null, string|array|null $order='start', ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order='start', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select(['m' => self::TABLE]);
         $this->processFields($select, $fields);
 
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     public function years(?array $fields=null): array

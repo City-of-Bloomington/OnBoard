@@ -72,7 +72,7 @@ class Email extends ActiveRecord
 		// Make sure there's a main email address
 		$t = new EmailTable();
         $l = $t->find(['person_id'=>$this->getPerson_id(), 'main'=>1]);
-        if (!count($l)) { $this->setMain(true); }
+        if (!count($l['rows'])) { $this->setMain(true); }
 
         // Make sure there's only one main
         if ($this->getMain()) { $this->saveMain(); }

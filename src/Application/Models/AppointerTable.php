@@ -12,7 +12,7 @@ class AppointerTable extends TableGateway
 {
     public function __construct() { parent::__construct('appointers', __namespace__.'\Appointer'); }
 
-    public function find(?array $fields=null, string|array|null $order='name', ?bool $paginated=false, ?int $limit=null)
+    public function find(?array $fields=null, string|array|null $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
         $select = new Select('appointers');
         if ($fields) {
@@ -33,7 +33,7 @@ class AppointerTable extends TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
     }
 
     private function handleJoins(Select &$select, &$fields)
