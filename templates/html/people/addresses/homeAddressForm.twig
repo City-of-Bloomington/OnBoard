@@ -16,8 +16,8 @@
 
     <h2>Home Address</h2>
     <p>Most boards and commissions require a resident in the city limits.
-       This home address is used to determine city and county residency.
-       Use this tool to look up your address to determine if you live in the city limits.
+       The home address is used to determine location requirements, such as city or county residency.
+       Use this tool to look up an address.
     </p>
     <form class="usa-search usa-search--small" role="search" id="addressChooser">
         <label class="usa-sr-only" for="query">Address Lookup</label>
@@ -28,24 +28,11 @@
                  alt="Address Lookup" />
         </button>
     </form>
-    <div id="results"></div>
-    <script src="{{ BASE_URI }}/js/people/addressChooser-{{ VERSION }}.js"></script>
-    <script>
-        ADDRESS_CHOOSER.start((candidate) => {
-            const a = candidate.address.split(',');
+    <ul id="results" class="usa-list usa-list--unstyled"></ul>
 
-            document.getElementById('address').value = a[0];
-            document.getElementById('city'   ).value = a[1];
-            document.getElementById('state'  ).value = a[2];
-            document.getElementById('zip'    ).value = a[3];
-            document.getElementById('x').value = candidate.location.x;
-            document.getElementById('y').value = candidate.location.y;
-
-            document.getElementById('addressForm').submit();
-        });
-    </script>
-
-
+    <p>If the address is not found, you can still enter it here;
+       however, the address will not satisfy any local requirements.
+    </p>
     <form           class="usa-form" method="post" id="addressForm">
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">Home Address</legend>
@@ -55,5 +42,35 @@
             {{ forms.actionLink(return_url, _('cancel'), 'cancel' ) }}
         </fieldset>
     </form>
+
+    <script src="{{ BASE_URI }}/js/people/addressChooser-{{ VERSION }}.js"></script>
+    <script>
+        ADDRESS_CHOOSER.start((candidate) => {
+            const a     = candidate.address.split(', '),
+                  state = document.getElementById('state');
+
+            document.getElementById('address').value = a[0];
+            document.getElementById('city'   ).value = a[1];
+            document.getElementById('zip'    ).value = a[3];
+            document.getElementById('x').value = candidate.location.x;
+            document.getElementById('y').value = candidate.location.y;
+
+            for (o of state.options) {
+                if (o.value == a[2]) { state.selectedIndex = o.index; break; }
+            }
+
+            document.getElementById('addressForm').submit();
+        });
+
+        function r(e) {
+            document.getElementById('x').value = '';
+            document.getElementById('y').value = '';
+            document.getElementById('address_gis_status').innerHTML = 'Unknown Address';
+        }
+        document.getElementById('address').addEventListener('keyup',  r);
+        document.getElementById('city'   ).addEventListener('keyup',  r);
+        document.getElementById('zip'    ).addEventListener('keyup',  r);
+        document.getElementById('state'  ).addEventListener('change', r);
+</script>
 </section>
 {% endblock %}

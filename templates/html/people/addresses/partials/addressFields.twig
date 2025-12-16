@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Address  address
  * @param string   return_url
@@ -7,10 +7,14 @@
  #}
 {% import  "html/macros/forms.twig" as forms %}
 {{ forms.field_text('address', 'address', _('address'), address.address ) }}
-{{ forms.field_text(  'city',  'city',    _('city'   ), address.city ) }}
+{{ forms.field_text(  'city',  'city',    _('city'   ), address.city    ) }}
 {{ forms.field_select('state', 'state',   _('state'  ), address.state, states ) }}
-{{ forms.field_text(  'zip',   'zip',     _('zip'    ), address.zip ) }}
+{{ forms.field_text(  'zip',   'zip',     _('zip'    ), address.zip     ) }}
 
 <input name="type"     type="hidden" value="{{ address.type }}" />
 <input name="x" id="x" type="hidden" value="{{ address.x    }}" />
 <input name="y" id="y" type="hidden" value="{{ address.y    }}" />
+
+<div>
+<span class="usa-tag" id="address_gis_status">{{ (address.x and address.y) ? 'Known' : 'Unknown' }} Address</span>
+</div>
