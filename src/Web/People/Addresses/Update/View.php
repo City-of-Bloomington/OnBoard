@@ -25,8 +25,7 @@ class View extends \Web\View
 
     public function render(): string
     {
-        $form = $this->vars['address']->getType()=='Home' ? 'homeAddressForm' : 'mailingAddressForm';
-        return $this->twig->render("html/people/addresses/$form.twig", $this->vars);
+        return $this->twig->render("html/people/addresses/updateForm.twig", $this->vars);
     }
 
     /**

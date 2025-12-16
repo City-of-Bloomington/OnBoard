@@ -14,7 +14,7 @@
     {{ include('html/people/partials/info.twig', { person: address.person }) }}
     {% endif %}
 
-    <h2>Home Address</h2>
+    <h2>{{ address.type }} Address</h2>
     <p>Most boards and commissions require a resident in the city limits.
        The home address is used to determine location requirements, such as city or county residency.
        Use this tool to look up an address.
@@ -35,7 +35,7 @@
     </p>
     <form           class="usa-form" method="post" id="addressForm">
         <fieldset   class="usa-fieldset">
-            <legend class="usa-legend">Home Address</legend>
+            <legend class="usa-legend">Address</legend>
             {{ include('html/people/addresses/partials/addressFields.twig') }}
 
             {{ forms.button('submit', _('save'), 'save') }}
