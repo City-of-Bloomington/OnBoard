@@ -259,22 +259,6 @@ class Person extends ActiveRecord
         return null;
     }
 
-    public function getLiaisonCommittees(): array
-    {
-        $sql = 'select distinct c.*
-                from liaisons l
-                join committees c on l.committee_id=c.id
-                where l.person_id=?';
-        $db = Database::getConnection();
-        $result = $db->query($sql, [$this->getId()]);
-
-        $committees = [];
-        foreach ($result->toArray() as $row) {
-            $committees[] = new Committee($row);
-        }
-        return $committees;
-    }
-
     public function getMembers($fields=null)
     {
         $fields['person_id'] = $this->getId();
@@ -331,19 +315,6 @@ class Person extends ActiveRecord
         $id = $this->getId();
         $r  = $db->query($sql, [$id, $id, $id, $id]);
         return count($r) ? true : false;
-    }
-
-    public function getApplications(?array $params=null): array
-    {
-        if ($this->getId()) {
-            if (!$params) { $params = []; }
-            $params['person_id'] = $this->getId();
-
-            $t = new ApplicationTable();
-            $l = $t->find($params);
-            return $l['rows'];
-        }
-        return [];
     }
 
     public function getFiles(): array
