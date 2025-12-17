@@ -21,7 +21,9 @@ class Controller extends \Web\Controller
             if (    !empty($_REQUEST['term_id'     ])) { $o = new Term     ($_REQUEST['term_id']); }
             elseif (!empty($_REQUEST['seat_id'     ])) { $o = new Seat     ($_REQUEST['seat_id']); }
             elseif (!empty($_REQUEST['committee_id'])) { $o = new Committee($_REQUEST['committee_id']); }
-            $member = $o->newMember();
+
+            if (isset($o)) { $member = $o->newMember(); }
+            else { throw new \Exception('missingRequiredFields'); }
         }
         catch (\Exception $e) {
             $_SESSION['errorMessages'][] = $e->getMessage();
