@@ -13,11 +13,17 @@ use Psr\Log\LogLevel;
 
 class GraylogWriter
 {
-    public static function doWrite(array $event)
+    private $publisher;
+
+    public function __construct(string $domain, int $port)
     {
-        $transport = new UdpTransport(GRAYLOG_DOMAIN, GRAYLOG_PORT, UdpTransport::CHUNK_SIZE_LAN);
-        $publisher = new Publisher();
-        $publisher->addTransport($transport);
+        $transport = new UdpTransport($domain, $port, UdpTransport::CHUNK_SIZE_LAN);
+        $this->publisher = new Publisher();
+        $this->publisher->addTransport($transport);
+    }
+
+    public function doWrite(array $event)
+    {
 
         $message = new Message();
         $message->setLevel(LogLevel::ERROR);
@@ -31,10 +37,10 @@ class GraylogWriter
         }
         $message->setFullMessage(print_r($event, true));
 
-        $publisher->publish($message);
+        $this->publisher->publish($message);
     }
 
-    public static function error(int $error, string $message, string $file, int $line)
+    public function error(int $error, string $message, string $file, int $line)
     {
         $e = [
             'errno'   => $error,
@@ -45,7 +51,7 @@ class GraylogWriter
         self::doWrite($e);
     }
 
-    public static function exception($e)
+    public function exception($e)
     {
         $e = [
             'errno'   => $e->getCode(),
@@ -58,7 +64,7 @@ class GraylogWriter
 
     }
 
-    public static function shutdown()
+    public function shutdown()
     {
         $e = error_get_last();
         if ($e) { self::doWrite($e); }
