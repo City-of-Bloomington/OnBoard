@@ -6,6 +6,9 @@ define('BASE_HOST', 'localhost');
 define('BASE_URL' , 'https://'.BASE_HOST.BASE_URI);
 define('USWDS_URL', '/static/uswds/dist');
 
+define('GOOGLE_CREDENTIALS_FILE', __DIR__.'/credentials.json');
+define('GOOGLE_USER_EMAIL',   'someone@localhost');
+
 /**
  * Database Setup
  * Refer to the PDO documentation for DSN sytnax for your database type

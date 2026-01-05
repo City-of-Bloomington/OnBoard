@@ -114,6 +114,13 @@ $AUTHENTICATION = [
     ]
 ];
 
+$ARCGIS = [
+    'portal' => '{{ onboard_arcgis.portal }}',
+    'server' => '{{ onboard_arcgis.server }}',
+    'user'   => '{{ onboard_arcgis.user   }}',
+    'pass'   => '{{ onboard_arcgis.pass   }}',
+];
+
 define('SMTP_HOST', "{{ onboard_smtp.host }}");
 define('SMTP_PORT', "{{ onboard_smtp.port }}");
 
