@@ -11,7 +11,7 @@
 <section>
     <h2>{{ search.current ? _('seats_current') : _('seats_past') }}</h2>
     {% if isAllowed('seats', 'add') %}
-    {{ forms.actionLink(uri('seats.add') ~ '?committee_id=' ~ committee.getId(), _('seat_add'), 'add') }}
+    {{ forms.actionLink(uri('seats.add', {}, { committee_id: committee.id }), _('seat_add'), 'add') }}
     {% endif %}
 
     <table class="usa-table usa-table-compact">
