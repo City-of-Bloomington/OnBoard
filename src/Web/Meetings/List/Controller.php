@@ -24,7 +24,9 @@ class Controller extends \Web\Controller
         $dates     = self::checkForDates();
         if ($dates) { $search = array_merge($search, $dates); }
         else        { $search = array_merge($search, self::currentDates()); }
-        if (!isset($search['year']) || !isset($search['start']) || !isset($search['end'])) {
+
+        if (  !(isset($search['start']) && isset($search['end']))
+            && !isset($search['year'])) {
             return new \Web\Views\BadRequestView();
         }
 
@@ -113,8 +115,7 @@ class Controller extends \Web\Controller
                 $year = (int)$start->format('Y');
                 return [
                     'start' => $start,
-                    'end'   => $end,
-                    'year'  => $year
+                    'end'   => $end
                 ];
             }
             catch (\Exception $e) {
