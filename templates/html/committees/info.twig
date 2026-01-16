@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     actionLinks
@@ -17,38 +17,40 @@
         {% endif %}
     </header>
 
-    <dl>
-        {% if committee.getType()          %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('type'         ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getType()               }}</dd></div>{% endif %}
-        {% if committee.getYearFormed()    %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('yearFormed'   ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getYearFormed()         }}</dd></div>{% endif %}
-        {% if committee.getEndDate()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('endDate'      ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getEndDate(DATE_FORMAT) }}</dd></div>{% endif %}
-        {% if committee.getStatutoryName() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('statutoryName') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getStatutoryName()      }}</dd></div>{% endif %}
-        {% if committee.getCode()          %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('code'         ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getCode()               }}</dd></div>{% endif %}
-        {% if committee.getWebsite()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('website'      ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="{{ committee.getWebsite()      }}">{{ committee.getWebsite()      }}</a></dd></div>{% endif %}
-        {% if committee.getVideoArchive()  %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('videoArchive' ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="{{ committee.getVideoArchive() }}">{{ committee.getVideoArchive() }}</a></dd></div>{% endif %}
-        {% if committee.getEmail()         %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('email'        ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="mailto:{{ committee.getEmail() }}">{{ committee.getEmail()        }}</a></dd></div>{% endif %}
-        {% if committee.getPhone()         %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('phone'        ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getPhone()              }}</dd></div>{% endif %}
-        {% if committee.getAddress()       %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('address'      ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getAddress()            }}</dd></div>{% endif %}
-        {% if committee.getCalendarId()    %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('calendarId'   ) }}</dt><dd class="tablet:grid-9 margin-left-0"><a class="usa-link" href="https://calendar.google.com/calendar/embed?src={{ committee.getCalendarId() }}">{{ committee.getCalendarId() }}</a></dd></div>{% endif %}
+    <table>
+        <tbody>
+        {% if committee.type          %}<tr><th>{{ _('type'         ) }}</th><td>{{ committee.type               }}</td></tr>{% endif %}
+        {% if committee.yearFormed    %}<tr><th>{{ _('yearFormed'   ) }}</th><td>{{ committee.yearFormed         }}</td></tr>{% endif %}
+        {% if committee.endDate       %}<tr><th>{{ _('endDate'      ) }}</th><td>{{ committee.getEndDate(DATE_FORMAT) }}</td></tr>{% endif %}
+        {% if committee.statutoryName %}<tr><th>{{ _('statutoryName') }}</th><td>{{ committee.statutoryName      }}</td></tr>{% endif %}
+        {% if committee.code          %}<tr><th>{{ _('code'         ) }}</th><td>{{ committee.code               }}</td></tr>{% endif %}
+        {% if committee.website       %}<tr><th>{{ _('website'      ) }}</th><td><a class="usa-link" href="{{ committee.website      }}">{{ committee.website      }}</a></td></tr>{% endif %}
+        {% if committee.videoArchive  %}<tr><th>{{ _('videoArchive' ) }}</th><td><a class="usa-link" href="{{ committee.videoArchive }}">{{ committee.videoArchive }}</a></td></tr>{% endif %}
+        {% if committee.email         %}<tr><th>{{ _('email'        ) }}</th><td><a class="usa-link" href="mailto:{{ committee.email }}">{{ committee.email        }}</a></td></tr>{% endif %}
+        {% if committee.phone         %}<tr><th>{{ _('phone'        ) }}</th><td>{{ committee.phone              }}</td></tr>{% endif %}
+        {% if committee.address       %}<tr><th>{{ _('address'      ) }}</th><td>{{ committee.address            }}</td></tr>{% endif %}
+        {% if committee.calendarId    %}<tr><th>{{ _('calendarId'   ) }}</th><td><a class="usa-link" href="https://calendar.google.com/calendar/embed?src={{ committee.calendarId }}">{{ committee.calendarId }}</a></td></tr>{% endif %}
         {% if isAllowed('committees', 'update') %}
-                {% if committee.hasTerms() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('termEndWarningDays' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getTermEndWarningDays()  }}</dd></div>{% endif %}
-       {% if committee.takesApplications() %}<div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('applicationLifetime') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.getApplicationLifetime() }}</dd></div>{% endif %}
+                {% if committee.hasTerms() %}<tr><th>{{ _('termEndWarningDays' ) }}</th><td>{{ committee.termEndWarningDays  }}</td>{% endif %}
+       {% if committee.takesApplications() %}<tr><th>{{ _('applicationLifetime') }}</th><td>{{ committee.applicationLifetime }}</td>{% endif %}
         {% endif %}
-        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('legislative') }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.isLegislative()    ? _('yes') : _('no') }}</dd></div>
-        <div class="grid-row margin-bottom-05"><dt class="tablet:grid-col-3 text-bold">{{ _('alternates' ) }}</dt><dd class="tablet:grid-9 margin-left-0">{{ committee.allowsAlternates() ? _('yes') : _('no') }}</dd></div>
-    </dl>
+        <tr><th>{{ _('legislative') }}</th><td>{{ committee.isLegislative    ? _('yes') : _('no') }}</td></tr>
+        <tr><th>{{ _('alternates' ) }}</th><td>{{ committee.allowsAlternates ? _('yes') : _('no') }}</td></tr>
+        </tbody>
+    </table>
 
-    {% if committee.getDescription() %}
+    {% if committee.description %}
     <h3>{{ _('committee_desc') }}</h3>
-    {{ committee.getDescription()|markdown_to_html }}
+    {{ committee.description|markdown_to_html }}
     {% endif %}
 
-    {% if committee.getMeetingSchedule() %}
+    {% if committee.meetingSchedule %}
     <h3>{{ _('meetingSchedule') }}</h3>
-    {{ committee.getMeetingSchedule()|markdown_to_html }}
+    {{ committee.meetingSchedule|markdown_to_html }}
     {% endif %}
 
     <h3>{{ _(['department', 'departments', 10]) }}</h3>
-    <ul>{% for d in committee.getDepartments() %}
+    <ul>{% for d in committee.departments %}
         <li>{% if isAllowed('departments', 'info') %}
             <a href="{{ uri('departments.info', { department_id: d.id } ) }}">{{ d.name }}</a>
             {% else %}
