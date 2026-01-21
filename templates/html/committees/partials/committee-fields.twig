@@ -1,9 +1,12 @@
 {#
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param array     committee_types   Options for committee_type
- * @param array     departments       Options for departments
+ *
+ * Options for select elements in the form
+ * @param array     committee_types
+ * @param array     departments
+ * @param array     validators
  #}
 {% import  "html/macros/forms.twig" as forms %}
 <fieldset class="usa-fieldset margin-bottom-3">
@@ -37,11 +40,10 @@
 
     {{ forms.field_textarea('description',     'description',     _('description'),     committee.description     ) }}
     {{ forms.field_textarea('meetingSchedule', 'meetingSchedule', _('meetingSchedule'), committee.meetingSchedule ) }}
-</fieldset>
 
-<fieldset class="usa-fieldset margin-bottom-3">
-    <legend class="usa-legend usa-legend--large">{{ _(['department', 'departments', 10]) }}</legend>
-    {{ forms.field_checkbox('departments', 'departments[]', _(['department', 'departments', 10]),  committee.departments|keys , departments) }}
+    {{ forms.field_checkbox('departments', 'departments[]', _(['department', 'departments', 10]),  committee.departments|keys , departments, false, {}, _('committee-departments-help', 'messages') ) }}
+    {{ forms.field_checkbox('validators',  'validators[]',  _(['validator',  'validators',  10]),  committee.validators,        validators,  false, {}, _('committee-validator-help',   'messages') ) }}
+
 </fieldset>
 
 <fieldset class="usa-fieldset margin-bottom-3">

@@ -3,3 +3,7 @@
 .usa-card__img       { background-color: transparent; }
 
 .usa-nav__secondary-links .usa-button { color: white; }
+
+#results a:hover { cursor: pointer; }
+
+tbody th { text-align: left; }

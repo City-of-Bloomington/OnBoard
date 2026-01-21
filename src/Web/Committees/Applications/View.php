@@ -46,12 +46,14 @@ class View extends \Web\View
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
         $url        = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
+        $validators = $c->getValidators();
 
         $tab  = new ApplicationTable();
         $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
         $data = [];
         foreach ($apps['rows'] as $a) {
-            $links  = [];
+            $links       = [];
+            $validations = [];
             if ($canArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$url",
@@ -67,6 +69,11 @@ class View extends \Web\View
                 ];
             }
 
+            foreach ($validators as $v) {
+                $t = $v($a);
+                $validations[$v::NAME] = $t ? 'Yes' : ($t===false ? 'No' : 'Unknown');
+            }
+
             $p      = $a->getPerson();
             $data[] = [
                 'id'           => $a->getId(),
@@ -75,6 +82,7 @@ class View extends \Web\View
                 'created'      => $a->getCreated(DATE_FORMAT),
                 'expires'      => $a->getExpires(DATE_FORMAT),
                 'actionLinks'  => $links,
+                'validations'  => $validations,
                 'current_member' => MemberTable::isMember($a->getPerson_id(), $a->getCommittee_id())
             ];
         }

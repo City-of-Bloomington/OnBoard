@@ -59,5 +59,11 @@
         </li>
         {% endfor %}
     </ul>
+
+    <h3>{{ _(['validator', 'validators', 10]) }}</h3>
+    <ul>{% for v,o in committee.validators %}
+        <li>{{ o.NAME }}</li>
+        {% endfor %}
+    </ul>
 </section>
 {% endblock %}

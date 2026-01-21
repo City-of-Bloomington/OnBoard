@@ -32,25 +32,25 @@
 
 {% macro field_radio(id, name, label, value, options, required=false, attr={}, help=null) %}
 <div><p>{{ label }}{{ required ? ' <span>*</span>' : '' }}</p>
+    {% if help %}<p class="usa-hint" id="{{ id }}-help">{{ help|raw }}</p>{% endif %}
     {% for o in options %}
     <div class="usa-radio">
         <input class="usa-radio__input"  id="{{ id }}_{{ o.value }}" name="{{ name }}" type="radio" value="{{ o.value }}" {{ value==o.value ? 'checked="checked"' : '' }} />
         <label class="usa-radio__label" for="{{ id }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
     </div>
     {% endfor %}
-    {% if help %}<p class="usa-hint" id="{{ id }}-help">{{ help|raw }}</p>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro field_checkbox(id, name, label, values, options, required=false, attr={}, help=null) %}
 <div><p>{{ label }}{{ required ? ' <span>*</span>' : '' }}</p>
+    {% if help %}<p class="usa-hint">{{ help|raw }}</p>{% endif %}
     {% for o in options %}
     <div class="usa-checkbox">
         <input class="usa-checkbox__input"  id="{{ id }}_{{ o.value }}" name="{{ name }}" type="checkbox" value="{{ o.value }}" {{ o.value in values ? 'checked="checked"' : '' }} />
         <label class="usa-checkbox__label" for="{{ id }}_{{ o.value }}">{{ o.label ?? o.value }}</label>
     </div>
     {% endfor %}
-    {% if help %}<p class="usa-hint">{{ help|raw }}</p>{% endif %}
 </div>
 {% endmacro %}
 

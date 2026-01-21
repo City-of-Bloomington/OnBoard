@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,6 +13,10 @@ class Address extends ActiveRecord
 {
     protected $tablename = 'people_addresses';
     protected $person;
+
+	public const TYPE_HOME = 'Home';
+	public const TYPE_MAIL = 'Mailing';
+	public static $TYPES = [self::TYPE_HOME, self::TYPE_MAIL];
 
     public static $STATES = ['AL' => 'Alabama',
 							 'AK' => 'Alaska',
@@ -88,7 +92,7 @@ class Address extends ActiveRecord
 				$sql    = 'select * from people_addresses where id=?';
                 $result = $db->createStatement($sql)->execute([$id]);
                 if (count($result)) { $this->exchangeArray($result->current()); }
-                else { throw new \Exception('emails/unknown'); }
+                else { throw new \Exception('addresses/unknown'); }
 			}
 		}
 		else {
@@ -113,6 +117,8 @@ class Address extends ActiveRecord
     public function validate()
     {
 		if (!$this->getPerson_id() || !$this->getType()) { throw new \Exception('missingRequiredFields'); }
+
+		if (!in_array($this->getType(), self::$TYPES)) { throw new \Exception('invalidType'); }
     }
 
     public function save()   { parent::save(); }

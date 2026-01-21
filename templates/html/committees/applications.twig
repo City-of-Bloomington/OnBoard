@@ -43,6 +43,10 @@
                 {% if a.current_member %}
                 <div class="usa-tag margin-left-1">{{ _('current_member') }}</div>
                 {% endif %}
+
+                {% for k, v in a.validations %}
+                <div class="usa-tag">{{ k }}: {{ v }}</div>
+                {% endfor %}
             </td>
             <td>{{ a.expires }}</td>
             <td>{% if a.actionLinks %}

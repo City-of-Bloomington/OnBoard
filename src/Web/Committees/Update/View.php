@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -19,8 +19,10 @@ class View extends \Web\View
         $this->vars = [
             'committee'         => $committee,
             'committee_types'   => self::committee_types(),
-            'departments'       => self::departments()
+            'departments'       => self::departments(),
+            'validators'        => self::validators()
         ];
+        print_r($this->vars['validators']);
     }
 
     public function render(): string
@@ -52,6 +54,24 @@ class View extends \Web\View
         $t   = new DepartmentTable();
         $r   = $t->find();
         foreach ($r['rows'] as $d) { $out[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
+        return $out;
+    }
+
+    /**
+     * Returns an array of options in the format expected by the forms macros
+     *
+     * @see templates/html/macros/forms.twig
+     */
+    public static function validators(): array
+    {
+        $out = [];
+        foreach (scandir(APPLICATION_HOME.'/src/Application/Applications/Validators') as $f) {
+            if ($f[0] != '.') {
+                $path  = pathinfo($f);
+                $class = "Application\\Applications\\Validators\\".$path['filename'];
+                $out[] = ['value'=>$class, 'label'=>$class::NAME];
+            }
+        }
         return $out;
     }
 }

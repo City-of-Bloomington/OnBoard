@@ -128,6 +128,13 @@ create table seats (
     foreign key (appointer_id) references appointers(id)
 );
 
+create table committee_application_validators (
+    committee_id int unsigned not null,
+    class        varchar(64)  not null,
+    primary key (committee_id, class),
+    foreign key (committee_id) references committees(id)
+);
+
 create table terms (
     id      int unsigned not null primary key auto_increment,
     seat_id int unsigned,

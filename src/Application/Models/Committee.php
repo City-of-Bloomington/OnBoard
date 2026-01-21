@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2025 City of Bloomington, Indiana
+ * @copyright 2009-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,8 +15,12 @@ class Committee extends ActiveRecord
     public static $types = ['seated', 'open'];
 
     protected $tablename = 'committees';
-    protected $departments = [];
+
+    private $departments = [];
+    private $validators  = [];
+
     private $departmentsHaveChanged = false;
+    private  $validatorsHaveChanged = false;
 
     public function __construct($id=null)
     {
@@ -62,17 +66,26 @@ class Committee extends ActiveRecord
         }
         parent::save();
 
+        $db = Database::getConnection();
         if ($this->departmentsHaveChanged) {
-            $db = Database::getConnection();
             $sql = 'delete from committee_departments where committee_id=?';
             $db->query($sql, [$this->getId()]);
 
             $sql = 'insert committee_departments set committee_id=?,department_id=?';
-            $insert = $db->createStatement($sql);
+            $ins = $db->createStatement($sql);
             foreach (array_keys($this->departments) as $id) {
-                $params = [$this->getId(), $id];
-                try { $insert->execute($params); }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                $ins->execute([$this->getId(), $id]);
+            }
+        }
+
+        if ($this->validatorsHaveChanged) {
+            $sql = 'delete from committee_application_validators where committee_id=?';
+            $db->query($sql, [$this->getId()]);
+
+            $sql = 'insert into committee_application_validators values(?,?)';
+            $ins = $db->createStatement($sql);
+            foreach (array_keys($this->validators) as $class) {
+                $ins->execute([$this->getId(), $class]);
             }
         }
     }
@@ -127,15 +140,12 @@ class Committee extends ActiveRecord
     public function setLegislative($b) { $this->data['legislative'] = $b ? 1 : 0; }
     public function setAlternates ($b) { $this->data['alternates' ] = $b ? 1 : 0; }
 
-    /**
-     * @param array $post The POST request
-     */
-    public function handleUpdate($post)
+    public function handleUpdate(array $post)
     {
-        if (!isset($post['departments'])) { $post['departments'] = null; }
+        if (!isset($post['departments'])) { $post['departments'] = []; }
 
         $fields = [
-            'type', 'departments',
+            'type', 'departments', 'validators',
             'name', 'statutoryName', 'code', 'website', 'videoArchive', 'yearFormed', 'calendarId',
             'email', 'phone', 'address', 'city', 'state', 'zip',
             'description', 'meetingSchedule',
@@ -282,47 +292,70 @@ class Committee extends ActiveRecord
 
     /**
      * Returns an array of Department objects with ID as the key
+     *
+     * @return Department[]
      */
     public function getDepartments(): array
     {
         if (!$this->departments) {
-            $t = new DepartmentTable();
-            $r = $t->find(['committee_id'=>$this->getId()]);
-            foreach ($r['rows'] as $d) {
+            $db  = Database::getConnection();
+            $sql = "select d.*
+                    from committee_departments c
+                    join departments d on d.id=c.department_id
+                    where c.committee_id=?";
+            $res = $db->query($sql)->execute([$this->getId()]);
+            foreach ($res as $row) {
+                $d = new Department($row);
                 $this->departments[$d->getId()] = $d;
             }
         }
         return $this->departments;
     }
 
-    public function hasDepartment(Department $d): bool
+    /**
+     * @param int[] $ids An array of department_ids
+     */
+    public function setDepartments(array $ids)
     {
-        return array_key_exists($d->getId(), $this->getDepartments());
+        $current = array_keys($this->getDepartments());
+        $this->departmentsHaveChanged = (array_diff($current, $ids) || array_diff($ids, $current)) ? true : false;
+        if ($this->departmentsHaveChanged) {
+            $this->departments = [];
+
+            foreach ($ids as $id) {
+                $this->departments[$id] = new Department($id);
+            }
+        }
     }
 
     /**
-     * @param array $ids An array of (int) department_ids
+     * @return Validator[]   An array of validator callables
      */
-    public function setDepartments(?array $ids=null)
+    public function getValidators(): array
     {
-        if ($ids) {
-            $current = array_keys($this->getDepartments());
-
-            if (array_diff($current, $ids) || array_diff($ids, $current)) {
-                $this->departments = [];
-                $this->departmentsHaveChanged = true;
-
-                foreach ($ids as $id) {
-                    try { $this->departments[$id] = new Department($id); }
-                    catch (\Exception $e) {
-                        // Just ignore invalid departments for now
-                    }
-                }
+        if (!$this->validators) {
+            $db  = Database::getConnection();
+            $sql = "select class from committee_application_validators where committee_id=?";
+            $res = $db->query($sql)->execute([$this->getId()]);
+            foreach ($res as $r) {
+                $this->validators[$r['class']] = new $r['class'];
             }
         }
-        else {
-            $this->departments = [];
-            $this->departmentsHaveChanged = true;
+        return $this->validators;
+    }
+
+    /**
+     * @param string[] $classes  Class names of validators
+     */
+    public function setValidators(array $classes)
+    {
+        $current = array_keys($this->validators);
+
+        $this->validatorsHaveChanged  = (array_diff($current, $classes) || array_diff($classes, $current)) ? true : false;
+        if ($this->validatorsHaveChanged) {
+            foreach ($classes as $c) {
+                $this->validators[$c] = new $c();
+            }
         }
     }
 

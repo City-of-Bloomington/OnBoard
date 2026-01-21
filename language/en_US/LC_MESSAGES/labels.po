@@ -686,6 +686,11 @@ msgstr "Actions"
 msgid "retirePrevious"
 msgstr "Retire Previous Appointee"
 
+msgid "validator"
+msgid_plural "validators"
+msgstr[0] "Application Validator"
+msgstr[1] "Application Validators"
+
 msgid "department"
 msgid_plural "departments"
 msgstr[0] "Department"
