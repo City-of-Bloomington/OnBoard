@@ -9,10 +9,6 @@ create table people (
 	id         int unsigned not null primary key auto_increment,
 	firstname  varchar(128) not null,
 	lastname   varchar(128) not null,
-	address    varchar(128),
-	city       varchar(32),
-	state      varchar(8),
-	zip        varchar(8),
     citylimits boolean,
     occupation varchar(128),
 	website    varchar(128),
@@ -45,7 +41,7 @@ create table people_phones (
 create table people_addresses (
     id        int unsigned not null primary key auto_increment,
     person_id int unsigned not null,
-    type      enum('Home', 'Mailing') not null default 'Home'
+    type      enum('Home', 'Mailing') not null default 'Home',
 	address   varchar(128) not null,
 	city      varchar(32),
 	state     varchar(8),
