@@ -98,7 +98,7 @@
             {% for a in applications_archived %}
             <tr><td>{{ a.created }}</td>
                 <td>{% if canView %}
-                    <a class="usa-link" href="{{ uri('people.view', { person_id: a.person_id}) }}">
+                    <a class="usa-link" href="{{ uri('applications.view', { application_id: a.id }) }}">
                         {{ a.person }}
                     </a>
                     {% else %}
