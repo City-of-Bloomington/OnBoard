@@ -1,8 +1,9 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     search      Search parameters
  * @param array     meetings    Search results
+ * @param string    sort
  * @param Committee committee
  *
  * Search form drop down options
@@ -34,7 +35,7 @@
             {{ forms.field_select('committee_id', 'committee_id', _('committee'),        search.committee_id ?? '', committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('year',         'year',         _('year'),             search.year         ?? '',      years, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('fileType',     'fileType',     _('meetingFile_type'), search.fileType     ?? '',  fileTypes, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('sort',         'sort',         _('sort'),             search.sort         ?? '',      sorts, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('sort',         'sort',         _('sort'),             sort, sorts, false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('filter'), 'search') }}
         </fieldset>
