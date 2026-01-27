@@ -49,7 +49,7 @@ class View extends \Web\View
         $validators = $c->getValidators();
 
         $tab  = new ApplicationTable();
-        $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
+        $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()]);
         $data = [];
         foreach ($apps['rows'] as $a) {
             $links       = [];

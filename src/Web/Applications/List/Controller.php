@@ -18,7 +18,7 @@ class Controller extends \Web\Controller
         $search = self::prepareSearch();
 
         $table = new ApplicationTable();
-        $list  = $table->search($search, null, parent::ITEMS_PER_PAGE, $page);
+        $list  = $table->search(fields:$search, itemsPerPage:parent::ITEMS_PER_PAGE, currentPage:$page);
 
         return new View($list['rows'],
                         $search,

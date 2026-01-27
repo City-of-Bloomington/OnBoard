@@ -1,14 +1,14 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models\Notifications;
 
-use Laminas\Db\Sql\Select;
+use Application\PdoRepository;
 
-class DefinitionTable extends \Web\TableGateway
+class DefinitionTable extends PdoRepository
 {
     public const TABLE = 'notification_definitions';
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\Definition'); }
@@ -26,24 +26,29 @@ class DefinitionTable extends \Web\TableGateway
         self::MEETINGFILE_NOTICE       => 'Application\Models\MeetingFile'
     ];
 
-    public function find(?array $fields=null, string|array|null $order=['event','committee_id'], ?int $itemsPerPage=null, ?int $currentPage=null): array
+    public function find(array $fields=[], ?string $order='event, committee_id', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select(self::TABLE);
+        $select = 'select * from '.self::TABLE;
+        $joins  = [];
+        $where  = [];
+        $params = [];
 
         if ($fields) {
             foreach ($fields as $k=>$v) {
                 switch ($k) {
                     case 'committee_id':
                         if ($v) {
-                            $select->where([$k=>$v]);
+                            $where[] = "$k=:$k";
+                            $params[$k] = $v;
                         }
                         else {
-                            $select->where('committee_id is null');
+                            $where[] = 'committee_id is null';
                         }
                     break;
 
                     case 'event':
-                        $select->where([$k=>$v]);
+                        $where[] = "$k=:$k";
+                        $params[$k] = $v;
                     break;
 
                     default:
@@ -51,7 +56,8 @@ class DefinitionTable extends \Web\TableGateway
                 }
             }
         }
-        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
     public function loadForSending(string $event, int $committee_id): ?Definition

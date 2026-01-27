@@ -1,39 +1,44 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
 
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
+use Application\PdoRepository;
 
-class TypesTable extends TableGateway
+class TypesTable extends PdoRepository
 {
     private $columns = ['id', 'name'];
 
 	public function __construct() { parent::__construct('legislationTypes', __namespace__.'\Type'); }
 
-	public function find(?array $fields=null, string|array|null $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
+	public function find(array $fields=[], ?string $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
 	{
-		$select = new Select('legislationTypes');
+        $select = 'select * from legislationTypes';
+        $joins  = [];
+        $where  = [];
+        $params = [];
 
 		if ($fields) {
-			foreach ($fields as $key=>$value) {
-				switch ($key) {
+			foreach ($fields as $k=>$v) {
+				switch ($k) {
                     case 'subtype':
-                        $select->where(['subtype'=>$value ? 1 : 0]);
+                        $t       = $v ? 1 : 0;
+                        $where[] = "subtype=$t";
                     break;
 
                     default:
-                        if (in_array($key, $this->columns)) {
-                            $select->where([$key=>$value]);
+                        if (in_array($k, $this->columns)) {
+                            $where[] = "$k=:$k";
+                            $params[$k] = $v;
                         }
 
 				}
             }
         }
 
-		return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 }
