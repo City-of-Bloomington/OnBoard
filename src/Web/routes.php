@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright 2020-2025 City of Bloomington, Indiana
+ * @copyright 2020-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
-$map->tokens(['alternate_id'             => '\d+',
+$map->tokens(['address_id'               => '\d+',
+              'alternate_id'             => '\d+',
               'applicantFile_id'         => '\d+',
               'application_id'           => '\d+',
               'appointer_id'             => '\d+',
@@ -240,6 +241,11 @@ $map->attach('profile.', '/profile', function ($r) {
         $r->get('delete',  '/{phone_id}/delete', Web\Profile\Phones\Delete\Controller::class);
         $r->get('update',  '/{phone_id}/update', Web\Profile\Phones\Update\Controller::class)->allows(['POST']);
         $r->get('add',     '/add',               Web\Profile\Phones\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('addresses.', '/addresses', function ($r) {
+        $r->get('delete',  '/{address_id}/delete', Web\Profile\Addresses\Delete\Controller::class);
+        $r->get('update',  '/{address_id}/update', Web\Profile\Addresses\Update\Controller::class)->allows(['POST']);
+        $r->get('add',     '/add',                 Web\Profile\Addresses\Add\Controller::class)->allows(['POST']);
     });
     $r->attach('files.', '/files', function ($r) {
         $r->get('download', '/{applicantFile_id}/download', Web\Profile\Files\Download\Controller::class);
