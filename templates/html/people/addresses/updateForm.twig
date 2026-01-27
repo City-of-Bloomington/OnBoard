@@ -19,25 +19,25 @@
        The home address is used to determine location requirements, such as city or county residency.
        Use this tool to look up an address.
     </p>
+
     <script type="text/javascript" src="https://bloomington.in.gov/master_address/js/choosers/env.php"></script>
     <script type="text/javascript" src="https://bloomington.in.gov/master_address/js/choosers/addressChooser.js"></script>
     <button class="usa-button" onclick="ADDRESS_CHOOSER.start(handleChoice);">
-        Address Lookup
+        Bloomington Address Lookup
     </button>
 
-    <p>If the address is not found, you can still enter it here;
-       however, the address will not satisfy any local requirements.
-    </p>
     <form           class="usa-form" method="post" id="addressForm">
         <fieldset   class="usa-fieldset">
-            <legend class="usa-legend">Address</legend>
+            <legend class="usa-legend">Address Form</legend>
+            <p>If the address is not found, you can still enter it here;
+               however, the address will not satisfy any local requirements.
+            </p>
             {{ include('html/people/addresses/partials/addressFields.twig') }}
 
             {{ forms.button('submit', _('save'), 'save') }}
             {{ forms.actionLink(return_url, _('cancel'), 'cancel' ) }}
         </fieldset>
     </form>
-
 </section>
 <script>
     function handleChoice(a) {
@@ -81,6 +81,7 @@
         background: white;
     }
     #modal-container div { background-color: white; }
+    #modal-container #searchResults table { width: 100%; }
     #modal-container #searchResults ul { list-style-type: none; }
     #modal-container #searchResults li { cursor: pointer; }
 </style>

@@ -8,6 +8,7 @@ LANGUAGES := $(wildcard language/*/LC_MESSAGES)
 JAVASCRIPT := $(shell find public -name '*.js' ! -name '*-*.js')
 
 VERSION := $(shell cat VERSION | tr -d "[:space:]")
+COMMIT := $(shell git rev-parse --short HEAD)
 
 default: test clean compile package
 
@@ -26,7 +27,7 @@ compile:
 package:
 	[[ -d build ]] || mkdir build
 	rsync -rl --exclude-from=buildignore . build/${APPNAME}
-	cd build && tar czf ${APPNAME}-${VERSION}.tar.gz ${APPNAME}
+	cd build && tar czf ${APPNAME}-${VERSION}-${COMMIT}.tar.gz ${APPNAME}
 
 test:
 	vendor/bin/phpunit -c src/Test/phpunit.xml --testsuite Unit

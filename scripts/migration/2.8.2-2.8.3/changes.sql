@@ -22,3 +22,10 @@ alter table people drop city;
 alter table people drop state;
 alter table people drop zip;
 alter table people drop citylimits;
+
+create table committee_application_validators (
+    committee_id int unsigned not null,
+    class        varchar(64)  not null,
+    primary key (committee_id, class),
+    foreign key (committee_id) references committees(id)
+);
