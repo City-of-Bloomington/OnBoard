@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -32,7 +32,9 @@ class View extends \Web\View
     {
         $canEdit = parent::isAllowed('liaisons', 'update');
         $canDel  = parent::isAllowed('liaisons', 'delete');
-        $res     = LiaisonTable::committeeLiaisonData(['committee_id'=>$committee_id]);
+
+        $t       = new LiaisonTable();
+        $res     = $t->committeeLiaisonData(['committee_id'=>$committee_id]);
         $data    = [];
         foreach ($res['results'] as $row) {
             $links = [];
