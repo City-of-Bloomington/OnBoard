@@ -1,51 +1,48 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Sql;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Expression;
+use Application\PdoRepository;
 
-class MeetingFilesTable extends TableGateway
+class MeetingFilesTable extends PdoRepository
 {
     const TABLE = 'meetingFiles';
     public static $sortableFields = ['filename', 'start', 'created'];
 
     public function __construct() { parent::__construct(self::TABLE, __namespace__.'\MeetingFile'); }
 
-    private function processFields(Select &$select, ?array $fields=null)
+    private function processFields(array &$joins, array &$where, array &$params, ?array $fields=null)
     {
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'start':
-                        $select->where(['m.start >= ?'=> $value->format('Y-m-d')]);
+                        $where[] = 'm.start >= :start';
+                        $params['start'] = $v->format('Y-m-d');
                     break;
 
                     case 'end':
-                        $select->where(['m.start <= ?'=>$value->format('Y-m-d')]);
+                        $where[] = 'm.start <= :end';
+                        $params['end'] = $v->foramt('Y-m-d');
                     break;
 
                     case 'year':
-                        $select->where(['year(m.start)=?' => (int)$value]);
+                        $where[] = 'year(m.start)=:year';
+                        $params['year'] = (int)$v;
                     break;
 
                     case 'indexed':
-                        if ($value) {
-                            $select->where(['f.indexed>f.updated']);
-                        }
-                        else {
-                            $select->where(['f.indexed is null or f.updated>f.indexed']);
-                        }
+                        $where[] = $v
+                                 ? 'f.indexed>f.updated'
+                                 : 'f.indexed is null or f.updated>f.indexed';
                     break;
 
                     default:
-                        $select->where([$key=>$value]);
+                        $where[] = "$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
@@ -53,30 +50,30 @@ class MeetingFilesTable extends TableGateway
 
     public function find(?array $fields=null, string|array|null $order='f.updated desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select(['f' => self::TABLE]);
-        $select->join(['m'=>'meetings'], 'm.id=f.meeting_id', []);
-        $this->processFields($select, $fields);
+        $select = 'select f.* from meetingFiles f';
+        $joins  = ['join meetings m on m.id=f.meeting_id'];
+        $where  = [];
+        $params = [];
 
-        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
+        $this->processFields($joins, $where, $params, $fields);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
     public function years(?array $fields=null)
     {
-        $sql    = new Sql(Database::getConnection());
-        $select = $sql->select()
-                      ->from(['f'=>self::TABLE])
-                      ->join(['m'=>'meetings'], 'm.id=f.meeting_id', [])
-                      ->columns([
-                            'year'  => new Expression('distinct(year(m.start))'),
-                            'count' => new Expression('count(*)')
-                        ])
-                      ->group('year')
-                      ->order('year desc');
+        $select = 'select distinct(year(m.start)) as year, count(*) as count from meetingFiles f';
+        $joins  = ['join meetings m on m.id=f.meeting_id'];
+        $where  = [];
+        $params = [];
+        $group  = 'year';
+        $order  = 'year desc';
+        $this->processFields($joins, $where, $params, $fields);
 
-        $this->processFields($select, $fields);
-
-        $query  = $sql->prepareStatementForSqlObject($select);
-        $result = $query->execute();
+        $sql    = parent::buildSql($select, $joins, $where, $group, $order);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute($params);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         $out    = [];
         foreach ($result as $row) {
             $out[$row['year']] = (int)$row['count'];
@@ -86,16 +83,18 @@ class MeetingFilesTable extends TableGateway
 
     /**
      * Check if a meetingFile has a given department
+     * @see Web\Auth\DepartmentAssociation
      */
-    public static function hasDepartment(int $department_id, int $file_id): bool
+    public function hasDepartment(int $department_id, int $file_id): bool
     {
         $sql    = "select d.department_id
                    from meetingFiles          f
                    join meetings              m on m.id=f.meeting_id
                    join committee_departments d on m.committee_id=d.committee_id
                    where d.department_id=? and f.id=?;";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $file_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $file_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }
