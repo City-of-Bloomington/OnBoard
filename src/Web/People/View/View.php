@@ -88,7 +88,8 @@ class View extends \Web\View
     public static function liaisons(Person $p): array
     {
         $out  = [];
-        $data = LiaisonTable::personLiaisonData(['person_id'=>$p->getId()]);
+        $t    = new LiaisonTable();
+        $data = $t->personLiaisonData(['person_id'=>$p->getId()]);
         foreach ($data['results'] as $l) {
             $out[] = [
                 'committee_id'   => $l['committee_id'],

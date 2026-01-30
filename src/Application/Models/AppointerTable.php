@@ -1,58 +1,46 @@
 <?php
 /**
- * @copyright 2014-2025 City of Bloomington, Indiana
+ * @copyright 2014-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
+use Application\PdoRepository;
 
-class AppointerTable extends TableGateway
+class AppointerTable extends PdoRepository
 {
     public function __construct() { parent::__construct('appointers', __namespace__.'\Appointer'); }
 
-    public function find(?array $fields=null, string|array|null $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
+    public function find(array $fields=[], ?string $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select('appointers');
-        if ($fields) {
-            $this->handleJoins($select, $fields);
+        $select = 'select a.* from appointers a';
+        $joins  = [];
+        $where  = [];
+        $params = [];
 
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+        if ($fields) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'committee_id':
-                        $select->where(['s.committee_id'=>$value]);
-                        break;
+                        $joins['s'] = 'join seats s on a.id=s.appointer_id';
+                        $where[]    = "s.$k=:$k";
+                        $params[$k] = $v;
+                    break;
 
                     case 'person_id':
-                        $select->where(['m.person_id'=>$value]);
-                        break;
+                        $joins['s'] = 'join seats   s on a.id=s.appointer_id';
+                        $joins[]    = 'join members m on s.id=m.seat_id';
+                        $where[]    = "m.$k=:$k";
+                        $params[$k] = $v;
+                    break;
 
                     default:
-                        $select->where([$key=>$value]);
+                         $where[]   = "$k=:$k";
+                        $params[]   = $v;
                 }
             }
         }
-        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
-    }
-
-    private function handleJoins(Select &$select, &$fields)
-    {
-        $joins = [];
-        foreach ($fields as $key=>$value) {
-            switch ($key) {
-                case 'committee_id':
-                    $joins['s'] = ['table'=>'seats', 'on'=>'appointers.id=s.appointer_id'];
-                    break;
-
-                case 'person_id':
-                    $joins['s'] = ['table'=>'seats',   'on'=>'appointers.id=s.appointer_id'];
-                    $joins['m'] = ['table'=>'members', 'on'=>'s.id=m.seat_id'];
-                    break;
-            }
-        }
-        foreach ($joins as $alias=>$j) {
-            $select->join([$alias=>$j['table']], $j['on'], []);
-        }
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 }

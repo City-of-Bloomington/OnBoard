@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Committees\Update;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
@@ -21,7 +22,19 @@ class Controller extends \Web\Controller
         if (isset($c)) {
             if (isset($_POST['name'])) {
                 try {
-                    CommitteeTable::update($c, $_POST);
+                    $change = [CommitteeHistory::STATE_ORIGINAL => $c->getData()];
+
+                    $c->handleUpdate($_POST);
+                    $c->save();
+
+                    $change[CommitteeHistory::STATE_UPDATED] = $c->getData();
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id'=> $c->getId(),
+                        'tablename'   => 'committees',
+                        'action'      => 'edit',
+                        'changes'     => [$change]
+                    ]);
+
                     $url = \Web\View::generateUrl('committees.info', ['committee_id'=>$c->getId()]);
                     header("Location: $url");
                     exit();

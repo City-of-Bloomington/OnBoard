@@ -2,7 +2,7 @@
 /**
  * Checks if a controller is loading a record associated with a given department
  *
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,7 +15,7 @@ use Laminas\Permissions\Acl\Assertion\AssertionInterface;
 
 class DepartmentAssociation implements AssertionInterface
 {
-    private static $params = [
+    public static $params = [
         'committee_id'         => '\Application\Models\CommitteeTable',
         'meeting_id'           => '\Application\Models\MeetingTable',
         'meetingFile_id'       => '\Application\Models\MeetingFilesTable',
@@ -41,7 +41,8 @@ class DepartmentAssociation implements AssertionInterface
 
             foreach (self::$params as $p=>$t) {
                 if (!empty($_REQUEST[$p])) {
-                    return $t::hasDepartment((int)$did, (int)$_REQUEST[$p]);
+                    $table = new $t();
+                    return $table->hasDepartment((int)$did, (int)$_REQUEST[$p]);
                 }
             }
        }

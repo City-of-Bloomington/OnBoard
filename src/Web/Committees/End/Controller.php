@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Committees\End;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\CommitteeTable;
 
 class Controller extends \Web\Controller
@@ -24,7 +25,19 @@ class Controller extends \Web\Controller
         if (isset($committee)) {
             if (isset($_POST['endDate'])) {
                 try {
-                    CommitteeTable::end($committee, new \DateTime($_POST['endDate']));
+                    $change  = [CommitteeHistory::STATE_ORIGINAL => $committee->getData()];
+
+                    $table   = new CommitteeTable();
+                    $endDate = new \DateTime($_POST['endDate']);
+                    $table->end($committee, $endDate);
+
+                    $change[CommitteeHistory::STATE_UPDATED] = $committee->getData();
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id'=> $committee->getId(),
+                        'tablename'   => 'committees',
+                        'action'      => 'end',
+                        'changes'     => [$change]
+                    ]);
 
                     $url = \Web\View::generateUrl('committees.info', ['committee_id'=>$committee->getId()]);
                     header("Location: $url");

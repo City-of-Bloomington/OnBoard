@@ -6,6 +6,7 @@
 declare (strict_types=1);
 namespace Web\Committees\Update;
 
+use Application\Applications\Validators;
 use Application\Models\Committee;
 use Application\Models\DepartmentTable;
 
@@ -22,7 +23,6 @@ class View extends \Web\View
             'departments'       => self::departments(),
             'validators'        => self::validators()
         ];
-        print_r($this->vars['validators']);
     }
 
     public function render(): string
@@ -65,12 +65,8 @@ class View extends \Web\View
     public static function validators(): array
     {
         $out = [];
-        foreach (scandir(APPLICATION_HOME.'/src/Application/Applications/Validators') as $f) {
-            if ($f[0] != '.') {
-                $path  = pathinfo($f);
-                $class = "Application\\Applications\\Validators\\".$path['filename'];
-                $out[] = ['value'=>$class, 'label'=>$class::NAME];
-            }
+        foreach (Validators::find() as $class) {
+            $out[] = ['value'=>$class, 'label'=>$class::NAME];
         }
         return $out;
     }

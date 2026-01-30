@@ -18,7 +18,7 @@ class Controller extends \Web\Controller
         $applicants = [];
 
         $table = new ApplicantTable();
-        $res   = $table->search($search, ['lastname','firstname'], parent::ITEMS_PER_PAGE, $page);
+        $res   = $table->search(fields:$search, itemsPerPage:parent::ITEMS_PER_PAGE, currentPage:$page);
 
         return new View($res['rows'],
                         $search,
