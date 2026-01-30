@@ -26,8 +26,8 @@ class CommitteeTable extends PdoRepository
                 switch ($k) {
                     case 'current':
                         // current == true|false (false is the past)
-                        $where[] = $v ? '(committees.endDate is null     or  committees.endDate >= now())'
-                                      : '(committees.endDate is not null and committees.endDate <= now())';
+                        $where[] = $v ? '(c.endDate is null     or  c.endDate >= now())'
+                                      : '(c.endDate is not null and c.endDate <= now())';
                     break;
 
                     case 'member_id':

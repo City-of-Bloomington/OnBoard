@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2025 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -81,10 +81,6 @@ class SeatTable extends TableGateway
         'member_email'           => 'me.email',
         'member_phone'           => 'mh.number',
         'member_website'         => 'mp.website',
-        'member_address'         => 'mp.address',
-        'member_city'            => 'mp.city',
-        'member_state'           => 'mp.state',
-        'member_zip'             => 'mp.zip',
         'member_startDate'       => 'm.startDate',
         'member_endDate'         => 'm.endDate',
         'member_termStart'       => "mt.startDate",
@@ -96,10 +92,6 @@ class SeatTable extends TableGateway
         'alternate_email'        => 'ae.email',
         'alternate_phone'        => 'ah.number',
         'alternate_website'      => 'ap.website',
-        'alternate_address'      => 'ap.address',
-        'alternate_city'         => 'ap.city',
-        'alternate_state'        => 'ap.state',
-        'alternate_zip'          => 'ap.zip',
         'alternate_startDate'    => 'alt.startDate',
         'alternate_endDate'      => 'alt.endDate',
         'alternate_termStart'    => "at.startDate",
