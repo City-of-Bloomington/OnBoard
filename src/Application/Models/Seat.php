@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2023 City of Bloomington, Indiana
+ * @copyright 2009-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -224,23 +224,6 @@ class Seat extends ActiveRecord
     {
         $t = new MemberTable();
         $l = $t->find(['seat_id'=>$this->getId(), 'current'=>true]);
-        return count($l['rows']) ? $l['rows'][0] : null;
-    }
-
-    /**
-     * Returns the most recent member for this seat
-     */
-    public function getLatestMember(): ?Member
-    {
-        $t = new MemberTable();
-        $l = $t->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
-        return count($l['rows']) ? $l['rows'][0] : null;
-    }
-
-    public function getLastestAlternate(): ?Alternate
-    {
-        $t = new AlternateTable();
-        $l = $t->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
         return count($l['rows']) ? $l['rows'][0] : null;
     }
 

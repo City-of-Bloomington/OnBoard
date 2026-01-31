@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Members\Reappoint;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Member;
 use Application\Models\MemberTable;
 
@@ -19,13 +20,39 @@ class Controller extends \Web\Controller
         }
 
         if (isset($member)) {
-            $seat = $member->getSeat();
+            $committee_id = $member->getCommittee_id();
+            $seat         = $member->getSeat();
             if ($seat && $seat->getType() == 'termed') {
 
                 if (!empty($_POST['confirm']) && $_POST['confirm']=='yes') {
-                    try {
-                        MemberTable::reappoint($member);
-                        $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$member->getCommittee_id()]);
+                    $changes = [];
+                    $term    = $member->getTerm();
+
+                    if (!$member->getEndDate()) {
+                        $original  = $member->getData();
+                        $member->setEndDate($term->getEndDate());
+                        $updated   = $member->getData();
+                        $changes[] = ['original'=>$original, 'updated'=>$updated];
+                    }
+
+                    $next      = $term->getNextTerm();
+                    $newMember = $next->newMember();
+                    $newMember->setPerson_id($member->getPerson_id());
+                    $newMember->setStartDate($next->getStartDate());
+                    $changes[] = ['updated'=>$newMember->getData()];
+
+                   try {
+                        $member->save();
+                        $newMember->save();
+
+                        CommitteeHistory::saveNewEntry([
+                            'committee_id' => $committee_id,
+                            'tablename'    => 'members',
+                            'action'       => 'reappoint',
+                            'changes'      => $changes
+                        ]);
+
+                        $return_url = \Web\View::generateUrl('committees.members', ['committee_id'=>$committee_id]);
                         header('Location: '.$return_url);
                         exit();
                     }

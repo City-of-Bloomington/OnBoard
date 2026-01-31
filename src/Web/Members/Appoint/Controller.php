@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Members\Appoint;
 
 use Application\Models\ApplicationTable;
+use Application\Models\CommitteeHistory;
 use Application\Models\Member;
 use Application\Models\MemberTable;
 use Application\Models\Term;
@@ -37,12 +38,22 @@ class Controller extends \Web\Controller
             $member->setStartDate($_POST['startDate']);
             $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
 
+
             $table = new ApplicationTable();
             $apps  = $table->find(['current'     => time(),
                                   'committee_id' => $member->getCommittee_id(),
                                      'person_id' => $member->getPerson_id()]);
+
             try {
-                MemberTable::appoint($member);
+                $member->save();
+                $change = ['original'=>[], 'updated'=>$member->getData()];
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id'=> $member->getCommittee_id(),
+                    'tablename'   => 'members',
+                    'action'      => 'appoint',
+                    'changes'     => [$change]
+                ]);
                 foreach ($apps['rows'] as $a) { $a->archive(); }
 
                 $return_url = parent::popCurrentReturnUrl();

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -49,6 +49,7 @@ class View extends \Web\View
         $validators = $c->getValidators();
 
         $tab  = new ApplicationTable();
+        $mt   = new MemberTable();
         $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()]);
         $data = [];
         foreach ($apps['rows'] as $a) {
@@ -83,7 +84,7 @@ class View extends \Web\View
                 'expires'      => $a->getExpires(DATE_FORMAT),
                 'actionLinks'  => $links,
                 'validations'  => $validations,
-                'current_member' => MemberTable::isMember($a->getPerson_id(), $a->getCommittee_id())
+                'current_member' => $mt->isMember($a->getPerson_id(), $a->getCommittee_id())
             ];
         }
         return $data;
