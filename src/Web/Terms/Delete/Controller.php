@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Terms\Delete;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Term;
 use Application\Models\TermTable;
 
@@ -17,12 +18,18 @@ class Controller extends \Web\Controller
             try {
                 $term = new Term($_REQUEST['term_id']);
                 $seat = $term->getSeat();
-                $url  = \Web\View::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
+                $term->delete();
 
-                TermTable::delete($term);
+                CommitteeHistory::saveNewEntry([
+                    'committee_id' => $seat->getCommittee_id(),
+                    'tablename'    => 'terms',
+                    'action'       => 'delete',
+                    'changes'      => [[CommitteeHistory::STATE_ORIGINAL=>$term]]
+                ]);
+
+                $url  = \Web\View::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
                 header("Location: $url");
                 exit();
-
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
         }
