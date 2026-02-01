@@ -14,7 +14,7 @@ class MeetingTable extends PdoRepository
 
     public function __construct() { parent::__construct('meetings', __namespace__.'\Meeting'); }
 
-    private function processFields(array &$joins, array &$where, array &$params, ?array $fields=null)
+    private function processFields(array &$joins, array &$where, array &$params, array $fields=[])
     {
         if ($fields) {
             foreach ($fields as $k=>$v) {
@@ -35,7 +35,7 @@ class MeetingTable extends PdoRepository
                         break;
 
                     case 'fileType':
-                        $joins[] = 'meetingFiles f on m.id=f.meeting_id';
+                        $joins[] = 'join meetingFiles f on m.id=f.meeting_id';
                         $where[] = 'f.type=:type';
                         $params['type'] = $v;
                         break;

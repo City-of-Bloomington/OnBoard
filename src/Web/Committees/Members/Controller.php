@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -27,7 +27,8 @@ class Controller extends \Web\Controller
         if (isset($committee)) {
 
             if ($committee->getType() === 'seated') {
-                $data      = SeatTable::currentData(['committee_id'=>$committee->getId()]);
+                $table     = new SeatTable();
+                $data      = $table->currentData(['committee_id'=>$committee->getId()]);
                 $seat_data = SeatsController::filter_viewable($data['results']);
 
                 switch ($this->outputFormat) {

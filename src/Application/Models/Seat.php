@@ -339,9 +339,13 @@ class Seat extends ActiveRecord
      */
     public function getLatestTerm(): ?Term
     {
-        $t = new TermTable();
-        $l = $t->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
-        return count($l['rows']) ? $l['rows'][0] : null;
+        $db  = Database::getConnection();
+        $sql = 'select * from terms where seat_id=? order by startDate desc limit 1';
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        if (count($res)) {
+            return new Term($res->current());
+        }
+        return null;
     }
 
     /**

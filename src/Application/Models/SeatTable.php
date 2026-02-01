@@ -7,55 +7,62 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Literal;
+use Application\PdoRepository;
 
-class SeatTable extends TableGateway
+class SeatTable extends PdoRepository
 {
     public function __construct() { parent::__construct('seats', __namespace__.'\Seat'); }
 
-    public function find(?array $fields=null, string|array|null $order=['s.code', 's.name'], ?int $itemsPerPage=null, ?int $currentPage=null): array
+    public function find(array $fields=[], ?string $order='s.code, s.name', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select(['s'=>'seats']);
+        $select = 'select s.* from seats s';
+        $joins  = [];
+        $where  = [];
+        $params = [];
+
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'current':
-                        if ($value) {
+                        if ($v) {
                             // current == true
-                            $select->where("(s.startDate is null or s.startDate<=now())");
-                            $select->where("(s.endDate   is null or s.endDate  >=now())");
+                            $where[] = "(s.startDate is null or s.startDate<=now())";
+                            $where[] = "(s.endDate   is null or s.endDate  >=now())";
                         }
                         else {
                             // current == false (the past)
-                            $select->where("(s.endDate is not null and s.endDate<=now())");
+                            $where[] = "(s.endDate is not null and s.endDate<=now())";
                         }
-
                     break;
 
                     case 'vacant':
-                        $membersJoin = new Literal("s.id=m.seat_id and (m.startDate is null or m.startDate <= now()) and (m.endDate is null or now() <= m.endDate)");
+                        $joins[] = 'join committees c on c.id=s.committee_id';
 
-                        $termJoin = new Literal("case when m.id is not null then m.term_id=t.id
-                                                      when m.id is null     then s.id=t.seat_id and (t.startDate or t.startDate <= now()) and (t.endDate is null or now() <= t.endDate)
-                                                end");
+                        $joins[] = "left join members m
+                                        on  s.id=m.seat_id
+                                        and (m.startDate is null or m.startDate <= now())
+                                        and (m.endDate is null or now() <= m.endDate)";
 
-                        $select->join(['c'=>'committees'], 's.committee_id=c.id', []);
-                        $select->join(['m'=>'members'   ], $membersJoin,          [], Select::JOIN_LEFT);
-                        $select->join(['t'=>'terms'     ], $termJoin,             [], Select::JOIN_LEFT);
-                        $select->join(['p'=>'people'    ], 'm.person_id=p.id',    [], Select::JOIN_LEFT);
-                        $select->where("(t.startDate is not null and p.firstname is null)
-                                    or  (t.startDate is null     and p.firstname is null)");
+                        $joins[] = "left join terms t
+                                        on case when m.id is not null then t.id=m.term_id
+                                                when m.id is null     then s.id=t.seat_id
+                                                                       and (t.startDate or t.startDate <= now())
+                                                                       and (t.endDate is null or now() <= t.endDate)
+                                        end";
+                        $joins[] = 'left join people p on p.id=m.person_id';
+
+                        $where[] = "(t.startDate is not null and p.firstname is null)
+                                 or (t.startDate is null     and p.firstname is null)";
                     break;
 
                     default:
-                        $select->where(["s.$key" => $value]);
+                        $where[] = "s.$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
-        return parent::performSelect($select, $order, $itemsPerPage, $currentPage);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
     /**
@@ -111,12 +118,7 @@ class SeatTable extends TableGateway
                                 and ((o.startDate is null or o.startDate <= now()) and (o.endDate is null or o.endDate >= now())))"
     ];
 
-    /**
-     * Return SQL for columns used in the SELECT
-     *
-     * @return string
-     */
-    private static function getDataColumns()
+    private static function getDataColumns(): string
     {
         $columns = [];
         foreach (self::$dataFields as $k=>$v) {
@@ -125,152 +127,78 @@ class SeatTable extends TableGateway
         return implode(', ', $columns);
     }
 
-    /**
-     * Prepares sql for the WHERE and binds values for all values
-     *
-     * @param array $fields
-     * @return array [$where, $params]
-     */
-    private static function bindFields(?array $fields=null): array
+    private static function bindFields(array &$where, array &$params, array $fields=[])
     {
-        $where  = [];
-        $params = [];
-        if (count($fields)) {
-            foreach ($fields as $k=>$v) {
-                if ($k === 'current' && $v) {
-                    $date    = $v->format(ActiveRecord::MYSQL_DATE_FORMAT);
-                    $where[] = "(c.endDate is null or '$date' <= c.endDate)";
-                    $where[] = "((s.startDate is null or s.startDate <= '$date') and (s.endDate is null or '$date' <= s.endDate))";
-                }
-                if ($k === 'vacant' && $v) {
-                    $where[] = '(m.person_id is null or mt.id != t.id)';
-                }
-                elseif (array_key_exists($k, self::$dataFields)) {
-                    $f        = self::$dataFields[$k];
-                    $where[]  = "$f=?";
-                    $params[] = $v;
-                }
+        foreach ($fields as $k=>$v) {
+            if ($k === 'current' && $v) {
+                $date    = $v->format(ActiveRecord::MYSQL_DATE_FORMAT);
+                $where[] = "(c.endDate is null or '$date' <= c.endDate)";
+                $where[] = "((s.startDate is null or s.startDate <= '$date') and (s.endDate is null or '$date' <= s.endDate))";
             }
-            $where = 'where '.implode(' and ', $where);
+            if ($k === 'vacant' && $v) {
+                $where[] = '(m.person_id is null or mt.id != t.id)';
+            }
+            elseif (array_key_exists($k, self::$dataFields)) {
+                $f        = self::$dataFields[$k];
+                $where[]  = "$f=:$k";
+                $params[$k] = $v;
+            }
         }
-        else {
-            $where  = '';
-            $params = null;
-        }
-        return [$where, $params];
     }
 
     /**
-     * @param string $sql
-     * @param array $params
+     * Returns raw database results, instead of Model objects
      */
-    private static function performDataSelect(string $sql, array $params)
+    private function performDataSelect(string $sql, array $params): array
     {
-        $db = Database::getConnection();
-        $result = $db->query($sql)->execute($params);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute($params);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+
         return [
             'fields'  => array_keys(self::$dataFields),
             'results' => $result
         ];
     }
 
-    /**
-     * @param array $fields
-     * @return array
-     */
-    public static function currentData(?array $fields=null)
+    public function currentData(?array $fields=null): array
     {
-        if (empty($fields['current'])) { $fields['current'] = new \DateTime(); }
-        $date   = $fields['current']->format(ActiveRecord::MYSQL_DATE_FORMAT);
-
-        list($where, $params) = self::bindFields($fields);
+        if (empty( $fields['current'])) { $fields['current'] = new \DateTime(); }
+        $date    = $fields['current']->format(ActiveRecord::MYSQL_DATE_FORMAT);
 
         $columns = self::getDataColumns();
-        $sql = "select  $columns
-                from seats             s
-                join committees        c  on s.committee_id=c.id
-                left join appointers   a  on s.appointer_id=a.id
-                left join terms        t  on s.id=  t.seat_id and ((  t.startDate is null or   t.startDate <= '$date') and (  t.endDate is null or   t.endDate >= '$date'))
-                left join members      m  on s.id=  m.seat_id and ((  m.startDate is null or   m.startDate <= '$date') and (  m.endDate is null or   m.endDate >= '$date'))
-                left join alternates alt  on s.id=alt.seat_id and ((alt.startDate is null or alt.startDate <= '$date') and (alt.endDate is null or alt.endDate >= '$date'))
-                left join terms       mt  on   m.term_id=mt.id
-                left join terms       at  on alt.term_id=at.id
-                left join people      mp  on   m.person_id=mp.id
-                left join people      ap  on alt.person_id=ap.id
-                left join people_emails me on me.person_id=mp.id and me.main=1
-                left join people_phones mh on mh.person_id=mp.id and mh.main=1
-                left join people_emails ae on ae.person_id=ap.id and ae.main=1
-                left join people_phones ah on ah.person_id=ap.id and ah.main=1
-                $where
-                order by c.name, s.code";
-        return self::performDataSelect($sql, $params);
+        $select  = "select $columns from seats s";
+        $joins   = [
+                 'join committees   c  on  c.id =  s.committee_id',
+            'left join appointers   a  on  a.id =  s.appointer_id',
+            "left join terms        t  on  s.id =  t.seat_id and ((  t.startDate is null or   t.startDate <= '$date') and (  t.endDate is null or   t.endDate >= '$date'))",
+            "left join members      m  on  s.id =  m.seat_id and ((  m.startDate is null or   m.startDate <= '$date') and (  m.endDate is null or   m.endDate >= '$date'))",
+            "left join alternates alt  on  s.id =alt.seat_id and ((alt.startDate is null or alt.startDate <= '$date') and (alt.endDate is null or alt.endDate >= '$date'))",
+            'left join terms       mt  on mt.id =  m.term_id',
+            'left join terms       at  on at.id =alt.term_id',
+            'left join people      mp  on mp.id =  m.person_id',
+            'left join people      ap  on ap.id =alt.person_id',
+            'left join people_emails me on me.person_id=mp.id and me.main=1',
+            'left join people_phones mh on mh.person_id=mp.id and mh.main=1',
+            'left join people_emails ae on ae.person_id=ap.id and ae.main=1',
+            'left join people_phones ah on ah.person_id=ap.id and ah.main=1'
+        ];
+        $where  = [];
+        $params = [];
+        self::bindFields($where, $params, $fields);
+        $sql    = parent::buildSql($select, $joins, $where, null, 'c.name,s.code');
+        return $this->performDataSelect($sql, $params);
     }
 
-    //----------------------------------------------------------------
-    // Route Action Functions
-    //
-    // These are functions that match the actions defined in the route
-    //----------------------------------------------------------------
-    public static function update(Seat $seat): int
-    {
-        if ($seat->getId()) {
-            $action   = 'edit';
-            $original = new Seat($seat->getId());
-        }
-        else {
-            $action   = 'add';
-            $original = new Seat();
-        }
-        $changes = [[CommitteeHistory::STATE_ORIGINAL => $original->getData(),
-                     CommitteeHistory::STATE_UPDATED  =>     $seat->getData()]];
-
-        $seat->save();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id' => $seat->getCommittee_id(),
-            'tablename'    => 'seats',
-            'action'       => $action,
-            'changes'      => $changes
-        ]);
-        return (int)$seat->getId();
-    }
-
-    public static function delete(Seat $seat)
-    {
-        $committee_id = $seat->getCommittee_id();
-        $change = [CommitteeHistory::STATE_ORIGINAL=>$seat->getData()];
-        $seat->delete();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id' => $committee_id,
-            'tablename'    => 'seats',
-            'action'       => 'delete',
-            'changes'      => [$change]
-        ]);
-    }
-
-    public static function end(Seat $seat, \DateTime $endDate)
-    {
-        $change[CommitteeHistory::STATE_ORIGINAL] = $seat->getData();
-        $seat->saveEndDate($endDate);
-        $change[CommitteeHistory::STATE_UPDATED ] = $seat->getData();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id' =>$seat->getCommittee_id(),
-            'tablename'    =>'seats',
-            'action'       =>'end',
-            'changes'      =>[$change]
-        ]);
-    }
-
-    public static function hasDepartment(int $department_id, int $seat_id): bool
+    public function hasDepartment(int $department_id, int $seat_id): bool
     {
         $sql    = "select s.committee_id
                    from seats s
                    join committee_departments d on s.committee_id=d.committee_id
                    where d.department_id=? and s.id=?";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $seat_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $seat_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }

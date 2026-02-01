@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -17,7 +17,8 @@ class Controller extends \Web\Controller
     public function __invoke(array $params): \Web\View
     {
         $search = self::parseQueryParameters();
-        $result = SeatTable::currentData($search);
+        $table  = new SeatTable();
+        $result = $table->currentData($search);
         $data   = self::filter_viewable($result['results']);
 
         switch ($this->outputFormat) {
