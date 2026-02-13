@@ -32,6 +32,6 @@ include '../../src/Web/bootstrap.php';
 
 $q = new EmailQueue();
 $l = $q->find(['sent'=>false]);
-foreach ($l as $e) {
+foreach ($l['rows'] as $e) {
     $e->send();
 }
