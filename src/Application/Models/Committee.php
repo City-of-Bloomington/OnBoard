@@ -425,7 +425,9 @@ class Committee extends ActiveRecord
         $year = new \DateTime('+1 year');
         foreach ($res['events'] as $event) {
             $eventId  = $event->id;
-            $list     = $meetingTable->find(['eventId'=>$event->id]);
+            $result   = $meetingTable->find(['eventId'=>$event->id]);
+            $list     = $result['rows'];
+
             fwrite($debug, "Event: $eventId\n");
 
             if ($event->status == 'cancelled') {
@@ -452,7 +454,7 @@ class Committee extends ActiveRecord
             $title    = substr((string)$event->summary, 0, 255);
             $location = !empty($event->location) ? substr($event->location, 0, 255) : null;
 
-            if ($list->count()) {
+            if (count($list)) {
                 foreach ($list as $meeting) {
                     fwrite($debug, "Updating meeting\n");
                     $meeting->setTitle   ($title);
