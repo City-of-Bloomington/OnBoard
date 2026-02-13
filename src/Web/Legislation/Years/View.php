@@ -32,10 +32,10 @@ class View extends \Web\View
 
     private static function types(): array
     {
-        $options = [['value'=>'', 'label'=>'']];
-        $table   = new TypesTable();
-        $list    = $table->find(['subtype'=>false]);
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
-        return $options;
+        $o = [['value'=>'', 'label'=>'']];
+        $t = new TypesTable();
+        $l = $t->find(['subtype'=>false]);
+        foreach ($l['rows'] as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
     }
 }

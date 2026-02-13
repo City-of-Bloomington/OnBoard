@@ -25,6 +25,7 @@ class View extends \Web\View
             'person'      => $person,
             'emails'               => PeopleView::emails               ($person, $return_url),
             'phones'               => PeopleView::phones               ($person, $return_url),
+            'addresses'            => PeopleView::addresses            ($person, $return_url),
             'applicantFiles'       => PeopleView::applicantFiles       ($person, $return_url),
             'applications_current' => PeopleView::applications_current ($person, $return_url),
             'applications_archived'=> PeopleView::applications_archived($person, $return_url),

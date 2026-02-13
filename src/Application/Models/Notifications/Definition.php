@@ -105,7 +105,7 @@ class Definition extends \Web\ActiveRecord
         $o = [];
         $t = new SubscriptionTable();
         $l = $t->find(['committee_id'=>$committee_id, 'event'=>$this->getEvent()]);
-        foreach ($l as $s) { $o[] = $s->getPerson(); }
+        foreach ($l['rows'] as $s) { $o[] = $s->getPerson(); }
         return $o;
     }
 

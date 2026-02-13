@@ -16,13 +16,12 @@ class Controller extends \Web\Controller
     {
         $search = self::prepareSearch();
         $people = new PeopleTable();
-        $users  = [];
 
         switch ($this->outputFormat) {
             case 'csv':
                 $users = $people->search($search);
                 $data  = [];
-                foreach ($users as $u) {
+                foreach ($users['rows'] as $u) {
                     $data[] = [
                         'id'         => $u->getId(),
                         'username'   => $u->getUsername(),
@@ -38,15 +37,11 @@ class Controller extends \Web\Controller
 
             default:
                 $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-                $list = $people->search($search, 'lastname', true);
-                $list->setCurrentPageNumber($page);
-                $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-                foreach ($list as $u) { $users[] = $u; }
+                $list = $people->search($search, 'lastname', parent::ITEMS_PER_PAGE, $page);
 
-
-                return new View($users,
+                return new View($list['rows'],
                                 $search,
-                                $list->getTotalItemCount(),
+                                $list['total'],
                                 parent::ITEMS_PER_PAGE,
                                 $page);
         }

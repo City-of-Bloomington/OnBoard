@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Seats\Delete;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 
@@ -15,10 +16,19 @@ class Controller extends \Web\Controller
     {
         if (!empty($_REQUEST['seat_id'])) {
             try {
-                $s   = new Seat($_REQUEST['seat_id']);
-                $url = \Web\View::generateUrl('committees.members', ['committee_id'=>$s->getCommittee_id()]);
+                $seat   = new Seat($_REQUEST['seat_id']);
+                $cid    = $seat->getCommittee_id();
+                $change = [CommitteeHistory::STATE_ORIGINAL=>$seat->getData()];
+                $seat->delete();
 
-                SeatTable::delete($s);
+                CommitteeHistory::saveNewEntry([
+                    'committee_id' => $cid,
+                    'tablename'    => 'seats',
+                    'action'       => 'delete',
+                    'changes'      => [$change]
+                ]);
+
+                $url = \Web\View::generateUrl('committees.members', ['committee_id'=>$cid]);
                 header("Location: $url");
                 exit();
             }

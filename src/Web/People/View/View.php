@@ -25,6 +25,7 @@ class View extends \Web\View
             'liaisons'             => self::liaisons             ($person),
             'emails'               => self::emails               ($person, $return_url),
             'phones'               => self::phones               ($person, $return_url),
+            'addresses'            => self::addresses            ($person, $return_url),
             'applicantFiles'       => self::applicantFiles       ($person, $return_url),
             'applications_current' => self::applications_current ($person, $return_url),
             'applications_archived'=> self::applications_archived($person, $return_url),
@@ -87,7 +88,8 @@ class View extends \Web\View
     public static function liaisons(Person $p): array
     {
         $out  = [];
-        $data = LiaisonTable::personLiaisonData(['person_id'=>$p->getId()]);
+        $t    = new LiaisonTable();
+        $data = $t->personLiaisonData(['person_id'=>$p->getId()]);
         foreach ($data['results'] as $l) {
             $out[] = [
                 'committee_id'   => $l['committee_id'],
@@ -101,20 +103,20 @@ class View extends \Web\View
     public static function emails(Person $p, string $return_url): array
     {
         $out = [];
-        $canEdit   = parent::isAllowed('emails', 'update');
-        $canDelete = parent::isAllowed('emails', 'delete');
+        $canEdit   = parent::isAllowed('people.emails', 'update');
+        $canDelete = parent::isAllowed('people.emails', 'delete');
         foreach ($p->getEmails() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.emails.update', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('email_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.emails.delete', ['person_id'=>$p->getId(), 'email_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('email_delete'),
                     'class' => 'delete'
                 ];
@@ -134,20 +136,20 @@ class View extends \Web\View
     public static function phones(Person $p, string $return_url): array
     {
         $out = [];
-        $canEdit   = parent::isAllowed('phones', 'update');
-        $canDelete = parent::isAllowed('phones', 'delete');
+        $canEdit   = parent::isAllowed('people.phones', 'update');
+        $canDelete = parent::isAllowed('people.phones', 'delete');
         foreach ($p->getPhones() as $e) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.phones.update', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('phone_edit'),
                     'class' => 'edit'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
-                    'url'   => parent::generateUri('phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
+                    'url'   => parent::generateUri('people.phones.delete', ['person_id'=>$p->getId(), 'phone_id'=>$e->getId()])."?return_url=$return_url",
                     'label' => parent::_('phone_delete'),
                     'class' => 'delete'
                 ];
@@ -160,6 +162,44 @@ class View extends \Web\View
                 'actionLinks' => $links
             ];
         }
+        return $out;
+    }
+
+    public static function addresses(Person $p, string $return_url): array
+    {
+        $out = [];
+        $canEdit   = parent::isAllowed('people.addresses', 'update');
+        $canDelete = parent::isAllowed('people.addresses', 'delete');
+        foreach ($p->getAddresses() as $e) {
+            $links = [];
+            if ($canEdit) {
+                $links[] = [
+                    'url'   => parent::generateUri('people.addresses.update', ['person_id'=>$p->getId(), 'address_id'=>$e->getId()])."?return_url=$return_url",
+                    'label' => parent::_('address_edit'),
+                    'class' => 'edit'
+                ];
+            }
+            if ($canDelete) {
+                $links[] = [
+                    'url'   => parent::generateUri('people.addresses.delete', ['person_id'=>$p->getId(), 'address_id'=>$e->getId()])."?return_url=$return_url",
+                    'label' => parent::_('address_delete'),
+                    'class' => 'delete'
+                ];
+            }
+            $out[] = [
+                'address_id'  => $e->getId(),
+                'person_id'   => $e->getPerson_id(),
+                'type'        => $e->getType(),
+                'address'     => $e->getAddress(),
+                'city'        => $e->getCity(),
+                'state'       => $e->getState(),
+                'zip'         => $e->getZip(),
+                'x'           => $e->getX(),
+                'y'           => $e->getY(),
+                'actionLinks' => $links
+            ];
+        }
+
         return $out;
     }
 
@@ -200,7 +240,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['current'=>time(), 'person_id'=>$p->getId()], 'created desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canArchive) {
                 $links[] = [
@@ -246,7 +286,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['archived'=>time(), 'person_id'=>$p->getId()], 'archived desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [

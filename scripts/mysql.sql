@@ -9,10 +9,6 @@ create table people (
 	id         int unsigned not null primary key auto_increment,
 	firstname  varchar(128) not null,
 	lastname   varchar(128) not null,
-	address    varchar(128),
-	city       varchar(32),
-	state      varchar(8),
-	zip        varchar(8),
     citylimits boolean,
     occupation varchar(128),
 	website    varchar(128),
@@ -40,6 +36,19 @@ create table people_phones (
     main      boolean,
     unique  key (person_id, number),
     foreign key (person_id) references people(id)
+);
+
+create table people_addresses (
+    id        int unsigned not null primary key auto_increment,
+    person_id int unsigned not null,
+    type      enum('Home', 'Mailing') not null default 'Home',
+	address   varchar(128) not null,
+	city      varchar(32),
+	state     varchar(8),
+	zip       varchar(8),
+	x         int,
+	y         int,
+	foreign key (person_id) references people(id)
 );
 
 create table committees (
@@ -117,6 +126,13 @@ create table seats (
     takesApplications boolean not null default 0,
     foreign key (committee_id) references committees(id),
     foreign key (appointer_id) references appointers(id)
+);
+
+create table committee_application_validators (
+    committee_id int unsigned not null,
+    class        varchar(64)  not null,
+    primary key (committee_id, class),
+    foreign key (committee_id) references committees(id)
 );
 
 create table terms (

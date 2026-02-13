@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2023 City of Bloomington, Indiana
+ * @copyright 2009-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -206,51 +206,25 @@ class Seat extends ActiveRecord
         return false;
     }
 
-    /**
-     * @return Laminas\Db\Result
-     */
-    public function getMembers()
+    public function getMembers(): array
     {
-        $table = new MemberTable();
-        return $table->find(['seat_id'=>$this->getId()]);
+        $t = new MemberTable();
+        $r = $t->find(['seat_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
-    public function getAlternates()
+    public function getAlternates(): array
     {
-        $table = new AlternateTable();
-        return $table->find(['seat_id'=>$this->getId()]);
+        $t = new AlternateTable();
+        $r = $t->find(['seat_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
     public function getCurrentMember(): ?Member
     {
-        $table = new MemberTable();
-        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>true]);
-        if (count($list)) {
-            return $list->current();
-        }
-        return null;
-    }
-
-    /**
-     * Returns the most recent member for this seat
-     */
-    public function getLatestMember(): ?Member
-    {
-        $table = new MemberTable();
-        $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
-        if (count($list)) {
-            return $list->current();
-        }
-        return null;
-    }
-    public function getLastestAlternate(): ?Alternate
-    {
-        $table = new AlternateTable();
-        $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
-        if (count($list)) {
-            return $list->current();
-        }
-        return null;
+        $t = new MemberTable();
+        $l = $t->find(['seat_id'=>$this->getId(), 'current'=>true]);
+        return count($l['rows']) ? $l['rows'][0] : null;
     }
 
     /**
@@ -284,19 +258,13 @@ class Seat extends ActiveRecord
         throw new \Exception('seats/invalidAlternate');
     }
 
-    /**
-     * @return array
-     */
-    public function getTerms()
+    public function getTerms(): array
     {
         $search = ['seat_id' => $this->getId()];
 
-        $table = new TermTable();
-        $list = $table->find($search);
-
-        $terms = [];
-        foreach ($list as $t) { $terms[] = $t; }
-        return $terms;
+        $t = new TermTable();
+        $l = $t->find($search);
+        return $l['rows'];
     }
 
     /**
@@ -311,12 +279,9 @@ class Seat extends ActiveRecord
     {
         if (!$timestamp) { $timestamp = time(); }
 
-        $table = new TermTable();
-
-        $list = $table->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
-        if (count($list)) {
-            return $list->current();
-        }
+        $t = new TermTable();
+        $l = $t->find(['seat_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (count($l['rows'])) { return $l['rows'][0]; }
         else {
             if ($timestamp >= time()) {
                 // Generate the next term in the sequence
@@ -332,7 +297,6 @@ class Seat extends ActiveRecord
             }
             else {
                 // Generate the previous term in the sequence
-
             }
         }
     }
@@ -375,10 +339,11 @@ class Seat extends ActiveRecord
      */
     public function getLatestTerm(): ?Term
     {
-        $table = new TermTable();
-        $list = $table->find(['seat_id'=>$this->getId()], 'startDate desc', false, 1);
-        if (count($list)) {
-            return $list->current();
+        $db  = Database::getConnection();
+        $sql = 'select * from terms where seat_id=? order by startDate desc limit 1';
+        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        if (count($res)) {
+            return new Term($res->current());
         }
         return null;
     }

@@ -36,8 +36,8 @@ class Controller
             $debug       = fopen(DEBUG_LOG, 'a');
             fwrite($debug, "home.calendarhook\nCalendar: $calendar_id\n");
 
-            if ($list->count()) {
-                $committee = $list->current();
+            if (count($list['rows'])) {
+                $committee = $list['rows'][0];
                 fwrite($debug, "Committee: ".$committee->getName()."\n");
                 $committee->syncGoogleCalendar();
             }
@@ -58,5 +58,3 @@ class Controller
         return '';
     }
 }
-
-

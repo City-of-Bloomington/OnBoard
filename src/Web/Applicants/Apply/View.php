@@ -20,7 +20,6 @@ class View extends \Web\View
             'post'      => $post,
             'committee' => $committee,
             'help'      => Site::getContent('applyForm_help'),
-            'citylimits_options' => $this->citylimits_options(),
             'referral_options'   => $this->referral_options()
         ];
     }
@@ -28,14 +27,6 @@ class View extends \Web\View
     public function render(): string
     {
         return $this->twig->render('html/applicants/applyForm.twig', $this->vars);
-    }
-
-    private function citylimits_options(): array
-    {
-        return [
-            ['value'=>1, 'label'=>$this->_('yes')],
-            ['value'=>0, 'label'=>$this->_('no' )],
-        ];
     }
 
     private function referral_options(): array

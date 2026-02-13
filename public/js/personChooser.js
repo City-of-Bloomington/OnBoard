@@ -36,17 +36,20 @@ var PERSON_CHOOSER = {
         return false;
 	},
 	setPerson: function (person_id, fieldId) {
-        ONBOARD.ajax(
-            BASE_URL + '/people/' + person_id + '?format=json',
-            function (request) {
+        const url = BASE_URL + '/people/' + person_id + '?format=json';
+        fetch(url)
+            .then( (r) => {
+                if (!r.ok) { throw new Error(`HTTP error: ${r.status} `); }
+                return r.text();
+            })
+            .then( (t) => {
                 const id     = PERSON_CHOOSER.fieldId ? PERSON_CHOOSER.fieldId : fieldId,
                       name   = id + '-name',
-                      person = JSON.parse(request.responseText);
-
+                      person = JSON.parse(t);
                 document.getElementById(id).value       = person.id;
                 document.getElementById(name).innerHTML = person.firstname + ' ' + person.lastname;
                 PERSON_CHOOSER.popup.close();
-            }
-        );
+            })
+            .catch( (e)=>{});
     }
 };

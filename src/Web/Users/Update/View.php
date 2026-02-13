@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -29,12 +29,11 @@ class View extends \Web\View
 
     private static function department_options(): array
     {
-        $opts  = [['value'=>'']];
-        $table = new DepartmentTable();
-        foreach ($table->find() as $d) {
-            $opts[] = ['value'=>$d->getId(), 'label'=>$d->getName()];
-        }
-        return $opts;
+        $o = [['value'=>'']];
+        $t = new DepartmentTable();
+        $l = $t->find();
+        foreach ($l['rows'] as $d) { $o[] = ['value'=>$d->getId(), 'label'=>$d->getName()]; }
+        return $o;
     }
 
     private static function role_options(): array

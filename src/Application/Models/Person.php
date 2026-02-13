@@ -16,8 +16,6 @@ class Person extends ActiveRecord
     protected $tablename = 'people';
     protected $department;
 
-    public static $STATES = ['IN'];
-
     /**
      * Populates the object with data
      *
@@ -37,13 +35,11 @@ class Person extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
-                if (ActiveRecord::isId($id)) {
-                    $sql = 'select * from people where id=?';
-                }
-                else {
-                    $sql = 'select * from people where username=?';
-                }
+                $db  = Database::getConnection();
+                $sql = ActiveRecord::isId($id)
+                     ? 'select * from people where id=?'
+                     : 'select * from people where username=?';
+
                 $result = $db->createStatement($sql)->execute([$id]);
                 if (count($result)) {
                     $this->exchangeArray($result->current());
@@ -76,8 +72,9 @@ class Person extends ActiveRecord
     {
         if ($this->isSafeToDelete()) {
             $db = Database::getConnection();
-            $db->query('delete from people_phones where person_id=?', [$this->getId()]);
-            $db->query('delete from people_emails where person_id=?', [$this->getId()]);
+            $db->query('delete from people_phones    where person_id=?', [$this->getId()]);
+            $db->query('delete from people_emails    where person_id=?', [$this->getId()]);
+            $db->query('delete from people_addresses where person_id=?', [$this->getId()]);
 
             parent::delete();
         }
@@ -95,25 +92,15 @@ class Person extends ActiveRecord
     public function getId():int     { return (int)parent::get('id');   }
     public function getFirstname()  { return parent::get('firstname'); }
     public function getLastname()   { return parent::get('lastname');  }
-    public function getAddress()    { return parent::get('address');   }
-    public function getCity()       { return parent::get('city');      }
-    public function getState()      { return parent::get('state');     }
-    public function getZip()        { return parent::get('zip');       }
     public function getOccupation() { return parent::get('occupation'); }
     public function getWebsite()    { return parent::get('website');   }
-    public function getCitylimits(): bool { return parent::get('citylimits') ? true : false; }
     public function getCreated($f=null)   { return parent::getDateData('created', $f); }
     public function getUpdated($f=null)   { return parent::getDateData('updated', $f); }
 
     public function setFirstname ($s) { parent::set('firstname', $s); }
     public function setLastname  ($s) { parent::set('lastname',  $s); }
-    public function setAddress   ($s) { parent::set('address',   $s); }
-    public function setCity      ($s) { parent::set('city',      $s); }
-    public function setState     ($s) { parent::set('state',     $s); }
-    public function setZip       ($s) { parent::set('zip',       $s); }
     public function setWebsite   ($s) { parent::set('website',   $s); }
     public function setOccupation($s) { parent::set('occupation', $s); }
-    public function setCitylimits($s) { $this->data['citylimits'] = $s ? 1 : 0; }
 
     public function getUsername() { return parent::get('username'); }
     public function getRole()     { return parent::get('role');     }
@@ -127,15 +114,11 @@ class Person extends ActiveRecord
 
     public function handleUpdate(array $post)
     {
-        $fields = [
-            'firstname', 'lastname',
-            'address', 'city', 'state', 'zip', 'website',
-            'citylimits', 'occupation'
-        ];
-        foreach ($fields as $field) {
-            if (isset($post[$field])) {
-                $set = 'set'.ucfirst($field);
-                $this->$set($post[$field]);
+        $fields = ['firstname', 'lastname', 'website', 'occupation'];
+        foreach ($fields as $f) {
+            if (isset($post[$f])) {
+                $set = 'set'.ucfirst($f);
+                $this->$set($post[$f]);
             }
         }
     }
@@ -190,7 +173,7 @@ class Person extends ActiveRecord
     {
         $t = new EmailTable();
         $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
@@ -201,11 +184,9 @@ class Person extends ActiveRecord
      */
     public function getEmails(): array
     {
-        $o = [];
         $t = new EmailTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $e) { $o[] = $e; }
-        return $o;
+        return $l['rows'];
     }
 
     public function hasEmail(string $email): bool
@@ -213,7 +194,7 @@ class Person extends ActiveRecord
         if ($this->getId()) {
             $t = new EmailTable();
             $l = $t->find(['person_id'=>$this->getId(), 'email'=>$email]);
-            return count($l) ? true : false;
+            return count($l['rows']) ? true : false;
         }
         return false;
     }
@@ -232,17 +213,15 @@ class Person extends ActiveRecord
     {
         $t = new PhoneTable();
         $l = $t->find(['person_id'=>$this->getId(), 'main'=>1]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
     public function getPhones(): array
     {
-        $o = [];
         $t = new PhoneTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $p) { $o[] = $p; }
-        return $o;
+        return $l['rows'];
     }
 
     public function hasPhone(string $number): bool
@@ -250,7 +229,7 @@ class Person extends ActiveRecord
         if ($this->getId()) {
             $t = new PhoneTable();
             $l = $t->find(['person_id'=>$this->getId(), 'number'=>$number]);
-            return count($l) ? true : false;
+            return count($l['rows']) ? true : false;
         }
         return false;
     }
@@ -265,79 +244,36 @@ class Person extends ActiveRecord
         }
     }
 
-    /**
-     * @return Laminas\Db\ResultSet
-     */
-    public function getMemberCommittees()
+    public function getAddresses(): array
     {
-        $table = new CommitteeTable();
-        return $table->find(['member_id'=>$this->getId()]);
+        $t = new AddressTable();
+        $l = $t->find(['person_id'=>$this->getId()]);
+        return $l['rows'];
     }
 
-    /**
-     * @return array An array of Committee objects
-     */
-    public function getLiaisonCommittees()
+    public function getAddress(string $type): ?Address
     {
-        $sql = 'select distinct c.*
-                from liaisons l
-                join committees c on l.committee_id=c.id
-                where l.person_id=?';
-        $db = Database::getConnection();
-        $result = $db->query($sql, [$this->getId()]);
-
-        $committees = [];
-        foreach ($result->toArray() as $row) {
-            $committees[] = new Committee($row);
-        }
-        return $committees;
+        $t = new AddressTable();
+        $l = $t->find(['person_id'=>$this->getId(), 'type'=>$type]);
+        if (count($l['rows'])) { return $l['rows'][0]; }
+        return null;
     }
 
-    /**
-     * @param array $fields Extra fields to search on
-     * @return Laminas\Db\ResultSet
-     */
     public function getMembers($fields=null)
     {
         $fields['person_id'] = $this->getId();
 
-        $table = new MemberTable();
-        return $table->find($fields);
-    }
-
-    /**
-     * @return array An array of People in the same committes
-     */
-    public function getPeers()
-    {
-        $peers = array();
-
-        $committees = array();
-        foreach ($this->getMemberCommittees() as $committee) {
-            $committees[] = $committee->getId();
-        }
-        if (count($committees)) {
-            $table = new PeopleTable();
-            $list = $table->find(['committee_id'=>$committees]);
-            foreach ($list as $person) {
-                if ($person->getId() != $this->getId()) {
-                    $peers[] = $person;
-                }
-            }
-        }
-        return $peers;
+        $t = new MemberTable();
+        $r = $t->find($fields);
+        return $r['rows'];
     }
 
     /**
      * Returns the offices held for the given committee
      *
      * If a date is given, it will return only offices held on that date
-     *
-     * @param Committee $committee
-     * @param string $date
-     * @return array An array of Office objects
      */
-    public function getOffices(Committee $committee=null, $date=null)
+    public function getOffices(?Committee $committee=null, ?string $date=null): array
     {
         $search = ['person_id'=>$this->getId()];
         if ($committee) {
@@ -349,35 +285,12 @@ class Person extends ActiveRecord
 
 
         $offices = [];
-        $table = new OfficeTable();
-        foreach ($table->find($search) as $o) {
-            $offices[] = $o;
-        }
-        return $offices;
+        $t = new OfficeTable();
+        $r = $t->find($search);
+        return $r['rows'];
     }
 
-    /**
-     * Returns all the appointment information for a person.
-     *
-     * Optionally provide a committee to limit the appointment information
-     *
-     * @param Committee $committee
-     * @return Laminas\Db\ResultSet
-     */
-    public function getAppointers(Committee $committee=null)
-    {
-        $search = ['person_id'=>$this->getId()];
-        if ($committee) {
-            $search['committee_id'] = $committee->getId();
-        }
-        $table = new AppointerTable();
-        return $table->find($search);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isSafeToDelete()
+    public function isSafeToDelete(): bool
     {
         $id = (int)$this->getId();
 
@@ -404,37 +317,14 @@ class Person extends ActiveRecord
         return count($r) ? true : false;
     }
 
-    /**
-     * Applications for this applicant
-     *
-     * @param array $params Additional query parameters
-     */
-    public function getApplications(array $params=null): array
-    {
-        $out = [];
-        if ($this->getId()) {
-            if (!$params) { $params = []; }
-            $params['person_id'] = $this->getId();
-
-            $t = new ApplicationTable();
-            $l = $t->find($params);
-            foreach ($l as $a) { $out[] = $a; }
-        }
-        return $out;
-    }
-
-    /**
-     * @return array An array of File objects
-     */
     public function getFiles(): array
     {
-        $files = [];
         if ($this->getId()) {
             $t = new ApplicantFilesTable();
             $l  = $t->find(['person_id'=>$this->getId()]);
-            foreach ($l as $f) { $files[] = $f; }
+            return $l['rows'];
         }
-        return $files;
+        return [];
     }
 
     public function hasNotificationSubscription(string $event, int $committee_id): ?Notifications\Subscription
@@ -443,17 +333,15 @@ class Person extends ActiveRecord
         $l = $t->find(['person_id'    => $this->getId(),
                        'committee_id' => $committee_id,
                        'event'        => $event]);
-        if (count($l)) { return $l->current(); }
+        if (count($l['rows'])) { return $l['rows'][0]; }
         return null;
     }
 
     public function getNotificationSubscriptions(): array
     {
-        $sub = [];
         $t = new Notifications\SubscriptionTable();
         $l = $t->find(['person_id'=>$this->getId()]);
-        foreach ($l as $s) { $sub[] = $s; }
-        return $sub;
+        return $l['rows'];
     }
 
 	/**
@@ -474,6 +362,7 @@ class Person extends ActiveRecord
             $tables = [
                 'people_emails',
                 'people_phones',
+                'people_addresses',
                 'members',
                 'alternates',
                 'liaisons',

@@ -1,9 +1,3 @@
-# Translation
-# Copyright (C) 2013-2022 City of Bloomington
-# This file is distributed under the same license as the onboard package.
-#
-domain "labels"
-
 msgid ""
 msgstr ""
 "Project-Id-Version: OnBoard 2.4\n"
@@ -121,30 +115,6 @@ msgstr "Last or family name"
 msgid "lastname_help"
 msgstr "For example, Martinez Gonzalez, Gu, or Smith"
 
-msgid "address"
-msgstr "Address"
-
-msgid "mail_address"
-msgstr "Mailing Address"
-
-msgid "streetaddress"
-msgstr "Street address"
-
-msgid "city"
-msgstr "City"
-
-msgid "state"
-msgstr "State"
-
-msgid "zip"
-msgstr "ZIP code"
-
-msgid "gender"
-msgstr "Gender"
-
-msgid "birthdate"
-msgstr "Birthdate"
-
 msgid "username"
 msgstr "Username"
 
@@ -156,6 +126,29 @@ msgstr "Authentication"
 
 msgid "role"
 msgstr "Role"
+
+msgid "city"
+msgstr "City"
+
+msgid "state"
+msgstr "State"
+
+msgid "zip"
+msgstr "ZIP code"
+
+msgid "address"
+msgid_plural "addresses"
+msgstr[0] "Address"
+msgstr[1] "Addresses"
+
+msgid "address_add"
+msgstr "Add Address"
+
+msgid "address_edit"
+msgstr "Edit Address"
+
+msgid "address_delete"
+msgstr "Delete Address"
 
 msgid "email"
 msgid_plural "emails"
@@ -518,8 +511,10 @@ msgstr "Reappoint Member"
 msgid "member_delete"
 msgstr "Delete Member"
 
-msgid "members_current"
-msgstr "Current Members"
+msgid "current_member"
+msgid_plural "current_members"
+msgstr[0] "Current Member"
+msgstr[1] "Current Members"
 
 msgid "members_past"
 msgstr "Previous Members"
@@ -690,6 +685,11 @@ msgstr "Actions"
 
 msgid "retirePrevious"
 msgstr "Retire Previous Appointee"
+
+msgid "validator"
+msgid_plural "validators"
+msgstr[0] "Application Validator"
+msgstr[1] "Application Validators"
 
 msgid "department"
 msgid_plural "departments"

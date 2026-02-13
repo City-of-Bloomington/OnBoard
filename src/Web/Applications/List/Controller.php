@@ -18,15 +18,11 @@ class Controller extends \Web\Controller
         $search = self::prepareSearch();
 
         $table = new ApplicationTable();
-        $list  = $table->search($search, null, true);
+        $list  = $table->search(fields:$search, itemsPerPage:parent::ITEMS_PER_PAGE, currentPage:$page);
 
-        $list->setCurrentPageNumber($page);
-        $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-        foreach ($list as $a) { $apps[] = $a; }
-
-        return new View($apps,
+        return new View($list['rows'],
                         $search,
-                        $list ? $list->getTotalItemCount() : 0,
+                        $list['total'],
                         parent::ITEMS_PER_PAGE,
                         $page);
     }

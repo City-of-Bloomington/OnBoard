@@ -7,7 +7,7 @@
  * applicants to committees, as a single application is associated with multiple
  * committees.
  *
- * @copyright 2020-2023 City of Bloomington, Indiana
+ * @copyright 2020-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -29,7 +29,7 @@ use Application\Models\Term;
 
 class CommitteeAssociation implements AssertionInterface
 {
-    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    public function assert(Acl $acl, ?RoleInterface $role=null, ?ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
             $user_id      = $_SESSION['USER']->getId();
@@ -38,21 +38,25 @@ class CommitteeAssociation implements AssertionInterface
             switch ($role->__toString()) {
                 case 'Appointer':
                     if ($committee_id) {
-                        return MemberTable::isMember($user_id, $committee_id);
+                        $t = new MemberTable();
+                        return $t->isMember($user_id, $committee_id);
                     }
 
                     if (!empty($_REQUEST['applicant_id'])) {
-                        return ApplicantTable::shareCommittee($user_id, (int)$_REQUEST['applicant_id']);
+                        $t = new ApplicantTable();
+                        return $t->shareCommittee($user_id, (int)$_REQUEST['applicant_id']);
                     }
 
                     if (!empty($_REQUEST['applicantFile_id'])) {
-                        return ApplicantFilesTable::shareCommittee($user_id, (int)$_REQUEST['applicantFile_id']);
+                        $t = new ApplicantFilesTable();
+                        return $t->shareCommittee($user_id, (int)$_REQUEST['applicantFile_id']);
                     }
                 break;
 
                 case 'Liaison':
                     if ($committee_id) {
-                        return LiaisonTable::isLiaison($user_id, $committee_id);
+                        $t = new LiaisonTable();
+                        return $t->isLiaison($user_id, $committee_id);
                     }
                 break;
 

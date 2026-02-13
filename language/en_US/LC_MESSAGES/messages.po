@@ -1,21 +1,17 @@
-# Translation
-# Copyright (C) 2013-2025 City of Bloomington
-# This file is distributed under the same license as the civic-legislation package.
-#
-domain "messages"
-
 msgid ""
 msgstr ""
 "Project-Id-Version: OnBoard\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
-"PO-Revision-Date: 2025-11-19 08:44-0500\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2026-01-12 11:21-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
+"X-Generator: Poedit 3.4.2\n"
 
 msgid "signed_in_as"
 msgstr "Signed in as %s"
@@ -80,3 +76,8 @@ msgstr "Name of the committee as it appears in the municipal code"
 msgid "committee-code-help"
 msgstr "Abbreviation used on various screens to save screen space"
 
+msgid "committee-departments-help"
+msgstr "Departments are used for granting permissions to work with particular boards and commissions"
+
+msgid "committee-validator-help"
+msgstr "Checks to run against applications for this committee"

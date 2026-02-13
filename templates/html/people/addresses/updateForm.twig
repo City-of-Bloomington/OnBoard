@@ -1,0 +1,113 @@
+{#
+ * @copyright 2025-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Address  address
+ * @param string   return_url
+ * @param array    states
+ #}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
+{% block content %}
+<section>
+    <header><h1>{{ address.person.fullname }}</h1></header>
+    {% if isAllowed('people', 'viewContactInfo') %}
+    {{ include('html/people/partials/info.twig', { person: address.person }) }}
+    {% endif %}
+
+    <h2>{{ address.type }} Address</h2>
+    <p>Most boards and commissions require a resident in the city limits.
+       The home address is used to determine location requirements, such as city or county residency.
+       Use this tool to look up a valid Bloomington address.
+    </p>
+
+    <script type="text/javascript" src="https://bloomington.in.gov/master_address/js/choosers/env.php"></script>
+    <script type="text/javascript" src="https://bloomington.in.gov/master_address/js/choosers/addressChooser.js"></script>
+    <button class="usa-button" onclick="ADDRESS_CHOOSER.start(handleChoice);">
+        Bloomington Address Lookup
+    </button>
+
+    <form           class="usa-form" method="post" id="addressForm">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend">Address Form</legend>
+            <p>If the address is not found, you can still enter it here;
+               however, the address will not satisfy any local requirements.
+            </p>
+            {{ include('html/people/addresses/partials/addressFields.twig') }}
+
+            {{ forms.button('submit', _('save'), 'save') }}
+            {{ forms.actionLink(return_url, _('cancel'), 'cancel' ) }}
+        </fieldset>
+    </form>
+</section>
+<script>
+    function handleChoice(a) {
+        const state = document.getElementById('state');
+        let address = a.subunit
+                    ? `${a.streetAddress} ${a.subunit.type_code} ${a.subunit.identifier}`
+                    : a.streetAddress;
+
+        document.getElementById('address').value = address;
+        document.getElementById('city'   ).value = a.city;
+        document.getElementById('zip'    ).value = a.zip;
+        document.getElementById('x'      ).value = a.state_plane_x;
+        document.getElementById('y'      ).value = a.state_plane_y;
+
+        for (o of state.options) {
+            if (o.value == a.state) { state.selectedIndex = o.index; break; }
+        }
+
+        document.getElementById('addressForm').submit();
+    }
+
+    function r(e) {
+        document.getElementById('x').value = '';
+        document.getElementById('y').value = '';
+        document.getElementById('address_gis_status').innerHTML = 'Unknown Address';
+    }
+    document.getElementById('address').addEventListener('keyup',  r);
+    document.getElementById('city'   ).addEventListener('keyup',  r);
+    document.getElementById('zip'    ).addEventListener('keyup',  r);
+    document.getElementById('state'  ).addEventListener('change', r);
+</script>
+<style type="text/css">
+    #modal-container {
+        position: fixed; top:50%; left:50%;
+        transform: translate(-50%, -50%);
+        z-index:100;
+
+        display: flex; align-items: center; justify-content: center;
+        background: white;
+
+        /* USWDS styles */
+        padding: 1rem;
+        border: 2px solid #e6e6e6;
+        border-radius: .25rem;
+    }
+    #modal-container div { background-color: white; }
+    #modal-container fieldset { border: none; text-align: center; }
+    #modal-container fieldset div { margin-bottom: 1rem; }
+    #modal-container legend { display: none; }
+    #modal-container label {
+        margin-right: 1rem;
+        /* USWDS styles */
+        font-size: 1.06rem; font-weight: 400; line-height: 1.3;
+    }
+    #modal-container input {
+        /* USWDS styles */
+        height: 2.5rem; padding: .5rem;
+    }
+    #modal-container button {
+        /* USWDS styles */
+        cursor: pointer;
+        font-size: 1.06rem; font-weight: 700;
+        line-height: .9;
+        color: #fff; background-color: #005ea2;
+        border: none; border-radius: .25rem;
+        padding: .75rem 1.25rem;
+    }
+    #modal-container #searchResults table { width: 100%; }
+    #modal-container #searchResults ul { list-style-type: none; }
+    #modal-container #searchResults li { cursor: pointer; }
+</style>
+
+{% endblock %}

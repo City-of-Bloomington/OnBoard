@@ -41,7 +41,7 @@ class View extends \Web\View
         if (parent::isAllowed('applications', 'view')) {
             $tab  = new ApplicationTable();
             $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
-            foreach ($apps as $a) {
+            foreach ($apps['rows'] as $a) {
                 $data[] = [
                     'id'           => $a->getId(),
                     'person_id'    => $a->getPerson_id(),

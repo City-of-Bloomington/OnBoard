@@ -1,102 +1,82 @@
 <?php
 /**
- * @copyright 2014-2023 City of Bloomington, Indiana
+ * @copyright 2014-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
 
+use Application\PdoRepository;
 use Web\ActiveRecord;
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
 
-class CommitteeTable extends TableGateway
+class CommitteeTable extends PdoRepository
 {
     public function __construct() { parent::__construct('committees', __namespace__.'\Committee'); }
 
-    public function find($fields=null, $order='name', $paginated=false, $limit=null)
+    public function find(?array $fields=null, ?string $order='name', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select('committees');
+        $select = 'select c.* from committees c';
+        $joins  = [];
+        $where  = [];
+        $group  = null;
+        $params = [];
+
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'current':
                         // current == true|false (false is the past)
-                        $value
-                            ? $select->where("(committees.endDate is null     or  committees.endDate >= now())")
-                            : $select->where("(committees.endDate is not null and committees.endDate <= now())");
+                        $where[] = $v ? '(c.endDate is null     or  c.endDate >= now())'
+                                      : '(c.endDate is not null and c.endDate <= now())';
                     break;
 
                     case 'member_id':
-                        $select->join(['m'=>'members'], 'committees.id=m.committee_id', []);
-                        $select->where(['m.person_id' => $value]);
+                        $joins[] = 'join members m on c.id=m.committee_id';
+                        $where[] = 'm.person_id=:member_id';
+                        $params['member_id'] = $v;
                     break;
 
                     case 'liaison_id':
-                        $select->join(['l'=>'committee_liaisons'], 'committees.id=l.committee_id', []);
-                        $select->where(['l.person_id' => $value]);
+                        $joins[] = 'join committee_liaisons l on c.id=l.committee_id';
+                        $where[] = 'l.person_id=:liaison_id';
+                        $params['liaison_id'] = $v;
                     break;
 
                     case 'department_id':
-                        $select->join(['d'=>'committee_departments'], 'committees.id=d.committee_id', []);
-                        $select->where(['d.department_id' => $value]);
+                        $joins[] = 'committee_departments d on c.id=d.committee_id';
+                        $where[] = "d.$k=:$k";
+                        $params[$k] = $v;
                     break;
 
                     case 'legislative':
                     case  'alternates':
-                        $select->where([$key=>$value ? 1 : 0]);
+                        $where[] = "$k=:$k";
+                        $params[$k] = $v ? 1 : 0;
                     break;
 
                     case 'takesApplications':
-                        $select->join(['s'=>'seats'], 'committees.id=s.committee_id', [], Select::JOIN_LEFT);
-                        $select->group('committees.id');
-                        $select->where(['s.takesApplications' => (bool)$value]);
+                        $joins[] = 'left join seats s on c.id=s.committee_id';
+                        $group   = 'c.id';
+                        $where[] = "s.$k=:$k";
+                        $params[$k] = $v ? 1 : 0;
                     break;
 
                     default:
-                        $select->where([$key=>$value]);
+                        $where[] = "$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        $sql  = parent::buildSql($select, $joins, $where, $group, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
-    //----------------------------------------------------------------
-    // Route Action Functions
-    //
-    // These are functions that match the actions defined in the route
-    //----------------------------------------------------------------
-    /**
-     * @return int   committee_id
-     */
-    public static function update(Committee $committee, array $post): int
+    public function end(Committee $committee, \DateTime $endDate)
     {
-        $action = $committee->getId() ? 'edit' : 'add';
-        $change = $action == 'edit' ? [CommitteeHistory::STATE_ORIGINAL=>$committee->getData()] : [];
-
-        $committee->handleUpdate($post);
-        $committee->save();
-        $change[CommitteeHistory::STATE_UPDATED] = $committee->getData();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id'=> $committee->getId(),
-            'tablename'   => 'committees',
-            'action'      => $action,
-            'changes'     => [$change]
-        ]);
-
-        return (int)$committee->getId();
-    }
-
-    public static function end(Committee $committee, \DateTime $endDate)
-    {
-        $db      = Database::getConnection();
-        $change  = [CommitteeHistory::STATE_ORIGINAL => $committee->getData()];
         $params  = [$endDate->format(ActiveRecord::MYSQL_DATE_FORMAT), $committee->getId()];
         $updates = [
             "update terms t join seats s on t.seat_id=s.id
-                                    set t.endDate=? where s.committee_id=? and t.endDate is null",
+                                 set t.endDate=? where s.committee_id=? and t.endDate is null",
             'update applications set archived=?  where committee_id=?   and archived  is null',
             'update offices      set endDate=?   where committee_id=?   and endDate   is null',
             'update seats        set endDate=?   where committee_id=?   and endDate   is null',
@@ -104,33 +84,28 @@ class CommitteeTable extends TableGateway
             'update committees   set endDate=?   where id=?'
         ];
 
-        $db->getDriver()->getConnection()->beginTransaction();
+        $this->pdo->beginTransaction();
         try {
-            foreach ($updates as $sql) { $db->query($sql)->execute($params); }
-            $db->getDriver()->getConnection()->commit();
+            foreach ($updates as $sql) {
+                $q = $this->pdo->prepare($sql);
+                $q->execute($params);
+            }
+            $this->pdo->commit();
         }
         catch (\Exception $e) {
-            $db->getDriver()->getConnection()->rollback();
+            $this->pdo->rollBack();
             throw $e;
         }
-
-        $change[CommitteeHistory::STATE_UPDATED] = $committee->getData();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id'=> $committee->getId(),
-            'tablename'   => 'committees',
-            'action'      => 'end',
-            'changes'     => [$change]
-        ]);
     }
 
-    public static function hasDepartment(int $department_id, int $committee_id): bool
+    public function hasDepartment(int $department_id, int $committee_id): bool
     {
         $sql    = "select committee_id
                    from committee_departments
                    where department_id=? and committee_id=?";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $committee_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $committee_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }

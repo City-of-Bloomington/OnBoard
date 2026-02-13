@@ -45,12 +45,11 @@ class View extends \Web\View
 
     private static function committees(): array
     {
-        $options = [['value'=>'', 'label'=>'']];
-        $table   = new CommitteeTable();
-        $list    = $table->find(['legislative'=>true]);
-        $options = [];
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
-        return $options;
+        $t = new CommitteeTable();
+        $l = $t->find(['legislative'=>true]);
+        $o = [];
+        foreach ($l['rows'] as $c) { $o[] = ['value'=>$c->getId(), 'label'=>$c->getName()]; }
+        return $o;
     }
 
     /**
@@ -69,20 +68,20 @@ class View extends \Web\View
 
     private static function statuses(): array
     {
-        $options = [['value'=>'', 'label'=>'']];
-        $table = new StatusesTable();
-        $list = $table->find();
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
-        return $options;
+        $o = [['value'=>'', 'label'=>'']];
+        $t = new StatusesTable();
+        $l = $t->find();
+        foreach ($l['rows'] as $s) { $o[] = ['value'=>$s->getId(), 'label'=>$s->getName()]; }
+        return $o;
     }
 
     private static function types(): array
     {
-        $options = [['value'=>'', 'label'=>'']];
-        $table   = new TypesTable();
-        $list    = $table->find(['subtype'=>false]);
-        foreach ($list as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
-        return $options;
+        $o = [['value'=>'', 'label'=>'']];
+        $t = new TypesTable();
+        $l = $t->find(['subtype'=>false]);
+        foreach ($l['rows'] as $s) { $o[] = ['value'=>$s->getId(), 'label'=>$s->getName()]; }
+        return $o;
     }
 
     private function actionLinks(Committee $c): array

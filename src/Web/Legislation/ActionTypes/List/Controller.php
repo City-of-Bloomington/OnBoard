@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare(strict_types=1);
@@ -12,9 +12,8 @@ class Controller extends \Web\Controller
 {
     public function __invoke(array $params): View
     {
-        $table = new ActionTypesTable();
-        $types = $table->find();
-
-        return new View($types);
+        $t = new ActionTypesTable();
+        $r = $t->find();
+        return new View($r['rows']);
     }
 }

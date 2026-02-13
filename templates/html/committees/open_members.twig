@@ -11,7 +11,7 @@
 {% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
-    <h2>{{ search.current ? _('members_current') : _('members_past') }}</h2>
+    <h2>{{ search.current ? _(['current_member','current_members', 10]) : _('members_past') }}</h2>
 
     {% if isAllowed('members', 'appoint') %}
     {{ forms.actionLink(uri('members.appoint') ~ '?committee_id=' ~ committee.getId(), _('member_add'), 'add' )}}

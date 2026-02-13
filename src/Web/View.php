@@ -49,6 +49,7 @@ abstract class View
                                                 'debug'            => true]);
 
         global $REQUEST, $ROUTE;
+
         $this->twig->addGlobal('APPLICATION_NAME', APPLICATION_NAME);
         $this->twig->addGlobal('VERSION',          VERSION);
         $this->twig->addGlobal('BASE_URL',         BASE_URL);
@@ -239,19 +240,17 @@ abstract class View
      * generate function on it.
      *
      * @see https://github.com/auraphp/Aura.Router/tree/2.x
-     * @param string $route_name
-     * @param array $params
-     * @return string
      */
-    public static function generateUri($route_name, $params=[])
+    public static function generateUri(string $route_name, ?array $route_params=[], ?array $query_params=null): string
     {
         global $ROUTES;
         $helper = $ROUTES->newRouteHelper();
-        return $helper($route_name, $params);
+        $uri    = $helper($route_name, $route_params);
+        return $query_params ? $uri.'?'.http_build_query($query_params) : $uri;
     }
-    public static function generateUrl($route_name, $params=[])
+    public static function generateUrl(string $route_name, ?array $route_params=[], ?array $query_params=[]): string
     {
-        return "https://".BASE_HOST.self::generateUri($route_name, $params);
+        return "https://".BASE_HOST.self::generateUri($route_name, $route_params, $query_params);
     }
     public static function current_url(): string
     {

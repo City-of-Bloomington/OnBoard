@@ -100,6 +100,13 @@ $AUTHENTICATION = [
     ]
 ];
 
+$ARCGIS = [
+    'portal' => 'https://localhost/arcgis',
+    'server' => 'https://localhost/arcgis-server',
+    'user'   => 'onboard',
+    'pass'   => 'something secret'
+];
+
 define('DATE_FORMAT', 'n/j/Y');
 define('TIME_FORMAT', 'H:i:s');
 define('DATETIME_FORMAT', 'n/j/Y H:i:s');

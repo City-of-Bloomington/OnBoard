@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright 2020-2025 City of Bloomington, Indiana
+ * @copyright 2020-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 
 $ROUTES = new \Aura\Router\RouterContainer(BASE_URI);
 $map    = $ROUTES->getMap();
-$map->tokens(['alternate_id'             => '\d+',
+$map->tokens(['address_id'               => '\d+',
+              'alternate_id'             => '\d+',
               'applicantFile_id'         => '\d+',
               'application_id'           => '\d+',
               'appointer_id'             => '\d+',
@@ -207,22 +208,27 @@ $map->attach('people.', '/people', function ($r) {
     $r->attach('merge.', '/merge', function ($r) {
         $r->get('index',   '', Web\People\Merge\Candidates\Controller::class)->allows(['POST']);
     });
+    $r->attach('emails.', '/{person_id}/emails', function ($r) {
+        $r->get('update', '/{email_id}/update', Web\People\Emails\Update\Controller::class)->allows(['POST']);
+        $r->get('delete', '/{email_id}/delete', Web\People\Emails\Delete\Controller::class);
+        $r->get('add',    '/add',               Web\People\Emails\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('phones.', '/{person_id}/phones', function ($r) {
+        $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
+        $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
+        $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('addresses.', '/{person_id}/addresses', function ($r) {
+        $r->get('update', '/{address_id}/update', Web\People\Addresses\Update\Controller::class)->allows(['POST']);
+        $r->get('delete', '/{address_id}/delete', Web\People\Addresses\Delete\Controller::class);
+        $r->get('add',    '/add',                 Web\People\Addresses\Add\Controller::class)->allows(['POST']);
+    });
     $r->get('update',     '/{person_id}/update', Web\People\Update\Controller::class)->allows(['POST']);
     $r->get('delete',     '/{person_id}/delete', Web\People\Delete\Controller::class);
     $r->get('view',       '/{person_id}'       , Web\People\View\Controller::class);
     $r->get('add',        '/add'     , Web\People\Add\Controller::class)->allows(['POST']);
     $r->get('callback',   '/callback', Web\People\Callback\Controller::class);
     $r->get('index',      ''         , Web\People\Find\Controller::class);
-});
-$map->attach('emails.', '/people/{person_id}/emails', function ($r) {
-    $r->get('update', '/{email_id}/update', Web\People\Emails\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{email_id}/delete', Web\People\Emails\Delete\Controller::class);
-    $r->get('add',    '/add',               Web\People\Emails\Add\Controller::class)->allows(['POST']);
-});
-$map->attach('phones.', '/people/{person_id}/phones', function ($r) {
-    $r->get('update', '/{phone_id}/update', Web\People\Phones\Update\Controller::class)->allows(['POST']);
-    $r->get('delete', '/{phone_id}/delete', Web\People\Phones\Delete\Controller::class);
-    $r->get('add',    '/add',               Web\People\Phones\Add\Controller::class)->allows(['POST']);
 });
 
 $map->attach('profile.', '/profile', function ($r) {
@@ -235,6 +241,11 @@ $map->attach('profile.', '/profile', function ($r) {
         $r->get('delete',  '/{phone_id}/delete', Web\Profile\Phones\Delete\Controller::class);
         $r->get('update',  '/{phone_id}/update', Web\Profile\Phones\Update\Controller::class)->allows(['POST']);
         $r->get('add',     '/add',               Web\Profile\Phones\Add\Controller::class)->allows(['POST']);
+    });
+    $r->attach('addresses.', '/addresses', function ($r) {
+        $r->get('delete',  '/{address_id}/delete', Web\Profile\Addresses\Delete\Controller::class);
+        $r->get('update',  '/{address_id}/update', Web\Profile\Addresses\Update\Controller::class)->allows(['POST']);
+        $r->get('add',     '/add',                 Web\Profile\Addresses\Add\Controller::class)->allows(['POST']);
     });
     $r->attach('files.', '/files', function ($r) {
         $r->get('download', '/{applicantFile_id}/download', Web\Profile\Files\Download\Controller::class);

@@ -32,7 +32,7 @@ exit(1);
 include '../../src/Web/bootstrap.php';
 $table = new CommitteeTable();
 $list  = $table->find(['current'=>true]);
-foreach ($list as $c) {
+foreach ($list['rows'] as $c) {
     echo "Sync Committee: ".$c->getName()."\n";
     $c->syncGoogleCalendar();
 }

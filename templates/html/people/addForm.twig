@@ -22,14 +22,6 @@
             {{ forms.field_email('email',    'email',     _('email'    ), person.email ) }}
             {{ forms.field_phone('phone',    'phone',     _('phone'    ), person.phone ) }}
         </fieldset>
-        <fieldset   class="usa-fieldset">
-            <legend class="usa-legend">{{ _('mail_address') }}</legend>
-            {{ forms.field_text  ('address', 'address', _('streetaddress'), person.address ) }}
-            {{ forms.field_text  ('city',    'city',    _('city'),          person.city    ) }}
-            {{ forms.field_select('state',   'state',   _('state'),         person.state, states ) }}
-            {{ forms.field_number('zip',     'zip',     _('zip'),           person.zip, false, { pattern:'[\\d]{5}(-[\\d]{4})?' } ) }}
-            {{ forms.field_radio('citylimits', 'citylimits', _('citylimits'), person.citylimits, yesno ) }}
-        </fieldset>
 
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ _('about') }}</legend>

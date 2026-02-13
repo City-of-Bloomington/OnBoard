@@ -17,7 +17,6 @@ class View extends \Web\View
 
         $this->vars = [
             'person'      => $p,
-            'states'      => UpdateView::states(),
             'yesno'       => UpdateView::yesno(),
             'return_url'  => parent::generateUri('people.index'),
             'breadcrumbs' => self::breadcrumbs()

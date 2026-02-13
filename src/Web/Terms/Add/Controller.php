@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Terms\Add;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\Term;
 use Application\Models\TermTable;
@@ -28,7 +29,17 @@ class Controller extends \Web\Controller
                 try {
                     $term->setStartDate($_POST['startDate'], 'Y-m-d');
                     $term->setEndDate  ($_POST['endDate'  ], 'Y-m-d');
-                    TermTable::update($term);
+                    $term->save();
+
+                    $change  = [CommitteeHistory::STATE_ORIGINAL => [],
+                                CommitteeHistory::STATE_UPDATED  => $term->getData()];
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id' => $term->getSeat()->getCommittee_id(),
+                        'tablename'    => 'terms',
+                        'action'       => 'add',
+                        'changes'      => [$change]
+                    ]);
+
                     $url = \Web\View::generateUrl('seats.view', ['seat_id'=>$term->getSeat_id()]);
                     header("Location: $url");
                     exit();

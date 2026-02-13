@@ -14,20 +14,20 @@ class Controller extends \Web\Controller
 
     public function __invoke(array $params): \Web\View
     {
-        $table = new TypesTable();
-        $res   = $table->find();
+        $t = new TypesTable();
+        $r = $t->find();
 
         switch ($this->outputFormat) {
             case 'csv':
-                return new \Web\Views\CSVView('LegislationTypes', self::data($res));
+                return new \Web\Views\CSVView('LegislationTypes', self::data($r['rows']));
             break;
 
             case 'json':
-                return new \Web\Views\JSONView(self::data($res));
+                return new \Web\Views\JSONView(self::data($r['rows']));
             break;
 
             default:
-                return new View(iterator_to_array($res));
+                return new View(iterator_to_array($r['rows']));
 
         }
     }

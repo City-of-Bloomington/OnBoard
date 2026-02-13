@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2025 City of Bloomington, Indiana
+ * @copyright 2009-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,8 +15,12 @@ class Committee extends ActiveRecord
     public static $types = ['seated', 'open'];
 
     protected $tablename = 'committees';
-    protected $departments = [];
+
+    private $departments = [];
+    private $validators  = [];
+
     private $departmentsHaveChanged = false;
+    private  $validatorsHaveChanged = false;
 
     public function __construct($id=null)
     {
@@ -62,17 +66,26 @@ class Committee extends ActiveRecord
         }
         parent::save();
 
+        $db = Database::getConnection();
         if ($this->departmentsHaveChanged) {
-            $db = Database::getConnection();
             $sql = 'delete from committee_departments where committee_id=?';
             $db->query($sql, [$this->getId()]);
 
             $sql = 'insert committee_departments set committee_id=?,department_id=?';
-            $insert = $db->createStatement($sql);
+            $ins = $db->createStatement($sql);
             foreach (array_keys($this->departments) as $id) {
-                $params = [$this->getId(), $id];
-                try { $insert->execute($params); }
-                catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
+                $ins->execute([$this->getId(), $id]);
+            }
+        }
+
+        if ($this->validatorsHaveChanged) {
+            $sql = 'delete from committee_application_validators where committee_id=?';
+            $db->query($sql, [$this->getId()]);
+
+            $sql = 'insert into committee_application_validators values(?,?)';
+            $ins = $db->createStatement($sql);
+            foreach (array_keys($this->validators) as $class) {
+                $ins->execute([$this->getId(), $class]);
             }
         }
     }
@@ -127,15 +140,12 @@ class Committee extends ActiveRecord
     public function setLegislative($b) { $this->data['legislative'] = $b ? 1 : 0; }
     public function setAlternates ($b) { $this->data['alternates' ] = $b ? 1 : 0; }
 
-    /**
-     * @param array $post The POST request
-     */
-    public function handleUpdate($post)
+    public function handleUpdate(array $post)
     {
-        if (!isset($post['departments'])) { $post['departments'] = null; }
+        if (!isset($post['departments'])) { $post['departments'] = []; }
 
         $fields = [
-            'type', 'departments',
+            'type', 'departments', 'validators',
             'name', 'statutoryName', 'code', 'website', 'videoArchive', 'yearFormed', 'calendarId',
             'email', 'phone', 'address', 'city', 'state', 'zip',
             'description', 'meetingSchedule',
@@ -179,45 +189,32 @@ class Committee extends ActiveRecord
         throw new \Exception('committees/invalidAlternate');
     }
 
-    /**
-     * Returns members for the committee
-     *
-     * @param array $fields
-     * @return Laminas\Db\ResultSet
-     */
-    public function getMembers(array $fields=null)
+    public function getMembers(?array $fields=null): array
     {
         $fields['committee_id'] = $this->getId();
 
-        $table = new MemberTable();
-        return $table->find($fields);
+        $t = new MemberTable();
+        $r = $t->find($fields);
+        return $r['rows'];
     }
 
-    /**
-     * @param string $date
-     * @return Laminas\Db\Result
-     */
-    public function getOffices($date=null)
+    public function getOffices(?string $date=null): array
     {
         $search = ['committee_id'=>$this->getId()];
         if (!empty($date)) { $search['current'] = $date; }
 
-        $table = new OfficeTable();
-        return $table->find($search);
+        $t = new OfficeTable();
+        $r = $t->find($search);
+        return $r['rows'];
     }
 
-    /**
-     * Returns a ResultSet containing Seats.
-     *
-     * @param array $fields
-     * @return Laminas\Db\ResultSet A ResultSet containing the Seat objects
-     */
-    public function getSeats(array $fields=null)
+    public function getSeats(?array $fields=null): array
     {
         $fields['committee_id'] = $this->getId();
 
-        $table = new SeatTable();
-        return $table->find($fields);
+        $t = new SeatTable();
+        $r = $t->find($fields);
+        return $r['rows'];
     }
 
     /**
@@ -241,19 +238,15 @@ class Committee extends ActiveRecord
 
     /**
      * Returns terms that were current for the given timestamp.
+     *
      * If no timestamp is given, the current time is used.
-     *
-     * @param timestamp $timestamp The timestamp for when the terms would have been current
-     *
-     * @return Laminas\Db\ResultSet
      */
-    public function getCurrentTerms($timestamp=null)
+    public function getCurrentTerms(int $timestamp=null): array
     {
-        if (!$timestamp) {
-            $timestamp = time();
-        }
-        $terms = new TermTable();
-        return $terms->find(['committee_id'=>$this->getId(), 'current'=>$timestamp]);
+        if (!$timestamp) { $timestamp = time(); }
+        $t = new TermTable();
+        $r = $t->find(['committee_id'=>$this->getId(), 'current'=>$timestamp]);
+        return $r['rows'];
     }
 
     /**
@@ -290,23 +283,29 @@ class Committee extends ActiveRecord
      *
      * @return Laminas\Db\ResultSet
      */
-    public function getMemberPeople()
+    public function getMemberPeople(): array
     {
-        $people = new PeopleTable();
-        return $people->find(['committee_id'=>$this->getId()]);
+        $t = new PeopleTable();
+        $r = $t->find(['committee_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
     /**
      * Returns an array of Department objects with ID as the key
      *
-     * @return array
+     * @return Department[]
      */
-    public function getDepartments()
+    public function getDepartments(): array
     {
         if (!$this->departments) {
-            $table = new DepartmentTable();
-            $list = $table->find(['committee_id'=>$this->getId()]);
-            foreach ($list as $d) {
+            $db  = Database::getConnection();
+            $sql = "select d.*
+                    from committee_departments c
+                    join departments d on d.id=c.department_id
+                    where c.committee_id=?";
+            $res = $db->query($sql)->execute([$this->getId()]);
+            foreach ($res as $row) {
+                $d = new Department($row);
                 $this->departments[$d->getId()] = $d;
             }
         }
@@ -314,69 +313,60 @@ class Committee extends ActiveRecord
     }
 
     /**
-     * @param Department $d
-     * @return boolean
+     * @param int[] $ids An array of department_ids
      */
-    public function hasDepartment(Department $d)
+    public function setDepartments(array $ids)
     {
-        return array_key_exists($d->getId(), $this->getDepartments());
-    }
+        $current = array_keys($this->getDepartments());
+        $this->departmentsHaveChanged = (array_diff($current, $ids) || array_diff($ids, $current)) ? true : false;
+        if ($this->departmentsHaveChanged) {
+            $this->departments = [];
 
-    /**
-     * @param array $ids An array of (int) department_ids
-     */
-    public function setDepartments(array $ids=null)
-    {
-        if ($ids) {
-            $current = array_keys($this->getDepartments());
-
-            if (array_diff($current, $ids) || array_diff($ids, $current)) {
-                $this->departments = [];
-                $this->departmentsHaveChanged = true;
-
-                foreach ($ids as $id) {
-                    try { $this->departments[$id] = new Department($id); }
-                    catch (\Exception $e) {
-                        // Just ignore invalid departments for now
-                    }
-                }
+            foreach ($ids as $id) {
+                $this->departments[$id] = new Department($id);
             }
         }
-        else {
-            $this->departments = [];
-            $this->departmentsHaveChanged = true;
+    }
+
+    /**
+     * @return Validator[]   An array of validator callables
+     */
+    public function getValidators(): array
+    {
+        if (!$this->validators) {
+            $db  = Database::getConnection();
+            $sql = "select class from committee_application_validators where committee_id=?";
+            $res = $db->query($sql)->execute([$this->getId()]);
+            foreach ($res as $r) {
+                $this->validators[$r['class']] = new $r['class'];
+            }
+        }
+        return $this->validators;
+    }
+
+    /**
+     * @param string[] $classes  Class names of validators
+     */
+    public function setValidators(array $classes)
+    {
+        $current = array_keys($this->validators);
+
+        $this->validatorsHaveChanged  = (array_diff($current, $classes) || array_diff($classes, $current)) ? true : false;
+        if ($this->validatorsHaveChanged) {
+            foreach ($classes as $c) {
+                $this->validators[$c] = new $c();
+            }
         }
     }
 
-    /**
-     * Application objects for this committee
-     *
-     * @param array $params Additional query parameters
-     * @return Laminas\Db\Result
-     */
-    public function getApplications(array $params=null)
+    public function getStatutes(): array
     {
-        if (!$params) { $params = []; }
-        $params['committee_id'] = $this->getId();
-
-        $table = new ApplicationTable();
-        return $table->find($params);
+        $t = new CommitteeStatuteTable();
+        $r = $t->find(['committee_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
-    /**
-     * @return Laminas\Db\Result
-     */
-    public function getStatutes()
-    {
-        $table = new CommitteeStatuteTable();
-        return $table->find(['committee_id'=>$this->getId()]);
-    }
-
-    /**
-     * @param array $fields
-     * @return array
-     */
-    public static function data(array $fields=null): array
+    public static function data(?array $fields=null): array
     {
         $where = '';
         if (isset(   $fields['current'])) {
@@ -509,7 +499,7 @@ class Committee extends ActiveRecord
     {
         $t = new MeetingTable();
         $l = $t->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
-        foreach ($l as $m) {
+        foreach ($l['rows'] as $m) {
             $event_id = $m->getEventId();
             if ($event_id) {
                 try {

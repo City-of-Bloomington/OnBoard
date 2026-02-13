@@ -1,55 +1,56 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models\Legislation;
 
-use Laminas\Db\Sql\Select;
-use Web\Database;
-use Web\TableGateway;
+use Application\PdoRepository;
 
-class LegislationFilesTable extends TableGateway
+class LegislationFilesTable extends PdoRepository
 {
 	public function __construct() { parent::__construct('legislationFiles', __namespace__.'\LegislationFile'); }
 
-	public function find($fields=null, $order=null, $paginated=false, $limit=null)
+	public function find(array $fields=[], ?string $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select('legislationFiles');
+        $select = 'select * from legislationFiles';
+        $joins  = [];
+        $where  = [];
+        $params = [];
+
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'indexed':
-                        if ($value) {
-                            $select->where(['indexed>updated']);
-                        }
-                        else {
-                            $select->where(['indexed is null or updated>indexed']);
-                        }
+                        $where[] = $v
+                                 ? 'indexed>updated'
+                                 : 'indexed is null or updated>indexed';
                     break;
 
                     default:
-                        $select->where([$key=>$value]);
-
+                        $where[]    = "$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
-        return $this->performSelect($select, $order, $paginated, $limit);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
     /**
 	 * Check if a legislation has a given department
      */
-	public static function hasDepartment(int $department_id, int $file_id): bool
+	public function hasDepartment(int $department_id, int $file_id): bool
 	{
         $sql    = "select d.department_id
                    from legislationFiles      f
                    join legislation           l on f.legislation_id=l.id
                    join committee_departments d on l.committee_id=d.committee_id
                    where d.department_id=? and f.id=?;";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $file_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $file_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
 	}
 }

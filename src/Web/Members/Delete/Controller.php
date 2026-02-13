@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Members\Delete;
 
+use Application\Models\CommitteeHistory;
 use Application\Models\Member;
 use Application\Models\MemberTable;
 
@@ -17,10 +18,18 @@ class Controller extends \Web\Controller
             if (!empty($_REQUEST['member_id'])) {
                 $m   = new Member($_REQUEST['member_id']);
                 $url = $m->getSeat_id()
-                        ? \Web\View::generateUrl(     'seats.view'   , ['seat_id'=>$m->getSeat_id()     ])
+                        ? \Web\View::generateUrl(     'seats.view'   , ['seat_id'     =>$m->getSeat_id()     ])
                         : \Web\View::generateUrl('committees.members', ['committee_id'=>$m->getCommittee_id()]);
 
-                MemberTable::delete($m);
+                $changes = [['original'=>$m->getData()]];
+                $m->delete();
+
+                CommitteeHistory::saveNewEntry([
+                    'committee_id' => $m->getCommittee_id(),
+                    'tablename'    => 'members',
+                    'action'       => 'delete',
+                    'changes'      => $changes
+                ]);
                 header("Location: $url");
                 exit();
             }

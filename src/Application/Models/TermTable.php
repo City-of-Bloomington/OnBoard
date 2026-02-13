@@ -1,102 +1,66 @@
 <?php
 /**
- * @copyright 2014-2025 City of Bloomington, Indiana
+ * @copyright 2014-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
+use Application\PdoRepository;
 
-class TermTable extends TableGateway
+class TermTable extends PdoRepository
 {
     public function __construct() { parent::__construct('terms', __namespace__.'\Term'); }
 
-    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    public function find(array $fields=[], ?string $order='startDate desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select('terms');
+        $select = 'select t.* from terms t';
+        $joins  = [];
+        $where  = [];
+        $params = [];
+
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'current':
-                        $date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-                        $select->where("(startDate is null or startDate<='$date')");
-                        $select->where("(endDate   is null or endDate  >='$date')");
+                        $date    = date(ActiveRecord::MYSQL_DATE_FORMAT, $v);
+                        $where[] = "(t.startDate is null or t.startDate<='$date')";
+                        $where[] = "(t.endDate   is null or t.endDate  >='$date')";
                         break;
 
                     case 'before':
-                        $date = date(ActiveRecord::MYSQL_DATE_FORMAT, $value);
-                        $select->where("startDate is null or startDate < '$date'");
-                        $select->where("endDate < '$date'");
+                        $date    = date(ActiveRecord::MYSQL_DATE_FORMAT, $v);
+                        $where[] = "(t.startDate is null or t.startDate < '$date')";
+                        $where[] =  "t.endDate < '$date'";
                         break;
 
                     case 'committee_id':
-                        $select->join(['s'=>'seats'], 'terms.seat_id=s.id', [] );
-                        $select->where(['s.committee_id'=>$value]);
+                        $joins[] = 'join seats s on s.id=t.seat_id';
+                        $where[] = 's.committee_id=:committee_id';
+                        $params['committee_id'] = $v;
                         break;
 
                     default:
-                        $select->where([$key=>$value]);
+                        $where[] = "t.$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
-    //----------------------------------------------------------------
-    // Route Action Functions
-    //
-    // These are functions that match the actions defined in the route
-    //----------------------------------------------------------------
-    public static function update(Term $term)
-    {
-        if ($term->getId()) {
-            $action   = 'edit';
-            $original = new Term($term->getId());
-        }
-        else {
-            $action   = 'add';
-            $original = [];
-        }
-        $change  = [CommitteeHistory::STATE_ORIGINAL => $original,
-                    CommitteeHistory::STATE_UPDATED  => $term->getData()];
-
-        $term->save();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id' => $term->getSeat()->getCommittee_id(),
-            'tablename'    => 'terms',
-            'action'       => $action,
-            'changes'      => [$change]
-        ]);
-    }
-
-    public static function delete(Term $term)
-    {
-        $seat   = $term->getSeat();
-        $change = [CommitteeHistory::STATE_ORIGINAL=>$term];
-        $term->delete();
-
-        CommitteeHistory::saveNewEntry([
-            'committee_id' => $seat->getCommittee_id(),
-            'tablename'    => 'terms',
-            'action'       => 'delete',
-            'changes'      => [$change]
-        ]);
-    }
-
-    public static function hasDepartment(int $department_id, int $term_id): bool
+    public function hasDepartment(int $department_id, int $term_id): bool
     {
         $sql    = "select s.committee_id
                    from terms                 t
                    join seats                 s on t.seat_id=s.id
                    join committee_departments d on s.committee_id=d.committee_id
                    where d.department_id=? and t.id=?";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $term_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $term_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }

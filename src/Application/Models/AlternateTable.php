@@ -1,43 +1,46 @@
 <?php
 /**
- * @copyright 2022-2025 City of Bloomington, Indiana
+ * @copyright 2022-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
 
-use Web\ActiveRecord;
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Select;
+use Application\PdoRepository;
 
-class AlternateTable extends TableGateway
+class AlternateTable extends PdoRepository
 {
     public function __construct() { parent::__construct('alternates', __namespace__.'\Alternate'); }
 
-    public function find($fields=null, $order='startDate desc', $paginated=false, $limit=null)
+    public function find(array $fields=[], ?string $order='startDate desc', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select('alternates');
+        $select = 'select * from alternates';
+        $joins  = [];
+        $where  = [];
+        $params = [];
+
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'current':
-                        if ($value) {
-                            $select->where("startDate <= now()");
-                            $select->where("(endDate is null or endDate >= now())");
+                        if ($v) {
+                            $where[] = 'startDate <= now()';
+                            $where[] = '(endDate is null or endDate >= now())';
                         }
                         else {
                             // current == false (the past)
-                            $select->where("(endDate is not null and endDate <= now())");
+                            $where[] = '(endDate is not null and endDate <= now())';
                         }
                         break;
 
                     default:
-                        $select->where([$key=>$value]);
+                        $where[] = "$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
-        return parent::performSelect($select, $order, $paginated, $limit);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
     //----------------------------------------------------------------
@@ -80,14 +83,15 @@ class AlternateTable extends TableGateway
         ]);
     }
 
-    public static function hasDepartment(int $department_id, int $alternate_id): bool
+    public function hasDepartment(int $department_id, int $alternate_id): bool
     {
         $sql    = "select a.committee_id
                    from alternates a
                    join committee_departments d on a.committee_id=d.committee_id
                    where d.department_id=? and a.id=?";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $alternate_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $alternate_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }

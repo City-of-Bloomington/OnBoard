@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -27,7 +27,8 @@ class Controller extends \Web\Controller
         if (isset($committee)) {
 
             if ($committee->getType() === 'seated') {
-                $data      = SeatTable::currentData(['committee_id'=>$committee->getId()]);
+                $table     = new SeatTable();
+                $data      = $table->currentData(['committee_id'=>$committee->getId()]);
                 $seat_data = SeatsController::filter_viewable($data['results']);
 
                 switch ($this->outputFormat) {
@@ -68,7 +69,6 @@ class Controller extends \Web\Controller
     {
         $data    = [];
         $canView = \Web\View::isAllowed('people', 'viewContactInfo');
-        $fields  = ['email', 'address', 'city', 'state', 'zip'];
         foreach ($results as $m) {
             $person  = $m->getPerson();
 
@@ -85,11 +85,7 @@ class Controller extends \Web\Controller
                 'offices'                => $this->offices($m)
             ];
             if ($canView) {
-                $row['member_email'  ] = $person->getEmail();
-                $row['member_address'] = $person->getAddress();
-                $row['member_city'   ] = $person->getCity();
-                $row['member_state'  ] = $person->getState();
-                $row['member_zip'    ] = $person->getZip();
+                $row['member_email'] = $person->getEmail();
             }
             $data[] = $row;
         }
@@ -98,16 +94,14 @@ class Controller extends \Web\Controller
 
     private function offices(Member $m)
     {
-        $offices = [];
-        $table   = new OfficeTable();
         $search  = ['person_id'    => $m->getPerson_id(),
                     'committee_id' => $m->getCommittee_id(),
                     'current'      => date('Y-m-d') ];
-        foreach ($table->find($search) as $o) { $offices[] = $o; }
+        $t = new OfficeTable();
+        $r = $t->find($search);
         return $this->outputFormat == 'html'
-               ? $offices
-               : self::serializeOffices($offices);
-
+               ? $r['rows']
+               : self::serializeOffices($r['rows']);
     }
 
     /**

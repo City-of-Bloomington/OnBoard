@@ -83,15 +83,17 @@ class Department extends ActiveRecord
     //----------------------------------------------------------------
     public function __toString() { return $this->get('name'); }
 
-    public function getCommittees()
+    public function getCommittees(): array
     {
-        $table = new CommitteeTable();
-        return $table->find(['department_id'=>$this->getId()]);
+        $t = new CommitteeTable();
+        $r = $t->find(['department_id'=>$this->getId()]);
+        return $r['rows'];
     }
 
-    public function getUsers()
+    public function getUsers(): array
     {
-        $table = new PeopleTable();
-        return $table->find(['user_account'=>true, 'department_id'=>$this->getid()]);
+        $t = new PeopleTable();
+        $r = $t->find(['user_account'=>true, 'department_id'=>$this->getid()]);
+        return $r['rows'];
     }
 }

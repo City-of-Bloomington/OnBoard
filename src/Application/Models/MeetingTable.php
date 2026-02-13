@@ -1,77 +1,80 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application\Models;
 
-use Web\Database;
-use Web\TableGateway;
-use Laminas\Db\Sql\Sql;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Expression;
+use Application\PdoRepository;
 
-class MeetingTable extends TableGateway
+class MeetingTable extends PdoRepository
 {
-    const TABLE = 'meetings';
     public static $sortableFields = ['start'];
 
-    public function __construct() { parent::__construct(self::TABLE, __namespace__.'\Meeting'); }
+    public function __construct() { parent::__construct('meetings', __namespace__.'\Meeting'); }
 
-    private function processFields(array $fields=null, Select &$select)
+    private function processFields(array &$joins, array &$where, array &$params, array $fields=[])
     {
         if ($fields) {
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
+            foreach ($fields as $k=>$v) {
+                switch ($k) {
                     case 'start':
-                        $select->where(['m.start >= ?'=> $value->format('Y-m-d H:i:s')]);
+                        $where[] = 'm.start >= :start';
+                        $params['start'] = $v->format('Y-m-d H:i:s');
                         break;
 
                     case 'end':
-                        $select->where(['m.end <= ?'=>$value->format('Y-m-d H:i:s')]);
+                        $where[] = 'm.end <= :end';
+                        $params['end'] = $v->format('Y-m-d H:i:s');
                         break;
 
                     case 'year':
-                        $select->where(['year(m.start)=?' => (int)$value]);
+                        $where[] = 'year(m.start)=:year';
+                        $params['year'] = (int)$v;
                         break;
 
                     case 'fileType':
-                        $select->join(['f'=>'meetingFiles'], 'm.id=f.meeting_id', []);
-                        $select->where(['f.type'=>$value]);
+                        $joins[] = 'join meetingFiles f on m.id=f.meeting_id';
+                        $where[] = 'f.type=:type';
+                        $params['type'] = $v;
                         break;
 
                     default:
-                        $select->where(["m.$key"=>$value]);
+                        $where[] = "m.$k=:$k";
+                        $params[$k] = $v;
                 }
             }
         }
     }
 
-    public function find($fields=null, $order='start', $paginated=false, $limit=null)
+    public function find(array $fields=[], ?string $order='start', ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
-        $select = new Select(['m' => self::TABLE]);
-        $this->processFields($fields, $select);
+        $select = 'select m.* from meetings m';
+        $joins  = [];
+        $where  = [];
+        $params = [];
 
-        return parent::performSelect($select, $order, $paginated, $limit);
+        $this->processFields($joins, $where, $params, $fields);
+        $sql  = parent::buildSql($select, $joins, $where, null, $order);
+        return  parent::performSelect($sql, $params, $itemsPerPage, $currentPage);
     }
 
-    public function years($fields=null): array
+
+    public function years(?array $fields=null): array
     {
-        $sql    = new Sql(Database::getConnection());
-        $select = $sql->select()
-                      ->from(['m' => self::TABLE])
-                      ->columns([
-                          'year'  => new Expression('distinct(year(m.start))'),
-                          'count' => new Expression('count(*)')
-                      ])
-                      ->group('year')
-                      ->order('year desc');
+        $select = "select distinct(year(m.start)) as year, count(*) as count from meetings as m";
+        $joins  = [];
+        $where  = [];
+        $params = [];
+        $group  = 'year';
+        $order  = 'year desc';
+        $this->processFields($joins, $where, $params, $fields);
 
-        $this->processFields($fields, $select);
-
-        $query  = $sql->prepareStatementForSqlObject($select);
-        $result = $query->execute();
+        $sql    = parent::buildSql($select, $joins, $where, $group, $order);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute($params);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         $out    = [];
         foreach ($result as $row) {
             $out[$row['year']] = (int)$row['count'];
@@ -79,14 +82,15 @@ class MeetingTable extends TableGateway
         return $out;
     }
 
-    public static function hasDepartment(int $department_id, int $meeting_id): bool
+    public function hasDepartment(int $department_id, int $meeting_id): bool
     {
         $sql    = "select m.committee_id
                    from meetings m
                    join committee_departments d on m.committee_id=d.committee_id
                    where d.department_id=? and m.id=?";
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute([$department_id, $meeting_id]);
+        $query  = $this->pdo->prepare($sql);
+        $query->execute([$department_id, $meeting_id]);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
         return count($result) ? true : false;
     }
 }

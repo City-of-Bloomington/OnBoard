@@ -20,7 +20,7 @@ class PersonAssociation implements AssertionInterface
         'phone_id' => '\Application\Models\PhoneTable'
     ];
 
-    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    public function assert(Acl $acl, ?RoleInterface $role=null, ?ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
             if (!empty($_REQUEST['person_id'])

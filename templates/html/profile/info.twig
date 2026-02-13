@@ -1,9 +1,10 @@
 {#
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person person
  * @param array  emails
  * @param array  phones
+ * @param array  addresses
  * @param array  members
  * @param array  liaisons
  * @param array  applicantFiles
@@ -44,6 +45,31 @@
         <td>{% if p.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
         <td>{{ forms.actionLink(uri('profile.phones.update', { phone_id: p.id }), _('phone_edit'  ), 'edit'  ) }}
             {{ forms.actionLink(uri('profile.phones.delete', { phone_id: p.id }), _('phone_delete'), 'delete') }}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+
+<section>
+    <header><h2>{{ _(['address', 'addresses', 2]) }}</h2></header>
+    {% set url     = uri('profile.addresses.add') %}
+    {% set home    = false %}
+    {% set mailing = false %}
+    {% for a in person.addresses %}
+        {% if a.type=='Home' %}{% set home    = true %}
+        {% else %}             {% set mailing = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if not home    %}{{ forms.actionLink(url ~ '?type=Home',    'Home Address',    'add') }}{% endif %}
+    {% if not mailing %}{{ forms.actionLink(url ~ '?type=Mailing', 'Mailing Address', 'add') }}{% endif %}
+    <table>
+    {% for a in person.addresses %}
+    <tr><td>{{ a.address }} {{ a.city }} {{ a.state }} {{ a.zip }}</td>
+        <td><span class="usa-tag">{{ a.type }}</span></td>
+        <td>{{ forms.actionLink(uri('profile.addresses.update', { address_id: a.id }), _('address_edit'  ), 'edit'  ) }}
+            {{ forms.actionLink(uri('profile.addresses.delete', { address_id: a.id }), _('address_delete'), 'delete') }}
         </td>
     </tr>
     {% endfor %}

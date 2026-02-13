@@ -21,12 +21,13 @@ class Controller extends \Web\Controller
         $committee = self::checkForCommittee($params);
         if ($committee) { $search['committee_id'] = $committee->getId(); }
 
-        $dates     = self::checkForDates();
-        if ($dates) { $search = array_merge($search, $dates); }
-        else        { $search = array_merge($search, self::currentDates()); }
-
-        if (  !(isset($search['start']) && isset($search['end']))
-            && !isset($search['year'])) {
+        try {
+            $dates     = self::checkForDates();
+            if ($dates) { $search = array_merge($search, $dates); }
+            else        { $search['year'] = self::year(); }
+        }
+        catch (\Exception $e) {
+            $_SESSION['errorMessages'][] = 'invalidDate';
             return new \Web\Views\BadRequestView();
         }
 
@@ -38,20 +39,12 @@ class Controller extends \Web\Controller
         $sort     = (!empty($_GET['sort']) && $_GET['sort']=='asc') ? 'asc' : 'desc';
 
         $table = new MeetingTable();
-        if ($this->outputFormat !='json') {
-            $list  = $table->find($search, "start $sort", true);
-            $list->setCurrentPageNumber($page);
-            $list->setItemCountPerPage(parent::ITEMS_PER_PAGE);
-
-            $totalItemCount = $list->getTotalItemCount();
-        }
-        else {
-            $list  = $table->find($search, "start $sort");
-            $totalItemCount = count($list);
-        }
+        $list  = $this->outputFormat !='json'
+               ? $table->find($search, "start $sort", parent::ITEMS_PER_PAGE, $page)
+               : $table->find($search, "start $sort");
 
         $meetings = [];
-        foreach ($list as $m) {
+        foreach ($list['rows'] as $m) {
             $date  = $m->getStart('Y-m-d');
             $time  = $m->getStart('H:i:s');
 
@@ -79,7 +72,7 @@ class Controller extends \Web\Controller
                 return new View($meetings,
                                 $search,
                                 $sort,
-                                $totalItemCount,
+                                $list['total'],
                                 $page,
                                 parent::ITEMS_PER_PAGE,
                                 $committee);
@@ -101,40 +94,36 @@ class Controller extends \Web\Controller
         return null;
     }
 
+    /**
+     * @throws \Exception
+     */
     private static function checkForDates(): array
     {
         if (!empty($_GET['start'])) {
-            try {
-                $start = new \DateTime($_GET['start']);
-                if (!empty($_GET['end'])) { $end = new \DateTime($_GET['end']); }
+            $start = new \DateTime($_GET['start']);
+            if (!empty($_GET['end'])) { $end = new \DateTime($_GET['end']); }
 
-                if (!isset($end)) {
-                    $end = clone $start;
-                    $end->add(new \DateInterval('P1Y'));
-                }
-                $year = (int)$start->format('Y');
-                return [
-                    'start' => $start,
-                    'end'   => $end
-                ];
+            if (!isset($end)) {
+                $end = clone $start;
+                $end->add(new \DateInterval('P1Y'));
             }
-            catch (\Exception $e) {
-                $_SESSION['errorMessages'][] = new \Exception('invalidDate');
-            }
+            return [
+                'start' => $start,
+                'end'   => $end
+            ];
         }
         return [];
     }
 
-    private static function currentDates(): array
+    /**
+     * @throws \Exception
+     */
+    private static function year(): int
     {
+        $maxY  = (int)date('Y') + 2;
         $year  = !empty($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
-        $start = new \DateTime("$year-01-01 00:00:00");
-        $end   = new \DateTime("$year-12-31 23:59:59");
-        return [
-            'start' => $start,
-            'end'   => $end,
-            'year'  => $year
-        ];
+        if ($year > $maxY) { throw new \Exception('invalidDate');}
+        return $year;
     }
 
     private static function years(Committee $c)

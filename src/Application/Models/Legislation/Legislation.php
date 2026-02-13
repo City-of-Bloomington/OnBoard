@@ -23,10 +23,11 @@ class Legislation extends ActiveRecord
 
 	private $tags    = [];
 
-	public static function actionTypes()
+	public static function actionTypes(): array
 	{
-        $table = new ActionTypesTable();
-        return $table->find();
+        $t = new ActionTypesTable();
+        $r = $t->find();
+		return $r['rows'];
 	}
 
 	/**
@@ -140,36 +141,31 @@ class Legislation extends ActiveRecord
 	//----------------------------------------------------------------
 	// Custom functions
 	//----------------------------------------------------------------
-	/**
-	 * Returns an array of Actions
-	 *
-	 * @return array  An array of Action objects
-	 */
-	public function getActions(array $fields=null)
+	public function getActions(?array $fields=null): array
 	{
         $search = $fields ? $fields : [];
         $search['legislation_id'] = $this->getId();
 
-        $table = new ActionsTable();
-        return $table->find($search);
+        $t = new ActionsTable();
+        $r = $t->find($search);
+		return $r['rows'];
 	}
 
-	/**
-	 * @return array  An array of LegislationFile objects
-	 */
-	public function getFiles()
+	public function getFiles(): array
 	{
-        $table = new LegislationFilesTable();
-        return $table->find(['legislation_id'=>$this->getId()]);
+        $t = new LegislationFilesTable();
+        $r = $t->find(['legislation_id'=>$this->getId()]);
+		return $r['rows'];
 	}
 
-	public function getChildren()
+	public function getChildren(): array
 	{
-        $table = new LegislationTable();
-        return $table->find(['parent_id'=>$this->getId()]);
+        $t = new LegislationTable();
+        $r = $t->find(['parent_id'=>$this->getId()]);
+		return $r['rows'];
 	}
 
-	public function amendsCode() { return $this->getAmendsCode(); }
+	public function amendsCode(): bool { return $this->getAmendsCode(); }
 
 	/**
 	 * Returns a data structure ready for serialization

@@ -180,8 +180,8 @@ abstract class File extends ActiveRecord
     public function getId()           { return parent::get('id');          }
     public function getFilename()     { return parent::get('filename');    }
     public function getMime_type()    { return parent::get('mime_type');   }
-    public function getCreated($f=null, \DateTimeZone $tz=null) { return parent::getDateData('created', $f, $tz); }
-    public function getUpdated($f=null, \DateTimeZone $tz=null) { return parent::getDateData('updated', $f, $tz); }
+    public function getCreated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('created', $format, $tz); }
+    public function getUpdated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('updated', $format, $tz); }
 
     //----------------------------------------------------------------
     // Custom Functions
@@ -315,12 +315,8 @@ abstract class File extends ActiveRecord
      *
      * If an new extension is provided, the filename's extension will be replaced
      * with the provided extension.
-     *
-     * @param string $filename
-     * @param string $extension  Optional, new extension to use for the filename
-     * @return string
      */
-    public static function createValidFilename($filename, $extension=null)
+    public static function createValidFilename(string $filename, ?string $extension=null): string
     {
         // No bad characters
         $filename = preg_replace('/[^A-Za-z0-9_\-\.\s]/','',$filename);

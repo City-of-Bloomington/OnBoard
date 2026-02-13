@@ -35,7 +35,7 @@ class View extends \Web\View
         $out = [];
         $t   = new AppointerTable();
         $l   = $t->find();
-        foreach ($l as $a) { $out[] = ['value'=>$a->getId(), 'label'=>$a->getName()]; }
+        foreach ($l['rows'] as $a) { $out[] = ['value'=>$a->getId(), 'label'=>$a->getName()]; }
         return $out;
     }
 

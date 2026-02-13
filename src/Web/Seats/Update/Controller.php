@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Seats\Update;
 
 use Application\Models\AppointerTable;
+use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
 use Application\Models\SeatTable;
 
@@ -21,6 +22,7 @@ class Controller extends \Web\Controller
 
         if (isset($seat)) {
             if (isset($_POST['name'])) {
+                $original = $seat->getData();
                 try {
                     $seat->setCode             ($_POST['code'             ]);
                     $seat->setName             ($_POST['name'             ]);
@@ -33,7 +35,17 @@ class Controller extends \Web\Controller
                     $seat->setVoting           ($_POST['voting'           ] ?? false);
                     $seat->setTakesApplications($_POST['takesApplications'] ?? false);
 
-                    SeatTable::update($seat);
+                    $seat->save();
+
+                    $changes = [[CommitteeHistory::STATE_ORIGINAL => $original,
+                                 CommitteeHistory::STATE_UPDATED  => $seat->getData()]];
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id' => $seat->getCommittee_id(),
+                        'tablename'    => 'seats',
+                        'action'       => 'edit',
+                        'changes'      => $changes
+                    ]);
+
                     $url = View::generateUrl('seats.view', ['seat_id'=>$seat->getId()]);
                     header("Location: $url");
                     exit();

@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Members\Update;
 
 use Application\Models\Committee;
+use Application\Models\CommitteeHistory;
 use Application\Models\Member;
 use Application\Models\MemberTable;
 use Application\Models\Seat;
@@ -23,6 +24,7 @@ class Controller extends \Web\Controller
 
         if (isset($member)) {
             parent::captureNewReturnUrl(self::return_url($member));
+            $original = $member->getData();;
 
             if (!empty($_POST['committee_id'])) {
                 $member->setPerson_id($_POST['person_id']);
@@ -30,7 +32,14 @@ class Controller extends \Web\Controller
                 $member->setEndDate(!empty($_POST['endDate']) ? $_POST['endDate'] : null);
 
                 try {
-                    MemberTable::update($member);
+                    $member->save();
+
+                    CommitteeHistory::saveNewEntry([
+                        'committee_id'=> $member->getCommittee_id(),
+                        'tablename'   => 'members',
+                        'action'      => 'edit',
+                        'changes'     => [['original'=>$original, 'updated'=>$member->getData()]]
+                    ]);
 
                     $url = parent::popCurrentReturnUrl();
                     header("Location: $url");

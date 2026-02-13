@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -19,7 +19,8 @@ class Controller extends \Web\Controller
                 ? $_GET['type']
                 : Liaison::$types[0];
 
-        $res  = LiaisonTable::data(['type'=>$type, 'current'=>true]);
+        $t    = new LiaisonTable();
+        $res  = $t->data(['type'=>$type, 'current'=>true]);
         $data = self::liaison_data($res['results']);
 
         switch ($this->outputFormat) {

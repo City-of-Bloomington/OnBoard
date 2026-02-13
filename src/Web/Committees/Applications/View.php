@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -8,6 +8,7 @@ namespace Web\Committees\Applications;
 
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
+use Application\Models\MemberTable;
 use Application\Models\Committees\NoteTable;
 use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
@@ -45,12 +46,15 @@ class View extends \Web\View
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
         $url        = parent::generateUrl('committees.applications', ['committee_id'=>$c->getId()]);
+        $validators = $c->getValidators();
 
         $tab  = new ApplicationTable();
-        $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()], 'created desc');
+        $mt   = new MemberTable();
+        $apps = $tab->find(['current'=>time(), 'committee_id'=>$c->getId()]);
         $data = [];
-        foreach ($apps as $a) {
-            $links  = [];
+        foreach ($apps['rows'] as $a) {
+            $links       = [];
+            $validations = [];
             if ($canArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$url",
@@ -66,6 +70,11 @@ class View extends \Web\View
                 ];
             }
 
+            foreach ($validators as $v) {
+                $t = $v($a);
+                $validations[$v::NAME] = $t ? 'Yes' : ($t===false ? 'No' : 'Unknown');
+            }
+
             $p      = $a->getPerson();
             $data[] = [
                 'id'           => $a->getId(),
@@ -73,7 +82,9 @@ class View extends \Web\View
                 'person'       => "{$p->getFirstname()} {$p->getLastname()}",
                 'created'      => $a->getCreated(DATE_FORMAT),
                 'expires'      => $a->getExpires(DATE_FORMAT),
-                'actionLinks'  => $links
+                'actionLinks'  => $links,
+                'validations'  => $validations,
+                'current_member' => $mt->isMember($a->getPerson_id(), $a->getCommittee_id())
             ];
         }
         return $data;
@@ -88,7 +99,7 @@ class View extends \Web\View
         $tab  = new ApplicationTable();
         $apps = $tab->find(['archived'=>time(), 'committee_id'=>$c->getId()], 'archived desc');
         $data = [];
-        foreach ($apps as $a) {
+        foreach ($apps['rows'] as $a) {
             $links  = [];
             if ($canUnArchive) {
                 $links[] = [
@@ -127,7 +138,7 @@ class View extends \Web\View
         $table = new NoteTable();
         $notes = $table->find(['committee_id'=>$c->getId()], 'created desc');
         $data  = [];
-        foreach ($notes as $n) {
+        foreach ($notes['rows'] as $n) {
             $links = [];
             if ($canEdit) {
                 $links[] = [
