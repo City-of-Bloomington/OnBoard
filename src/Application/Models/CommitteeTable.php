@@ -43,7 +43,7 @@ class CommitteeTable extends PdoRepository
                     break;
 
                     case 'department_id':
-                        $joins[] = 'committee_departments d on c.id=d.committee_id';
+                        $joins[] = 'join committee_departments d on c.id=d.committee_id';
                         $where[] = "d.$k=:$k";
                         $params[$k] = $v;
                     break;
