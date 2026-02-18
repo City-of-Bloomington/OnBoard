@@ -34,8 +34,12 @@ class Controller extends \Web\Controller
 
         }
         else {
+            $data = [];
             $list = $table->search($search);
-            return new \Web\Views\JSONView($list['rows']);
+            foreach ($list['rows'] as $l) {
+                $data[] = $l->toArray();
+            }
+            return new \Web\Views\JSONView($data);
         }
     }
 
