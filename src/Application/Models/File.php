@@ -3,7 +3,7 @@
  * Files will be stored as /data/{tablename}/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
- * @copyright 2016-2022 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -113,17 +113,25 @@ abstract class File extends ActiveRecord
         }
     }
 
+    /**
+     * Check information related to file storage
+     */
+    public function validate()
+    {
+        if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
+        if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+    }
+
     public function save()
     {
         // Let MySQL handle setting correct datetimes for created and updated
-        if ($this->getId()) {
-            unset($this->data['created']);
-        }
-        unset($this->data['updated']);
+        if (isset($this->data['created'])) { unset($this->data['created']); }
+        if (isset($this->data['updated'])) { unset($this->data['updated']); }
 
         // Move the new file into place
         if ($this->tempFile && $this->newFile) {
             $this->saveFile($this->tempFile, $this->newFile);
+            $this->data['indexed'] = null;
         }
 
         parent::save();
@@ -132,7 +140,6 @@ abstract class File extends ActiveRecord
         $sql = "select * from {$this->tablename} where id=?";
         $res = $db->createStatement($sql)->execute([$this->getId()]);
         $this->exchangeArray($res->current());
-
     }
 
     protected function saveFile($tempFile, $newFile)
@@ -174,6 +181,9 @@ abstract class File extends ActiveRecord
     public function getMime_type()    { return parent::get('mime_type');   }
     public function getCreated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('created', $format, $tz); }
     public function getUpdated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('updated', $format, $tz); }
+    public function getIndexed(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('indexed', $format, $tz); }
+    public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
+    public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
 
     //----------------------------------------------------------------
     // Custom Functions

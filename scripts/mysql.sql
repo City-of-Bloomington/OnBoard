@@ -199,10 +199,13 @@ create table applicantFiles (
     internalFilename varchar(128) not null,
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
-    created          datetime     not null default CURRENT_TIMESTAMP,
+    created          timestamp    not null default CURRENT_TIMESTAMP,
+    indexed          timestamp,
     updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    updated_by       int unsigned,
     person_id        int unsigned not null,
-    foreign key (person_id) references people(id)
+    foreign key (updated_by) references people(id),
+    foreign key (person_id ) references people(id)
 );
 
 create table offices (
@@ -325,10 +328,12 @@ create table legislationFiles (
     internalFilename varchar(128) not null,
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
-    created          datetime     not null default CURRENT_TIMESTAMP,
-    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    created          timestamp    not null default CURRENT_TIMESTAMP,
     indexed          timestamp,
-    foreign key (legislation_id) references legislation(id)
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    updated_by       int unsigned,
+    foreign key (legislation_id) references legislation(id),
+    foreign key (updated_by)     references      people(id)
 );
 
 create table reports (
@@ -339,10 +344,12 @@ create table reports (
     internalFilename varchar(128) not null,
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
-    created          datetime     not null default CURRENT_TIMESTAMP,
-    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    created          timestamp    not null default CURRENT_TIMESTAMP,
     indexed          timestamp,
-    foreign key (committee_id) references committees(id)
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    updated_by       int unsigned,
+    foreign key (committee_id) references committees(id),
+    foreign key (updated_by)   references     people(id)
 );
 
 create table email_queue (

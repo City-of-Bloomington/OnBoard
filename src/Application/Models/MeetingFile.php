@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2024 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -11,11 +11,6 @@ use Web\View;
 
 class MeetingFile extends File implements Notifications\Model
 {
-    const VALIDATION_ALL  = 0b1111;
-    const VALIDATION_DB   = 0b0001;
-    const VALIDATION_FILE = 0b0010;
-    public $validation = self::VALIDATION_ALL;
-
     protected $tablename = 'meetingFiles';
     protected $meeting;
 
@@ -35,6 +30,9 @@ class MeetingFile extends File implements Notifications\Model
                'text/rtf'                                                         => 'rtf'
     ];
 
+    /**
+     * Check information not related to the file storage
+     */
     public function validateDatabaseInformation()
     {
         if (!$this->getType() || !$this->getMeeting_id()) {
@@ -48,14 +46,9 @@ class MeetingFile extends File implements Notifications\Model
 
     public function validate()
     {
-        if ($this->validation & self::VALIDATION_DB) {
-            $this->validateDatabaseInformation();
-        }
+        $this->validateDatabaseInformation();
 
-        if ($this->validation & self::VALIDATION_FILE) {
-            if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
-            if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
-        }
+        parent::validate();
     }
 
     //----------------------------------------------------------------
@@ -70,10 +63,6 @@ class MeetingFile extends File implements Notifications\Model
     public function setTitle     ($s) { parent::set('title',   $s); }
     public function setMeeting_id($i) { parent::setForeignKeyField (__namespace__.'\Meeting', 'meeting_id', $i); }
     public function setMeeting   ($o) { parent::setForeignKeyObject(__namespace__.'\Meeting', 'meeting_id', $o); }
-
-    public function setIndexed(\DateTime $d)    { $this->data['indexed'   ] = $d->format(ActiveRecord::MYSQL_DATETIME_FORMAT); }
-    public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
-    public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
 
     //----------------------------------------------------------------
     // Custom Functions

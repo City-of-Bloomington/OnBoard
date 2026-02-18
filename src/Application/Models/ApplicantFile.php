@@ -3,7 +3,7 @@
  * Files will be stored as /data/applicantFiles/YYYY/MM/DD/$file_id.ext
  * User provided filenames will be stored in the database
  *
- * @copyright 2016-2025 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -29,15 +29,18 @@ class ApplicantFile extends File
     ];
 
     /**
-     * Throws an exception if anything's wrong
-     * @throws Exception $e
+     * Check information not related to the file storage
      */
+    public function validateDatabaseInformation()
+    {
+        if (!$this->getPerson_id()) { throw new \Exception('files/missingApplicant'); }
+    }
+
     public function validate()
     {
-        // Check for required fields here.  Throw an exception if anything is missing.
-        if (!$this->getFilename())  { throw new \Exception('files/missingFilename');  }
-        if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType');  }
-        if (!$this->getPerson_id()) { throw new \Exception('files/missingApplicant'); }
+        $this->validateDatabaseInformation();
+
+        parent::validate();
     }
 
     //----------------------------------------------------------------

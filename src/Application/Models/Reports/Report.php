@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -14,11 +14,6 @@ use Web\View;
 
 class Report extends File
 {
-    const VALIDATION_ALL  = 0b1111;
-    const VALIDATION_DB   = 0b0001;
-    const VALIDATION_FILE = 0b0010;
-    public $validation = self::VALIDATION_ALL;
-
     protected $tablename = 'reports';
     protected $committee;
 
@@ -31,6 +26,9 @@ class Report extends File
         parent::__construct($id);
     }
 
+    /**
+     * Check information not related to the file storage
+     */
     public function validateDatabaseInformation()
     {
         if (!$this->getTitle() || !$this->getCommittee_id()) {
@@ -40,14 +38,9 @@ class Report extends File
 
 	public function validate()
 	{
-        if ($this->validation & self::VALIDATION_DB) {
-            $this->validateDatabaseInformation();
-        }
+        $this->validateDatabaseInformation();
 
-		if ($this->validation & self::VALIDATION_FILE) {
-            if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
-            if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
-        }
+        parent::validate();
 	}
 
 	//----------------------------------------------------------------

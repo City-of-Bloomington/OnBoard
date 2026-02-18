@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
@@ -15,9 +15,19 @@ class LegislationFile extends File
     protected $tablename = 'legislationFiles';
     protected $legislation;
 
-    public function validate()
+    /**
+     * Check information not related to the file storage
+     */
+    public function validateDatabaseInformation()
     {
         if (!$this->getLegislation_id()) { throw new \Exception('missingRequiredFields'); }
+    }
+
+    public function validate()
+    {
+        $this->validateDatabaseInformation();
+
+        parent::validate();
     }
 
 	//----------------------------------------------------------------

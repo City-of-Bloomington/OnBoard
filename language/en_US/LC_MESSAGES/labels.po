@@ -51,6 +51,9 @@ msgstr "Reset"
 msgid "done"
 msgstr "Done"
 
+msgid "upload"
+msgstr "Upload"
+
 msgid "download"
 msgstr "Download"
 

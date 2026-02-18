@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -30,6 +30,8 @@ class Controller extends \Web\Controller
                     $report->setCommittee_id($_POST['committee_id']);
                     $report->setTitle       ($_POST['title'       ]);
                     $report->setReportDate  ($_POST['reportDate'  ], 'Y-m-d');
+                    $report->setUpdatedPerson($_SESSION['USER']);
+
                     // Before we save the file, make sure all the database information is correct
                     $report->validateDatabaseInformation();
                     // If they are editing an existing document, they do not need to upload a new file
