@@ -245,9 +245,11 @@ create table meetingFiles(
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
     created          timestamp    not null default CURRENT_TIMESTAMP,
-    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     indexed          timestamp,
-    foreign key (  meeting_id) references   meetings(id)
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    updated_by       int unsigned,
+    foreign key (meeting_id) references meetings(id),
+    foreign key (updated_by) references   people(id)
 );
 
 create table meeting_attendance (
