@@ -5,15 +5,8 @@
 define('APPLICATION_HOME', realpath(__DIR__.'/../../'));
 define('VERSION', trim(file_get_contents(APPLICATION_HOME.'/VERSION')));
 
-// Path to LibreOffice for converting files to PDF
-define('SOFFICE', '/usr/bin/soffice');
-
 /**
- * Multi-Site support
- *
- * To allow multiple sites to use this same install base,
- * define the SITE_HOME variable in the Apache config for each
- * site you want to host.
+ * Configuration and Data directory
  *
  * SITE_HOME is the directory where all site-specific data and
  * configuration are stored.  For backup purposes, backing up this
@@ -21,9 +14,6 @@ define('SOFFICE', '/usr/bin/soffice');
  */
 define('SITE_HOME', !empty($_SERVER['SITE_HOME']) ? $_SERVER['SITE_HOME'] : APPLICATION_HOME.'/data');
 
-/**
- * Enable autoloading for the PHP libraries
- */
 $loader = require APPLICATION_HOME.'/vendor/autoload.php';
 $loader->addPsr4('Site\\', SITE_HOME);
 

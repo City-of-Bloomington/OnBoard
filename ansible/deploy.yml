@@ -14,11 +14,6 @@
         packages:
           - "php-mysql"
           - "php-pgsql"
-          - "default-jre"
-          - "libreoffice-common"
-          - "libreoffice-writer"
-          - "libreoffice-java-common"
-          - 'poppler-utils'
 
     - name: 'Create mysql database'
       community.mysql.mysql_db:
@@ -93,5 +88,4 @@
         - "{{ onboard_install_path }}"
         - "{{ onboard_backup_path  }}"
         - "{{ onboard_site_home    }}"
-        - "/var/www" # Required for Apache to use LibreOffice to generate PDF
 ...

@@ -124,14 +124,6 @@ abstract class File extends ActiveRecord
         // Move the new file into place
         if ($this->tempFile && $this->newFile) {
             $this->saveFile($this->tempFile, $this->newFile);
-
-            if (!in_array($this->data['mime_type'], ['application/pdf', 'application/zip'])) {
-                self::convertToPDF($this->newFile);
-
-                $extension = static::$mime_types[$this->data['mime_type']];
-                $this->data['filename' ] = basename($this->data['filename'], $extension).'pdf';
-                $this->data['mime_type'] = 'application/pdf';
-            }
         }
 
         parent::save();
@@ -223,38 +215,6 @@ abstract class File extends ActiveRecord
         // Flag where it's supposed to go
         // Actually moving the file is deferred until save()
         $this->newFile = $this->getFullPath();
-    }
-
-    /**
-     * In-place conversion of given file to PDF
-     *
-     * You must have set the SOFFICE path in bootstrap.php
-     * Apache must have permission to write to the SITE_HOME directory.
-     * LibreOffice will create .config and .cache directories in SITE_HOME
-     *
-     * @param string $file Full path to the file to convert
-     */
-    public static function convertToPDF($file)
-    {
-        if ($file && is_file($file) && is_writable($file)) {
-            $info = pathinfo($file);
-            $dir  = $info['dirname'];
-
-            $cmd  = SOFFICE.' -env:UserInstallation=file://'.SITE_HOME." --convert-to pdf --headless --outdir $dir $file";
-            $out  = "$cmd\n";
-            $out .= shell_exec($cmd);
-            if (is_file("$file.pdf")) {
-                 rename("$file.pdf", $file);
-            }
-            else {
-                file_put_contents(SITE_HOME.'/soffice.log', $out, FILE_APPEND);
-                unlink($file);
-                throw new \Exception("file/pdfConversionFailed");
-            }
-        }
-        else {
-            throw new \Exception("file/pdfConversionFailed");
-        }
     }
 
     /**
