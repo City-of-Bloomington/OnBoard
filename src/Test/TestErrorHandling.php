@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-include '../../bootstrap.php';
+include '../Web/bootstrap.php';
 
 // Cause an error and see what happens.
 $committee = new Committee('CCCC');

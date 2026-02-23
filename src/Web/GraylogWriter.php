@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2020-2025 City of Bloomington, Indiana
+ * @copyright 2020-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -28,8 +28,8 @@ class GraylogWriter
         $message = new Message();
         $message->setLevel(LogLevel::ERROR);
         if (!empty($event['message'])) { $message->setShortMessage($event['message']); }
-        if (!empty($event['file'   ])) { $message->setFile        ($event['file'   ]); }
-        if (!empty($event['line'   ])) { $message->setLine        ($event['line'   ]); }
+        if (!empty($event['file'   ])) { $message->setAdditional('file', $event['file']); }
+        if (!empty($event['line'   ])) { $message->setAdditional('line', $event['line']); }
 
         $message->setAdditional('base_uri', BASE_URI);
         if (!empty($_SERVER['REQUEST_URI'])) {
