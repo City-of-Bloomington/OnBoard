@@ -2,7 +2,7 @@
 /**
  * Update the SOLR index with new documents that have not been indexed
  *
- * @copyright 2023-2025 City of Bloomington, Indiana
+ * @copyright 2023-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -33,7 +33,7 @@ foreach ($types as $tablename=>$classname) {
     echo "Found $total $tablename\n";
     foreach ($result['rows'] as $f) {
         $c++;
-        echo "{$f->getFullPath()} {$f->getId()} $c/$total\n";
+        echo "{$f->getId()} {$f->getInternalFilename()} {$f->getFilename()} $c/$total\n";
         $solr->add($f);
         $update->execute([$f->getId()]);
     }

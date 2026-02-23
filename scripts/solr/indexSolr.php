@@ -38,7 +38,7 @@ foreach ($types as $tablename=>$classname) {
     $c     = 0;
     foreach ($result['rows'] as $f) {
         $c++;
-        echo "{$f->getFullPath()} $c/$total\n";
+        echo "{$f->getId()} {$f->getInternalFilename()} {$f->getFilename()} $c/$total\n";
         $data = $solr->prepareIndexFields($f);
         $buffer->createDocument($data);
 

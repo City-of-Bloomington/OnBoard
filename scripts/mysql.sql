@@ -1,4 +1,4 @@
--- @copyright 2006-2025 City of Bloomington, Indiana
+-- @copyright 2006-2026 City of Bloomington, Indiana
 -- @license http://www.gnu.org/copyleft/agpl.html GNU/AGPL, see LICENSE
 create table departments (
     id    int unsigned not null primary key auto_increment,
@@ -196,7 +196,8 @@ create table applications (
 
 create table applicantFiles (
     id int unsigned not null primary key auto_increment,
-    internalFilename varchar(128) not null,
+    url              varchar(255),
+    internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
     created          timestamp    not null default CURRENT_TIMESTAMP,
@@ -244,7 +245,8 @@ create table meetingFiles(
     meeting_id       int unsigned not null,
     type             varchar(16)  not null,
     title            varchar(64),
-    internalFilename varchar(128) not null,
+    url              varchar(255),
+    internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
     created          timestamp    not null default CURRENT_TIMESTAMP,
@@ -325,7 +327,8 @@ create table legislationActions (
 create table legislationFiles (
     id               int unsigned not null primary key auto_increment,
     legislation_id   int unsigned not null,
-    internalFilename varchar(128) not null,
+    url              varchar(255),
+    internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
     created          timestamp    not null default CURRENT_TIMESTAMP,
@@ -341,7 +344,8 @@ create table reports (
     committee_id     int unsigned not null,
     title            varchar(128) not null,
     reportDate       date         not null,
-    internalFilename varchar(128) not null,
+    url              varchar(255),
+    internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
     created          timestamp    not null default CURRENT_TIMESTAMP,

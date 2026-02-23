@@ -305,11 +305,9 @@ abstract class File extends ActiveRecord
     }
 
     /**
-     * Returns the full path to the file or derivative
-     *
-     * @return string
+     * Returns the full path to the file on the server's hard drive
      */
-    public function getFullPath()
+    private function getFullPath(): string
     {
         return SITE_HOME."/{$this->tablename}/{$this->getInternalFilename()}";
     }
