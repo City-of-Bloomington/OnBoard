@@ -163,4 +163,48 @@ class Meeting extends ActiveRecord
         $update = $pdo->prepare($sql);
         $update->execute([$notes, $this->getId()]);
     }
+
+    private static $LOCATION_MAP = [
+        // Google Calendar Resource   => Human Readable Location
+        '|^(.+)?Atrium(.+)?$|'                                      => "City Hall Showers\n401 N Morton ST\nAtrium",
+        '|^(.+)?Council Chambers(.+)?$|'                            => "City Hall Showers\n401 N Morton ST\nCouncil Chambers Room 115",
+        '|^(.+)?Kelly Conference Room(.+)?$|'                       => "City Hall Showers\n401 N Morton ST\nKelly Conference Room 155",
+        '|^(.+)?Lemon Conference Room(.+)?$|'                       => "City Hall Showers\n401 N Morton ST\nLemon Conference Room 125",
+        '|^(.+)?McCloskey Conference Room(.+)?$|'                   => "City Hall Showers\n401 N Morton ST\nMcCloskey Conference Room 135",
+        '|^(.+)?Showers Plaza(.+)?$|'                               => "City Hall Showers\n401 N Morton ST",
+        '|^(.+)?Allison Conference Room(.+)?$|'                     => "City Hall Showers\n401 N Morton ST\nAllison Conference Room 225",
+        '|^.+Dunlap Conference Room.+$|'                            => "City Hall Showers\n401 N Morton ST\nDunlap Conference Room 235",
+        '|^(.+)?Hooker(.+)?$|'                                      => "City Hall Showers\n401 N Morton ST\nHooker Conference Room 245",
+        '|^(.+)?ITS Training Room(.+)?$|'                           => "City Hall Showers\n401 N Morton ST\nTraining Room",
+        '|^(.+)?Banneker - Gymnasium(.+)?$|'                        => "Banneker Community Center\n930 W 7th ST\nGymnasium",
+        '|^(.+)?Banneker - Kitchen(.+)?$|'                          => "Banneker Community Center\n930 W 7th ST\nKitchen",
+        '|^(.+)?Family Resource Center(.+)?$|'                      => "Banneker Community Center\n930 W 7th ST\nFamily Resource Center (Third Floor)",
+        '|^(.*)?Banneker Community Center(.+)?$|'                   => "Banneker Community Center\n930 W 7th ST",
+        '|^(.+)?Blucher Poole Conference Room(.+)?$|'               => "Blucher Poole\n5555 N Bottom RD\nConference Room",
+        '|^(.+)?Dillman Road Conference Room(.+)?$|'                => "Dillman Water Treatment Plant\n100 W Dillman RD\nConference Room",
+        '|^(.+)?BPD Detective Library Conference Room(.+)?$|'       => "Police Headquarters\n220 E 3rd ST\nDetective Library Conference Room",
+        '|^(.+)?BPD Headquarters Training Room(.+)?$|'              => "Police Headquarters\n220 E 3rd ST\nTraining Room",
+        '|^(.+)?BPD Firing Range(.+)?$|'                            => "Public Safety Training Center\n3230 S Walnut ST\nFiring Range",
+        '|^(.+)?Fire Department Training Tower(.+)?$|'              => "Public Safety Training Center\n3230 S Walnut ST\nFire Training Tower",
+        '|^(.+)?BPD Firing Range Class Room(.+)?$|'                 => "Public Safety Training Center\n3230 S Walnut ST\nFiring Range Classroom",
+        '|^(.+)?Police Substation Community Room(.+)?$|'            => "Police Substation\n245 W Grimes LN\nCommunity Room",
+        '|^(.+)?Mill 1(.+)?$|'                                      => "The Mill\n642 N Madison ST\nRoom 1",
+        '|^(.+)?Mill 2(.+)?$|'                                      => "The Mill\n642 N Madison ST\nRoom 2",
+        '|^(.+)?Mill 3(.+)?$|'                                      => "The Mill\n642 N Madison ST\nRoom 3",
+        '|^(.+)?Utilities Administration Conference Room(.+)?$|'    => "Utilities Service Center\n600 E Miller DR\nAdministration Conference Room",
+        '|^(.+)?Utilities Board Room(.+)?$|'                        => "Utilities Service Center\n600 E Miller DR\nBoard Room",
+        '|^(.+)?Utilities Engineering Large Conference Room(.+)?$|' => "Utilities Service Center\n600 E Miller DR\nEngineering Large Conference Room",
+        '|^(.+)?Utilities Engineering Small Conference Room(.+)?$|' => "Utilities Service Center\n600 E Miller DR\nEngineering Small Conference Room",
+        '|^.+?Animal Shelter.+Education.+?$|'                       => "Animal Shelter\n3410 S Walnut ST\nEducation Room",
+        '|^.+?Animal Shelter.+Admin.+?$|'                           => "Animal Shelter\n3410 S Walnut ST\nShelter Admin",
+        '|^.+?Animal Shelter.+?$|'                                  => "Animal Shelter\n3410 S Walnut ST",
+        '|https://bloomington\.zoom\.us/./\d+\?pwd=\w+|'            => '',
+        '|\, Bloomington\, IN.+$|'                                  => '',
+        '|\,\s|'                                                    => "\n"
+    ];
+
+    public function translated_location(): string
+    {
+        return preg_replace(array_keys(self::$LOCATION_MAP), array_values(self::$LOCATION_MAP), $this->getLocation() ?? '');
+    }
 }

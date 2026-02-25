@@ -48,15 +48,15 @@
         <li class="margin-bottom-2 grid-col-12">
             <div        class="usa-card__container">
                 <div    class="usa-card__header">
-                    <h3><a class="usa-link" href="{{ uri('meetings.view', { meeting_id: m.id }) }}">
-                            {{ m.start|date(DATE_FORMAT) }} {{ m.start|date(TIME_FORMAT) }} - {{ m.end|date(TIME_FORMAT) }}
+                    <h3><a class="usa-link" href="{{ uri('meetings.view', { meeting_id: m.meeting.id }) }}">
+                            {{ m.meeting.start|date(DATE_FORMAT) }} {{ m.meeting.start|date(TIME_FORMAT) }} - {{ m.meeting.end|date(TIME_FORMAT) }}
                         </a>
                     </h3>
-                    <strong>{{ m.title }}</strong>
-                    <div>{{ m.location }}</div>
-                    {% if m.htmlLink -%}
+                    <strong>{{ m.meeting.title }}</strong>
+                    <div>{{ m.meeting.translated_location }}</div>
+                    {% if m.meeting.htmlLink -%}
                     <div>
-                        <a class="usa-link" href="{{ m.htmlLink }}">Google Calendar</a>
+                        <a class="usa-link" href="{{ m.meeting.htmlLink }}">Google Calendar</a>
                     </div>
                     {%- endif %}
                 </div>

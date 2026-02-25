@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Meeting   meeting
  * @param Committee committee
@@ -9,12 +9,13 @@
 {% extends "html/layouts/committee.twig" %}
 {% import  "html/macros/forms.twig"      as forms %}
 {% block content %}
-<h2>{{ meeting.getStart()|date("F j, Y") }}  {{ meeting.getStart()|date("g:ia") }} - {{ meeting.getEnd()|date("g:ia") }}</h2>
-<p>{{ meeting.getLocation() }}
-    {% if meeting.getHtmlLink() -%}
-    <div><a href="{{ meeting.getHtmlLink() }}" class="usa-link">Google Calendar</a><div>
-    {%- endif %}
-</p>
+{{ include('html/meetings/partials/header.twig') }}
+
+<address>{{ meeting.translated_location }}</address>
+
+{% if meeting.getHtmlLink() -%}
+<div><a href="{{ meeting.getHtmlLink() }}" class="usa-link">Google Calendar</a></div>
+{%- endif %}
 
 <form method="post" class="usa-form" >
     <fieldset       class="usa-fieldset">

@@ -7,3 +7,4 @@
 #results a:hover { cursor: pointer; }
 
 tbody th { text-align: left; }
+address { white-space: pre-line; }

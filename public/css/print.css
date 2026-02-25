@@ -1,0 +1,12 @@
+@media print {
+    body > a,
+    body > section,
+    body > div,
+    body > header,
+    body > footer { display: none; }
+
+    main > .grid-container { padding: 0; }
+
+    main nav,
+    aside { display: none; }
+}
