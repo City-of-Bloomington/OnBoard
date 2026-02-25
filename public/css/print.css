@@ -8,5 +8,6 @@
     main > .grid-container { padding: 0; }
 
     main nav,
+    a.actionLink,
     aside { display: none; }
 }

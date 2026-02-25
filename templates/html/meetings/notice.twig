@@ -1,0 +1,53 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Meeting   meeting
+ * @param Committee committee
+ * @param array     attendance
+ #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h1>{{ committee.name }}</h1>
+        <h2>{{ meeting.start|date("F j, Y") }}
+            {{ meeting.start|date("g:ia") }} - {{ meeting.end|date("g:ia") }}
+        </h2>
+        <h2>{{ meeting.title }}</h2>
+    </header>
+    <address>{{ meeting.translated_location }}</address>
+
+    <p>As a quorum of the Council or its committees may be present, this gathering
+       constitutes a meeting under the Indiana Open Door Law (I.C. § 5-14-1.5).
+       For that reason, this statement provides notice that this meeting will
+       occur and is open for the public to attend, observe, and record what transpires.
+    </p>
+
+    <h3>{{ _('membership') }}</h3>
+    <table class="usa-table usa-table--compact">
+        <thead>
+            <tr>
+                <th scope="col">{{ _('name') }}</th>
+                <th scope="col">{{ _('appointed_by') }}</th>
+                <th scope="col">{{ _('startDate') }}</th>
+                {% if attendance[0].term_startDate %}
+                <th scope="col">{{ _('term') }}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in attendance %}
+        <tr>
+            <th scope="row">{{ m.firstname }} {{ m.lastname }}</th>
+            <td>{{ m.appointer }}</td>
+            <td>{{ m.member_startDate|date(DATE_FORMAT) }}</td>
+            {% if m.term_startDate %}
+            <td>{{ m.term_startDate|date(DATE_FORMAT) }} - {{ m.term_endDate|date(DATE_FORMAT) }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% endblock %}
