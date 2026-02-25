@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -23,7 +23,7 @@ class View extends \Web\View
             'meeting'         => $m,
             'committee'       => $m->getCommittee(),
             'files'           => self::createFileData($files),
-            'attendance'      => $m->hasAttendance() ? $m->getAttendance() : null,
+            'attendance'      => $m->getAttendance(),
             'attendanceNotes' => self::attendanceNotes($m),
             'actionLinks'     => self::actionLinks($m),
             'warehouse'       => self::warehouse_data($m),

@@ -21,30 +21,42 @@
 <div><a href="{{ meeting.getHtmlLink() }}" class="usa-link">Google Calendar</a></div>
 {%- endif %}
 
-<h3>{{ _('attendance') }}</h3>
-{% if isAllowed('meetings', 'attendance') %}
-    {{ forms.actionLink(uri('meetings.attendance', { meeting_id: meeting.getId()} ), _('edit'), 'edit' ) }}
-{% endif %}
-{% if attendance %}
+<h3>{{ _('membership') }}</h3>
 <table class="usa-table usa-table--compact">
     <thead>
         <tr>
             <th scope="col">{{ _('name') }}</th>
-            <th scope="col">{{ _('attendance_status') }}</th>
+            <th scope="col">{{ _('appointed_by') }}</th>
+            <th scope="col">{{ _('startDate') }}</th>
+            {% if attendance[0].term_startDate %}
+            <th scope="col">{{ _('term') }}</th>
+            {% endif %}
+            {% if attendance[0].attendance %}
+            <th scope="col">{{ _('attendance') }}</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
     {% for m in attendance %}
     <tr>
         <th scope="row">{{ m.firstname }} {{ m.lastname }}</th>
+        <td>{{ m.appointer }}</td>
+        <td>{{ m.member_startDate|date(DATE_FORMAT) }}</td>
+        {% if m.term_startDate %}
+        <td>{{ m.term_startDate|date(DATE_FORMAT) }} - {{ m.term_endDate|date(DATE_FORMAT) }}</td>
+        {% endif %}
+        {% if m.attendance %}
         <td>{{ m.attendance }}</td>
+        {% endif %}
     </tr>
     {% endfor %}
     </tbody>
 </table>
-{% endif %}
 {% if attendanceNotes %}
 <p>{{ attendanceNotes }}</p>
+{% endif %}
+{% if isAllowed('meetings', 'attendance') %}
+    {{ forms.actionLink(uri('meetings.attendance', { meeting_id: meeting.getId()} ), _('edit_attendance'), 'edit' ) }}
 {% endif %}
 
 <h3>{{ _(['meetingFile', 'meetingFiles', 10]) }}</h3>

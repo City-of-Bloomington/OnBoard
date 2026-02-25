@@ -94,6 +94,9 @@ msgstr "Logout"
 msgid "help"
 msgstr "Help"
 
+msgid "notice"
+msgstr "Notice"
+
 msgid "about"
 msgstr "About"
 
@@ -495,7 +498,10 @@ msgstr[0] "Member"
 msgstr[1] "Members"
 
 msgid "membership"
-msgid_plural "memberships"
+msgstr "Board Membership"
+
+msgid "appointment"
+msgid_plural "appointments"
 msgstr[0] "Appointment"
 msgstr[1] "Appointments"
 

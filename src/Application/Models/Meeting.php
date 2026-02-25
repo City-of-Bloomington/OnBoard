@@ -134,14 +134,20 @@ class Meeting extends ActiveRecord
                        m.seat_id,
                        m.term_id,
                        m.person_id,
-                       m.startDate,
-                       m.endDate,
+                       m.startDate   as member_startDate,
+                       m.endDate     as member_endDate,
                        p.firstname,
-                       p.lastname
+                       p.lastname,
+                      ap.name        as appointer,
+                       t.startDate   as term_startDate,
+                       t.endDate     as term_endDate
                 from meetings x
                 join members  m on x.committee_id=m.committee_id and m.startDate<x.start and (m.endDate is null or m.endDate>x.start)
                 join people   p on p.id=m.person_id
-                left join meeting_attendance a on a.meeting_id=x.id and a.member_id=m.id
+                left join meeting_attendance a on  x.id=a.meeting_id and a.member_id=m.id
+                left join terms              t on  t.id=m.term_id
+                left join seats              s on  s.id=m.seat_id
+                left join appointers        ap on ap.id=s.appointer_id
                 where x.id=?";
         $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
         $q   = $pdo->prepare($sql);

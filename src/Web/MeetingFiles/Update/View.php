@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\MeetingFiles\Update;
 
+use Application\Models\Meeting;
 use Application\Models\MeetingTable;
 use Application\Models\MeetingFile;
 use Application\Models\Committee;
@@ -36,7 +37,8 @@ class View extends \Web\View
              'meetings'    => self::meetingOptions($committee, $year),
              'accept'      => self::mime_types(),
              'maxBytes'    => $maxBytes,
-             'maxSize'     => $maxSize
+             'maxSize'     => $maxSize,
+             'breadcrumbs' => self::breadcrumbs($committee, $meeting)
          ];
     }
 
@@ -77,5 +79,18 @@ class View extends \Web\View
             $options[] = ['value'=>$m->getId(), 'label'=>$m->getStart('F j Y g:i a')];
         }
         return $options;
+    }
+
+    private static function breadcrumbs(Committee $c, Meeting $m): array
+    {
+        $committee_id = $c->getId();
+        $committee    = $c->getName();
+        $meetings     = parent::_(['meeting', 'meetings', 10]);
+        return [
+            $committee  => parent::generateUri('committees.info',     ['committee_id'=>$committee_id]),
+            $meetings   => parent::generateUri('committees.meetings', ['committee_id'=>$committee_id]),
+            $m->getStart('F j, Y g:ia') => parent::generateUri('meetings.view', ['meeting_id'=>$m->getId()]),
+            parent::_('meetingFile') => null
+        ];
     }
 }
