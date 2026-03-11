@@ -18,9 +18,9 @@
 
 <form class="usa-form"  method="post" enctype="multipart/form-data">
     <fieldset class="usa-fieldset">
-        <legend class="usa-legend usa-legend--large">{{ meetingFile.getId() ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
+        <legend class="usa-legend usa-legend--large">{{ meetingFile.id ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
 
-        {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.getMeeting_id(), meetings, true ) }}
+        {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.meeting_id, meetings, true ) }}
         <div class="grid-row margin-top-1">
             <div class="flex-col flex-1">
                 {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ (year - 1) %}
@@ -32,13 +32,13 @@
             </div>
         </div>
 
-        {{ forms.field_select('type', 'type', _('type'),  meetingFile.getType(), types, true) }}
-        {{ forms.field_text('title', 'title', _('title'), meetingFile.getTitle() ) }}
+        {{ forms.field_select('type', 'type', _('type'),  meetingFile.type, types, true) }}
+        {{ forms.field_text('title', 'title', _('title'), meetingFile.title ) }}
 
         <div class="usa-form-group">
-            {% if meetingFile.getFilename() -%}
-            <div><a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.getId() }) }}">
-                    {{ meetingFile.getFilename() }}
+            {% if meetingFile.filename -%}
+            <div><a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.id }) }}">
+                    {{ meetingFile.filename }}
                  </a>
             </div>
             {%- endif %}
@@ -48,7 +48,7 @@
         </div>
 
         {{ forms.button('submit', _('save'), 'save') }}
-        {{ forms.actionLink(uri('meetings.view', { meeting_id: meetingFile.getMeeting_id() }) , _('cancel') ) }}
+        {{ forms.actionLink(uri('meetings.view', { meeting_id: meetingFile.meeting_id }) , _('cancel') ) }}
     </fieldset>
 </form>
 {% endblock %}
