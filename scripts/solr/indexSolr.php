@@ -31,7 +31,7 @@ $types  = [
 
 foreach ($types as $tablename=>$classname) {
     $table     = new $classname();
-    $result    = $table->find();
+    $result    = $table->find(['url'=>null]);
     $sql       = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
     $total = $result['total'];

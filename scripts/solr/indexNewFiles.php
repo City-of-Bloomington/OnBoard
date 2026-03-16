@@ -24,7 +24,7 @@ $types  = [
 ];
 foreach ($types as $tablename=>$classname) {
     $table  = new $classname();
-    $result = $table->find(['indexed'=>false]);
+    $result = $table->find(['indexed'=>false, 'url'=>null]);
     $total  = $result['total'];
     $c      = 0;
 
