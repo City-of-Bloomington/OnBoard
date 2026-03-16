@@ -20,7 +20,6 @@ class Controller extends \Web\Controller
                 switch ($this->outputFormat) {
                     case 'json':
                         return new \Web\Views\JSONView($c->toArray());
-                    break;
 
                     default:
                         return new View($c);

@@ -31,7 +31,6 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'json':
                 return new \Web\Views\JSONView($years);
-            break;
 
             default:
                 return new View($years, $committee ?? null);

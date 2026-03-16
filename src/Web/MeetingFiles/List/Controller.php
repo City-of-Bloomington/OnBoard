@@ -38,7 +38,6 @@ class Controller extends \Web\Controller
                 foreach ($list['rows'] as $f) { $files[] = $f->getData(); }
 
                 return new \Web\Views\CSVView('Meetings', $files);
-            break;
 
             default:
                 return new View($list['rows'],

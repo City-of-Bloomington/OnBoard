@@ -60,7 +60,6 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'json':
                 return new \Web\Views\JSONView($meetings);
-            break;
 
             default:
                 return new View($meetings,
@@ -118,11 +117,5 @@ class Controller extends \Web\Controller
         $year  = !empty($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
         if ($year > $maxY) { throw new \Exception('invalidDate');}
         return $year;
-    }
-
-    private static function years(Committee $c)
-    {
-        $table = new MeetingTable();
-        return array_keys($table->years(['committee_id'=>$c->getId()]));
     }
 }

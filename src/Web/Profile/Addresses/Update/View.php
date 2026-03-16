@@ -38,13 +38,4 @@ class View extends \Web\View
         foreach (Address::$STATES as $abbr=>$name) { $o[] = ['value'=>$abbr, 'label'=>$name]; }
         return $o;
     }
-
-    private static function breadcrumbs(Person $p): array
-    {
-        return [
-            parent::_(['person', 'people', 10]) => parent::generateUri('people.index'),
-            $p->getFullname() => parent::generateUri('people.view', ['person_id'=>$p->getId()]),
-            parent::_('address_add') => null
-        ];
-    }
 }

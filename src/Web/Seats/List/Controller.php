@@ -24,7 +24,6 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'csv':
                 return new \Web\Views\CSVView('Seats', $data);
-            break;
 
             default:
                 return new View($data, $search);
@@ -40,11 +39,10 @@ class Controller extends \Web\Controller
     {
         $search = [];
         if (!empty($_GET['current'])) {
-            try {
-                $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
+            $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
+            if ($c) {
                 $search['current'] = $c;
             }
-            catch (\Exception $e) { }
         }
         if (!empty($_GET['committee_id'])) {
             try {

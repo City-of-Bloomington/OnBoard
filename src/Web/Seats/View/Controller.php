@@ -20,7 +20,6 @@ class Controller extends \Web\Controller
                 switch ($this->outputFormat) {
                     case 'csv':
                         return new CSVView($seat);
-                    break;
 
                     default:
                         return new View($seat);

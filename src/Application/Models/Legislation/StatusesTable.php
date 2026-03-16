@@ -10,7 +10,7 @@ use Application\PdoRepository;
 
 class StatusesTable extends PdoRepository
 {
-    private $columns = ['id', 'name', 'active'];
+    protected $columns = ['id', 'name', 'active'];
 
 	public function __construct() { parent::__construct('legislationStatuses', __namespace__.'\Status'); }
 

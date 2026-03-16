@@ -29,7 +29,6 @@ class Controller extends \Web\Controller
                 $list = $table->find($search, 'reportDate desc');
                 foreach ($list['rows'] as $r) { $data[] = $r->toArray(); }
                 return new \Web\Views\JSONView($data);
-            break;
 
             default:
                 $page  = !empty($_GET['page']) ? (int)$_GET['page'] : 1;

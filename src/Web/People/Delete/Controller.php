@@ -21,6 +21,5 @@ class Controller extends \Web\Controller
         }
         header('Location: '.\Web\View::generateUrl('people.index'));
         exit();
-        return new \Web\View\NotFoundView();
     }
 }

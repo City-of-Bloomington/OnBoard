@@ -200,7 +200,7 @@ class Seat extends ActiveRecord
                 ) foreignKeys";
         $db = Database::getConnection();
         $result = $db->query($sql, [$this->getId(), $this->getId()]);
-        if ($result) {
+        if (count($result)) {
             $row = $result->current();
             return (int)$row['count'] === 0 ? true : false;
         }
@@ -290,10 +290,8 @@ class Seat extends ActiveRecord
 
                 if ($latestTerm) {
                     $newTerm = $this->generateTermForTimestamp($latestTerm, $timestamp);
-                    if ($newTerm) {
-                        $newTerm->save();
-                        return $newTerm;
-                    }
+                    $newTerm->save();
+                    return $newTerm;
                 }
             }
             else {

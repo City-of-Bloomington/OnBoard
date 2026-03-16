@@ -31,7 +31,6 @@ class Controller extends \Web\Controller
                             'website'   => $person->getWebsite(),
                             'username'  => $person->getUsername()
                         ]);
-                        break;
 
                     default:
                         return new View($person);

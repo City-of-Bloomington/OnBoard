@@ -34,11 +34,9 @@ class Controller extends \Web\Controller
                 switch ($this->outputFormat) {
                     case 'csv':
                         return new \Web\Views\CSVView($committee->getName(), $seat_data);
-                    break;
 
                     case 'json':
                         return new \Web\Views\JSONView($seat_data);
-                    break;
 
                     default:
                         return new SeatedView($committee, $seat_data);
@@ -51,11 +49,9 @@ class Controller extends \Web\Controller
                 switch ($this->outputFormat) {
                     case 'csv':
                         return new \Web\Views\CSVView($committee->getName(), $members);
-                    break;
 
                     case 'json':
                         return new \Web\Views\JSONView($members);
-                    break;
 
                     default:
                         return new OpenView($committee, $members, $search);

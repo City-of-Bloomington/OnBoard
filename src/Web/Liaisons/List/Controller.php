@@ -26,15 +26,12 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'email':
                 return new MailMerge($data);
-            break;
 
             case 'csv':
                 return new \Web\Views\CSVView('Liaisons', $data);
-            break;
 
             case 'json':
                 return new \Web\Views\JSONView($data);
-            break;
 
             default:
                 return new View($data, $type);

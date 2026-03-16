@@ -126,9 +126,9 @@ class Term extends ActiveRecord
     public function isSafeToDelete(): bool
     {
         $sql = 'select count(*) as count from members where term_id=?';
-        $db = Database::getConnection();
+        $db  = Database::getConnection();
         $result = $db->query($sql, [$this->getId()]);
-        if ($result) {
+        if (count($result)) {
             $row = $result->current();
             return ((int)$row['count'] === 0) ? true : false;
         }

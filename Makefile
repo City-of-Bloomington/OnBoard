@@ -31,4 +31,4 @@ package:
 
 test:
 	vendor/bin/phpunit -c src/Test/phpunit.xml --testsuite Unit
-	vendor/bin/phpstan analyse -l 3
+	vendor/bin/phpstan analyse -l 4

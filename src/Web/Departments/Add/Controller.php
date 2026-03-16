@@ -22,8 +22,6 @@ class Controller extends \Web\Controller
                 exit();
             }
             catch (\Exception $e) {
-                print_r($e);
-                exit();
                 $_SESSION['errorMessages'][] = $e->getMessage();
             }
         }

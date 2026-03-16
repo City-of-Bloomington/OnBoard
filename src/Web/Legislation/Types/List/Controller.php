@@ -20,11 +20,9 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'csv':
                 return new \Web\Views\CSVView('LegislationTypes', self::data($r['rows']));
-            break;
 
             case 'json':
                 return new \Web\Views\JSONView(self::data($r['rows']));
-            break;
 
             default:
                 return new View(iterator_to_array($r['rows']));

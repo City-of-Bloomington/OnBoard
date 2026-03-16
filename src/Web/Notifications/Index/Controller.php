@@ -27,7 +27,6 @@ class Controller extends \Web\Controller
                         $result['total'],
                         parent::ITEMS_PER_PAGE,
                         $page);
-        return new View(self::definitions());
     }
 
     private static function definitions(): array

@@ -24,7 +24,6 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'csv':
                 return new \Web\Views\CSVView('Vacancies', $data);
-            break;
 
             default:
                 return new View($data);
@@ -40,11 +39,10 @@ class Controller extends \Web\Controller
     private static function parseQueryParameters(): array
     {
         if (!empty($_GET['current'])) {
-            try {
-                $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
+            $c = \DateTime::createFromFormat(DATE_FORMAT, $_GET['current']);
+            if ($c) {
                 return ['current'=>$c];
             }
-            catch (\Exception $e) { }
         }
         return [];
     }

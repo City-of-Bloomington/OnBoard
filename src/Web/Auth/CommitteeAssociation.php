@@ -62,7 +62,6 @@ class CommitteeAssociation implements AssertionInterface
 
                 case 'Administrator':
                     return true;
-                break;
 
                 default:
             }

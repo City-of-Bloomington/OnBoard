@@ -33,7 +33,6 @@ class Controller extends \Web\Controller
                     ];
                 }
                 return new \Web\Views\CSVView('Users', $data);
-            break;
 
             default:
                 $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;

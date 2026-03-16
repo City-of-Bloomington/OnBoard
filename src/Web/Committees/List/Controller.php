@@ -23,11 +23,9 @@ class Controller extends \Web\Controller
         switch ($this->outputFormat) {
             case 'csv':
                 return new \Web\Views\CSVView('Committees', $data);
-            break;
 
             case 'json':
                 return new \Web\Views\JSONView($data);
-            break;
 
             default:
                 return new View($data, $search['current']);

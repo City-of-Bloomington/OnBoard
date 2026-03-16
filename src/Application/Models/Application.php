@@ -28,8 +28,6 @@ class Application extends ActiveRecord implements Notifications\Model
      * Passing in a scalar will load the data from the database.
      * This will load all fields in the table as properties of this class.
      * You may want to replace this with, or add your own extra, custom loading
-     *
-     * @param int|string|array $id (ID, email, username)
      */
     public function __construct($id=null)
     {
