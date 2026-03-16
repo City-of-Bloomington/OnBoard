@@ -21,8 +21,6 @@ class Legislation extends ActiveRecord
 	protected $parent;
 	protected $status;
 
-	private $tags    = [];
-
 	public static function actionTypes(): array
 	{
         $t = new ActionTypesTable();
