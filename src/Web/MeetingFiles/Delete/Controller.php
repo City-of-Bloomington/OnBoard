@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -9,7 +9,7 @@ namespace Web\MeetingFiles\Delete;
 use Application\Models\MeetingFile;
 use Application\Models\MeetingFilesTable;
 use Application\Models\CommitteeTable;
-use Web\Search\Solr;
+use Application\Search\Solr;
 
 class Controller extends \Web\Controller
 {

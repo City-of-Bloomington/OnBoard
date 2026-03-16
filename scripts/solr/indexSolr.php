@@ -2,13 +2,13 @@
 /**
  * Clear and reindex onboard data in a Solr core
  *
- * @copyright 2021-2025 City of Bloomington, Indiana
+ * @copyright 2021-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 
 use Web\Database;
-use Web\Search\Solr;
+use Application\Search\Solr;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
 include '../../src/Web/bootstrap.php';

@@ -7,7 +7,7 @@
  */
 declare (strict_types=1);
 use Web\Database;
-use Web\Search\Solr;
+use Application\Search\Solr;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
 

@@ -10,7 +10,7 @@ use Application\PdoRepository;
 
 class ReportsTable extends PdoRepository
 {
-    public $columns = ['id', 'title', 'reportDate', 'committee_id'];
+    public $columns = ['id', 'title', 'reportDate', 'committee_id', 'url'];
 	public function __construct() { parent::__construct('reports', __namespace__.'\Report'); }
 
 	public function find(array $fields=[], ?string $order=null, ?int $itemsPerPage=null, ?int $currentPage=null): array
