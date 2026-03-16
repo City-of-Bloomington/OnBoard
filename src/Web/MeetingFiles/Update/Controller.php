@@ -40,6 +40,7 @@ class Controller extends \Web\Controller
      */
     public static function saveAndRedirect(MeetingFile $file)
     {
+        $file->setUrl       ($_POST['url'       ]);
         $file->setType      ($_POST['type'      ]);
         $file->setTitle     ($_POST['title'     ]);
         $file->setMeeting_id($_POST['meeting_id']);

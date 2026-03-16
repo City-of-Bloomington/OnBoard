@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param MeetingFile meetingFile
  * @param Committee   committee
@@ -36,6 +36,7 @@
         {{ forms.field_text('title', 'title', _('title'), meetingFile.title ) }}
 
         <div class="usa-form-group">
+            {{ forms.field_text('url', 'url', _('url'), meetingFile.url ) }}
             {% if meetingFile.filename -%}
             <div><a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.id }) }}">
                     {{ meetingFile.filename }}
