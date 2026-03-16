@@ -196,7 +196,7 @@ create table applications (
 
 create table applicantFiles (
     id int unsigned not null primary key auto_increment,
-    url              varchar(255),
+    url              text,
     internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
@@ -245,7 +245,7 @@ create table meetingFiles(
     meeting_id       int unsigned not null,
     type             varchar(16)  not null,
     title            varchar(64),
-    url              varchar(255),
+    url              text,
     internalFilename varchar(128),
     filename         varchar(128),
     mime_type        varchar(128),
@@ -327,7 +327,7 @@ create table legislationActions (
 create table legislationFiles (
     id               int unsigned not null primary key auto_increment,
     legislation_id   int unsigned not null,
-    url              varchar(255),
+    url              text,
     internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
@@ -344,7 +344,7 @@ create table reports (
     committee_id     int unsigned not null,
     title            varchar(128) not null,
     reportDate       date         not null,
-    url              varchar(255),
+    url              text,
     internalFilename varchar(128),
     filename         varchar(128) not null,
     mime_type        varchar(128) not null,
