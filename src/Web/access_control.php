@@ -2,6 +2,7 @@
 /**
  * @copyright 2014-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @var \Aura\Router\RouterContainer $ROUTES
  */
 use Laminas\Permissions\Acl\Acl;
 use Laminas\Permissions\Acl\Role\GenericRole as Role;

@@ -82,6 +82,7 @@ abstract class View
                 if (MarkdownRuntime::class === $class) {
                     return new MarkdownRuntime(new MichelfMarkdown());
                 }
+                return null;
             }
         });
     }
