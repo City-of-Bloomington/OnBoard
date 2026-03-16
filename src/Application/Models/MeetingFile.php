@@ -87,12 +87,11 @@ class MeetingFile extends File implements Notifications\Model
 
     public function getData(): array
     {
-        $m    = $this->getMeeting();
-        $c    = $m->getCommittee();
-
         $data = $this->data;
-        $data['url'      ] = $this->getDownloadUrl();
-        $data['committee'] = $c->getName();
+        if (empty($data['url'])) {
+            $data['url'] = View::generateUrl('meetingFiles.download', ['meetingFile_id'=>$data['id']]);
+        }
+        $data['committee'] = $this->getCommittee()->getName();
         return $data;
     }
 
@@ -109,9 +108,6 @@ class MeetingFile extends File implements Notifications\Model
         return $this->getMeeting()->getStart('Y/m/d');
     }
 
-    public function getDownloadUrl():string { return  View::generateUrl('meetingFiles.download', ['meetingFile_id'=>$this->getId()]); }
-    public function getDownloadUri():string { return  View::generateUri('meetingFiles.download', ['meetingFile_id'=>$this->getId()]); }
-
     public function getSolrFields(): array
     {
         $m = $this->getMeeting();
@@ -120,7 +116,7 @@ class MeetingFile extends File implements Notifications\Model
             'id'        => $this->getId(),
             'type'      => $this->getType(),
             'title'     => $this->getTitle() ?: "{$c->getName()} {$m->getStart('Y-m-d')} {$this->getType()}",
-            'url'       => $this->getDownloadUrl(),
+            'url'       => $this->data['url'] ?? View::generateUrl('meetingFiles.download', ['meetingFile_id'=>$this->getId()]),
             'text'      => $this->extractText(),
             'date'      => $this->getMeeting()->getStart(),
             'changed'   => $this->getUpdated(),

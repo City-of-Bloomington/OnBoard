@@ -25,8 +25,8 @@ class ApplicantFilesTable extends PdoRepository
             foreach ($fields as $k=>$v) {
                 switch ($k) {
                     default:
-                        $where[] = "$k=:$k";
-                        $params[$k] = $v;
+                        if ($v) { $where[] = "$k=:$k"; $params[$k] = $v; }
+                        else    { $where[] = "$k is null"; }
                 }
             }
         }

@@ -31,8 +31,8 @@ class ReportsTable extends PdoRepository
 
                     default:
                         if (in_array($k, $this->columns)) {
-                            $where[] = "$k=:$k";
-                            $params[$k] = $v;
+                            if ($v) { $where[] = "$k=:$k"; $params[$k] = $v; }
+                            else    { $where[] = "$k is null"; }
                         }
 
                 }

@@ -9,6 +9,7 @@ use Application\Models\File;
 
 use Web\ActiveRecord;
 use Web\Database;
+use Web\View;
 
 class LegislationFile extends File
 {
@@ -52,7 +53,7 @@ class LegislationFile extends File
             'id'        => $this->getId(),
             'type'      => $l->getType(),
             'title'     => $l->getTitle(),
-            'url'       => \Web\View::generateUrl('legislationFiles.download', ['legislationFile_id'=>$this->getId()]),
+            'url'       => $this->data['url'] ?? View::generateUrl('legislationFiles.download', ['legislationFile_id'=>$this->getId()]),
             'text'      => $this->extractText(),
             'date'      => $this->getCreated(),
             'changed'   => $this->getUpdated(),

@@ -77,7 +77,7 @@ class Report extends File
             'id'        => $this->getId(),
             'type'      => 'Report',
             'title'     => $this->getTitle(),
-            'url'       => View::generateUrl('reports.download', ['report_id'=>$this->getId()]),
+            'url'       => $this->data['url'] ?? View::generateUrl('reports.download', ['report_id'=>$this->getId()]),
             'text'      => $this->extractText(),
             'date'      => $this->getReportDate(),
             'changed'   => $this->getUpdated(),

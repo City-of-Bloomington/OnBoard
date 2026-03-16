@@ -41,8 +41,8 @@ class MeetingFilesTable extends PdoRepository
                     break;
 
                     default:
-                        $where[] = "$k=:$k";
-                        $params[$k] = $v;
+                        if ($v) { $where[] = "$k=:$k"; $params[$k] = $v; }
+                        else    { $where[] = "$k is null"; }
                 }
             }
         }

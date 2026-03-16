@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     reports   Search results
  * @param array     search    Search parameters
@@ -43,7 +43,7 @@
     <li         class="usa-collection__item">
         <div    class="usa-collection__body">
             <h3 class="usa-collection__heading">
-                <a class="usa-link" href="{{ uri('reports.download', { report_id: r.id }) }}">
+                <a class="usa-link" href="{{ r.url ?? uri('reports.download', { report_id: r.id }) }}">
                     {{ r.title ?? _('noTitle') }}
                     <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
                         <use href="{{ USWDS_URL }}/img/sprite.svg#file_present"></use>

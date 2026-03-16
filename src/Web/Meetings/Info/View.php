@@ -76,6 +76,7 @@ class View extends \Web\View
         foreach ($files as $f) {
             $d = [
                 'id'          => $f->getId(),
+                'url'         => $f->getUrl() ?? parent::generateUri('meetingFiles.download', ['meetingFile_id'=>$f->getId()]),
                 'type'        => $f->getType(),
                 'filename'    => $f->getFilename(),
                 'title'       => $f->getTitle(),

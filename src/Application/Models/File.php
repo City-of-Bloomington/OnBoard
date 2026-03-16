@@ -118,8 +118,10 @@ abstract class File extends ActiveRecord
      */
     public function validate()
     {
-        if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
-        if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+        if (!$this->getUrl()) {
+            if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
+            if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+        }
     }
 
     public function save()
@@ -131,7 +133,6 @@ abstract class File extends ActiveRecord
         // Move the new file into place
         if ($this->tempFile && $this->newFile) {
             $this->saveFile($this->tempFile, $this->newFile);
-            $this->data['indexed'] = null;
         }
 
         parent::save();
@@ -177,11 +178,14 @@ abstract class File extends ActiveRecord
     // Generic Getters & Setters
     //----------------------------------------------------------------
     public function getId()           { return parent::get('id');          }
+    public function getUrl()          { return parent::get('url');         }
     public function getFilename()     { return parent::get('filename');    }
     public function getMime_type()    { return parent::get('mime_type');   }
     public function getCreated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('created', $format, $tz); }
     public function getUpdated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('updated', $format, $tz); }
     public function getIndexed(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('indexed', $format, $tz); }
+
+    public function setUrl(?string $s=null)     { $this->data['url'] = $s; }
     public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
     public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
 
@@ -221,6 +225,9 @@ abstract class File extends ActiveRecord
         // Clean all bad characters from the filename
         $filename = $this->createValidFilename($filename, $extension);
         $this->data['filename'] = $filename;
+
+        $this->data['url'    ] = null;
+        $this->data['indexed'] = null;
 
         // Flag where it's supposed to go
         // Actually moving the file is deferred until save()
