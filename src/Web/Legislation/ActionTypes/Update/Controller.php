@@ -11,7 +11,7 @@ use Application\Models\Legislation\ActionType;
 
 class Controller extends \Web\Controller
 {
-    public function __invoke(array $params): View
+    public function __invoke(array $params): \Web\View
     {
         if (!empty($_REQUEST['legislationActionType_id'])) {
             try { $type = new ActionType($_REQUEST['legislationActionType_id']); }
