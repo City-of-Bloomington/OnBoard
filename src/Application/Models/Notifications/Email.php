@@ -56,7 +56,7 @@ class Email extends ActiveRecord
 
     /**
      * Throws an exception if anything's wrong
-     * @throws Exception $e
+     * @throws \Exception
      */
     public function validate()
     {

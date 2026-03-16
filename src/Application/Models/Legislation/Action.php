@@ -54,6 +54,9 @@ class Action extends ActiveRecord
 		}
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function validate()
 	{
         if (!$this->getLegislation_id() || !$this->getType_id() || !$this->getActionDate()) {

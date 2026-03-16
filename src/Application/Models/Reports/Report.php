@@ -9,10 +9,11 @@ namespace Application\Models\Reports;
 
 use Application\Models\Committee;
 use Application\Models\File;
+use Application\Search\Indexable;
 use Web\ActiveRecord;
 use Web\View;
 
-class Report extends File
+class Report extends File implements Indexable
 {
     protected $tablename = 'reports';
     protected $committee;
@@ -28,6 +29,8 @@ class Report extends File
 
     /**
      * Check information not related to the file storage
+     *
+     * @throws \Exception
      */
     public function validateDatabaseInformation()
     {
@@ -36,6 +39,9 @@ class Report extends File
         }
     }
 
+	/**
+     * @throws \Exception
+     */
 	public function validate()
 	{
         $this->validateDatabaseInformation();

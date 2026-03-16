@@ -42,7 +42,7 @@ class Ldap implements ExternalIdentity
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public static function authenticate(string $username, string $password): bool
     {

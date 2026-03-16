@@ -56,6 +56,9 @@ class Application extends ActiveRecord implements Notifications\Model
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         if (!$this->getCommittee_id() || !$this->getPerson_id()) {

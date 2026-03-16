@@ -114,6 +114,9 @@ class Address extends ActiveRecord
         $this->person = null;
     }
 
+    /**
+	 * @throws \Exception
+	 */
     public function validate()
     {
 		if (!$this->getPerson_id() || !$this->getType()) { throw new \Exception('missingRequiredFields'); }

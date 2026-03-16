@@ -57,6 +57,9 @@ class Alternate extends ActiveRecord
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         if (!$this->getPerson_id()) { throw new \Exception('missingPerson'); }

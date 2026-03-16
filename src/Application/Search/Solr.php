@@ -127,7 +127,7 @@ class Solr
         return $this->client->update($delete);
     }
 
-    public function prepareIndexFields(File $file): array
+    public function prepareIndexFields(Indexable $file): array
     {
         $data = $file->getSolrFields();
 

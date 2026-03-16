@@ -63,6 +63,9 @@ class Email extends ActiveRecord
         $this->person = null;
     }
 
+	/**
+	 * @throws \Exception
+	 */
 	public function validate()
 	{
         if (!self::isValidFormat($this->getEmail())) { throw new \Exception('email/invalidFormat'); }

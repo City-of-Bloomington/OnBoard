@@ -115,6 +115,8 @@ abstract class File extends ActiveRecord
 
     /**
      * Check information related to file storage
+     *
+     * @throws \Exception
      */
     public function validate()
     {
@@ -203,7 +205,7 @@ abstract class File extends ActiveRecord
      * This function does the bulk of the work for setting all the required information.
      * It tries to read as much meta-data about the file as possible
      *
-     * @param array|string Either a $_FILES array or a path to a file
+     * @param array|string $file Either a $_FILES array or a path to a file
      */
     public function setFile($file)
     {

@@ -59,6 +59,9 @@ class Legislation extends ActiveRecord
 		}
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function validate()
 	{
         if (!$this->getCommittee_id() || !$this->getType_id() || !$this->getTitle() || !$this->getNumber()) {

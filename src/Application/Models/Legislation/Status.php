@@ -40,6 +40,9 @@ class Status extends ActiveRecord
 		}
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function validate()
 	{
         if (!$this->getName()) { throw new \Exception('missingRequiredFields'); }

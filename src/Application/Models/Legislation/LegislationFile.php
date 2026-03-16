@@ -6,24 +6,30 @@
 namespace Application\Models\Legislation;
 
 use Application\Models\File;
+use Application\Search\Indexable;
 
 use Web\ActiveRecord;
 use Web\Database;
 use Web\View;
 
-class LegislationFile extends File
+class LegislationFile extends File implements Indexable
 {
     protected $tablename = 'legislationFiles';
     protected $legislation;
 
     /**
      * Check information not related to the file storage
+     *
+     * @throws \Exception
      */
     public function validateDatabaseInformation()
     {
         if (!$this->getLegislation_id()) { throw new \Exception('missingRequiredFields'); }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         $this->validateDatabaseInformation();

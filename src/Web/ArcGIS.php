@@ -55,7 +55,6 @@ class ArcGIS
     /**
      * May return more than one parcel for given coordinates
      *
-     * @param string $resource  Path to resource in REST service
      * @param int    $x         State Plane X
      * @param int    $y         State Plane y
      * @return array  An array of parcels

@@ -36,6 +36,9 @@ class ApplicantFile extends File
         if (!$this->getPerson_id()) { throw new \Exception('files/missingApplicant'); }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         $this->validateDatabaseInformation();

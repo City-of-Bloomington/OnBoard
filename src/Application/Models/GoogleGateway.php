@@ -8,6 +8,7 @@ namespace Application\Models;
 use Google\Client;
 use Google\Service\Calendar;
 use Google\Service\Calendar\Channel;
+use Google\Service\Calendar\Event;
 use Google\Service\Calendar\Events;
 
 class GoogleGateway
@@ -27,7 +28,7 @@ class GoogleGateway
 
     /**
      * @see https://developers.google.com/google-apps/calendar/v3/reference/events/list
-     * @throws Exception
+     * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
     public static function events(string $calendarId,
@@ -55,7 +56,7 @@ class GoogleGateway
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
     public static function sync(string $calendarId, ?string $nextSyncToken=null): array
@@ -69,7 +70,7 @@ class GoogleGateway
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
     private static function gatherPaginatedResults(string $calendarId, array $opts): array
@@ -98,12 +99,7 @@ class GoogleGateway
         ];
     }
 
-    /**
-     * @param string $calendarId
-     * @param string $eventId
-     * @return Event
-     */
-    public static function getEvent(string $calendarId, string $eventId)
+    public static function getEvent(string $calendarId, string $eventId): Event
     {
         $service = new Calendar(self::getClient());
         return $service->events->get($calendarId, $eventId);

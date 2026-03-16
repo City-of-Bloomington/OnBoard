@@ -55,6 +55,9 @@ class Member extends ActiveRecord
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         if (!$this->getPerson_id()) { throw new \Exception('missingPerson'); }

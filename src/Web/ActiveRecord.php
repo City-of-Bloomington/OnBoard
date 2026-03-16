@@ -144,12 +144,9 @@ abstract class ActiveRecord
      * fall back to trying something strtotime() understands
      * http://www.php.net/manual/en/function.strtotime.php
      *
-     * @param string $date
-     * @param string $format
-     * @throws Exception
-     * @return DateTime
+     * @throws \Exception
      */
-    public static function parseDate($date, $format=DATETIME_FORMAT)
+    public static function parseDate(string $date, string $format=DATETIME_FORMAT): \DateTime
     {
         $d = \DateTime::createFromFormat($format, $date);
         if (!$d) {

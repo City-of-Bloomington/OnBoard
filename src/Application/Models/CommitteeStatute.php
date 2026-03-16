@@ -50,6 +50,9 @@ class CommitteeStatute extends ActiveRecord
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         if (!$this->getCommittee_id() || !$this->getCitation() || !$this->getUrl()) {

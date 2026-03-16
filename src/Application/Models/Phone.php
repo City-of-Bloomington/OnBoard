@@ -62,6 +62,9 @@ class Phone extends ActiveRecord
         $this->person = null;
     }
 
+	/**
+	 * @throws \Exception
+	 */
 	public function validate()
 	{
 		if (!$this->getPerson_id()) { throw new \Exception('phones/missingPerson'); }

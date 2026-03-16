@@ -46,6 +46,9 @@ class CommitteeHistory extends ActiveRecord
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         $requiredFields = ['tablename', 'action', 'committee_id', 'person_id'];

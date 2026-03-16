@@ -14,7 +14,7 @@ interface ExternalIdentity
 
 	/**
 	 * Return whether the username, password combo is valid
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public static function authenticate(string $username, string $password): bool;
     public static function bind_dn(string $username): string;

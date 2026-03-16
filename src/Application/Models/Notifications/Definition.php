@@ -6,9 +6,10 @@
 declare (strict_types=1);
 namespace Application\Models\Notifications;
 
+use Web\ActiveRecord;
 use Web\Database;
 
-class Definition extends \Web\ActiveRecord
+class Definition extends ActiveRecord
 {
     protected $tablename = 'notification_definitions';
     protected $committee;
@@ -54,7 +55,7 @@ class Definition extends \Web\ActiveRecord
     /**
      * Throws an exception if anything's wrong
      *
-     * @throws \Exception $e
+     * @throws \Exception
      */
     public function validate()
     {
@@ -112,10 +113,10 @@ class Definition extends \Web\ActiveRecord
     /**
      * An array of people objects
      *
-     * @param array  $people  Non-subscribers to include in the notification
-     * @param object $model   Object to use for template variables
+     * @param \Application\Models\Person[]  $people  Non-subscribers to include in the notification
+     * @param object                        $model   Object to use for template variables
      */
-    public function send(array $people, Model $model)
+    public function send(array $people, $model)
     {
         $s = new \Web\Notifications\View($this->getSubject(), $model);
         $b = new \Web\Notifications\View($this->getBody(),    $model);
@@ -130,7 +131,7 @@ class Definition extends \Web\ActiveRecord
                 $mail = new Email();
                 $mail->setSubject($subject);
                 $mail->setBody($body);
-                $mail->setEmailFrom('no-reply@'.BASE_HOST, APPLICATION_NAME);
+                $mail->setEmailFrom('no-reply@'.BASE_HOST);
                 $mail->setEmailTo($to);
                 $mail->setEvent($this->getEvent());
                 $mail->setCommittee_id($model->getCommittee_id());

@@ -49,6 +49,9 @@ class Committee extends ActiveRecord
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function validate()
     {
         if (!$this->getType()) { $this->setType('seated'); }
@@ -281,7 +284,7 @@ class Committee extends ActiveRecord
     /**
      * Returns all the people who have served on this committee
      *
-     * @return Laminas\Db\ResultSet
+     * @return Person[]
      */
     public function getMemberPeople(): array
     {
@@ -329,7 +332,7 @@ class Committee extends ActiveRecord
     }
 
     /**
-     * @return Validator[]   An array of validator callables
+     * @return \Application\Applications\Validator[]   An array of validator callables
      */
     public function getValidators(): array
     {

@@ -35,7 +35,7 @@ class CommitteeAssociation implements AssertionInterface
             $user_id      = $_SESSION['USER']->getId();
             $committee_id = self::getCommittee_id();
 
-            switch ($role->__toString()) {
+            switch ($role->getRoleId()) {
                 case 'Appointer':
                     if ($committee_id) {
                         $t = new MemberTable();
