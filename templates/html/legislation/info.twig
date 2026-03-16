@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Legislation legislation
  * @param Committee   committee
@@ -13,47 +13,47 @@
 {% block content %}
 <section>
     <header>
-        {% if legislation.getParent_id() %}
-        {% set parent=legislation.getParent() %}
-        <h2><a href="{{ uri('legislation.view', { legislation_id: legislation.getParent_id(), committee_id: committee.getId() }) }}">
-            {{ parent.getYear() }} {{ parent.getType() }} {{ parent.getNumber() }}
+        {% if legislation.parent_id %}
+        {% set parent=legislation.parent %}
+        <h2><a href="{{ uri('legislation.view', { legislation_id: legislation.parent_id, committee_id: committee.id }) }}">
+            {{ parent.year }} {{ parent.type }} {{ parent.number }}
             </a>
         </h2>
-        <h2>{{ parent.getTitle() }}</h2>
+        <h2>{{ parent.title }}</h2>
         {% endif %}
 
-        <h2>{{ legislation.getYear() }} {{ legislation.getType() }} {{ legislation.getNumber() }} {{ legislation.getStatus() }}</h3>
-        <h2>{{ legislation.getTitle() }}</h2>
+        <h2>{{ legislation.year }} {{ legislation.type }} {{ legislation.number }} {{ legislation.status }}</h3>
+        <h2>{{ legislation.title }}</h2>
     </header>
     {% if actionLinks %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
 
 
-    <div>{{ legislation.getSynopsis() ? legislation.getSynopsis()|markdown_to_html : '' }}</div>
+    <div>{{ legislation.synopsis ? legislation.synopsis|markdown_to_html : '' }}</div>
 
     <table>
     <tr><th>{{ _('amendsCode') }}</th>
-        <td>{{ legislation.getAmendsCode() ? _('yes') : _('no') }}</td>
+        <td>{{ legislation.amendsCode ? _('yes') : _('no') }}</td>
     </tr>
     </table>
 
-    {% set files = legislation.getFiles() %}
+    {% set files = legislation.files %}
     {% if  files|length>0 %}
     <ul>{% for f in files %}
-        <li><a href="{{ uri('legislationFiles.download', { legislationFile_id: f.getId()} ) }}">{{ f.getFilename() }}</a>
+        <li><a href="{{ uri('legislationFiles.download', { legislationFile_id: f.id } ) }}">{{ f.filename }}</a>
             {% if isAllowed('legislationFiles', 'update') %}
-            {{ forms.actionLink(uri('legislationFiles.update', { legislationFile_id: f.getId()} ), _('legislationFile_edit'), 'edit' ) }}
+            {{ forms.actionLink(uri('legislationFiles.update', { legislationFile_id: f.id } ), _('legislationFile_edit'), 'edit' ) }}
             {% endif %}
             {% if isAllowed('legislationFiles', 'delete') %}
-            {{ forms.actionLink(uri('legislationFiles.delete', { legislationFile_id: f.getId()} ), _('legislationFile_delete'), 'delete' ) }}
+            {{ forms.actionLink(uri('legislationFiles.delete', { legislationFile_id: f.id } ), _('legislationFile_delete'), 'delete' ) }}
             {% endif %}
         </li>
         {% endfor %}
     </ul>
     {% else %}
         {% if isAllowed('legislationFiles', 'add') %}
-        {{ forms.actionLink(uri('legislationFiles.add') ~ '?legislation_id=' ~ legislation.getId(), _('legislationFile_add'), 'add' ) }}
+        {{ forms.actionLink(uri('legislationFiles.add') ~ '?legislation_id=' ~ legislation.id, _('legislationFile_add'), 'add' ) }}
         {% endif %}
     {% endif %}
 
