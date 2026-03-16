@@ -59,28 +59,16 @@ abstract class ActiveRecord
         }
     }
 
-    /**
-     * Returns any field stored in $data
-     *
-     * @param string $fieldname
-     */
-    protected function get($fieldname)
+    protected function get(string $fieldname)
     {
-        if (isset($this->data[$fieldname])) {
+        if (isset( $this->data[$fieldname])) {
             return $this->data[$fieldname];
         }
     }
 
-    /**
-     * @param string $fieldname
-     * @param string $value
-     */
-    protected function set($fieldname, $value)
+    protected function set(string $fieldname, ?string $value=null)
     {
-        if ($value) {
-            $value = trim($value);
-        }
-        $this->data[$fieldname] = $value ? $value : null;
+        $this->data[$fieldname] = $value ? trim($value) : null;
     }
 
     /**

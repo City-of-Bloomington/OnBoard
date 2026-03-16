@@ -108,7 +108,7 @@ class Legislation extends ActiveRecord
 	public function setTitle    ($s) { parent::set('title',    $s); }
 	public function setSynopsis ($s) { parent::set('synopsis', $s); }
 	public function setNotes    ($s) { parent::set('notes',    $s); }
-	public function setYear     ($s) { parent::set('year',     $s ? (int)$s : null); }
+	public function setYear     ($s) { $this->data['year'] =   $s ? (int)$s : null; }
 	public function setCommittee_id        ($i) { parent::setForeignKeyField ('\Application\Models\Committee', 'committee_id', $i); }
 	public function setCommittee (Committee $o) { parent::setForeignKeyObject('\Application\Models\Committee', 'committee_id', $o); }
 	public function setType_id             ($i) { parent::setForeignKeyField (__namespace__.'\Type',        'type_id',   $i); }

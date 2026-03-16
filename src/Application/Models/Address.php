@@ -141,8 +141,8 @@ class Address extends ActiveRecord
 	public function setCity   (string $s) { parent::set('city',    $s); }
 	public function setState  (string $s) { parent::set('state',   $s); }
 	public function setZip    (string $s) { parent::set('zip',     $s); }
-	public function setX      (int    $x) { parent::set('x',       $x); }
-	public function setY      (int    $y) { parent::set('y',       $y); }
+	public function setX(int $x) { $this->data['x'] = $x; }
+	public function setY(int $y) { $this->data['y'] = $y; }
 
 	public function getPerson_id() { return parent::get('person_id'); }
 	public function getPerson()    { return parent::getForeignKeyObject(__namespace__.'\Person', 'person_id');      }
@@ -156,8 +156,7 @@ class Address extends ActiveRecord
 			else                   { parent::set($f, null); }
 		}
 		foreach (['x', 'y'] as $f) {
-			if (!empty($post[$f])) { parent::set($f, (int)$post[$f]); }
-			else                   { parent::set($f, null); }
+			$this->data[$f] = !empty($post[$f]) ? (int)$post[$f] : null;
 		}
 
 	}

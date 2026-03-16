@@ -136,10 +136,10 @@ class Committee extends ActiveRecord
     public function setState           ($s) { parent::set('state',            $s); }
     public function setZip             ($s) { parent::set('zip',              $s); }
     public function setDescription     ($s) { parent::set('description',      $s); }
-    public function setYearFormed      ($s) { parent::set('yearFormed',  (int)$s); }
+    public function setYearFormed      ($s) { $this->data['yearFormed'] = (int)$s; }
     public function setMeetingSchedule ($s) { parent::set('meetingSchedule',  $s); }
-    public function setTermEndWarningDays ($s) { parent::set('termEndWarningDays',  (int)$s); }
-    public function setApplicationLifetime($s) { parent::set('applicationLifetime', (int)$s); }
+    public function setTermEndWarningDays ($s) { $this->data['termEndWarningDays' ] = (int)$s; }
+    public function setApplicationLifetime($s) { $this->data['applicationLifetime'] = (int)$s; }
     public function setLegislative($b) { $this->data['legislative'] = $b ? 1 : 0; }
     public function setAlternates ($b) { $this->data['alternates' ] = $b ? 1 : 0; }
 

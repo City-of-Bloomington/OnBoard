@@ -104,7 +104,7 @@ class Solr
         return $this->client->update($delete);
     }
 
-    public function add(File $file): ResultInterface
+    public function add(Indexable $file): ResultInterface
     {
         $fields = $this->prepareIndexFields($file);
         $update = $this->client->createUpdate();
@@ -117,7 +117,7 @@ class Solr
     /**
      * Delete a single file from the index
      */
-    public function delete(File $file): ResultInterface
+    public function delete(Indexable $file): ResultInterface
     {
         $fields = $this->prepareIndexFields($file);
         $delete = $this->client->createUpdate();

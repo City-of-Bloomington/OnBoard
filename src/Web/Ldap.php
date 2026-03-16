@@ -109,7 +109,7 @@ class Ldap implements ExternalIdentity
                 }
             }
             else {
-                throw new \Exception(ldap_error(self::$connection));
+                throw new \Exception('ldap/connectionFailed');
             }
         }
     }
