@@ -126,7 +126,7 @@ class Definition extends ActiveRecord
         $rec     = array_merge($subs, $people);
 
         foreach ($rec as $p) {
-            $to = $p->getEmail();
+            $to = $p->getEmail()->__toString();
             if ($to) {
                 $mail = new Email();
                 $mail->setSubject($subject);
