@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person user
  *
@@ -25,31 +25,8 @@
             {{ forms.field_select('department_id', 'department_id', _('department'), user.department_id, departments )}}
 
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('users.index'), _('cancel'), 'cancel') }}
+            {{ forms.actionLink(uri('people.view', { person_id: user.id }), _('cancel'), 'cancel') }}
         </fieldset>
     </form>
 </section>
-
-<section>
-    <header><h2>{{ _(['email', 'emails', 10]) }}</h2></header>
-    <table>
-    {% for e in user.getEmails() %}
-    <tr><td>{{ e.email }}</td>
-        <td>{% if e.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-    </tr>
-    {% endfor %}
-    </table>
-</section>
-
-<section>
-    <header><h2>{{ _(['phone', 'phones', 10]) }}</h2></header>
-    <table>
-    {% for p in user.getPhones() %}
-    <tr><td>{{ p.number }}</td>
-        <td>{% if p.main %}<span class="usa-tag">{{ _('main') }}</span>{% endif %}</td>
-    </tr>
-    {% endfor %}
-    </table>
-</section>
-
 {% endblock %}

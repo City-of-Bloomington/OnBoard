@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -34,7 +34,8 @@ class Controller extends \Web\Controller
                 if (!empty($_POST['email'])) { $person->saveEmail($_POST['email']); }
                 elseif ($ldap)               { $person->saveEmail($ldap->getEmail()); }
 
-                header('Location: '.\Web\View::generateUrl('users.index'));
+                $return_url = \Web\View::generateUrl('people.view', ['person_id'=>$person->getId()]);
+                header("Location: $return_url");
                 exit();
             }
             catch (\Exception $e) {
