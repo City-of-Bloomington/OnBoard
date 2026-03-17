@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
 #}
@@ -17,9 +17,6 @@
             {% if breadcrumbs is defined %}
             {{ include('html/layouts/partials/breadcrumbs.twig') }}
             {% endif %}
-            {% if ERROR_MESSAGES is defined %}
-            {{ include('html/layouts/partials/errorMessages.twig') }}
-            {% endif %}
 
             {{ include('html/committees/partials/header.twig') }}
 
@@ -29,6 +26,10 @@
                 </aside>
 
                 <div class="desktop:grid-col-9">
+                {% if ERROR_MESSAGES is defined %}
+                {{ include('html/layouts/partials/errorMessages.twig') }}
+                {% endif %}
+
                 {% block content %}
                 {% endblock %}
                 </div>

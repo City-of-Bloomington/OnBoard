@@ -153,6 +153,12 @@ msgstr "Edit Address"
 msgid "address_delete"
 msgstr "Delete Address"
 
+msgid "address_home"
+msgstr "Home Address"
+
+msgid "address_mailing"
+msgstr "Mailing Address"
+
 msgid "email"
 msgid_plural "emails"
 msgstr[0] "Email"

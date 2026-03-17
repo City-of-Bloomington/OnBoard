@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array     post
  * @param Committee committee
@@ -11,12 +11,21 @@
 {% block content %}
 <section>
     <header>
-        <h1>{{ _('applyToCommittee', 'messages')|format(committee.getName()) }}</h1>
+        <h1>{{ _('applyToCommittee', 'messages')|format(committee.name) }}</h1>
     </header>
 
     {{ help|markdown_to_html }}
 
     <form           class="usa-form usa-form--large" method="post">
+        <fieldset   class="usa-fieldset">
+            <legend class="usa-legend usa-legend--large">{{ _('contactInfo') }}</legend>
+            <table>
+                <tr><th>{{ _('email') }} *</th><td>{{ USER.email ?? forms.actionLink(uri('profile.emails.add') ~ '?return_url=' ~ current_url(), _('email_add'), 'add') }}</td></tr>
+                <tr><th>{{ _('address_home') }} *</th><td>{{ USER.getAddress('Home') ?? forms.actionLink(uri('profile.addresses.add') ~ '?type=Home&return_url=' ~ current_url(), _('address_add'), 'add') }}</td></tr>
+            </table>
+            {{ forms.actionLink(uri('profile.index'), _('profile_edit'), 'edit') }}
+        </fieldset>
+        {% if USER.email and USER.getAddress('Home') %}
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend usa-legend--large">{{ _('referral') }}</legend>
             {{ forms.field_select('referredFrom',  'referredFrom',  _('referredFrom'),  post.referredFrom  ?? '', referral_options ) }}
@@ -35,8 +44,9 @@
 
         <fieldset   class="usa-fieldset">
             {{ forms.button('submit', _('save'), 'save') }}
-            {{ forms.actionLink(uri('committees.info', { committee_id: committee.getId()}), _('cancel'), 'cancel' ) }}
+            {{ forms.actionLink(uri('committees.info', { committee_id: committee.id }), _('cancel'), 'cancel' ) }}
         </fieldset>
+        {% endif %}
     </form>
 </section>
 {% endblock %}

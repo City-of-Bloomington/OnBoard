@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -15,13 +15,14 @@ class Controller extends \Web\Controller
     {
         $email = new Email();
         $email->setPerson($_SESSION['USER']);
-        $return_url = \Web\View::generateUrl('profile.index');
+        $return_url = parent::captureNewReturnUrl(\Web\View::generateUrl('profile.index'));
 
         if (isset($_POST['email'])) {
             $email->handleUpdate($_POST);
 
             try  {
                 $email->save();
+                $return_url = parent::popCurrentReturnUrl();
                 header("Location: $return_url");
                 exit();
             }

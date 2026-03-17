@@ -32,6 +32,21 @@ msgstr "The username and password combination you entered is not correct."
 msgid "missingRequiredFields"
 msgstr "You did not include all the required fields."
 
+msgid "missing/person"
+msgstr "You must provide a person"
+
+msgid "missing/email"
+msgstr "You must provide an email address"
+
+msgid "missing/phone"
+msgstr "You must provide a phone number"
+
+msgid "missing/address_home"
+msgstr "You must provide a home address"
+
+msgid "missing/address"
+msgstr "You must provide an address"
+
 msgid "noAccessAllowed"
 msgstr "You are not allowed to go here."
 

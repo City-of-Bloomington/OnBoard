@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2012-2025 City of Bloomington, Indiana
+ * @copyright 2012-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
@@ -19,14 +19,17 @@ abstract class Controller
 	}
 
 	/**
-     * Saves a new return_url into the SESSION
+     * Saves a new return_url into the SESSION.  Returns the saved url.
      *
-     * @param string $default   Default url to use if none available in REQUEST or SESSION
+     * @param  string $default   Default url to use if none available in REQUEST or SESSION
+     * @return string            The captured URL
      */
-	public static function captureNewReturnUrl(?string $default=BASE_URL)
+	public static function captureNewReturnUrl(?string $default=BASE_URL): string
     {
         if (!empty($_REQUEST['return_url'])) { $_SESSION['return_url'] = $_REQUEST['return_url']; }
         if ( empty($_SESSION['return_url'])) { $_SESSION['return_url'] = $default; }
+
+        return $_SESSION['return_url'];
     }
 
     /**

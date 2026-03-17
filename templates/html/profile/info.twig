@@ -62,8 +62,8 @@
         {% endif %}
     {% endfor %}
 
-    {% if not home    %}{{ forms.actionLink(url ~ '?type=Home',    'Home Address',    'add') }}{% endif %}
-    {% if not mailing %}{{ forms.actionLink(url ~ '?type=Mailing', 'Mailing Address', 'add') }}{% endif %}
+    {% if not home    %}{{ forms.actionLink(url ~ '?type=Home',    _('address_home'),    'add') }}{% endif %}
+    {% if not mailing %}{{ forms.actionLink(url ~ '?type=Mailing', _('address_mailing'), 'add') }}{% endif %}
     <table>
     {% for a in person.addresses %}
     <tr><td>{{ a.address }} {{ a.city }} {{ a.state }} {{ a.zip }}</td>

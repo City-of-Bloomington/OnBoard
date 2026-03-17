@@ -76,6 +76,7 @@ abstract class View
         $this->twig->addFunction(new TwigFunction('uri',         [$this, 'generateUri']));
         $this->twig->addFunction(new TwigFunction('url',         [$this, 'generateUrl']));
         $this->twig->addFunction(new TwigFunction('isAllowed',   [$this, 'isAllowed'  ]));
+        $this->twig->addFunction(new TwigFunction('current_url', [$this, 'current_url']));
 
         $this->twig->addRuntimeLoader(new class implements RuntimeLoaderInterface {
             public function load($class) {

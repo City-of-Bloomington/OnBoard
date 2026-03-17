@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Web\Applicants\Apply;
 
+use Application\Models\Address;
 use Application\Models\Application;
 use Application\Models\Committee;
 use Application\Models\Notifications\DefinitionTable;
@@ -29,8 +30,10 @@ class Controller extends \Web\Controller
         $application = new Application();
         $application->setCommittee($committee);
         $application->setPerson($_SESSION['USER']);
+        $errors      = self::validate($application);
+        if ($errors) { $_SESSION['errorMessages'] = $errors; }
 
-        if (isset($_POST['interest'])) {
+        if (!$errors && isset($_POST['interest'])) {
             try {
                 $application->handleUpdate($_POST);
                 self::notify($application);
@@ -53,5 +56,17 @@ class Controller extends \Web\Controller
         $p = $a->getPeopleToNotify();
         $n = $t->loadForSending(DefinitionTable::APPLICATION_NOTICE, $a->getCommittee_id());
         if (isset($n) && count($p)) { $n->send($p, $a); }
+    }
+
+    private static function validate(Application $a): array
+    {
+        $errors = [];
+        if (!$a->getPerson_id()) { $errors[] = 'missing/person'; }
+        else {
+            $person = $a->getPerson();
+            if (!$person->getEmail()) { $errors[] = 'missing/email'; }
+            if (!$person->getAddress(Address::TYPE_HOME)) { $errors[] = 'missing/address_home'; }
+        }
+        return $errors;
     }
 }

@@ -21,13 +21,15 @@ class Controller extends \Web\Controller
         $address = new Address();
         $address->setType($type);
         $address->setPerson($_SESSION['USER']);
-        $return_url = \Web\View::generateUrl('profile.index');
+
+        $return_url = parent::captureNewReturnUrl(\Web\View::generateUrl('profile.index'));
 
         if (isset($_POST['address'])) {
             $address->handleUpdate($_POST);
 
             try  {
                 $address->save();
+                $return_url = parent::popCurrentReturnUrl();
                 header("Location: $return_url");
                 exit();
             }
