@@ -52,7 +52,14 @@ class Controller extends \Web\Controller
             foreach ($m->getMeetingFiles() as $f) { $files[$f->getType()][] = $f->getData(); }
 
             $meetings[$date][$time][] = [
-                'meeting'  => $m,
+                'id'       => $m->getId(),
+                'title'    => $m->getTitle(),
+                'eventId'  => $m->getEventId(),
+                'location' => $m->getLocation(),
+                'start'    => $m->getStart('c'),
+                'end'      => $m->getEnd  ('c'),
+                'htmlLink' => $m->getHtmlLink(),
+                'translated_location' => $m->translated_location(),
                 'files'    => $files
             ];
         }
