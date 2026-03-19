@@ -6,7 +6,7 @@
  * @param array    states
  #}
 {% import  "html/macros/forms.twig" as forms %}
-{{ forms.field_text('address', 'address', _('address'), address.address ) }}
+{{ forms.field_text('address', 'address', _('address'), address.address, true ) }}
 {{ forms.field_text(  'city',  'city',    _('city'   ), address.city    ) }}
 {{ forms.field_select('state', 'state',   _('state'  ), address.state, states ) }}
 {{ forms.field_text(  'zip',   'zip',     _('zip'    ), address.zip     ) }}

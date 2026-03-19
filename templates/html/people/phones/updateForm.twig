@@ -18,7 +18,7 @@
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ phone.getId() ? _('phone_edit') : _('phone_add') }}</legend>
 
-            {{ forms.field_phone('number', 'number', _('phone'), phone.getNumber() ) }}
+            {{ forms.field_phone('number', 'number', _('phone'), phone.getNumber(), true ) }}
             {{ forms.field_bool('main',    'main',   _('main' ), phone.getMain()   ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}

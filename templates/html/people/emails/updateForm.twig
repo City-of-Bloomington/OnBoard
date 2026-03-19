@@ -17,7 +17,7 @@
         <fieldset   class="usa-fieldset">
             <legend class="usa-legend">{{ email.id ? _('email_edit') : _('email_add') }}</legend>
 
-            {{ forms.field_email('email', 'email', _('email'), email.email ) }}
+            {{ forms.field_email('email', 'email', _('email'), email.email, true ) }}
             {{ forms.field_bool('main',   'main',  _('main' ), email.main  ) }}
 
             {{ forms.button('submit', _('save'), 'save') }}
