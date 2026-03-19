@@ -49,7 +49,7 @@ $ACL->allow(null,
             ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
             ['index', 'view', 'years', 'download', 'callback']);
 
-$ACL->allow('Public', 'profile');
+$ACL->allow('Public', ['profile', 'profile.addresses', 'profile.emails', 'profile.files', 'profile.phones', 'profile.notifications']);
 $ACL->allow('Public', 'committees', 'apply');
 
 $ACL->allow('Appointer', 'committees',     'applications', $requiresDepartmentAssociation);
