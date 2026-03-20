@@ -1,11 +1,11 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 use Application\Models\CommitteeTable;
-use Application\Models\GoogleGateway;
+use Application\GoogleCalendarGateway;
 
 if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 echo "
@@ -49,7 +49,7 @@ foreach ($list['rows'] as $c) {
     $calendar_id = $c->getCalendarId();
     if ($calendar_id) {
         $watch_id = APPLICATION_NAME."-{$c->getId()}-".uniqid();
-        $channel  = GoogleGateway::watch($calendar_id, $watch_id, $expires);
+        $channel  = GoogleCalendarGateway::watch($calendar_id, $watch_id, $expires);
         fwrite($debug, "$watch_id\n");
         fwrite($debug, print_r($channel, true));
     }

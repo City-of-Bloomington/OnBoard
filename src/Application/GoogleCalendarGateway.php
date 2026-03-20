@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-namespace Application\Models;
+namespace Application;
 
 use Google\Client;
 use Google\Service\Calendar;
@@ -11,7 +11,7 @@ use Google\Service\Calendar\Channel;
 use Google\Service\Calendar\Event;
 use Google\Service\Calendar\Events;
 
-class GoogleGateway
+class GoogleCalendarGateway
 {
     private static function getClient()
     {

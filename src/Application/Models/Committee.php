@@ -6,6 +6,7 @@
 declare (strict_types=1);
 namespace Application\Models;
 
+use Application\GoogleCalendarGateway;
 use Web\ActiveRecord;
 use Web\View;
 use Web\Database;
@@ -416,7 +417,7 @@ class Committee extends ActiveRecord
 
         if (!$this->getCalendarId()) { return; }
 
-        $res = GoogleGateway::sync($this->getCalendarId(), $this->getSyncToken());
+        $res = GoogleCalendarGateway::sync($this->getCalendarId(), $this->getSyncToken());
         if (!$res['nextSyncToken']) {
             fwrite($debug, print_r($res, true)."\n");
             exit();
@@ -508,7 +509,7 @@ class Committee extends ActiveRecord
             $event_id = $m->getEventId();
             if ($event_id) {
                 try {
-                    $event = GoogleGateway::getEvent($this->getCalendarId(), $event_id);
+                    $event = GoogleCalendarGateway::getEvent($this->getCalendarId(), $event_id);
                     if ($event->status == 'cancelled') { self::cancelMeeting($m); }
                 }
                 catch (\Exception $e) {

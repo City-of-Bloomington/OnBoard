@@ -11,7 +11,7 @@
  * [HTTP_X_GOOG_RESOURCE_ID]        => zDkcEeu4J4fYNUkBtRqbAQ9aA6Y
  * [HTTP_X_GOOG_RESOURCE_URI]       => https://www.googleapis.com/calendar/v3/calendars/inghamn%40bloomington.in.gov/events?alt=json
  *
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @see https://developers.google.com/calendar/api/guides/push
  */
@@ -19,7 +19,6 @@ declare (strict_types=1);
 namespace Web\Meetings\CalendarHook;
 
 use Application\Models\CommitteeTable;
-use Application\Models\GoogleGateway;
 use Application\Models\Meeting;
 use Application\Models\MeetingTable;
 
