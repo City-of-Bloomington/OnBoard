@@ -40,6 +40,7 @@ exit(1);
 }
 
 include '../../src/Web/bootstrap.php';
+$google  = new GoogleCalendarGateway();
 $table   = new CommitteeTable();
 $list    = $table->find(['current'=>true]);
 $expires = strtotime("+$minutes minute");
@@ -49,7 +50,7 @@ foreach ($list['rows'] as $c) {
     $calendar_id = $c->getCalendarId();
     if ($calendar_id) {
         $watch_id = APPLICATION_NAME."-{$c->getId()}-".uniqid();
-        $channel  = GoogleCalendarGateway::watch($calendar_id, $watch_id, $expires);
+        $channel  = $google->watch($calendar_id, $watch_id, $expires);
         fwrite($debug, "$watch_id\n");
         fwrite($debug, print_r($channel, true));
     }

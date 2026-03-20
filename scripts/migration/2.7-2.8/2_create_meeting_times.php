@@ -11,9 +11,10 @@
 declare (strict_types=1);
 include '../../../src/Web/bootstrap.php';
 
-use Application\Models\GoogleGateway;
+use Application\GoogleCalendarGateway;
 use Web\Database;
 
+$google = new GoogleCalendarGateway();
 $db     = Database::getConnection();
 $pdo    = $db->getDriver()->getConnection()->getResource();
 $unknownEvents = fopen('./unknownEvents.csv', 'w');
@@ -38,7 +39,7 @@ foreach ($result as $row) {
     echo "$row[id] $row[meetingDate] $row[eventId]\n";
 
     try {
-        $event = GoogleGateway::getEvent($row['calendarId'], $row['eventId']);
+        $event = $google->getEvent($row['calendarId'], $row['eventId']);
         if (!$event->start->dateTime || !$event->end->dateTime) {
             fputcsv($missingTimes, $row);
             continue;

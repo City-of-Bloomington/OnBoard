@@ -13,17 +13,14 @@ use Google\Service\Calendar\Events;
 
 class GoogleCalendarGateway
 {
-    private static function getClient()
-    {
-        static $client = null;
+    private Client $client;
 
-        if (!$client) {
-            $client = new Client();
-            $client->setAuthConfig(GOOGLE_CREDENTIALS_FILE);
-            $client->setScopes([Calendar::CALENDAR]);
-            $client->setSubject(GOOGLE_USER_EMAIL);
-        }
-        return $client;
+    public function __construct()
+    {
+        $this->client = new Client();
+        $this->client->setAuthConfig(GOOGLE_CREDENTIALS_FILE);
+        $this->client->setScopes([Calendar::CALENDAR]);
+        $this->client->setSubject(GOOGLE_USER_EMAIL);
     }
 
     /**
@@ -31,11 +28,11 @@ class GoogleCalendarGateway
      * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
-    public static function events(string $calendarId,
-                              ?\DateTime $start=null,
-                              ?\DateTime $end=null,
-                                   ?bool $singleEvents=true,
-                                    ?int $maxResults=null): array
+    public function events(string $calendarId,
+                       ?\DateTime $start=null,
+                       ?\DateTime $end=null,
+                            ?bool $singleEvents=true,
+                             ?int $maxResults=null): array
     {
         $events = [];
         $FIELDS = 'description,end,endTimeUnspecified,htmlLink,id,location,'
@@ -52,30 +49,30 @@ class GoogleCalendarGateway
         if ($start) { $opts['timeMin'] = $start->format(\DateTime::RFC3339); }
         if ($end  ) { $opts['timeMax'] = $end  ->format(\DateTime::RFC3339); }
 
-        return self::gatherPaginatedResults($calendarId, $opts);
+        return $this->gatherPaginatedResults($calendarId, $opts);
     }
 
     /**
      * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
-    public static function sync(string $calendarId, ?string $nextSyncToken=null): array
+    public function sync(string $calendarId, ?string $nextSyncToken=null): array
     {
         $opts = [
             'singleEvents' => true,
             'syncToken'    => $nextSyncToken
         ];
 
-        return self::gatherPaginatedResults($calendarId, $opts);
+        return $this->gatherPaginatedResults($calendarId, $opts);
     }
 
     /**
      * @throws \Exception
      * @return array [nextSyncToken=>'', events=>[]]
      */
-    private static function gatherPaginatedResults(string $calendarId, array $opts): array
+    private function gatherPaginatedResults(string $calendarId, array $opts): array
     {
-        $service = new Calendar(self::getClient());
+        $service = new Calendar($this->client);
         $events  = [];
         $hasMore = true;
         while ($hasMore) {
@@ -88,7 +85,7 @@ class GoogleCalendarGateway
             catch (\Google\Service\Exception $e) {
                 if ($e->getCode() == 410) {
                     unset($opts['syncToken']);
-                    return self::gatherPaginatedResults($calendarId, $opts);
+                    return $this->gatherPaginatedResults($calendarId, $opts);
                 }
                 throw $e;
             }
@@ -99,9 +96,9 @@ class GoogleCalendarGateway
         ];
     }
 
-    public static function getEvent(string $calendarId, string $eventId): Event
+    public function getEvent(string $calendarId, string $eventId): Event
     {
-        $service = new Calendar(self::getClient());
+        $service = new Calendar($this->client);
         return $service->events->get($calendarId, $eventId);
     }
 
@@ -113,7 +110,7 @@ class GoogleCalendarGateway
      * @param int    $expiration  Unix timestamp
      * @return Channel
      */
-    public static function watch(string $calendarId, string $watch_id, int $expiration): Channel
+    public function watch(string $calendarId, string $watch_id, int $expiration): Channel
     {
         $opts  = [
             'id'         => $watch_id,
@@ -123,7 +120,7 @@ class GoogleCalendarGateway
             'eventTypes' => 'default'
         ];
         $watch   = new Channel($opts);
-        $service = new Calendar(self::getClient());
+        $service = new Calendar($this->client);
         return $service->events->watch($calendarId, $watch);
     }
 }

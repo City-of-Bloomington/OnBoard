@@ -417,7 +417,8 @@ class Committee extends ActiveRecord
 
         if (!$this->getCalendarId()) { return; }
 
-        $res = GoogleCalendarGateway::sync($this->getCalendarId(), $this->getSyncToken());
+        $google = new GoogleCalendarGateway();
+        $res    = $google->sync($this->getCalendarId(), $this->getSyncToken());
         if (!$res['nextSyncToken']) {
             fwrite($debug, print_r($res, true)."\n");
             exit();
@@ -503,13 +504,14 @@ class Committee extends ActiveRecord
 
     public function validateFutureMeetings()
     {
-        $t = new MeetingTable();
-        $l = $t->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
-        foreach ($l['rows'] as $m) {
+        $google = new GoogleCalendarGateway();
+        $table  = new MeetingTable();
+        $list   = $table->find(['committee_id'=>$this->getId(), 'start'=>new \DateTime()]);
+        foreach ($list['rows'] as $m) {
             $event_id = $m->getEventId();
             if ($event_id) {
                 try {
-                    $event = GoogleCalendarGateway::getEvent($this->getCalendarId(), $event_id);
+                    $event = $google->getEvent($this->getCalendarId(), $event_id);
                     if ($event->status == 'cancelled') { self::cancelMeeting($m); }
                 }
                 catch (\Exception $e) {
