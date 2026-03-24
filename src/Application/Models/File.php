@@ -187,7 +187,7 @@ abstract class File extends ActiveRecord
     public function getUpdated(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('updated', $format, $tz); }
     public function getIndexed(?string $format=null, ?\DateTimeZone $tz=null) { return parent::getDateData('indexed', $format, $tz); }
 
-    public function setUrl(?string $s=null)     { $this->data['url'] = $s; }
+    public function setUrl(?string $s=null)     { $this->data['url'] = $s ? trim($s) : null; }
     public function setUpdated_by(int $id)      { $this->data['updated_by'] = $id; }
     public function setUpdatedPerson(Person $p) { $this->data['updated_by'] = (int)$p->getId(); }
 
