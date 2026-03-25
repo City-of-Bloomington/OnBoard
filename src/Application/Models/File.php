@@ -323,6 +323,11 @@ abstract class File extends ActiveRecord
 
     public function sendToBrowser()
     {
+        if ($this->getUrl()) {
+            header("Location: ".$this->getUrl());
+            exit();
+        }
+
         $mime     = $this->getMime_type();
         $filename = $this->getDisplayFilename();
 
