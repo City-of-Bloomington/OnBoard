@@ -65,6 +65,9 @@ msgstr "The file you uploaded is not a valid filetype.  We only accept %s"
 msgid "files/missingExtension"
 msgstr "The file you uploaded is not a known filetype. Filenames must include an extension."
 
+msgid "files/filenameTooLong"
+msgstr "The filename you provided is too long."
+
 msgid "terms/overlappingTerms"
 msgstr "You have entered an overlapping term.  A person cannot serve two terms, for the same committee, at the same time."
 

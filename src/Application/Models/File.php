@@ -123,6 +123,8 @@ abstract class File extends ActiveRecord
         if (!$this->getUrl()) {
             if (!$this->getFilename())  { throw new \Exception('files/missingFilename'); }
             if (!$this->getMime_type()) { throw new \Exception('files/missingMimeType'); }
+
+            if (strlen($this->getFilename()) > 255) { throw new \Exception('files/filenameTooLong'); }
         }
     }
 
