@@ -288,7 +288,7 @@ abstract class File extends ActiveRecord
      */
     public function getExtension()
     {
-        return static::$mime_types[$this->getMime_type()];
+        return self::$mime_types[$this->getMime_type()];
     }
 
     /**
