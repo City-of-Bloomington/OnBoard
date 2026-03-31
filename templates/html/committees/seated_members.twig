@@ -79,6 +79,9 @@
                         <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
                     </div>
                 </div>
+                {% if row.carryOver %}
+                <p>{{ _('carryOver-help', 'messages') }}</p>
+                {% endif %}
             </div>
         </li>
     {% endfor %}

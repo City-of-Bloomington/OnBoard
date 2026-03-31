@@ -6,11 +6,12 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
+"X-Generator: Poedit 3.4.2\n"
 
 msgid "home"
 msgstr "Home"
@@ -613,8 +614,8 @@ msgstr "Start"
 msgid "end"
 msgstr "End"
 
-msgid "carryover"
-msgstr "Carry Over"
+msgid "carryOver"
+msgstr "Interim"
 
 msgid "yearFormed"
 msgstr "Year Formed"
@@ -932,7 +933,6 @@ msgstr "New Action"
 
 msgid "legislationAction_edit"
 msgstr "Edit Action"
-
 
 msgid "legislationFile"
 msgid_plural "legislationFiles"

@@ -81,3 +81,6 @@ msgstr "Departments are used for granting permissions to work with particular bo
 
 msgid "committee-validator-help"
 msgstr "Checks to run against applications for this committee"
+
+msgid "carryOver-help"
+msgstr "Interim members do not serve the full term"
