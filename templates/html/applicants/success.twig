@@ -1,5 +1,5 @@
 {#
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Applicant applicant
  #}
@@ -9,6 +9,6 @@
     <header>
         <h2>{{ _('thanks') }}</h2>
     </header>
-    <p>{{ _('application_received', 'messages') }}</p>
+    {{ _('application_received', 'messages')|raw }}
 </section>
 {% endblock %}
