@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2025 City of Bloomington, Indiana
+ * @copyright 2014-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @var \Aura\Router\RouterContainer $ROUTES
  */
@@ -66,6 +66,7 @@ $ACL->allow('Clerk',
             $requiresDepartmentAssociation);
 
 $ACL->allow('Liaison', 'committees.notes', ['add', 'update'], $requiresCommitteeAssociation);
+$ACL->allow('Liaison', 'meetings',          'attendance',     $requiresCommitteeAssociation);
 
 $ACL->allow('Staff');
 $ACL->deny ('Staff', 'users', ['update', 'delete']);

@@ -188,6 +188,10 @@ class Term extends ActiveRecord
     {
         return $this->getSeat()->getCommittee();
     }
+    public function getCommittee_id(): int
+    {
+        return $this->getSeat()->getCommittee_id();
+    }
 
     /**
      * @return boolean

@@ -21,11 +21,7 @@ use Laminas\Permissions\Acl\Assertion\AssertionInterface;
 use Application\Models\ApplicantFilesTable;
 use Application\Models\ApplicantTable;
 use Application\Models\LiaisonTable;
-use Application\Models\Member;
 use Application\Models\MemberTable;
-use Application\Models\Office;
-use Application\Models\Seat;
-use Application\Models\Term;
 
 class CommitteeAssociation implements AssertionInterface
 {
@@ -74,25 +70,22 @@ class CommitteeAssociation implements AssertionInterface
      */
     private static function getCommittee_id(): ?int
     {
-        if (!empty($_REQUEST['committee_id'])) {
-            return (int)$_REQUEST['committee_id'];
+        if (!empty($_REQUEST['committee_id'])) { return (int)$_REQUEST['committee_id']; }
+
+        $params = [
+            'member_id'  => '\Application\Models\Member',
+            'term_id'    => '\Application\Models\Term',
+            'seat_id'    => '\Application\Models\Seat',
+            'office_id'  => '\Application\Models\Office',
+            'meeting_id' => '\Application\Models\Meeting'
+        ];
+        foreach ($params as $p=>$m) {
+            if (!empty($_REQUEST[$p])) {
+                $model = new $m($_REQUEST[$p]);
+                return (int)$model->getCommittee_id();
+            }
         }
-        elseif (!empty($_REQUEST['member_id'])) {
-            $member = new Member($_REQUEST['member_id']);
-            return (int)$member->getCommittee_id();
-        }
-        elseif (!empty($_REQUEST['term_id'])) {
-            $term = new Term($_REQUEST['term_id']);
-            return (int)$term->getCommittee()->getId();
-        }
-        elseif (!empty($_REQUEST['seat_id'])) {
-            $seat = new Seat($_REQUEST['seat_id']);
-            return (int)$seat->getCommittee_id();
-        }
-        elseif (!empty($_REQUEST['office_id'])) {
-            $office = new Office($_REQUEST['office_id']);
-            return (int)$office->getCommittee_id();
-        }
+
         return null;
     }
 }
