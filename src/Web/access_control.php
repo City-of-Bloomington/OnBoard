@@ -70,6 +70,7 @@ $ACL->allow('Liaison', 'meetings',          'attendance',     $requiresCommittee
 
 $ACL->allow('Staff');
 $ACL->deny ('Staff', 'users', ['update', 'delete']);
+$ACL->deny ('Staff', 'terms', ['add', 'update']);
 $ACL->deny ('Staff', 'applicantFiles', 'delete');
 
 // Administrator is allowed access to everything
