@@ -15,22 +15,6 @@
           - "php-mysql"
           - "php-pgsql"
 
-    - name: 'Create mysql database'
-      community.mysql.mysql_db:
-        config_file: "{{ mysql_defaults_extra_file }}"
-        name: "{{ onboard_db.name }}"
-        state: 'present'
-      no_log: True
-
-    - name: 'Create mysql user for site'
-      community.mysql.mysql_user:
-        name:     "{{ onboard_db.user }}"
-        password: "{{ onboard_db.pass }}"
-        priv:     "{{ onboard_db.name }}.*:ALL"
-        state: 'present'
-        config_file: "{{ mysql_defaults_extra_file }}"
-      no_log: True
-
     - name: "Create directories"
       ansible.builtin.file:
         path: "{{ item }}"
