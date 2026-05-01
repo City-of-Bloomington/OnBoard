@@ -244,7 +244,7 @@ class Committee extends ActiveRecord
      *
      * If no timestamp is given, the current time is used.
      */
-    public function getCurrentTerms(int $timestamp=null): array
+    public function getCurrentTerms(?int $timestamp=null): array
     {
         if (!$timestamp) { $timestamp = time(); }
         $t = new TermTable();

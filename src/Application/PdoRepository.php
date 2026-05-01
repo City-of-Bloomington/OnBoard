@@ -57,7 +57,7 @@ abstract class PdoRepository
         return $sql;
     }
 
-	protected function performSelect(string $select, array $params, int $itemsPerPage=null, ?int $currentPage=null): array
+	protected function performSelect(string $select, array $params, ?int $itemsPerPage=null, ?int $currentPage=null): array
     {
 		$total = null;
         if ($itemsPerPage) {
