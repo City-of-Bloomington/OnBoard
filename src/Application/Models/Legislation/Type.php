@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2025 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
@@ -10,7 +10,7 @@ use Web\Database;
 
 class Type extends ActiveRecord
 {
-	protected $tablename = 'legislationTypes';
+	public const TABLENAME = 'legislationTypes';
 
 	/**
 	 * Populates the object with data

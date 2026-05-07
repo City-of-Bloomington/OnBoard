@@ -13,7 +13,7 @@ use Web\Database;
 
 class ApplicantFile extends File
 {
-    protected $tablename = 'applicantFiles';
+    public const TABLENAME = 'applicantFiles';
     protected $person;
 
     /**

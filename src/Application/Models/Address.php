@@ -11,7 +11,7 @@ use Web\Database;
 
 class Address extends ActiveRecord
 {
-    protected $tablename = 'people_addresses';
+    public const TABLENAME = 'people_addresses';
     protected $person;
 
 	public const TYPE_HOME = 'Home';

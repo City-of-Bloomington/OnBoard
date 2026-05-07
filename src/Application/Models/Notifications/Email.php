@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -14,9 +14,9 @@ use Application\Models\Committee;
 
 class Email extends ActiveRecord
 {
-    protected $tablename = 'email_queue';
-    protected $committee;
+    public  const TABLENAME = 'email_queue';
     private const COMMITTEE = 'Application\Models\Committee';
+    protected $committee;
 
     /**
      * Populates the object with data

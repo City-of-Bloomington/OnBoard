@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2016-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -10,10 +10,9 @@ use Web\Database;
 
 class Liaison extends ActiveRecord
 {
-    const TYPE_DEPARTMENTAL = 'departmental';
-    const TYPE_LEGAL        = 'legal';
-
-    protected $tablename = 'liaisons';
+    public const TYPE_DEPARTMENTAL = 'departmental';
+    public const TYPE_LEGAL        = 'legal';
+    public const TABLENAME         = 'liaisons';
 
     protected $committee;
     protected $person;

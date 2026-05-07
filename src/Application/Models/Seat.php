@@ -24,7 +24,7 @@ class Seat extends ActiveRecord
         'second monday of' => 'Second Monday of the month'
     ];
 
-    protected $tablename = 'seats';
+    public const TABLENAME = 'seats';
 
     protected $committee;
     protected $appointer;
@@ -189,8 +189,6 @@ class Seat extends ActiveRecord
     //----------------------------------------------------------------
     // Custom Functions
     //----------------------------------------------------------------
-    public function getData() { return $this->data; }
-
     public function isSafeToDelete(): bool
     {
         $sql = "select count(*) as count from (

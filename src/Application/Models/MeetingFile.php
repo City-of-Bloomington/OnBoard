@@ -13,7 +13,7 @@ use Web\View;
 
 class MeetingFile extends File implements Notifications\Model, Indexable
 {
-    protected $tablename = 'meetingFiles';
+    public const TABLENAME = 'meetingFiles';
     protected $meeting;
 
     public static $types = ['Agenda', 'Memorandum', 'Minutes', 'Packet'];

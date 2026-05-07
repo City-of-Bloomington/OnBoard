@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2025 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -11,7 +11,7 @@ use Web\Database;
 
 class Member extends ActiveRecord
 {
-    protected $tablename = 'members';
+    public const TABLENAME = 'members';
 
     protected $committee;
     protected $seat;
@@ -147,11 +147,6 @@ class Member extends ActiveRecord
         parent::setForeignKeyObject(__namespace__.'\Term', 'term_id', $o);
         $this->populateDates($o);
     }
-
-    //----------------------------------------------------------------
-    // Custom Functions
-    //----------------------------------------------------------------
-    public function getData() { return $this->data; }
 
     /**
      * Make sure this member is not overlapping any existing members

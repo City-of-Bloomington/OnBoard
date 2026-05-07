@@ -14,7 +14,7 @@ class Committee extends ActiveRecord
 {
     public static $types = ['seated', 'open'];
 
-    protected $tablename = 'committees';
+    public const TABLENAME = 'committees';
 
     private $departments = [];
     private $validators  = [];
@@ -161,11 +161,6 @@ class Committee extends ActiveRecord
             }
         }
     }
-
-    //----------------------------------------------------------------
-    // Custom Functions
-    //----------------------------------------------------------------
-    public function getData() { return $this->data; }
 
     /**
      * @return Member

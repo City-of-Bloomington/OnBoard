@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -10,11 +10,10 @@ use Web\Database;
 
 class CommitteeHistory extends ActiveRecord
 {
-    const STATE_ORIGINAL = 'original';
-    const STATE_UPDATED  = 'updated';
+    public const TABLENAME      = 'committeeHistory';
+    public const STATE_ORIGINAL = 'original';
+    public const STATE_UPDATED  = 'updated';
     public static $states = [self::STATE_ORIGINAL, self::STATE_UPDATED];
-
-    protected $tablename = 'committeeHistory';
 
     protected $committee;
     protected $person;
@@ -27,14 +26,14 @@ class CommitteeHistory extends ActiveRecord
             }
             else {
                 $db = Database::getConnection();
-                $sql = "select * from {$this->tablename} where id=?";
+                $sql = "select * from committeeHistory where id=?";
 
                 $result = $db->createStatement($sql)->execute([$id]);
                 if (count($result)) {
                     $this->exchangeArray($result->current());
                 }
                 else {
-                    throw new \Exception("{$this->tablename}/unknown");
+                    throw new \Exception("committeeHistory/unknown");
                 }
             }
         }
@@ -56,7 +55,7 @@ class CommitteeHistory extends ActiveRecord
             $field = ucfirst($f);
             $get   = 'get'.$field;
             if (!$this->$get()) {
-                throw new \Exception("{$this->tablename}/missing$field");
+                throw new \Exception("committeeHistory/missing$field");
             }
         }
     }

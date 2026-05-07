@@ -15,7 +15,7 @@ use Web\View;
 
 class Report extends File implements Indexable
 {
-    protected $tablename = 'reports';
+    public const TABLENAME = 'reports';
     protected $committee;
 
     public function __construct($id=null)

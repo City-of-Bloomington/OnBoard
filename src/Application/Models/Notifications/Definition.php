@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -11,10 +11,10 @@ use Web\Database;
 
 class Definition extends ActiveRecord
 {
-    protected $tablename = 'notification_definitions';
+    public  const TABLENAME = 'notification_definitions';
+    private const COMMITTEE = 'Application\Models\Committee';
     protected $committee;
 
-    private const COMMITTEE = 'Application\Models\Committee';
 
     /**
      * Populates the object with data

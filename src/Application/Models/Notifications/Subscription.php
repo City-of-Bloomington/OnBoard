@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -11,13 +11,12 @@ use Application\Models\Notifications\DefinitionTable;
 
 class Subscription extends \Web\ActiveRecord
 {
-    protected $tablename = 'notification_subscriptions';
+    public  const TABLENAME = 'notification_subscriptions';
+    private const PERSON    = 'Application\Models\Person';
+    private const COMMITTEE = 'Application\Models\Committee';
 
     protected $person;
     protected $committee;
-
-    private const PERSON    = 'Application\Models\Person';
-    private const COMMITTEE = 'Application\Models\Committee';
 
     /**
      * Populates the object with data

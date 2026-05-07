@@ -71,13 +71,14 @@ abstract class File extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
+                $table = static::TABLENAME;
                 $db = Database::getConnection();
                 if (ActiveRecord::isId($id)) {
-                    $sql = "select * from {$this->tablename} where id=?";
+                    $sql = "select * from $table where id=?";
                 }
                 // Internal filename without extension
                 elseif (ctype_xdigit($id)) {
-                    $sql = "select * from {$this->tablename} where internalFilename like ?";
+                    $sql = "select * from $table where internalFilename like ?";
                     $id.= '%';
                 }
 
@@ -141,8 +142,9 @@ abstract class File extends ActiveRecord
 
         parent::save();
 
+        $tab = static::TABLENAME;
         $db  = Database::getConnection();
-        $sql = "select * from {$this->tablename} where id=?";
+        $sql = "select * from $tab where id=?";
         $res = $db->createStatement($sql)->execute([$this->getId()]);
         $this->exchangeArray($res->current());
     }
@@ -223,7 +225,7 @@ abstract class File extends ActiveRecord
             $extension = static::$mime_types[$this->data['mime_type']];
         }
         else {
-            throw new \Exception("{$this->tablename}/unknownFileType");
+            throw new \Exception(static::TABLENAME.'/unknownFileType');
         }
 
         // Clean all bad characters from the filename
@@ -320,7 +322,8 @@ abstract class File extends ActiveRecord
      */
     private function getFullPath(): string
     {
-        return SITE_HOME."/{$this->tablename}/{$this->getInternalFilename()}";
+        $table = static::TABLENAME;
+        return SITE_HOME."/$table/{$this->getInternalFilename()}";
     }
 
     public function sendToBrowser()

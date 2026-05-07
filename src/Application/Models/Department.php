@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2023 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -10,7 +10,7 @@ use Web\Database;
 
 class Department extends ActiveRecord
 {
-    protected $tablename = 'departments';
+    public const TABLENAME = 'departments';
 
     /**
      * Populates the object with data

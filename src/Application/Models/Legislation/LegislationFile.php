@@ -14,7 +14,7 @@ use Web\View;
 
 class LegislationFile extends File implements Indexable
 {
-    protected $tablename = 'legislationFiles';
+    public const TABLENAME = 'legislationFiles';
     protected $legislation;
 
     /**

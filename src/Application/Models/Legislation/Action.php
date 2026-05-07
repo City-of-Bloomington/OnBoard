@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2017-2020 City of Bloomington, Indiana
+ * @copyright 2017-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
@@ -10,7 +10,7 @@ use Web\Database;
 
 class Action extends ActiveRecord
 {
-	protected $tablename = 'legislationActions';
+	public const TABLENAME = 'legislationActions';
 	protected $legislation;
 	protected $type;
 

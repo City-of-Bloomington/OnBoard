@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2017 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2017-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models\Legislation;
 
@@ -10,7 +10,7 @@ use Web\Database;
 
 class ActionType extends ActiveRecord
 {
-	protected $tablename = 'legislationActionTypes';
+	public const TABLENAME = 'legislationActionTypes';
 
 	/**
 	 * Populates the object with data

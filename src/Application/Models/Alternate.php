@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2022-2025 City of Bloomington, Indiana
+ * @copyright 2022-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -13,7 +13,7 @@ use Web\Database;
 
 class Alternate extends ActiveRecord
 {
-    protected $tablename = 'alternates';
+    public const TABLENAME = 'alternates';
 
     protected $committee;
     protected $seat;
@@ -139,8 +139,6 @@ class Alternate extends ActiveRecord
     //----------------------------------------------------------------
     // Custom Functions
     //----------------------------------------------------------------
-    public function getData() { return $this->data; }
-
     private function populateDates(?Term $term=null)
     {
         if ($term) {

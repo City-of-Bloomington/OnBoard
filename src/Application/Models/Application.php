@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016-2025 City of Bloomington, Indiana
+ * @copyright 2016-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
@@ -10,7 +10,7 @@ use Web\Database;
 
 class Application extends ActiveRecord implements Notifications\Model
 {
-    protected $tablename = 'applications';
+    public const TABLENAME = 'applications';
     protected $person;
     protected $committee;
 

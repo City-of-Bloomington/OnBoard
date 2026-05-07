@@ -1,15 +1,13 @@
 <?php
 /**
- * @copyright 2011-2025 City of Bloomington, Indiana
+ * @copyright 2011-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Web;
-use Laminas\Db\Sql\Sql;
 
 abstract class ActiveRecord
 {
-    protected $tablename;
-    protected $data = array();
+    protected $data = [];
 
     const MYSQL_DATE_FORMAT     = 'Y-m-d';
     const MYSQL_TIME_FORMAT     = 'H:i:s';
@@ -25,6 +23,7 @@ abstract class ActiveRecord
     {
         $this->data = $data;
     }
+    public function getData(): array { return $this->data; }
 
     /**
      * Writes the database back to the database
@@ -32,18 +31,25 @@ abstract class ActiveRecord
     protected function save()
     {
         $this->validate();
-        $db  = Database::getConnection();
-        $sql = new Sql($db, $this->tablename);
+        $pdo   = \Application\Database::getConnection();
+        $table = static::TABLENAME;
+
+        $c = [];
+        foreach ($this->data as $k=>$v) {
+            if ($k != 'id') { $c[] = "$k=:$k"; }
+        }
+        $set = 'set '.implode(',', $c);
+
         if ($this->getId()) {
-            $update = $sql->update()
-                ->set($this->data)
-                ->where(array('id'=>$this->getId()));
-            $sql->prepareStatementForSqlObject($update)->execute();
+            $update = $pdo->prepare("update $table $set where id=:id");
+            $update->execute($this->data);
         }
         else {
-            $insert = $sql->insert()->values($this->data);
-            $sql->prepareStatementForSqlObject($insert)->execute();
-            $this->data['id'] = $db->getDriver()->getLastGeneratedValue();
+            unset($this->data['id']);
+
+            $insert = $pdo->prepare("insert $table $set");
+            $insert->execute($this->data);
+            $this->data['id'] = $pdo->lastInsertId();
         }
     }
 
@@ -53,9 +59,10 @@ abstract class ActiveRecord
     protected function delete()
     {
         if ($this->getId()) {
-            $sql = new Sql(Database::getConnection(), $this->tablename);
-            $delete = $sql->delete()->where(['id'=>$this->getId()]);
-            $sql->prepareStatementForSqlObject($delete)->execute();
+            $pdo    = \Application\Database::getConnection();
+            $table  = static::TABLENAME;
+            $delete = $pdo->prepare("delete from $table where id=:id");
+            $delete->execute(['id'=>$this->getId()]);
         }
     }
 

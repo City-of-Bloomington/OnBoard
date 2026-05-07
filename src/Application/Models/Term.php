@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2009-2022 City of Bloomington, Indiana
+ * @copyright 2009-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -11,7 +11,7 @@ use Web\Database;
 
 class Term extends ActiveRecord
 {
-    protected $tablename = 'terms';
+    public const TABLENAME = 'terms';
 
     protected $seat;
 
@@ -121,8 +121,6 @@ class Term extends ActiveRecord
     //----------------------------------------------------------------
     // Custom Functions
     //----------------------------------------------------------------
-    public function getData() { return $this->data; }
-
     public function isSafeToDelete(): bool
     {
         $sql = 'select count(*) as count from members where term_id=?';

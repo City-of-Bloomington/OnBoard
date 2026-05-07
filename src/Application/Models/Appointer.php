@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2014-2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -11,7 +10,7 @@ use Web\Database;
 
 class Appointer extends ActiveRecord
 {
-    protected $tablename = 'appointers';
+    public const TABLENAME = 'appointers';
 
     /**
      * Populates the object with data
