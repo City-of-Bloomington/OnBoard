@@ -6,7 +6,7 @@
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Appointer extends ActiveRecord
 {
@@ -31,16 +31,12 @@ class Appointer extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
-                if (ActiveRecord::isId($id)) {
-                    $sql = 'select * from appointers where id=?';
-                }
-                else {
-                    $sql = 'select * from appointers where name=?';
-                }
-                $result = $db->createStatement($sql)->execute([$id]);
+                $sql = ActiveRecord::isId($id)
+                     ? 'select * from appointers where id=?'
+                     : 'select * from appointers where name=?';
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('apopinters/unknownAppointer');

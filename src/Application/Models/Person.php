@@ -8,7 +8,7 @@ namespace Application\Models;
 
 use Web\ActiveRecord;
 use Web\Auth\ExternalIdentity;
-use Web\Database;
+use Application\Database;
 use Web\View;
 
 class Person extends ActiveRecord
@@ -33,14 +33,12 @@ class Person extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db  = Database::getConnection();
                 $sql = ActiveRecord::isId($id)
                      ? 'select * from people where id=?'
                      : 'select * from people where username=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('people/unknownPerson');
@@ -70,10 +68,9 @@ class Person extends ActiveRecord
     public function delete()
     {
         if ($this->isSafeToDelete()) {
-            $db = Database::getConnection();
-            $db->query('delete from people_phones    where person_id=?', [$this->getId()]);
-            $db->query('delete from people_emails    where person_id=?', [$this->getId()]);
-            $db->query('delete from people_addresses where person_id=?', [$this->getId()]);
+            Database::execute('delete from people_phones    where person_id=?', [$this->getId()]);
+            Database::execute('delete from people_emails    where person_id=?', [$this->getId()]);
+            Database::execute('delete from people_addresses where person_id=?', [$this->getId()]);
 
             parent::delete();
         }
@@ -296,8 +293,7 @@ class Person extends ActiveRecord
         $sql = "select id from members  where person_id=$id
           union select id from liaisons where person_id=$id
           union select id from offices  where person_id=$id";
-        $db = Database::getConnection();
-        $result  = $db->query($sql)->execute();
+        $result = Database::query($sql, []);
         return count($result) ? false : true;
     }
 
@@ -310,9 +306,8 @@ class Person extends ActiveRecord
                 select id from liaisons where person_id=?
                 union
                 select id from offices where person_id=?";
-        $db = Database::getConnection();
         $id = $this->getId();
-        $r  = $db->query($sql, [$id, $id, $id, $id]);
+        $r  = Database::query($sql, [$id, $id, $id, $id]);
         return count($r) ? true : false;
     }
 
@@ -372,20 +367,20 @@ class Person extends ActiveRecord
                 'notification_subscriptions'
             ];
 
-			$db = Database::getConnection();
-			$db->getDriver()->getConnection()->beginTransaction();
+			$pdo = Database::getConnection();
+            $pdo->beginTransaction();
             try {
                 foreach ($tables as $t) {
-                    $db->query("update $t set person_id=? where person_id=?")
-                       ->execute([$this->getId(), $person->getId()]);
+                    Database::execute("update $t set person_id=? where person_id=?",
+                                      [$this->getId(), $person->getId()]);
                 }
-				$db->query('delete from people where id=?')->execute([$person->getId()]);
+				Database::execute('delete from people where id=?', [$person->getId()]);
             }
             catch (\Exception $e) {
-                $db->getDriver()->getConnection()->rollback();
+                $pdo->rollBack();
                 throw($e);
             }
-            $db->getDriver()->getConnection()->commit();
+            $pdo->commit();
 		}
 	}
 }

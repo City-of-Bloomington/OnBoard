@@ -6,7 +6,7 @@
 namespace Application\Models\Legislation;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class ActionType extends ActiveRecord
 {
@@ -32,15 +32,12 @@ class ActionType extends ActiveRecord
 			}
 			else {
 				$db = Database::getConnection();
-				if (ActiveRecord::isId($id)) {
-					$sql = 'select * from legislationActionTypes where id=?';
-				}
-				else {
-					$sql = 'select * from legislationActionTypes where name=?';
-				}
-				$result = $db->createStatement($sql)->execute([$id]);
+				$sql = ActiveRecord::isId($id)
+					 ? 'select * from legislationActionTypes where id=?'
+					 : 'select * from legislationActionTypes where name=?';
+				$result = Database::query($sql, [$id]);
 				if (count($result)) {
-					$this->exchangeArray($result->current());
+					$this->exchangeArray($result[0]);
 				}
 				else {
 					throw new \Exception('legislationActionTypes/unknown');

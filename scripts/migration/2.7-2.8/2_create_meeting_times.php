@@ -12,10 +12,9 @@ declare (strict_types=1);
 include '../../../src/Web/bootstrap.php';
 
 use Application\Models\GoogleGateway;
-use Web\Database;
+use Application\Database;
 
-$db     = Database::getConnection();
-$pdo    = $db->getDriver()->getConnection()->getResource();
+$pdo    = Database::getConnection();
 $unknownEvents = fopen('./unknownEvents.csv', 'w');
 $missingTimes  = fopen('./missingTimes.csv', 'w');
 

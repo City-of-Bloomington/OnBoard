@@ -9,7 +9,6 @@ use Application\Models\File;
 use Application\Search\Indexable;
 
 use Web\ActiveRecord;
-use Web\Database;
 use Web\View;
 
 class LegislationFile extends File implements Indexable

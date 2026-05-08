@@ -6,7 +6,7 @@
 declare (strict_types=1);
 namespace Application\Models\Committees;
 
-use Web\Database;
+use Application\Database;
 
 class Note extends \Web\ActiveRecord
 {
@@ -31,11 +31,10 @@ class Note extends \Web\ActiveRecord
         if ($id) {
             if (is_array($id)) { $this->exchangeArray($id); }
             else {
-                $db  = Database::getConnection();
                 $sql = 'select * from committee_notes where id=?';
-                $res = $db->createStatement($sql)->execute([$id]);
+                $res = Database::query($sql, [$id]);
                 if (count($res)) {
-                    $this->exchangeArray($res->current());
+                    $this->exchangeArray($res[0]);
                 }
                 else {
                     throw new \Exception('committees/unknownNote');

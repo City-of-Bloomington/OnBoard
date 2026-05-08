@@ -9,10 +9,9 @@ include '../../../src/Web/bootstrap.php';
 use Application\Models\Email;
 use Application\Models\Person;
 use Application\Models\Phone;
-use Web\Database;
+use Application\Database;
 
-$db  = Database::getConnection();
-$pdo = $db->getDriver()->getConnection()->getResource();
+$pdo = Database::getConnection();
 
 echo "Delete applicants without any application or files\n";
 $sql = "delete a

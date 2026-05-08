@@ -7,14 +7,15 @@ namespace Web;
 
 abstract class ActiveRecord
 {
-    protected $data = [];
-
-    const MYSQL_DATE_FORMAT     = 'Y-m-d';
-    const MYSQL_TIME_FORMAT     = 'H:i:s';
-    const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
+    public const TABLENAME             = '';
+    public const MYSQL_DATE_FORMAT     = 'Y-m-d';
+    public const MYSQL_TIME_FORMAT     = 'H:i:s';
+    public const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     abstract public function getId();
     abstract public function validate();
+
+    protected $data = [];
 
     /**
      * Callback from TableGateway

@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models\Legislation;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Status extends ActiveRecord
 {
@@ -20,14 +20,12 @@ class Status extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$db = Database::getConnection();
                 $sql = ActiveRecord::isId($id)
                     ? 'select * from legislationStatuses where id=?'
                     : 'select * from legislationStatuses where name=?';
-
-				$result = $db->createStatement($sql)->execute([$id]);
+				$result = Database::query($sql, [$id]);
 				if (count($result)) {
-					$this->exchangeArray($result->current());
+					$this->exchangeArray($result[0]);
 				}
 				else {
 					throw new \Exception('legislationActions/unknown');
@@ -52,9 +50,8 @@ class Status extends ActiveRecord
 
 	public function delete()
 	{
-        $db = Database::getConnection();
         $sql = 'update legislation set status_id=null where status_id=?';
-        $db->createStatement($sql)->execute([$this->getId()]);
+		Database::execute($sql, [$this->getId()]);
         parent::delete();
 	}
 

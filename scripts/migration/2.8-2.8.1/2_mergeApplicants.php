@@ -4,15 +4,14 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-use Web\Database;
+use Application\Database;
 use Application\Models\Applicant;
 use Application\Models\ApplicantTable;
 use Application\Models\ApplicantFilesTable;
 
 include '../../../src/Web/bootstrap.php';
 
-$db  = Database::getConnection();
-$pdo = $db->getDriver()->getConnection()->getResource();
+$pdo = Database::getConnection();
 
 $select = $pdo->prepare('select max(id) from applicants where email=?');
 

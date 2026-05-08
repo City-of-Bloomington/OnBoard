@@ -10,7 +10,7 @@ use Application\Models\Committee;
 use Application\Models\TagsTable;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 use Web\View;
 
 class Legislation extends ActiveRecord
@@ -38,12 +38,10 @@ class Legislation extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$db = Database::getConnection();
 				$sql = 'select * from legislation where id=?';
-
-				$result = $db->createStatement($sql)->execute([$id]);
+				$result = Database::query($sql, [$id]);
 				if (count($result)) {
-					$this->exchangeArray($result->current());
+					$this->exchangeArray($result[0]);
 				}
 				else {
 					throw new \Exception('legislation/unknown');
@@ -218,13 +216,11 @@ class Legislation extends ActiveRecord
                 $f->delete();
             }
 
-            $db = Database::getConnection();
-
             $sql = 'delete from legislationActions where legislation_id=?';
-            $db->query($sql)->execute([$id]);
+			Database::execute($sql, [$id]);
 
             $sql = 'delete from legislation where id=?';
-            $db->query($sql)->execute([$id]);
+			Database::execute($sql, [$id]);
         }
     }
 }

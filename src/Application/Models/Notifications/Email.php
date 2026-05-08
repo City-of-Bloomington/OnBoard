@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models\Notifications;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 use PHPMailer\PHPMailer\PHPMailer;
 
 use Application\Models\Committee;
@@ -35,11 +35,10 @@ class Email extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db  = Database::getConnection();
                 $sql = 'select * from email_queue where id=?';
-                $res = $db->createStatement($sql)->execute([$id]);
+                $res = Database::query($sql, [$id]);
                 if (count($res)) {
-                    $this->exchangeArray($res->current());
+                    $this->exchangeArray($res[0]);
                 }
                 else {
                     throw new \Exception('people/unknownPerson');
@@ -113,9 +112,8 @@ class Email extends ActiveRecord
 
             $mail->send();
 
-            $db  = Database::getConnection();
             $sql = 'update email_queue set sent=now() where id=?';
-            $db->query($sql)->execute([$this->getId()]);
+            Database::execute($sql, [$this->getId()]);
         }
     }
 }

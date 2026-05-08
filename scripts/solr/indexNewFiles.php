@@ -6,14 +6,14 @@
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
-use Web\Database;
+use Application\Database;
 use Application\Search\Solr;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
 
 include '../../src/Web/bootstrap.php';
 
-$db     = Database::getConnection();
+$pdo    = Database::getConnection();
 $solr   = new Solr($SOLR['onboard']);
 $solr->setTimeout(20);
 
@@ -28,7 +28,7 @@ foreach ($types as $tablename=>$classname) {
     $total  = $result['total'];
     $c      = 0;
 
-    $update = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
+    $update = $pdo->prepare("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
     echo "Found $total $tablename\n";
     foreach ($result['rows'] as $f) {

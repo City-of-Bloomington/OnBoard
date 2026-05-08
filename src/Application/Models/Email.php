@@ -5,8 +5,7 @@
  */
 namespace Application\Models;
 use Web\ActiveRecord;
-use Web\Database;
-use Laminas\Db\Sql\Sql;
+use Application\Database;
 
 class Email extends ActiveRecord
 {
@@ -32,11 +31,10 @@ class Email extends ActiveRecord
                 $this->exchangeArray($id);
 			}
 			else {
-				$db = Database::getConnection();
 				$sql = 'select * from people_emails where id=?';
-                $result = $db->createStatement($sql)->execute([$id]);
+				$result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('emails/unknown');
@@ -83,14 +81,13 @@ class Email extends ActiveRecord
 
 	private function saveMain()
     {
-        $db  = Database::getConnection();
         if ($this->getId()) {
             $sql = 'update people_emails set main=null where person_id=? and id!=?';
-            $db->query($sql)->execute([$this->getPerson_id(), $this->getId()]);
+			Database::execute($sql, [$this->getPerson_id(), $this->getId()]);
         }
         else {
             $sql = 'update people_emails set main=null where person_id=?';
-            $db->query($sql)->execute([$this->getPerson_id()]);
+			Database::execute($sql, [$this->getPerson_id()]);
         }
     }
 

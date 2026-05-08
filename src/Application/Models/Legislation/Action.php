@@ -6,7 +6,7 @@
 namespace Application\Models\Legislation;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Action extends ActiveRecord
 {
@@ -35,12 +35,10 @@ class Action extends ActiveRecord
 				$this->exchangeArray($id);
 			}
 			else {
-				$db = Database::getConnection();
                 $sql = 'select * from legislationActions where id=?';
-
-				$result = $db->createStatement($sql)->execute([$id]);
+				$result = Database::query($sql, [$id]);
 				if (count($result)) {
-					$this->exchangeArray($result->current());
+					$this->exchangeArray($result[0]);
 				}
 				else {
 					throw new \Exception('legislationActions/unknown');

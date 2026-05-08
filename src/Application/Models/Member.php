@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Member extends ActiveRecord
 {
@@ -37,12 +37,10 @@ class Member extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
                 $sql = 'select * from members where id=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('members/unknown');
@@ -156,8 +154,6 @@ class Member extends ActiveRecord
      */
     private function overlapsExistingMember(): ?Member
     {
-        $db = Database::getConnection();
-
         $sql = "select * from members
                 where committee_id=? and person_id=?
                 and ((startDate is null) or (? is null)       or (startDate <= ?) )
@@ -169,8 +165,8 @@ class Member extends ActiveRecord
             $this->getStartDate(),    $this->getStartDate()
         ];
 
-        $result = $db->query($sql, $params);
-        if (count($result)) { return new Member($result->toArray()[0]); }
+        $result = Database::query($sql, $params);
+        if (count($result)) { return new Member($result[0]); }
 
         // Make sure this service does not overlap with another member for the same seat
         // http://stackoverflow.com/questions/3196099/date-range-overlap-with-nullable-dates
@@ -185,8 +181,8 @@ class Member extends ActiveRecord
                 $this->getStartDate(),    $this->getStartDate()
             ];
 
-            $result = $db->query($sql, $params);
-            if (count($result)) { return new Member($result->toArray()[0]); }
+            $result = Database::query($sql, $params);
+            if (count($result)) { return new Member($result[0]); }
         }
         return null;
     }

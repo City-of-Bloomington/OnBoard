@@ -9,7 +9,6 @@
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
 
 class ApplicantFile extends File
 {

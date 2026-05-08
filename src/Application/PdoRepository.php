@@ -6,7 +6,7 @@
 declare (strict_types=1);
 namespace Application;
 
-use Web\Database;
+use Application\Database;
 
 abstract class PdoRepository
 {
@@ -16,8 +16,7 @@ abstract class PdoRepository
 
     public function __construct(string $table, string $class)
     {
-        $db          = Database::getConnection();
-        $this->pdo   = $db->getDriver()->getConnection()->getResource();
+        $this->pdo   = Database::getConnection();
         $this->table = $table;
         $this->class = $class;
     }
@@ -64,9 +63,7 @@ abstract class PdoRepository
             $currentPage = $currentPage ? $currentPage : 1;
 
             $sql    = "select count(*) as count from ($select) o";
-            $qq     = $this->pdo->prepare($sql);
-            $qq->execute($params);
-            $r      = $qq->fetchAll(\PDO::FETCH_ASSOC);
+            $r      = Database::query($sql, $params);
             $total  = $r[0]['count'];
 
             $offset = $itemsPerPage * ($currentPage-1);
@@ -74,9 +71,7 @@ abstract class PdoRepository
         }
 
 		$rows  = [];
-        $qq    = $this->pdo->prepare($select);
-        $qq->execute($params);
-        $res   = $qq->fetchAll(\PDO::FETCH_ASSOC);
+        $res   = Database::query($select, $params);
         $model = $this->class;
 		foreach ($res as $r) { $rows[] = new $model($r); }
 

@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Meeting extends ActiveRecord
 {
@@ -33,11 +33,10 @@ class Meeting extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db     = Database::getConnection();
                 $sql    = 'select * from meetings where id=?';
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('meetings/unknownMeeting');
@@ -109,20 +108,18 @@ class Meeting extends ActiveRecord
 
     public function isSafeToDelete(): bool
     {
-        $sql = 'select count(*) from meetingFiles where meeting_id=?';
-        $db  = Database::getConnection();
-        $res = $db->createStatement($sql)->execute([$this->getId()]);
-        $files = $res->getResource()->fetchColumn();
+        $sql   = 'select count(*) as count from meetingFiles where meeting_id=?';
+        $res   = Database::query($sql, [$this->getId()]);
+        $files = $res[0]['count'];
 
         return !$files && !$this->getEventId();
     }
 
     public function hasAttendance(): bool
     {
-        $sql = 'select count(*) from meeting_attendance where meeting_id=?';
-        $db  = Database::getConnection();
-        $res = $db->createStatement($sql)->execute([$this->getId()]);
-        $c   = $res->getResource()->fetchColumn();
+        $sql = 'select count(*) as count from meeting_attendance where meeting_id=?';
+        $res = Database::query($sql, [$this->getId()]);
+        $c   = $res[0]['count'];
         return $c ? true : false;
     }
 
@@ -144,25 +141,21 @@ class Meeting extends ActiveRecord
                 join people   p on p.id=m.person_id
                 left join meeting_attendance a on a.meeting_id=x.id and a.member_id=m.id
                 where x.id=?";
-        $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
-        $q   = $pdo->prepare($sql);
-        $q->execute([$this->getId()]);
-        return $q->fetchAll(\PDO::FETCH_ASSOC);
+        return Database::query($sql, [$this->getId()]);
     }
 
     public function saveAttendance(array $attendance, ?string $notes=null)
     {
-        $pdo = Database::getConnection()->getDriver()->getConnection()->getResource();
         $sql = 'delete from meeting_attendance where meeting_id=?';
-        $pdo->prepare($sql)->execute([$this->getId()]);
+        Database::execute($sql, [$this->getId()]);
 
         $sql    = 'insert meeting_attendance values(:meeting_id, :member_id, :status)';
+        $pdo    = Database::getConnection();
         $insert = $pdo->prepare($sql);
         foreach ($attendance as $row) { $insert->execute($row); }
 
         $sql    = 'update meetings set attendanceNotes=? where id=?';
-        $update = $pdo->prepare($sql);
-        $update->execute([$notes, $this->getId()]);
+        Database::execute($sql, [$notes, $this->getId()]);
     }
 
     private static $LOCATION_MAP = [

@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Office extends ActiveRecord
 {
@@ -35,12 +35,10 @@ class Office extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
                 $sql = 'select * from offices where id=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('offices/unknownOffice');

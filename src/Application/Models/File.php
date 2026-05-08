@@ -9,7 +9,7 @@
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 abstract class File extends ActiveRecord
 {
@@ -72,7 +72,6 @@ abstract class File extends ActiveRecord
             }
             else {
                 $table = static::TABLENAME;
-                $db = Database::getConnection();
                 if (ActiveRecord::isId($id)) {
                     $sql = "select * from $table where id=?";
                 }
@@ -83,11 +82,11 @@ abstract class File extends ActiveRecord
                 }
 
                 $result = isset($sql)
-                        ? $db->createStatement($sql)->execute([$id])
+                        ? Database::query($sql, [$id])
                         : [];
 
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('files/unknownFile');
@@ -143,10 +142,9 @@ abstract class File extends ActiveRecord
         parent::save();
 
         $tab = static::TABLENAME;
-        $db  = Database::getConnection();
         $sql = "select * from $tab where id=?";
-        $res = $db->createStatement($sql)->execute([$this->getId()]);
-        $this->exchangeArray($res->current());
+        $res = Database::query($sql, [$this->getId()]);
+        $this->exchangeArray($res[0]);
     }
 
     protected function saveFile($tempFile, $newFile)

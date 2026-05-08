@@ -8,7 +8,7 @@ namespace Application\Models;
 
 use Web\ActiveRecord;
 use Web\View;
-use Web\Database;
+use Application\Database;
 
 class Committee extends ActiveRecord
 {
@@ -29,11 +29,10 @@ class Committee extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
                 $sql = 'select * from committees where id=?';
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('committees/unknownCommittee');
@@ -69,13 +68,14 @@ class Committee extends ActiveRecord
         }
         parent::save();
 
-        $db = Database::getConnection();
+        $pdo = Database::getConnection();
         if ($this->departmentsHaveChanged) {
             $sql = 'delete from committee_departments where committee_id=?';
-            $db->query($sql, [$this->getId()]);
+            $del = $pdo->prepare($sql);
+            $del->execute([$this->getId()]);
 
             $sql = 'insert committee_departments set committee_id=?,department_id=?';
-            $ins = $db->createStatement($sql);
+            $ins = $pdo->prepare($sql);
             foreach (array_keys($this->departments) as $id) {
                 $ins->execute([$this->getId(), $id]);
             }
@@ -83,10 +83,11 @@ class Committee extends ActiveRecord
 
         if ($this->validatorsHaveChanged) {
             $sql = 'delete from committee_application_validators where committee_id=?';
-            $db->query($sql, [$this->getId()]);
+            $del = $pdo->prepare($sql);
+            $del->execute([$this->getId()]);
 
             $sql = 'insert into committee_application_validators values(?,?)';
-            $ins = $db->createStatement($sql);
+            $ins = $pdo->prepare($sql);
             foreach (array_keys($this->validators) as $class) {
                 $ins->execute([$this->getId(), $class]);
             }
@@ -226,9 +227,8 @@ class Committee extends ActiveRecord
         $sql = "select count(*) as count from $table
                 where committee_id=?
                   and endDate is not null and endDate < now()";
-        $db = Database::getConnection();
-        $result = $db->query($sql)->execute([$this->getId()]);
-        $row = $result->current();
+        $result = Database::query($sql, [$this->getId()]);
+        $row    = $result[0];
         return $row['count'] ? true : false;
     }
     public function hasPastSeats  () { return $this->hasPast('seats'  ); }
@@ -296,12 +296,11 @@ class Committee extends ActiveRecord
     public function getDepartments(): array
     {
         if (!$this->departments) {
-            $db  = Database::getConnection();
             $sql = "select d.*
                     from committee_departments c
                     join departments d on d.id=c.department_id
                     where c.committee_id=?";
-            $res = $db->query($sql)->execute([$this->getId()]);
+            $res = Database::query($sql, [$this->getId()]);
             foreach ($res as $row) {
                 $d = new Department($row);
                 $this->departments[$d->getId()] = $d;
@@ -332,9 +331,8 @@ class Committee extends ActiveRecord
     public function getValidators(): array
     {
         if (!$this->validators) {
-            $db  = Database::getConnection();
             $sql = "select class from committee_application_validators where committee_id=?";
-            $res = $db->query($sql)->execute([$this->getId()]);
+            $res = Database::query($sql, [$this->getId()]);
             foreach ($res as $r) {
                 $this->validators[$r['class']] = new $r['class'];
             }
@@ -398,8 +396,7 @@ class Committee extends ActiveRecord
                 group by c.id
                 order by c.name";
         $out    = [];
-        $db     = Database::getConnection();
-        $result = $db->query($sql)->execute();
+        $result = Database::query($sql, []);
         foreach ($result as $row) { $out[] = $row; }
         return $out;
     }
@@ -478,9 +475,8 @@ class Committee extends ActiveRecord
         }
 
         fwrite($debug, "Updating committee token: $res[nextSyncToken] {$this->getId()}\n");
-        $db  = Database::getConnection();
         $sql = 'update committees set syncToken=?, synced=now() where id=?';
-        $db->createStatement($sql)->execute([$res['nextSyncToken'], $this->getId()]);
+        Database::execute($sql, [$res['nextSyncToken'], $this->getId()]);
     }
 
     /**
@@ -518,9 +514,8 @@ class Committee extends ActiveRecord
     {
         $history = [];
 
-        $db  = Database::getConnection();
         $sql = 'select * from committeeHistory where committee_id=? order by date desc';
-        $result = $db->query($sql)->execute([$this->getId()]);
+        $result = Database::query($sql, [$this->getId()]);
         foreach ($result as $row) {
             $history[] = new CommitteeHistory($row);
         }
@@ -531,24 +526,21 @@ class Committee extends ActiveRecord
     public function allowsAlternates (): bool { return $this->getAlternates(); }
     public function hasTerms(): bool
     {
-        $db  = Database::getConnection();
         $sql = 'select count(*) as count from terms t join seats s on t.seat_id=s.id where s.committee_id=?';
-        $row = $db->query($sql)->execute([$this->getId()])->current();
-        return (int)$row['count'] > 0;
+        $res = Database::query($sql, [$this->getId()]);
+        return (int)$res[0]['count'] > 0;
     }
     public function takesApplications(): bool
     {
-        $db  = Database::getConnection();
         $sql = 'select count(*) as count from seats where takesApplications=1 and committee_id=?';
-        $row = $db->query($sql)->execute([$this->getId()])->current();
-        return (int)$row['count'] > 0;
+        $res = Database::query($sql, [$this->getId()]);
+        return (int)$res[0]['count'] > 0;
     }
     public function hasReports(): bool
     {
-        $db  = Database::getConnection();
         $sql = 'select count(*) as count from reports where committee_id=?';
-        $row = $db->query($sql)->execute([$this->getId()])->current();
-        return (int)$row['count'] > 0;
+        $res = Database::query($sql, [$this->getId()]);
+        return (int)$res[0]['count'] > 0;
     }
 
     public function toArray(): array

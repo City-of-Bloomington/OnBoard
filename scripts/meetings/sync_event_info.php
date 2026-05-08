@@ -5,7 +5,6 @@
  */
 declare (strict_types=1);
 namespace Application\Models;
-use Web\Database;
 
 if ($argc != 2 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 echo "

@@ -7,7 +7,7 @@
  */
 declare (strict_types=1);
 
-use Web\Database;
+use Application\Database;
 use Application\Search\Solr;
 
 $_SERVER['REQUEST_URI'] = __FILE__;
@@ -21,7 +21,7 @@ $client->getAdapter()->setTimeout(20);
 $buffer = $client->getPlugin('bufferedadd');
 $buffer->setBufferSize(100);
 
-$db     = Database::getConnection();
+$pdo    = Database::getConnection();
 
 $types  = [
     'meetingFiles'     => 'Application\Models\MeetingFilesTable',
@@ -32,7 +32,7 @@ $types  = [
 foreach ($types as $tablename=>$classname) {
     $table     = new $classname();
     $result    = $table->find(['url'=>null]);
-    $sql       = $db->createStatement("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
+    $sql       = $pdo->prepare("update $tablename set indexed=CURRENT_TIMESTAMP where id=?");
 
     $total = $result['total'];
     $c     = 0;

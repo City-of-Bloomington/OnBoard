@@ -8,7 +8,6 @@ namespace Application\Models;
 use Application\Search\Indexable;
 
 use Web\ActiveRecord;
-use Web\Database;
 use Web\View;
 
 class MeetingFile extends File implements Notifications\Model, Indexable

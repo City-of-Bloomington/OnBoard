@@ -8,7 +8,7 @@ namespace Application\Models;
 
 use Application\Models\TermTable;
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Seat extends ActiveRecord
 {
@@ -48,12 +48,10 @@ class Seat extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
                 $sql = 'select * from seats where id=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('seats/unknownSeat');
@@ -173,14 +171,14 @@ class Seat extends ActiveRecord
                 $this->getId()
             ];
 
-            $db = Database::getConnection();
-            $db->getDriver()->getConnection()->beginTransaction();
+            $pdo = Database::getConnection();
+            $pdo->beginTransaction();
             try {
-                foreach ($updates as $sql) { $db->query($sql)->execute($params); }
-                $db->getDriver()->getConnection()->commit();
+                foreach ($updates as $sql) { Database::execute($sql, $params); }
+                $pdo->commit();
             }
             catch (\Exception $e) {
-                $db->getDriver()->getConnection()->rollback();
+                $pdo->rollBack();
                 throw $e;
             }
         }
@@ -192,15 +190,12 @@ class Seat extends ActiveRecord
     public function isSafeToDelete(): bool
     {
         $sql = "select count(*) as count from (
-                    select id from terms where seat_id=?
-                    union
-                    select id from members where seat_id=?
+                    select id from terms   where seat_id=?
+              union select id from members where seat_id=?
                 ) foreignKeys";
-        $db = Database::getConnection();
-        $result = $db->query($sql, [$this->getId(), $this->getId()]);
+        $result = Database::query($sql, [$this->getId(), $this->getId()]);
         if (count($result)) {
-            $row = $result->current();
-            return (int)$row['count'] === 0 ? true : false;
+            return (int)$result[0]['count'] === 0 ? true : false;
         }
         return false;
     }
@@ -336,11 +331,10 @@ class Seat extends ActiveRecord
      */
     public function getLatestTerm(): ?Term
     {
-        $db  = Database::getConnection();
         $sql = 'select * from terms where seat_id=? order by startDate desc limit 1';
-        $res = $db->createStatement($sql)->execute([$this->getId()]);
+        $res = Database::query($sql, [$this->getId()]);
         if (count($res)) {
-            return new Term($res->current());
+            return new Term($res[0]);
         }
         return null;
     }
@@ -365,11 +359,9 @@ class Seat extends ActiveRecord
 
         if ($committee->getType() === 'seated') {
             // Seats on seated committees can only be deleted if there are no terms
-            $db = Database::getConnection();
             $sql = 'select count(*) as count from terms where seat_id=?';
-            $result = $db->query($sql, [$this->getId()]);
-            $row = $result->current();
-            return $row['count'] === 0;
+            $result = Database::query($sql, [$this->getId()]);
+            return (int)$result[0]['count'] === 0;
         }
         else {
             // Terms for open committees do not need seats.

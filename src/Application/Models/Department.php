@@ -6,7 +6,7 @@
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Department extends ActiveRecord
 {
@@ -32,15 +32,12 @@ class Department extends ActiveRecord
             }
             else {
                 $db = Database::getConnection();
-                if (ActiveRecord::isId($id)) {
-                    $sql = 'select * from departments where id=?';
-                }
-                else {
-                    $sql = 'select * from departments where name=?';
-                }
-                $result = $db->createStatement($sql)->execute([$id]);
+                $sql = ActiveRecord::isId($id)
+                     ? 'select * from departments where id=?'
+                     : 'select * from departments where name=?';
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('departments/unknown');

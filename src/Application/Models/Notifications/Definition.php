@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models\Notifications;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Definition extends ActiveRecord
 {
@@ -35,11 +35,10 @@ class Definition extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db  = Database::getConnection();
                 $sql = 'select * from notification_definitions where id=?';
-                $res = $db->createStatement($sql)->execute([$id]);
+                $res = Database::query($sql, [$id]);
                 if (count($res)) {
-                    $this->exchangeArray($res->current());
+                    $this->exchangeArray($res[0]);
                 }
                 else {
                     throw new \Exception('notifications/unknownDefinition');

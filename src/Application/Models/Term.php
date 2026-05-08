@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Term extends ActiveRecord
 {
@@ -34,12 +34,10 @@ class Term extends ActiveRecord
                 $this->exchangeArray($id);
             }
             else {
-                $db = Database::getConnection();
                 $sql = 'select * from terms where id=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('terms/unknownTerm');
@@ -80,13 +78,11 @@ class Term extends ActiveRecord
         }
 
         // Make sure this term is not overlapping terms for the seat
-        $db  = Database::getConnection();
         $sql = "select id from terms
                 where seat_id=?
                 and (?<endDate and ?>startDate)";
         if ($this->getId()) { $sql.= ' and id!='.$this->getId(); }
-
-        $result = $db->createStatement($sql)->execute([
+        $result = Database::query($sql, [
             $this->getSeat_id(),
             $this->getStartDate(), $this->getEndDate()
         ]);
@@ -124,11 +120,9 @@ class Term extends ActiveRecord
     public function isSafeToDelete(): bool
     {
         $sql = 'select count(*) as count from members where term_id=?';
-        $db  = Database::getConnection();
-        $result = $db->query($sql, [$this->getId()]);
+        $result = Database::query($sql, [$this->getId()]);
         if (count($result)) {
-            $row = $result->current();
-            return ((int)$row['count'] === 0) ? true : false;
+            return ((int)$result[0]['count'] === 0) ? true : false;
         }
         return false;
     }
@@ -197,21 +191,18 @@ class Term extends ActiveRecord
     public function isVacant()
     {
         if ($this->getId()) {
-            $db = Database::getConnection();
 
             $sql = 'select count(*) as count from members where endDate is null and term_id=?';
-            $result = $db->query($sql, [$this->getId()]);
-            $row = $result->current();
-            if ($row['count'] > 0) {
+            $result = Database::query($sql, [$this->getId()]);
+            if ((int)$result[0]['count'] > 0) {
                 return false;
             }
 
             $sql = 'select max(endDate) as endDate from members where term_id=?';
-            $result = $db->query($sql, [$this->getId()]);
+            $result = Database::query($sql, [$this->getId()]);
             if (count($result)) {
-                $row = $result->current();
-                if ($row['endDate']) {
-                    $endDate = new \DateTime($row['endDate']);
+                if ($result[0]['endDate']) {
+                    $endDate = new \DateTime($result[0]['endDate']);
                     return (int)$endDate->format('U') < (int)$this->getEndDate('U');
                 }
 

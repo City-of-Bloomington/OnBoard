@@ -7,7 +7,7 @@ declare (strict_types=1);
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Address extends ActiveRecord
 {
@@ -88,10 +88,9 @@ class Address extends ActiveRecord
 		if ($id) {
 			if (is_array($id)) { $this->exchangeArray($id); }
 			else {
-				$db     = Database::getConnection();
 				$sql    = 'select * from people_addresses where id=?';
-                $result = $db->createStatement($sql)->execute([$id]);
-                if (count($result)) { $this->exchangeArray($result->current()); }
+				$result = Database::query($sql, [$id]);
+                if (count($result)) { $this->exchangeArray($result[0]); }
                 else { throw new \Exception('addresses/unknown'); }
 			}
 		}

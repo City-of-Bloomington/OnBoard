@@ -1,13 +1,13 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 namespace Application;
 
 use Application\Models\Committee;
-use Web\Database;
+use Application\Database;
 use Web\Ldap;
 
 class WarehouseService
@@ -30,7 +30,6 @@ class WarehouseService
     {
         $out = [];
         if (array_key_exists($committee_id, self::$board_hearing_types)) {
-            $db      = Database::getConnection('warehouse');
             $type_id = self::$board_hearing_types[$committee_id];
             $d       = $date->format('Y-m-d');
 
@@ -42,7 +41,7 @@ class WarehouseService
                     from epl.plan_hearings h
                     join epl.plans         p on p.plan_id=h.plan_id
                     where h.type_id=? and h.start_date=?";
-            $result = $db->createStatement($sql)->execute([$type_id, $d]);
+            $result = Database::query($sql, [$type_id, $d], 'warehouse');
             if (count($result)) {
                 $plans = [];
                 foreach ($result as $row) { $plans[] = $row; }
@@ -57,7 +56,7 @@ class WarehouseService
                     from epl.permit_hearings h
                     join epl.permits        p on p.permit_id=h.permit_id
                     where h.type_id=? and h.start_date=?";
-            $result = $db->createStatement($sql)->execute([$type_id, $d]);
+            $result = Database::query($sql, [$type_id, $d], 'warehouse');
             if (count($result)) {
                 $permits = [];
                 foreach ($result as $row) { $permits[] = $row; }
@@ -69,9 +68,8 @@ class WarehouseService
 
     public static function permitting_staff(string $username): array
     {
-        $db  = Database::getConnection('warehouse');
         $sql = 'select * from epl.staff where username=?';
-        $res = $db->createStatement($sql)->execute([Ldap::bind_dn($username)]);
+        $res = Database::query($sql, [Ldap::bind_dn($username)], 'warehouse');
         if (count($res)) {
             $out = [];
             foreach ($res as $r) { $out[] = $r; }

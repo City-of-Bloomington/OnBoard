@@ -6,7 +6,7 @@
 namespace Application\Models;
 
 use Web\ActiveRecord;
-use Web\Database;
+use Application\Database;
 
 class Application extends ActiveRecord implements Notifications\Model
 {
@@ -38,10 +38,9 @@ class Application extends ActiveRecord implements Notifications\Model
             else {
                 $db = Database::getConnection();
                 $sql = 'select * from applications where id=?';
-
-                $result = $db->createStatement($sql)->execute([$id]);
+                $result = Database::query($sql, [$id]);
                 if (count($result)) {
-                    $this->exchangeArray($result->current());
+                    $this->exchangeArray($result[0]);
                 }
                 else {
                     throw new \Exception('applications/unknown');
@@ -77,18 +76,18 @@ class Application extends ActiveRecord implements Notifications\Model
     public function archive()
     {
         if ($this->getId()) {
-            $sql = 'update applications set archived=now() where id=?';
-            $db = Database::getConnection();
-            $db->query($sql, [$this->getId()]);
+            $pdo = Database::getConnection();
+            $upd = $pdo->prepare('update applications set archived=now() where id=?');
+            $upd->execute([$this->getId()]);
         }
     }
 
     public function unarchive()
     {
         if ($this->getId()) {
-            $sql = 'update applications set archived=null where id=?';
-            $db = Database::getConnection();
-            $db->query($sql, [$this->getId()]);
+            $pdo = Database::getConnection();
+            $upd = $pdo->prepare('update applications set archived=null where id=?');
+            $upd->execute([$this->getId()]);
         }
     }
 
@@ -155,8 +154,7 @@ class Application extends ActiveRecord implements Notifications\Model
                 join liaisons     l on p.id=l.person_id
                 where l.type='departmental'
                   and l.committee_id=?";
-        $db = Database::getConnection();
-        $result  = $db->createStatement($sql)->execute([$this->getCommittee_id()]);
+        $result = Database::query($sql, [$this->getCommittee_id()]);
         foreach ($result as $p) { $people[] = new Person($p); }
 
         return $people;

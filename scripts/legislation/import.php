@@ -18,7 +18,6 @@ namespace Application\Models\Legislation;
 
 use Application\Models\Committee;
 use Application\Models\Tag;
-use Web\Database;
 
 $_SERVER['SITE_HOME'] = '/srv/data/onboard';
 include '../../bootstrap.php';
