@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.5",
         "aura/router":                      "@stable",
         "google/apiclient":                 "@stable",
         "google/cloud-recaptcha-enterprise":"@stable",

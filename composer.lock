@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1fdd8bd72efaa19c1abea129adad471",
+    "content-hash": "d74d4eabf58858ce796b441a06f52636",
     "packages": [
         {
             "name": "aura/router",
@@ -256,16 +256,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.440.0",
+            "version": "v0.441.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "f835f7a84611071ca2f58e8f44aac497d3aa7c44"
+                "reference": "9e3c10389ed39915261e5bc98a687c2b1307040d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/f835f7a84611071ca2f58e8f44aac497d3aa7c44",
-                "reference": "f835f7a84611071ca2f58e8f44aac497d3aa7c44",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/9e3c10389ed39915261e5bc98a687c2b1307040d",
+                "reference": "9e3c10389ed39915261e5bc98a687c2b1307040d",
                 "shasum": ""
             },
             "require": {
@@ -294,9 +294,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.440.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.441.0"
             },
-            "time": "2026-05-04T01:36:24+00:00"
+            "time": "2026-05-11T01:42:35+00:00"
         },
         {
             "name": "google/auth",
@@ -3152,16 +3152,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.1.7",
+            "version": "14.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "da6e6b64940901650abcea62430c8c24926b7a71"
+                "reference": "031856c28c060e1c1d1fc94d256e3ffbe4230c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/da6e6b64940901650abcea62430c8c24926b7a71",
-                "reference": "da6e6b64940901650abcea62430c8c24926b7a71",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/031856c28c060e1c1d1fc94d256e3ffbe4230c91",
+                "reference": "031856c28c060e1c1d1fc94d256e3ffbe4230c91",
                 "shasum": ""
             },
             "require": {
@@ -3218,7 +3218,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.1.7"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.1.8"
             },
             "funding": [
                 {
@@ -3238,7 +3238,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-04T15:51:53+00:00"
+            "time": "2026-05-09T12:06:52+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -4786,7 +4786,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.3"
+        "php": ">=8.5"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
