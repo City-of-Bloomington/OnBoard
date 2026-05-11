@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -37,7 +37,7 @@ class CSVView extends \Web\View
     public function render(): string
     {
         $out = fopen('php://output', 'w');
-        foreach ($this->data as $row) { fputcsv($out, $row); }
+        foreach ($this->data as $row) { fputcsv(stream:$out, fields:$row, escape:"\\"); }
         fclose($out);
 
         return '';

@@ -2,7 +2,7 @@
 /**
  * Output arbitrary data as a CSV file
  *
- * @copyright 2024 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -31,7 +31,7 @@ class CSVView extends \Web\View
     {
         $out = fopen('php://output', 'w');
         foreach ($this->data as $row) {
-            fputcsv($out, $row);
+            fputcsv(stream:$out, fields:$row, escape:"\\");
         }
         fclose($out);
         return '';
