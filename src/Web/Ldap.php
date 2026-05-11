@@ -73,8 +73,8 @@ class Ldap implements ExternalIdentity
             $config['base_dn'],
             $config['username_attribute']."=$username"
         );
-        if (ldap_count_entries(self::$connection,$result)) {
-            $entries = ldap_get_entries(self::$connection, $result);
+        if ($result && ldap_count_entries(self::$connection, $result)) {
+            $entries  =  ldap_get_entries(self::$connection, $result);
             $this->entry = $entries[0];
         }
         else {
