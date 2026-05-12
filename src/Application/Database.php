@@ -27,7 +27,7 @@ class Database
 
     public static function query(string $sql, array $params, string $db='default'): array
 	{
-		$pdo = self::getConnection();
+		$pdo = self::getConnection($db);
 		$q   = $pdo->prepare($sql);
 		$q->execute($params);
 		return $q->fetchAll(\PDO::FETCH_ASSOC);
