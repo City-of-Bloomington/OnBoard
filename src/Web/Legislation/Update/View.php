@@ -48,7 +48,7 @@ class View extends \Web\View
     {
         $options = [['value'=>'', 'label'=>'']];
         $table   = new StatusesTable();
-        $search  = $l->getId() ? null : ['active' => 1]; // New legislation should only use active statuses
+        $search  = $l->getId() ? [] : ['active' => 1]; // New legislation should only use active statuses
         $list    = $table->find($search);
         foreach ($list['rows'] as $t) { $options[] = ['value'=>$t->getId(), 'label'=>$t->getName()]; }
         return $options;
