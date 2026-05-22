@@ -14,6 +14,7 @@
         packages:
           - "php-mysql"
           - "php-pgsql"
+          - 'poppler-utils'
 
     - name: "Create directories"
       ansible.builtin.file:
