@@ -100,6 +100,7 @@ create table committee_notes (
     note text,
     created  timestamp not null default CURRENT_TIMESTAMP,
     modified timestamp not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    archived timestamp,
     foreign key (committee_id) references committees(id),
     foreign key (   person_id) references     people(id)
 );

@@ -80,8 +80,10 @@ $map->attach('appointers.', '/appointers', function ($r) {
 
 $map->attach('committees.', '/committees', function ($r) {
     $r->attach('notes.', '/{committee_id}/notes', function ($r) {
-        $r->get('update', '/{note_id}/update', Web\Committees\Notes\Update\Controller::class)->allows(['POST']);
-        $r->get('add',    '/add',              Web\Committees\Notes\Add\Controller::class)->allows(['POST']);
+        $r->get('archive',   '/{note_id}/archive',   Web\Committees\Notes\Archive\Controller::class);
+        $r->get('unarchive', '/{note_id}/unarchive', Web\Committees\Notes\Unarchive\Controller::class);
+        $r->get('update',    '/{note_id}/update',    Web\Committees\Notes\Update\Controller::class)->allows(['POST']);
+        $r->get('add',       '/add',                 Web\Committees\Notes\Add\Controller::class)->allows(['POST']);
     });
 
     $r->get('members',      '/{committee_id}/members'      , Web\Committees\Members\Controller::class);

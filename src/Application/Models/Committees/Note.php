@@ -68,14 +68,21 @@ class Note extends \Web\ActiveRecord
     public function getPerson_id()    { return parent::get('person_id'   ); }
     public function getCommittee()    { return parent::getForeignKeyObject('Application\Models\Committee', 'committee_id'); }
     public function getPerson()       { return parent::getForeignKeyObject('Application\Models\Person',    'person_id'   ); }
-    public function getCreated ($f=null) { return parent::getDateData('created',  $f); }
-    public function getModified($f=null) { return parent::getDateData('modified', $f); }
+
+    public function getCreated (): ?\Datetime { return $this->data['created' ] ? new \Datetime($this->data['created' ]) : null; }
+    public function getModified(): ?\Datetime { return $this->data['modified'] ? new \Datetime($this->data['modified']) : null; }
+    public function getArchived(): ?\Datetime { return $this->data['archived'] ? new \Datetime($this->data['archived']) : null; }
 
     public function setNote($s) { parent::set('note', $s); }
     public function setCommittee_id($i) { parent::setForeignKeyField ('Application\Models\Committee', 'committee_id', $i); }
     public function setCommittee   ($o) { parent::setForeignKeyObject('Application\Models\Committee', 'committee_id', $o); }
     public function setPerson_id   ($i) { parent::setForeignKeyField ('Application\Models\Person',    'person_id',    $i); }
     public function setPerson      ($o) { parent::setForeignKeyObject('Application\Models\Person',    'person_id',    $o); }
+
+    public function setArchived(?\Datetime $d=null)
+    {
+        $this->data['archived'] = $d ? $d->format(parent::MYSQL_DATETIME_FORMAT) : null;
+    }
 
     public function __toString() { return parent::get('note'); }
 }

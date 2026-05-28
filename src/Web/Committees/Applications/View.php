@@ -9,6 +9,7 @@ namespace Web\Committees\Applications;
 use Application\Models\ApplicationTable;
 use Application\Models\Committee;
 use Application\Models\MemberTable;
+use Application\Models\Committees\Note;
 use Application\Models\Committees\NoteTable;
 use Application\Models\Notifications\DefinitionTable;
 use Application\Models\Notifications\SubscriptionTable;
@@ -23,7 +24,8 @@ class View extends \Web\View
             'committee'             => $c,
             'applications_current'  => self::applications_current ($c),
             'applications_archived' => self::applications_archived($c),
-            'notes'                 => self::committee_notes($c),
+            'notes_current'         => self::notes($c),
+            'notes_archived'        => self::notes($c, 'archived'),
             'actionLinks'           => self::actionLinks($c)
         ];
     }
@@ -41,7 +43,7 @@ class View extends \Web\View
         return \Web\Notifications\View::actionLinksForSubscriptions($event, $c->getId(), $ret);
     }
 
-    private static function applications_current(Committee $c): array
+    private static function applications_current(Committee $c, string $status='current'): array
     {
         $canArchive = parent::isAllowed('applications', 'archive');
         $canDelete  = parent::isAllowed('applications', 'delete');
@@ -58,14 +60,14 @@ class View extends \Web\View
             if ($canArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$url",
-                    'label' => parent::_('application_archive'),
+                    'label' => parent::_('archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
-                    'label' => parent::_('application_delete'),
+                    'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
             }
@@ -104,14 +106,14 @@ class View extends \Web\View
             if ($canUnArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()])."?return_url=$url",
-                    'label' => parent::_('application_unarchive'),
+                    'label' => parent::_('unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$url",
-                    'label' => parent::_('application_delete'),
+                    'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
             }
@@ -129,34 +131,57 @@ class View extends \Web\View
         return $data;
     }
 
-    private static function committee_notes(Committee $c): array
+    private static function notes(Committee $c, string $status='current'): array
     {
-        $canView = parent::isAllowed('committees.notes', 'view');
-        $canEdit = parent::isAllowed('committees.notes', 'update');
+        $canView = parent::isAllowed('committees.notes', 'view'     );
+        $canEdit = parent::isAllowed('committees.notes', 'update'   );
+        $canArch = parent::isAllowed('committees.notes', 'archive'  );
+        $canUnar = parent::isAllowed('committees.notes', 'unarchive');
+
         if (!$canView) { return []; }
 
         $table = new NoteTable();
-        $notes = $table->find(['committee_id'=>$c->getId()], 'created desc');
+        $notes = $table->find(['committee_id'=>$c->getId(), 'archived'=>$status!='current'], 'created desc');
         $data  = [];
         foreach ($notes['rows'] as $n) {
-            $links = [];
-            if ($canEdit) {
-                $links[] = [
-                    'url'   => parent::generateUri('committees.notes.update', ['committee_id'=>$c->getId(), 'note_id'=>$n->getId()]),
-                    'label' => parent::_('note_edit'),
-                    'class' => 'edit'
-                ];
-            }
             $data[] = [
                 'id'          => $n->getId(),
                 'person_id'   => $n->getPerson_id(),
                 'person'      => $n->getPerson()->getFullname(),
-                'created'     => $n->getCreated (DATETIME_FORMAT),
-                'modified'    => $n->getModified(DATETIME_FORMAT),
+                'created'     => $n->getCreated (),
+                'modified'    => $n->getModified(),
+                'archived'    => $n->getArchived(),
                 'note'        => $n->getNote(),
-                'actionLinks' => $links
+                'actionLinks' => self::notes_links($n, $canEdit, $canArch, $canUnar)
             ];
         }
         return $data;
+    }
+    private static function notes_links(Note $n, bool $canEdit, bool $canArchive, bool $canUnArchive): array
+    {
+        $links = [];
+        if ($canEdit) {
+            $links[] = [
+                'url'   => parent::generateUri('committees.notes.update', ['committee_id'=>$n->getCommittee_id(), 'note_id'=>$n->getId()]),
+                'label' => parent::_('edit'),
+                'class' => 'edit'
+            ];
+        }
+
+        if ($n->getArchived() && $canUnArchive) {
+            $links[] = [
+                'url'   => parent::generateUri('committees.notes.unarchive', ['committee_id'=>$n->getCommittee_id(), 'note_id'=>$n->getId()]),
+                'label' => parent::_('unarchive'),
+                'class' => 'unarchive'
+            ];
+        }
+        elseif ($canArchive) {
+            $links[] = [
+                'url'   => parent::generateUri('committees.notes.archive', ['committee_id'=>$n->getCommittee_id(), 'note_id'=>$n->getId()]),
+                'label' => parent::_('archive'),
+                'class' => 'archive'
+            ];
+        }
+        return $links;
     }
 }

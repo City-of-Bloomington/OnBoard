@@ -28,6 +28,12 @@ msgstr "Edit"
 msgid "delete"
 msgstr "Delete"
 
+msgid "archive"
+msgstr "Archive"
+
+msgid "unarchive"
+msgstr "Unarchive"
+
 msgid "choose"
 msgstr "Choose"
 
@@ -634,6 +640,9 @@ msgid_plural "notes"
 msgstr[0] "Note"
 msgstr[1] "Notes"
 
+msgid "notes_archived"
+msgstr "Archived Notes"
+
 msgid "note_add"
 msgstr "Add Note"
 
@@ -733,21 +742,6 @@ msgstr[1] "Applications"
 
 msgid "apply"
 msgstr "Apply"
-
-msgid "application_add"
-msgstr "New Application"
-
-msgid "application_edit"
-msgstr "Edit"
-
-msgid "application_delete"
-msgstr "Delete"
-
-msgid "application_archive"
-msgstr "Archive"
-
-msgid "application_unarchive"
-msgstr "Unarchive"
 
 msgid "application_confirmation"
 msgstr "Application Confirmation"

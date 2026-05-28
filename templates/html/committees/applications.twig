@@ -2,7 +2,8 @@
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
- * @param array     notes
+ * @param array     notes_current
+ * @param array     notes_archived
  * @param array     applications_current
  * @param array     applications_archived
  * @param array     actionLinks
@@ -57,6 +58,38 @@
         {% endfor %}
     </tbody>
     </table>
+
+    <details>
+        <summary>{{ _('applications_archived') }}</summary>
+        <table class="usa-table">
+            <thead>
+                <tr><th>{{ _('created' ) }}</th>
+                    <th>{{ _('name'    ) }}</th>
+                    <th>{{ _('archived') }}</th>
+                    <th>{{ _('actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in applications_archived %}
+                <tr><td>{{ a.created }}</td>
+                    <td>{% if canView %}
+                        <a class="usa-link" href="{{ uri('applications.view', { application_id: a.id }) }}">
+                            {{ a.person }}
+                        </a>
+                        {% else %}
+                        {{ a.person }}
+                        {% endif %}
+                    </td>
+                    <td>{{ a.archived }}</td>
+                    <td>{% if a.actionLinks %}
+                        {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </details>
 </section>
 
 {% if isAllowed('committees.notes', 'view') %}
@@ -67,14 +100,14 @@
     {% endif %}
 
     <div class="usa-card-group">
-    {% for n in notes %}
+    {% for n in notes_current %}
     <article class="usa-card">
         <div class="usa-card__container">
             <div class="usa-card__body">
                 {{ n.note }}
             </div>
             <footer class="usa-card__footer">
-                <div>{{ n.person }} - {{ n.created }}</div>
+                <div>{{ n.person }} - {{ n.created|date(DATETIME_FORMAT) }}</div>
                 {% if n.actionLinks %}
                 <div>
                 {{ include('html/partials/actionLinks.twig', { actionLinks: n.actionLinks }, with_context: false ) }}
@@ -85,41 +118,30 @@
     </article>
     {% endfor %}
     </div>
+
+    <details>
+        <summary>{{ _('notes_archived') }}</summary>
+        <div class="usa-card-group">
+        {% for n in notes_archived %}
+        <article class="usa-card">
+            <div class="usa-card__container">
+                <div class="usa-card__body">
+                    {{ n.note }}
+                </div>
+                <footer class="usa-card__footer">
+                    <div>{{ n.person }} - {{ n.created|date(DATETIME_FORMAT) }}</div>
+                    {% if n.actionLinks %}
+                    <div>
+                    {{ include('html/partials/actionLinks.twig', { actionLinks: n.actionLinks }, with_context: false ) }}
+                    </div>
+                    {% endif %}
+                </footer>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+    </details>
 </section>
 {% endif %}
 
-<section>
-    <header>
-        <h2>{{ _('applications_archived') }}</h2>
-    </header>
-
-    <table class="usa-table">
-        <thead>
-            <tr><th>{{ _('created' ) }}</th>
-                <th>{{ _('name'    ) }}</th>
-                <th>{{ _('archived') }}</th>
-                <th>{{ _('actions') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for a in applications_archived %}
-            <tr><td>{{ a.created }}</td>
-                <td>{% if canView %}
-                    <a class="usa-link" href="{{ uri('applications.view', { application_id: a.id }) }}">
-                        {{ a.person }}
-                    </a>
-                    {% else %}
-                    {{ a.person }}
-                    {% endif %}
-                </td>
-                <td>{{ a.archived }}</td>
-                <td>{% if a.actionLinks %}
-                    {{ include('html/partials/actionLinks.twig', {actionLinks:a.actionLinks}, with_context=false) }}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</section>
 {% endblock %}

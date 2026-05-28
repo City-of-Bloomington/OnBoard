@@ -237,14 +237,14 @@ class View extends \Web\View
             if ($canArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.archive', ['application_id'=>$a->getId()])."?return_url=$return_url",
-                    'label' => parent::_('application_archive'),
+                    'label' => parent::_('archive'),
                     'class' => 'archive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$return_url",
-                    'label' => parent::_('application_delete'),
+                    'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
             }
@@ -283,14 +283,14 @@ class View extends \Web\View
             if ($canUnArchive) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.unarchive', ['application_id'=>$a->getId()])."?return_url=$return_url",
-                    'label' => parent::_('application_unarchive'),
+                    'label' => parent::_('unarchive'),
                     'class' => 'unarchive'
                 ];
             }
             if ($canDelete) {
                 $links[] = [
                     'url'   => parent::generateUri('applications.delete', ['application_id'=>$a->getId()])."?return_url=$return_url",
-                    'label' => parent::_('application_delete'),
+                    'label' => parent::_('delete'),
                     'class' => 'delete'
                 ];
             }

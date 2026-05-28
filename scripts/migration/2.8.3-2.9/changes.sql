@@ -29,3 +29,5 @@ alter table reports          modify created          timestamp not null default 
 alter table reports          modify indexed          timestamp    after created;
 alter table reports          add    updated_by       int unsigned;
 alter table reports          add    foreign key (updated_by) references people(id);
+
+alter table committee_notes add archived timestamp;
