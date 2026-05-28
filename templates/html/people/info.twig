@@ -33,24 +33,14 @@
 {{ include('html/people/addresses/list.twig') }}
 {% endif %}
 
-{% if members %}
 {{ include('html/people/partials/members.twig') }}
-{% endif %}
-
-{% if liaisons %}
 {{ include('html/people/partials/liaisons.twig') }}
-{% endif %}
 
-{% if applicantFiles and isAllowed('applicantFiles', 'download') %}
+{% if isAllowed('applicantFiles', 'download') %}
 {{ include('html/people/partials/files.twig', { applicant:person } ) }}
 {% endif %}
 
-{% if applications_current %}
 {{ include('html/applications/partials/applications_current.twig') }}
-{% endif %}
-
-{% if applications_archived %}
 {{ include('html/applications/partials/applications_archived.twig') }}
-{% endif %}
 
 {% endblock %}

@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array applications_archived
  #}
@@ -8,6 +8,7 @@
         <h2>{{ _('applications_archived') }}</h2>
     </header>
 
+    {% if applications_archived %}
     <table class="usa-table">
         <thead>
             <tr><th>{{ _('application_created') }}</th>
@@ -32,4 +33,5 @@
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </section>

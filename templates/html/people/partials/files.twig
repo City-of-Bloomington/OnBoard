@@ -6,6 +6,8 @@
 {% import "html/macros/forms.twig" as forms %}
 <section>
     <header><h2>{{ _('applicantFile') }}</h2></header>
+
+    {% if applicantFiles %}
     <table>
     {% for f in applicantFiles %}
     <tr><td><a href="{{ uri('applicantFiles.download', { applicantFile_id: f.id }) }}">{{ f.filename }}</a></td>
@@ -17,4 +19,5 @@
     </tr>
     {% endfor %}
     </table>
+    {% endif %}
 </section>

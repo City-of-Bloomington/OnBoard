@@ -1,5 +1,5 @@
 {#
- * @copyright 2025 City of Bloomington, Indiana
+ * @copyright 2025-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Application application
  * @param Committeee  committee
@@ -33,16 +33,14 @@
 {{ include('html/people/addresses/list.twig') }}
 {% endif %}
 
-{% if applicantFiles and isAllowed('applicantFiles', 'download') %}
+{% if isAllowed('applicantFiles', 'download') %}
 {{ include('html/people/partials/files.twig', { applicant:person } ) }}
 {% endif %}
 
-{% if applications_current %}
 {{ include('html/applications/partials/applications_current.twig') }}
-{% endif %}
-
-{% if applications_archived %}
 {{ include('html/applications/partials/applications_archived.twig') }}
-{% endif %}
+
+{{ include('html/people/partials/members.twig') }}
+{{ include('html/people/partials/liaisons.twig') }}
 
 {% endblock %}

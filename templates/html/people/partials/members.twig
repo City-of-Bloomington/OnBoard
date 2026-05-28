@@ -6,6 +6,7 @@
 <section>
     <header><h2>{{ _(['membership', 'memberships', 10]) }}</h2></header>
 
+    {% if members %}
     <table class="usa-table usa-table--compact">
         <thead>
             <tr>
@@ -23,4 +24,5 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </section>

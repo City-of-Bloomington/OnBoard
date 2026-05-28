@@ -23,6 +23,8 @@ class View extends \Web\View
             'committee'   => $a->getCommittee(),
             'return_url'  => $return_url,
             'person'      => $person,
+            'members'              => PeopleView::members              ($person),
+            'liaisons'             => PeopleView::liaisons             ($person),
             'emails'               => PeopleView::emails               ($person, $return_url),
             'phones'               => PeopleView::phones               ($person, $return_url),
             'addresses'            => PeopleView::addresses            ($person, $return_url),

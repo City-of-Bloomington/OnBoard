@@ -6,6 +6,7 @@
 <section>
     <header><h2>{{ _(['liaisonship', 'liaisonships', 10]) }}</h2></header>
 
+    {% if liaisons %}
     <table class="usa-table usa-table--compact">
     <thead>
         <tr>
@@ -21,4 +22,5 @@
         {% endfor %}
     </tbody>
     </table>
+    {% endif %}
 </section>
