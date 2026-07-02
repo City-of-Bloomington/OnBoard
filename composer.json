@@ -2,10 +2,11 @@
     "require": {
         "php": ">=8.5",
         "aura/router":                      "@stable",
+        "facile-it/php-openid-client":      "@stable",
         "google/apiclient":                 "@stable",
         "google/cloud-recaptcha-enterprise":"@stable",
         "graylog2/gelf-php":                "@stable",
-        "jumbojett/openid-connect-php":     "@stable",
+        "guzzlehttp/guzzle":                "@stable",
         "laminas/laminas-permissions-acl":  "@stable",
         "michelf/php-markdown":             "@stable",
         "phpmailer/phpmailer":              "@stable",
@@ -30,6 +31,11 @@
             "Domain\\":      "src/Domain",
             "Test\\":        "src/Test",
             "Web\\":         "src/Web"
+        }
+    },
+   "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }
