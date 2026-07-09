@@ -1,0 +1,43 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Committee committee
+ * @param array     files
+ * @param array     actionLinks
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% block content %}
+<section>
+    <header>
+        <h2>{{ _(['committeeFile', 'committeeFiles', 10]) }}</h2>
+        {% if actionLinks %}
+        {{ include('html/partials/actionLinks.twig') }}
+        {% endif %}
+    </header>
+
+    <ul class="usa-collection usa-collection--condensed margin-top-3">
+        {% for f in files %}
+        <li         class="usa-collection__item">
+            <div    class="usa-collection__body">
+                <h3 class="usa-collection__heading">
+                    <a class="usa-link" href="{{ f.url }}">
+                        {{ f.title ?? f.type }}
+                        <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                            <use href="{{ USWDS_URL }}/img/sprite.svg#file_present"></use>
+                        </svg>
+                    </a>
+                </h3>
+                <ul     class="usa-collection__meta" aria-label="More information">
+                    <li class="usa-collection__meta-item position-relative">
+                        <strong>{{ _('type') }}:</strong> {{ f.type }}
+                    </li>
+                </ul>
+                {% if f.actions is defined %}
+                {{ include('html/partials/actionLinks.twig', {actionLinks:f.actions}, with_context=false ) }}
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

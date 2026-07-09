@@ -293,6 +293,17 @@ msgstr "Current Committees"
 msgid "committees_past"
 msgstr "Past Committees"
 
+msgid "committeeFile"
+msgid_plural "committeeFiles"
+msgstr[0] "Governing Document"
+msgstr[1] "Governing Documents"
+
+msgid "committeeFile_add"
+msgstr "New Governing Document"
+
+msgid "committeeFile_edit"
+msgstr "Edit Governing Document"
+
 msgid "committeeHistory"
 msgstr "History"
 

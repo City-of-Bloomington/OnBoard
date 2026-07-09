@@ -46,7 +46,7 @@ $ACL->allow(null,  'committees', ['index','info', 'members', 'seats', 'statutes'
 $ACL->allow(null,  'seats',      ['index','view', 'vacancies']);
 $ACL->allow(null,  'login');
 $ACL->allow(null,
-            ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports'],
+            ['people', 'members', 'alternates', 'legislation', 'liaisons', 'meetings', 'meetingFiles', 'legislationFiles', 'reports', 'committees.files'],
             ['index', 'view', 'years', 'download', 'callback']);
 
 $ACL->allow('Public', ['profile', 'profile.addresses', 'profile.emails', 'profile.files', 'profile.phones', 'profile.notifications']);
@@ -66,6 +66,7 @@ $ACL->allow('Clerk',
             $requiresDepartmentAssociation);
 
 $ACL->allow('Liaison', 'committeeStatutes', null, $requiresCommitteeAssociation);
+$ACL->allow('Liaison', 'committees.files',  null, $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'committees.notes',  null, $requiresCommitteeAssociation);
 $ACL->allow('Liaison', 'meetings',          'attendance',     $requiresCommitteeAssociation);
 

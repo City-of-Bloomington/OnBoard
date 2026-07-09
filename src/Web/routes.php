@@ -17,6 +17,7 @@ $map->tokens(['address_id'               => '\d+',
               'definition_id'            => '\d+',
               'department_id'            => '\d+',
               'email_id'                 => '\d+',
+              'file_id'                  => '\d+',
               'legislation_id'           => '\d+',
               'legislationAction_id'     => '\d+',
               'legislationActionType_id' => '\d+',
@@ -86,6 +87,13 @@ $map->attach('committees.', '/committees', function ($r) {
         $r->get('add',       '/add',                 Web\Committees\Notes\Add\Controller::class)->allows(['POST']);
     });
 
+    $r->attach('files.', '/{committee_id}/files', function ($r) {
+        $r->get('download', '/{file_id}/download', Web\Committees\Files\Download\Controller::class);
+        $r->get('update',   '/{file_id}/update'  , Web\Committees\Files\Update\Controller::class)->allows(['POST']);
+        $r->get('delete',   '/{file_id}/delete'  , Web\Committees\Files\Delete\Controller::class);
+        $r->get('add',      '/add',                Web\Committees\Files\Add\Controller::class)->allows(['POST']);
+        $r->get('index',    ''    ,                Web\Committees\Files\List\Controller::class);
+    });
     $r->get('members',      '/{committee_id}/members'      , Web\Committees\Members\Controller::class);
     $r->get('update',       '/{committee_id}/update'       , Web\Committees\Update\Controller::class)->allows(['POST']);
     $r->get('end',          '/{committee_id}/end'          , Web\Committees\End\Controller::class)->allows(['POST']);
@@ -101,6 +109,7 @@ $map->attach('committees.', '/committees', function ($r) {
     $r->get('add',          '/add'               , Web\Committees\Add\Controller::class)->allows(['POST']);
     $r->get('index',        ''                   , Web\Committees\List\Controller::class);
 });
+
 
 $map->attach('committeeStatutes.', '/committeeStatutes', function ($r) {
     $r->get('add',    '/add', Web\Committees\Statutes\Add\Controller::class)->allows(['POST']);

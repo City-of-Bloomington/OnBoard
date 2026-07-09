@@ -54,8 +54,6 @@ class View extends \Web\View
     private static function createFileData(array $files, ?Committee $committee=null): array
     {
         $filedata = [];
-        $userCanEdit   = parent::isAllowed('meetingFiles', 'update');
-        $userCanDelete = parent::isAllowed('meetingFiles', 'delete');
         foreach ($files as $f) {
             $d = [
                 'id'          => $f->getId(),

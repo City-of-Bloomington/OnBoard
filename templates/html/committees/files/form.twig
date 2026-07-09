@@ -1,0 +1,41 @@
+{#
+ * @copyright 2026 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param CommitteeFile file
+ * @param Committee     committee
+ *
+ * Metadata
+ * @param array  types      Meeting file type options
+ * @param string accept     Comma separated mime_types that are accepted
+ * @param int    maxBytes   Max upload size in bytes
+ * @param string maxSize    Max upload size, human readable
+ #}
+{% extends "html/layouts/committee.twig" %}
+{% import  "html/macros/forms.twig"      as forms      %}
+{% block content %}
+
+<form class="usa-form"  method="post" enctype="multipart/form-data">
+    <fieldset class="usa-fieldset">
+        <legend class="usa-legend usa-legend--large">{{ file.id ? _('committeeFile_edit') : _('committeeFile_add') }}</legend>
+
+        {{ forms.field_select('type', 'type', _('type'),  file.type, types, true) }}
+        {{ forms.field_text('title', 'title', _('title'), file.title ) }}
+
+        <div class="usa-form-group">
+            {{ forms.field_text('url', 'url', _('url'), file.url ) }}
+            {% if file.filename -%}
+            <div><a href="{{ uri('committees.files.download', { file_id: file.id, committee_id: committee.id }) }}">
+                    {{ file.filename }}
+                 </a>
+            </div>
+            {%- endif %}
+            {{ forms.field_file('file', 'file', _('committeeFile'), file,
+                                accept, maxSize, maxBytes, false, {},
+                                accept ~ ' - ' ~ maxSize) }}
+        </div>
+
+        {{ forms.button('submit', _('save'), 'save') }}
+        {{ forms.actionLink(uri('committees.files.index', { committee_id: committee.id }) , _('cancel') ) }}
+    </fieldset>
+</form>
+{% endblock %}

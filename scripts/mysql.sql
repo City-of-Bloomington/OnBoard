@@ -105,6 +105,23 @@ create table committee_notes (
     foreign key (   person_id) references     people(id)
 );
 
+create table committeeFiles(
+    id               int unsigned not null primary key auto_increment,
+    committee_id     int unsigned not null,
+    type             varchar(16)  not null,
+    title            varchar(64),
+    url              text,
+    internalFilename varchar(128),
+    filename         varchar(256),
+    mime_type        varchar(128),
+    created          timestamp    not null default CURRENT_TIMESTAMP,
+    indexed          timestamp,
+    updated          timestamp    not null default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    updated_by       int unsigned,
+    foreign key (committee_id) references committees(id),
+    foreign key (updated_by  ) references people(id)
+);
+
 create table appointers (
     id int unsigned not null primary key auto_increment,
     name varchar(128) not null unique

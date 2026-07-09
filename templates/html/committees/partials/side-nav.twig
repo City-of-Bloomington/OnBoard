@@ -26,6 +26,12 @@
             </a>
         </li>
         <li class="usa-sidenav__item">
+            <a href="{{ uri('committees.files.index', { committee_id: committee.getId() }) }}"
+                class="{{ ROUTE_NAME|slice(0,16)=='committees.files' ? 'usa-current' : '' }}">
+                {{ _(['committeeFile', 'committeeFiles', 10]) }}
+            </a>
+        </li>
+        <li class="usa-sidenav__item">
             <a href="{{ uri('committees.liaisons', { committee_id: committee.getId()}) }}"
                 class="{{ ROUTE_NAME=='committees.liaisons' ? 'usa-current' : '' }}">
                 {{ _(['liaison', 'liaisons', 10]) }}
@@ -67,7 +73,6 @@
             {% endif %}
         </li>
         {% endif %}
-
 
         {% if isAllowed('committees', 'applications') and committee.takesApplications() %}
         <li class="usa-sidenav__item">
