@@ -4,8 +4,7 @@ build
 dist
 .git/
 .git*
-ckan_config.inc
-site_config.inc
+site_config.php
 credentials.json
 /ansible/roles/*
 /data/ckan/*
