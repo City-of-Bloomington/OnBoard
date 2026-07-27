@@ -68,7 +68,7 @@ class WarehouseService
 
     public static function permitting_staff(string $username): array
     {
-        $sql = 'select * from epl.staff where username=?';
+        $sql = 'select * from epl.users where username_epl=?';
         $res = Database::query($sql, [Ldap::bind_dn($username)], 'warehouse');
         if (count($res)) {
             $out = [];
