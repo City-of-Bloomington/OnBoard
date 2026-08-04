@@ -169,19 +169,19 @@ class SeatTable extends PdoRepository
         $columns = self::getDataColumns();
         $select  = "select $columns from seats s";
         $joins   = [
-                 'join committees   c  on  c.id =  s.committee_id',
-            'left join appointers   a  on  a.id =  s.appointer_id',
-            "left join terms        t  on  s.id =  t.seat_id and ((  t.startDate is null or   t.startDate <= '$date') and (  t.endDate is null or   t.endDate >= '$date'))",
-            "left join members      m  on  s.id =  m.seat_id and ((  m.startDate is null or   m.startDate <= '$date') and (  m.endDate is null or   m.endDate >= '$date'))",
-            "left join alternates alt  on  s.id =alt.seat_id and ((alt.startDate is null or alt.startDate <= '$date') and (alt.endDate is null or alt.endDate >= '$date'))",
-            'left join terms       mt  on mt.id =  m.term_id',
-            'left join terms       at  on at.id =alt.term_id',
-            'left join people      mp  on mp.id =  m.person_id',
-            'left join people      ap  on ap.id =alt.person_id',
-            'left join people_emails me on me.person_id=mp.id and me.main=1',
-            'left join people_phones mh on mh.person_id=mp.id and mh.main=1',
-            'left join people_emails ae on ae.person_id=ap.id and ae.main=1',
-            'left join people_phones ah on ah.person_id=ap.id and ah.main=1'
+                 'join committees     c on  c.id =   s.committee_id',
+            'left join appointers     a on  a.id =   s.appointer_id',
+            "left join terms          t on  s.id =   t.seat_id and ((  t.startDate is null or   t.startDate <= '$date') and (  t.endDate is null or   t.endDate >= '$date'))",
+            "left join members        m on  s.id =   m.seat_id and ((  m.startDate is null or   m.startDate <= '$date') and (  m.endDate is null or   m.endDate >= '$date'))",
+            "left join alternates   alt on  s.id = alt.seat_id and ((alt.startDate is null or alt.startDate <= '$date') and (alt.endDate is null or alt.endDate >= '$date'))",
+            'left join terms         mt on mt.id =   m.term_id',
+            'left join terms         at on at.id = alt.term_id',
+            'left join people        mp on mp.id =   m.person_id',
+            'left join people        ap on ap.id = alt.person_id',
+            'left join people_emails me on mp.id =  me.person_id and me.main=1',
+            'left join people_phones mh on mp.id =  mh.person_id and mh.main=1',
+            'left join people_emails ae on ap.id =  ae.person_id and ae.main=1',
+            'left join people_phones ah on ap.id =  ah.person_id and ah.main=1'
         ];
         $where  = [];
         $params = [];
