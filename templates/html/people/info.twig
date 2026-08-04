@@ -40,7 +40,9 @@
 {{ include('html/people/partials/files.twig', { applicant:person } ) }}
 {% endif %}
 
+{% if isAllowed('applications', 'view') %}
 {{ include('html/applications/partials/applications_current.twig') }}
 {{ include('html/applications/partials/applications_archived.twig') }}
+{% endif %}
 
 {% endblock %}

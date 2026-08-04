@@ -19,7 +19,7 @@
         {% for m in members %}
         <tr><td><a class="usa-link" href="{{ uri('committees.members', { committee_id: m.committee_id }) }}">{{ m.committee_name }}</a></td>
             <td>{{ m.offices|join(', ') }}</td>
-            <td>{{ m.startDate }} - {{ m.endDate }}</td>
+            <td>{{ m.startDate|date(DATE_FORMAT) }} - {{ m.endDate|date(DATE_FORMAT) }}</td>
         </tr>
         {% endfor %}
         </tbody>

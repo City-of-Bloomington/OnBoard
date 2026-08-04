@@ -35,7 +35,10 @@
         {% endif %}
         <td>{{ status|raw }}</td>
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
-        <td>{{ row.member_firstname }} {{ row.member_lastname }}</td>
+        <td><a href="{{ uri('people.view', { person_id: row.member_person_id }) }}" class="usa-link">
+                {{ row.member_firstname }} {{ row.member_lastname }}
+            </a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
