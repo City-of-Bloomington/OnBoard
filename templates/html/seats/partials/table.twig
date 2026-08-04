@@ -25,22 +25,26 @@
             </a>
         </td>
         {% if row.seat_type=='termed' %}
-        <td class="font-mono-2xs">{{ row.term_startDate ? row.term_startDate|date(DATE_FORMAT) : '' }}</td>
-        <td class="font-mono-2xs">{{ row.term_endDate   ? row.term_endDate  |date(DATE_FORMAT) : '' }}</td>
+        <td>{{ row.term_startDate ? row.term_startDate|date(DATE_FORMAT) : '' }}</td>
+        <td>{{ row.term_endDate   ? row.term_endDate  |date(DATE_FORMAT) : '' }}</td>
         {% else %}
-        <td class="font-mono-2xs">{{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }}</td>
-        <td class="font-mono-2xs">{{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}</td>
+        <td>{{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }}</td>
+        <td>{{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}</td>
         {% endif %}
 
-        {% set colors = { 'filled':'base', 'expiring':'gold', 'vacant': 'secondary-dark' } %}
+        {% set colors = { 'filled':'base', 'expiring':'accent-warm-dark', 'vacant': 'secondary-dark' } %}
         {% set status = (row.termEndsSoon or row.carryOver) ? 'expiring' : 'filled' %}
         {% set status = (not row.member_id)                 ? 'vacant'   : status %}
-        <td><span class="usa-tag bg-{{ colors[status] }}">{{ status }}</span></td>
+        <td><span class="usa-tag bg-{{ colors[status] }}">{{ status }}</span>
+            {% if status=='vacant' %}since {{ row.last_member_endDate|date(DATE_FORMAT) }}{% endif %}
+        </td>
 
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>
-        <td><a href="{{ uri('people.view', { person_id: row.member_person_id }) }}" class="usa-link">
+        <td>{% if row.member_person_id %}
+            <a href="{{ uri('people.view', { person_id: row.member_person_id }) }}" class="usa-link">
                 {{ row.member_firstname }} {{ row.member_lastname }}
             </a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

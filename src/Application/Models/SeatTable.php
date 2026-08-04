@@ -115,7 +115,8 @@ class SeatTable extends PdoRepository
                                 from offices o
                                 where o.committee_id=s.committee_id
                                 and o.person_id=m.person_id
-                                and ((o.startDate is null or o.startDate <= now()) and (o.endDate is null or o.endDate >= now())))"
+                                and ((o.startDate is null or o.startDate <= now()) and (o.endDate is null or o.endDate >= now())))",
+        'last_member_endDate' => '(select endDate from members where seat_id=s.id order by endDate desc limit 1)'
     ];
 
     private static function getDataColumns(): string
