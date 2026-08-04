@@ -18,6 +18,7 @@ class Controller extends \Web\Controller
 
             try {
                 $target = new Person($_POST['target_id']);
+                $people = [];
                 foreach ($_POST['person_id'] as $id) { $people[] = new Person($id); }
 
                 foreach ($people as $p) {
