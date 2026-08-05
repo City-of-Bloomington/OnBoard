@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Committee committee
  * @param array     seat_data
@@ -22,11 +22,11 @@
                             <a class="usa-link" href="{{ uri('members.view', { member_id: row.member_id }) }}">
                             {{ row.member_firstname }} {{ row.member_lastname }}
                             </a>
-                            {% if row.termEndsSoon %}
+                            {% if row.status=='termEndsSoon' %}
                             <span class="usa-tag margin-left-1">{{ _('termEndsSoon') }}</span>
                             {% endif %}
 
-                            {% if row.carryOver %}
+                            {% if row.status=='carryOver' %}
                             <span class="usa-tag margin-left-1">{{ _('carryOver') }}</span>
                             {% endif %}
 
@@ -79,7 +79,7 @@
                         <strong>{{ _('appointed_by') }}:</strong> {{ row.appointer_name }}{{ row.seat_voting ? ' (voting)' : '' }}
                     </div>
                 </div>
-                {% if row.carryOver %}
+                {% if row.status=='carryOver' %}
                 <p>{{ _('carryOver-help', 'messages') }}</p>
                 {% endif %}
             </div>
