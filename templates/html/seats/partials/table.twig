@@ -32,11 +32,9 @@
         <td>{{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}</td>
         {% endif %}
 
-        {% set colors = { 'filled':'base', 'expiring':'accent-warm-dark', 'vacant': 'secondary-dark' } %}
-        {% set status = (row.termEndsSoon or row.carryOver) ? 'expiring' : 'filled' %}
-        {% set status = (not row.member_id)                 ? 'vacant'   : status %}
-        <td><span class="usa-tag bg-{{ colors[status] }}">{{ status }}</span>
-            {% if status=='vacant' %}since {{ row.last_member_endDate|date(DATE_FORMAT) }}{% endif %}
+        {% set colors = { 'filled':'base', 'termEndsSoon':'accent-warm-dark', 'carryOver':'accent-warm-dark', 'vacant':'secondary-dark' } %}
+        <td><span class="usa-tag bg-{{ colors[row.status] }}">{{ _(row.status) }}</span>
+            {% if row.status=='vacant' %}since {{ row.last_member_endDate|date(DATE_FORMAT) }}{% endif %}
         </td>
 
         <td>{{ row.appointer_name }}{{ row.seat_voting ? ' (Voting)' : '' }}</td>

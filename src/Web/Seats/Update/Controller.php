@@ -9,7 +9,6 @@ namespace Web\Seats\Update;
 use Application\Models\AppointerTable;
 use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
-use Application\Models\SeatTable;
 
 class Controller extends \Web\Controller
 {

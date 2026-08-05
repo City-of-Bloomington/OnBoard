@@ -29,7 +29,7 @@ class Controller extends \Web\Controller
             if ($committee->getType() === 'seated') {
                 $table     = new SeatTable();
                 $data      = $table->currentData(['committee_id'=>$committee->getId()]);
-                $seat_data = SeatsController::filter_viewable($data['results']);
+                $seat_data = SeatsController::filter_viewable($data);
 
                 switch ($this->outputFormat) {
                     case 'csv':
@@ -107,7 +107,7 @@ class Controller extends \Web\Controller
      * Because there can be many offices for a single membership,
      * we pack office ID and title into a string.
      *
-     * @see Application\Models\SeatTable::$dataFields
+     * @see Application\Models\SeatTable::currentData()
      */
     private static function serializeOffices(array $offices): string
     {

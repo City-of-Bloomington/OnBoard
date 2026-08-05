@@ -19,7 +19,7 @@ class Controller extends \Web\Controller
         $search = self::parseQueryParameters();
         $table  = new SeatTable();
         $result = $table->currentData($search);
-        $data   = self::filter_viewable($result['results']);
+        $data   = self::filter_viewable($result);
 
         switch ($this->outputFormat) {
             case 'csv':
@@ -58,6 +58,10 @@ class Controller extends \Web\Controller
                 $search['appointer_id'] = $appointer->getId();
             }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e->getMessage(); }
+        }
+
+        if (!empty($_GET['status']) && in_array($_GET['status'], SeatTable::$valid_statuses)) {
+            $search['status'] = $_GET['status'];
         }
         return $search;
     }

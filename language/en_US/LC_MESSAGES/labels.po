@@ -675,6 +675,9 @@ msgstr "End of Term Warning"
 msgid "termEndsSoon"
 msgstr "Term Ends Soon"
 
+msgid "filled"
+msgstr "Filled"
+
 msgid "applicationLifetime"
 msgstr "Application Lifetime"
 

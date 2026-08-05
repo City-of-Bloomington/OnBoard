@@ -285,7 +285,6 @@ $map->attach('seats.', '/seats', function ($r) {
     $r->get('end',       '/{seat_id}/end'      , Web\Seats\End\Controller::class)->allows(['POST']);
     $r->get('view',      '/{seat_id}'          , Web\Seats\View\Controller::class);
     $r->get('add',       '/add'           , Web\Seats\Add\Controller::class)->allows(['POST']);
-    $r->get('vacancies', '/vacancies'     , Web\Seats\Vacancies\Controller::class);
     $r->get('index',     ''               , Web\Seats\List\Controller::class);
 });
 

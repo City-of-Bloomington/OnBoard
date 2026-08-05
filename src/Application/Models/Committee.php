@@ -209,11 +209,17 @@ class Committee extends ActiveRecord
 
     public function getSeats(?array $fields=null): array
     {
-        $fields['committee_id'] = $this->getId();
+        $sql    = 'select * from seats where committee_id=?';
+        if ( isset( $fields['current'] )) {
+            $sql .= $fields['current']
+                  ? ' and (startDate is null or startDate<=now()) and (endDate is null or endDate>=now())'
+                  : ' and (endDate is not null and endDate<=now())'; // Past
+        }
 
-        $t = new SeatTable();
-        $r = $t->find($fields);
-        return $r['rows'];
+        $seats  = [];
+        $result = Database::query($sql, [$this->getId()]);
+        foreach ($result as $r) { $seats[] = new Seat($r); }
+        return $seats;
     }
 
     /**

@@ -8,7 +8,6 @@ namespace Web\Seats\End;
 
 use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
-use Application\Models\SeatTable;
 
 class Controller extends \Web\Controller
 {

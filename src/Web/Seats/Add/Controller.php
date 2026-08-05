@@ -10,7 +10,6 @@ use Application\Models\AppointerTable;
 use Application\Models\Committee;
 use Application\Models\CommitteeHistory;
 use Application\Models\Seat;
-use Application\Models\SeatTable;
 
 class Controller extends \Web\Controller
 {

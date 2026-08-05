@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param array data
  * @param array actionLinks
@@ -9,6 +9,7 @@
  * @param int appointer_id
  *
  * Search Options
+ * @param array statuses
  * @param array committees
  * @param array appointers
  #}
@@ -18,10 +19,8 @@
 <section>
     <header>
         <h1>{{ _(['seat', 'seats', 10]) }}</h1>
-        {{ include('html/seats/partials/header.twig') }}
     </header>
 
-    <h2>{{ _('all') }}</h2>
     {% if actionLinks is defined %}
     {{ include('html/partials/actionLinks.twig') }}
     {% endif %}
@@ -30,6 +29,7 @@
         <fieldset class="usa-fieldset">
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('appointer_id', 'appointer_id', _('appointer'), appointer_id, appointers, false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('status',       'status',       _('seat_status'), status,     statuses,   false, { onchange:'this.form.submit();' } ) }}
             {{ forms.button('submit', _('search'), 'search') }}
         </fieldset>
     </form>

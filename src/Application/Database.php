@@ -25,6 +25,9 @@ class Database
 		return self::$connections[$db];
     }
 
+    /**
+	 * Perform a query and return results
+	 */
     public static function query(string $sql, array $params, string $db='default'): array
 	{
 		$pdo = self::getConnection($db);
@@ -33,6 +36,9 @@ class Database
 		return $q->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Perform a query without returning results (ie. update, insert)
+	 */
 	public static function execute(string $sql, array $params, string $db='default')
 	{
 		$pdo = self::getConnection($db);
