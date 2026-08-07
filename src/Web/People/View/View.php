@@ -82,7 +82,7 @@ class View extends \Web\View
         $out  = [];
         $t    = new LiaisonTable();
         $data = $t->personLiaisonData(['person_id'=>$p->getId()]);
-        foreach ($data['results'] as $l) {
+        foreach ($data as $l) {
             $out[] = [
                 'committee_id'   => $l['committee_id'],
                 'committee_name' => $l['committee'],

@@ -15,13 +15,10 @@ class Controller extends \Web\Controller
 
     public function __invoke(array $params): \Web\View
     {
-        $type = (!empty($_GET['type']) && in_array($_GET['type'], Liaison::$types))
-                ? $_GET['type']
-                : Liaison::$types[0];
-
+        $s    = self::prepareSearch();
         $t    = new LiaisonTable();
-        $res  = $t->data(['type'=>$type, 'current'=>true]);
-        $data = self::liaison_data($res['results']);
+        $r    = $t->data($s);
+        $data = self::liaison_data($r);
 
         switch ($this->outputFormat) {
             case 'email':
@@ -34,8 +31,17 @@ class Controller extends \Web\Controller
                 return new \Web\Views\JSONView($data);
 
             default:
-                return new View($data, $type);
+                return new View($data, $s);
         }
+    }
+
+    private static function prepareSearch(): array
+    {
+        $s = ['current'=>true];
+        if (!empty($_GET['type'  ]) && in_array($_GET['type'  ], LiaisonTable::$valid_types   )) { $s['type'  ] = $_GET['type'  ]; }
+        if (!empty($_GET['status']) && in_array($_GET['status'], LiaisonTable::$valid_statuses)) { $s['status'] = $_GET['status']; }
+        if (!empty($_GET['committee_id'])) { $s['committee_id'] = (int)$_GET['committee_id']; }
+        return $s;
     }
 
     /**

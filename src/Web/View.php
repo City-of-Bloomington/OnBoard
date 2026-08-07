@@ -260,13 +260,21 @@ abstract class View
         global $REQUEST;
 
         $url = $REQUEST->getUri()->getPath();
-        if ($_SERVER['QUERY_STRING']) {
-            $s = preg_replace('/[^a-zA-Z0-9\=\;\&\+]/', '', $_SERVER['QUERY_STRING']);
-            $p = [];
-            parse_str($s, $p);
+        $p   = self::current_query_params();
+        if ($p) {
             $url.='?'.http_build_query($p);
         }
         return $url;
+    }
+
+    public static function current_query_params(): array
+    {
+        $p = [];
+        if ($_SERVER['QUERY_STRING']) {
+            $s = preg_replace('/[^a-zA-Z0-9\=\;\&\+]/', '', $_SERVER['QUERY_STRING']);
+            parse_str($s, $p);
+        }
+        return $p;
     }
 
     public static function isAllowed(string $resource, ?string $action=null): bool

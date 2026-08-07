@@ -36,7 +36,7 @@ class View extends \Web\View
         $t       = new LiaisonTable();
         $res     = $t->committeeLiaisonData(['committee_id'=>$committee_id]);
         $data    = [];
-        foreach ($res['results'] as $row) {
+        foreach ($res as $row) {
             $links = [];
             if ($canEdit) {
                 $links[] = [

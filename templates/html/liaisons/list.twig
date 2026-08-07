@@ -1,29 +1,34 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @see LiaisonTable::$dataFields
  * @param array  data
+ *
+ * Search Options
+ * @param int    committee_id
  * @param string type
+ * @param string status
+
+ * Search Drop Down Options
+ * @param array  committees
+ * @oaram array  types
+ * @param array  statuses
  #}
 {% extends "html/layouts/default.twig" %}
+{% import  "html/macros/forms.twig" as forms %}
 {% block content %}
 <section>
     <header>
         <h1>{{ _(['liaison', 'liaisons', 10]) }}</h1>
-
-        <a href="{{ uri('liaisons.index') }}"
-            class="usa-link margin-right-05">{{ _('departmental') }}</a>
-
-        <a href="{{ uri('liaisons.index') }}?type=legal" class="usa-link margin-right-05">
-            {{ _('legal') }}
-            <svg class="usa-icon bottom-neg-2px" aria-hidden="true" focusable="false" role="img">
-                <use href="{{ USWDS_URL }}/img/sprite.svg#filter_list"></use>
-            </svg>
-        </a>
     </header>
-
-    <h2>{{ _(type) }}</h2>
-
+    <form         class="usa-form" method="get">
+        <fieldset class="usa-fieldset">
+            {{ forms.field_select('type',         'type',         _('type'),      type,         types     , false, { onchange:'this.form.submit();' }) }}
+            {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' }) }}
+            {{ forms.field_select('status',       'status',       _('status'   ), status,       statuses  , false, { onchange:'this.form.submit();' }) }}
+            {{ forms.button('submit', _('search'), 'search') }}
+            {{ forms.actionLink(uri('liaisons.index'), _('reset'), 'cancel') }}
+        </fieldset>
+    </form>
 
     {% if actionLinks is defined %}
     {{ include('html/partials/actionLinks.twig') }}
@@ -32,6 +37,7 @@
     <table  class="usa-table usa-table--borderless usa-table--stacked">
         <thead>
             <tr><th>{{ _('committee'   ) }}</th>
+                <th>{{ _('type'        ) }}</th>
                 <th>{{ _('name'        ) }}</th>
                 {% if isAllowed('people', 'viewContactInfo') %}
                 <th>{{ _('email'   ) }}</th>
@@ -46,7 +52,11 @@
                         {{ row.committee_code ?? row.committee }}
                     </a>
                 </td>
-                <td><a class="usa-link" href="{{ uri('people.view', { person_id: row.person_id }) }}">{{ row.firstname }} {{ row.lastname }}</a></td>
+                <td>{{ row.type ? _(row.type): '' }}</td>
+                <td>{% if row.person_id %}
+                    <a href="{{ uri('people.view', { person_id: row.person_id }) }}" class="usa-link">{{ row.firstname }} {{ row.lastname }}</a>
+                    {% endif %}
+                </td>
                 {% if isAllowed('people', 'viewContactInfo') %}
                 <td>{{ row.email }}</td>
                 <td>{{ row.phone }}</td>

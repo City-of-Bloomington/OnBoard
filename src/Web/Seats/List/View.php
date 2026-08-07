@@ -88,7 +88,7 @@ class View extends \Web\View
             if (!empty($search['status'      ])) { $p['status'      ]=$search['status'      ]; }
             $p = http_build_query($p);
 
-            return [['url' => parent::generateUri('seats.index')."?$p", 'label' => 'CSV Export', 'class' => 'download']];
+            return [['url' => parent::generateUri('seats.index')."?$p", 'label' => 'CSV', 'class' => 'download']];
         }
         return [];
     }

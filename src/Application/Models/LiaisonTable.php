@@ -5,42 +5,36 @@
  */
 namespace Application\Models;
 
+use Application\Database;
 use Application\PdoRepository;
 
 class LiaisonTable extends PdoRepository
 {
+    public static $valid_filters  = ['committee_id', 'person_id', 'type', 'status', 'current'];
+    public static $valid_statuses = ['Staff', 'Non-staff', 'Vacant'];
+    public static $valid_types    = ['legal', 'departmental'];
+
     public function __construct() { parent::__construct('liaisons', __namespace__.'\Liaison'); }
 
-    /**
-     * These are the fields that will be returned for all *Data functions
-     */
-    public static $dataFields = [
-        'liaison_id'     => 'l.id',
-        'committee_id'   => 'c.id',
-        'committee'      => 'c.name',
-        'committee_code' => 'c.code',
-        'type'           => 'l.type',
-        'person_id'      => 'p.id',
-        'username'       => 'p.username',
-        'firstname'      => 'p.firstname',
-        'lastname'       => 'p.lastname',
-        'email'          => 'e.email',
-        'phone'          => 'h.number'
-    ];
 
-    /**
-     * Return SQL for columns used in the SELECT
-     *
-     * @return string
-     */
-    private static function getDataColumns()
-    {
-        $columns = [];
-        foreach (self::$dataFields as $k=>$v) {
-            $columns[] = "$v as $k";
-        }
-        return implode(', ', $columns);
-    }
+    public static $select = <<<END
+    select l.id        as liaison_id,
+           c.id        as committee_id,
+           c.name      as committee,
+           c.code      as committee_code,
+           l.type      as type,
+           p.id        as person_id,
+           p.username  as username,
+           p.firstname as firstname,
+           p.lastname  as lastname,
+           e.email     as email,
+           h.number    as phone,
+           case when p.id is null then 'Vacant'
+                when p.username is not null then 'Staff'
+                else 'Non-staff'
+           end as status
+    from committees c
+    END;
 
     /**
      * Prepares sql for the WHERE and binds values for all values
@@ -49,28 +43,24 @@ class LiaisonTable extends PdoRepository
     {
         if ($fields) {
             foreach ($fields as $k=>$v) {
-                if (array_key_exists($k, self::$dataFields)) {
-                    $f          = self::$dataFields[$k];
-                    $where[]    = "$f=:$k";
-                    $params[$k] = $v;
-                }
-                elseif ($k === 'current' && $v) {
-                    $where[] = '(c.endDate is null or now() < c.endDate)';
+                if (in_array($k, self::$valid_filters)) {
+                    switch ($k) {
+                        case 'current':
+                            $where[] = '(c.endDate is null or now() < c.endDate)';
+                        break;
+
+                        case 'status':
+                            $where[] = $v=='Vacant' ? 'p.id is null'
+                                     : ($v=='Staff' ? 'p.username is not null' : 'p.username is null');
+                        break;
+
+                        default:
+                            $where[]    = "l.$k=:$k";
+                            $params[$k] = $v;
+                    }
                 }
             }
         }
-    }
-
-    private function performDataSelect(string $select, array $params): array
-    {
-        $qq    = $this->pdo->prepare($select);
-        $qq->execute($params);
-        $res   = $qq->fetchAll(\PDO::FETCH_ASSOC);
-
-        return [
-            'fields'  => array_keys(self::$dataFields),
-            'results' => $res
-        ];
     }
 
     /**
@@ -82,9 +72,6 @@ class LiaisonTable extends PdoRepository
      */
     public function data(array $fields=[]): array
     {
-        $columns = self::getDataColumns();
-
-        $select = "select $columns from committees c";
         $joins  = [
             'left join liaisons      l on c.id=l.committee_id',
             'left join people        p on l.person_id=p.id',
@@ -95,8 +82,8 @@ class LiaisonTable extends PdoRepository
         $params = [];
 
         self::bindFields($where, $params, $fields);
-        $sql = parent::buildSql($select, $joins, $where, null, 'c.name');
-        return $this->performDataSelect($sql, $params);
+        $sql = parent::buildSql(self::$select, $joins, $where, null, 'c.name, l.type');
+        return Database::query($sql, $params);
     }
 
     /**
@@ -107,9 +94,6 @@ class LiaisonTable extends PdoRepository
      */
     public function committeeLiaisonData(array $fields=[]): array
     {
-        $columns = self::getDataColumns();
-
-        $select = "select $columns from committees c";
         $joins  = [
                  'join liaisons      l on c.id=l.committee_id',
             'left join people        p on l.person_id=p.id',
@@ -120,8 +104,8 @@ class LiaisonTable extends PdoRepository
         $params = [];
 
         self::bindFields($where, $params, $fields);
-        $sql = parent::buildSql($select, $joins, $where, null, 'c.name');
-        return $this->performDataSelect($sql, $params);
+        $sql = parent::buildSql(self::$select, $joins, $where, null, 'c.name');
+        return Database::query($sql, $params);
      }
 
      /**
@@ -131,9 +115,6 @@ class LiaisonTable extends PdoRepository
       */
      public function personLiaisonData(array $fields=[]): array
      {
-        $columns = self::getDataColumns();
-
-        $select = "select $columns from committees c";
         $joins  = [
                  'join liaisons      l on c.id=l.committee_id',
                  'join people        p on l.person_id=p.id',
@@ -144,8 +125,8 @@ class LiaisonTable extends PdoRepository
         $params = [];
 
         self::bindFields($where, $params, $fields);
-        $sql = parent::buildSql($select, $joins, $where, null, 'c.name');
-        return $this->performDataSelect($sql, $params);
+        $sql = parent::buildSql(self::$select, $joins, $where, null, 'c.name');
+        return Database::query($sql, $params);
      }
 
      public function isLiaison(int $person_id, int $committee_id): bool

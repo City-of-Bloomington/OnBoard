@@ -2,7 +2,6 @@
 /**
  * @copyright 2024-2025 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @see LiaisonTable::$dataFields
  */
 declare (strict_types=1);
 namespace Web\Liaisons\List;

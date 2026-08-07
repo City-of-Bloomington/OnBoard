@@ -21,18 +21,20 @@
         <h1>{{ _(['seat', 'seats', 10]) }}</h1>
     </header>
 
-    {% if actionLinks is defined %}
-    {{ include('html/partials/actionLinks.twig') }}
-    {% endif %}
-
     <form         class="usa-form" method="get">
         <fieldset class="usa-fieldset">
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('appointer_id', 'appointer_id', _('appointer'), appointer_id, appointers, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('status',       'status',       _('seat_status'), status,     statuses,   false, { onchange:'this.form.submit();' } ) }}
+
             {{ forms.button('submit', _('search'), 'search') }}
+            {{ forms.actionLink(uri('seats.index'), _('reset'), 'cancel') }}
         </fieldset>
     </form>
+
+    {% if actionLinks is defined %}
+    {{ include('html/partials/actionLinks.twig') }}
+    {% endif %}
 
     {{ include('html/seats/partials/table.twig') }}
 </section>
