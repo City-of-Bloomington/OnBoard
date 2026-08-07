@@ -1,7 +1,8 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Department department
+ * @param array      committees
 #}
 {% extends "html/layouts/default.twig" %}
 
@@ -12,34 +13,34 @@
         <h2>{{ department.name }}</h2>
     </header>
 
-    <section>
-        <header><h3>{{ _(['committee', 'committees', 10]) }}</h3></header>
-        <table>
-            {% for committee in department.committees %}
-            <tr><td><a href="{{ uri('committees.info', { committee_id: committee.id }) }}">
-                        {{ committee.name }}
-                    </a>
-                </td>
-            </tr>
-            {% else %}
-            <tr><td>No committees found.</td></tr>
-            {% endfor %}
-        </table>
-    </section>
+    <table>
+    <thead>
+    <tr><th>{{ _('committee') }}</th>
+        <th>{{ _(['liaison', 'liaisons', 10]) }}</th>
+    </tr>
+    <tbody>
+        {% for c in department.committees %}
+        <tr><td><a href="{{ uri('committees.info', { committee_id: c.id }) }}">
+                    {{ c.name }}
+                </a>
+            </td>
+            <td>{% for l in c.liaisons %}
+                {{ l.firstname }} {{ l.lastname }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td>No committees found.</td></tr>
+        {% endfor %}
+    </tbody>
+    </table>
 
     {% if isAllowed('users', 'view') %}
     <section>
         <header><h3>Users</h3></header>
         {% if department.users|length > 0 %}
-        <ul>{% for user in department.users %}
-            <li>{% if user.getFullname is defined %}
-                {{ user.getFullname() }}
-                {% elseif user.getUsername is defined %}
-                {{ user.getUsername() }}
-                {% else %}
-                User ID: {{ user.getId() }}
-                {% endif %}
-            </li>
+        <ul>{% for u in department.users %}
+            <li><a href="{{ uri('people.view', { person_id: u.id } ) }}">{{ u.fullname }}</a></li>
             {% endfor %}
         </ul>
         {% else %}

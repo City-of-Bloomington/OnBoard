@@ -361,6 +361,12 @@ class Committee extends ActiveRecord
         }
     }
 
+    public function getLiaisons(): array
+    {
+        $t = new LiaisonTable();
+        return $t->data(['committee_id'=>$this->getId()]);
+    }
+
     public function getStatutes(): array
     {
         $t = new CommitteeStatuteTable();
