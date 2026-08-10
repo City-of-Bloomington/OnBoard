@@ -25,7 +25,7 @@
         <fieldset class="usa-fieldset">
             {{ forms.field_select('committee_id', 'committee_id', _('committee'), committee_id, committees, false, { onchange:'this.form.submit();' } ) }}
             {{ forms.field_select('appointer_id', 'appointer_id', _('appointer'), appointer_id, appointers, false, { onchange:'this.form.submit();' } ) }}
-            {{ forms.field_select('status',       'status',       _('seat_status'), status,     statuses,   false, { onchange:'this.form.submit();' } ) }}
+            {{ forms.field_select('status',       'status',       _('status'   ), status,       statuses,   false, { onchange:'this.form.submit();' } ) }}
 
             {{ forms.button('submit', _('search'), 'search') }}
             {{ forms.actionLink(uri('seats.index'), _('reset'), 'cancel') }}
