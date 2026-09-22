@@ -115,11 +115,11 @@ class View extends \Web\View
             }
 
             $plans   = $staff
-                     ? 'https://energov.bloomington.in.gov/energov_prod/manageplan/#/plan'
-                     : 'https://energov.bloomington.in.gov/energov_prod/selfservice#/plan';
+                     ? 'https://energov.bloomington.in.gov/energov_prod/manageplan/plan'
+                     : 'https://energov.bloomington.in.gov/energov_prod/civic-access-public/details/plan';
             $permits = $staff
-                     ? 'https://energov.bloomington.in.gov/energov_prod/managepermit/#/permit'
-                     : 'https://energov.bloomington.in.gov/energov_prod/selfservice#/permit';
+                     ? 'https://energov.bloomington.in.gov/energov_prod/managepermit/permit'
+                     : 'https://energov.bloomington.in.gov/energov_prod/civic-access-public/details/permit';
 
             $info = WarehouseService::meeting_info((int)$m->getCommittee_id(), new \DateTime($m->getStart()));
             if (isset($info['permits'])) {
