@@ -2,7 +2,6 @@
 - hosts: 'onboard'
   become: 'yes'
   roles:
-    - 'City-of-Bloomington.mysql'
     - 'City-of-Bloomington.php'
 
   tasks:
@@ -35,6 +34,12 @@
         dest: "{{ onboard_install_path | dirname }}"
         owner: 'www-data'
         group: 'staff'
+
+    - name: 'PHP FPM Configuration'
+      ansible.builtin.template:
+        src: 'php-fpm.conf'
+        dest: "/etc/php/{{ php_version.stdout }}/fpm/pool.d/onboard.conf"
+      notify: 'php-fpm-restart'
 
     - name: 'Apache configuration'
       ansible.builtin.template:
