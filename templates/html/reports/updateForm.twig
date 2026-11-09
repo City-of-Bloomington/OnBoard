@@ -1,5 +1,5 @@
 {#
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Report    report
  * @param Committee committee
@@ -13,22 +13,33 @@
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
 
+<section>
+<header><h2>{{ report.getId() ? _('report_edit') : _('report_add') }}</h2></header>
+
 <form class="usa-form" method="post" enctype="multipart/form-data">
     <fieldset class="usa-fieldset">
-        <legend class="usa-legend usa-legend--large">{{ report.getId() ? _('report_edit') : _('report_add') }}</legend>
         <input name="committee_id" type="hidden" value="{{ report.getCommittee_id() }}" />
 
-        {{ forms.field_text('title', 'title', _('title'), report.title, true )}}
-        {{ forms.field_date('reportDate', 'reportDate', _('date'), report.getReportDate('Y-m-d'), true) }}
+        {{ forms.field_text('title',      'title',      _('title'), report.title, true )}}
+        {{ forms.field_date('reportDate', 'reportDate', _('date' ), report.getReportDate('Y-m-d'), true) }}
+
+    </fieldset>
+
+    <fieldset class="usa-fieldset">
+        <legend class="usa-legend">{{ _('file') }}</legend>
+        <p>{{ _('file_options', 'messages') }}</p>
+
+        {{ forms.field_text('url',        'url',        _('url'  ), report.url ) }}
 
         {% if report.getFilename() -%}
-        <div class="margin-top-3">
+        <div>
+            <label class="usa-label">{{ _('current_file') }}</label>
             <a href="{{ uri('reports.download', { report_id: report.getId() }) }}">
                 {{ report.getFilename() }}
             </a>
         </div>
         {%- endif %}
-        {{ forms.field_file('reportFile', 'reportFile', _('report'), report,
+        {{ forms.field_file('reportFile', 'reportFile', _('upload'), report,
                             accept, maxSize, maxBytes, false, {},
                             accept ~ ' - ' ~ maxSize) }}
 
@@ -37,4 +48,6 @@
 
     </fieldset>
 </form>
+
+</section>
 {% endblock %}

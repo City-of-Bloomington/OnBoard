@@ -1,4 +1,4 @@
-{% macro actionLink(url, label, class) %}
+{% macro actionLink(url, label, class=null) %}
 {% set classmap={
  'archive':   'save_alt',
  'unarchive': 'undo',
@@ -14,7 +14,7 @@
 </a>
 {% endmacro %}
 
-{% macro button(type, label, class) %}
+{% macro button(type, label, class=null) %}
 {% set classmap={
  'cancel': 'usa-button--outline'
 } %}

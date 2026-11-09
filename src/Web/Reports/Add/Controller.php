@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2024-2025 City of Bloomington, Indiana
+ * @copyright 2024-2026 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
@@ -10,6 +10,8 @@ use Application\Models\Reports\Report;
 use Application\Models\Reports\ReportsTable;
 use Application\Models\Committee;
 use Application\Models\CommitteeTable;
+
+use Web\Reports\Update\Controller as UpdateController;
 
 class Controller extends \Web\Controller
 {
@@ -29,26 +31,7 @@ class Controller extends \Web\Controller
         }
 
         if (isset($_POST['committee_id'])) {
-            $file = (isset($_FILES['reportFile']) && $_FILES['reportFile']['error'] != UPLOAD_ERR_NO_FILE)
-                    ? $_FILES['reportFile']
-                    : null;
-
-            try {
-                $report->setCommittee_id($_POST['committee_id']);
-                $report->setTitle       ($_POST['title'       ]);
-                $report->setReportDate  ($_POST['reportDate'  ], 'Y-m-d');
-                $report->setUpdatedPerson($_SESSION['USER']);
-
-                // Before we save the file, make sure all the database information is correct
-                $report->validateDatabaseInformation();
-                // If they are editing an existing document, they do not need to upload a new file
-                if ($file) {$report->setFile($file); }
-
-                $report->save();
-                $return_url = \Web\View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
-                header("Location: $return_url");
-                exit();
-            }
+            try { UpdateController::saveAndRedirect($report); }
             catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
         }
         return new \Web\Reports\Update\View($report);

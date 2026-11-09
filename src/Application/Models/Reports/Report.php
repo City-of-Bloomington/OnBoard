@@ -72,7 +72,7 @@ class Report extends File implements Indexable
             'committee' => $this->getCommittee()->getName(),
             'title'     => $this->getTitle(),
             'date'      => $this->getReportDate(),
-            'url'       => View::generateUrl('reports.download', ['report_id'=>$this->getId()])
+            'url'       => $this->getUrl() ?? View::generateUrl('reports.download', ['report_id'=>$this->getId()])
         ];
 	}
 

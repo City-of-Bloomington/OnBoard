@@ -21,27 +21,9 @@ class Controller extends \Web\Controller
         }
 
         if (isset($report) && $report->getCommittee_id()) {
+
             if (isset($_POST['committee_id'])) {
-                $file = (isset($_FILES['reportFile']) && $_FILES['reportFile']['error'] != UPLOAD_ERR_NO_FILE)
-                        ? $_FILES['reportFile']
-                        : null;
-
-                try {
-                    $report->setCommittee_id($_POST['committee_id']);
-                    $report->setTitle       ($_POST['title'       ]);
-                    $report->setReportDate  ($_POST['reportDate'  ], 'Y-m-d');
-                    $report->setUpdatedPerson($_SESSION['USER']);
-
-                    // Before we save the file, make sure all the database information is correct
-                    $report->validateDatabaseInformation();
-                    // If they are editing an existing document, they do not need to upload a new file
-                    if ($file) { $report->setFile($file); }
-
-                    $report->save();
-                    $return_url = \Web\View::generateUrl('reports.index').'?committee_id='.$report->getCommittee_id();
-                    header("Location: $return_url");
-                    exit();
-                }
+                try { self::saveAndRedirect($report); }
                 catch (\Exception $e) { $_SESSION['errorMessages'][] = $e; }
             }
 
@@ -49,5 +31,35 @@ class Controller extends \Web\Controller
         }
 
         return new \Web\Views\NotFoundView();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function saveAndRedirect(Report $r)
+    {
+
+        $r->setCommittee_id($_POST['committee_id']);
+        $r->setTitle       ($_POST['title'       ]);
+        $r->setReportDate  ($_POST['reportDate'  ], 'Y-m-d');
+        $r->setUpdatedPerson($_SESSION['USER']);
+
+        $r->validateDatabaseInformation();
+
+        $file = (isset($_FILES['reportFile']) && $_FILES['reportFile']['error'] != UPLOAD_ERR_NO_FILE)
+                ? $_FILES['reportFile']
+                : null;
+        if ($file) {
+            $r->setFile($file);
+            $r->setUrl(null);
+        }
+        else {
+            $r->setUrl($_POST['url']);
+        }
+
+        $r->save();
+        $url = \Web\View::generateUrl('reports.index').'?committee_id='.$r->getCommittee_id();
+        header("Location: $url");
+        exit();
     }
 }

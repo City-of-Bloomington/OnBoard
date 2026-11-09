@@ -61,6 +61,12 @@ msgstr "Done"
 msgid "upload"
 msgstr "Upload"
 
+msgid "file"
+msgstr "File"
+
+msgid "current_file"
+msgstr "Current File"
+
 msgid "download"
 msgstr "Download"
 

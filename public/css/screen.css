@@ -4,6 +4,8 @@
 
 .usa-nav__secondary-links .usa-button { color: white; }
 
+.usa-legend { font-weight: bold; }
+
 #results a:hover { cursor: pointer; }
 
 tbody th { text-align: left; }

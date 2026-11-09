@@ -72,6 +72,7 @@ abstract class ActiveRecord
         if (isset( $this->data[$fieldname])) {
             return $this->data[$fieldname];
         }
+        return null;
     }
 
     protected function set(string $fieldname, ?string $value=null)

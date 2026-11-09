@@ -16,11 +16,12 @@
 {% import  "html/macros/forms.twig"      as forms      %}
 {% block content %}
 
+<section>
+<header><h2>{{ meetingFile.id ? _('meetingFile_edit') : _('meetingFile_add') }}</h2></header>
+
 <form class="usa-form"  method="post" enctype="multipart/form-data">
     <fieldset class="usa-fieldset">
-        <legend class="usa-legend usa-legend--large">{{ meetingFile.id ? _('meetingFile_edit') : _('meetingFile_add') }}</legend>
-
-        {{ forms.field_combo('meeting_id', 'meeting_id', _('meeting'), meetingFile.meeting_id, meetings, true ) }}
+        {{ forms.field_combo('meeting_id', 'meeting_id', _('meetingDate'), meetingFile.meeting_id, meetings, true ) }}
         <div class="grid-row margin-top-1">
             <div class="flex-col flex-1">
                 {% set url = uri('meetingFiles.update', { meetingFile_id: meetingFile.id }) ~ '?year=' ~ (year - 1) %}
@@ -31,25 +32,32 @@
                 {{ forms.actionLink(url, (year + 1) ) }}
             </div>
         </div>
+        {{ forms.field_select('type',  'type',  _('type' ), meetingFile.type, types, true) }}
+        {{ forms.field_text  ('title', 'title', _('title'), meetingFile.title ) }}
+    </fieldset>
 
-        {{ forms.field_select('type', 'type', _('type'),  meetingFile.type, types, true) }}
-        {{ forms.field_text('title', 'title', _('title'), meetingFile.title ) }}
+    <fieldset class="usa-fieldset">
+        <legend class="usa-legend">{{ _('file') }}</legend>
+        <p>{{ _('file_options', 'messages') }}</p>
 
-        <div class="usa-form-group">
-            {{ forms.field_text('url', 'url', _('url'), meetingFile.url ) }}
-            {% if meetingFile.filename -%}
-            <div><a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.id }) }}">
-                    {{ meetingFile.filename }}
-                 </a>
-            </div>
-            {%- endif %}
-            {{ forms.field_file('meetingFile', 'meetingFile', _('meetingFile'), meetingFile,
-                                accept, maxSize, maxBytes, false, {},
-                                accept ~ ' - ' ~ maxSize) }}
+        {{ forms.field_text  ('url',   'url',   _('url'  ), meetingFile.url ) }}
+
+        {% if meetingFile.filename -%}
+        <div>
+            <label class="usa-label">{{ _('current_file') }}</label>
+            <a href="{{ uri('meetingFiles.download', { meetingFile_id: meetingFile.id }) }}">
+                {{ meetingFile.filename }}
+            </a>
         </div>
+        {%- endif %}
+        {{ forms.field_file('meetingFile', 'meetingFile', _('upload'), meetingFile,
+                            accept, maxSize, maxBytes, false, {},
+                            accept ~ ' - ' ~ maxSize) }}
 
         {{ forms.button('submit', _('save'), 'save') }}
         {{ forms.actionLink(uri('meetings.view', { meeting_id: meetingFile.meeting_id }) , _('cancel') ) }}
     </fieldset>
 </form>
+
+</section>
 {% endblock %}
