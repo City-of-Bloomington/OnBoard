@@ -54,23 +54,23 @@
                         {% endif %}
                     </div>
                 </div>
+                <div class="grid-row">
+                    <strong>{{ _('seat') }}:</strong>
+                    {% if isAllowed('seats', 'view') %}
+                    <a class="usa-link" href="{{ uri('seats.view', { seat_id: row.seat_id }) }}">{{ row.seat_name }}</a>
+                    {% else %}
+                    {{ row.seat_name }}
+                    {% endif %}
+                </div>
                 <div class="grid-row flex-1">
-                    <div class="tablet:grid-col-2">
-                        <strong>{{ _('seat') }}:</strong>
-                        {% if isAllowed('seats', 'view') %}
-                        <a class="usa-link" href="{{ uri('seats.view', { seat_id: row.seat_id }) }}">{{ row.seat_code }}</a>
-                        {% else %}
-                        {{ row.seat_code }}
-                        {% endif %}
-                    </div>
                     {% if row.seat_type == 'termed' %}
-                    <div class="tablet:grid-col-4">
+                    <div class="tablet:grid-col-6">
                         <strong>{{ _('seat_term'   ) }}:</strong>
                         {{ row.term_startDate|date(DATE_FORMAT) }} -
                         {{ row.term_endDate  |date(DATE_FORMAT) }}
                     </div>
                     {% endif %}
-                    <div class="tablet:grid-col-4">
+                    <div class="tablet:grid-col-6">
                         <strong>{{ _('membership') }}</strong>
                         {{ row.member_startDate ? row.member_startDate|date(DATE_FORMAT) : '' }} -
                         {{ row.member_endDate   ? row.member_endDate  |date(DATE_FORMAT) : '' }}
