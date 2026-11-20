@@ -37,15 +37,52 @@ class DepartmentAssociation implements AssertionInterface
     public function assert(Acl $acl, ?RoleInterface $role=null, ?ResourceInterface $resource=null, $privilege=null)
     {
         if (isset($_SESSION['USER'])) {
-            $did = $_SESSION['USER']->getDepartment_id();
+            $did = (int)$_SESSION['USER']->getDepartment_id();
 
-            foreach (self::$params as $p=>$t) {
-                if (!empty($_REQUEST[$p])) {
-                    $table = new $t();
-                    return $table->hasDepartment((int)$did, (int)$_REQUEST[$p]);
-                }
+            switch ($resource) {
+                case 'committees.notes':
+                case 'committees.file':
+                case 'committees':
+                case 'legislation':
+                    return self::check_department('committee_id', $did);
+
+                case 'applications':
+                    return self::check_department('application_id', $did);
+
+                case 'applicantFiles':
+                    return self::check_department('applicantFile_id', $did);
+
+                case 'meetingFiles':
+                    return $privilege == 'add'
+                        ? self::check_department(    'meeting_id', $did)
+                        : self::check_department('meetingFile_id', $did);
+
+                case 'legislationFiles':
+                    return $privilege == 'add'
+                        ? self::check_department(    'legislation_id', $did)
+                        : self::check_department('legislationFile_id', $did);
+
+                case 'legislationActions':
+                    return $privilege == 'add'
+                        ? self::check_department(      'legislation_id', $did)
+                        : self::check_department('legislationAction_id', $did);
+
+                case 'reports':
+                    return $privilege == 'add'
+                        ? self::check_department('committee_id', $did)
+                        : self::check_department(   'report_id', $did);
             }
        }
        return false;
+    }
+
+    private static function check_department(string $param_name, int $dept_id): bool
+    {
+        if ( !empty( $_REQUEST[$param_name])) {
+            $t = self::$params[$param_name];
+            $table = new $t();
+            return $table->hasDepartment($dept_id, (int)$_REQUEST[$param_name]);
+        }
+        return false;
     }
 }
